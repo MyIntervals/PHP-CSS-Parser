@@ -1,4 +1,15 @@
 <?php
+
+/**
+* @package html
+* CSSParser class parses CSS from text into a data structure.
+* 
+* @todo Add support for @namespace
+* @todo Allow string output
+* @todo Fix parsing of @import with media query support
+* @todo Add methods like selectorsWithElement($sId/Class/TagName), removeSelector($oSelector), attributesOfType($sType), removeAttribute($oAttribute)
+* @todo Add multiplyAbsoluteValues($fFactor)
+*/
 class CSSParser { 
 	private $sText;
 	private $iCurrentPosition;
@@ -63,9 +74,18 @@ class CSSParser {
 			$this->parseList($oResult);
 			return $oResult;
 		} else if($sIdentifier === 'import') {
-			return new CSSImport($this->parseURLValue());
+			$oLocation = $this->parseURLValue();
+			$this->consumeWhiteSpace();
+			$sMediaQuery = null;
+			if(!$this->comes(';')) {
+				$sMediaQuery = $this->consumeUntil(';');
+			}
+			$this->consume(';');
+			return new CSSImport($oLocation, $sMediaQuery);
 		} else if($sIdentifier === 'charset') {
 			$sCharset = $this->parseStringValue();
+			$this->consumeWhiteSpace();
+			$this->consume(';');
 			$this->setCharset($sCharset);
 			return new CSSCharset($sCharset);
 		} else {
@@ -118,7 +138,7 @@ class CSSParser {
 			}
 			$this->consume($sQuote);
 		}
-		return $sResult;
+		return new CSSString($sResult);
 	}
 	
 	private function parseCharacter($bIsForIdentifier) {
@@ -133,12 +153,13 @@ class CSSParser {
 			}
 			$sUnicode = $this->consumeExpression('/[0-9a-fA-F]+/');
 			if(mb_strlen($sUnicode, $this->sCharset) < 6) {
-				if(!preg_match('\\s', $this->peek())) {
-					throw new Exception("Unicode escape sequence not followed by whitespace");
-				} else if($this->comes('\r\n')) {
-					$this->consume(2);
-				} else {
-					$this->consume(1);
+				//Consume whitespace after incomplete unicode escape
+				if(preg_match('\\s', $this->peek())) {
+					if($this->comes('\r\n')) {
+						$this->consume(2);
+					} else {
+						$this->consume(1);
+					}
 				}
 			}
 			$sUtf16 = '';
@@ -188,10 +209,6 @@ class CSSParser {
 		$this->consume(':');
 		$this->consumeWhiteSpace();
 		while(!($this->comes('}') || $this->comes(';') || $this->comes('!'))) {
-			if($this->comes(',')) {
-				$this->consume(',');
-				$this->consumeWhiteSpace();
-			}
 			$oRule->addValue($this->parseValue());
 			$this->consumeWhiteSpace();
 		}
@@ -208,17 +225,24 @@ class CSSParser {
 	}
 	
 	private function parseValue() {
-		if(is_numeric($this->peek()) || $this->comes('-')) {
-			return $this->parseNumericValue();
-		} else if($this->comes('#') || $this->comes('rgb') || $this->comes('hsl')) {
-			return $this->parseColorValue();
-		} else if($this->comes('url')){
-			return $this->parseURLValue();
-		} else if($this->comes("'") || $this->comes('"')){
-			return $this->parseStringValue();
-		} else {
-			return $this->parseIdentifier();
-		}
+		$aResult = array();
+		do {
+			$this->consumeWhiteSpace();
+			if(is_numeric($this->peek()) || $this->comes('-') || $this->comes('.')) {
+				$aResult[] = $this->parseNumericValue();
+			} else if($this->comes('#') || $this->comes('rgb') || $this->comes('hsl')) {
+				$aResult[] = $this->parseColorValue();
+			} else if($this->comes('url')){
+				$aResult[] = $this->parseURLValue();
+			} else if($this->comes("'") || $this->comes('"')){
+				$aResult[] = $this->parseStringValue();
+			} else {
+				$aResult[] = $this->parseIdentifier();
+			}
+			$this->consumeWhiteSpace();
+		} while($this->comes(',') && is_string($this->consume(',')));
+		
+		return $aResult;
 	}
 	
 	private function parseNumericValue() {
@@ -262,7 +286,6 @@ class CSSParser {
 	private function parseColorValue() {
 		$aColor = array();
 		if($this->comes('#')) {
-			$fAlpha = 1.0;
 			if($this->comes('#')) {
 				$this->consume('#');
 				$sValue = $this->parseIdentifier();
@@ -270,10 +293,6 @@ class CSSParser {
 					$sValue = $sValue[0].$sValue[0].$sValue[1].$sValue[1].$sValue[2].$sValue[2];
 				}
 				$aColor = array('r' => intval($sValue[0].$sValue[1], 16), 'g' => intval($sValue[2].$sValue[3], 16), 'b' => intval($sValue[4].$sValue[5], 16));
-			}
-			$aColor = array('r' => $iR, 'g' => $iG, 'b' => $iB);
-			if($fAlpha != 1.0) {
-				$aColor['a'] = $fAlpha;
 			}
 		} else {
 			$sColorMode = $this->parseIdentifier();
@@ -283,21 +302,28 @@ class CSSParser {
 			for($i=0;$i<$iLength;$i++) {
 				$this->consumeWhiteSpace();
 				$aColor[$sColorMode[$i]] = $this->parseNumericValue();
+				$this->consumeWhiteSpace();
 				if($i < ($iLength-1)) {
 					$this->consume(',');
 				}
-				$this->consumeWhiteSpace();
 			}
 			$this->consume(')');
 		}
 	}
 	
 	private function parseURLValue() {
-		$this->consume('url');
+		$bUseUrl = $this->comes('url');
+		if($bUseUrl) {
+			$this->consume('url');
+			$this->consumeWhiteSpace();
+			$this->consume('(');
+		}
 		$this->consumeWhiteSpace();
-		$this->consume('(');
 		$oResult = new CSSURL($this->parseStringValue());
-		$this->consume(')');
+		if($bUseUrl) {
+			$this->consumeWhiteSpace();
+			$this->consume(')');
+		}
 		return $oResult;
 	}
 	
@@ -374,7 +400,7 @@ class CSSParser {
 	}
 }
 
-class CSSList {
+abstract class CSSList {
 	private $aContents;
 	
 	public function __construct() {
@@ -383,6 +409,14 @@ class CSSList {
 	
 	public function append($oItem) {
 		$this->aContents[] = $oItem;
+	}
+	
+	public function __toString() {
+		$sResult = '';
+		foreach($this->aContents as $oContent) {
+			$sResult .= $oContent->__toString();
+		}
+		return $sResult;
 	}
 }
 
@@ -404,13 +438,22 @@ class CSSMediaQuery extends CSSList {
 	public function getQuery() {
 			return $this->sQuery;
 	}
+	
+	public function __toString() {
+		$sResult = "@media {$this->sQuery} {";
+		$sResult .= parent::__toString();
+		$sResult .= '}';
+		return $sResult;
+	}
 }
 
 class CSSImport {
 	private $oLocation;
+	private $sMediaQuery;
 	
-	public function __construct(CSSURL $oLocation) {
+	public function __construct(CSSURL $oLocation, $sMediaQuery) {
 		$this->oLocation = $oLocation;
+		$this->sMediaQuery = $sMediaQuery;
 	}
 	
 	public function setLocation($oLocation) {
@@ -419,6 +462,10 @@ class CSSImport {
 
 	public function getLocation() {
 			return $this->oLocation;
+	}
+	
+	public function __toString() {
+		return "@import ".$this->oLocation->__toString().($this->sMediaQuery === null ? '' : ' '.$this->sMediaQuery).';';
 	}
 }
 
@@ -436,16 +483,29 @@ class CSSCharset {
 	public function getCharset() {
 			return $this->sCharset;
 	}
+	
+	public function __toString() {
+		return "@charset {$this->sCharset->__toString()};";
+	}
 }
 
-class CSSRuleSet {
+abstract class CSSRuleSet {
 	private $aRules;
 	
 	public function __construct() {
 		$this->aRules = array();
 	}
+	
 	public function addRule(CSSRule $oRule) {
 		$this->aRules[$oRule->getRule()] = $oRule;
+	}
+	
+	public function __toString() {
+		$sResult = '';
+		foreach($this->aRules as $oRule) {
+			$sResult .= $oRule->__toString();
+		}
+		return $sResult;
 	}
 }
 
@@ -454,6 +514,13 @@ class CSSAtRule extends CSSRuleSet {
 	
 	public function __construct($sType) {
 		$this->sType = $sType;
+	}
+	
+	public function __toString() {
+		$sResult = "@{$this->sType} {";
+		$sResult .= parent::__toString();
+		$sResult .= '}';
+		return $sResult;
 	}
 }
 
@@ -474,6 +541,13 @@ class CSSSelector extends CSSRuleSet {
 		foreach($this->aSelector as $iKey => $sSelector) {
 			$this->aSelector[$iKey] = trim($sSelector);
 		}
+	}
+	
+	public function __toString() {
+		$sResult = implode(', ', $this->aSelector).' {';
+		$sResult .= parent::__toString();
+		$sResult .= '}';
+		return $sResult;
 	}
 }
 
@@ -514,10 +588,23 @@ class CSSRule {
 	public function getIsImportant() {
 	    return $this->bIsImportant;
 	}
+	public function __toString() {
+		$sResult = "{$this->sRule}: ";
+		foreach($this->aValues as $aValues) {
+			$sResult .= implode(', ', $aValues).' ';
+		}
+		if($this->bIsImportant) {
+			$sResult .= '!important';
+		} else {
+			$sResult = substr($sResult, 0, -1);
+		}
+		$sResult .= ';';
+		return $sResult;
+	}
 }
 
-class CSSValue {
-	
+abstract class CSSValue {
+	public abstract function __toString();
 }
 
 class CSSSize extends CSSValue {
@@ -544,6 +631,10 @@ class CSSSize extends CSSValue {
 	public function getSize() {
 	    return $this->fSize;
 	}
+	
+	public function __toString() {
+		return $this->fSize.($this->sUnit === null ? '' : $this->sUnit);
+	}
 }
 
 class CSSColor extends CSSValue {
@@ -552,12 +643,56 @@ class CSSColor extends CSSValue {
 	public function __construct($aColor) {
 		$this->aColor = $aColor;
 	}
+	
+	public function setColor($aColor) {
+	    $this->aColor = $aColor;
+	}
+
+	public function getColor() {
+	    return $this->aColor;
+	}
+	
+	public function __toString() {
+		return implode('', array_keys($this->aColor)).'('.implode(', ', $this->aColor).')';
+	}
+}
+
+class CSSString extends CSSValue {
+	private $sString;
+	
+	public function __construct($sString) {
+		$this->sString = $sString;
+	}
+	
+	public function setString($sString) {
+	    $this->sString = $sString;
+	}
+
+	public function getString() {
+	    return $this->sString;
+	}
+	
+	public function __toString() {
+		return '"'.addslashes($this->sString).'"';
+	}
 }
 
 class CSSURL extends CSSValue {
-	private $sURL;
+	private $oURL;
 	
-	public function __construct($sURL) {
-		$this->sURL = $sURL;
+	public function __construct(CSSString $oURL) {
+		$this->oURL = $oURL;
+	}
+	
+	public function setURL(CSSString $oURL) {
+	    $this->oURL = $oURL;
+	}
+
+	public function getURL() {
+	    return $this->oURL;
+	}
+	
+	public function __toString() {
+		return "url({$this->oURL->__toString()})";
 	}
 }
