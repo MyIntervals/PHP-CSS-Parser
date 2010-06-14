@@ -6,7 +6,6 @@
 * 
 * @todo Add support for @namespace
 * @todo Allow string output
-* @todo Fix parsing of @import with media query support
 * @todo Add methods like selectorsWithElement($sId/Class/TagName), removeSelector($oSelector), attributesOfType($sType), removeAttribute($oAttribute)
 * @todo Add multiplyAbsoluteValues($fFactor)
 */
@@ -125,7 +124,7 @@ class CSSParser {
 		$sContent = null;
 		if($sQuote === null) {
 			//Unquoted strings end in whitespace or with braces, brackets, parentheses
-			while(!preg_match('/[\\s{}()<>\\[\\]]/', $this->peek())) {
+			while(!preg_match('/[\\s{}()<>\\[\\]]/isu', $this->peek())) {
 				$sResult .= $this->parseCharacter(false);
 			}
 		} else {
@@ -148,13 +147,13 @@ class CSSParser {
 				return '';
 			}
 			$aMatches;
-			if(preg_match('/[0-9a-fA-F]/', $this->peek()) === 0) {
+			if(preg_match('/[0-9a-fA-F]/Su', $this->peek()) === 0) {
 				return $this->consume(1);
 			}
 			$sUnicode = $this->consumeExpression('/[0-9a-fA-F]+/');
 			if(mb_strlen($sUnicode, $this->sCharset) < 6) {
 				//Consume whitespace after incomplete unicode escape
-				if(preg_match('\\s', $this->peek())) {
+				if(preg_match('/\\s/isSu', $this->peek())) {
 					if($this->comes('\r\n')) {
 						$this->consume(2);
 					} else {
@@ -172,7 +171,7 @@ class CSSParser {
 			return iconv('utf-16', $this->sCharset, $sUtf16);
 		}
 		if($bIsForIdentifier) {
-			if(preg_match('/[a-zA-Z0-9]|-|_/', $this->peek()) === 1) {
+			if(preg_match('/[a-zA-Z0-9]|-|_/u', $this->peek()) === 1) {
 				return $this->consume(1);
 			} else if(ord($this->peek()) > 0xa1) {
 				return $this->consume(1);
@@ -286,14 +285,12 @@ class CSSParser {
 	private function parseColorValue() {
 		$aColor = array();
 		if($this->comes('#')) {
-			if($this->comes('#')) {
-				$this->consume('#');
-				$sValue = $this->parseIdentifier();
-				if(mb_strlen($sValue, $this->sCharset) === 3) {
-					$sValue = $sValue[0].$sValue[0].$sValue[1].$sValue[1].$sValue[2].$sValue[2];
-				}
-				$aColor = array('r' => intval($sValue[0].$sValue[1], 16), 'g' => intval($sValue[2].$sValue[3], 16), 'b' => intval($sValue[4].$sValue[5], 16));
+			$this->consume('#');
+			$sValue = $this->parseIdentifier();
+			if(mb_strlen($sValue, $this->sCharset) === 3) {
+				$sValue = $sValue[0].$sValue[0].$sValue[1].$sValue[1].$sValue[2].$sValue[2];
 			}
+			$aColor = array('r' => intval($sValue[0].$sValue[1], 16), 'g' => intval($sValue[2].$sValue[3], 16), 'b' => intval($sValue[4].$sValue[5], 16));
 		} else {
 			$sColorMode = $this->parseIdentifier();
 			$this->consumeWhiteSpace();
@@ -370,10 +367,10 @@ class CSSParser {
 	}
 	
 	private function consumeWhiteSpace() {
-		while(preg_match('/\\s/', $this->peek()) === 1) {
+		while(preg_match('/\\s/isS', $this->peek()) === 1) {
 			$this->consume(1);
+			$this->consumeComment();
 		}
-		$this->consumeComment();
 	}
 	
 	private function consumeComment() {
@@ -630,6 +627,16 @@ class CSSSize extends CSSValue {
 
 	public function getSize() {
 	    return $this->fSize;
+	}
+	
+	public function isRelative() {
+		if($this->sUnit === '%' || $this->sUnit === 'em' || $this->sUnit === 'ex') {
+			return true;
+		}
+		if($this->sUnit === null && $this->fSize != 0) {
+			return true;
+		}
+		return false;
 	}
 	
 	public function __toString() {
