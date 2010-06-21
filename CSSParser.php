@@ -367,17 +367,20 @@ class CSSParser {
 	}
 	
 	private function consumeWhiteSpace() {
-		while(preg_match('/\\s/isS', $this->peek()) === 1) {
-			$this->consume(1);
-			$this->consumeComment();
-		}
+		do {
+			while(preg_match('/\\s/isS', $this->peek()) === 1) {
+				$this->consume(1);
+			}
+		} while($this->consumeComment());
 	}
 	
 	private function consumeComment() {
 		if($this->comes('/*')) {
 			$this->consumeUntil('*/');
 			$this->consume('*/');
+			return true;
 		}
+		return false;
 	}
 	
 	private function isEnd() {
@@ -415,9 +418,71 @@ abstract class CSSList {
 		}
 		return $sResult;
 	}
+	
+	public function getContents() {
+		return $this->aContents;
+	}
+	
+	protected function allSelectors(&$aResult) {
+		foreach($this->aContents as $mContent) {
+			if($mContent instanceof CSSSelector) {
+				$aResult[] = $mContent;
+			} else if($mContent instanceof CSSList) {
+				$mContent->allSelectors($aResult);
+			}
+		}
+	}
+	
+	protected function allRuleSets(&$aResult) {
+		foreach($this->aContents as $mContent) {
+			if($mContent instanceof CSSRuleSet) {
+				$aResult[] = $mContent;
+			} else if($mContent instanceof CSSList) {
+				$mContent->allRuleSets($aResult);
+			}
+		}
+	}
+	
+	protected function allValues($oElement, &$aResult) {
+		if($oElement instanceof CSSList) {
+			foreach($oElement->getContents() as $oContent) {
+				$this->allValues($oContent, $aResult);
+			}
+		} else if($oElement instanceof CSSRuleSet) {
+			foreach($oElement->getRules() as $oRule) {
+				$this->allValues($oRule, $aResult);
+			}
+		} else if($oElement instanceof CSSRule) {
+			foreach($oElement->getValues() as $aValues) {
+				foreach($aValues as $mValue) {
+					$aResult[] = $mValue;
+				}
+			}
+		}
+	}
 }
 
 class CSSDocument extends CSSList {
+	public function getAllSelectors() {
+		$aResult = array();
+		$this->allSelectors($aResult);
+		return $aResult;
+	}
+	
+	public function getAllRuleSets() {
+		$aResult = array();
+		$this->allRuleSets($aResult);
+		return $aResult;
+	}
+	
+	public function getAllValues($oElement = null) {
+		if($oElement === null) {
+			$oElement = $this;
+		}
+		$aResult = array();
+		$this->allValues($oElement, $aResult);
+		return $aResult;
+	}
 }
 
 class CSSMediaQuery extends CSSList {
@@ -497,6 +562,26 @@ abstract class CSSRuleSet {
 		$this->aRules[$oRule->getRule()] = $oRule;
 	}
 	
+	public function getRules() {
+		return $this->aRules;
+	}
+	
+	public function removeRule($mRule) {
+		if($mRule instanceof CSSRule) {
+			$mRule = $mRule->getRule();
+		}
+		if(strrpos($mRule, '-')===strlen($mRule)-strlen('-')) {
+			$sStart = substr($mRule, 0, -1);
+			foreach($this->aRules as $oRule) {
+				if($oRule->getRule() === $sStart || strpos($oRule->getRule(), $mRule) === 0) {
+					unset($this->aRules[$oRule->getRule()]);
+				}
+			}
+		} else if(isset($this->aRules[$mRule])) {
+			unset($this->aRules[$mRule]);
+		}
+	}
+	
 	public function __toString() {
 		$sResult = '';
 		foreach($this->aRules as $oRule) {
@@ -538,6 +623,10 @@ class CSSSelector extends CSSRuleSet {
 		foreach($this->aSelector as $iKey => $sSelector) {
 			$this->aSelector[$iKey] = trim($sSelector);
 		}
+	}
+	
+	public function getSelector() {
+		return $this->aSelector;
 	}
 	
 	public function __toString() {
@@ -622,7 +711,7 @@ class CSSSize extends CSSValue {
 	}
 	
 	public function setSize($fSize) {
-	    $this->fSize = $fSize;
+	    $this->fSize = floatval($fSize);
 	}
 
 	public function getSize() {
