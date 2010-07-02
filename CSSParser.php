@@ -404,7 +404,7 @@ abstract class CSSList {
 	private $aContents;
 	
 	public function __construct() {
-		$aContents = array();
+		$this->aContents = array();
 	}
 	
 	public function append($oItem) {
