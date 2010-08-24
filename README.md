@@ -112,21 +112,83 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 
 ## Examples
 
-### Parsed structure
+### Example 1 (At-Rules)
 
 #### Input
 
+	@charset "utf-8";
+
+	@font-face {
+	  font-family: "CrassRoots";
+	  src: url("../media/cr.ttf")
+	}
+	
 	html, body {
 		font-size: 1.6em
 	}
 	
-#### Structure (var_dump flavoured)
+#### Structure (`var_dump()`)
 
 	object(CSSDocument)#2 (1) {
 	  ["aContents":"CSSList":private]=>
-	  array(1) {
+	  array(3) {
 	    [0]=>
-	    object(CSSSelector)#3 (2) {
+	    object(CSSCharset)#4 (1) {
+	      ["sCharset":"CSSCharset":private]=>
+	      object(CSSString)#3 (1) {
+	        ["sString":"CSSString":private]=>
+	        string(5) "utf-8"
+	      }
+	    }
+	    [1]=>
+	    object(CSSAtRule)#5 (2) {
+	      ["sType":"CSSAtRule":private]=>
+	      string(9) "font-face"
+	      ["aRules":"CSSRuleSet":private]=>
+	      array(2) {
+	        ["font-family"]=>
+	        object(CSSRule)#6 (3) {
+	          ["sRule":"CSSRule":private]=>
+	          string(11) "font-family"
+	          ["aValues":"CSSRule":private]=>
+	          array(1) {
+	            [0]=>
+	            array(1) {
+	              [0]=>
+	              object(CSSString)#7 (1) {
+	                ["sString":"CSSString":private]=>
+	                string(10) "CrassRoots"
+	              }
+	            }
+	          }
+	          ["bIsImportant":"CSSRule":private]=>
+	          bool(false)
+	        }
+	        ["src"]=>
+	        object(CSSRule)#8 (3) {
+	          ["sRule":"CSSRule":private]=>
+	          string(3) "src"
+	          ["aValues":"CSSRule":private]=>
+	          array(1) {
+	            [0]=>
+	            array(1) {
+	              [0]=>
+	              object(CSSURL)#9 (1) {
+	                ["oURL":"CSSURL":private]=>
+	                object(CSSString)#10 (1) {
+	                  ["sString":"CSSString":private]=>
+	                  string(15) "../media/cr.ttf"
+	                }
+	              }
+	            }
+	          }
+	          ["bIsImportant":"CSSRule":private]=>
+	          bool(false)
+	        }
+	      }
+	    }
+	    [2]=>
+	    object(CSSSelector)#11 (2) {
 	      ["aSelector":"CSSSelector":private]=>
 	      array(2) {
 	        [0]=>
@@ -137,7 +199,7 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	      ["aRules":"CSSRuleSet":private]=>
 	      array(1) {
 	        ["font-size"]=>
-	        object(CSSRule)#4 (3) {
+	        object(CSSRule)#12 (3) {
 	          ["sRule":"CSSRule":private]=>
 	          string(9) "font-size"
 	          ["aValues":"CSSRule":private]=>
@@ -145,7 +207,7 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	            [0]=>
 	            array(1) {
 	              [0]=>
-	              object(CSSSize)#5 (2) {
+	              object(CSSSize)#13 (2) {
 	                ["fSize":"CSSSize":private]=>
 	                float(1.6)
 	                ["sUnit":"CSSSize":private]=>
@@ -161,14 +223,138 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	  }
 	}
 
-#### `__toString()` output
+#### Output (`__toString()`)
 
-	html, body {font-size: 1.6em;}
+	@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}html, body {font-size: 1.6em;}
 
+### Example 2 (Values)
+
+#### Input
+
+	#header {
+		margin: 10px 2em 1cm 2%;
+		font-family: Verdana, Helvetica, "Gill Sans", sans-serif;
+		color: red !important;
+	}
+	
+#### Structure (`var_dump()`)
+
+	object(CSSDocument)#2 (1) {
+	  ["aContents":"CSSList":private]=>
+	  array(1) {
+	    [0]=>
+	    object(CSSSelector)#3 (2) {
+	      ["aSelector":"CSSSelector":private]=>
+	      array(1) {
+	        [0]=>
+	        string(7) "#header"
+	      }
+	      ["aRules":"CSSRuleSet":private]=>
+	      array(3) {
+	        ["margin"]=>
+	        object(CSSRule)#4 (3) {
+	          ["sRule":"CSSRule":private]=>
+	          string(6) "margin"
+	          ["aValues":"CSSRule":private]=>
+	          array(4) {
+	            [0]=>
+	            array(1) {
+	              [0]=>
+	              object(CSSSize)#5 (2) {
+	                ["fSize":"CSSSize":private]=>
+	                float(10)
+	                ["sUnit":"CSSSize":private]=>
+	                string(2) "px"
+	              }
+	            }
+	            [1]=>
+	            array(1) {
+	              [0]=>
+	              object(CSSSize)#6 (2) {
+	                ["fSize":"CSSSize":private]=>
+	                float(2)
+	                ["sUnit":"CSSSize":private]=>
+	                string(2) "em"
+	              }
+	            }
+	            [2]=>
+	            array(1) {
+	              [0]=>
+	              object(CSSSize)#7 (2) {
+	                ["fSize":"CSSSize":private]=>
+	                float(1)
+	                ["sUnit":"CSSSize":private]=>
+	                string(2) "cm"
+	              }
+	            }
+	            [3]=>
+	            array(1) {
+	              [0]=>
+	              object(CSSSize)#8 (2) {
+	                ["fSize":"CSSSize":private]=>
+	                float(2)
+	                ["sUnit":"CSSSize":private]=>
+	                string(1) "%"
+	              }
+	            }
+	          }
+	          ["bIsImportant":"CSSRule":private]=>
+	          bool(false)
+	        }
+	        ["font-family"]=>
+	        object(CSSRule)#9 (3) {
+	          ["sRule":"CSSRule":private]=>
+	          string(11) "font-family"
+	          ["aValues":"CSSRule":private]=>
+	          array(1) {
+	            [0]=>
+	            array(4) {
+	              [0]=>
+	              string(7) "Verdana"
+	              [1]=>
+	              string(9) "Helvetica"
+	              [2]=>
+	              object(CSSString)#10 (1) {
+	                ["sString":"CSSString":private]=>
+	                string(9) "Gill Sans"
+	              }
+	              [3]=>
+	              string(10) "sans-serif"
+	            }
+	          }
+	          ["bIsImportant":"CSSRule":private]=>
+	          bool(false)
+	        }
+	        ["color"]=>
+	        object(CSSRule)#11 (3) {
+	          ["sRule":"CSSRule":private]=>
+	          string(5) "color"
+	          ["aValues":"CSSRule":private]=>
+	          array(1) {
+	            [0]=>
+	            array(1) {
+	              [0]=>
+	              string(3) "red"
+	            }
+	          }
+	          ["bIsImportant":"CSSRule":private]=>
+	          bool(true)
+	        }
+	      }
+	    }
+	  }
+	}
+
+#### Output (`__toString()`)
+
+	#header {margin: 10px 2em 1cm 2%;font-family: Verdana, Helvetica, "Gill Sans", sans-serif;color: red !important;}
 
 ## To-Do
 
 * More convenience methods [like `selectorsWithElement($sId/Class/TagName)`, `removeSelector($oSelector)`, `attributesOfType($sType)`, `removeAttributesOfType($sType)`]
 * Options for output (compact, verbose, etc.)
 * Support for @namespace
+* Named color support (using `CSSColor` instead of an anonymous string literal)
+* Allow for function-like property values other than hsl(), rgb(), rgba(), and url() (like -moz-linear-gradient(), for example).
 * Test suite
+* Adopt lenient parsing rules
