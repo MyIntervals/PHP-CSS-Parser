@@ -73,7 +73,7 @@ There are a few convenience methods on CSSDocument to ease finding, manipulating
 
 ### Use cases
 
-Use `CSSParser` to prepend an id to all selectors:
+#### Use `CSSParser` to prepend an id to all selectors
 
 	$sMyId = "#my_id";
 	$oParser = new CSSParser($sCssContents);
@@ -83,7 +83,7 @@ Use `CSSParser` to prepend an id to all selectors:
 		$oSelector->setSelector($sMyId.' '.$aSelector);
 	}
 	
-Shrink all absolute sizes to half:
+#### Shrink all absolute sizes to half
 
 	$oParser = new CSSParser($sCssContents);
 	$oCss = $oParser->parse();
@@ -93,7 +93,7 @@ Shrink all absolute sizes to half:
 		}
 	}
 
-Remove unwanted rules:
+#### Remove unwanted rules
 
 	$oParser = new CSSParser($sCssContents);
 	$oCss = $oParser->parse();
