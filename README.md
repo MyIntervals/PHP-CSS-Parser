@@ -110,9 +110,65 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	$oCssDocument = $oCssParser->parse();
 	print $oCssDocument->__toString();
 
+## Examples
+
+### Parsed structure
+
+#### Input
+
+	html, body {
+		font-size: 1.6em
+	}
+	
+#### Structure (var_dump flavoured)
+
+	object(CSSDocument)#2 (1) {
+	  ["aContents":"CSSList":private]=>
+	  array(1) {
+	    [0]=>
+	    object(CSSSelector)#3 (2) {
+	      ["aSelector":"CSSSelector":private]=>
+	      array(2) {
+	        [0]=>
+	        string(4) "html"
+	        [1]=>
+	        string(4) "body"
+	      }
+	      ["aRules":"CSSRuleSet":private]=>
+	      array(1) {
+	        ["font-size"]=>
+	        object(CSSRule)#4 (3) {
+	          ["sRule":"CSSRule":private]=>
+	          string(9) "font-size"
+	          ["aValues":"CSSRule":private]=>
+	          array(1) {
+	            [0]=>
+	            array(1) {
+	              [0]=>
+	              object(CSSSize)#5 (2) {
+	                ["fSize":"CSSSize":private]=>
+	                float(1.6)
+	                ["sUnit":"CSSSize":private]=>
+	                string(2) "em"
+	              }
+	            }
+	          }
+	          ["bIsImportant":"CSSRule":private]=>
+	          bool(false)
+	        }
+	      }
+	    }
+	  }
+	}
+
+#### `__toString()` output
+
+	html, body {font-size: 1.6em;}
+
+
 ## To-Do
 
-* More convenience methods [like selectorsWithElement($sId/Class/TagName), removeSelector($oSelector), attributesOfType($sType), removeAttributesOfType($sType)]
+* More convenience methods [like `selectorsWithElement($sId/Class/TagName)`, `removeSelector($oSelector)`, `attributesOfType($sType)`, `removeAttributesOfType($sType)`]
 * Options for output (compact, verbose, etc.)
 * Support for @namespace
 * Test suite
