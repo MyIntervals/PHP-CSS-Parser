@@ -80,7 +80,7 @@ class CSSParser {
 			$sCharset = $this->parseStringValue();
 			$this->consumeWhiteSpace();
 			$this->consume(';');
-			$this->setCharset($sCharset);
+			$this->setCharset($sCharset->getString());
 			return new CSSCharset($sCharset);
 		} else {
 			//Unknown other at rule (font-face or such)
@@ -320,16 +320,22 @@ class CSSParser {
 	}
 	
 	private function comes($sString, $iOffset = 0) {
+		if($this->isEnd()) {
+			return false;
+		}
 		return $this->peek($sString, $iOffset) == $sString;
 	}
 	
 	private function peek($iLength = 1, $iOffset = 0) {
-			if(is_string($iLength)) {
-				$iLength = mb_strlen($iLength, $this->sCharset);
-			}
-			if(is_string($iOffset)) {
-				$iOffset = mb_strlen($iOffset, $this->sCharset);
-			}
+		if($this->isEnd()) {
+			return '';
+		}
+		if(is_string($iLength)) {
+			$iLength = mb_strlen($iLength, $this->sCharset);
+		}
+		if(is_string($iOffset)) {
+			$iOffset = mb_strlen($iOffset, $this->sCharset);
+		}
 		return mb_substr($this->sText, $this->iCurrentPosition+$iOffset, $iLength, $this->sCharset);
 	}
 	
@@ -342,7 +348,7 @@ class CSSParser {
 			$this->iCurrentPosition += mb_strlen($mValue, $this->sCharset);
 			return $mValue;
 		} else {
-			if($this->iCurrentPosition+$mValue >= $this->iLength) {
+			if($this->iCurrentPosition+$mValue > $this->iLength) {
 				throw new Exception("Tried to consume $mValue chars, exceeded file end");
 			}
 			$sResult = mb_substr($this->sText, $this->iCurrentPosition, $mValue, $this->sCharset);
