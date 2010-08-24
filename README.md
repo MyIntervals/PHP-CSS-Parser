@@ -28,10 +28,14 @@ The resulting CSS document structure can be manipulated prior to being output.
 
 The resulting data structure consists mainly of four basic types: `CSSList`, `CSSRuleSet`, `CSSRule` and `CSSValue`. There are two additional types used: `CSSImport` and `CSSCharset` which you won’t use often.
 
+# CSSList
+
 `CSSList` represents a generic CSS container, most likely containing selectors but it may also contain at-rules, charset declarations, etc. `CSSList` has the following concrete subtypes:
 
 * `CSSDocument` – representing the root of a CSS file.
 * `CSSMediaQuery` – represents a subsection of a CSSList that only applies to a output device matching the contained media query.
+
+# CSSRuleSet
 
 `CSSRuleSet` is a container for individual rules. The most common form of a rule set is one constrained by a selector. The following concrete subtypes exist:
 
@@ -40,9 +44,13 @@ The resulting data structure consists mainly of four basic types: `CSSList`, `CS
 
 Note: A `CSSList` can contain other `CSSList`s (and `CSSImport`s as well as a `CSSCharset`) while a `CSSRuleSet` can only contain `CSSRule`s.
 
+# CSSRule
+
 `CSSRule`s just have a key (the rule) and multiple values (the part after the colon in the CSS file). This means the `values` attribute is an array consisting of arrays. The inner level of arrays is comma-separated in the CSS file while the outer level is whitespace-separated.
 
-`CSSValue`s is an abstract class that only defines the `__toString` method. The concrete subclasses are:
+# CSSValue
+
+`CSSValue` is an abstract class that only defines the `__toString` method. The concrete subclasses are:
 
 * `CSSSize` – consists of a numeric `size` value and a unit.
 * `CSSColor` – colors can be input in the form #rrggbb, #rgb or schema(val1, val2, …) but are alwas stored as an array of ('s' => val1, 'c' => val2, 'h' => val3, …) and output in the second form.
