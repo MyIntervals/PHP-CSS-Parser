@@ -3,11 +3,6 @@
 /**
 * @package html
 * CSSParser class parses CSS from text into a data structure.
-* 
-* @todo Add support for @namespace
-* @todo Allow string output
-* @todo Add methods like selectorsWithElement($sId/Class/TagName), removeSelector($oSelector), attributesOfType($sType), removeAttribute($oAttribute)
-* @todo Add multiplyAbsoluteValues($fFactor)
 */
 class CSSParser { 
 	private $sText;
