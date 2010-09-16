@@ -145,7 +145,7 @@ class CSSParser {
 			if(preg_match('/[0-9a-fA-F]/Su', $this->peek()) === 0) {
 				return $this->consume(1);
 			}
-			$sUnicode = $this->consumeExpression('/[0-9a-fA-F]+/');
+			$sUnicode = $this->consumeExpression('/[0-9a-fA-F]+/u');
 			if(mb_strlen($sUnicode, $this->sCharset) < 6) {
 				//Consume whitespace after incomplete unicode escape
 				if(preg_match('/\\s/isSu', $this->peek())) {
@@ -209,7 +209,7 @@ class CSSParser {
 		if($this->comes('!')) {
 			$this->consume('!');
 			$this->consumeWhiteSpace();
-			$this->consumeExpression('/important/i');
+			$this->consumeExpression('/important/iu');
 			$oRule->setIsImportant(true);
 		}
 		if($this->comes(';')) {
@@ -248,7 +248,7 @@ class CSSParser {
 			if($this->comes('.')) {
 				$sSize .= $this->consume('.');
 			} else {
-				$sSize .= $this->consumeExpression('/\\d+/');
+				$sSize .= $this->consume(1);
 			}
 		}
 		$fSize = floatval($sSize);
@@ -369,7 +369,7 @@ class CSSParser {
 	
 	private function consumeWhiteSpace() {
 		do {
-			while(preg_match('/\\s/isS', $this->peek()) === 1) {
+			while(preg_match('/\\s/isSu', $this->peek()) === 1) {
 				$this->consume(1);
 			}
 		} while($this->consumeComment());
@@ -389,7 +389,7 @@ class CSSParser {
 	}
 	
 	private function consumeUntil($sEnd) {
-		$iEndPos = strpos($this->sText, $sEnd, $this->iCurrentPosition);
+		$iEndPos = mb_strpos($this->sText, $sEnd, $this->iCurrentPosition, $this->sCharset);
 		if($iEndPos === false) {
 			throw new Exception("Required $sEnd not found, got {$this->peek(5)}");
 		}
