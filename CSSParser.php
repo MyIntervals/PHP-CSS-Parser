@@ -209,7 +209,10 @@ class CSSParser {
 		if($this->comes('!')) {
 			$this->consume('!');
 			$this->consumeWhiteSpace();
-			$this->consumeExpression('/important/iu');
+			$sImportantMarker = $this->consumeUntil(';');
+			if(mb_convert_case($sImportantMarker, MB_CASE_LOWER) !== 'important') {
+				throw new Exception("! was not followed by “important”");
+			}
 			$oRule->setIsImportant(true);
 		}
 		if($this->comes(';')) {
@@ -359,7 +362,7 @@ class CSSParser {
 	
 	private function consumeExpression($mExpression) {
 		$aMatches;
-		if(preg_match($mExpression, $this->sText, $aMatches, PREG_OFFSET_CAPTURE, $this->iCurrentPosition) === 1) {
+		if(preg_match($mExpression, $this->inputLeft(), $aMatches) === 1) {
 			if($aMatches[0][1] === $this->iCurrentPosition) {
 				return $this->consume($aMatches[0][0]);
 			}
