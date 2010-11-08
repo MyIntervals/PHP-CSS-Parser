@@ -209,9 +209,9 @@ class CSSParser {
 		if($this->comes('!')) {
 			$this->consume('!');
 			$this->consumeWhiteSpace();
-			$sImportantMarker = $this->consumeUntil(';');
+			$sImportantMarker = $this->consume(strlen('important'));
 			if(mb_convert_case($sImportantMarker, MB_CASE_LOWER) !== 'important') {
-				throw new Exception("! was not followed by “important”");
+				throw new Exception("! was followed by “".$sImportantMarker."”. Expected “important”");
 			}
 			$oRule->setIsImportant(true);
 		}
