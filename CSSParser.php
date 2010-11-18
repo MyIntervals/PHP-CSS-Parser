@@ -304,6 +304,7 @@ class CSSParser {
 			}
 			$this->consume(')');
 		}
+		return new CSSColor($aColor);
 	}
 	
 	private function parseURLValue() {
