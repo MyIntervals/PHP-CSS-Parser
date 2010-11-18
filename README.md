@@ -80,7 +80,11 @@ There are a few convenience methods on CSSDocument to ease finding, manipulating
 	$oCss = $oParser->parse();
 	foreach($oCss->getAllSelectors() as $oSelector) {
 		$aSelector = $oSelector->getSelector();
-		$oSelector->setSelector($sMyId.' '.$aSelector);
+		foreach($aSelector as $iKey => $sSelector) {
+			//Loop over all selector parts (the comma-separated strings in a selector) and prepend the id
+			$aSelector[$iKey] = "$sMyId $sSelector";
+		}
+		$oSelector->setSelector($aSelector);
 	}
 	
 #### Shrink all absolute sizes to half
