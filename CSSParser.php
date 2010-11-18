@@ -288,7 +288,7 @@ class CSSParser {
 			if(mb_strlen($sValue, $this->sCharset) === 3) {
 				$sValue = $sValue[0].$sValue[0].$sValue[1].$sValue[1].$sValue[2].$sValue[2];
 			}
-			$aColor = array('r' => intval($sValue[0].$sValue[1], 16), 'g' => intval($sValue[2].$sValue[3], 16), 'b' => intval($sValue[4].$sValue[5], 16));
+			$aColor = array('r' => new CSSSize(intval($sValue[0].$sValue[1], 16)), 'g' => new CSSSize(intval($sValue[2].$sValue[3], 16)), 'b' => new CSSSize(intval($sValue[4].$sValue[5], 16)));
 		} else {
 			$sColorMode = $this->parseIdentifier();
 			$this->consumeWhiteSpace();
@@ -448,14 +448,14 @@ abstract class CSSList {
 		}
 	}
 	
-	protected function allValues($oElement, &$aResult) {
+	protected function allValues($oElement, &$aResult, $sSearchString = null) {
 		if($oElement instanceof CSSList) {
 			foreach($oElement->getContents() as $oContent) {
-				$this->allValues($oContent, $aResult);
+				$this->allValues($oContent, $aResult, $sSearchString);
 			}
 		} else if($oElement instanceof CSSRuleSet) {
-			foreach($oElement->getRules() as $oRule) {
-				$this->allValues($oRule, $aResult);
+			foreach($oElement->getRules($sSearchString) as $oRule) {
+				$this->allValues($oRule, $aResult, $sSearchString);
 			}
 		} else if($oElement instanceof CSSRule) {
 			foreach($oElement->getValues() as $aValues) {
@@ -480,12 +480,16 @@ class CSSDocument extends CSSList {
 		return $aResult;
 	}
 	
-	public function getAllValues($oElement = null) {
-		if($oElement === null) {
-			$oElement = $this;
+	public function getAllValues($mElement = null) {
+		$sSearchString = null;
+		if($mElement === null) {
+			$mElement = $this;
+		} else if(is_string($mElement)) {
+			$sSearchString = $mElement;
+			$mElement = $this;
 		}
 		$aResult = array();
-		$this->allValues($oElement, $aResult);
+		$this->allValues($mElement, $aResult, $sSearchString);
 		return $aResult;
 	}
 }
@@ -567,8 +571,25 @@ abstract class CSSRuleSet {
 		$this->aRules[$oRule->getRule()] = $oRule;
 	}
 	
-	public function getRules() {
-		return $this->aRules;
+	public function getRules($mRule = null) {
+		if($mRule === null) {
+			return $this->aRules;
+		}
+		$aResult = array();
+		if($mRule instanceof CSSRule) {
+			$mRule = $mRule->getRule();
+		}
+		if(strrpos($mRule, '-')===strlen($mRule)-strlen('-')) {
+			$sStart = substr($mRule, 0, -1);
+			foreach($this->aRules as $oRule) {
+				if($oRule->getRule() === $sStart || strpos($oRule->getRule(), $mRule) === 0) {
+					$aResult[$oRule->getRule()] = $this->aRules[$oRule->getRule()];
+				}
+			}
+		} else if(isset($this->aRules[$mRule])) {
+			$aResult[$mRule] = $this->aRules[$mRule];
+		}
+		return $aResult;
 	}
 	
 	public function removeRule($mRule) {
@@ -600,6 +621,7 @@ class CSSAtRule extends CSSRuleSet {
 	private $sType;
 	
 	public function __construct($sType) {
+		parent::__construct();
 		$this->sType = $sType;
 	}
 	
@@ -702,8 +724,8 @@ class CSSSize extends CSSValue {
 	private $fSize;
 	private $sUnit;
 	
-	public function __construct($fSize, $sUnit) {
-		$this->fSize = $fSize;
+	public function __construct($fSize, $sUnit = null) {
+		$this->fSize = floatval($fSize);
 		$this->sUnit = $sUnit;
 	}
 	
@@ -753,8 +775,12 @@ class CSSColor extends CSSValue {
 	    return $this->aColor;
 	}
 	
+	public function getColorDescription() {
+		return implode('', array_keys($this->aColor));
+	}
+	
 	public function __toString() {
-		return implode('', array_keys($this->aColor)).'('.implode(', ', $this->aColor).')';
+		return $this->getColorDescription().'('.implode(', ', $this->aColor).')';
 	}
 }
 
