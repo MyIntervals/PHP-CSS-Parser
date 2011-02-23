@@ -47,7 +47,7 @@ class CSSParser {
 					return;
 				}
 			} else {
-				$oList->append($this->parseSelector());
+				$this->parseSelector($oList);
 			}
 			$this->consumeWhiteSpace();
 		}
@@ -180,13 +180,26 @@ class CSSParser {
 		return null;
 	}
 	
-	private function parseSelector() {
+	private function parseSelector($oList) {
 		$oResult = new CSSSelector();
 		$oResult->setSelector($this->consumeUntil('{'));
+		
+		$results = $oList->getAllSelectors();
+		foreach ($results as $selector)
+		{
+			if ($oResult->getSelector() == $selector->getSelector())
+			{
+				$this->consume('{');
+				$this->consumeWhiteSpace();
+				$this->parseRuleSet($selector);
+				return;
+			}
+		}
+		
 		$this->consume('{');
 		$this->consumeWhiteSpace();
 		$this->parseRuleSet($oResult);
-		return $oResult;
+		$oList->append($oResult);
 	}
 	
 	private function parseRuleSet($oRuleSet) {
