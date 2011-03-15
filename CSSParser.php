@@ -363,8 +363,8 @@ class CSSParser {
 	
 	private function consumeExpression($mExpression) {
 		$aMatches;
-		if(preg_match($mExpression, $this->inputLeft(), $aMatches) === 1) {
-			if($aMatches[0][1] === $this->iCurrentPosition) {
+		if(preg_match($mExpression, $this->inputLeft(), $aMatches, PREG_OFFSET_CAPTURE) === 1) {
+			if($aMatches[0][1] === 0) {
 				return $this->consume($aMatches[0][0]);
 			}
 		}
