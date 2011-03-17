@@ -144,7 +144,7 @@ class CSSParser {
 			if(preg_match('/[0-9a-fA-F]/Su', $this->peek()) === 0) {
 				return $this->consume(1);
 			}
-			$sUnicode = $this->consumeExpression('/[0-9a-fA-F]+/u');
+			$sUnicode = $this->consumeExpression('/^[0-9a-fA-F]{1,6}/u');
 			if(mb_strlen($sUnicode, $this->sCharset) < 6) {
 				//Consume whitespace after incomplete unicode escape
 				if(preg_match('/\\s/isSu', $this->peek())) {
@@ -155,17 +155,21 @@ class CSSParser {
 					}
 				}
 			}
-			$sUtf16 = '';
-			if((strlen($sUnicode) % 2) === 1) {
-				$sUnicode = "0$sUnicode";
-			}
 
-			// we need at least the Basic Multilingual Plane
-			$sUnicode = str_pad($sUnicode, 4, '0', STR_PAD_LEFT);
+			$sUnicode = str_pad($sUnicode, 6, '0', STR_PAD_LEFT);
+
+			$v = hexdec($sUnicode);
+
+			// do not replace
+			// - line feed
+			// - single and double quotation mark
+			if (in_array($v, array(0xa, 0x22, 0x27))) {
+			  $result = '\\' . $sUnicode;
+			  return $result;
+			}
 
 			// if the character is above U+FFFF, it must be encoded with a surrogate pair
 			// based on the "Example UTF-16 encoding procedure" on http://en.wikipedia.org/wiki/Utf-16
-			$v = hexdec($sUnicode);
 			if ($v > 0xFFFF) {
 				$v_bis = $v - 0x10000;
 				$vh = $v_bis >> 10; // higher 10 bits of $v_bis
@@ -173,13 +177,25 @@ class CSSParser {
 				$w1 = 0xD800 + $vh; // first code unit of UTF-16 encoding
 				$w2 = 0xDC00 + $vl; // second code unit of UTF-16 encoding
 
-				$sUnicode = str_pad(dechex($w1), 4, "0", STR_PAD_LEFT) . str_pad(dechex($w2), 4, "0", STR_PAD_LEFT);
+				$sUtf16Bytes = str_pad(dechex($w1), 4, "0", STR_PAD_LEFT) . str_pad(dechex($w2), 4, "0", STR_PAD_LEFT);
+			}
+			else {
+			  // we need the Basic Multilingual Plane
+			  $sUtf16Bytes = mb_substr($sUnicode, -4, 4, $this->sCharset);
 			}
 
-			$sUtf16 = pack("H*" , $sUnicode);
+			$sUtf16 = pack("H*" , $sUtf16Bytes);
 
 			$result = iconv('utf-16', $this->sCharset, $sUtf16);
-			return $result;
+			// use utf-16 big endian character set for the check, as we do not want a leading Byte Order Mark
+			$check = iconv($this->sCharset, 'utf-16be', $result);
+			if ($check !== $sUtf16) {
+			  // character not representable in target character set, so keep the character escape intact
+			  return '\\' . $sUnicode;
+			}
+			else {
+			  return $result;
+			}
 		}
 		if($bIsForIdentifier) {
 			if(preg_match('/[a-zA-Z0-9]|-|_/u', $this->peek()) === 1) {
@@ -379,10 +395,8 @@ class CSSParser {
 
 	private function consumeExpression($mExpression) {
 		$aMatches;
-		if(preg_match($mExpression, $this->inputLeft(), $aMatches, PREG_OFFSET_CAPTURE) === 1) {
-			if($aMatches[0][1] === 0) {
-				return $this->consume($aMatches[0][0]);
-			}
+		if(preg_match($mExpression, $this->inputLeft(), $aMatches) === 1) {
+			return $this->consume($aMatches[0]);
 		}
 		throw new Exception("Expected pattern $mExpression not found, got: {$this->peek(5)}");
 	}
@@ -816,7 +830,7 @@ class CSSString extends CSSValue {
 	}
 
 	public function __toString() {
-		return '"'.addslashes($this->sString).'"';
+		return '"'.$this->sString.'"';
 	}
 }
 
