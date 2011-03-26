@@ -61,6 +61,49 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 		}
 	}
 	
+	function testUnicodeParsing() {
+		$oDoc = $this->parsedStructureForFile('unicode');
+		foreach($oDoc->getAllRuleSets() as $oRuleSet) {
+			if(!$oRuleSet instanceof CSSSelector) {
+				continue;
+			}
+			$aSelector = $oRuleSet->getSelector();
+			if(substr($aSelector[0], 0, strlen('.test-'))  !== '.test-') {
+				continue;
+			}
+			$aContentRules = $oRuleSet->getRules('content');
+			$aContents = $aContentRules['content']->getValues();
+			$sCssString = $aContents[0][0]->__toString();
+			if($aSelector[0] === '.test-1') {
+				$this->assertSame('" "', $sCssString);
+			}
+			if($aSelector[0] === '.test-2') {
+				$this->assertSame('"é"', $sCssString);
+			}
+			if($aSelector[0] === '.test-3') {
+				$this->assertSame('" "', $sCssString);
+			}
+			if($aSelector[0] === '.test-4') {
+				$this->assertSame('"𝄞"', $sCssString);
+			}
+			if($aSelector[0] === '.test-5') {
+				$this->assertSame('"水"', $sCssString);
+			}
+			if($aSelector[0] === '.test-6') {
+				$this->assertSame('"¥"', $sCssString);
+			}
+			if($aSelector[0] === '.test-7') {
+				$this->assertSame('"\A"', $sCssString);
+			}
+			if($aSelector[0] === '.test-8') {
+				$this->assertSame('"\"\""', $sCssString);
+			}
+			if($aSelector[0] === '.test-9') {
+				$this->assertSame('"\"\\\'"', $sCssString);
+			}
+		}
+	}
+	
 	function parsedStructureForFile($sFileName) {
 		$sFile = dirname(__FILE__).DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR."$sFileName.css";
 		$oParser = new CSSParser(file_get_contents($sFile));
