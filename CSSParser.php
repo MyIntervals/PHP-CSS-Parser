@@ -145,7 +145,7 @@ class CSSParser {
 			if(preg_match('/[0-9a-fA-F]/Su', $this->peek()) === 0) {
 				return $this->consume(1);
 			}
-			$sUnicode = $this->consumeExpression('/[0-9a-fA-F]+/u');
+			$sUnicode = $this->consumeExpression('/^[0-9a-fA-F]{1,6}/u');
 			if(mb_strlen($sUnicode, $this->sCharset) < 6) {
 				//Consume whitespace after incomplete unicode escape
 				if(preg_match('/\\s/isSu', $this->peek())) {
@@ -156,14 +156,13 @@ class CSSParser {
 					}
 				}
 			}
-			$sUtf16 = '';
-			if((strlen($sUnicode) % 2) === 1) {
-				$sUnicode = "0$sUnicode";
+			$iUnicode = intval($sUnicode, 16);
+			$sUtf32 = "";
+			for($i=0;$i<4;$i++) {
+				$sUtf32 .= chr($iUnicode & 0xff);
+				$iUnicode = $iUnicode >> 8;
 			}
-			for($i=0;$i<strlen($sUnicode);$i+=2) {
-				$sUtf16 .= chr(intval($sUnicode[$i].$sUnicode[$i+1]));
-			}
-			return iconv('utf-16', $this->sCharset, $sUtf16);
+			return iconv('utf-32le', $this->sCharset, $sUtf32);
 		}
 		if($bIsForIdentifier) {
 			if(preg_match('/[a-zA-Z0-9]|-|_/u', $this->peek()) === 1) {
@@ -363,10 +362,8 @@ class CSSParser {
 	
 	private function consumeExpression($mExpression) {
 		$aMatches;
-		if(preg_match($mExpression, $this->inputLeft(), $aMatches) === 1) {
-			if($aMatches[0][1] === $this->iCurrentPosition) {
-				return $this->consume($aMatches[0][0]);
-			}
+		if(preg_match($mExpression, $this->inputLeft(), $aMatches, PREG_OFFSET_CAPTURE) === 1) {
+			return $this->consume($aMatches[0][0]);
 		}
 		throw new Exception("Expected pattern $mExpression not found, got: {$this->peek(5)}");
 	}
@@ -695,11 +692,11 @@ class CSSRule {
 	}
 	
 	public function setIsImportant($bIsImportant) {
-	    $this->bIsImportant = $bIsImportant;
+			$this->bIsImportant = $bIsImportant;
 	}
 
 	public function getIsImportant() {
-	    return $this->bIsImportant;
+			return $this->bIsImportant;
 	}
 	public function __toString() {
 		$sResult = "{$this->sRule}: ";
@@ -730,19 +727,19 @@ class CSSSize extends CSSValue {
 	}
 	
 	public function setUnit($sUnit) {
-	    $this->sUnit = $sUnit;
+			$this->sUnit = $sUnit;
 	}
 
 	public function getUnit() {
-	    return $this->sUnit;
+			return $this->sUnit;
 	}
 	
 	public function setSize($fSize) {
-	    $this->fSize = floatval($fSize);
+			$this->fSize = floatval($fSize);
 	}
 
 	public function getSize() {
-	    return $this->fSize;
+			return $this->fSize;
 	}
 	
 	public function isRelative() {
@@ -768,11 +765,11 @@ class CSSColor extends CSSValue {
 	}
 	
 	public function setColor($aColor) {
-	    $this->aColor = $aColor;
+			$this->aColor = $aColor;
 	}
 
 	public function getColor() {
-	    return $this->aColor;
+			return $this->aColor;
 	}
 	
 	public function getColorDescription() {
@@ -792,15 +789,17 @@ class CSSString extends CSSValue {
 	}
 	
 	public function setString($sString) {
-	    $this->sString = $sString;
+			$this->sString = $sString;
 	}
 
 	public function getString() {
-	    return $this->sString;
+			return $this->sString;
 	}
 	
 	public function __toString() {
-		return '"'.addslashes($this->sString).'"';
+		$sString = addslashes($this->sString);
+		$sString = str_replace("\n", '\A', $sString);
+		return '"'.$sString.'"';
 	}
 }
 
@@ -812,11 +811,11 @@ class CSSURL extends CSSValue {
 	}
 	
 	public function setURL(CSSString $oURL) {
-	    $this->oURL = $oURL;
+			$this->oURL = $oURL;
 	}
 
 	public function getURL() {
-	    return $this->oURL;
+			return $this->oURL;
 	}
 	
 	public function __toString() {
