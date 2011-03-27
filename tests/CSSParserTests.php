@@ -103,6 +103,12 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 			if($aSelector[0] === '.test-9') {
 				$this->assertSame('"\"\\\'"', $sCssString);
 			}
+			if($aSelector[0] === '.test-10') {
+				$this->assertSame('"\\\'\\\\"', $sCssString);
+			}
+			if($aSelector[0] === '.test-11') {
+				$this->assertSame('"test"', $sCssString);
+			}
 		}
 	}
 	
