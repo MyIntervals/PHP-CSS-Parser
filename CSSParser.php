@@ -459,8 +459,15 @@ abstract class CSSList {
 	}
 	
 	public function append($oItem) {
-		$this->aContents[] = $oItem;
-	}
+    if(is_array($oItem))
+    {
+      $this->aContents = array_merge($this->aContents, $oItem);
+    }
+    else
+    {
+		  $this->aContents[] = $oItem;
+    }
+  }
 	
 	public function __toString() {
 		$sResult = '';
