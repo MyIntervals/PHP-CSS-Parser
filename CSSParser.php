@@ -4,10 +4,47 @@
 * @package html
 * CSSParser class parses CSS from text into a data structure.
 */
-class CSSParser { 
+class CSSParser {
+  const
+    NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX = '/
+      (\.[\w]+)                    # classes
+      |
+      \[(\w+)                      # attributes
+      |
+      (\:(                         # pseudo classes
+        link|visited|active
+        |hover|focus
+        |lang
+        |target
+        |enabled|disabled|checked|indeterminate
+        |root
+        |nth-child|nth-last-child|nth-of-type|nth-last-of-type
+        |first-child|last-child|first-of-type|last-of-type
+        |only-child|only-of-type
+        |empty|contains
+      ))
+    /ix',
+    ELEMENTS_AND_PSEUDO_ELEMENTS_RX = '/
+      ((^|[\s\+\>\~]+)[\w]+ # elements
+      |                   
+      \:{1,2}(                 # pseudo-elements
+        after|before
+        |first-letter|first-line
+        |selection
+      )
+    )/ix';
+    
 	private $sText;
 	private $iCurrentPosition;
 	private $iLength;
+	
+  public static function computeSpecificity($selector){
+    $a = 0;
+    $b = substr_count($selector, '#');
+    $c = preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $selector, $matches);
+    $d = preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $selector, $matches);
+    return ($a*1000) + ($b*100) + ($c*10) + $d;
+  }
 	
 	public function __construct($sText, $sDefaultCharset = 'utf-8') {
 		$this->sText = $sText;
@@ -179,13 +216,25 @@ class CSSParser {
 		return null;
 	}
 	
-	private function parseSelector() {
-		$oResult = new CSSSelector();
-		$oResult->setSelector($this->consumeUntil('{'));
-		$this->consume('{');
-		$this->consumeWhiteSpace();
-		$this->parseRuleSet($oResult);
-		return $oResult;
+  private function parseSelector() {
+    $oResult = new NullCSSRuleSet();
+    $selectors = explode( ',', $this->consumeUntil('{') );
+    $this->consume('{');
+    $this->consumeWhiteSpace();
+    $this->parseRuleSet($oResult);
+
+    $aSelectors = array();
+    foreach($selectors as $selector)
+    {
+      $oSelector = new CSSSelector();
+      $oSelector->setSelector(trim($selector));
+      foreach ($oResult->getRules() as $rule)
+      {
+        $oSelector->addRule($rule);
+      }
+      $aSelectors[] = $oSelector;      
+    }
+		return $aSelectors;
 	}
 	
 	private function parseRuleSet($oRuleSet) {
@@ -614,6 +663,8 @@ abstract class CSSRuleSet {
 	}
 }
 
+class NullCSSRuleSet extends CSSRuleSet {}
+
 class CSSAtRule extends CSSRuleSet {
 	private $sType;
 	
@@ -631,30 +682,36 @@ class CSSAtRule extends CSSRuleSet {
 }
 
 class CSSSelector extends CSSRuleSet {
-	private $aSelector;
+	private
+	  $sSelector = '',
+	  $iSpecificity = 0,
+	  $bIsInlineStyle = false;
 	
 	public function __construct() {
 		parent::__construct();
-		$this->aSelector = array();
 	}
 	
 	public function setSelector($mSelector) {
-		if(is_array($mSelector)) {
-			$this->aSelector = $mSelector;
-		} else {
-			$this->aSelector = explode(',', $mSelector);
-		}
-		foreach($this->aSelector as $iKey => $sSelector) {
-			$this->aSelector[$iKey] = trim($sSelector);
-		}
+    $this->sSelector = $mSelector;
+    $this->iSpecificity = CSSParser::computeSpecificity($mSelector);
 	}
 	
 	public function getSelector() {
-		return $this->aSelector;
+		return $this->sSelector;
 	}
 	
+	public function setSpecificity($iSpecificity)
+  {
+    $this->iSpecificity = $iSpecificity;
+  }
+	
+	public function getSpecificity()
+  {
+    return $this->iSpecificity;
+  }
+	
 	public function __toString() {
-		$sResult = implode(', ', $this->aSelector).' {';
+		$sResult = $this->sSelector . ' {';
 		$sResult .= parent::__toString();
 		$sResult .= '}';
 		return $sResult;
