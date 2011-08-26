@@ -19,7 +19,7 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 				}
 				$oParser = new CSSParser(file_get_contents($sDirectory.DIRECTORY_SEPARATOR.$sFileName));
 				try {
-					$oParser->parse();
+					$oParser->parse()->__toString();
 				} catch(Exception $e) {
 					$this->fail($e);
 				}
@@ -34,11 +34,12 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 	function testColorParsing() {
 		$oDoc = $this->parsedStructureForFile('colortest');
 		foreach($oDoc->getAllRuleSets() as $oRuleSet) {
-			if(!$oRuleSet instanceof CSSSelector) {
+			if(!$oRuleSet instanceof CSSDeclarationBlock) {
 				continue;
 			}
-			$aSelector = $oRuleSet->getSelector();
-			if($aSelector[0] === '#mine') {
+			$sSelector = $oRuleSet->getSelectors();
+			$sSelector = $sSelector[0]->getSelector();
+			if($sSelector == '#mine') {
 				$aColorRule = $oRuleSet->getRules('color');
 				$aValues = $aColorRule['color']->getValues();
 				$this->assertSame('red', $aValues[0][0]);
@@ -65,51 +66,97 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 	
 	function testUnicodeParsing() {
 		$oDoc = $this->parsedStructureForFile('unicode');
-		foreach($oDoc->getAllRuleSets() as $oRuleSet) {
-			if(!$oRuleSet instanceof CSSSelector) {
-				continue;
-			}
-			$aSelector = $oRuleSet->getSelector();
-			if(substr($aSelector[0], 0, strlen('.test-')) !== '.test-') {
+		foreach($oDoc->getAllDeclarationBlocks() as $oRuleSet) {
+			$sSelector = $oRuleSet->getSelectors();
+			$sSelector = $sSelector[0]->getSelector();
+			if(substr($sSelector, 0, strlen('.test-')) !== '.test-') {
 				continue;
 			}
 			$aContentRules = $oRuleSet->getRules('content');
 			$aContents = $aContentRules['content']->getValues();
 			$sCssString = $aContents[0][0]->__toString();
-			if($aSelector[0] === '.test-1') {
+			if($sSelector == '.test-1') {
 				$this->assertSame('" "', $sCssString);
 			}
-			if($aSelector[0] === '.test-2') {
+			if($sSelector == '.test-2') {
 				$this->assertSame('"é"', $sCssString);
 			}
-			if($aSelector[0] === '.test-3') {
+			if($sSelector == '.test-3') {
 				$this->assertSame('" "', $sCssString);
 			}
-			if($aSelector[0] === '.test-4') {
+			if($sSelector == '.test-4') {
 				$this->assertSame('"𝄞"', $sCssString);
 			}
-			if($aSelector[0] === '.test-5') {
+			if($sSelector == '.test-5') {
 				$this->assertSame('"水"', $sCssString);
 			}
-			if($aSelector[0] === '.test-6') {
+			if($sSelector == '.test-6') {
 				$this->assertSame('"¥"', $sCssString);
 			}
-			if($aSelector[0] === '.test-7') {
+			if($sSelector == '.test-7') {
 				$this->assertSame('"\A"', $sCssString);
 			}
-			if($aSelector[0] === '.test-8') {
+			if($sSelector == '.test-8') {
 				$this->assertSame('"\"\""', $sCssString);
 			}
-			if($aSelector[0] === '.test-9') {
+			if($sSelector == '.test-9') {
 				$this->assertSame('"\"\\\'"', $sCssString);
 			}
-			if($aSelector[0] === '.test-10') {
+			if($sSelector == '.test-10') {
 				$this->assertSame('"\\\'\\\\"', $sCssString);
 			}
-			if($aSelector[0] === '.test-11') {
+			if($sSelector == '.test-11') {
 				$this->assertSame('"test"', $sCssString);
 			}
 		}
+	}
+
+	function testSpecificity() {
+		$oDoc = $this->parsedStructureForFile('specificity');
+		$oDeclarationBlock = $oDoc->getAllDeclarationBlocks();
+		$oDeclarationBlock = $oDeclarationBlock[0];
+		$aSelectors = $oDeclarationBlock->getSelectors();
+		foreach($aSelectors as $oSelector) {
+			switch($oSelector->getSelector()) {
+				case "#test .help":
+					$this->assertSame(110, $oSelector->getSpecificity());
+				break;
+				case "#file":
+					$this->assertSame(100, $oSelector->getSpecificity());
+				break;
+				case ".help:hover":
+					$this->assertSame(20, $oSelector->getSpecificity());
+				break;
+				case "ol li::before":
+					$this->assertSame(3, $oSelector->getSpecificity());
+				break;
+				case "li.green":
+					$this->assertSame(11, $oSelector->getSpecificity());
+				break;
+				default:
+					$this->fail("specificity: untested selector ".$oSelector->getSelector());
+			}
+		}
+		$this->assertEquals(array(new CSSSelector('#test .help', true)), $oDoc->getSelectorsBySpecificity('> 100'));
+	}
+
+	function testManipulation() {
+		$oDoc = $this->parsedStructureForFile('atrules');
+		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}html, body {font-size: 1.6em;}', $oDoc->__toString());
+		foreach($oDoc->getAllDeclarationBlocks() as $oBlock) {
+			foreach($oBlock->getSelectors() as $oSelector) {
+				//Loop over all selector parts (the comma-separated strings in a selector) and prepend the id
+				$oSelector->setSelector('#my_id '.$oSelector->getSelector());
+			}
+		}
+		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}#my_id html, #my_id body {font-size: 1.6em;}', $oDoc->__toString());
+
+		$oDoc = $this->parsedStructureForFile('values');
+		$this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana, Helvetica, "Gill Sans", sans-serif;font-size: 10px;color: red !important;}body {color: green;font: 75% "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;}', $oDoc->__toString());
+		foreach($oDoc->getAllRuleSets() as $oRuleSet) {
+			$oRuleSet->removeRule('font-');
+		}
+		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;}body {color: green;}', $oDoc->__toString());
 	}
 	
 	function parsedStructureForFile($sFileName) {

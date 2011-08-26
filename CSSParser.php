@@ -180,7 +180,7 @@ class CSSParser {
 	}
 	
 	private function parseSelector() {
-		$oResult = new CSSSelector();
+		$oResult = new CSSDeclarationBlock();
 		$oResult->setSelector($this->consumeUntil('{'));
 		$this->consume('{');
 		$this->consumeWhiteSpace();
@@ -425,12 +425,12 @@ abstract class CSSList {
 		return $this->aContents;
 	}
 	
-	protected function allSelectors(&$aResult) {
+	protected function allDeclarationBlocks(&$aResult) {
 		foreach($this->aContents as $mContent) {
-			if($mContent instanceof CSSSelector) {
+			if($mContent instanceof CSSDeclarationBlock) {
 				$aResult[] = $mContent;
 			} else if($mContent instanceof CSSList) {
-				$mContent->allSelectors($aResult);
+				$mContent->allDeclarationBlocks($aResult);
 			}
 		}
 	}
@@ -462,13 +462,36 @@ abstract class CSSList {
 			}
 		}
 	}
+
+	protected function allSelectors(&$aResult, $sSpecificitySearch = null) {
+		foreach($this->getAllDeclarationBlocks() as $oBlock) {
+			foreach($oBlock->getSelectors() as $oSelector) {
+				if($sSpecificitySearch === null) {
+					$aResult[] = $oSelector;
+				} else {
+					$sComparison = "\$bRes = {$oSelector->getSpecificity()} $sSpecificitySearch;";
+					eval($sComparison);
+					if($bRes) {
+						$aResult[] = $oSelector;
+					}
+				}
+			}
+		}
+	}
 }
 
 class CSSDocument extends CSSList {
-	public function getAllSelectors() {
+	public function getAllDeclarationBlocks() {
 		$aResult = array();
-		$this->allSelectors($aResult);
+		$this->allDeclarationBlocks($aResult);
 		return $aResult;
+	}
+
+	/**
+	* @deprecated use getAllSelectors()
+	*/
+	public function getAllSelectors() {
+		return $this->getAllDeclarationBlocks();
 	}
 	
 	public function getAllRuleSets() {
@@ -487,6 +510,15 @@ class CSSDocument extends CSSList {
 		}
 		$aResult = array();
 		$this->allValues($mElement, $aResult, $sSearchString);
+		return $aResult;
+	}
+	
+	public function getSelectorsBySpecificity($sSpecificitySearch = null) {
+		if(is_numeric($sSpecificitySearch) || is_numeric($sSpecificitySearch[0])) {
+			$sSpecificitySearch = "== $sSpecificitySearch";
+		}
+		$aResult = array();
+		$this->allSelectors($aResult, $sSpecificitySearch);
 		return $aResult;
 	}
 }
@@ -630,34 +662,117 @@ class CSSAtRule extends CSSRuleSet {
 	}
 }
 
-class CSSSelector extends CSSRuleSet {
-	private $aSelector;
-	
+class CSSDeclarationBlock extends CSSRuleSet {
+	private $aSelectors;
+
 	public function __construct() {
 		parent::__construct();
-		$this->aSelector = array();
+		$this->aSelectors = array();
+	}
+
+	public function setSelectors($mSelector) {
+		if(is_array($mSelector)) {
+			$this->aSelectors = $mSelector;
+		} else {
+			$this->aSelectors = explode(',', $mSelector);
+		}
+		foreach($this->aSelectors as $iKey => $mSelector) {
+			if(!($mSelector instanceof CSSSelector)) {
+				$this->aSelectors[$iKey] = new CSSSelector($mSelector);
+			}
+		}
 	}
 	
+	/**
+	* @deprecated use getSelectors()
+	*/
+	public function getSelector() {
+		$this->getSelectors();
+	}
+	
+	/**
+	* @deprecated use setSelectors()
+	*/
 	public function setSelector($mSelector) {
-		if(is_array($mSelector)) {
-			$this->aSelector = $mSelector;
-		} else {
-			$this->aSelector = explode(',', $mSelector);
-		}
-		foreach($this->aSelector as $iKey => $sSelector) {
-			$this->aSelector[$iKey] = trim($sSelector);
+		$this->setSelectors($mSelector);
+	}
+	
+	public function getSelectors() {
+		return $this->aSelectors;
+	}
+	
+	public function __toString() {
+		$sResult = implode(', ', $this->aSelectors).' {';
+		$sResult .= parent::__toString();
+		$sResult .= '}';
+		return $sResult;
+	}
+}
+
+class CSSSelector {
+	const
+		NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX = '/
+			(\.[\w]+)										 # classes
+			|
+			\[(\w+)											 # attributes
+			|
+			(\:(												 # pseudo classes
+				link|visited|active
+				|hover|focus
+				|lang
+				|target
+				|enabled|disabled|checked|indeterminate
+				|root
+				|nth-child|nth-last-child|nth-of-type|nth-last-of-type
+				|first-child|last-child|first-of-type|last-of-type
+				|only-child|only-of-type
+				|empty|contains
+			))
+		/ix',
+		ELEMENTS_AND_PSEUDO_ELEMENTS_RX = '/
+			((^|[\s\+\>\~]+)[\w]+ # elements
+			|										
+			\:{1,2}(								 # pseudo-elements
+				after|before
+				|first-letter|first-line
+				|selection
+			)
+		)/ix';
+	
+	private $sSelector;
+	private $iSpecificity;
+	
+	public function __construct($sSelector, $bCalculateSpecificity = false) {
+		$this->setSelector($sSelector);
+		if($bCalculateSpecificity) {
+			$this->getSpecificity();
 		}
 	}
 	
 	public function getSelector() {
-		return $this->aSelector;
+		return $this->sSelector;
 	}
 	
+	public function setSelector($sSelector) {
+		$this->sSelector = trim($sSelector);
+		$this->iSpecificity = null;
+	}
+
 	public function __toString() {
-		$sResult = implode(', ', $this->aSelector).' {';
-		$sResult .= parent::__toString();
-		$sResult .= '}';
-		return $sResult;
+		return $this->getSelector();
+	}
+
+	public function getSpecificity() {
+		if($this->iSpecificity === null) {
+			$a = 0;
+			/// @todo should exclude \# as well as "#"
+			$aMatches;
+			$b = substr_count($this->sSelector, '#');
+			$c = preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $this->sSelector, $aMatches);
+			$d = preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $this->sSelector, $aMatches);
+			$this->iSpecificity = ($a*1000) + ($b*100) + ($c*10) + $d;
+		}
+		return $this->iSpecificity;
 	}
 }
 

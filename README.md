@@ -26,7 +26,7 @@ The resulting CSS document structure can be manipulated prior to being output.
 
 ### Manipulation
 
-The resulting data structure consists mainly of four basic types: `CSSList`, `CSSRuleSet`, `CSSRule` and `CSSValue`. There are two additional types used: `CSSImport` and `CSSCharset` which you won’t use often.
+The resulting data structure consists mainly of five basic types: `CSSList`, `CSSRuleSet`, `CSSRule`, `CSSSelector` and `CSSValue`. There are two additional types used: `CSSImport` and `CSSCharset` which you won’t use often.
 
 #### CSSList
 
@@ -40,7 +40,7 @@ The resulting data structure consists mainly of four basic types: `CSSList`, `CS
 `CSSRuleSet` is a container for individual rules. The most common form of a rule set is one constrained by a selector. The following concrete subtypes exist:
 
 * `CSSAtRule` – for generic at-rules which do not match the ones specifically mentioned like @import, @charset or @media. A common example for this is @font-face.
-* `CSSSelector` – a selector; contains an array of selector strings (comma-separated in the CSS) as well as the rules to be applied to the matching elements.
+* `CSSDeclarationBlock` – a RuleSet constrained by a `CSSSelector; contains an array of selector objects (comma-separated in the CSS) as well as the rules to be applied to the matching elements.
 
 Note: A `CSSList` can contain other `CSSList`s (and `CSSImport`s as well as a `CSSCharset`) while a `CSSRuleSet` can only contain `CSSRule`s.
 
@@ -67,7 +67,7 @@ If you want to manipulate a `CSSRuleSet`, use the methods `addRule(CSSRule $oRul
 
 There are a few convenience methods on CSSDocument to ease finding, manipulating and deleting rules:
 
-* `getAllSelectors()` – does what it says; no matter how deeply nested your selectors are.
+* `getAllDeclarationBlocks()` – does what it says; no matter how deeply nested your selectors are aliased as `getAllSelectors()`.
 * `getAllRuleSets()` – does what it says; no matter how deeply nested your rule sets are.
 * `getAllValues()` – finds all `CSSValue` objects inside `CSSRule`s.
 
@@ -78,13 +78,11 @@ There are a few convenience methods on CSSDocument to ease finding, manipulating
 	$sMyId = "#my_id";
 	$oParser = new CSSParser($sCssContents);
 	$oCss = $oParser->parse();
-	foreach($oCss->getAllSelectors() as $oSelector) {
-		$aSelector = $oSelector->getSelector();
-		foreach($aSelector as $iKey => $sSelector) {
+	foreach($oCss->getAllDeclarationBlocks() as $oBlock) {
+		foreach($oBlock->getSelectors() as $oSelector) {
 			//Loop over all selector parts (the comma-separated strings in a selector) and prepend the id
-			$aSelector[$iKey] = "$sMyId $sSelector";
+			$oSelector->setSelector($sMyId.' '.$oSelector->getSelector());
 		}
-		$oSelector->setSelector($aSelector);
 	}
 	
 #### Shrink all absolute sizes to half
@@ -133,98 +131,108 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	
 #### Structure (`var_dump()`)
 
-	object(CSSDocument)#2 (1) {
-	  ["aContents":"CSSList":private]=>
-	  array(3) {
-	    [0]=>
-	    object(CSSCharset)#4 (1) {
-	      ["sCharset":"CSSCharset":private]=>
-	      object(CSSString)#3 (1) {
-	        ["sString":"CSSString":private]=>
-	        string(5) "utf-8"
-	      }
-	    }
-	    [1]=>
-	    object(CSSAtRule)#5 (2) {
-	      ["sType":"CSSAtRule":private]=>
-	      string(9) "font-face"
-	      ["aRules":"CSSRuleSet":private]=>
-	      array(2) {
-	        ["font-family"]=>
-	        object(CSSRule)#6 (3) {
-	          ["sRule":"CSSRule":private]=>
-	          string(11) "font-family"
-	          ["aValues":"CSSRule":private]=>
-	          array(1) {
-	            [0]=>
-	            array(1) {
-	              [0]=>
-	              object(CSSString)#7 (1) {
-	                ["sString":"CSSString":private]=>
-	                string(10) "CrassRoots"
-	              }
-	            }
-	          }
-	          ["bIsImportant":"CSSRule":private]=>
-	          bool(false)
-	        }
-	        ["src"]=>
-	        object(CSSRule)#8 (3) {
-	          ["sRule":"CSSRule":private]=>
-	          string(3) "src"
-	          ["aValues":"CSSRule":private]=>
-	          array(1) {
-	            [0]=>
-	            array(1) {
-	              [0]=>
-	              object(CSSURL)#9 (1) {
-	                ["oURL":"CSSURL":private]=>
-	                object(CSSString)#10 (1) {
-	                  ["sString":"CSSString":private]=>
-	                  string(15) "../media/cr.ttf"
-	                }
-	              }
-	            }
-	          }
-	          ["bIsImportant":"CSSRule":private]=>
-	          bool(false)
-	        }
-	      }
-	    }
-	    [2]=>
-	    object(CSSSelector)#11 (2) {
-	      ["aSelector":"CSSSelector":private]=>
-	      array(2) {
-	        [0]=>
-	        string(4) "html"
-	        [1]=>
-	        string(4) "body"
-	      }
-	      ["aRules":"CSSRuleSet":private]=>
-	      array(1) {
-	        ["font-size"]=>
-	        object(CSSRule)#12 (3) {
-	          ["sRule":"CSSRule":private]=>
-	          string(9) "font-size"
-	          ["aValues":"CSSRule":private]=>
-	          array(1) {
-	            [0]=>
-	            array(1) {
-	              [0]=>
-	              object(CSSSize)#13 (2) {
-	                ["fSize":"CSSSize":private]=>
-	                float(1.6)
-	                ["sUnit":"CSSSize":private]=>
-	                string(2) "em"
-	              }
-	            }
-	          }
-	          ["bIsImportant":"CSSRule":private]=>
-	          bool(false)
-	        }
-	      }
-	    }
-	  }
+	object(CSSDocument)#145 (1) {
+		["aContents":"CSSList":private]=>
+		array(3) {
+			[0]=>
+			object(CSSCharset)#149 (1) {
+				["sCharset":"CSSCharset":private]=>
+				object(CSSString)#136 (1) {
+					["sString":"CSSString":private]=>
+					string(5) "utf-8"
+				}
+			}
+			[1]=>
+			object(CSSAtRule)#138 (2) {
+				["sType":"CSSAtRule":private]=>
+				string(9) "font-face"
+				["aRules":"CSSRuleSet":private]=>
+				array(2) {
+					["font-family"]=>
+					object(CSSRule)#137 (3) {
+						["sRule":"CSSRule":private]=>
+						string(11) "font-family"
+						["aValues":"CSSRule":private]=>
+						array(1) {
+							[0]=>
+							array(1) {
+								[0]=>
+								object(CSSString)#134 (1) {
+									["sString":"CSSString":private]=>
+									string(10) "CrassRoots"
+								}
+							}
+						}
+						["bIsImportant":"CSSRule":private]=>
+						bool(false)
+					}
+					["src"]=>
+					object(CSSRule)#140 (3) {
+						["sRule":"CSSRule":private]=>
+						string(3) "src"
+						["aValues":"CSSRule":private]=>
+						array(1) {
+							[0]=>
+							array(1) {
+								[0]=>
+								object(CSSURL)#139 (1) {
+									["oURL":"CSSURL":private]=>
+									object(CSSString)#143 (1) {
+										["sString":"CSSString":private]=>
+										string(15) "../media/cr.ttf"
+									}
+								}
+							}
+						}
+						["bIsImportant":"CSSRule":private]=>
+						bool(false)
+					}
+				}
+			}
+			[2]=>
+			object(CSSDeclarationBlock)#144 (2) {
+				["aSelectors":"CSSDeclarationBlock":private]=>
+				array(2) {
+					[0]=>
+					object(CSSSelector)#141 (2) {
+						["sSelector":"CSSSelector":private]=>
+						string(4) "html"
+						["iSpecificity":"CSSSelector":private]=>
+						NULL
+					}
+					[1]=>
+					object(CSSSelector)#142 (2) {
+						["sSelector":"CSSSelector":private]=>
+						string(4) "body"
+						["iSpecificity":"CSSSelector":private]=>
+						NULL
+					}
+				}
+				["aRules":"CSSRuleSet":private]=>
+				array(1) {
+					["font-size"]=>
+					object(CSSRule)#163 (3) {
+						["sRule":"CSSRule":private]=>
+						string(9) "font-size"
+						["aValues":"CSSRule":private]=>
+						array(1) {
+							[0]=>
+							array(1) {
+								[0]=>
+								object(CSSSize)#147 (2) {
+									["fSize":"CSSSize":private]=>
+									float(1.6)
+									["sUnit":"CSSSize":private]=>
+									string(2) "em"
+								}
+							}
+						}
+						["bIsImportant":"CSSRule":private]=>
+						bool(false)
+					}
+				}
+			}
+		}
 	}
 
 #### Output (`__toString()`)
@@ -243,110 +251,115 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	
 #### Structure (`var_dump()`)
 
-	object(CSSDocument)#2 (1) {
-	  ["aContents":"CSSList":private]=>
-	  array(1) {
-	    [0]=>
-	    object(CSSSelector)#3 (2) {
-	      ["aSelector":"CSSSelector":private]=>
-	      array(1) {
-	        [0]=>
-	        string(7) "#header"
-	      }
-	      ["aRules":"CSSRuleSet":private]=>
-	      array(3) {
-	        ["margin"]=>
-	        object(CSSRule)#4 (3) {
-	          ["sRule":"CSSRule":private]=>
-	          string(6) "margin"
-	          ["aValues":"CSSRule":private]=>
-	          array(4) {
-	            [0]=>
-	            array(1) {
-	              [0]=>
-	              object(CSSSize)#5 (2) {
-	                ["fSize":"CSSSize":private]=>
-	                float(10)
-	                ["sUnit":"CSSSize":private]=>
-	                string(2) "px"
-	              }
-	            }
-	            [1]=>
-	            array(1) {
-	              [0]=>
-	              object(CSSSize)#6 (2) {
-	                ["fSize":"CSSSize":private]=>
-	                float(2)
-	                ["sUnit":"CSSSize":private]=>
-	                string(2) "em"
-	              }
-	            }
-	            [2]=>
-	            array(1) {
-	              [0]=>
-	              object(CSSSize)#7 (2) {
-	                ["fSize":"CSSSize":private]=>
-	                float(1)
-	                ["sUnit":"CSSSize":private]=>
-	                string(2) "cm"
-	              }
-	            }
-	            [3]=>
-	            array(1) {
-	              [0]=>
-	              object(CSSSize)#8 (2) {
-	                ["fSize":"CSSSize":private]=>
-	                float(2)
-	                ["sUnit":"CSSSize":private]=>
-	                string(1) "%"
-	              }
-	            }
-	          }
-	          ["bIsImportant":"CSSRule":private]=>
-	          bool(false)
-	        }
-	        ["font-family"]=>
-	        object(CSSRule)#9 (3) {
-	          ["sRule":"CSSRule":private]=>
-	          string(11) "font-family"
-	          ["aValues":"CSSRule":private]=>
-	          array(1) {
-	            [0]=>
-	            array(4) {
-	              [0]=>
-	              string(7) "Verdana"
-	              [1]=>
-	              string(9) "Helvetica"
-	              [2]=>
-	              object(CSSString)#10 (1) {
-	                ["sString":"CSSString":private]=>
-	                string(9) "Gill Sans"
-	              }
-	              [3]=>
-	              string(10) "sans-serif"
-	            }
-	          }
-	          ["bIsImportant":"CSSRule":private]=>
-	          bool(false)
-	        }
-	        ["color"]=>
-	        object(CSSRule)#11 (3) {
-	          ["sRule":"CSSRule":private]=>
-	          string(5) "color"
-	          ["aValues":"CSSRule":private]=>
-	          array(1) {
-	            [0]=>
-	            array(1) {
-	              [0]=>
-	              string(3) "red"
-	            }
-	          }
-	          ["bIsImportant":"CSSRule":private]=>
-	          bool(true)
-	        }
-	      }
-	    }
-	  }
+	object(CSSDocument)#148 (1) {
+		["aContents":"CSSList":private]=>
+		array(1) {
+			[0]=>
+			object(CSSDeclarationBlock)#146 (2) {
+				["aSelectors":"CSSDeclarationBlock":private]=>
+				array(1) {
+					[0]=>
+					object(CSSSelector)#167 (2) {
+						["sSelector":"CSSSelector":private]=>
+						string(7) "#header"
+						["iSpecificity":"CSSSelector":private]=>
+						NULL
+					}
+				}
+				["aRules":"CSSRuleSet":private]=>
+				array(3) {
+					["margin"]=>
+					object(CSSRule)#194 (3) {
+						["sRule":"CSSRule":private]=>
+						string(6) "margin"
+						["aValues":"CSSRule":private]=>
+						array(4) {
+							[0]=>
+							array(1) {
+								[0]=>
+								object(CSSSize)#151 (2) {
+									["fSize":"CSSSize":private]=>
+									float(10)
+									["sUnit":"CSSSize":private]=>
+									string(2) "px"
+								}
+							}
+							[1]=>
+							array(1) {
+								[0]=>
+								object(CSSSize)#150 (2) {
+									["fSize":"CSSSize":private]=>
+									float(2)
+									["sUnit":"CSSSize":private]=>
+									string(2) "em"
+								}
+							}
+							[2]=>
+							array(1) {
+								[0]=>
+								object(CSSSize)#180 (2) {
+									["fSize":"CSSSize":private]=>
+									float(1)
+									["sUnit":"CSSSize":private]=>
+									string(2) "cm"
+								}
+							}
+							[3]=>
+							array(1) {
+								[0]=>
+								object(CSSSize)#186 (2) {
+									["fSize":"CSSSize":private]=>
+									float(2)
+									["sUnit":"CSSSize":private]=>
+									string(1) "%"
+								}
+							}
+						}
+						["bIsImportant":"CSSRule":private]=>
+						bool(false)
+					}
+					["font-family"]=>
+					object(CSSRule)#184 (3) {
+						["sRule":"CSSRule":private]=>
+						string(11) "font-family"
+						["aValues":"CSSRule":private]=>
+						array(1) {
+							[0]=>
+							array(4) {
+								[0]=>
+								string(7) "Verdana"
+								[1]=>
+								string(9) "Helvetica"
+								[2]=>
+								object(CSSString)#189 (1) {
+									["sString":"CSSString":private]=>
+									string(9) "Gill Sans"
+								}
+								[3]=>
+								string(10) "sans-serif"
+							}
+						}
+						["bIsImportant":"CSSRule":private]=>
+						bool(false)
+					}
+					["color"]=>
+					object(CSSRule)#162 (3) {
+						["sRule":"CSSRule":private]=>
+						string(5) "color"
+						["aValues":"CSSRule":private]=>
+						array(1) {
+							[0]=>
+							array(1) {
+								[0]=>
+								string(3) "red"
+							}
+						}
+						["bIsImportant":"CSSRule":private]=>
+						bool(true)
+					}
+				}
+			}
+		}
 	}
 
 #### Output (`__toString()`)
