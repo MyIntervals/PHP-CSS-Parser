@@ -376,6 +376,11 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 * Test suite
 * Adopt lenient parsing rules
 
+## Contributors/Thanks to
+
+* [GaryJones](https://github.com/GaryJones) for lots of input and [http://css-specificity.info/](http://css-specificity.info/).
+* [https://github.com/ju1ius](https://github.com/ju1ius) for the specificity parsing code.
+
 ## License
 
 PHP-CSS-Parser is freely distributable under the terms of an MIT-style license.
