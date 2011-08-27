@@ -402,6 +402,10 @@ class CSSParser {
 	}
 }
 
+/**
+* A CSSList is the most generic container available. Its contents include CSSRuleSet as well as other CSSList objects.
+* Also, it may contain CSSImport and CSSCharset objects stemming from @-rules.
+*/
 abstract class CSSList {
 	private $aContents;
 	
@@ -480,7 +484,13 @@ abstract class CSSList {
 	}
 }
 
+/**
+* The root CSSList of a parsed file. Contains all top-level css contents, mostly declaration blocks, but also any @-rules encountered.
+*/
 class CSSDocument extends CSSList {
+	/**
+	* Gets all CSSDeclarationBlock objects recursively.
+	*/
 	public function getAllDeclarationBlocks() {
 		$aResult = array();
 		$this->allDeclarationBlocks($aResult);
@@ -494,12 +504,18 @@ class CSSDocument extends CSSList {
 		return $this->getAllDeclarationBlocks();
 	}
 	
+	/**
+	* Returns all CSSRuleSet objects found recursively in the tree.
+	*/
 	public function getAllRuleSets() {
 		$aResult = array();
 		$this->allRuleSets($aResult);
 		return $aResult;
 	}
 	
+	/**
+	* Returns all CSSValue objects found recursively in the tree.
+	*/
 	public function getAllValues($mElement = null) {
 		$sSearchString = null;
 		if($mElement === null) {
@@ -512,7 +528,13 @@ class CSSDocument extends CSSList {
 		$this->allValues($mElement, $aResult, $sSearchString);
 		return $aResult;
 	}
-	
+
+	/**
+	* Returns all CSSSelector objects found recursively in the tree.
+	* Note that this does not yield the full CSSDeclarationBlock that the selector belongs to (and, currently, there is no way to get to that).
+	* @param $sSpecificitySearch An optional filter by specificity. May contain a comparison operator and a number or just a number (defaults to "==").
+	* @example getSelectorsBySpecificity('>= 100')
+	*/
 	public function getSelectorsBySpecificity($sSpecificitySearch = null) {
 		if(is_numeric($sSpecificitySearch) || is_numeric($sSpecificitySearch[0])) {
 			$sSpecificitySearch = "== $sSpecificitySearch";
@@ -523,6 +545,9 @@ class CSSDocument extends CSSList {
 	}
 }
 
+/**
+* A CSSList consisting of the CSSList and CSSList objects found in a @media query.
+*/
 class CSSMediaQuery extends CSSList {
 	private $sQuery;
 	
@@ -547,6 +572,9 @@ class CSSMediaQuery extends CSSList {
 	}
 }
 
+/**
+* Class representing an @import rule.
+*/
 class CSSImport {
 	private $oLocation;
 	private $sMediaQuery;
@@ -569,6 +597,13 @@ class CSSImport {
 	}
 }
 
+/**
+* Class representing an @charset rule.
+* The following restrictions apply:
+* • May not be found in any CSSList other than the CSSDocument.
+* • May only appear at the very top of a CSSDocument’s contents.
+* • Must not appear more than once.
+*/
 class CSSCharset {
 	private $sCharset;
 	
@@ -589,6 +624,10 @@ class CSSCharset {
 	}
 }
 
+/**
+* CSSRuleSet is a generic superclass denoting rules. The typical example for rule sets are declaration block.
+* However, unknown At-Rules (like @font-face) are also rule sets.
+*/
 abstract class CSSRuleSet {
 	private $aRules;
 	
@@ -646,6 +685,9 @@ abstract class CSSRuleSet {
 	}
 }
 
+/**
+* A CSSRuleSet constructed by an unknown @-rule. @font-face rules are rendered into CSSAtRule objects.
+*/
 class CSSAtRule extends CSSRuleSet {
 	private $sType;
 	
@@ -662,6 +704,10 @@ class CSSAtRule extends CSSRuleSet {
 	}
 }
 
+/**
+* Declaration blocks are the parts of a css file which denote the rules belonging to a selector.
+* Declaration blocks usually appear directly inside a CSSDocument or another CSSList (mostly a CSSMediaQuery).
+*/
 class CSSDeclarationBlock extends CSSRuleSet {
 	private $aSelectors;
 
@@ -709,6 +755,9 @@ class CSSDeclarationBlock extends CSSRuleSet {
 	}
 }
 
+/**
+* Class representing a single CSS selector. Selectors have to be split by the comma prior to being passed into this class.
+*/
 class CSSSelector {
 	const
 		NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX = '/
@@ -776,6 +825,10 @@ class CSSSelector {
 	}
 }
 
+/**
+* CSSRuleSets contains CSSRule objects which always have a key and a value.
+* In CSS, CSSRules are expressed as follows: “key: value[0][0] value[0][1], value[1][0] value[1][1];”
+*/
 class CSSRule {
 	private $sRule;
 	private $aValues;
