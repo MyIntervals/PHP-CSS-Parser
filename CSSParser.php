@@ -488,7 +488,7 @@ class CSSDocument extends CSSList {
 	}
 
 	/**
-	* @deprecated use getAllSelectors()
+	* @deprecated use getAllDeclarationBlocks()
 	*/
 	public function getAllSelectors() {
 		return $this->getAllDeclarationBlocks();
@@ -687,7 +687,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
 	* @deprecated use getSelectors()
 	*/
 	public function getSelector() {
-		$this->getSelectors();
+		return $this->getSelectors();
 	}
 	
 	/**
