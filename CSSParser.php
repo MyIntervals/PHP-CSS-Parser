@@ -223,22 +223,32 @@ class CSSParser {
 	private function parseValue() {
 		$aResult = array();
 		do {
-			$this->consumeWhiteSpace();
-			if(is_numeric($this->peek()) || $this->comes('-') || $this->comes('.')) {
-				$aResult[] = $this->parseNumericValue();
-			} else if($this->comes('#') || $this->comes('rgb') || $this->comes('hsl')) {
-				$aResult[] = $this->parseColorValue();
-			} else if($this->comes('url')){
-				$aResult[] = $this->parseURLValue();
-			} else if($this->comes("'") || $this->comes('"')){
-				$aResult[] = $this->parseStringValue();
-			} else {
-				$aResult[] = $this->parseIdentifier();
-			}
-			$this->consumeWhiteSpace();
+			$aResult[] = $this->parseSingleValue();
 		} while($this->comes(',') && is_string($this->consume(',')));
 		
 		return $aResult;
+	}
+
+	private function parseSingleValue() {
+		$oValue = null;
+		$this->consumeWhiteSpace();
+		if(is_numeric($this->peek()) || (($this->comes('-') || $this->comes('.')) && is_numeric($this->peek(1, 1)))) {
+			$oValue = $this->parseNumericValue();
+		} else if($this->comes('#') || $this->comes('rgb') || $this->comes('hsl')) {
+			$oValue = $this->parseColorValue();
+		} else if($this->comes('url')){
+			$oValue = $this->parseURLValue();
+		} else if($this->comes("'") || $this->comes('"')){
+			$oValue = $this->parseStringValue();
+		} else {
+			$oValue = $this->parseIdentifier();
+		}
+		$this->consumeWhiteSpace();
+		if($this->comes('/')) {
+			$this->consume('/');
+			$oValue = new CSSSlashedValue($oValue, $this->parseSingleValue());
+		}
+		return $oValue;
 	}
 	
 	private function parseNumericValue() {
@@ -988,5 +998,35 @@ class CSSURL extends CSSValue {
 	
 	public function __toString() {
 		return "url({$this->oURL->__toString()})";
+	}
+}
+
+class CSSSlashedValue extends CSSValue {
+	private $oValue1;
+	private $oValue2;
+
+	public function __construct($oValue1, $oValue2) {
+		$this->oValue1 = $oValue1;
+		$this->oValue2 = $oValue2;
+	}
+
+	public function getValue1() {
+		return $this->oValue1;
+	}
+
+	public function getValue2() {
+		return $this->oValue2;
+	}
+
+	public function __toString() {
+		$oValue1 = $this->oValue1;
+		$oValue2 = $this->oValue2;
+		if($oValue1 instanceof CSSValue) {
+			$oValue1 = $oValue1->__toString();
+		}
+		if($oValue2 instanceof CSSValue) {
+			$oValue2 = $oValue2->__toString();
+		}
+		return "$oValue1/$oValue2";
 	}
 }

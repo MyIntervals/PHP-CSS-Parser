@@ -17,6 +17,10 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 				if(strrpos($sFileName, '.css') !== strlen($sFileName)-strlen('.css')) {
 					continue;
 				}
+				if(strpos($sFileName, '-') === 0) {
+					//Either a file which SHOULD fail or a future test of a as-of-now missing feature
+					continue;
+				}
 				$oParser = new CSSParser(file_get_contents($sDirectory.DIRECTORY_SEPARATOR.$sFileName));
 				try {
 					$oParser->parse()->__toString();
@@ -157,6 +161,11 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 			$oRuleSet->removeRule('font-');
 		}
 		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;}body {color: green;}', $oDoc->__toString());
+	}
+
+	function testSlashedValues() {
+		$oDoc = $this->parsedStructureForFile('slashed');
+		$this->assertSame('.test {font: 12px/1.5;border-radius: 5px 10px 5px 10px/10px 5px 10px 5px;}', $oDoc->__toString());
 	}
 	
 	function parsedStructureForFile($sFileName) {
