@@ -202,7 +202,11 @@ class CSSParser {
 		$this->consume(':');
 		$this->consumeWhiteSpace();
 		while(!($this->comes('}') || $this->comes(';') || $this->comes('!'))) {
-			$oRule->addValue($this->parseValue());
+      if($oRule->getRule() == 'font') {
+        $oRule->addValue($this->parseFontShorthand());
+      } else {
+			  $oRule->addValue($this->parseValue());
+      }
 			$this->consumeWhiteSpace();
 		}
 		if($this->comes('!')) {
@@ -239,7 +243,29 @@ class CSSParser {
 		} while($this->comes(',') && is_string($this->consume(',')));
 		
 		return $aResult;
+  }
+
+  private function parseFontShorthand() {
+		$aResult = array();
+		do {
+			$this->consumeWhiteSpace();
+			if(is_numeric($this->peek()) || $this->comes('-') || $this->comes('.')) {
+				$aResult[] = $this->parseNumericValue();
+      } else if($this->comes('/')) {
+        $this->consume('/');
+        $this->consumeWhiteSpace();
+				$aResult[] = $this->parseNumericValue();
+			} else if($this->comes("'") || $this->comes('"')){
+				$aResult[] = $this->parseStringValue();
+			} else {
+				$aResult[] = $this->parseIdentifier();
+			}
+			$this->consumeWhiteSpace();
+		} while($this->comes(',') && is_string($this->consume(',')));
+		
+		return $aResult;
 	}
+
 	
 	private function parseNumericValue() {
 		$sSize = '';
