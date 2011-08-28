@@ -92,7 +92,7 @@ class CSSParser {
 		}
 	}
 	
-	private function parseIdentifier() {
+	private function parseIdentifier($bAllowFunctions = true) {
 		$sResult = $this->parseCharacter(true);
 		if($sResult === null) {
 			throw new Exception("Identifier expected, got {$this->peek(5)}");
@@ -100,6 +100,11 @@ class CSSParser {
 		$sCharacter;
 		while(($sCharacter = $this->parseCharacter(true)) !== null) {
 			$sResult .= $sCharacter;
+		}
+		if($bAllowFunctions && $this->comes('(')) {
+			$this->consume('(');
+			$sResult = new CSSFunction($sResult, $this->parseValue());
+			$this->consume(')');
 		}
 		return $sResult;
 	}
@@ -297,13 +302,13 @@ class CSSParser {
 		$aColor = array();
 		if($this->comes('#')) {
 			$this->consume('#');
-			$sValue = $this->parseIdentifier();
+			$sValue = $this->parseIdentifier(false);
 			if(mb_strlen($sValue, $this->sCharset) === 3) {
 				$sValue = $sValue[0].$sValue[0].$sValue[1].$sValue[1].$sValue[2].$sValue[2];
 			}
 			$aColor = array('r' => new CSSSize(intval($sValue[0].$sValue[1], 16)), 'g' => new CSSSize(intval($sValue[2].$sValue[3], 16)), 'b' => new CSSSize(intval($sValue[4].$sValue[5], 16)));
 		} else {
-			$sColorMode = $this->parseIdentifier();
+			$sColorMode = $this->parseIdentifier(false);
 			$this->consumeWhiteSpace();
 			$this->consume('(');
 			$iLength = mb_strlen($sColorMode, $this->sCharset);
@@ -1032,5 +1037,28 @@ class CSSSlashedValue extends CSSValue {
 			$oValue2 = $oValue2->__toString();
 		}
 		return "$oValue1/$oValue2";
+	}
+}
+
+class CSSFunction extends CSSValue {
+	private $sName;
+	private $aContents;
+
+	public function __construct($sName, $aContents) {
+		$this->sName = $sName;
+		$this->aContents = $aContents;
+	}
+
+	public function getName() {
+		return $this->sName;
+	}
+
+	public function getContents() {
+		return $this->aContents;
+	}
+
+	public function __toString() {
+		$sContents = implode(',', $this->aContents);
+		return "{$this->sName}({$sContents})";
 	}
 }
