@@ -28,6 +28,10 @@ class CSSSize extends CSSValue {
 	public function getSize() {
 			return $this->fSize;
 	}
+
+	public function isSize() {
+		return $this->sUnit !== 'deg' && $this->sUnit !== 's';
+	}
 	
 	public function isRelative() {
 		if($this->sUnit === '%' || $this->sUnit === 'em' || $this->sUnit === 'ex') {

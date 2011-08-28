@@ -172,6 +172,15 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 		$oDoc = $this->parsedStructureForFile('functions');
 		$sExpected = 'div.main {background-image: linear-gradient(rgb(0, 0, 0),rgb(255, 255, 255));}.collapser::before, .collapser::-moz-before, .collapser::-webkit-before {content: "»";font-size: 1.2em;margin-right: 0.2em;-moz-transition-property: -moz-transform;-moz-transition-duration: 0.2s;-moz-transform-origin: center 60%;}.collapser.expanded::before, .collapser.expanded::-moz-before, .collapser.expanded::-webkit-before {-moz-transform: rotate(90deg);}.collapser + * {height: 0;overflow: hidden;-moz-transition-property: height;-moz-transition-duration: 0.3s;}.collapser.expanded + * {height: auto;}';
 		$this->assertSame($sExpected, $oDoc->__toString());
+
+		foreach($oDoc->getAllValues(null, true) as $mValue) {
+			if($mValue instanceof CSSSize && $mValue->isSize()) {
+				$mValue->setSize($mValue->getSize()*3);
+			}
+		}
+		$sExpected = str_replace(array('1.2em', '0.2em', '60%'), array('3.6em', '0.6em', '180%'), $sExpected);
+		$this->assertSame($sExpected, $oDoc->__toString());
+		
 		foreach($oDoc->getAllValues(null, true) as $mValue) {
 			if($mValue instanceof CSSSize && !$mValue->isRelative()) {
 				$mValue->setSize($mValue->getSize()*2);
