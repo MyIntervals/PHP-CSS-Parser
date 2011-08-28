@@ -273,6 +273,10 @@ class CSSParser {
 			$sUnit = $this->consume('ex');
 		} else if($this->comes('px')) {
 			$sUnit = $this->consume('px');
+		} else if($this->comes('deg')) {
+			$sUnit = $this->consume('deg');
+		} else if($this->comes('s')) {
+			$sUnit = $this->consume('s');
 		} else if($this->comes('cm')) {
 			$sUnit = $this->consume('cm');
 		} else if($this->comes('pt')) {
