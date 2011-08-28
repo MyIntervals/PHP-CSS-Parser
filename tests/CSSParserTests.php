@@ -170,7 +170,15 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 
 	function testFunctionSyntax() {
 		$oDoc = $this->parsedStructureForFile('functions');
-		$this->assertSame('div.main {background-image: linear-gradient(rgb(0, 0, 0),rgb(255, 255, 255));}.collapser::before, .collapser::-moz-before, .collapser::-webkit-before {content: "»";font-size: 1.2em;margin-right: 0.2em;-moz-transition-property: -moz-transform;-moz-transition-duration: 0.2s;-moz-transform-origin: center 60%;}.collapser.expanded::before, .collapser.expanded::-moz-before, .collapser.expanded::-webkit-before {-moz-transform: rotate(90deg);}.collapser + * {height: 0;overflow: hidden;-moz-transition-property: height;-moz-transition-duration: 0.3s;}.collapser.expanded + * {height: auto;}', $oDoc->__toString());
+		$sExpected = 'div.main {background-image: linear-gradient(rgb(0, 0, 0),rgb(255, 255, 255));}.collapser::before, .collapser::-moz-before, .collapser::-webkit-before {content: "»";font-size: 1.2em;margin-right: 0.2em;-moz-transition-property: -moz-transform;-moz-transition-duration: 0.2s;-moz-transform-origin: center 60%;}.collapser.expanded::before, .collapser.expanded::-moz-before, .collapser.expanded::-webkit-before {-moz-transform: rotate(90deg);}.collapser + * {height: 0;overflow: hidden;-moz-transition-property: height;-moz-transition-duration: 0.3s;}.collapser.expanded + * {height: auto;}';
+		$this->assertSame($sExpected, $oDoc->__toString());
+		foreach($oDoc->getAllValues(null, true) as $mValue) {
+			if($mValue instanceof CSSSize && !$mValue->isRelative()) {
+				$mValue->setSize($mValue->getSize()*2);
+			}
+		}
+		$sExpected = str_replace(array('0.2s', '0.3s', '90deg'), array('0.4s', '0.6s', '180deg'), $sExpected);
+		$this->assertSame($sExpected, $oDoc->__toString());
 	}
 	
 	function parsedStructureForFile($sFileName) {

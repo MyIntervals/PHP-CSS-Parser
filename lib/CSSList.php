@@ -47,19 +47,24 @@ abstract class CSSList {
 		}
 	}
 	
-	protected function allValues($oElement, &$aResult, $sSearchString = null) {
+	protected function allValues($oElement, &$aResult, $sSearchString = null, $bSearchInFunctionArguments = false) {
 		if($oElement instanceof CSSList) {
 			foreach($oElement->getContents() as $oContent) {
-				$this->allValues($oContent, $aResult, $sSearchString);
+				$this->allValues($oContent, $aResult, $sSearchString, $bSearchInFunctionArguments);
 			}
 		} else if($oElement instanceof CSSRuleSet) {
 			foreach($oElement->getRules($sSearchString) as $oRule) {
-				$this->allValues($oRule, $aResult, $sSearchString);
+				$this->allValues($oRule, $aResult, $sSearchString, $bSearchInFunctionArguments);
 			}
 		} else if($oElement instanceof CSSRule) {
 			foreach($oElement->getValues() as $aValues) {
 				foreach($aValues as $mValue) {
 					$aResult[] = $mValue;
+					if($bSearchInFunctionArguments && $mValue instanceof CSSFunction) {
+						foreach($mValue->getArguments() as $mArgument) {
+							$aResult[] = $mArgument;
+						}
+					}
 				}
 			}
 		}
@@ -113,8 +118,10 @@ class CSSDocument extends CSSList {
 	
 	/**
 	* Returns all CSSValue objects found recursively in the tree.
+	* @param (object|string) $mElement the CSSList or CSSRuleSet to start the search from (defaults to the whole document). If a string is given, it is used as rule name filter (@see{CSSRuleSet->getRules()}).
+	* @param (bool) $bSearchInFunctionArguments whether to also return CSSValue objects used as CSSFunction arguments.
 	*/
-	public function getAllValues($mElement = null) {
+	public function getAllValues($mElement = null, $bSearchInFunctionArguments = false) {
 		$sSearchString = null;
 		if($mElement === null) {
 			$mElement = $this;
@@ -123,7 +130,7 @@ class CSSDocument extends CSSList {
 			$mElement = $this;
 		}
 		$aResult = array();
-		$this->allValues($mElement, $aResult, $sSearchString);
+		$this->allValues($mElement, $aResult, $sSearchString, $bSearchInFunctionArguments);
 		return $aResult;
 	}
 

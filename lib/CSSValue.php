@@ -142,23 +142,23 @@ class CSSSlashedValue extends CSSValue {
 
 class CSSFunction extends CSSValue {
 	private $sName;
-	private $aContents;
+	private $aArguments;
 
-	public function __construct($sName, $aContents) {
+	public function __construct($sName, $aArguments) {
 		$this->sName = $sName;
-		$this->aContents = $aContents;
+		$this->aArguments = $aArguments;
 	}
 
 	public function getName() {
 		return $this->sName;
 	}
 
-	public function getContents() {
-		return $this->aContents;
+	public function getArguments() {
+		return $this->aArguments;
 	}
 
 	public function __toString() {
-		$sContents = implode(',', $this->aContents);
-		return "{$this->sName}({$sContents})";
+		$aArguments = implode(',', $this->aArguments);
+		return "{$this->sName}({$aArguments})";
 	}
 }
