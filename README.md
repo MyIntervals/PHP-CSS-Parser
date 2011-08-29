@@ -7,7 +7,7 @@ A Parser for CSS Files written in PHP. Allows extraction of CSS files into a dat
 
 ### Installation
 
-Include the `CSSParser.php` file somewhere in your code using `require_once` (or `include_once`, if you prefer), it does not have any other dependencies.
+Include the `CSSParser.php` file somewhere in your code using `require_once` (or `include_once`, if you prefer), the given `lib` folder needs to exist next to the file.
 
 ### Extraction
 
