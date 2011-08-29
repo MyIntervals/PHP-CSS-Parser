@@ -49,18 +49,18 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 				$this->assertSame('red', $aValues[0][0]);
 				$aColorRule = $oRuleSet->getRules('background-');
 				$aValues = $aColorRule['background-color']->getValues();
-				$this->assertEquals(array('r' => new CSSSize(35.0), 'g' => new CSSSize(35.0), 'b' => new CSSSize(35.0)), $aValues[0][0]->getColor());
+				$this->assertEquals(array('r' => new CSSSize(35.0, null, true), 'g' => new CSSSize(35.0, null, true), 'b' => new CSSSize(35.0, null, true)), $aValues[0][0]->getColor());
 				$aColorRule = $oRuleSet->getRules('border-color');
 				$aValues = $aColorRule['border-color']->getValues();
-				$this->assertEquals(array('r' => new CSSSize(10.0), 'g' => new CSSSize(100.0), 'b' => new CSSSize(230.0), 'a' => new CSSSize(0.3)), $aValues[0][0]->getColor());
+				$this->assertEquals(array('r' => new CSSSize(10.0, null, true), 'g' => new CSSSize(100.0, null, true), 'b' => new CSSSize(230.0, null, true), 'a' => new CSSSize(0.3, null, true)), $aValues[0][0]->getColor());
 				$aColorRule = $oRuleSet->getRules('outline-color');
 				$aValues = $aColorRule['outline-color']->getValues();
-				$this->assertEquals(array('r' => new CSSSize(34.0), 'g' => new CSSSize(34.0), 'b' => new CSSSize(34.0)), $aValues[0][0]->getColor());
+				$this->assertEquals(array('r' => new CSSSize(34.0, null, true), 'g' => new CSSSize(34.0, null, true), 'b' => new CSSSize(34.0, null, true)), $aValues[0][0]->getColor());
 			}
 		}
 		foreach($oDoc->getAllValues('background-') as $oColor) {
 			if($oColor->getColorDescription() === 'hsl') {
-				$this->assertEquals(array('h' => new CSSSize(220.0), 's' => new CSSSize(10.0), 'l' => new CSSSize(220.0)), $oColor->getColor());
+				$this->assertEquals(array('h' => new CSSSize(220.0, null, true), 's' => new CSSSize(10.0, null, true), 'l' => new CSSSize(220.0, null, true)), $oColor->getColor());
 			}
 		}
 		foreach($oDoc->getAllValues('color') as $sColor) {
@@ -166,11 +166,17 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 	function testSlashedValues() {
 		$oDoc = $this->parsedStructureForFile('slashed');
 		$this->assertSame('.test {font: 12px/1.5;border-radius: 5px 10px 5px 10px/10px 5px 10px 5px;}', $oDoc->__toString());
+		foreach($oDoc->getAllValues(null) as $mValue) {
+			if($mValue instanceof CSSSize && $mValue->isSize() && !$mValue->isRelative()) {
+				$mValue->setSize($mValue->getSize()*3);
+			}
+		}
+		$this->assertSame('.test {font: 36px/1.5;border-radius: 15px 30px 15px 30px/30px 15px 30px 15px;}', $oDoc->__toString());
 	}
 
 	function testFunctionSyntax() {
 		$oDoc = $this->parsedStructureForFile('functions');
-		$sExpected = 'div.main {background-image: linear-gradient(rgb(0, 0, 0),rgb(255, 255, 255));}.collapser::before, .collapser::-moz-before, .collapser::-webkit-before {content: "»";font-size: 1.2em;margin-right: 0.2em;-moz-transition-property: -moz-transform;-moz-transition-duration: 0.2s;-moz-transform-origin: center 60%;}.collapser.expanded::before, .collapser.expanded::-moz-before, .collapser.expanded::-webkit-before {-moz-transform: rotate(90deg);}.collapser + * {height: 0;overflow: hidden;-moz-transition-property: height;-moz-transition-duration: 0.3s;}.collapser.expanded + * {height: auto;}';
+		$sExpected = 'div.main {background-image: linear-gradient(rgb(0,0,0),rgb(255,255,255));}.collapser::before, .collapser::-moz-before, .collapser::-webkit-before {content: "»";font-size: 1.2em;margin-right: 0.2em;-moz-transition-property: -moz-transform;-moz-transition-duration: 0.2s;-moz-transform-origin: center 60%;}.collapser.expanded::before, .collapser.expanded::-moz-before, .collapser.expanded::-webkit-before {-moz-transform: rotate(90deg);}.collapser + * {height: 0;overflow: hidden;-moz-transition-property: height;-moz-transition-duration: 0.3s;}.collapser.expanded + * {height: auto;}';
 		$this->assertSame($sExpected, $oDoc->__toString());
 
 		foreach($oDoc->getAllValues(null, true) as $mValue) {
@@ -182,7 +188,7 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 		$this->assertSame($sExpected, $oDoc->__toString());
 		
 		foreach($oDoc->getAllValues(null, true) as $mValue) {
-			if($mValue instanceof CSSSize && !$mValue->isRelative()) {
+			if($mValue instanceof CSSSize && !$mValue->isRelative() && !$mValue->isColorComponent()) {
 				$mValue->setSize($mValue->getSize()*2);
 			}
 		}

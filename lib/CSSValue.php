@@ -4,33 +4,47 @@ abstract class CSSValue {
 	public abstract function __toString();
 }
 
-class CSSSize extends CSSValue {
+abstract class CSSPrimitiveValue extends CSSValue {
+	
+}
+
+class CSSSize extends CSSPrimitiveValue {
 	private $fSize;
 	private $sUnit;
+	private $bIsColorComponent;
 	
-	public function __construct($fSize, $sUnit = null) {
+	public function __construct($fSize, $sUnit = null, $bIsColorComponent = false) {
 		$this->fSize = floatval($fSize);
 		$this->sUnit = $sUnit;
+		$this->bIsColorComponent = $bIsColorComponent;
 	}
 	
 	public function setUnit($sUnit) {
-			$this->sUnit = $sUnit;
+		$this->sUnit = $sUnit;
 	}
 
 	public function getUnit() {
-			return $this->sUnit;
+		return $this->sUnit;
 	}
 	
 	public function setSize($fSize) {
-			$this->fSize = floatval($fSize);
+		$this->fSize = floatval($fSize);
 	}
 
 	public function getSize() {
-			return $this->fSize;
+		return $this->fSize;
 	}
 
+	public function isColorComponent() {
+		return $this->bIsColorComponent;
+	}
+
+	/**
+	* Returns whether the number stored in this CSSSize really represents a size (as in a length of something on screen).
+	* @return false if the unit is degrees, seconds or if the number is a component in a CSSColor object.
+	*/
 	public function isSize() {
-		return $this->sUnit !== 'deg' && $this->sUnit !== 's';
+		return $this->sUnit !== 'deg' && $this->sUnit !== 's' && !$this->isColorComponent();
 	}
 	
 	public function isRelative() {
@@ -48,31 +62,7 @@ class CSSSize extends CSSValue {
 	}
 }
 
-class CSSColor extends CSSValue {
-	private $aColor;
-	
-	public function __construct($aColor) {
-		$this->aColor = $aColor;
-	}
-	
-	public function setColor($aColor) {
-			$this->aColor = $aColor;
-	}
-
-	public function getColor() {
-			return $this->aColor;
-	}
-	
-	public function getColorDescription() {
-		return implode('', array_keys($this->aColor));
-	}
-	
-	public function __toString() {
-		return $this->getColorDescription().'('.implode(', ', $this->aColor).')';
-	}
-}
-
-class CSSString extends CSSValue {
+class CSSString extends CSSPrimitiveValue {
 	private $sString;
 	
 	public function __construct($sString) {
@@ -94,7 +84,7 @@ class CSSString extends CSSValue {
 	}
 }
 
-class CSSURL extends CSSValue {
+class CSSURL extends CSSPrimitiveValue {
 	private $oURL;
 	
 	public function __construct(CSSString $oURL) {
@@ -114,55 +104,3 @@ class CSSURL extends CSSValue {
 	}
 }
 
-class CSSSlashedValue extends CSSValue {
-	private $oValue1;
-	private $oValue2;
-
-	public function __construct($oValue1, $oValue2) {
-		$this->oValue1 = $oValue1;
-		$this->oValue2 = $oValue2;
-	}
-
-	public function getValue1() {
-		return $this->oValue1;
-	}
-
-	public function getValue2() {
-		return $this->oValue2;
-	}
-
-	public function __toString() {
-		$oValue1 = $this->oValue1;
-		$oValue2 = $this->oValue2;
-		if($oValue1 instanceof CSSValue) {
-			$oValue1 = $oValue1->__toString();
-		}
-		if($oValue2 instanceof CSSValue) {
-			$oValue2 = $oValue2->__toString();
-		}
-		return "$oValue1/$oValue2";
-	}
-}
-
-class CSSFunction extends CSSValue {
-	private $sName;
-	private $aArguments;
-
-	public function __construct($sName, $aArguments) {
-		$this->sName = $sName;
-		$this->aArguments = $aArguments;
-	}
-
-	public function getName() {
-		return $this->sName;
-	}
-
-	public function getArguments() {
-		return $this->aArguments;
-	}
-
-	public function __toString() {
-		$aArguments = implode(',', $this->aArguments);
-		return "{$this->sName}({$aArguments})";
-	}
-}

@@ -4,6 +4,7 @@ require_once('lib/CSSList.php');
 require_once('lib/CSSRuleSet.php');
 require_once('lib/CSSRule.php');
 require_once('lib/CSSValue.php');
+require_once('lib/CSSValueList.php');
 
 /**
 * @package html
@@ -261,7 +262,7 @@ class CSSParser {
 		return $oValue;
 	}
 	
-	private function parseNumericValue() {
+	private function parseNumericValue($bForColor = false) {
 		$sSize = '';
 		if($this->comes('-')) {
 			$sSize .= $this->consume('-');
@@ -300,7 +301,7 @@ class CSSParser {
 		} else if($this->comes('mm')) {
 			$sUnit = $this->consume('mm');
 		}
-		return new CSSSize($fSize, $sUnit);
+		return new CSSSize($fSize, $sUnit, $bForColor);
 	}
 	
 	private function parseColorValue() {
@@ -311,7 +312,7 @@ class CSSParser {
 			if(mb_strlen($sValue, $this->sCharset) === 3) {
 				$sValue = $sValue[0].$sValue[0].$sValue[1].$sValue[1].$sValue[2].$sValue[2];
 			}
-			$aColor = array('r' => new CSSSize(intval($sValue[0].$sValue[1], 16)), 'g' => new CSSSize(intval($sValue[2].$sValue[3], 16)), 'b' => new CSSSize(intval($sValue[4].$sValue[5], 16)));
+			$aColor = array('r' => new CSSSize(intval($sValue[0].$sValue[1], 16), null, true), 'g' => new CSSSize(intval($sValue[2].$sValue[3], 16), null, true), 'b' => new CSSSize(intval($sValue[4].$sValue[5], 16), null, true));
 		} else {
 			$sColorMode = $this->parseIdentifier(false);
 			$this->consumeWhiteSpace();
@@ -319,7 +320,7 @@ class CSSParser {
 			$iLength = mb_strlen($sColorMode, $this->sCharset);
 			for($i=0;$i<$iLength;$i++) {
 				$this->consumeWhiteSpace();
-				$aColor[$sColorMode[$i]] = $this->parseNumericValue();
+				$aColor[$sColorMode[$i]] = $this->parseNumericValue(true);
 				$this->consumeWhiteSpace();
 				if($i < ($iLength-1)) {
 					$this->consume(',');
