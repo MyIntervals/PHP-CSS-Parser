@@ -5,7 +5,3 @@
 .some {
 	filters: may(contain, a, ')');
 }
-
-.ie-specific {
-	filter: (may-contain=sign);
-}

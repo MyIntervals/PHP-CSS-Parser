@@ -263,7 +263,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
     }
   }
 
-  /*
+  /**
    * Convert shorthand font declarations
    * (e.g. <tt>font: 300 italic 11px/14px verdana, helvetica, sans-serif;</tt>)
    * into their constituent parts.
@@ -310,10 +310,11 @@ class CSSDeclarationBlock extends CSSRuleSet {
       ){
         $aFontProperties['font-weight'] = $aValues;
       }
-      else if($mValue instanceof CSSSlashedValue)
+      else if($mValue instanceof CSSRuleValueList && $mValue->getListSeparator() === '/')
       {
-        $aFontProperties['font-size'] = array($mValue->getValue1());
-        $aFontProperties['line-height'] = array($mValue->getValue2());
+				list($oSize, $oHeight) = $mValue->getListComponents();
+				$aFontProperties['font-size'] = $oSize;
+				$aFontProperties['line-height'] = $oHeight;
       }
       else if($mValue instanceof CSSSize && $mValue->getUnit() !== null)
       {
@@ -601,7 +602,9 @@ class CSSDeclarationBlock extends CSSRuleSet {
       $aLHValues = $aRules['line-height']->getValues();
       if($aLHValues[0][0] !== 'normal')
       {
-        $val = new CSSSlashedValue($aFSValues[0][0], $aLHValues[0][0]);
+				$val = new CSSRuleValueList('/');
+				$val->addListComponent($aFSValues[0][0]);
+				$val->addListComponent($aLHValues[0][0]);
         $oNewRule->addValue(array($val));
       }
     }
@@ -611,7 +614,9 @@ class CSSDeclarationBlock extends CSSRuleSet {
     }
 
     $aFFValues = $aRules['font-family']->getValues();
-    $oNewRule->addValue($aFFValues[0]);
+		$oFFValue = new CSSRuleValueList(',');
+		$oFFValue->setListComponents($aFFValues[0]);
+    $oNewRule->addValue($oFFValue);
 
     $this->addRule($oNewRule);
     foreach ($aFontProperties as $sProperty)

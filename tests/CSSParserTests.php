@@ -23,7 +23,7 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 				}
 				$oParser = new CSSParser(file_get_contents($sDirectory.DIRECTORY_SEPARATOR.$sFileName));
 				try {
-					$oParser->parse()->__toString();
+					$this->assertNotEquals('', $oParser->parse()->__toString());
 				} catch(Exception $e) {
 					$this->fail($e);
 				}
@@ -156,7 +156,7 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}#my_id html, #my_id body {font-size: 1.6em;}', $oDoc->__toString());
 
 		$oDoc = $this->parsedStructureForFile('values');
-		$this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana, Helvetica, "Gill Sans", sans-serif;font-size: 10px;color: red !important;}body {color: green;font: 75% "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;}', $oDoc->__toString());
+		$this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;font-size: 10px;color: red !important;}body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}', $oDoc->__toString());
 		foreach($oDoc->getAllRuleSets() as $oRuleSet) {
 			$oRuleSet->removeRule('font-');
 		}
@@ -165,13 +165,33 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 
 	function testSlashedValues() {
 		$oDoc = $this->parsedStructureForFile('slashed');
-		$this->assertSame('.test {font: 12px/1.5;border-radius: 5px 10px 5px 10px/10px 5px 10px 5px;}', $oDoc->__toString());
+		$this->assertSame('.test {font: 12px/1.5 Verdana,Arial,sans-serif;border-radius: 5px 10px 5px 10px/10px 5px 10px 5px;}', $oDoc->__toString());
 		foreach($oDoc->getAllValues(null) as $mValue) {
 			if($mValue instanceof CSSSize && $mValue->isSize() && !$mValue->isRelative()) {
 				$mValue->setSize($mValue->getSize()*3);
 			}
 		}
-		$this->assertSame('.test {font: 36px/1.5;border-radius: 15px 30px 15px 30px/30px 15px 30px 15px;}', $oDoc->__toString());
+		foreach($oDoc->getAllDeclarationBlocks() as $oBlock) {
+			$oRule = $oBlock->getRules('font');
+			$oRule = $oRule['font'];
+			$oSpaceList = $oRule->getValue();
+			$this->assertEquals(' ', $oSpaceList->getListSeparator());
+			$oSlashList = $oSpaceList->getListComponents();
+			$oCommaList = $oSlashList[1];
+			$oSlashList = $oSlashList[0];
+			$this->assertEquals(',', $oCommaList->getListSeparator());
+			$this->assertEquals('/', $oSlashList->getListSeparator());
+			$oRule = $oBlock->getRules('border-radius');
+			$oRule = $oRule['border-radius'];
+			$oSlashList = $oRule->getValue();
+			$this->assertEquals('/', $oSlashList->getListSeparator());
+			$oSpaceList1 = $oSlashList->getListComponents();
+			$oSpaceList2 = $oSpaceList1[1];
+			$oSpaceList1 = $oSpaceList1[0];
+			$this->assertEquals(' ', $oSpaceList1->getListSeparator());
+			$this->assertEquals(' ', $oSpaceList2->getListSeparator());
+		}
+		$this->assertSame('.test {font: 36px/1.5 Verdana,Arial,sans-serif;border-radius: 15px 30px 15px 30px/30px 15px 30px 15px;}', $oDoc->__toString());
 	}
 
 	function testFunctionSyntax() {
@@ -198,19 +218,19 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 
   function testExpandShorthands() {
 		$oDoc = $this->parsedStructureForFile('expand-shorthands');
-		$sExpected = 'body {font: italic 500 14px/1.618 "Trebuchet MS", Georgia, serif;border: 2px solid rgb(255,0,255);background: rgb(204,204,204) url("/images/foo.png") no-repeat left top;margin: 1em !important;padding: 2px 6px 3px;}';
+		$sExpected = 'body {font: italic 500 14px/1.618 "Trebuchet MS",Georgia,serif;border: 2px solid rgb(255,0,255);background: rgb(204,204,204) url("/images/foo.png") no-repeat left top;margin: 1em !important;padding: 2px 6px 3px;}';
 		$this->assertSame($sExpected, $oDoc->__toString());
     $oDoc->expandShorthands();
-    $sExpected = 'body {margin-top: 1em !important;margin-right: 1em !important;margin-bottom: 1em !important;margin-left: 1em !important;padding-top: 2px;padding-right: 6px;padding-bottom: 3px;padding-left: 6px;border-top-color: rgb(255,0,255);border-right-color: rgb(255,0,255);border-bottom-color: rgb(255,0,255);border-left-color: rgb(255,0,255);border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-width: 2px;border-right-width: 2px;border-bottom-width: 2px;border-left-width: 2px;font-style: italic;font-variant: normal;font-weight: 500;font-size: 14px;line-height: 1.618;font-family: "Trebuchet MS", Georgia, serif;background-color: rgb(204,204,204);background-image: url("/images/foo.png");background-repeat: no-repeat;background-attachment: scroll;background-position: left, top;}';
+    $sExpected = 'body {margin-top: 1em !important;margin-right: 1em !important;margin-bottom: 1em !important;margin-left: 1em !important;padding-top: 2px;padding-right: 6px;padding-bottom: 3px;padding-left: 6px;border-top-color: rgb(255,0,255);border-right-color: rgb(255,0,255);border-bottom-color: rgb(255,0,255);border-left-color: rgb(255,0,255);border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-width: 2px;border-right-width: 2px;border-bottom-width: 2px;border-left-width: 2px;font-style: italic;font-variant: normal;font-weight: 500;font-size: 14px;line-height: 1.618;font-family: "Trebuchet MS",Georgia,serif;background-color: rgb(204,204,204);background-image: url("/images/foo.png");background-repeat: no-repeat;background-attachment: scroll;background-position: left top;}';
 		$this->assertSame($sExpected, $oDoc->__toString());
   }
 	
   function testCreateShorthands() {
 		$oDoc = $this->parsedStructureForFile('create-shorthands');
-		$sExpected = 'body {font-size: 2em;font-family: Helvetica, Arial, sans-serif;font-weight: bold;border-width: 2px;border-color: rgb(153,153,153);border-style: dotted;background-color: rgb(255,255,255);background-image: url("foobar.png");background-repeat: repeat-y;margin-top: 2px;margin-right: 3px;margin-bottom: 4px;margin-left: 5px;}';
+		$sExpected = 'body {font-size: 2em;font-family: Helvetica,Arial,sans-serif;font-weight: bold;border-width: 2px;border-color: rgb(153,153,153);border-style: dotted;background-color: rgb(255,255,255);background-image: url("foobar.png");background-repeat: repeat-y;margin-top: 2px;margin-right: 3px;margin-bottom: 4px;margin-left: 5px;}';
 		$this->assertSame($sExpected, $oDoc->__toString());
     $oDoc->createShorthands();
-    $sExpected = 'body {background: rgb(255,255,255) url("foobar.png") repeat-y;margin: 2px 5px 4px 3px;border: 2px dotted rgb(153,153,153);font: bold 2em Helvetica, Arial, sans-serif;}';
+    $sExpected = 'body {background: rgb(255,255,255) url("foobar.png") repeat-y;margin: 2px 5px 4px 3px;border: 2px dotted rgb(153,153,153);font: bold 2em Helvetica,Arial,sans-serif;}';
 		$this->assertSame($sExpected, $oDoc->__toString());
   }
 

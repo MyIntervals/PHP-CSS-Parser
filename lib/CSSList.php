@@ -57,11 +57,7 @@ abstract class CSSList {
 				$this->allValues($oRule, $aResult, $sSearchString, $bSearchInFunctionArguments);
 			}
 		} else if($oElement instanceof CSSRule) {
-			foreach($oElement->getValues() as $aValues) {
-				foreach($aValues as $mValue) {
-					$this->allValues($mValue, $aResult, $sSearchString, $bSearchInFunctionArguments);
-				}
-			}
+			$this->allValues($oElement->getValue(), $aResult, $sSearchString, $bSearchInFunctionArguments);
 		} else if($oElement instanceof CSSValueList) {
 			if($bSearchInFunctionArguments || !($oElement instanceof CSSFunction)) {
 				foreach($oElement->getListComponents() as $mComponent) {

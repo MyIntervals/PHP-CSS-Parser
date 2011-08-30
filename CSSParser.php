@@ -109,7 +109,7 @@ class CSSParser {
 		}
 		if($bAllowFunctions && $this->comes('(')) {
 			$this->consume('(');
-			$sResult = new CSSFunction($sResult, $this->parseValue());
+			$sResult = new CSSFunction($sResult, $this->parseValue(array('=', ',')));
 			$this->consume(')');
 		}
 		return $sResult;
@@ -211,11 +211,8 @@ class CSSParser {
 		$oRule = new CSSRule($this->parseIdentifier());
 		$this->consumeWhiteSpace();
 		$this->consume(':');
-		$this->consumeWhiteSpace();
-		while(!($this->comes('}') || $this->comes(';') || $this->comes('!'))) {
-			$oRule->addValue($this->parseValue());
-			$this->consumeWhiteSpace();
-		}
+		$oValue = $this->parseValue(self::listDelimiterForRule($oRule->getRule()));
+		$oRule->setValue($oValue);
 		if($this->comes('!')) {
 			$this->consume('!');
 			$this->consumeWhiteSpace();
@@ -230,17 +227,60 @@ class CSSParser {
 		}
 		return $oRule;
 	}
-	
-	private function parseValue() {
-		$aResult = array();
-		do {
-			$aResult[] = $this->parseSingleValue();
-		} while($this->comes(',') && is_string($this->consume(',')));
-		
-		return $aResult;
+
+	private function parseValue($aListDelimiters) {
+		$aStack = array();
+		$this->consumeWhiteSpace();
+		while(!($this->comes('}') || $this->comes(';') || $this->comes('!') || $this->comes(')'))) {
+			if(count($aStack) > 0) {
+				$bFoundDelimiter = false;
+				foreach($aListDelimiters as $sDelimiter) {
+					if($this->comes($sDelimiter)) {
+						array_push($aStack, $this->consume($sDelimiter));
+						$this->consumeWhiteSpace();
+						$bFoundDelimiter = true;
+						break;
+					}
+				}
+				if(!$bFoundDelimiter) {
+					//Whitespace was the list delimiter
+					array_push($aStack, ' ');
+				}
+			}
+			array_push($aStack, $this->parsePrimitiveValue());
+			$this->consumeWhiteSpace();
+		}
+		foreach($aListDelimiters as $sDelimiter) {
+			if(count($aStack) === 1) {
+				return $aStack[0];
+			}
+			$iStartPosition = null;
+			while(($iStartPosition = array_search($sDelimiter, $aStack, true)) !== false) {
+				$iLength = 2; //Number of elements to be joined
+				for($i=$iStartPosition+2;$i<count($aStack);$i+=2) {
+					if($sDelimiter !== $aStack[$i]) {
+						break;
+					}
+					$iLength++;
+				}
+				$oList = new CSSRuleValueList($sDelimiter);
+				for($i=$iStartPosition-1;$i-$iStartPosition+1<$iLength*2;$i+=2) {
+					$oList->addListComponent($aStack[$i]);
+				}
+				array_splice($aStack, $iStartPosition-1, $iLength*2-1, array($oList));
+			}
+		}
+		return $aStack[0];
 	}
 
-	private function parseSingleValue() {
+	private static function listDelimiterForRule($sRule) {
+		if(preg_match('/^font($|-)/', $sRule)) {
+			return array(',', '/', ' ');
+		}
+		return array(',', ' ', '/');
+	}
+	
+	private function parsePrimitiveValue() {
 		$oValue = null;
 		$this->consumeWhiteSpace();
 		if(is_numeric($this->peek()) || (($this->comes('-') || $this->comes('.')) && is_numeric($this->peek(1, 1)))) {
@@ -255,10 +295,6 @@ class CSSParser {
 			$oValue = $this->parseIdentifier();
 		}
 		$this->consumeWhiteSpace();
-		if($this->comes('/')) {
-			$this->consume('/');
-			$oValue = new CSSSlashedValue($oValue, $this->parseSingleValue());
-		}
 		return $oValue;
 	}
 	

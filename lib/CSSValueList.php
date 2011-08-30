@@ -5,16 +5,33 @@ abstract class CSSValueList extends CSSValue {
 	protected $sSeparator;
 	
 	public function __construct($aComponents = array(), $sSeparator = ',') {
+		if($aComponents instanceof CSSValueList && $aComponents->getListSeparator() === $sSeparator) {
+			$aComponents = $aComponents->getListComponents();
+		} else if(!is_array($aComponents)) {
+			$aComponents = array($aComponents);
+		}
 		$this->aComponents = $aComponents;
 		$this->sSeparator = $sSeparator;
+	}
+
+	public function addListComponent($mComponent) {
+		$this->aComponents[] = $mComponent;
 	}
 
 	public function getListComponents() {
 		return $this->aComponents;
 	}
+
+	public function setListComponents($aComponents) {
+		$this->aComponents = $aComponents;
+	}
 	
 	public function getListSeparator() {
 		return $this->sSeparator;
+	}
+
+	public function setListSeparator($sSeparator) {
+		$this->sSeparator = $sSeparator;
 	}
 
 	function __toString() {
@@ -22,17 +39,9 @@ abstract class CSSValueList extends CSSValue {
 	}
 }
 
-class CSSSlashedValue extends CSSValueList {
-	public function __construct($oValue1, $oValue2) {
-		parent::__construct(array($oValue1, $oValue2), '/');
-	}
-
-	public function getValue1() {
-		return $this->aComponents[0];
-	}
-
-	public function getValue2() {
-		return $this->aComponents[1];
+class CSSRuleValueList extends CSSValueList {
+	public function __construct($sSeparator = ',') {
+		parent::__construct(array(), $sSeparator);
 	}
 }
 
@@ -45,6 +54,10 @@ class CSSFunction extends CSSValueList {
 
 	public function getName() {
 		return $this->sName;
+	}
+
+	public function setName($sName) {
+		$this->sName = $sName;
 	}
 
 	public function getArguments() {
@@ -64,6 +77,11 @@ class CSSColor extends CSSFunction {
 	
 	public function getColor() {
 		return $this->aComponents;
+	}
+
+	public function setColor($aColor) {
+		$this->setName(implode('', array_keys($aColor)));
+		$this->aComponents = $aColor;
 	}
 	
 	public function getColorDescription() {
