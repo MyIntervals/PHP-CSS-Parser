@@ -198,7 +198,7 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 
   function testExpandShorthands() {
 		$oDoc = $this->parsedStructureForFile('expand-shorthands');
-		$sExpected = 'body {font: italic 500 14px/1.618 "Trebuchet MS", Georgia, serif;border: 2px solid rgb(255,0,255);background: rgb(204,204,204) url("/images/foo.png") no-repeat left top;margin: 1em;padding: 2px 6px 3px;}';
+		$sExpected = 'body {font: italic 500 14px/1.618 "Trebuchet MS", Georgia, serif;border: 2px solid rgb(255,0,255);background: rgb(204,204,204) url("/images/foo.png") no-repeat left top;margin: 1em !important;padding: 2px 6px 3px;}';
 		$this->assertSame($sExpected, $oDoc->__toString());
     $oDoc->expandShorthands();
     $sExpected = 'body {margin-top: 1em !important;margin-right: 1em !important;margin-bottom: 1em !important;margin-left: 1em !important;padding-top: 2px;padding-right: 6px;padding-bottom: 3px;padding-left: 6px;border-top-color: rgb(255,0,255);border-right-color: rgb(255,0,255);border-bottom-color: rgb(255,0,255);border-left-color: rgb(255,0,255);border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-width: 2px;border-right-width: 2px;border-bottom-width: 2px;border-left-width: 2px;font-style: italic;font-variant: normal;font-weight: 500;font-size: 14px;line-height: 1.618;font-family: "Trebuchet MS", Georgia, serif;background-color: rgb(204,204,204);background-image: url("/images/foo.png");background-repeat: no-repeat;background-attachment: scroll;background-position: left, top;}';
