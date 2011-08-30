@@ -131,57 +131,45 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	
 #### Structure (`var_dump()`)
 
-	object(CSSDocument)#145 (1) {
+	object(CSSDocument)#2 (1) {
 		["aContents":"CSSList":private]=>
 		array(3) {
 			[0]=>
-			object(CSSCharset)#149 (1) {
+			object(CSSCharset)#4 (1) {
 				["sCharset":"CSSCharset":private]=>
-				object(CSSString)#136 (1) {
+				object(CSSString)#3 (1) {
 					["sString":"CSSString":private]=>
 					string(5) "utf-8"
 				}
 			}
 			[1]=>
-			object(CSSAtRule)#138 (2) {
+			object(CSSAtRule)#5 (2) {
 				["sType":"CSSAtRule":private]=>
 				string(9) "font-face"
 				["aRules":"CSSRuleSet":private]=>
 				array(2) {
 					["font-family"]=>
-					object(CSSRule)#137 (3) {
+					object(CSSRule)#6 (3) {
 						["sRule":"CSSRule":private]=>
 						string(11) "font-family"
-						["aValues":"CSSRule":private]=>
-						array(1) {
-							[0]=>
-							array(1) {
-								[0]=>
-								object(CSSString)#134 (1) {
-									["sString":"CSSString":private]=>
-									string(10) "CrassRoots"
-								}
-							}
+						["mValue":"CSSRule":private]=>
+						object(CSSString)#7 (1) {
+							["sString":"CSSString":private]=>
+							string(10) "CrassRoots"
 						}
 						["bIsImportant":"CSSRule":private]=>
 						bool(false)
 					}
 					["src"]=>
-					object(CSSRule)#140 (3) {
+					object(CSSRule)#8 (3) {
 						["sRule":"CSSRule":private]=>
 						string(3) "src"
-						["aValues":"CSSRule":private]=>
-						array(1) {
-							[0]=>
-							array(1) {
-								[0]=>
-								object(CSSURL)#139 (1) {
-									["oURL":"CSSURL":private]=>
-									object(CSSString)#143 (1) {
-										["sString":"CSSString":private]=>
-										string(15) "../media/cr.ttf"
-									}
-								}
+						["mValue":"CSSRule":private]=>
+						object(CSSURL)#9 (1) {
+							["oURL":"CSSURL":private]=>
+							object(CSSString)#10 (1) {
+								["sString":"CSSString":private]=>
+								string(15) "../media/cr.ttf"
 							}
 						}
 						["bIsImportant":"CSSRule":private]=>
@@ -190,18 +178,18 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 				}
 			}
 			[2]=>
-			object(CSSDeclarationBlock)#144 (2) {
+			object(CSSDeclarationBlock)#11 (2) {
 				["aSelectors":"CSSDeclarationBlock":private]=>
 				array(2) {
 					[0]=>
-					object(CSSSelector)#141 (2) {
+					object(CSSSelector)#12 (2) {
 						["sSelector":"CSSSelector":private]=>
 						string(4) "html"
 						["iSpecificity":"CSSSelector":private]=>
 						NULL
 					}
 					[1]=>
-					object(CSSSelector)#142 (2) {
+					object(CSSSelector)#13 (2) {
 						["sSelector":"CSSSelector":private]=>
 						string(4) "body"
 						["iSpecificity":"CSSSelector":private]=>
@@ -211,21 +199,17 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 				["aRules":"CSSRuleSet":private]=>
 				array(1) {
 					["font-size"]=>
-					object(CSSRule)#163 (3) {
+					object(CSSRule)#14 (3) {
 						["sRule":"CSSRule":private]=>
 						string(9) "font-size"
-						["aValues":"CSSRule":private]=>
-						array(1) {
-							[0]=>
-							array(1) {
-								[0]=>
-								object(CSSSize)#147 (2) {
-									["fSize":"CSSSize":private]=>
-									float(1.6)
-									["sUnit":"CSSSize":private]=>
-									string(2) "em"
-								}
-							}
+						["mValue":"CSSRule":private]=>
+						object(CSSSize)#15 (3) {
+							["fSize":"CSSSize":private]=>
+							float(1.6)
+							["sUnit":"CSSSize":private]=>
+							string(2) "em"
+							["bIsColorComponent":"CSSSize":private]=>
+							bool(false)
 						}
 						["bIsImportant":"CSSRule":private]=>
 						bool(false)
@@ -251,15 +235,15 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	
 #### Structure (`var_dump()`)
 
-	object(CSSDocument)#148 (1) {
+	object(CSSDocument)#2 (1) {
 		["aContents":"CSSList":private]=>
 		array(1) {
 			[0]=>
-			object(CSSDeclarationBlock)#146 (2) {
+			object(CSSDeclarationBlock)#3 (2) {
 				["aSelectors":"CSSDeclarationBlock":private]=>
 				array(1) {
 					[0]=>
-					object(CSSSelector)#167 (2) {
+					object(CSSSelector)#4 (2) {
 						["sSelector":"CSSSelector":private]=>
 						string(7) "#header"
 						["iSpecificity":"CSSSelector":private]=>
@@ -269,91 +253,88 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 				["aRules":"CSSRuleSet":private]=>
 				array(3) {
 					["margin"]=>
-					object(CSSRule)#194 (3) {
+					object(CSSRule)#5 (3) {
 						["sRule":"CSSRule":private]=>
 						string(6) "margin"
-						["aValues":"CSSRule":private]=>
-						array(4) {
-							[0]=>
-							array(1) {
+						["mValue":"CSSRule":private]=>
+						object(CSSRuleValueList)#10 (2) {
+							["aComponents":protected]=>
+							array(4) {
 								[0]=>
-								object(CSSSize)#151 (2) {
+								object(CSSSize)#6 (3) {
 									["fSize":"CSSSize":private]=>
 									float(10)
 									["sUnit":"CSSSize":private]=>
 									string(2) "px"
+									["bIsColorComponent":"CSSSize":private]=>
+									bool(false)
 								}
-							}
-							[1]=>
-							array(1) {
-								[0]=>
-								object(CSSSize)#150 (2) {
+								[1]=>
+								object(CSSSize)#7 (3) {
 									["fSize":"CSSSize":private]=>
 									float(2)
 									["sUnit":"CSSSize":private]=>
 									string(2) "em"
+									["bIsColorComponent":"CSSSize":private]=>
+									bool(false)
 								}
-							}
-							[2]=>
-							array(1) {
-								[0]=>
-								object(CSSSize)#180 (2) {
+								[2]=>
+								object(CSSSize)#8 (3) {
 									["fSize":"CSSSize":private]=>
 									float(1)
 									["sUnit":"CSSSize":private]=>
 									string(2) "cm"
+									["bIsColorComponent":"CSSSize":private]=>
+									bool(false)
 								}
-							}
-							[3]=>
-							array(1) {
-								[0]=>
-								object(CSSSize)#186 (2) {
+								[3]=>
+								object(CSSSize)#9 (3) {
 									["fSize":"CSSSize":private]=>
 									float(2)
 									["sUnit":"CSSSize":private]=>
 									string(1) "%"
+									["bIsColorComponent":"CSSSize":private]=>
+									bool(false)
 								}
 							}
+							["sSeparator":protected]=>
+							string(1) " "
 						}
 						["bIsImportant":"CSSRule":private]=>
 						bool(false)
 					}
 					["font-family"]=>
-					object(CSSRule)#184 (3) {
+					object(CSSRule)#11 (3) {
 						["sRule":"CSSRule":private]=>
 						string(11) "font-family"
-						["aValues":"CSSRule":private]=>
-						array(1) {
-							[0]=>
+						["mValue":"CSSRule":private]=>
+						object(CSSRuleValueList)#13 (2) {
+							["aComponents":protected]=>
 							array(4) {
 								[0]=>
 								string(7) "Verdana"
 								[1]=>
 								string(9) "Helvetica"
 								[2]=>
-								object(CSSString)#189 (1) {
+								object(CSSString)#12 (1) {
 									["sString":"CSSString":private]=>
 									string(9) "Gill Sans"
 								}
 								[3]=>
 								string(10) "sans-serif"
 							}
+							["sSeparator":protected]=>
+							string(1) ","
 						}
 						["bIsImportant":"CSSRule":private]=>
 						bool(false)
 					}
 					["color"]=>
-					object(CSSRule)#162 (3) {
+					object(CSSRule)#14 (3) {
 						["sRule":"CSSRule":private]=>
 						string(5) "color"
-						["aValues":"CSSRule":private]=>
-						array(1) {
-							[0]=>
-							array(1) {
-								[0]=>
-								string(3) "red"
-							}
-						}
+						["mValue":"CSSRule":private]=>
+						string(3) "red"
 						["bIsImportant":"CSSRule":private]=>
 						bool(true)
 					}
@@ -364,7 +345,7 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 
 #### Output (`__toString()`)
 
-	#header {margin: 10px 2em 1cm 2%;font-family: Verdana, Helvetica, "Gill Sans", sans-serif;color: red !important;}
+	#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans", sans-serif;color: red !important;}
 
 ## To-Do
 
