@@ -152,6 +152,28 @@ class CSSDocument extends CSSList {
 		$this->allSelectors($aResult, $sSpecificitySearch);
 		return $aResult;
 	}
+  
+  /**
+   * Expands all shorthand properties to their long value
+   */ 
+  public function expandShorthands()
+  {
+    foreach($this->getAllDeclarationBlocks() as $oDeclaration)
+    {
+      $oDeclaration->expandShorthands();
+    }
+  }
+
+  /*
+   * Create shorthands properties whenever possible
+   */
+  public function createShorthands()
+  {
+    foreach($this->getAllDeclarationBlocks() as $oDeclaration)
+    {
+      $oDeclaration->createShorthands();
+    }
+  }
 }
 
 /**
