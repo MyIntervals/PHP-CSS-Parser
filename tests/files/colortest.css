@@ -1,10 +1,13 @@
 #mine {
-	color: red;
-	border-color: rgba(10, 100, 230, 0.3);
-	outline-color: #222;
-	background-color: #232323;
+  color: red;
+  border-color: rgba(10, 100, 230, 0.3);
+  border-left-color: rgb(50%, 80%, 10%);
+  outline-color: #222;
+  background-color: #232323;
 }
 
 #yours {
-	background-color: hsl(220, 10, 220);
+  background-color: hsl(220, 10%, 220%);
+  color: notacolor;
+  border-color: rgba(322, -5, 200%, 3.4);
 }

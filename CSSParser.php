@@ -1,4 +1,5 @@
 <?php
+require_once 'lib/ColorUtils.php';
 require_once('lib/CSSProperties.php');
 require_once('lib/CSSList.php');
 require_once('lib/CSSRuleSet.php');
@@ -98,7 +99,7 @@ class CSSParser {
 		}
 	}
 	
-	private function parseIdentifier($bAllowFunctions = true) {
+	private function parseIdentifier($bAllowFunctions = false, $bAllowColors = false) {
 		$sResult = $this->parseCharacter(true);
 		if($sResult === null) {
 			throw new Exception("Identifier expected, got {$this->peek(5)}");
@@ -106,8 +107,30 @@ class CSSParser {
 		$sCharacter;
 		while(($sCharacter = $this->parseCharacter(true)) !== null) {
 			$sResult .= $sCharacter;
-		}
-		if($bAllowFunctions && $this->comes('(')) {
+    }
+    if($bAllowColors)
+    {
+      // is it a color name ?
+      if($sResult == 'transparent')
+      {
+        return new CSSColor(array(
+          'r' => new CSSSize(0, null, true),
+          'g' => new CSSSize(0, null, true),
+          'b' => new CSSSize(0, null, true),
+          'a' => new CSSSize(0, null, true)
+        ));
+      }
+      else if($aColor = ColorUtils::namedColorToRgb($sResult))
+      {
+        return new CSSColor(array(
+          'r' => new CSSSize($aColor['r'], null, true),
+          'g' => new CSSSize($aColor['g'], null, true),
+          'b' => new CSSSize($aColor['b'], null, true)
+        ));
+      }
+    }
+    if($bAllowFunctions && $this->comes('('))
+    {
 			$this->consume('(');
 			$sResult = new CSSFunction($sResult, $this->parseValue());
 			$this->consume(')');
@@ -252,7 +275,7 @@ class CSSParser {
 		} else if($this->comes("'") || $this->comes('"')){
 			$oValue = $this->parseStringValue();
 		} else {
-			$oValue = $this->parseIdentifier();
+			$oValue = $this->parseIdentifier(true, true);
 		}
 		$this->consumeWhiteSpace();
 		if($this->comes('/')) {
@@ -260,7 +283,7 @@ class CSSParser {
 			$oValue = new CSSSlashedValue($oValue, $this->parseSingleValue());
 		}
 		return $oValue;
-	}
+  }
 	
 	private function parseNumericValue($bForColor = false) {
 		$sSize = '';
@@ -308,16 +331,25 @@ class CSSParser {
 		$aColor = array();
 		if($this->comes('#')) {
 			$this->consume('#');
-			$sValue = $this->parseIdentifier(false);
-			if(mb_strlen($sValue, $this->sCharset) === 3) {
+			$sValue = $this->parseIdentifier();
+      // convert hex to rgb
+			if(strlen($sValue) == 3) {
 				$sValue = $sValue[0].$sValue[0].$sValue[1].$sValue[1].$sValue[2].$sValue[2];
-			}
-			$aColor = array('r' => new CSSSize(intval($sValue[0].$sValue[1], 16), null, true), 'g' => new CSSSize(intval($sValue[2].$sValue[3], 16), null, true), 'b' => new CSSSize(intval($sValue[4].$sValue[5], 16), null, true));
+      }
+      if(strlen($sValue) == 6) {
+        // Use bitwise operations for speed
+        $iColorVal = hexdec($sValue);
+			  $aColor = array(
+          'r' => new CSSSize(0xFF & ($iColorVal >> 0x10), null, true),
+          'g' => new CSSSize(0xFF & ($iColorVal >> 0x8), null, true),
+          'b' => new CSSSize(0xFF & $iColorVal, null, true)
+        );
+      }
 		} else {
-			$sColorMode = $this->parseIdentifier(false);
+			$sColorMode = $this->parseIdentifier();
 			$this->consumeWhiteSpace();
 			$this->consume('(');
-			$iLength = mb_strlen($sColorMode, $this->sCharset);
+			$iLength = strlen($sColorMode);
 			for($i=0;$i<$iLength;$i++) {
 				$this->consumeWhiteSpace();
 				$aColor[$sColorMode[$i]] = $this->parseNumericValue(true);
@@ -328,7 +360,9 @@ class CSSParser {
 			}
 			$this->consume(')');
 		}
-		return new CSSColor($aColor);
+    $oColor = new CSSColor($aColor);
+    $oColor->toRGB();
+    return $oColor;
 	}
 	
 	private function parseURLValue() {

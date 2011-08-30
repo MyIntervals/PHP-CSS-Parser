@@ -21,7 +21,8 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 					//Either a file which SHOULD fail or a future test of a as-of-now missing feature
 					continue;
 				}
-				$oParser = new CSSParser(file_get_contents($sDirectory.DIRECTORY_SEPARATOR.$sFileName));
+				$file = $sDirectory.DIRECTORY_SEPARATOR.$sFileName;
+				$oParser = new CSSParser(file_get_contents($file));
 				try {
 					$oParser->parse()->__toString();
 				} catch(Exception $e) {
@@ -37,35 +38,27 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 	*/
 	function testColorParsing() {
 		$oDoc = $this->parsedStructureForFile('colortest');
-		foreach($oDoc->getAllRuleSets() as $oRuleSet) {
-			if(!$oRuleSet instanceof CSSDeclarationBlock) {
-				continue;
-			}
-			$sSelector = $oRuleSet->getSelectors();
-			$sSelector = $sSelector[0]->getSelector();
-			if($sSelector == '#mine') {
-				$aColorRule = $oRuleSet->getRules('color');
-				$aValues = $aColorRule['color']->getValues();
-				$this->assertSame('red', $aValues[0][0]);
-				$aColorRule = $oRuleSet->getRules('background-');
-				$aValues = $aColorRule['background-color']->getValues();
-				$this->assertEquals(array('r' => new CSSSize(35.0, null, true), 'g' => new CSSSize(35.0, null, true), 'b' => new CSSSize(35.0, null, true)), $aValues[0][0]->getColor());
-				$aColorRule = $oRuleSet->getRules('border-color');
-				$aValues = $aColorRule['border-color']->getValues();
-				$this->assertEquals(array('r' => new CSSSize(10.0, null, true), 'g' => new CSSSize(100.0, null, true), 'b' => new CSSSize(230.0, null, true), 'a' => new CSSSize(0.3, null, true)), $aValues[0][0]->getColor());
-				$aColorRule = $oRuleSet->getRules('outline-color');
-				$aValues = $aColorRule['outline-color']->getValues();
-				$this->assertEquals(array('r' => new CSSSize(34.0, null, true), 'g' => new CSSSize(34.0, null, true), 'b' => new CSSSize(34.0, null, true)), $aValues[0][0]->getColor());
-			}
-		}
-		foreach($oDoc->getAllValues('background-') as $oColor) {
-			if($oColor->getColorDescription() === 'hsl') {
-				$this->assertEquals(array('h' => new CSSSize(220.0, null, true), 's' => new CSSSize(10.0, null, true), 'l' => new CSSSize(220.0, null, true)), $oColor->getColor());
-			}
-		}
-		foreach($oDoc->getAllValues('color') as $sColor) {
-			$this->assertSame('red', $sColor);
-		}
+    $this->assertsSame(
+      "#mine {color: rgb(255,0,0);border-color: rgba(10,100,230,0.3);border-left-color: rgb(50%,80%,10%);outline-color: rgb(34,34,34);background-color: rgb(35,35,35);}#yours {background-color: rgb(255,255,255);color: notacolor;border-color: rgb(322,-5,200%);}",
+      $oDoc->__toString()
+    );
+    foreach($doc->getAllDeclarationBlocks() as $declaration)
+    {
+      foreach($declaration->getRules() as $rule)
+      {
+        foreach ($rule->getValues() as $value)
+        {
+          if($value[0] instanceof CSSColor)
+          {
+            $value[0]->toHSL();
+          }  
+        }
+      }
+    }
+    $this->assertsSame(
+      "#mine {color: hsl(0,100%,50%);border-color: hsla(180,100%,55%,0.3);border-left-color: hsl(86,77%,45%);outline-color: hsl(0,0%,34%);background-color: hsl(0,0%,35%);}#yours {background-color: hsl(0,0%,100%);color: notacolor;border-color: hsl(300,100%,50%);}",
+      $oDoc->__toString()
+    );
 	}
 	
 	function testUnicodeParsing() {
@@ -156,11 +149,11 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}#my_id html, #my_id body {font-size: 1.6em;}', $oDoc->__toString());
 
 		$oDoc = $this->parsedStructureForFile('values');
-		$this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana, Helvetica, "Gill Sans", sans-serif;font-size: 10px;color: red !important;}body {color: green;font: 75% "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;}', $oDoc->__toString());
+		$this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana, Helvetica, "Gill Sans", sans-serif;font-size: 10px;color: rgb(255,0,0) !important;}body {color: rgb(0,128,0);font: 75% "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;}', $oDoc->__toString());
 		foreach($oDoc->getAllRuleSets() as $oRuleSet) {
 			$oRuleSet->removeRule('font-');
 		}
-		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;}body {color: green;}', $oDoc->__toString());
+		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: rgb(255,0,0) !important;}body {color: rgb(0,128,0);}', $oDoc->__toString());
 	}
 
 	function testSlashedValues() {
