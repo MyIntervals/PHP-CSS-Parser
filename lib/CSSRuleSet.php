@@ -419,22 +419,22 @@ class CSSDeclarationBlock extends CSSRuleSet {
       'background-position', 'background-attachment'
     );
     $aRules = $this->getRules();
-    $oNewRule = new CSSRule('background');
-    foreach($aProperties as $sProperty)
-    {
+    $aNewValues = array();
+    foreach($aProperties as $sProperty) {
       if(!isset($aRules[$sProperty])) continue;
       $oRule = $aRules[$sProperty];
-      if(!$oRule->getIsImportant())
-      {
-        foreach($aRules[$sProperty]->getValues() as $aValues)
-        {
-          $oNewRule->addValue($aValues);
+      if(!$oRule->getIsImportant()) {
+        foreach($aRules[$sProperty]->getValues() as $aValues) {
+          $aNewValues[] = $aValues;
         }
         $this->removeRule($sProperty);
       }
     }
-    if(count($oNewRule->getValues()) > 0)
-    {
+    if(count($aNewValues)) {
+      $oNewRule = new CSSRule('background');
+      foreach ($aNewValues as $mValue) {
+        $oNewRule->addValue($mValue);  
+      }
       $this->addRule($oNewRule);
     }
   }
@@ -445,42 +445,37 @@ class CSSDeclarationBlock extends CSSRuleSet {
    *
    * TODO: this is extremely similar to createBackgroundShorthand and should be combined
    **/
-  public function createBorderShorthand()
-  {
+  public function createBorderShorthand() {
     $aBorderRules = array(
       'border-width', 'border-style', 'border-color' 
     );
-    $oNewRule = new CSSRule('border');
     $aRules = $this->getRules();
-    foreach ($aBorderRules as $sBorderRule)
-    {
+    $aNewValues = array();
+    foreach ($aBorderRules as $sBorderRule) {
       if(!isset($aRules[$sBorderRule])) continue;
-      
       $oRule = $aRules[$sBorderRule];
-      if(!$oRule->getIsImportant())
-      {
+      if(!$oRule->getIsImportant()) {
         // Can't merge if multiple values !
         if(count($oRule->getValues()) > 1) continue;
-        foreach($oRule->getValues() as $aValues)
-        {
+        foreach($oRule->getValues() as $aValues) {
           $mValue = $aValues[0];
-          if($mValue instanceof CSSValue)
-          {
+          if($mValue instanceof CSSValue) {
             $mNewValue = clone $mValue;
-            $oNewRule->addValue(array($mNewValue));
+            $aNewValues[] = $mNewValue;
           }
-          else
-          {
-            $oNewRule->addValue(array($mValue));
+          else {
+            $aNewValues[] = $mValue;
           }
         }
       }
-    }  
-    if(count($oNewRule->getValues()))
-    {
+    }
+    if(count($aNewValues)) {
+      $oNewRule = new CSSRule('border');
+      foreach($aNewValues as $mNewValue) {
+        $oNewRule->addValue(array($mNewValue));
+      }
       $this->addRule($oNewRule);
-      foreach ($aBorderRules as $sRuleName)
-      {
+      foreach($aBorderRules as $sRuleName) {
         $this->removeRule($sRuleName);
       }
     }
