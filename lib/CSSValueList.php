@@ -154,14 +154,7 @@ class CSSColor extends CSSFunction {
     foreach($aRGB as $key => $val) {
       $this->aComponents[$key] = new CSSSize($val, null, true);
     }
-    $sName = 'rgb';
-    // If we don't need alpha channel, drop it
-    if(isset($aRGB['a'])) {
-      $sName .= 'a';
-    }
-    else {
-      unset($this->aComponents['a']);
-		}
+    $sName = isset($aRGB['a']) ? 'rgba' : 'rgb';
 		$this->setName($sName);
     return $this;
   }
@@ -188,11 +181,10 @@ class CSSColor extends CSSFunction {
     $this->aComponents['h'] = new CSSSize($aHSL['h'], null, true);
     $this->aComponents['s'] = new CSSSize($aHSL['s'], '%', true);
     $this->aComponents['l'] = new CSSSize($aHSL['l'], '%', true);
-    // If we don't need alpha channel, drop it
 		$sName = 'hsl';
     if(isset($aHSL['a'])) {
       $this->aComponents['a'] = new CSSSize($aHSL['a'], null, true);
-      $sName .= 'a';
+      $sName = 'hsla';
 		}
 		$this->setName($sName);
     return $this;
