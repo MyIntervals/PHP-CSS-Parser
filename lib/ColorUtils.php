@@ -152,19 +152,25 @@ class ColorUtils {
     'yellowgreen'          =>	array('r' => 154, 'g' => 205, 'b' => 50)
   );
 
-  static function namedColorToRgb($sColor, $bAsString=false)
+  static function namedColor2rgb($sColor, $bAsString=false)
   {
-    $sColor = strtolower($sColor);
+    $sColor = mb_strtolower($sColor);
+    if($sColor == 'transparent') {
+      return array('r'=>0, 'g'=>0, 'b'=>0, 'a'=>0);
+    }
     if(isset(self::$X11_COLORS_MAP[$sColor]))
     {
       $aRGB = self::$X11_COLORS_MAP[$sColor];
-      return $bAsString ? 'rgb('.implode(',', $aRGB).')' : $aRGB;
+      //return $bAsString ? 'rgb('.implode(',', $aRGB).')' : $aRGB;
+      return $aRGB;
     }
     return null;
   }
 
-  static function rgb2namedColor($r, $g, $b)
+  static function rgb2namedColor($r, $g, $b, $a=1)
   {
+    if($a !== 1) return null;
+    if($a == 0) return 'transparent';
     $result = array_search(
       array('r' => $r, 'g' => $g, 'b' => $b),
       self::$X11_COLORS_MAP
@@ -200,9 +206,10 @@ class ColorUtils {
    **/
   static function rgb2hex($r, $g, $b, $asString=true)
   {
-    $value = dechex(
-      max(0, min($r, 255)) << 16 | max(0, min($g, 255)) << 8 | max(0, min($b, 255))
-    );
+    $r = self::normalizeRGBValue($r);
+    $g = self::normalizeRGBValue($g);
+    $b = self::normalizeRGBValue($b);
+    $value = dechex($r << 16 | $g << 8 | $b);
     $value = str_pad($value, 6, '0', STR_PAD_LEFT);
     return $asString ? '#'.$value : (int)'0x'.$value;
   }
@@ -213,14 +220,31 @@ class ColorUtils {
   static function hsl2rgb($h, $s, $l, $a=1)
   {
     // normalize to float between 0..1
-    $s = max(0, min(self::percents2fraction($s), 1));
-    $l = max(0, min(self::percents2fraction($l), 1));
-    
+    $s = self::normalizeFraction($s);
+    $l = self::normalizeFraction($l);
+    $a = self::constrainValue($a, 0, 1);
+
+    if($l == 1)
+    {
+      // white
+      $aRGB = array('r' => 255, 'g' => 255, 'b' => 255);
+      if($a < 1) $aRGB['a'] = $a;
+      return $aRGB;
+    }
+    if ($l == 0)
+    {
+      // black
+      $aRGB = array('r' => 0, 'g' => 0, 'b' => 0);
+      if($a < 1) $aRGB['a'] = $a;
+      return $aRGB;
+    }
     if($s == 0)
     {
-      // We don't need no fancy calculation !
+      // Grayscale: we don't need no fancy calculation !
       $v = round(255 * $l);
-      return array('r' => $v, 'g' => $v, 'b' => $v);
+      $aRGB = array('r' => $v, 'g' => $v, 'b' => $v);
+      if($a < 1) $aRGB['a'] = $a;
+      return $aRGB;
     }
     // normalize to int between [0,360)
     $h = (($h % 360) + 360) % 360; 
@@ -231,12 +255,13 @@ class ColorUtils {
     else $m2 = ($l + $s) - ($l * $s);
     $m1 = $l * 2 - $m2;
     
-    return array(
+    $aRGB = array(
       'r' => round(255 * self::hue2rgb($m1, $m2, $h + (1/3))),
       'g' => round(255 * self::hue2rgb($m1, $m2, $h)),
-      'b' => round(255 * self::hue2rgb($m1, $m2, $h - (1/3))),
-      'a' => $a
+      'b' => round(255 * self::hue2rgb($m1, $m2, $h - (1/3)))
     );
+    if($a < 1) $aRGB['a'] = $a;
+    return $aRGB;
   }
 
   static private function hue2rgb($m1, $m2, $h)
@@ -256,9 +281,10 @@ class ColorUtils {
   static function rgb2hsl($r, $g, $b, $a=1)
   {
     // normalize to float between 0..1
-    $r = max(0, min(self::percentsTo255($r) / 255, 1));
-    $g = max(0, min(self::percentsTo255($g) / 255, 1));
-    $b = max(0, min(self::percentsTo255($b) / 255, 1));
+    $r = self::normalizeRGBValue($r) / 255;
+    $g = self::normalizeRGBValue($g) / 255;
+    $b = self::normalizeRGBValue($b) / 255;
+    $a = self::constrainValue($a, 0, 1);
 
     $min = min($r, $g, $b); //Min. value of RGB
     $max = max($r, $g, $b); //Max. value of RGB
@@ -302,38 +328,55 @@ class ColorUtils {
       if ($h < 0) $h++;
       if ($h > 1) $h--;
     }
-    return array(
+    $aHSL = array(
       'h' => round($h * 360),
-      's' => round($s * 100),
-      'l' => round($l * 100),
-      'a' => $a
+      's' => round($s * 100) . '%',
+      'l' => round($l * 100) . '%'
     );
+    if($a < 1) $aHSL['a'] = $a;
+    return $aHSL;
   }
 
   /**
-   * Converts a percentage to a float between 0..1
+   * Normalize a fraction value:
+   * @param $value the divided of the fraction, either a percentage or a number. 
+   * @param $max the divisor of the fraction.
+   * @returns a float in range 0..1
    **/
-  static function percents2fraction($value)
+  static function normalizeFraction($value, $max=100)
   {
     $i = strpos($value, '%');
     if($i !== false)
     {
       $value = substr($value, 0, $i);
+      $max = 100;
     }
-    return $value / 100;
+    $value = self::constrainValue($value, 0, $max);
+    return $value / $max;
   }
 
   /**
-   * Converts a percentage to an integer between 0..255
+   * Normalize a rgb value:
+   * @param $value either a percentage or a number
+   * @returns an integer in range 0..255
    **/
-  static function percentsTo255($value)
+  static function normalizeRGBValue($value)
   {
     $i = strpos($value, '%');
+    // percentage value
     if($i !== false)
     {
       $value = substr($value, 0, $i);
+      $value = self::constrainValue($value, 0, 100);
+      return round($value * 255 / 100);
     }
-    return round($value * 255 / 100);
+    // normal value
+    return self::constrainValue($value, 0, 255);
+  }
+
+  static function constrainValue($value, $min, $max)
+  {
+    return max($min, min($value, $max));
   }
 }
 

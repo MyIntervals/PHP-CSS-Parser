@@ -37,7 +37,7 @@ class CSSSlashedValue extends CSSValueList {
 }
 
 class CSSFunction extends CSSValueList {
-	protected $sName;
+	private $sName;
 	public function __construct($sName, $aArguments) {
 		$this->sName = $sName;
 		parent::__construct($aArguments);
@@ -45,6 +45,10 @@ class CSSFunction extends CSSValueList {
 
 	public function getName() {
 		return $this->sName;
+	}
+
+	public function setName($sName) {
+		$this->sName = $sName;
 	}
 
 	public function getArguments() {
@@ -58,19 +62,66 @@ class CSSFunction extends CSSValueList {
 }
 
 class CSSColor extends CSSFunction {
-  public function __construct($aColor) {
-    if(!is_array($aColor))
-    {
-      $aRGB = ColorUtils::hex2rgb($aColor);
-      $aColor = array(
-        'r' => new CSSSize($aRGB['r'], null, true),
-        'g' => new CSSSize($aRGB['g'], null, true),
-        'b' => new CSSSize($aRGB['b'], null, true)
-      );
+
+  public function __construct($mColor=null) {
+		parent::__construct('rgb', null);
+    if(is_array($mColor)) {
+      if(isset($mColor['r'], $mColor['g'], $mColor['b'])) {
+        $this->fromRGB($mColor);
+      }
+      else if(isset($mColor['h'], $mColor['s'], $mColor['l'])) {
+        $this->fromHSL($mColor);
+      }
     }
-		parent::__construct(implode('', array_keys($aColor)), $aColor);
+    else if(is_string($mColor)) {
+      if($aRGB = ColorUtils::namedColor2rgb($mColor)) {
+        $this->fromRGB($aRGB);
+      }
+      else if($aRGB = ColorUtils::hex2rgb($mColor)) {
+        $this->fromRGB($aRGB);
+      }
+    }
 	}
-	
+
+  public function fromRGB(Array $aRGB) {
+    $this->aComponents = array();
+    $sName = 'rgb';
+    foreach(array('r', 'g', 'b', 'a') as $sChannel) {
+			if($sChannel == 'a') {
+				if(!isset($aRGB['a'])) continue;
+				$sValue = ColorUtils::constrainValue((string)$aRGB['a'], 0, 1);
+				if($sValue == 1) continue;
+				$sName .= 'a';
+			}
+			else {
+				$sValue = ColorUtils::normalizeRGBValue((string)$aRGB[$sChannel]);
+			}
+      $this->aComponents[$sChannel] = new CSSSize($sValue, null, true);
+    }
+		$this->setName($sName);
+    return $this;
+  }
+
+  public function fromHSL(Array $aHSL) {
+    $aRGB = ColorUtils::hsl2rgb(
+			(string)$aHSL['h'],
+			(string)$aHSL['s'],
+			(string)$aHSL['l'],
+      isset($aHSL['a']) ? (string)$aHSL['a'] : 1
+    );
+    return $this->fromRGB($aRGB);
+  }
+
+  public function fromHex($sValue) {
+    $aRGB = ColorUtils::hex2rgb($sValue);
+    return $this->fromRGB($aRGB);
+  }
+
+  public function fromNamedColor($sValue) {
+    $aRGB = ColorUtils::namedColor2rgb($sValue);
+    return $this->fromRGB($aRGB);
+  }
+
 	public function getColor() {
 		return $this->aComponents;
 	}
@@ -79,19 +130,16 @@ class CSSColor extends CSSFunction {
 		return $this->getName();
 	}
 
-  public function toRGB()
-  {
-    $name = $this->getName();
+  public function toRGB() {
+    $sName = $this->getName();
     $aComponents = $this->aComponents;
     
-    if($name == 'rgb') return;
-    if($name == 'rgba')
-    {
+    if(!$sName || $sName == 'rgb') return;
+    if($sName == 'rgba') {
       // If we don't need alpha channel, drop it
-      if($aComponents['a']->getSize() >= 1)
-      {
+      if($aComponents['a']->getSize() >= 1) {
         unset($this->aComponents['a']);
-        $this->sName = 'rgb';
+        $this->setName('rgb');
       }
       return;
     }
@@ -101,35 +149,32 @@ class CSSColor extends CSSFunction {
       $aComponents['l']->getSize(),
       isset($aComponents['a']) ? $aComponents['a']->getSize() : 1
     );
+		
     $this->aComponents = array();
-    foreach($aRGB as $key => $val)
-    {
+    foreach($aRGB as $key => $val) {
       $this->aComponents[$key] = new CSSSize($val, null, true);
     }
-    $this->sName = 'rgb';
+    $sName = 'rgb';
     // If we don't need alpha channel, drop it
-    if($aRGB['a'] < 1)
-    {
-      $this->sName .= 'a';
+    if(isset($aRGB['a'])) {
+      $sName .= 'a';
     }
-    else
-    {
+    else {
       unset($this->aComponents['a']);
-    }
+		}
+		$this->setName($sName);
+    return $this;
   }
 
-  public function toHSL()
-  {
-    $name = $this->getName();
+  public function toHSL() {
+    $sName = $this->getName();
     $aComponents = $this->aComponents;
-    if($name == 'hsl') return;
-    if($name == 'hsla')
-    {
+    if(!$sName || $sName == 'hsl') return;
+    if($sName == 'hsla') {
       // If we don't need alpha channel, drop it
-      if($aComponents['a']->getSize() >= 1)
-      {
+      if($aComponents['a']->getSize() >= 1) {
         unset($this->aComponents['a']);
-        $this->sName = 'hsl';
+        $this->setName('hsl');
       }
       return;
     }
@@ -143,32 +188,19 @@ class CSSColor extends CSSFunction {
     $this->aComponents['h'] = new CSSSize($aHSL['h'], null, true);
     $this->aComponents['s'] = new CSSSize($aHSL['s'], '%', true);
     $this->aComponents['l'] = new CSSSize($aHSL['l'], '%', true);
-    $this->sName = 'hsl';
     // If we don't need alpha channel, drop it
-    if($aHSL['a'] < 1)
-    {
+		$sName = 'hsl';
+    if(isset($aHSL['a'])) {
       $this->aComponents['a'] = new CSSSize($aHSL['a'], null, true);
-      $this->sName .= 'a';
-    }
+      $sName .= 'a';
+		}
+		$this->setName($sName);
+    return $this;
   }
 
-  public function getNamedColor()
-  {
+  public function getNamedColor() {
     $this->toRGB();
     $aComponents = $this->aComponents;
-    if(isset($aComponents['a']))
-    {
-      if($aComponents['a'] !== 1)
-      {
-        return null;
-      }
-      else if($aComponents['r']->getSize() == 0
-              && $aComponents['g']->getSize() == 0
-              && $aComponents['b']->getSize() == 0
-      ){
-        return 'transparent';
-      }
-    }
     return ColorUtils::rgb2NamedColor(
       $aComponents['r']->getSize(),
       $aComponents['g']->getSize(),
@@ -176,21 +208,18 @@ class CSSColor extends CSSFunction {
     );
   }
 
-  public function getHexValue()
-  {
+  public function getHexValue() {
     $aComponents = $this->aComponents;
     if(isset($aComponents['a']) && $aComponents['a']->getSize() !== 1) return null;
-    $name = $this->getName();
-    if($name == 'rgb')
-    {
+    $sName = $this->getName();
+    if($sName == 'rgb') {
       return ColorUtils::rgb2hex(
         $aComponents['r']->getSize(),
         $aComponents['g']->getSize(),
         $aComponents['b']->getSize()
       );
     }
-    else if($name == 'hsl')
-    {
+    else if($sName == 'hsl') {
       return ColorUtils::hsl2hex(
         $aComponents['h']->getSize(),
         $aComponents['s']->getSize(),
@@ -199,5 +228,3 @@ class CSSColor extends CSSFunction {
     }
   }
 }
-
-

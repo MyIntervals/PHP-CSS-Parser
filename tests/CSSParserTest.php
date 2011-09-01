@@ -39,7 +39,7 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 	function testColorParsing() {
 		$oDoc = $this->parsedStructureForFile('colortest');
     $this->assertSame(
-      "#mine {color: rgb(255,0,0);border-color: rgba(10,100,230,0.3);border-left-color: rgb(50%,80%,10%);outline-color: rgb(34,34,34);background-color: rgb(35,35,35);}#yours {background-color: rgb(255,255,255);color: notacolor;border-color: rgb(322,-5,200%);}",
+      "#mine {color: rgb(255,0,0);border-color: rgba(10,100,230,0.3);border-left-color: rgb(128,204,26);outline-color: rgb(34,34,34);background-color: rgb(35,35,35);}#yours {background-color: rgb(255,255,255);color: notacolor;outline-color: rgba(0,0,0,0);border-color: rgb(255,0,255);}",
       $oDoc->__toString()
     );
     foreach($oDoc->getAllDeclarationBlocks() as $oDeclaration)
@@ -56,7 +56,7 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
       }
     }
     $this->assertSame(
-      "#mine {color: hsl(0,100%,50%);border-color: hsla(180,100%,55%,0.3);border-left-color: hsl(86,77%,45%);outline-color: hsl(0,0%,34%);background-color: hsl(0,0%,35%);}#yours {background-color: hsl(0,0%,100%);color: notacolor;border-color: hsl(300,100%,50%);}",
+      "#mine {color: hsl(0,100%,50%);border-color: hsla(215,92%,47%,0.3);border-left-color: hsl(86,77%,45%);outline-color: hsl(0,0%,13%);background-color: hsl(0,0%,14%);}#yours {background-color: hsl(0,0%,100%);color: notacolor;outline-color: hsla(0,0%,0%,0);border-color: hsl(300,100%,50%);}",
       $oDoc->__toString()
     );
 	}

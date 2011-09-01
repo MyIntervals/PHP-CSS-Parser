@@ -111,22 +111,10 @@ class CSSParser {
     if($bAllowColors)
     {
       // is it a color name ?
-      if($sResult == 'transparent')
+      if($aColor = ColorUtils::namedColor2rgb($sResult))
       {
-        return new CSSColor(array(
-          'r' => new CSSSize(0, null, true),
-          'g' => new CSSSize(0, null, true),
-          'b' => new CSSSize(0, null, true),
-          'a' => new CSSSize(0, null, true)
-        ));
-      }
-      else if($aColor = ColorUtils::namedColorToRgb($sResult))
-      {
-        return new CSSColor(array(
-          'r' => new CSSSize($aColor['r'], null, true),
-          'g' => new CSSSize($aColor['g'], null, true),
-          'b' => new CSSSize($aColor['b'], null, true)
-        ));
+				$oColor = new CSSColor();
+				return $oColor->fromRGB($aColor);
       }
     }
     if($bAllowFunctions && $this->comes('('))
@@ -328,24 +316,12 @@ class CSSParser {
 	}
 	
 	private function parseColorValue() {
-		$aColor = array();
 		if($this->comes('#')) {
 			$this->consume('#');
 			$sValue = $this->parseIdentifier();
-      // convert hex to rgb
-			if(strlen($sValue) == 3) {
-				$sValue = $sValue[0].$sValue[0].$sValue[1].$sValue[1].$sValue[2].$sValue[2];
-      }
-      if(strlen($sValue) == 6) {
-        // Use bitwise operations for speed
-        $iColorVal = hexdec($sValue);
-			  $aColor = array(
-          'r' => new CSSSize(0xFF & ($iColorVal >> 0x10), null, true),
-          'g' => new CSSSize(0xFF & ($iColorVal >> 0x8), null, true),
-          'b' => new CSSSize(0xFF & $iColorVal, null, true)
-        );
-      }
+      return new CSSColor($sValue);
 		} else {
+			$aColor = array();
 			$sColorMode = $this->parseIdentifier();
 			$this->consumeWhiteSpace();
 			$this->consume('(');
@@ -359,10 +335,8 @@ class CSSParser {
 				}
 			}
 			$this->consume(')');
+			return new CSSColor($aColor);
 		}
-    $oColor = new CSSColor($aColor);
-    $oColor->toRGB();
-    return $oColor;
 	}
 	
 	private function parseURLValue() {

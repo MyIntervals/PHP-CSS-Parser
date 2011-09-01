@@ -9,5 +9,6 @@
 #yours {
   background-color: hsl(220, 10%, 220%);
   color: notacolor;
+	outline-color: transparent;
   border-color: rgba(322, -5, 200%, 3.4);
 }
