@@ -359,8 +359,8 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 
 ## Contributors/Thanks to
 
-* [GaryJones](https://github.com/GaryJones) for lots of input and [http://css-specificity.info/](http://css-specificity.info/).
 * [ju1ius](https://github.com/ju1ius) for the specificity parsing code and the ability to expand/compact shorthand properties.
+* [GaryJones](https://github.com/GaryJones) for lots of input and [http://css-specificity.info/](http://css-specificity.info/).
 
 ## License
 
