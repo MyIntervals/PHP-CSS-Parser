@@ -41,10 +41,14 @@ class CSSSize extends CSSPrimitiveValue {
 
 	/**
 	* Returns whether the number stored in this CSSSize really represents a size (as in a length of something on screen).
-	* @return false if the unit is degrees, seconds or if the number is a component in a CSSColor object.
+	* @return false if the unit an angle, a duration, a frequency or the number is a component in a CSSColor object.
 	*/
 	public function isSize() {
-		return $this->sUnit !== 'deg' && $this->sUnit !== 's' && !$this->isColorComponent();
+		$aNonSizeUnits = array('deg', 'grad', 'rad', 'turns', 's', 'ms', 'Hz', 'kHz');
+		if(in_array($this->sUnit), $aNonSizeUnits) {
+			return false;
+		}
+		return !$this->isColorComponent();
 	}
 	
 	public function isRelative() {
