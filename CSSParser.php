@@ -1,4 +1,5 @@
 <?php
+require_once('lib/CSSUrlUtils.php');
 require_once('lib/CSSProperties.php');
 require_once('lib/CSSList.php');
 require_once('lib/CSSRuleSet.php');
@@ -10,16 +11,63 @@ require_once('lib/CSSValueList.php');
 * @package html
 * CSSParser class parses CSS from text into a data structure.
 */
-class CSSParser { 
+class CSSParser {
+  /**
+   * User options
+   **/
+  protected $aOptions = array(
+    'ignore_charset_rules' => false,
+    'resolve_imports' => false,
+    'absolute_urls' => false,
+    'base_url' => null,
+    'default_charset' => 'utf-8'
+  );
+
+  /**
+   * Parser internal pointers
+   **/
 	private $sText;
 	private $iCurrentPosition;
 	private $iLength;
+  private $aLoadedFiles = array();
+
+  /**
+   * Data for resolving imports
+   **/
+  const IMPORT_FILE = 'file';
+  const IMPORT_URL = 'url';
+  const IMPORT_NONE = 'none';
+  private $sImportMode = 'none';
+
+  /**
+   * flags
+   **/
+  private $bIgnoreCharsetRules = false;
+  private $bIgnoreImportRules = false;
+  private $bIsAbsBaseUrl;
 	
-	public function __construct($sText, $sDefaultCharset = 'utf-8') {
-		$this->sText = $sText;
-		$this->iCurrentPosition = 0;
-		$this->setCharset($sDefaultCharset);
-	}
+  /**
+   * @param $aOptions array of options
+   * 
+   * Valid options:
+   *   * default_charset:
+   *     default charset used by the parser.
+   *     Will be overriden by @charset rules unless ignore_charset_rules is set to true
+   *   * ignore_charset_rules:
+   *     @charset rules are parsed but do not change the parser's default charset
+   *   * resolve_imports:
+   *     recursively import embedded stylesheets
+   *   * absolute_urls:
+   *     make all urls absolute
+   *   * base_url:
+   *     the base url to use for absolute urls and resolving imports
+   *     if not set, will be computed from the file path
+   **/
+  public function __construct(array $aOptions=array()) {
+    $this->aOptions = array_merge($this->aOptions, $aOptions);
+    $this->bIgnoreCharsetRules = $this->aOptions['ignore_charset_rules'];
+    $this->bIsAbsBaseUrl = CSSUrlUtils::isAbsUrl($this->aOptions['base_url']);
+  }
 	
 	public function setCharset($sCharset) {
 		$this->sCharset = $sCharset;
@@ -29,12 +77,116 @@ class CSSParser {
 	public function getCharset() {
 			return $this->sCharset;
 	}
-	
-	public function parse() {
+
+  public function getLoadedFiles() {
+    return $this->aLoadedFiles;
+  }
+
+  /**
+   * @param $sPath    string path to a file to load
+   **/
+  public function parseFile($sPath, $aLoadedFiles=array())
+  {
+    if(!$this->aOptions['base_url']) {
+      $this->aOptions['base_url'] = dirname($sPath);
+    }
+    if($this->aOptions['absolute_urls']) {
+      $this->aOptions['base_url'] = realpath($this->aOptions['base_url']);
+    }
+    //printf(">>> Parsing %s in %s\n", $sPath, $this->aOptions['base_url']);
+    $this->sImportMode = self::IMPORT_FILE;
+    $sPath = realpath($sPath);
+    $aLoadedFiles[] = $sPath;
+    $this->aLoadedFiles = array_merge($this->aLoadedFiles, $aLoadedFiles);
+    $sCss = file_get_contents($sPath);
+    return $this->parseString($sCss);
+  }
+
+  public function parseURL($sPath, $aLoadedFiles=array())
+  {
+    if(!$this->aOptions['base_url']) {
+      $this->aOptions['base_url'] = dirname($sPath);
+    }
+    //printf(">>> Parsing %s in %s\n", $sPath, $this->aOptions['base_url']);
+    //if($this->aOptions['absolute_urls'] && !CSSUrlUtils::isAbsUrl($this->aOptions['base_url'])) {
+      //$sProtocol = $_SERVER['HTTPS'] ? 'https' : 'http';
+      //$sPath = $sProtocol.'://'.$_SERVER['HTTP_HOST'].'/'.ltrim($sPath, '/');
+      //$this->aOptions['base_url'] = dirname($sPath);
+    //}
+    $this->sImportMode = self::IMPORT_URL;
+    $aLoadedFiles[] =$sPath;
+    $this->aLoadedFiles = array_merge($this->aLoadedFiles, $aLoadedFiles);
+    $sCss = CSSUrlUtils::loadURL($sPath);
+    return $this->parseString($sCss);
+  }
+
+
+  public function parseString($sString) {
+		$this->sText = $sString;
+		$this->iCurrentPosition = 0;
+    $this->setCharset($this->aOptions['default_charset']);
 		$oResult = new CSSDocument();
 		$this->parseDocument($oResult);
+    $this->postParse($oResult);
 		return $oResult;
-	}
+  }
+
+  public function postParse($oDoc)
+  {
+    $aImports = array();
+    $aCharsets = array();
+    $aContents = $oDoc->getContents();
+    foreach($aContents as $i => $oItem) {
+      if($oItem instanceof CSSIgnoredValue) {
+        unset($aContents[$i]);
+      } else if($oItem instanceof CSSImport) {
+        $aImports[] = $oItem;
+        unset($aContents[$i]);
+      } else if ($oItem instanceof CSSCharset) {
+        $aCharsets[] = $oItem;
+        unset($aContents[$i]);
+      }
+    }
+    $aImportedItems = array();
+    $aImportOptions = array_merge($this->aOptions, array(
+      'default_charset' => $this->sCharset,
+      'ignore_charset_rules' => true,
+      'base_url' => null
+    ));
+    foreach($aImports as $oImport) {
+      if($this->aOptions['resolve_imports']) {
+        $parser = new CSSParser($aImportOptions);
+        $sPath = $oImport->getLocation()->getURL()->getString();
+        if($this->sImportMode == self::IMPORT_URL) {
+          if(!in_array($sPath, $this->aLoadedFiles)) {          
+            $oImportedDoc = $parser->parseURL($sPath, $this->aLoadedFiles);
+            $this->aLoadedFiles = $parser->getLoadedFiles();
+            $aImportedContents = $oImportedDoc->getContents();
+          }
+        } else if($this->sImportMode == self::IMPORT_FILE) {
+          $sPath = realpath($sPath);
+          if(!in_array($sPath, $this->aLoadedFiles)) {
+            $oImportedDoc = $parser->parseFile($sPath, $this->aLoadedFiles);
+            $this->aLoadedFiles = $parser->getLoadedFiles();
+            $aImportedContents = $oImportedDoc->getContents();
+          }
+        }
+        if($oImport->getMediaQuery() !== null) {
+          $sMediaQuery = $oImport->getMediaQuery();
+          $oMediaQuery = new CSSMediaQuery();
+          $oMediaQuery->setQuery($sMediaQuery);
+          $oMediaQuery->setContents($aImportedContents);
+          $aImportedContents = array($oMediaQuery); 
+        }
+      } else {
+        $aImportedContents = array($oImport);
+      }
+      $aImportedItems = array_merge($aImportedItems, $aImportedContents);
+    }
+    $aContents = array_merge($aImportedItems, $aContents);
+    if(isset($aCharsets[0])) array_unshift($aContents, $aCharsets[0]);
+    $oDoc->setContents($aContents);
+  }
 	
 	private function parseDocument(CSSDocument $oDocument) {
 		$this->consumeWhiteSpace();
@@ -53,6 +205,8 @@ class CSSParser {
 					return;
 				}
 			} else {
+        $this->bIgnoreCharsetRules = true;
+        $this->bIgnoreImportRules = true;
 				$oList->append($this->parseSelector());
 			}
 			$this->consumeWhiteSpace();
@@ -65,8 +219,10 @@ class CSSParser {
 	private function parseAtRule() {
 		$this->consume('@');
 		$sIdentifier = $this->parseIdentifier();
-		$this->consumeWhiteSpace();
+    $this->consumeWhiteSpace();
 		if($sIdentifier === 'media') {
+      $this->bIgnoreCharsetRules = true;
+      $this->bIgnoreImportRules = true;
 			$oResult = new CSSMediaQuery();
 			$oResult->setQuery(trim($this->consumeUntil('{')));
 			$this->consume('{');
@@ -74,6 +230,7 @@ class CSSParser {
 			$this->parseList($oResult);
 			return $oResult;
 		} else if($sIdentifier === 'import') {
+      $this->bIgnoreCharsetRules = true;
 			$oLocation = $this->parseURLValue();
 			$this->consumeWhiteSpace();
 			$sMediaQuery = null;
@@ -81,15 +238,26 @@ class CSSParser {
 				$sMediaQuery = $this->consumeUntil(';');
 			}
 			$this->consume(';');
-			return new CSSImport($oLocation, $sMediaQuery);
+      if($this->bIgnoreImportRules) {
+        return new CSSIgnoredValue();
+      }
+      return new CSSImport($oLocation, $sMediaQuery);
 		} else if($sIdentifier === 'charset') {
-			$sCharset = $this->parseStringValue();
-			$this->consumeWhiteSpace();
-			$this->consume(';');
-			$this->setCharset($sCharset->getString());
-			return new CSSCharset($sCharset);
+        $sCharset = $this->parseStringValue();
+        $this->consumeWhiteSpace();
+        $this->consume(';');
+        // Only the first charset rule should exist !
+        if($this->bIgnoreCharsetRules) {
+          return new CSSIgnoredValue();
+        } else {
+          $this->setCharset($sCharset->getString());
+          $this->bIgnoreCharsetRules = true;
+          return new CSSCharset($sCharset);
+        }
 		} else {
 			//Unknown other at rule (font-face or such)
+      $this->bIgnoreCharsetRules = true;
+      $this->bIgnoreImportRules = true;
 			$this->consume('{');
 			$this->consumeWhiteSpace();
 			$oAtRule = new CSSAtRule($sIdentifier);
@@ -176,7 +344,7 @@ class CSSParser {
 			return iconv('utf-32le', $this->sCharset, $sUtf32);
 		}
 		if($bIsForIdentifier) {
-			if(preg_match('/[a-zA-Z0-9]|-|_/u', $this->peek()) === 1) {
+			if(preg_match('/\*|[a-zA-Z0-9]|-|_/u', $this->peek()) === 1) {
 				return $this->consume(1);
 			} else if(ord($this->peek()) > 0xa1) {
 				return $this->consume(1);
@@ -375,7 +543,22 @@ class CSSParser {
 			$this->consume('(');
 		}
 		$this->consumeWhiteSpace();
-		$oResult = new CSSURL($this->parseStringValue());
+    $sValue = $this->parseStringValue();
+    if($this->aOptions['absolute_urls'] || $this->aOptions['resolve_imports']) {
+      $sURL = $sValue->getString(); 
+      // resolve only if:
+      // (url is not absolute) OR IF (url is absolute path AND base_url is absolute)
+      $bIsAbsPath = CSSUrlUtils::isAbsPath($sURL);
+      $bIsAbsUrl = CSSUrlUtils::isAbsUrl($sURL);
+      if( (!$bIsAbsUrl && !$bIsAbsPath)
+          || ($bIsAbsPath && $this->bIsAbsBaseUrl)) {
+        $sURL = CSSUrlUtils::joinPaths(
+          $this->aOptions['base_url'], $sURL
+        );
+        $sValue = new CSSString($sURL);
+      }
+    }
+		$oResult = new CSSURL($sValue);
 		if($bUseUrl) {
 			$this->consumeWhiteSpace();
 			$this->consume(')');

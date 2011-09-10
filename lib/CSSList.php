@@ -10,10 +10,29 @@ abstract class CSSList {
 	public function __construct() {
 		$this->aContents = array();
 	}
+
+  public function prepend($oItem)
+  {
+    array_unshift($this->aContents, $oItem);
+  }
 	
 	public function append($oItem) {
 		$this->aContents[] = $oItem;
 	}
+
+  public function extend(Array $aItems) {
+    foreach ($aItems as $oItem) {
+      $this->aContents[] = $oItem;
+    }
+  }
+
+  public function removeItemAt($iIndex) {
+    unset($this->aContents[$iIndex]);
+  }
+
+  public function insertItemsAt(Array $oItems, $iIndex) {
+    array_splice($this->aContents, $iIndex, 0, $oItems);
+  }
 	
 	public function __toString() {
 		$sResult = '';
@@ -25,7 +44,10 @@ abstract class CSSList {
 	
 	public function getContents() {
 		return $this->aContents;
-	}
+  }
+  public function setContents(Array $aContents) {
+    $this->aContents = $aContents;
+  }
 	
 	protected function allDeclarationBlocks(&$aResult) {
 		foreach($this->aContents as $mContent) {
