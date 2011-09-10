@@ -45,7 +45,7 @@ class CSSSize extends CSSPrimitiveValue {
 	*/
 	public function isSize() {
 		$aNonSizeUnits = array('deg', 'grad', 'rad', 'turns', 's', 'ms', 'Hz', 'kHz');
-		if(in_array($this->sUnit), $aNonSizeUnits) {
+		if(in_array($this->sUnit, $aNonSizeUnits)) {
 			return false;
 		}
 		return !$this->isColorComponent();
