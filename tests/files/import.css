@@ -1,0 +1,10 @@
+@import "imported.css";
+@import "colortest.css" screen, print;
+
+body#icomelast{
+  color: fuschia;
+  padding: 5px;
+  background-image: url(http://foobar.com);
+}
+
+@import "nope.css";
