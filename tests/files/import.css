@@ -1,5 +1,6 @@
 @import "imported.css";
 @import "colortest.css" screen, print;
+@import "subdir/sub.css";
 
 body#icomelast{
   color: fuschia;
