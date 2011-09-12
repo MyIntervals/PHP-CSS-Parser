@@ -1,4 +1,5 @@
 <?php
+require_once('lib/CSSCharsetUtils.php');
 require_once('lib/CSSUrlUtils.php');
 require_once('lib/CSSProperties.php');
 require_once('lib/CSSList.php');
@@ -16,11 +17,10 @@ class CSSParser {
    * User options
    **/
   protected $aOptions = array(
-    'ignore_charset_rules' => false,
     'resolve_imports' => false,
     'absolute_urls' => false,
     'base_url' => null,
-    'default_charset' => 'utf-8'
+    'force_charset' => false
   );
 
   /**
@@ -42,7 +42,6 @@ class CSSParser {
   /**
    * flags
    **/
-  private $bIgnoreCharsetRules = false;
   private $bIgnoreImportRules = false;
   private $bIsAbsBaseUrl;
 	
@@ -50,11 +49,8 @@ class CSSParser {
    * @param $aOptions array of options
    * 
    * Valid options:
-   *   * default_charset:
-   *     default charset used by the parser.
-   *     Will be overriden by @charset rules unless ignore_charset_rules is set to true
-   *   * ignore_charset_rules:
-   *     @charset rules are parsed but do not change the parser's default charset
+   *   * force_charset:
+   *     convert css text to given charset
    *   * resolve_imports:
    *     recursively import embedded stylesheets
    *   * absolute_urls:
@@ -65,7 +61,6 @@ class CSSParser {
    **/
   public function __construct(array $aOptions=array()) {
     $this->aOptions = array_merge($this->aOptions, $aOptions);
-    $this->bIgnoreCharsetRules = $this->aOptions['ignore_charset_rules'];
     $this->bIsAbsBaseUrl = CSSUrlUtils::isAbsUrl($this->aOptions['base_url']);
   }
 	
@@ -76,7 +71,7 @@ class CSSParser {
 
 	public function getCharset() {
 			return $this->sCharset;
-	}
+  }
 
   public function getLoadedFiles() {
     return $this->aLoadedFiles;
@@ -93,12 +88,13 @@ class CSSParser {
     if($this->aOptions['absolute_urls']) {
       $this->aOptions['base_url'] = realpath($this->aOptions['base_url']);
     }
-    //printf(">>> Parsing %s in %s\n", $sPath, $this->aOptions['base_url']);
     $this->sImportMode = self::IMPORT_FILE;
     $sPath = realpath($sPath);
     $aLoadedFiles[] = $sPath;
     $this->aLoadedFiles = array_merge($this->aLoadedFiles, $aLoadedFiles);
     $sCss = file_get_contents($sPath);
+    var_dump($sPath);
+    
     return $this->parseString($sCss);
   }
 
@@ -107,24 +103,36 @@ class CSSParser {
     if(!$this->aOptions['base_url']) {
       $this->aOptions['base_url'] = dirname($sPath);
     }
-    //printf(">>> Parsing %s in %s\n", $sPath, $this->aOptions['base_url']);
-    //if($this->aOptions['absolute_urls'] && !CSSUrlUtils::isAbsUrl($this->aOptions['base_url'])) {
-      //$sProtocol = $_SERVER['HTTPS'] ? 'https' : 'http';
-      //$sPath = $sProtocol.'://'.$_SERVER['HTTP_HOST'].'/'.ltrim($sPath, '/');
-      //$this->aOptions['base_url'] = dirname($sPath);
-    //}
     $this->sImportMode = self::IMPORT_URL;
     $aLoadedFiles[] =$sPath;
     $this->aLoadedFiles = array_merge($this->aLoadedFiles, $aLoadedFiles);
-    $sCss = CSSUrlUtils::loadURL($sPath);
-    return $this->parseString($sCss);
+    $aResult = CSSUrlUtils::loadURL($sPath);
+    $sResponse = $aResult['response'];
+    // charset from HTTP header
+    if($aResult['charset']) {
+      return $this->parseString($sResponse, $aResult['charset']);
+    }
+    return $this->parseString($sResponse);
   }
 
 
-  public function parseString($sString) {
+  public function parseString($sString, $sCharset=null) {
+    echo "First 4 bytes: " . CSSCharsetUtils::printBytes($sString, 4) . PHP_EOL;
+    if(!$sCharset) {
+      // detect charset from BOM and/or @charset rule
+      $sCharset = CSSCharsetUtils::detectCharset($sString);
+      if(!$sCharset) {
+        $sCharset = 'UTF-8';
+      }
+    }
+    $sString = CSSCharsetUtils::removeBOM($sString);
+    if($this->aOptions['force_charset']) {
+      $sString = CSSCharsetUtils::convert($sString, $sCharset, $this->aOptions['force_charset']);
+      $sCharset = $this->aOptions['force_charset'];
+    } 
 		$this->sText = $sString;
 		$this->iCurrentPosition = 0;
-    $this->setCharset($this->aOptions['default_charset']);
+    $this->setCharset($sCharset);
 		$oResult = new CSSDocument();
 		$this->parseDocument($oResult);
     $this->postParse($oResult);
@@ -149,8 +157,7 @@ class CSSParser {
     }
     $aImportedItems = array();
     $aImportOptions = array_merge($this->aOptions, array(
-      'default_charset' => $this->sCharset,
-      'ignore_charset_rules' => true,
+      'force_charset' => $this->sCharset,
       'base_url' => null
     ));
     foreach($aImports as $oImport) {
@@ -231,7 +238,6 @@ class CSSParser {
 			$this->parseList($oResult);
 			return $oResult;
 		} else if($sIdentifier === 'import') {
-      $this->bIgnoreCharsetRules = true;
 			$oLocation = $this->parseURLValue();
 			$this->consumeWhiteSpace();
 			$sMediaQuery = null;
@@ -239,22 +245,16 @@ class CSSParser {
 				$sMediaQuery = $this->consumeUntil(';');
 			}
 			$this->consume(';');
+      $oImport = new CSSImport($oLocation, $sMediaQuery);
       if($this->bIgnoreImportRules) {
-        return new CSSIgnoredValue();
+        return new CSSIgnoredValue($oImport);
       }
-      return new CSSImport($oLocation, $sMediaQuery);
+      return $oImport;
 		} else if($sIdentifier === 'charset') {
         $sCharset = $this->parseStringValue();
         $this->consumeWhiteSpace();
         $this->consume(';');
-        // Only the first charset rule should exist !
-        if($this->bIgnoreCharsetRules) {
-          return new CSSIgnoredValue();
-        } else {
-          $this->setCharset($sCharset->getString());
-          $this->bIgnoreCharsetRules = true;
-          return new CSSCharset($sCharset);
-        }
+        return new CSSCharset($sCharset);
 		} else {
 			//Unknown other at rule (font-face or such)
       $this->bIgnoreCharsetRules = true;
@@ -342,7 +342,7 @@ class CSSParser {
 				$sUtf32 .= chr($iUnicode & 0xff);
 				$iUnicode = $iUnicode >> 8;
 			}
-			return iconv('utf-32le', $this->sCharset, $sUtf32);
+      return CSSCharsetUtils::convert($sUtf32, 'UTF-32LE', $this->sCharset);
 		}
 		if($bIsForIdentifier) {
 			if(preg_match('/\*|[a-zA-Z0-9]|-|_/u', $this->peek()) === 1) {

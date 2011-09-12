@@ -12,9 +12,20 @@ class CSSUrlUtils {
     curl_setopt($rCurl, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($rCurl, CURLOPT_USERAGENT, 'PHP-CSS-Parser v0.1');
     curl_setopt($rCurl, CURLOPT_RETURNTRANSFER, true);
-    $sResult = curl_exec($rCurl);
+    $mResponse = curl_exec($rCurl);
+    $aInfos = curl_getinfo($rCurl);
     curl_close($rCurl);
-    return $sResult;
+    if(false === $mResponse) return false;
+    $aResult = array(
+      'charset' => null,
+      'response' => $mResponse  
+    );
+    if($aInfos['content_type']) {
+      if (preg_match('/charset=([a-zA-Z0-9-]*)/', $aInfos['content_type'], $aMatches)) {
+        $aResult['charset'] = $aMatches[0];
+      }
+    }
+    return $aResult;
   }
 
   /**

@@ -36,5 +36,11 @@ class CSSImportTest extends PHPUnit_Framework_TestCase
       ),  
     );
   }
+
+  public function testResolveImports()
+  {
+    $oParser = new CSSParser(array('resolve_imports' => true));
+    $oDoc = $oParser->parseFile("files/import.css");
+  }
   
 }
