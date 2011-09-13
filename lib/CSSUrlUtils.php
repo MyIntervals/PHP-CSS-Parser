@@ -113,6 +113,7 @@ class CSSUrlUtils {
    **/
   static public function buildURL(array $aURL)
   {
+    $sURL = '';
     if(isset($aURL['scheme'])) {
       $sURL .= $aURL['scheme'] . '://';
     }
