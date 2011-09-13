@@ -1,6 +1,5 @@
 @import "imported.css";
 @import "import/utf-16.css";
-@import "unicode.css" screen, print;
 
 body#icomelast{
   color: fuschia;

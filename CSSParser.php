@@ -85,7 +85,7 @@ class CSSParser {
     if(!$this->aOptions['base_url']) {
       $this->aOptions['base_url'] = dirname($sPath);
     }
-    if($this->aOptions['absolute_urls']) {
+    if($this->aOptions['absolute_urls'] && !CSSUrlUtils::isAbsUrl($this->aOptions['base_url'])) {
       $this->aOptions['base_url'] = realpath($this->aOptions['base_url']);
     }
     $this->sImportMode = self::IMPORT_FILE;
@@ -93,15 +93,13 @@ class CSSParser {
     $aLoadedFiles[] = $sPath;
     $this->aLoadedFiles = array_merge($this->aLoadedFiles, $aLoadedFiles);
     $sCss = file_get_contents($sPath);
-    var_dump($sPath);
-    
     return $this->parseString($sCss);
   }
 
   public function parseURL($sPath, $aLoadedFiles=array())
   {
     if(!$this->aOptions['base_url']) {
-      $this->aOptions['base_url'] = dirname($sPath);
+      $this->aOptions['base_url'] = CSSUrlUtils::dirname($sPath);
     }
     $this->sImportMode = self::IMPORT_URL;
     $aLoadedFiles[] =$sPath;
@@ -117,7 +115,7 @@ class CSSParser {
 
 
   public function parseString($sString, $sCharset=null) {
-    echo "First 4 bytes: " . CSSCharsetUtils::printBytes($sString, 4) . PHP_EOL;
+    //echo "First 4 bytes: " . CSSCharsetUtils::printBytes($sString, 4) . PHP_EOL;
     if(!$sCharset) {
       // detect charset from BOM and/or @charset rule
       $sCharset = CSSCharsetUtils::detectCharset($sString);

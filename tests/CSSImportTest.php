@@ -40,7 +40,8 @@ class CSSImportTest extends PHPUnit_Framework_TestCase
   public function testResolveImports()
   {
     $oParser = new CSSParser(array('resolve_imports' => true));
-    $oDoc = $oParser->parseFile("files/import.css");
+    $oDoc = $oParser->parseFile(dirname(__FILE__)."/files/import.css");
+    echo $oDoc . PHP_EOL;
   }
   
 }
