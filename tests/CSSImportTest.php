@@ -51,7 +51,7 @@ class CSSImportTest extends PHPUnit_Framework_TestCase
     return array(
       array(
         dirname(__FILE__)."/files/import.css",
-        '@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("/home/ju1ius/code/php/third-party/PHP-CSS-Parser/tests/files/../media/cr.ttf");}html, body {font-size: 1.6em;}header {width: 618px;height: 120px;}body.im_utf-32 {color: green;}div.im_utf-16 {background: url("/home/ju1ius/code/php/third-party/PHP-CSS-Parser/tests/files/import/barfoo.png");}body#icomelast {color: fuschia;padding: 5px;background-image: url("http://foobar.com");}'
+        '@font-face {font-family: "CrassRoots";src: url("/home/ju1ius/code/php/third-party/PHP-CSS-Parser/tests/files/../media/cr.ttf");}html, body {font-size: 1.6em;}header {width: 618px;height: 120px;}.euc-jp {content: "もっと強く";}body.im_utf-32 {color: green;}div.im_utf-16 {background: url("/home/ju1ius/code/php/third-party/PHP-CSS-Parser/tests/files/import/barfoo.png");}body#icomelast {color: fuschia;padding: 5px;background-image: url("http://foobar.com");}'
       )
     );
   }
