@@ -91,14 +91,6 @@ class CSSAtRule extends CSSRuleSet {
 * Declaration blocks usually appear directly inside a CSSDocument or another CSSList (mostly a CSSMediaQuery).
 */
 class CSSDeclarationBlock extends CSSRuleSet {
-	static 
-		$LIST_STYLE_PROPERTIES = array(
-			'list-style-type', 'list-style-position', 'list-style-image'
-		),
-		$BACKGROUND_PROPERTIES = array(
-			'background-color', 'background-image', 'background-repeat',
-			'background-position', 'background-attachment'
-		);
 
 	private $aSelectors;
 
