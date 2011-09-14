@@ -91,6 +91,7 @@ class CSSAtRule extends CSSRuleSet {
 * Declaration blocks usually appear directly inside a CSSDocument or another CSSList (mostly a CSSMediaQuery).
 */
 class CSSDeclarationBlock extends CSSRuleSet {
+
 	private $aSelectors;
 
 	public function __construct() {
@@ -129,28 +130,28 @@ class CSSDeclarationBlock extends CSSRuleSet {
 		return $this->aSelectors;
 	}
 
-  /*
+  /**
    * Split shorthand declarations (e.g. +margin+ or +font+) into their constituent parts.
    **/
-  public function expandShorthands()
-  {
+  public function expandShorthands() {
     // border must be expanded before dimensions
     $this->expandBorderShorthand();
     $this->expandDimensionsShorthand();
     $this->expandFontShorthand();
     $this->expandBackgroundShorthand();
+		$this->expandListStyleShorthand();
   }
 
-  /*
+  /**
    * Create shorthand declarations (e.g. +margin+ or +font+) whenever possible.
    **/
-  public function createShorthands()
-  {
+  public function createShorthands() {
     $this->createBackgroundShorthand();
     $this->createDimensionsShorthand();
     // border must be shortened after dimensions 
     $this->createBorderShorthand();
     $this->createFontShorthand();
+		$this->createListStyleShorthand();
   }
 
   /**
@@ -158,8 +159,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
    * Additional splitting happens in expandDimensionsShorthand
    * Multiple borders are not yet supported as of CSS3
    **/
-  public function expandBorderShorthand()
-  {
+  public function expandBorderShorthand() {
     $aBorderRules = array(
       'border', 'border-left', 'border-right', 'border-top', 'border-bottom' 
     );
@@ -167,44 +167,30 @@ class CSSDeclarationBlock extends CSSRuleSet {
       'thin', 'medium', 'thick'
     );
     $aRules = $this->getRules();
-    foreach ($aBorderRules as $sBorderRule)
-    {
+    foreach ($aBorderRules as $sBorderRule) {
       if(!isset($aRules[$sBorderRule])) continue;
       $oRule = $aRules[$sBorderRule];
       $mRuleValue = $oRule->getValue();
       $aValues = array();
       if(!$mRuleValue instanceof CSSRuleValueList) {
         $aValues[] = $mRuleValue;
-      }
-      else {
+      } else {
         $aValues = $mRuleValue->getListComponents();
       }
-      foreach ($aValues as $mValue)
-      {
-        if($mValue instanceof CSSValue)
-        {
+      foreach ($aValues as $mValue) {
+        if($mValue instanceof CSSValue) {
           $mNewValue = clone $mValue;
-        }
-        else
-        {
+        } else {
           $mNewValue = $mValue;
         }
-        if($mValue instanceof CSSSize)
-        {
+        if($mValue instanceof CSSSize) {
           $sNewRuleName = $sBorderRule."-width";
-        }
-        else if($mValue instanceof CSSColor)
-        {
+        } else if($mValue instanceof CSSColor) {
           $sNewRuleName = $sBorderRule."-color";
-        }
-        else
-        {
-          if(in_array($mValue, $aBorderSizes))
-          {
+        } else {
+          if(in_array($mValue, $aBorderSizes)) {
             $sNewRuleName = $sBorderRule."-width";
-          }
-          else //if(in_array($mValue, $aBorderStyles))
-          {
+          } else/* if(in_array($mValue, $aBorderStyles))*/ {
             $sNewRuleName = $sBorderRule."-style";
           }
         }
@@ -222,8 +208,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
    * into their constituent parts.
    * Handles margin, padding, border-color, border-style and border-width.
    **/
-  public function expandDimensionsShorthand()
-  {
+  public function expandDimensionsShorthand() {
     $aExpansions = array(
       'margin'       => 'margin-%s',
       'padding'      => 'padding-%s',
@@ -232,21 +217,18 @@ class CSSDeclarationBlock extends CSSRuleSet {
       'border-width' => 'border-%s-width'
     );
     $aRules = $this->getRules();
-    foreach ($aExpansions as $sProperty => $sExpanded)
-    {
+    foreach ($aExpansions as $sProperty => $sExpanded) {
       if(!isset($aRules[$sProperty])) continue;
       $oRule = $aRules[$sProperty];
       $mRuleValue = $oRule->getValue();
       $aValues = array();
       if(!$mRuleValue instanceof CSSRuleValueList) {
         $aValues[] = $mRuleValue;
-      }
-      else {
+      } else {
         $aValues = $mRuleValue->getListComponents();
       }
       $top = $right = $bottom = $left = null;
-      switch(count($aValues))
-      {
+      switch(count($aValues)) {
         case 1:
           $top = $right = $bottom = $left = $aValues[0];
           break;
@@ -266,8 +248,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
           $left = $aValues[3];
           break;
       }
-      foreach(array('top', 'right', 'bottom', 'left') as $sPosition)
-      {
+      foreach(array('top', 'right', 'bottom', 'left') as $sPosition) {
         $oNewRule = new CSSRule(sprintf($sExpanded, $sPosition));
         $oNewRule->setIsImportant($oRule->getIsImportant());
         $oNewRule->addValue(${$sPosition});
@@ -282,72 +263,56 @@ class CSSDeclarationBlock extends CSSRuleSet {
    * (e.g. <tt>font: 300 italic 11px/14px verdana, helvetica, sans-serif;</tt>)
    * into their constituent parts.
    **/
-  public function expandFontShorthand()
-  {
+  public function expandFontShorthand() {
     $aRules = $this->getRules();
     if(!isset($aRules['font'])) return;
     $oRule = $aRules['font'];
     // reset properties to 'normal' per http://www.w3.org/TR/CSS21/fonts.html#font-shorthand
     $aFontProperties = array(
-      'font-style' => 'normal', 'font-variant' => 'normal', 'font-weight' => 'normal',
-      'font-size' => 'normal', 'line-height' => 'normal'
+			'font-style'   => 'normal',
+			'font-variant' => 'normal',
+			'font-weight'  => 'normal',
+			'font-size'    => 'normal',
+			'line-height'  => 'normal'
     );    
     $mRuleValue = $oRule->getValue();
     $aValues = array();
     if(!$mRuleValue instanceof CSSRuleValueList) {
       $aValues[] = $mRuleValue;
-    }
-    else {
+    } else {
       $aValues = $mRuleValue->getListComponents();
     }
-    foreach($aValues as $mValue)
-    { 
-      if(!$mValue instanceof CSSValue)
-      {
+    foreach($aValues as $mValue) { 
+      if(!$mValue instanceof CSSValue) {
         $mValue = mb_strtolower($mValue);
       }
-      if(in_array($mValue, array('normal', 'inherit')))
-      {
-        foreach (array('font-style', 'font-weight', 'font-variant') as $sProperty)
-        {
-          if(!isset($aFontProperties[$sProperty]))
-          {
+      if(in_array($mValue, array('normal', 'inherit'))) {
+        foreach (array('font-style', 'font-weight', 'font-variant') as $sProperty) {
+          if(!isset($aFontProperties[$sProperty])) {
             $aFontProperties[$sProperty] = $mValue;
           }
         }
-      }
-      else if(in_array($mValue, array('italic', 'oblique')))
-      {
+      } else if(in_array($mValue, array('italic', 'oblique'))) {
         $aFontProperties['font-style'] = $mValue;
-      }
-      else if($mValue == 'small-caps')
-      {
+      } else if($mValue == 'small-caps') {
         $aFontProperties['font-variant'] = $mValue;
-      }
-      else if(in_array($mValue, array('bold', 'bolder', 'lighter'))
-        || ($mValue instanceof CSSSize
-              && in_array($mValue->getSize(), range(100, 900, 100))
-            )
-      ){
+			} else if(
+				in_array($mValue, array('bold', 'bolder', 'lighter'))
+				|| ($mValue instanceof CSSSize
+						&& in_array($mValue->getSize(), range(100, 900, 100)))
+      ) {
         $aFontProperties['font-weight'] = $mValue;
-      }
-      else if($mValue instanceof CSSRuleValueList && $mValue->getListSeparator() === '/')
-      {
+      } else if($mValue instanceof CSSRuleValueList && $mValue->getListSeparator() == '/') {
 				list($oSize, $oHeight) = $mValue->getListComponents();
 				$aFontProperties['font-size'] = $oSize;
 				$aFontProperties['line-height'] = $oHeight;
-      }
-      else if($mValue instanceof CSSSize && $mValue->getUnit() !== null)
-      {
+      } else if($mValue instanceof CSSSize && $mValue->getUnit() !== null) {
         $aFontProperties['font-size'] = $mValue;
-      }
-      else
-      {
+      } else {
         $aFontProperties['font-family'] = $mValue;
       }
     }
-    foreach ($aFontProperties as $sProperty => $mValue)
-    {
+    foreach ($aFontProperties as $sProperty => $mValue) {
       $oNewRule = new CSSRule($sProperty);
       $oNewRule->addValue($mValue);
       $oNewRule->setIsImportant($oRule->getIsImportant());
@@ -362,8 +327,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
    * into their constituent parts.
    * @see http://www.w3.org/TR/CSS21/colors.html#propdef-background
    **/
-  public function expandBackgroundShorthand()
-  {
+  public function expandBackgroundShorthand() {
     $aRules = $this->getRules();
     if(!isset($aRules['background'])) return;
     $oRule = $aRules['background'];
@@ -376,12 +340,10 @@ class CSSDeclarationBlock extends CSSRuleSet {
     $aValues = array();
     if(!$mRuleValue instanceof CSSRuleValueList) {
       $aValues[] = $mRuleValue;
-    }
-    else {
+    } else {
       $aValues = $mRuleValue->getListComponents();
     }
-    if(count($aValues) == 1 && $aValues[0] == 'inherit')
-    {
+    if(count($aValues) == 1 && $aValues[0] == 'inherit') {
       foreach ($aBgProperties as $sProperty => $mValue) {
         $oNewRule = new CSSRule($sProperty);
         $oNewRule->addValue('inherit');
@@ -392,38 +354,25 @@ class CSSDeclarationBlock extends CSSRuleSet {
       return;
     }
     $iNumBgPos = 0;
-    foreach($aValues as $mValue)
-    {
-      if(!$mValue instanceof CSSValue)
-      {
+    foreach($aValues as $mValue) {
+      if(!$mValue instanceof CSSValue) {
         $mValue = mb_strtolower($mValue);
       }
-      if ($mValue instanceof CSSURL)
-      {
+      if ($mValue instanceof CSSURL) {
         $aBgProperties['background-image'] = $mValue;
-      }
-      else if($mValue instanceof CSSColor)
-      {
+      } else if($mValue instanceof CSSColor) {
         $aBgProperties['background-color'] = $mValue;
-      }
-      else if(in_array($mValue, array('scroll', 'fixed')))
-      {
+      } else if(in_array($mValue, array('scroll', 'fixed'))) {
         $aBgProperties['background-attachment'] = $mValue;
-      }
-      else if(in_array($mValue, array('repeat','no-repeat', 'repeat-x', 'repeat-y')))
-      {
+      } else if(in_array($mValue, array('repeat','no-repeat', 'repeat-x', 'repeat-y'))) {
         $aBgProperties['background-repeat'] = $mValue;
-      }
-      else if(in_array($mValue, array('left','center','right','top','bottom'))
-        || $mValue instanceof CSSSize
+      } else if(in_array($mValue, array('left','center','right','top','bottom'))
+					|| $mValue instanceof CSSSize
       ){
-        if($iNumBgPos == 0)
-        {
+        if($iNumBgPos == 0) {
           $aBgProperties['background-position'][0] = $mValue;
           $aBgProperties['background-position'][1] = 'center';
-        }
-        else
-        {
+        } else {
           $aBgProperties['background-position'][$iNumBgPos] = $mValue;
         }
         $iNumBgPos++;
@@ -438,13 +387,64 @@ class CSSDeclarationBlock extends CSSRuleSet {
     $this->removeRule('background');
   }
 
-  public function createBackgroundShorthand()
-  {
-    $aProperties = array(
-      'background-color', 'background-image', 'background-repeat', 
-      'background-position', 'background-attachment'
-    );
+	public function expandListStyleShorthand() {
+		$aListProperties = array(
+			'list-style-type'     => 'disc',
+			'list-style-position' => 'outside',
+			'list-style-image'    => 'none'
+		);
+		$aListStyleTypes = array(
+			'none', 'disc', 'circle', 'square', 'decimal-leading-zero', 'decimal',
+			'lower-roman', 'upper-roman', 'lower-greek', 'lower-alpha', 'lower-latin',
+			'upper-alpha', 'upper-latin', 'hebrew', 'armenian', 'georgian', 'cjk-ideographic',
+			'hiragana', 'hira-gana-iroha', 'katakana-iroha', 'katakana'	
+		);
+		$aListStylePositions = array(
+			'inside', 'outside'
+		);
     $aRules = $this->getRules();
+    if(!isset($aRules['list-style'])) return;
+		$oRule = $aRules['list-style'];
+		$mRuleValue = $oRule->getValue();
+    $aValues = array();
+    if(!$mRuleValue instanceof CSSRuleValueList) {
+      $aValues[] = $mRuleValue;
+    } else {
+      $aValues = $mRuleValue->getListComponents();
+    }
+    if(count($aValues) == 1 && $aValues[0] == 'inherit') {
+      foreach ($aListProperties as $sProperty => $mValue) {
+        $oNewRule = new CSSRule($sProperty);
+        $oNewRule->addValue('inherit');
+        $oNewRule->setIsImportant($oRule->getIsImportant());
+        $this->addRule($oNewRule);
+      }
+      $this->removeRule('list-style');
+      return;
+		}
+		foreach($aValues as $mValue) {
+			if(!$mValue instanceof CSSValue) {
+        $mValue = mb_strtolower($mValue);
+			}
+			if($mValue instanceof CSSUrl) {
+				$aListProperties['list-style-image'] = $mValue;
+			} else if(in_array($mValue, $aListStyleTypes)) {
+				$aListProperties['list-style-types'] = $mValue;
+			} else if(in_array($mValue, $aListStylePositions)) {
+				$aListProperties['list-style-position'] = $mValue;
+			}
+		}
+    foreach ($aListProperties as $sProperty => $mValue) {
+      $oNewRule = new CSSRule($sProperty);
+      $oNewRule->setIsImportant($oRule->getIsImportant());
+      $oNewRule->addValue($mValue);
+      $this->addRule($oNewRule);
+    }
+    $this->removeRule('list-style');
+	}
+
+	public function createShorthandProperties(array $aProperties, $sShorthand) {
+		$aRules = $this->getRules();
     $aNewValues = array();
     foreach($aProperties as $sProperty) {
       if(!isset($aRules[$sProperty])) continue;
@@ -454,8 +454,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
         $aValues = array();
         if(!$mRuleValue instanceof CSSRuleValueList) {
           $aValues[] = $mRuleValue;
-        }
-        else {
+        } else {
           $aValues = $mRuleValue->getListComponents();
         }
         foreach($aValues as $mValue) {
@@ -465,61 +464,38 @@ class CSSDeclarationBlock extends CSSRuleSet {
       }
     }
     if(count($aNewValues)) {
-      $oNewRule = new CSSRule('background');
-      foreach ($aNewValues as $mValue) {
+      $oNewRule = new CSSRule($sShorthand);
+      foreach($aNewValues as $mValue) {
         $oNewRule->addValue($mValue);  
       }
       $this->addRule($oNewRule);
     }
-  }
+	}
+
+  public function createBackgroundShorthand() {
+    $aProperties = array(
+      'background-color', 'background-image', 'background-repeat', 
+      'background-position', 'background-attachment'
+    );
+		$this->createShorthandProperties($aProperties, 'background');
+	}
+
+  public function createListStyleShorthand() {
+		$aProperties = array(
+			'list-style-type', 'list-style-position', 'list-style-image'
+		);
+		$this->createShorthandProperties($aProperties, 'list-style');
+	}
 
   /**
    * Combine border-color, border-style and border-width into border
    * Should be run after create_dimensions_shorthand!
-   *
-   * TODO: this is extremely similar to createBackgroundShorthand and should be combined
    **/
   public function createBorderShorthand() {
-    $aBorderRules = array(
+    $aProperties = array(
       'border-width', 'border-style', 'border-color' 
     );
-    $aRules = $this->getRules();
-    $aNewValues = array();
-    foreach ($aBorderRules as $sBorderRule) {
-      if(!isset($aRules[$sBorderRule])) continue;
-      $oRule = $aRules[$sBorderRule];
-      if(!$oRule->getIsImportant()) {
-        $mRuleValue = $oRule->getValue();
-        $aValues = array();
-        if(!$mRuleValue instanceof CSSRuleValueList) {
-          $aValues[] = $mRuleValue;
-        }
-        else {
-          $aValues = $mRuleValue->getListComponents();
-        }
-        // Can't merge if multiple values !
-        if(count($aValues) > 1) continue;
-        foreach($aValues as $mValue) {
-          if($mValue instanceof CSSValue) {
-            $mNewValue = clone $mValue;
-            $aNewValues[] = $mNewValue;
-          }
-          else {
-            $aNewValues[] = $mValue;
-          }
-        }
-      }
-    }
-    if(count($aNewValues)) {
-      $oNewRule = new CSSRule('border');
-      foreach($aNewValues as $mNewValue) {
-        $oNewRule->addValue($mNewValue);
-      }
-      $this->addRule($oNewRule);
-      foreach($aBorderRules as $sRuleName) {
-        $this->removeRule($sRuleName);
-      }
-    }
+		$this->createShorthandProperties($aProperties, 'border');
   }
 
   /*
@@ -527,8 +503,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
    * (margin, padding, border-color, border-style and border-width) 
    * and converts them into shorthand CSS properties.
    **/
-  public function createDimensionsShorthand()
-  {
+  public function createDimensionsShorthand() {
     $aPositions = array('top', 'right', 'bottom', 'left');
     $aExpansions = array(
       'margin'       => 'margin-%s',
@@ -538,63 +513,47 @@ class CSSDeclarationBlock extends CSSRuleSet {
       'border-width' => 'border-%s-width'
     );
     $aRules = $this->getRules();
-    foreach ($aExpansions as $sProperty => $sExpanded)
-    {
+    foreach ($aExpansions as $sProperty => $sExpanded) {
       $aFoldable = array();
-      foreach($aRules as $sRuleName => $oRule)
-      {
-        foreach ($aPositions as $sPosition)
-        {
-          if($sRuleName == sprintf($sExpanded, $sPosition))
-          {
+      foreach($aRules as $sRuleName => $oRule) {
+        foreach ($aPositions as $sPosition) {
+          if($sRuleName == sprintf($sExpanded, $sPosition)) {
             $aFoldable[$sRuleName] = $oRule; 
           }
         }
       }
       // All four dimensions must be present
-      if(count($aFoldable) == 4)
-      {
+      if(count($aFoldable) == 4) {
         $aValues = array();
-        foreach ($aPositions as $sPosition)
-        {
+        foreach ($aPositions as $sPosition) {
           $oRule = $aRules[sprintf($sExpanded, $sPosition)];
           $mRuleValue = $oRule->getValue();
           $aRuleValues = array();
           if(!$mRuleValue instanceof CSSRuleValueList) {
             $aRuleValues[] = $mRuleValue;
-          }
-          else {
+          } else {
             $aRuleValues = $mRuleValue->getListComponents();
           }
           $aValues[$sPosition] = $aRuleValues;
         }
         $oNewRule = new CSSRule($sProperty);
-        if((string)$aValues['left'][0] == (string)$aValues['right'][0])
-        {
-          if((string)$aValues['top'][0] == (string)$aValues['bottom'][0])
-          {
-            if((string)$aValues['top'][0] == (string)$aValues['left'][0])
-            {
+        if((string)$aValues['left'][0] == (string)$aValues['right'][0]) {
+          if((string)$aValues['top'][0] == (string)$aValues['bottom'][0]) {
+            if((string)$aValues['top'][0] == (string)$aValues['left'][0]) {
               // All 4 sides are equal
               $oNewRule->addValue($aValues['top']);
-            }
-            else
-            {
+            } else {
               // Top and bottom are equal, left and right are equal
               $oNewRule->addValue($aValues['top']);
               $oNewRule->addValue($aValues['left']);
             }
-          }
-          else
-          {
+          } else {
             // Only left and right are equal
             $oNewRule->addValue($aValues['top']);
             $oNewRule->addValue($aValues['left']);
             $oNewRule->addValue($aValues['bottom']);
           }
-        }
-        else
-        {
+        } else {
           // No sides are equal 
           $oNewRule->addValue($aValues['top']);
           $oNewRule->addValue($aValues['left']);
@@ -615,32 +574,26 @@ class CSSDeclarationBlock extends CSSRuleSet {
    * tries to convert them into a shorthand CSS <tt>font</tt> property. 
    * At least font-size AND font-family must be present in order to create a shorthand declaration.
    **/
-  public function createFontShorthand()
-  {
+  public function createFontShorthand() {
     $aFontProperties = array(
       'font-style', 'font-variant', 'font-weight', 'font-size', 'line-height', 'font-family'
     );
     $aRules = $this->getRules();
-    if(!isset($aRules['font-size']) || !isset($aRules['font-family']))
-    {
+    if(!isset($aRules['font-size']) || !isset($aRules['font-family'])) {
       return;
     }
     $oNewRule = new CSSRule('font');
-    foreach(array('font-style', 'font-variant', 'font-weight') as $sProperty)
-    {
-      if(isset($aRules[$sProperty]))
-      {
+    foreach(array('font-style', 'font-variant', 'font-weight') as $sProperty) {
+      if(isset($aRules[$sProperty])) {
         $oRule = $aRules[$sProperty];
         $mRuleValue = $oRule->getValue();
         $aValues = array();
         if(!$mRuleValue instanceof CSSRuleValueList) {
           $aValues[] = $mRuleValue;
-        }
-        else {
+        } else {
           $aValues = $mRuleValue->getListComponents();
         }
-        if($aValues[0] !== 'normal')
-        {
+        if($aValues[0] !== 'normal') {
           $oNewRule->addValue($aValues[0]);
         }
       }
@@ -651,32 +604,26 @@ class CSSDeclarationBlock extends CSSRuleSet {
     $aFSValues = array();
     if(!$mRuleValue instanceof CSSRuleValueList) {
       $aFSValues[] = $mRuleValue;
-    }
-    else {
+    } else {
       $aFSValues = $mRuleValue->getListComponents();
     }
     // But wait to know if we have line-height to add it
-    if(isset($aRules['line-height']))
-    {
+    if(isset($aRules['line-height'])) {
       $oRule = $aRules['line-height'];
       $mRuleValue = $oRule->getValue();
       $aLHValues = array();
       if(!$mRuleValue instanceof CSSRuleValueList) {
         $aLHValues[] = $mRuleValue;
-      }
-      else {
+      } else {
         $aLHValues = $mRuleValue->getListComponents();
       }
-      if($aLHValues[0] !== 'normal')
-      {
+      if($aLHValues[0] !== 'normal') {
 				$val = new CSSRuleValueList('/');
 				$val->addListComponent($aFSValues[0]);
 				$val->addListComponent($aLHValues[0]);
         $oNewRule->addValue($val);
       }
-    }
-    else
-    {
+    } else {
       $oNewRule->addValue($aFSValues[0]);
     }
     $oRule = $aRules['font-family'];
@@ -684,8 +631,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
     $aFFValues = array();
     if(!$mRuleValue instanceof CSSRuleValueList) {
       $aFFValues[] = $mRuleValue;
-    }
-    else {
+    } else {
       $aFFValues = $mRuleValue->getListComponents();
     }
 		$oFFValue = new CSSRuleValueList(',');
@@ -693,8 +639,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
     $oNewRule->addValue($oFFValue);
 
     $this->addRule($oNewRule);
-    foreach ($aFontProperties as $sProperty)
-    {
+    foreach ($aFontProperties as $sProperty) {
       $this->removeRule($sProperty);
     }
   }
