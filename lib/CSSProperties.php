@@ -52,6 +52,14 @@ class CSSCharset {
 	}
 }
 
+/**
+ * Class representing an @namespace rule.
+ * The following restrictions apply:
+ * <ul>
+ *   <li>May not be found in any CSSList other than the CSSDocument.</li>
+ *   <li>May only appear after all @import rules and before other @rules.</li>
+ * </ul>
+ */
 class CSSNamespace {
   private $sPrefix;
   private $sURI;
