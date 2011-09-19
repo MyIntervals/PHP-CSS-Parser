@@ -7,7 +7,7 @@ require_once __DIR__.'/../../CSSParser.php';
 class GH27_Test extends PHPUnit_Framework_TestCase
 {
   /**
-   * @dataProvider testMSFiltersProvider
+   * @dataProvider testNamespacesProvider
    **/
   public function testNamespaces($sCss, $sExpected)
   {
@@ -15,7 +15,7 @@ class GH27_Test extends PHPUnit_Framework_TestCase
     $oDoc = $oParser->parse();
     $this->assertEquals((string)$oDoc, $sExpected);
   }
-  public function testMSFiltersProvider()
+  public function testNamespacesProvider()
   {
     return array(
       array(
