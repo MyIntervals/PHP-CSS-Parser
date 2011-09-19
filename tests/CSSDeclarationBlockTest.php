@@ -26,7 +26,11 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
       array('body{ border: 2px }', 'body {border-width: 2px;}'),
       array('body{ border: rgb(255,0,0) }', 'body {border-color: rgb(255,0,0);}'),
       array('body{ border: 1em solid }', 'body {border-width: 1em;border-style: solid;}'),
-      array('body{ margin: 1em; }', 'body {margin: 1em;}')
+			array('body{ margin: 1em; }', 'body {margin: 1em;}'),
+			array(
+				'p { border: 1px solid rgb(0,0,0); border-right: none; }',
+				'p {border-width: 1px;border-style: solid;border-color: rgb(0,0,0);border-right-style: none;}'
+			)	
     );
   }
 
@@ -121,6 +125,32 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
       array('body {margin: 1em 2em 3em;}','body {margin-top: 1em;margin-right: 2em;margin-bottom: 3em;margin-left: 2em;}'), 
     );
   }
+
+	/**
+	 * @dataProvider testExpandShorthandsProvider
+	 * @depends testExpandBorderShorthand
+	 * @depends testExpandBackgroundShorthand
+	 * @depends testExpandDimensionsShorthand
+	 * @depends testExpandFontShorthand
+	 **/
+	public function testExpandShorthands($sCSS, $sExpected) {
+		$oParser = new CSSParser($sCSS);
+		$oDoc = $oParser->parse();
+		$oDoc->expandShorthands();
+		$this->assertEquals((string)$oDoc, $sExpected);
+	}
+	public function testExpandShorthandsProvider() {
+		return array(
+			array(
+				'p {border-right: none;border: 1px solid rgb(0,0,0);}',
+				'p {border-right-style: none;border-top-width: 1px;border-right-width: 1px;border-bottom-width: 1px;border-left-width: 1px;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-right-color: rgb(0,0,0);border-bottom-color: rgb(0,0,0);border-left-color: rgb(0,0,0);border-top-color: rgb(0,0,0);}'
+			),	
+			array(
+				'p { border: 1px solid rgb(0,0,0); border-right: none; }',
+				'p {border-top-width: 1px;border-right-width: 1px;border-bottom-width: 1px;border-left-width: 1px;border-top-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-color: rgb(0,0,0);border-right-color: rgb(0,0,0);border-bottom-color: rgb(0,0,0);border-left-color: rgb(0,0,0);border-right-style: none;}'
+			)	
+		);
+	}
 
   /**
    * @dataProvider createBorderShorthandProvider
