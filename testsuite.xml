@@ -1,0 +1,11 @@
+<phpunit>
+  <testsuites>
+    <testsuite name="PHP-CSS-Parser Tests">
+      <file>tests/CSSDeclarationBlockTest.php</file>
+      <file>tests/CSSParserTests.php</file>
+    </testsuite>
+    <testsuite name="PHP-CSS-Parser Bugs">
+      <directory>tests/bugs</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>

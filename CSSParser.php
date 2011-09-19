@@ -88,7 +88,17 @@ class CSSParser {
 			$this->consume(';');
 			$this->setCharset($sCharset->getString());
 			return new CSSCharset($sCharset);
-		} else {
+    } else if($sIdentifier === 'namespace') {
+      if($this->comes('"') || $this->comes("'") || $this->comes(('url'))) {
+        $oNamespace = new CSSNamespace($this->parseURLValue()); 
+      } else {
+        $sPrefix = $this->parseIdentifier();
+        $oNamespace = new CSSNamespace($this->parseURLValue(), $sPrefix);
+      }
+      $this->consumeWhiteSpace();
+      $this->consume(';');
+      return $oNamespace;
+    } else {
 			//Unknown other at rule (font-face or such)
 			$this->consume('{');
 			$this->consumeWhiteSpace();
@@ -210,8 +220,13 @@ class CSSParser {
 	private function parseRule() {
 		$oRule = new CSSRule($this->parseIdentifier());
 		$this->consumeWhiteSpace();
-		$this->consume(':');
-		$oValue = $this->parseValue(self::listDelimiterForRule($oRule->getRule()));
+    $this->consume(':');
+    $sRule = $oRule->getrule();
+    if($sRule == 'filter' || $sRule == '-ms-filter') {
+      $oValue = $this->parseMSFilter();
+    } else {
+		  $oValue = $this->parseValue(self::listDelimiterForRule($oRule->getRule()));
+    }
 		$oRule->setValue($oValue);
 		if($this->comes('!')) {
 			$this->consume('!');
@@ -226,7 +241,26 @@ class CSSParser {
 			$this->consume(';');
 		}
 		return $oRule;
-	}
+  }
+
+  private function parseMSFilter() {
+    $this->consumeWhiteSpace();
+    $bAsString = false;
+    if($this->comes("'") || $this->comes('"')) {
+      $bAsString = true;
+      $this->consume( $this->comes('"') ? '"' : "'" );
+      $this->consumeWhiteSpace();
+    }
+    $sName = $this->consumeUntil('(');
+    $this->consume('(');
+    $oValue = new CSSFunction($sName, $this->parseValue(array('=', ',')));
+    $this->consume(')');
+    if($bAsString) {
+      $this->consumeWhiteSpace();
+      $this->consume( $this->comes('"') ? '"' : "'" );
+    }
+    return $oValue;
+  }
 
 	private function parseValue($aListDelimiters) {
 		$aStack = array();

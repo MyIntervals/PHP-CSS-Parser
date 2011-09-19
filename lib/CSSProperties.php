@@ -52,6 +52,36 @@ class CSSCharset {
 	}
 }
 
+class CSSNamespace {
+  private $sPrefix;
+  private $sURI;
+
+  public function __construct($sURI, $sPrefix=null) {
+    $this->sURI = $sURI;
+    $this->sPrefix = $sPrefix;
+  }
+
+  public function getURI() {
+    return $this->sURI;
+  }
+  public function setURI($sURI) {
+    $this->sURI = $sURI;
+  }
+
+  public function getPrefix() {
+    return $this->sPrefix;
+  }
+  public function setPrefix($sPrefix) {
+    $this->sPrefix = $sPrefix;
+  }
+
+  public function __toString() {
+    $sPrefix = $this->sPrefix ? ' '.$this->sPrefix : '';
+    return "@namespace" . $sPrefix . ' ' . $this->sURI . ';';
+  }
+
+}
+
 /**
 * Class representing a single CSS selector. Selectors have to be split by the comma prior to being passed into this class.
 */
