@@ -222,11 +222,7 @@ class CSSParser {
 		$this->consumeWhiteSpace();
     $this->consume(':');
     $sRule = $oRule->getrule();
-    if($sRule == 'filter' || $sRule == '-ms-filter') {
-      $oValue = $this->parseMSFilter();
-    } else {
-		  $oValue = $this->parseValue(self::listDelimiterForRule($oRule->getRule()));
-    }
+		$oValue = $this->parseValue(self::listDelimiterForRule($oRule->getRule()));
 		$oRule->setValue($oValue);
 		if($this->comes('!')) {
 			$this->consume('!');
@@ -241,25 +237,6 @@ class CSSParser {
 			$this->consume(';');
 		}
 		return $oRule;
-  }
-
-  private function parseMSFilter() {
-    $this->consumeWhiteSpace();
-    $bAsString = false;
-    if($this->comes("'") || $this->comes('"')) {
-      $bAsString = true;
-      $this->consume( $this->comes('"') ? '"' : "'" );
-      $this->consumeWhiteSpace();
-    }
-    $sName = $this->consumeUntil('(');
-    $this->consume('(');
-    $oValue = new CSSFunction($sName, $this->parseValue(array('=', ',')));
-    $this->consume(')');
-    if($bAsString) {
-      $this->consumeWhiteSpace();
-      $this->consume( $this->comes('"') ? '"' : "'" );
-    }
-    return $oValue;
   }
 
 	private function parseValue($aListDelimiters) {
