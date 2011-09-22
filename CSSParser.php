@@ -201,7 +201,7 @@ class CSSParser {
 	
 	private function parseRuleSet($oRuleSet) {
 		while(!$this->comes('}')) {
-			$oRuleSet->addRule($this->parseRule());
+			$oRuleSet->append($this->parseRule());
 			$this->consumeWhiteSpace();
 		}
 		$this->consume('}');
