@@ -194,7 +194,7 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
 		return array(
 			array(
 				'p {border-right: none;border: 1px solid rgb(0,0,0);}',
-				'p {border-right-style: none;border-top-width: 1px;border-right-width: 1px;border-bottom-width: 1px;border-left-width: 1px;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-right-color: rgb(0,0,0);border-bottom-color: rgb(0,0,0);border-left-color: rgb(0,0,0);border-top-color: rgb(0,0,0);}'
+				'p {border-right-style: none;border-top-width: 1px;border-right-width: 1px;border-bottom-width: 1px;border-left-width: 1px;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-color: rgb(0,0,0);border-right-color: rgb(0,0,0);border-bottom-color: rgb(0,0,0);border-left-color: rgb(0,0,0);}'
 			),	
 			array(
 				'p { border: 1px solid rgb(0,0,0); border-right: none; }',

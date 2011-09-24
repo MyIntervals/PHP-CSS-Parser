@@ -5,7 +5,7 @@
 * However, unknown At-Rules (like @font-face) are also rule sets.
 */
 abstract class CSSRuleSet {
-	private $aRules;
+	protected $aRules;
 	
 	public function __construct() {
 		$this->aRules = array();
@@ -18,7 +18,7 @@ abstract class CSSRuleSet {
    *
    * @return bool
    **/
-  public function contains($mRule) {
+  public function containsRule($mRule) {
     if($mRule instanceof CSSRule) {
       return array_search($mRule, $this->aRules) !== false;
     }
@@ -35,7 +35,7 @@ abstract class CSSRuleSet {
    *
    * @return CSSRuleSet The current CSSRuleSet instance
    **/
-	public function append(CSSRule $oRule) {
+	public function appendRule(CSSRule $oRule) {
     $this->aRules[] = $oRule;
     return $this;
 	}
@@ -47,48 +47,50 @@ abstract class CSSRuleSet {
    *
    * @return CSSRuleSet The current CSSRuleSet instance
    **/
-	public function prepend(CSSRule $oRule) {
+	public function prependRule(CSSRule $oRule) {
     array_unshift($this->aRules, $oRule);
     return $this;
   }
 
 	/**
-	 * Adds each rule of given array after the specified rule.
+	 * Inserts a rule or an array of rules after the specified rule.
 	 *
-	 * @param array   $aRules The rules to add
-	 * @param CSSRule $oRule  The CSSRule after which rules will be added.
+	 * @param CSSRule|array $mRule The rule or array of rules to insert
+   * @param CSSRule       $oRule The CSSRule after which rules will be added.
    *
    * @return CSSRuleSet The current CSSRuleSet instance
 	 **/
-	public function insertAfter(array $aRules, CSSRule $oRule) {
+  public function insertRuleAfter($mRule, CSSRule $oRule) {
+    if(!is_array($mRule)) $mRule = array($mRule);
 		$index = array_search($oRule, $this->aRules);
-    array_splice($this->aRules, $index, 0, $aRules);
+    array_splice($this->aRules, $index, 0, $mRule);
     return $this;
 	}
 
 	/**
-	 * Adds each rule of given array before the specified rule.
+	 * Inserts a rule or an array of rules before the specified rule.
 	 *
-	 * @param array   $aRules The rules to add
-	 * @param CSSRule $oRule  The CSSRule before which rules will be added.
+	 * @param CSSRule|array $aRules The rule or array of rules to insert
+	 * @param CSSRule       $oRule  The CSSRule before which rules will be added.
    *
    * @return CSSRuleSet The current CSSRuleSet instance
 	 **/
-	public function insertBefore(array $aRules, CSSRule $oRule) {
+	public function insertRuleBefore($mRule, CSSRule $oRule) {
+    if(!is_array($mRule)) $mRule = array($mRule);
 		$index = array_search($oRule, $this->aRules);
-    array_splice($this->aRules, $index-1, 0, $aRules);
+    array_splice($this->aRules, $index-1, 0, $mRule);
     return $this;
 	}
 
 	/**
-	 * Replaces a rule with all rules in an array.
+	 * Replaces a rule by another rule or an array of rules.
 	 *
 	 * @param CSSRule       $oOldRule  The CSSRule to replace
 	 * @param CSSRule|array $mNewRule  A CSSRule or an array of rules to add
    *
    * @return CSSRuleSet The current CSSRuleSet instance
 	 **/
-  public function replace(CSSRule $oOldRule, $mNewRule) {
+  public function replaceRule(CSSRule $oOldRule, $mNewRule) {
     if(!is_array($mNewRule)) $mNewRule = array($mNewRule);
 		$index = array_search($oOldRule, $this->aRules);
     array_splice($this->aRules, $index, 1, $mNewRule);
@@ -98,28 +100,32 @@ abstract class CSSRuleSet {
   /**
    * Removes a rule from this rule set.
    *
-   * @param int|string|CSSRule $mRule An index, CSSRule instance or rule name to remove.
+   * @param int|string|CSSRule|array $mRule An index, CSSRule instance or rule name to remove, or an array thereof.
    *                                  If int, removes the rule at given position.
    *                                  If CSSRule, removes the specified rule.
    *                                  If string, all matching rules will be removed.
    * @param bool           $bWildcard If true, all rules starting with the pattern are returned.
    *                                  If false only rules wich strictly match the pattern.
    **/
-  public function remove($mRule, $bWildcard=false) {
-    if(is_int($mRule)) {
-      unset($this->aRules[$mRule]);
-    } else if($mRule instanceof CSSRule) {
-			$index = array_search($mRule, $this->aRules);
-			unset($this->aRules[$index]);
-		} else {
-			foreach($this->aRules as $iPos => $oRule) {
-				if($bWildcard) {
-					if(strpos($oRule->getRule(), $mRule) === 0) unset($this->aRules[$iPos]);
-				} else {
-					if($oRule->getRule() === $mRule) unset($this->aRules[$iPos]);
-				}
-			}
-		}
+  public function removeRule($mSearch, $bWildcard=false) {
+    if(!is_array($mSearch)) $mSearch = array($mSearch);
+    foreach($mSearch as $mRule) {
+      if(is_int($mRule)) {
+        unset($this->aRules[$mRule]);
+      } else if($mRule instanceof CSSRule) {
+        $index = array_search($mRule, $this->aRules);
+        unset($this->aRules[$index]);
+      } else {
+        foreach($this->aRules as $iPos => $oRule) {
+          if($bWildcard) {
+            if(strpos($oRule->getRule(), $mRule) === 0) unset($this->aRules[$iPos]);
+          } else {
+            if($oRule->getRule() === $mRule) unset($this->aRules[$iPos]);
+          }
+        }
+      }
+    }
+    $this->aRules = array_values($this->aRules);
 	}
 
 	/**
@@ -167,7 +173,7 @@ abstract class CSSRuleSet {
    *
    * @return CSSRule
    **/
-  public function getFirst($mRule=null) {
+  public function getFirstRule($mRule=null) {
     if(!$mRule && isset($this->aRules[0])) return $this->aRules[0];
     foreach($this->aRules as $oRule) {
 			if($oRule->getRule() === $mRule) return $oRule;
@@ -181,7 +187,7 @@ abstract class CSSRuleSet {
    *
    * @return CSSRule
    **/
-  public function getLast($mRule=null) {
+  public function getLastRule($mRule=null) {
     if(!$mRule && count($this->aRules)) return $this->aRules[count($this->aRules)-1];
     foreach(array_reverse($this->aRules) as $oRule) {
 			if($oRule->getRule() === $mRule) return $oRule;
@@ -356,7 +362,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
 					}
 					$this->addRuleExpansion($iPos, $oRule, $sNewRuleName, $mValue);
 				}
-				$this->remove($oRule);
+				$this->removeRule($oRule);
 			} // end foreach $oRules
     } // end foreach $aBorderRules
   }
@@ -412,7 +418,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
 					$mValue = ${$sPosition};
 					$this->addRuleExpansion($iPos, $oRule, $sNewRuleName, $mValue);
 				}
-				$this->remove($oRule);
+				$this->removeRule($oRule);
 			}
     }
   }
@@ -474,7 +480,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
 			foreach ($aFontProperties as $sProperty => $mValue) {
 				$this->addRuleExpansion($iPos, $oRule, $sProperty, $mValue);
 			}
-			$this->remove($oRule);
+			$this->removeRule($oRule);
 		}
   }
 
@@ -506,7 +512,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
 				foreach ($aBgProperties as $sProperty => $mValue) {
 					$this->addRuleExpansion($iPos, $oRule, $sProperty, 'inherit');
 				}
-				$this->remove($oRule);
+				$this->removeRule($oRule);
 				return;
 			}
 			$iNumBgPos = 0;
@@ -536,8 +542,8 @@ class CSSDeclarationBlock extends CSSRuleSet {
 			}
 			foreach ($aBgProperties as $sProperty => $mValue) {
 				$this->addRuleExpansion($iPos, $oRule, $sProperty, $mValue);
-			}
-			$this->remove($oRule);
+      }
+      $this->removeRule($oRule);
 		}
   }
 
@@ -570,7 +576,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
 				foreach ($aListProperties as $sProperty => $mValue) {
 					$this->addRuleExpansion($iPos, $oRule, $sProperty, 'inherit');
 				}
-				$this->remove($oRule);
+        $this->removeRule($iPos);
 				return;
 			}
 			foreach($aValues as $mValue) {
@@ -588,7 +594,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
 			foreach ($aListProperties as $sProperty => $mValue) {
 				$this->addRuleExpansion($iPos, $oRule, $sProperty, $mValue);
 			}
-			$this->remove($oRule);
+      $this->removeRule($oRule);
 		}
 	}
 
@@ -610,7 +616,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
 		$oNewRule = new CSSRule($sNewRuleName);
 		$oNewRule->setIsImportant($bShorthandIsImportant);
 		$oNewRule->addValue($mValue);
-		$this->insertAfter(array($oNewRule), $oShorthandRule);
+		$this->insertRuleAfter($oNewRule, $oShorthandRule);
 	}
 
   public function createBackgroundShorthand() {
@@ -705,10 +711,10 @@ class CSSDeclarationBlock extends CSSRuleSet {
         $oNewRule->addValue($aValues['bottom']);
         $oNewRule->addValue($aValues['right']);
       }
-      $this->append($oNewRule);
+      $this->appendRule($oNewRule);
       foreach ($aPositions as $sPosition)
       {
-        $this->remove(sprintf($sExpanded, $sPosition));
+        $this->removeRule(sprintf($sExpanded, $sPosition));
       }
     }
   }
@@ -779,10 +785,8 @@ class CSSDeclarationBlock extends CSSRuleSet {
 		$oFFValue->setListComponents($aFFValues);
     $oNewRule->addValue($oFFValue);
 
-    $this->append($oNewRule);
-    foreach($aFontProperties as $sProperty) {
-      $this->remove($sProperty);
-    }
+    $this->appendRule($oNewRule);
+    $this->removeRule($aFontProperties);
 	}
 
   private function createShorthandProperties(array $aProperties, $sShorthand, $bSafe=false) {
@@ -823,15 +827,13 @@ class CSSDeclarationBlock extends CSSRuleSet {
 	}
 
   private function mergeValues($sShorthand, $aValues, $aOldRules, $bImportant) {
-    foreach($aOldRules as $iPos) {
-      $this->remove($iPos);
-    }
+    $this->removeRule($aOldRules);
     $oNewRule = new CSSRule($sShorthand);
     $oNewRule->setIsImportant($bImportant);
     foreach($aValues as $mValue) {
       $oNewRule->addValue($mValue);  
     }
-    $this->append($oNewRule);
+    $this->appendRule($oNewRule);
   }
   
   /**
@@ -845,14 +847,14 @@ class CSSDeclarationBlock extends CSSRuleSet {
     // first we check if a shorthand already exists, and keep only the relevant one.
     $aLastExistingShorthand = $this->getAppliedRule($sShorthand, true);
     foreach($this->getRules($sShorthand) as $iPos => $oRule) {
-      if($iPos !== $aLastExistingShorthand['position']) $this->remove($iPos);
+      if($iPos !== $aLastExistingShorthand['position']) $this->removeRule($iPos);
     }
     // next we try to get rid of unused rules
     foreach($aProperties as $sProperty) {
       $aRule = $this->getAppliedRule($sProperty, true);
       if(!$aRule) continue;
 			foreach($this->getRules($sProperty) as $iPos => $oRule) {
-        if($iPos !== $aRule['position']) $this->remove($iPos);
+        if($iPos !== $aRule['position']) $this->removeRule($iPos);
       }
       if($aLastExistingShorthand) {
         $bRuleIsImportant = $aRule['rule']->getIsImportant();
@@ -864,7 +866,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
         // we can get rid of the rule.
         if(($iRulePosition < $iShorthandPosition && $bRuleIsImportant === $bShorthandIsImportant)
            || (!$bRuleIsImportant && $bShorthandIsImportant)) {
-          $this->remove($iRulePosition);
+          $this->removeRule($iRulePosition);
         }
       }
     }
@@ -914,7 +916,7 @@ class CSSDeclarationBlock extends CSSRuleSet {
 			foreach($aRules as $iPos => $oRule) {
         if($iNumShorthands && !$oRule->getIsImportant() && $iPos < $iExistingShorthandPosition) {
           // If rule is not important and comes before a shorthand, we can safely remove it.
-          $this->remove($iPos);
+          $this->removeRule($iPos);
           continue;
 				}
       }

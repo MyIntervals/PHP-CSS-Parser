@@ -44,17 +44,13 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 			$sSelector = $oRuleSet->getSelectors();
 			$sSelector = $sSelector[0]->getSelector();
 			if($sSelector == '#mine') {
-				$aColorRule = $oRuleSet->getRules('color');
-				$aValues = $aColorRule['color']->getValues();
+				$aValues = $oRuleSet->getAppliedRule('color')->getValues();
 				$this->assertSame('red', $aValues[0][0]);
-				$aColorRule = $oRuleSet->getRules('background-');
-				$aValues = $aColorRule['background-color']->getValues();
+				$aValues = $oRuleSet->getAppliedRule('background-color')->getValues();
 				$this->assertEquals(array('r' => new CSSSize(35.0, null, true), 'g' => new CSSSize(35.0, null, true), 'b' => new CSSSize(35.0, null, true)), $aValues[0][0]->getColor());
-				$aColorRule = $oRuleSet->getRules('border-color');
-				$aValues = $aColorRule['border-color']->getValues();
+				$aValues = $oRuleSet->getAppliedRule('border-color')->getValues();
 				$this->assertEquals(array('r' => new CSSSize(10.0, null, true), 'g' => new CSSSize(100.0, null, true), 'b' => new CSSSize(230.0, null, true), 'a' => new CSSSize(0.3, null, true)), $aValues[0][0]->getColor());
-				$aColorRule = $oRuleSet->getRules('outline-color');
-				$aValues = $aColorRule['outline-color']->getValues();
+				$aValues = $oRuleSet->getAppliedRule('outline-color')->getValues();
 				$this->assertEquals(array('r' => new CSSSize(34.0, null, true), 'g' => new CSSSize(34.0, null, true), 'b' => new CSSSize(34.0, null, true)), $aValues[0][0]->getColor());
 			}
 		}
@@ -76,8 +72,8 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 			if(substr($sSelector, 0, strlen('.test-')) !== '.test-') {
 				continue;
 			}
-			$aContentRules = $oRuleSet->getRules('content');
-			$aContents = $aContentRules['content']->getValues();
+			$aContentRules = $oRuleSet->getAppliedRule('content');
+			$aContents = $aContentRules->getValues();
 			$sCssString = $aContents[0][0]->__toString();
 			if($sSelector == '.test-1') {
 				$this->assertSame('" "', $sCssString);
@@ -158,7 +154,7 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 		$oDoc = $this->parsedStructureForFile('values');
 		$this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;font-size: 10px;color: red !important;}body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}', $oDoc->__toString());
 		foreach($oDoc->getAllRuleSets() as $oRuleSet) {
-			$oRuleSet->removeRule('font-');
+			$oRuleSet->removeRule('font', true);
 		}
 		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;}body {color: green;}', $oDoc->__toString());
 	}
@@ -172,8 +168,7 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 			}
 		}
 		foreach($oDoc->getAllDeclarationBlocks() as $oBlock) {
-			$oRule = $oBlock->getRules('font');
-			$oRule = $oRule['font'];
+			$oRule = $oBlock->getAppliedRule('font');
 			$oSpaceList = $oRule->getValue();
 			$this->assertEquals(' ', $oSpaceList->getListSeparator());
 			$oSlashList = $oSpaceList->getListComponents();
@@ -181,8 +176,7 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 			$oSlashList = $oSlashList[0];
 			$this->assertEquals(',', $oCommaList->getListSeparator());
 			$this->assertEquals('/', $oSlashList->getListSeparator());
-			$oRule = $oBlock->getRules('border-radius');
-			$oRule = $oRule['border-radius'];
+			$oRule = $oBlock->getAppliedRule('border-radius');
 			$oSlashList = $oRule->getValue();
 			$this->assertEquals('/', $oSlashList->getListSeparator());
 			$oSpaceList1 = $oSlashList->getListComponents();
@@ -215,24 +209,6 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 		$sExpected = str_replace(array('0.2s', '0.3s', '90deg'), array('0.4s', '0.6s', '180deg'), $sExpected);
 		$this->assertSame($sExpected, $oDoc->__toString());
 	}
-
-  function testExpandShorthands() {
-		$oDoc = $this->parsedStructureForFile('expand-shorthands');
-		$sExpected = 'body {font: italic 500 14px/1.618 "Trebuchet MS",Georgia,serif;border: 2px solid rgb(255,0,255);background: rgb(204,204,204) url("/images/foo.png") no-repeat left top;margin: 1em !important;padding: 2px 6px 3px;}';
-		$this->assertSame($sExpected, $oDoc->__toString());
-    $oDoc->expandShorthands();
-    $sExpected = 'body {margin-top: 1em !important;margin-right: 1em !important;margin-bottom: 1em !important;margin-left: 1em !important;padding-top: 2px;padding-right: 6px;padding-bottom: 3px;padding-left: 6px;border-top-color: rgb(255,0,255);border-right-color: rgb(255,0,255);border-bottom-color: rgb(255,0,255);border-left-color: rgb(255,0,255);border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-width: 2px;border-right-width: 2px;border-bottom-width: 2px;border-left-width: 2px;font-style: italic;font-variant: normal;font-weight: 500;font-size: 14px;line-height: 1.618;font-family: "Trebuchet MS",Georgia,serif;background-color: rgb(204,204,204);background-image: url("/images/foo.png");background-repeat: no-repeat;background-attachment: scroll;background-position: left top;}';
-		$this->assertSame($sExpected, $oDoc->__toString());
-  }
-	
-  function testCreateShorthands() {
-		$oDoc = $this->parsedStructureForFile('create-shorthands');
-		$sExpected = 'body {font-size: 2em;font-family: Helvetica,Arial,sans-serif;font-weight: bold;border-width: 2px;border-color: rgb(153,153,153);border-style: dotted;background-color: rgb(255,255,255);background-image: url("foobar.png");background-repeat: repeat-y;margin-top: 2px;margin-right: 3px;margin-bottom: 4px;margin-left: 5px;}';
-		$this->assertSame($sExpected, $oDoc->__toString());
-    $oDoc->createShorthands();
-    $sExpected = 'body {background: rgb(255,255,255) url("foobar.png") repeat-y;margin: 2px 5px 4px 3px;border: 2px dotted rgb(153,153,153);font: bold 2em Helvetica,Arial,sans-serif;}';
-		$this->assertSame($sExpected, $oDoc->__toString());
-  }
 
 	function parsedStructureForFile($sFileName) {
 		$sFile = dirname(__FILE__).DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR."$sFileName.css";
