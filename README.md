@@ -30,7 +30,7 @@ The resulting data structure consists mainly of five basic types: `CSSList`, `CS
 
 #### CSSList
 
-`CSSList` represents a generic CSS container, most likely containing selectors but it may also contain at-rules, charset declarations, etc. `CSSList` has the following concrete subtypes:
+`CSSList` represents a generic CSS container, most likely containing declaration blocks (rule sets with a selector) but it may also contain at-rules, charset declarations, etc. `CSSList` has the following concrete subtypes:
 
 * `CSSDocument` – representing the root of a CSS file.
 * `CSSMediaQuery` – represents a subsection of a CSSList that only applies to a output device matching the contained media query.
@@ -67,7 +67,7 @@ If you want to manipulate a `CSSRuleSet`, use the methods `addRule(CSSRule $oRul
 
 There are a few convenience methods on CSSDocument to ease finding, manipulating and deleting rules:
 
-* `getAllDeclarationBlocks()` – does what it says; no matter how deeply nested your selectors are aliased as `getAllSelectors()`.
+* `getAllDeclarationBlocks()` – does what it says; no matter how deeply nested your selectors are. Aliased as `getAllSelectors()`.
 * `getAllRuleSets()` – does what it says; no matter how deeply nested your rule sets are.
 * `getAllValues()` – finds all `CSSValue` objects inside `CSSRule`s.
 
@@ -355,12 +355,13 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 * Named color support (using `CSSColor` instead of an anonymous string literal)
 * Test suite
 * Adopt lenient parsing rules
+* Support for @-rules (other than @media) that are CSSLists (to support @-webkit-keyframes)
 
 ## Contributors/Thanks to
 
 * [ju1ius](https://github.com/ju1ius) for the specificity parsing code and the ability to expand/compact shorthand properties.
 * [GaryJones](https://github.com/GaryJones) for lots of input and [http://css-specificity.info/](http://css-specificity.info/).
-* [docteurklein](https://github.com/docteurklein) for output formatting and CSSList->remove() inspiration.
+* [docteurklein](https://github.com/docteurklein) for output formatting and `CSSList->remove()` inspiration.
 
 ## License
 
