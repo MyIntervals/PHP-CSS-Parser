@@ -88,7 +88,17 @@ class CSSParser {
 			$this->consume(';');
 			$this->setCharset($sCharset->getString());
 			return new CSSCharset($sCharset);
-		} else {
+    } else if($sIdentifier === 'namespace') {
+      if($this->comes('"') || $this->comes("'") || $this->comes(('url'))) {
+        $oNamespace = new CSSNamespace($this->parseURLValue()); 
+      } else {
+        $sPrefix = $this->parseIdentifier();
+        $oNamespace = new CSSNamespace($this->parseURLValue(), $sPrefix);
+      }
+      $this->consumeWhiteSpace();
+      $this->consume(';');
+      return $oNamespace;
+    } else {
 			//Unknown other at rule (font-face or such)
 			$this->consume('{');
 			$this->consumeWhiteSpace();
@@ -210,7 +220,8 @@ class CSSParser {
 	private function parseRule() {
 		$oRule = new CSSRule($this->parseIdentifier());
 		$this->consumeWhiteSpace();
-		$this->consume(':');
+    $this->consume(':');
+    $sRule = $oRule->getrule();
 		$oValue = $this->parseValue(self::listDelimiterForRule($oRule->getRule()));
 		$oRule->setValue($oValue);
 		if($this->comes('!')) {
@@ -226,7 +237,7 @@ class CSSParser {
 			$this->consume(';');
 		}
 		return $oRule;
-	}
+  }
 
 	private function parseValue($aListDelimiters) {
 		$aStack = array();
