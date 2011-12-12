@@ -13,12 +13,16 @@ class CSSImport {
 	}
 	
 	public function setLocation($oLocation) {
-			$this->oLocation = $oLocation;
+    $this->oLocation = $oLocation;
 	}
 
 	public function getLocation() {
-			return $this->oLocation;
+    return $this->oLocation;
 	}
+
+  public function getMediaQuery() {
+    return $this->sMediaQuery;
+  }
 	
 	public function __toString() {
 		return "@import ".$this->oLocation->__toString().($this->sMediaQuery === null ? '' : ' '.$this->sMediaQuery).';';
@@ -40,11 +44,11 @@ class CSSCharset {
 	}
 	
 	public function setCharset($sCharset) {
-			$this->sCharset = $sCharset;
+    $this->sCharset = $sCharset;
 	}
 
 	public function getCharset() {
-			return $this->sCharset;
+		return $this->sCharset;
 	}
 	
 	public function __toString() {

@@ -10,8 +10,8 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
    **/
   public function testExpandBorderShorthand($sCss, $sExpected)
   {
-    $oParser = new CSSParser($sCss);
-    $oDoc = $oParser->parse();
+    $oParser = new CSSParser();
+    $oDoc = $oParser->parseString($sCss);
     foreach($oDoc->getAllDeclarationBlocks() as $oDeclaration)
     {
       $oDeclaration->expandBorderShorthand();
@@ -35,8 +35,8 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
    **/
   public function testExpandFontShorthand($sCss, $sExpected)
   {
-    $oParser = new CSSParser($sCss);
-    $oDoc = $oParser->parse();
+    $oParser = new CSSParser();
+    $oDoc = $oParser->parseString($sCss);
     foreach($oDoc->getAllDeclarationBlocks() as $oDeclaration)
     {
       $oDeclaration->expandFontShorthand();
@@ -78,8 +78,8 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
    **/
   public function testExpandBackgroundShorthand($sCss, $sExpected)
   {
-    $oParser = new CSSParser($sCss);
-    $oDoc = $oParser->parse();
+    $oParser = new CSSParser();
+    $oDoc = $oParser->parseString($sCss);
     foreach($oDoc->getAllDeclarationBlocks() as $oDeclaration)
     {
       $oDeclaration->expandBackgroundShorthand();
@@ -103,8 +103,8 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
    **/
   public function testExpandDimensionsShorthand($sCss, $sExpected)
   {
-    $oParser = new CSSParser($sCss);
-    $oDoc = $oParser->parse();
+    $oParser = new CSSParser();
+    $oDoc = $oParser->parseString($sCss);
     foreach($oDoc->getAllDeclarationBlocks() as $oDeclaration)
     {
       $oDeclaration->expandDimensionsShorthand();
@@ -127,8 +127,8 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
    **/
   public function testCreateBorderShorthand($sCss, $sExpected)
   {
-    $oParser = new CSSParser($sCss);
-    $oDoc = $oParser->parse();
+    $oParser = new CSSParser();
+    $oDoc = $oParser->parseString($sCss);
     foreach($oDoc->getAllDeclarationBlocks() as $oDeclaration)
     {
       $oDeclaration->createBorderShorthand();
@@ -150,8 +150,8 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
    **/
   public function testCreateFontShorthand($sCss, $sExpected)
   {
-    $oParser = new CSSParser($sCss);
-    $oDoc = $oParser->parse();
+    $oParser = new CSSParser();
+    $oDoc = $oParser->parseString($sCss);
     foreach($oDoc->getAllDeclarationBlocks() as $oDeclaration)
     {
       $oDeclaration->createFontShorthand();
@@ -175,8 +175,8 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
    **/
   public function testCreateDimensionsShorthand($sCss, $sExpected)
   {
-    $oParser = new CSSParser($sCss);
-    $oDoc = $oParser->parse();
+    $oParser = new CSSParser();
+    $oDoc = $oParser->parseString($sCss);
     foreach($oDoc->getAllDeclarationBlocks() as $oDeclaration)
     {
       $oDeclaration->createDimensionsShorthand();
@@ -199,8 +199,8 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
    **/
   public function testCreateBackgroundShorthand($sCss, $sExpected)
   {
-    $oParser = new CSSParser($sCss);
-    $oDoc = $oParser->parse();
+    $oParser = new CSSParser();
+    $oDoc = $oParser->parseString($sCss);
     foreach($oDoc->getAllDeclarationBlocks() as $oDeclaration)
     {
       $oDeclaration->createBackgroundShorthand();

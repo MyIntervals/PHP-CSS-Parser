@@ -4,7 +4,7 @@
 
 require_once(dirname(__FILE__).'/../CSSParser.php');
 
-class CSSParserTests extends PHPUnit_Framework_TestCase {
+class CSSParserTest extends PHPUnit_Framework_TestCase {
 	function testCssFiles() {
 		
 		$sDirectory = dirname(__FILE__).DIRECTORY_SEPARATOR.'files';
@@ -21,9 +21,10 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 					//Either a file which SHOULD fail or a future test of a as-of-now missing feature
 					continue;
 				}
-				$oParser = new CSSParser(file_get_contents($sDirectory.DIRECTORY_SEPARATOR.$sFileName));
+				$oParser = new CSSParser();
+        $oDoc = $oParser->parseString(file_get_contents($sDirectory.DIRECTORY_SEPARATOR.$sFileName));
 				try {
-					$this->assertNotEquals('', $oParser->parse()->__toString());
+					$this->assertNotEquals('', $oDoc->__toString());
 				} catch(Exception $e) {
 					$this->fail($e);
 				}
@@ -236,7 +237,7 @@ class CSSParserTests extends PHPUnit_Framework_TestCase {
 
 	function parsedStructureForFile($sFileName) {
 		$sFile = dirname(__FILE__).DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR."$sFileName.css";
-		$oParser = new CSSParser(file_get_contents($sFile));
-		return $oParser->parse();
+		$oParser = new CSSParser();
+		return $oParser->parseString(file_get_contents($sFile));
 	}
 }

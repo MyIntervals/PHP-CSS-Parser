@@ -8,6 +8,19 @@ abstract class CSSPrimitiveValue extends CSSValue {
 	
 }
 
+class CSSIgnoredValue extends CSSValue {
+  private $mValue;
+  public function __construct($mValue) {
+    $this->mValue = $mValue;
+  }
+  public function getValue() {
+    return $this->mValue;
+  }
+  public function __toString() {
+    return $this->mValue->__toString();
+  }
+}
+
 class CSSSize extends CSSPrimitiveValue {
 	private $fSize;
 	private $sUnit;

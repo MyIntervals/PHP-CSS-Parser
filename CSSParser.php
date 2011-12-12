@@ -1,4 +1,6 @@
 <?php
+require_once('lib/CSSCharsetUtils.php');
+require_once('lib/CSSUrlUtils.php');
 require_once('lib/CSSProperties.php');
 require_once('lib/CSSList.php');
 require_once('lib/CSSRuleSet.php');
@@ -10,31 +12,293 @@ require_once('lib/CSSValueList.php');
 * @package html
 * CSSParser class parses CSS from text into a data structure.
 */
-class CSSParser { 
+class CSSParser {
+  /**
+   * User options
+   **/
+  protected $aOptions = array(
+    'resolve_imports' => false,
+    'absolute_urls'   => false,
+    'base_url'        => null,
+    'input_encoding'  => null,
+    'output_encoding' => null
+  );
+
+  /**
+   * Parser internal pointers
+   **/
 	private $sText;
 	private $iCurrentPosition;
 	private $iLength;
+  private $aLoadedFiles = array();
+
+  /**
+   * Data for resolving imports
+   **/
+  const IMPORT_FILE    = 'file';
+  const IMPORT_URL     = 'url';
+  const IMPORT_NONE    = 'none';
+  private $sImportMode = 'none';
+
+  /**
+   * flags
+   **/
+  private $bIgnoreCharsetRules = false;
+  private $bIgnoreImportRules  = false;
+  private $bIsAbsBaseUrl;
 	
-	public function __construct($sText, $sDefaultCharset = 'utf-8') {
-		$this->sText = $sText;
-		$this->iCurrentPosition = 0;
-		$this->setCharset($sDefaultCharset);
-	}
-	
+  /**
+   * @param $aOptions array of options
+   * 
+   * Valid options are:
+   * <ul>
+   *   <li>
+   *     <b>input_encoding:</b>
+   *     Force the input to be read with this encoding.
+   *     This also force encoding for all imported stylesheets if resolve_imports is set to true.
+   *     If not specified, the input encoding will be detected according to:
+   *     http://www.w3.org/TR/CSS2/syndata.html#charset
+   *   </li>
+   *   <li>
+   *     <b>output_encoding:</b>
+   *     Converts the output to given encoding.
+   *   </li>
+   *   <li>
+   *     <b>resolve_imports:</b>
+   *     Recursively import embedded stylesheets.
+   *   </li>
+   *   <li>
+   *     <b>absolute_urls:</b>
+   *     Make all urls absolute.
+   *   </li>
+   *   <li>
+   *     <b>base_url:</b>
+   *     The base url to use for absolute urls and resolving imports.
+   *     If not specified, will be computed from the file path or url.
+   *   </li>
+   * </ul>
+   **/
+  public function __construct(array $aOptions=array()) {
+    $this->setOptions($aOptions);
+  }
+
+  /**
+   * Gets an option value.
+   *
+   * @param  string $sName    The option name
+   * @param  mixed  $mDefault The default value (null by default)
+   *
+   * @return mixed  The option value or the default value
+   */
+  public function getOption($sName, $mDefault=null) {
+    return isset($this->aOptions[$sName]) ? $this->aOptions[$sName] : $mDefault;
+  }
+  /**
+   * Sets an option value.
+   *
+   * @param  string $sName  The option name
+   * @param  mixed  $mValue The default value
+   *
+   * @return CSSParser The current CSSParser instance
+   */
+  public function setOption($sName, $mValue) {
+    $this->aOptions[$sName] = $mValue;
+    return $this;
+  }
+
+  /**
+   * Returns the options of the current instance.
+   *
+   * @return array The current instance's options
+   **/
+  public function getOptions() {
+    return $this->aOptions;
+  }
+
+  /**
+   * Merge given options with the current options
+   *
+   * @param array $aOptions The options to merge
+   *
+   * @return CSSParser The current CSSParser instance
+   **/
+  public function setOptions(array $aOptions) {
+    $this->aOptions = array_merge($this->aOptions, $aOptions);
+    return $this;
+  }
+
+  /**
+   * @todo Access should be private, since calling this method
+   *       from the outside world could lead to unpredicable results.
+   **/
 	public function setCharset($sCharset) {
 		$this->sCharset = $sCharset;
 		$this->iLength = mb_strlen($this->sText, $this->sCharset);
 	}
 
 	public function getCharset() {
-			return $this->sCharset;
-	}
-	
-	public function parse() {
+		return $this->sCharset;
+  }
+
+  /**
+   * Returns an array of all the loaded stylesheets.
+   *
+   * @return array The loaded stylesheets
+   **/
+  public function getLoadedFiles() {
+    return $this->aLoadedFiles;
+  }
+
+  /**
+   * Parses a local stylesheet into a CSSDocument object.
+   *
+   * @param string $sPath        Path to a file to load
+   * @param array  $aLoadedFiles An array of files to exclude
+   *
+   * @return CSSDocument the resulting CSSDocument
+   **/
+  public function parseFile($sPath, $aLoadedFiles=array()) {
+    if(!$this->getOption('base_url')) {
+      $this->setOption('base_url', dirname($sPath));
+    }
+    if($this->getOption('absolute_urls') && !CSSUrlUtils::isAbsUrl($this->getOption('base_url'))) {
+      $this->setOption('base_url', realpath($this->getOption('base_url')));
+    }
+    $this->sImportMode = self::IMPORT_FILE;
+    $sPath = realpath($sPath);
+    $aLoadedFiles[] = $sPath;
+    $this->aLoadedFiles = array_merge($this->aLoadedFiles, $aLoadedFiles);
+    $sCss = file_get_contents($sPath);
+    return $this->parseString($sCss);
+  }
+
+  /**
+   * Parses a remote stylesheet into a CSSDocument object.
+   *
+   * @param string $sPath        URL of a file to load
+   * @param array  $aLoadedFiles An array of files to exclude
+   *
+   * @return CSSDocument the resulting CSSDocument
+   **/
+  public function parseURL($sPath, $aLoadedFiles=array()) {
+    if(!$this->getOption('base_url')) {
+      $this->setOption('base_url', CSSUrlUtils::dirname($sPath));
+    }
+    $this->sImportMode = self::IMPORT_URL;
+    $aLoadedFiles[] =$sPath;
+    $this->aLoadedFiles = array_merge($this->aLoadedFiles, $aLoadedFiles);
+    $aResult = CSSUrlUtils::loadURL($sPath);
+    $sResponse = $aResult['response'];
+    // charset from Content-Type HTTP header
+    // TODO: what do we do if the header returns a wrong charset ?
+    if($aResult['charset']) {
+      return $this->parseString($sResponse, $aResult['charset']);
+    }
+    return $this->parseString($sResponse);
+  }
+
+  /**
+   * Parses a string into a CSSDocument object.
+   *
+   * @param string $sString  A CSS String
+   * @param array  $sCharset An optional charset to use (overridden by the "input_encoding" option).
+   *
+   * @return CSSDocument the resulting CSSDocument
+   **/
+
+  public function parseString($sString, $sCharset=null) {
+    $this->bIsAbsBaseUrl = CSSUrlUtils::isAbsUrl($this->getOption('base_url'));
+    if($this->getOption('input_encoding')) {
+      // The input encoding has been overriden by user.
+      $sCharset = $this->getOption('input_encoding');
+      $this->bIgnoreCharsetRules = true;
+    }
+    if(!$sCharset) {
+      // detect charset from BOM and/or @charset rule
+      $sCharset = CSSCharsetUtils::detectCharset($sString);
+      if(!$sCharset) {
+        $sCharset = 'UTF-8';
+      }
+    }
+    $sString = CSSCharsetUtils::removeBOM($sString);
+    if($this->getOption('output_encoding')) {
+      $sString = CSSCharsetUtils::convert($sString, $sCharset, $this->getOption('output_encoding'));
+      $sCharset = $this->getOption('output_encoding');
+      $this->bIgnoreCharsetRules = true;
+    }
+		$this->sText = $sString;
+		$this->iCurrentPosition = 0;
+    $this->setCharset($sCharset);
 		$oResult = new CSSDocument();
 		$this->parseDocument($oResult);
+    $this->postParse($oResult);
 		return $oResult;
-	}
+  }
+
+  /**
+   * Post processes the parsed CSSDocument object.
+   *
+   * Handles removal of ignored values and resolving of @import rules.
+   *
+   * @todo Should CSSIgnoredValue exist ?
+   *       Another solution would be to add values only if they are not === null,
+   *       i.e. in CSSList::append(), CSSRule::addValue() etc...
+   **/
+  private function postParse($oDoc) {
+    $aCharsets = array();
+    $aImports = array();
+    $aContents = $oDoc->getContents();
+    foreach($aContents as $i => $oItem) {
+      if($oItem instanceof CSSIgnoredValue) {
+        unset($aContents[$i]);
+      } else if($oItem instanceof CSSCharset) {
+        $aCharsets[] = $oItem;
+        unset($aContents[$i]);
+      } else if($oItem instanceof CSSImport) {
+        $aImports[] = $oItem;
+        unset($aContents[$i]);
+      }
+    }
+    $aImportedItems = array();
+    $aImportOptions = array_merge($this->getOptions(), array(
+      'output_encoding' => $this->sCharset,
+      'base_url'        => null
+    ));
+    foreach($aImports as $oImport) {
+      if($this->getOption('resolve_imports')) {
+        $parser = new CSSParser($aImportOptions);
+        $sPath = $oImport->getLocation()->getURL()->getString();
+        $bIsAbsUrl = CSSUrlUtils::isAbsUrl($sPath);
+        if($this->sImportMode == self::IMPORT_URL || $bIsAbsUrl) {
+          if(!in_array($sPath, $this->aLoadedFiles)) {          
+            $oImportedDoc = $parser->parseURL($sPath, $this->aLoadedFiles);
+            $this->aLoadedFiles = $parser->getLoadedFiles();
+            $aImportedContents = $oImportedDoc->getContents();
+          }
+        } else if($this->sImportMode == self::IMPORT_FILE) {
+          $sPath = realpath($sPath);
+          if(!in_array($sPath, $this->aLoadedFiles)) {
+            $oImportedDoc = $parser->parseFile($sPath, $this->aLoadedFiles);
+            $this->aLoadedFiles = $parser->getLoadedFiles();
+            $aImportedContents = $oImportedDoc->getContents();
+          }
+        }
+        if($oImport->getMediaQuery() !== null) {
+          $sMediaQuery = $oImport->getMediaQuery();
+          $oMediaQuery = new CSSMediaQuery();
+          $oMediaQuery->setQuery($sMediaQuery);
+          $oMediaQuery->setContents($aImportedContents);
+          $aImportedContents = array($oMediaQuery); 
+        }
+      } else {
+        $aImportedContents = array($oImport);
+      }
+      $aImportedItems = array_merge($aImportedItems, $aImportedContents);
+    }
+    $aContents = array_merge($aImportedItems, $aContents);
+    if(isset($aCharsets[0])) array_unshift($aContents, $aCharsets[0]);
+    $oDoc->setContents($aContents);
+  }
 	
 	private function parseDocument(CSSDocument $oDocument) {
 		$this->consumeWhiteSpace();
@@ -53,6 +317,8 @@ class CSSParser {
 					return;
 				}
 			} else {
+        $this->bIgnoreCharsetRules = true;
+        $this->bIgnoreImportRules = true;
 				$oList->append($this->parseSelector());
 			}
 			$this->consumeWhiteSpace();
@@ -65,8 +331,10 @@ class CSSParser {
 	private function parseAtRule() {
 		$this->consume('@');
 		$sIdentifier = $this->parseIdentifier();
-		$this->consumeWhiteSpace();
+    $this->consumeWhiteSpace();
 		if($sIdentifier === 'media') {
+      $this->bIgnoreCharsetRules = true;
+      $this->bIgnoreImportRules = true;
 			$oResult = new CSSMediaQuery();
 			$oResult->setQuery(trim($this->consumeUntil('{')));
 			$this->consume('{');
@@ -74,6 +342,7 @@ class CSSParser {
 			$this->parseList($oResult);
 			return $oResult;
 		} else if($sIdentifier === 'import') {
+      $this->bIgnoreCharsetRules = true;
 			$oLocation = $this->parseURLValue();
 			$this->consumeWhiteSpace();
 			$sMediaQuery = null;
@@ -81,15 +350,25 @@ class CSSParser {
 				$sMediaQuery = $this->consumeUntil(';');
 			}
 			$this->consume(';');
-			return new CSSImport($oLocation, $sMediaQuery);
+      $oImport = new CSSImport($oLocation, $sMediaQuery);
+      if($this->bIgnoreImportRules) {
+        return new CSSIgnoredValue($oImport);
+      }
+      return $oImport;
 		} else if($sIdentifier === 'charset') {
-			$sCharset = $this->parseStringValue();
-			$this->consumeWhiteSpace();
-			$this->consume(';');
-			$this->setCharset($sCharset->getString());
-			return new CSSCharset($sCharset);
+        $sCharset = $this->parseStringValue();
+        $this->consumeWhiteSpace();
+        $this->consume(';');
+        $oCharset = new CSSCharset($sCharset);
+        if($this->bIgnoreCharsetRules) {
+          return new CSSIgnoredValue($oCharset);
+        }
+        $this->bIgnoreCharsetRules = true;
+        return $oCharset;
 		} else {
 			//Unknown other at rule (font-face or such)
+      $this->bIgnoreCharsetRules = true;
+      $this->bIgnoreImportRules = true;
 			$this->consume('{');
 			$this->consumeWhiteSpace();
 			$oAtRule = new CSSAtRule($sIdentifier);
@@ -173,10 +452,10 @@ class CSSParser {
 				$sUtf32 .= chr($iUnicode & 0xff);
 				$iUnicode = $iUnicode >> 8;
 			}
-			return iconv('utf-32le', $this->sCharset, $sUtf32);
+      return CSSCharsetUtils::convert($sUtf32, 'UTF-32LE', $this->sCharset);
 		}
 		if($bIsForIdentifier) {
-			if(preg_match('/[a-zA-Z0-9]|-|_/u', $this->peek()) === 1) {
+			if(preg_match('/\*|[a-zA-Z0-9]|-|_/u', $this->peek()) === 1) {
 				return $this->consume(1);
 			} else if(ord($this->peek()) > 0xa1) {
 				return $this->consume(1);
@@ -375,7 +654,22 @@ class CSSParser {
 			$this->consume('(');
 		}
 		$this->consumeWhiteSpace();
-		$oResult = new CSSURL($this->parseStringValue());
+    $sValue = $this->parseStringValue();
+    if($this->getOption('absolute_urls') || $this->getOption('resolve_imports')) {
+      $sURL = $sValue->getString(); 
+      // resolve only if:
+      // (url is not absolute) OR IF (url is absolute path AND base_url is absolute)
+      $bIsAbsPath = CSSUrlUtils::isAbsPath($sURL);
+      $bIsAbsUrl = CSSUrlUtils::isAbsUrl($sURL);
+      if( (!$bIsAbsUrl && !$bIsAbsPath)
+          || ($bIsAbsPath && $this->bIsAbsBaseUrl)) {
+        $sURL = CSSUrlUtils::joinPaths(
+          $this->getOption('base_url'), $sURL
+        );
+        $sValue = new CSSString($sURL);
+      }
+    }
+		$oResult = new CSSURL($sValue);
 		if($bUseUrl) {
 			$this->consumeWhiteSpace();
 			$this->consume(')');
