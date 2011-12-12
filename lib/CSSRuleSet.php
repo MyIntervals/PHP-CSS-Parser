@@ -643,11 +643,11 @@ class CSSDeclarationBlock extends CSSRuleSet {
       $this->removeRule($sProperty);
     }
   }
-	
+
 	public function __toString() {
 		$sResult = implode(', ', $this->aSelectors).' {';
 		$sResult .= parent::__toString();
-		$sResult .= '}';
+		$sResult .= '}'."\n";
 		return $sResult;
 	}
 }
