@@ -15,13 +15,41 @@ abstract class CSSList {
 		$this->aContents[] = $oItem;
 	}
 
-    public function remove(CSSDeclarationBlock $item) {
-        foreach ($this->aContents as $key => $oItem) {
-            if($oItem->getSelectors() === $item->getSelectors()) {
-                unset($this->aContents[$key]);
-            }
-        }
-    }
+	/**
+	* Removes an item from the CSS list.
+	* @param CSSRuleSet|CSSImport|CSSCharset|CSSList $oItemToRemove May be a CSSRuleSet (most likely a CSSDeclarationBlock), a CSSImport, a CSSCharset or another CSSList (most likely a CSSMediaQuery)
+	*/
+	public function remove($oItemToRemove) {
+		$iKey = array_search($oItemToRemove, $this->aContents, true);
+		if($iKey !== false) {
+			unset($this->aContents[$iKey]);
+		}
+	}
+
+	public function removeDeclarationBlockBySelector($mSelector, $bRemoveAll = false) {
+		if($mSelector instanceof CSSDeclarationBlock) {
+			$mSelector = $mSelector->getSelectors();
+		}
+		if(!is_array($mSelector)) {
+			$mSelector = explode(',', $mSelector);
+		}
+		foreach($mSelector as $iKey => &$mSel) {
+			if(!($mSel instanceof CSSSelector)) {
+				$mSel = new CSSSelector($mSel);
+			}
+		}
+		foreach($this->aContents as $iKey => $mItem) {
+			if(!($mItem instanceof CSSDeclarationBlock)) {
+				continue;
+			}
+			if($mItem->getSelectors() == $mSelector) {
+				unset($this->aContents[$iKey]);
+				if(!$bRemoveAll) {
+					return;
+				}
+			}
+		}
+	}
 
 	public function __toString() {
 		$sResult = '';

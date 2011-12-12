@@ -16,7 +16,7 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
     {
       $oDeclaration->expandBorderShorthand();
     }
-    $this->assertEquals((string)$oDoc, $sExpected);
+    $this->assertSame(trim((string)$oDoc), $sExpected);
   }
   public function expandBorderShorthandProvider()
   {
@@ -41,7 +41,7 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
     {
       $oDeclaration->expandFontShorthand();
     }
-    $this->assertEquals((string)$oDoc, $sExpected);
+    $this->assertSame(trim((string)$oDoc), $sExpected);
   }
   public function expandFontShorthandProvider()
   {
@@ -84,7 +84,7 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
     {
       $oDeclaration->expandBackgroundShorthand();
     }
-    $this->assertEquals((string)$oDoc, $sExpected);
+    $this->assertSame(trim((string)$oDoc), $sExpected);
   }
   public function expandBackgroundShorthandProvider()
   {
@@ -109,7 +109,7 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
     {
       $oDeclaration->expandDimensionsShorthand();
     }
-    $this->assertEquals((string)$oDoc, $sExpected);
+    $this->assertSame(trim((string)$oDoc), $sExpected);
   }
   public function expandDimensionsShorthandProvider()
   {
@@ -133,7 +133,7 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
     {
       $oDeclaration->createBorderShorthand();
     }
-    $this->assertEquals((string)$oDoc, $sExpected);
+    $this->assertSame(trim((string)$oDoc), $sExpected);
   }
   public function createBorderShorthandProvider()
   {
@@ -156,7 +156,7 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
     {
       $oDeclaration->createFontShorthand();
     }
-    $this->assertEquals((string)$oDoc, $sExpected);
+    $this->assertSame(trim((string)$oDoc), $sExpected);
   }
   public function createFontShorthandProvider()
   {
@@ -181,7 +181,7 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
     {
       $oDeclaration->createDimensionsShorthand();
     }
-    $this->assertEquals((string)$oDoc, $sExpected);
+    $this->assertSame(trim((string)$oDoc), $sExpected);
   }
   public function createDimensionsShorthandProvider()
   {
@@ -205,7 +205,7 @@ class CSSDeclarationBlockTest extends PHPUnit_Framework_TestCase
     {
       $oDeclaration->createBackgroundShorthand();
     }
-    $this->assertEquals((string)$oDoc, $sExpected);
+    $this->assertSame(trim((string)$oDoc), $sExpected);
   }
   public function createBackgroundShorthandProvider()
   {
