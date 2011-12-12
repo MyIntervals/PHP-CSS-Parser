@@ -6,15 +6,23 @@
 */
 abstract class CSSList {
 	private $aContents;
-	
+
 	public function __construct() {
 		$this->aContents = array();
 	}
-	
+
 	public function append($oItem) {
 		$this->aContents[] = $oItem;
 	}
-	
+
+    public function remove(CSSDeclarationBlock $item) {
+        foreach ($this->aContents as $key => $oItem) {
+            if($oItem->getSelectors() === $item->getSelectors()) {
+                unset($this->aContents[$key]);
+            }
+        }
+    }
+
 	public function __toString() {
 		$sResult = '';
 		foreach($this->aContents as $oContent) {
