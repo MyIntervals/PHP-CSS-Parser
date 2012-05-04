@@ -109,7 +109,7 @@ class CSSParser {
 		}
 		if($bAllowFunctions && $this->comes('(')) {
 			$this->consume('(');
-			$sResult = new CSSFunction($sResult, $this->parseValue(array('=', ',')));
+			$sResult = new CSSFunction($sResult, $this->parseValue(array('=', ',', ' ')));
 			$this->consume(')');
 		}
 		return $sResult;

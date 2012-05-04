@@ -239,6 +239,12 @@ body {color: green;}'."\n", $oDoc->__toString());
     $sExpected = 'body {background: rgb(255,255,255) url("foobar.png") repeat-y;margin: 2px 5px 4px 3px;border: 2px dotted rgb(153,153,153);font: bold 2em Helvetica,Arial,sans-serif;}'."\n";
 		$this->assertSame($sExpected, $oDoc->__toString());
   }
+	
+	function testPrefixedGradient() {
+		$oDoc = $this->parsedStructureForFile('webkit');
+		$sExpected = '.test {background: -webkit-linear-gradient(top right,white,black);}'."\n";
+		$this->assertSame($sExpected, $oDoc->__toString());
+	}
 
 	function testListValueRemoval() {
 		$oDoc = $this->parsedStructureForFile('atrules');
