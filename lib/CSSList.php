@@ -106,6 +106,28 @@ abstract class CSSList {
 		}
 	}
 
+    /**
+     * Retrieve a selector by id or name.
+     *
+     * @param $selector
+     * @return bool
+     */
+    public function getRuleBySelector($selector)
+    {
+        foreach($this->getAllDeclarationBlocks() as $oBlock)
+        {
+            foreach($oBlock->getSelectors() as $oSelector)
+            {
+                if($oSelector->getSelector() == $selector)
+                {
+                    return $oBlock;
+                }
+            }
+        }
+
+        return FALSE;
+    }
+
 	protected function allSelectors(&$aResult, $sSpecificitySearch = null) {
 		foreach($this->getAllDeclarationBlocks() as $oBlock) {
 			foreach($oBlock->getSelectors() as $oSelector) {
