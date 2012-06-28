@@ -14,6 +14,13 @@ class CSSParser {
 	private $sText;
 	private $iCurrentPosition;
 	private $iLength;
+
+    /**
+     * Should we use mb_* string functions
+     *
+     * @var bool
+     */
+    private $bUseMbFunctions = TRUE;
 	
 	public function __construct($sText, $sDefaultCharset = 'utf-8') {
 		$this->sText = $sText;
@@ -23,7 +30,7 @@ class CSSParser {
 	
 	public function setCharset($sCharset) {
 		$this->sCharset = $sCharset;
-		$this->iLength = mb_strlen($this->sText, $this->sCharset);
+		$this->iLength = $this->strlen($this->sText, $this->sCharset);
 	}
 
 	public function getCharset() {
@@ -35,7 +42,11 @@ class CSSParser {
 		$this->parseDocument($oResult);
 		return $oResult;
 	}
-	
+
+    public function setUseMbFlag($bFlag){
+        $this->bUseMbFunctions = (bool) $bFlag;
+    }
+
 	private function parseDocument(CSSDocument $oDocument) {
 		$this->consumeWhiteSpace();
 		$this->parseList($oDocument, true);
@@ -157,7 +168,7 @@ class CSSParser {
 				return $this->consume(1);
 			}
 			$sUnicode = $this->consumeExpression('/^[0-9a-fA-F]{1,6}/u');
-			if(mb_strlen($sUnicode, $this->sCharset) < 6) {
+			if($this->strlen($sUnicode, $this->sCharset) < 6) {
 				//Consume whitespace after incomplete unicode escape
 				if(preg_match('/\\s/isSu', $this->peek())) {
 					if($this->comes('\r\n')) {
@@ -345,7 +356,7 @@ class CSSParser {
 		if($this->comes('#')) {
 			$this->consume('#');
 			$sValue = $this->parseIdentifier(false);
-			if(mb_strlen($sValue, $this->sCharset) === 3) {
+			if($this->strlen($sValue, $this->sCharset) === 3) {
 				$sValue = $sValue[0].$sValue[0].$sValue[1].$sValue[1].$sValue[2].$sValue[2];
 			}
 			$aColor = array('r' => new CSSSize(intval($sValue[0].$sValue[1], 16), null, true), 'g' => new CSSSize(intval($sValue[2].$sValue[3], 16), null, true), 'b' => new CSSSize(intval($sValue[4].$sValue[5], 16), null, true));
@@ -353,7 +364,7 @@ class CSSParser {
 			$sColorMode = $this->parseIdentifier(false);
 			$this->consumeWhiteSpace();
 			$this->consume('(');
-			$iLength = mb_strlen($sColorMode, $this->sCharset);
+			$iLength = $this->strlen($sColorMode, $this->sCharset);
 			for($i=0;$i<$iLength;$i++) {
 				$this->consumeWhiteSpace();
 				$aColor[$sColorMode[$i]] = $this->parseNumericValue(true);
@@ -395,27 +406,27 @@ class CSSParser {
 			return '';
 		}
 		if(is_string($iLength)) {
-			$iLength = mb_strlen($iLength, $this->sCharset);
+			$iLength = $this->strlen($iLength, $this->sCharset);
 		}
 		if(is_string($iOffset)) {
-			$iOffset = mb_strlen($iOffset, $this->sCharset);
+			$iOffset = $this->strlen($iOffset, $this->sCharset);
 		}
-		return mb_substr($this->sText, $this->iCurrentPosition+$iOffset, $iLength, $this->sCharset);
+		return $this->substr($this->sText, $this->iCurrentPosition+$iOffset, $iLength, $this->sCharset);
 	}
 	
 	private function consume($mValue = 1) {
 		if(is_string($mValue)) {
-			$iLength = mb_strlen($mValue, $this->sCharset);
-			if(mb_substr($this->sText, $this->iCurrentPosition, $iLength, $this->sCharset) !== $mValue) {
+			$iLength = $this->strlen($mValue, $this->sCharset);
+			if($this->substr($this->sText, $this->iCurrentPosition, $iLength, $this->sCharset) !== $mValue) {
 				throw new Exception("Expected $mValue, got ".$this->peek(5));
 			}
-			$this->iCurrentPosition += mb_strlen($mValue, $this->sCharset);
+			$this->iCurrentPosition += $this->strlen($mValue, $this->sCharset);
 			return $mValue;
 		} else {
 			if($this->iCurrentPosition+$mValue > $this->iLength) {
 				throw new Exception("Tried to consume $mValue chars, exceeded file end");
 			}
-			$sResult = mb_substr($this->sText, $this->iCurrentPosition, $mValue, $this->sCharset);
+			$sResult = $this->substr($this->sText, $this->iCurrentPosition, $mValue, $this->sCharset);
 			$this->iCurrentPosition += $mValue;
 			return $sResult;
 		}
@@ -459,7 +470,27 @@ class CSSParser {
 	}
 	
 	private function inputLeft() {
-		return mb_substr($this->sText, $this->iCurrentPosition, -1, $this->sCharset);
+		return $this->substr($this->sText, $this->iCurrentPosition, -1, $this->sCharset);
 	}
+
+    private function substr($string, $start, $length){
+        if($this->bUseMbFunctions) {
+            return mb_substr($string, $start, $length, $this->sCharset);
+        }
+        else {
+            return substr($string, $start, $length);
+        }
+    }
+
+    private function strlen($text)
+    {
+        if($this->bUseMbFunctions) {
+            return mb_strlen($text, $this->sCharset);
+        }
+        else {
+            return strlen($text);
+        }
+
+    }
 }
 
