@@ -30,7 +30,7 @@ class CSSParser {
 	
 	public function setCharset($sCharset) {
 		$this->sCharset = $sCharset;
-		$this->iLength = $this->strlen($this->sText, $this->sCharset);
+		$this->iLength = $this->strlen($this->sText);
 	}
 
 	public function getCharset() {
@@ -168,7 +168,7 @@ class CSSParser {
 				return $this->consume(1);
 			}
 			$sUnicode = $this->consumeExpression('/^[0-9a-fA-F]{1,6}/u');
-			if($this->strlen($sUnicode, $this->sCharset) < 6) {
+			if($this->strlen($sUnicode) < 6) {
 				//Consume whitespace after incomplete unicode escape
 				if(preg_match('/\\s/isSu', $this->peek())) {
 					if($this->comes('\r\n')) {
@@ -356,7 +356,7 @@ class CSSParser {
 		if($this->comes('#')) {
 			$this->consume('#');
 			$sValue = $this->parseIdentifier(false);
-			if($this->strlen($sValue, $this->sCharset) === 3) {
+			if($this->strlen($sValue) === 3) {
 				$sValue = $sValue[0].$sValue[0].$sValue[1].$sValue[1].$sValue[2].$sValue[2];
 			}
 			$aColor = array('r' => new CSSSize(intval($sValue[0].$sValue[1], 16), null, true), 'g' => new CSSSize(intval($sValue[2].$sValue[3], 16), null, true), 'b' => new CSSSize(intval($sValue[4].$sValue[5], 16), null, true));
@@ -364,7 +364,7 @@ class CSSParser {
 			$sColorMode = $this->parseIdentifier(false);
 			$this->consumeWhiteSpace();
 			$this->consume('(');
-			$iLength = $this->strlen($sColorMode, $this->sCharset);
+			$iLength = $this->strlen($sColorMode);
 			for($i=0;$i<$iLength;$i++) {
 				$this->consumeWhiteSpace();
 				$aColor[$sColorMode[$i]] = $this->parseNumericValue(true);
@@ -406,27 +406,27 @@ class CSSParser {
 			return '';
 		}
 		if(is_string($iLength)) {
-			$iLength = $this->strlen($iLength, $this->sCharset);
+			$iLength = $this->strlen($iLength);
 		}
 		if(is_string($iOffset)) {
-			$iOffset = $this->strlen($iOffset, $this->sCharset);
+			$iOffset = $this->strlen($iOffset);
 		}
-		return $this->substr($this->sText, $this->iCurrentPosition+$iOffset, $iLength, $this->sCharset);
+		return $this->substr($this->sText, $this->iCurrentPosition+$iOffset, $iLength);
 	}
 	
 	private function consume($mValue = 1) {
 		if(is_string($mValue)) {
-			$iLength = $this->strlen($mValue, $this->sCharset);
-			if($this->substr($this->sText, $this->iCurrentPosition, $iLength, $this->sCharset) !== $mValue) {
+			$iLength = $this->strlen($mValue);
+			if($this->substr($this->sText, $this->iCurrentPosition, $iLength) !== $mValue) {
 				throw new Exception("Expected $mValue, got ".$this->peek(5));
 			}
-			$this->iCurrentPosition += $this->strlen($mValue, $this->sCharset);
+			$this->iCurrentPosition += $this->strlen($mValue);
 			return $mValue;
 		} else {
 			if($this->iCurrentPosition+$mValue > $this->iLength) {
 				throw new Exception("Tried to consume $mValue chars, exceeded file end");
 			}
-			$sResult = $this->substr($this->sText, $this->iCurrentPosition, $mValue, $this->sCharset);
+			$sResult = $this->substr($this->sText, $this->iCurrentPosition, $mValue);
 			$this->iCurrentPosition += $mValue;
 			return $sResult;
 		}
@@ -470,7 +470,7 @@ class CSSParser {
 	}
 	
 	private function inputLeft() {
-		return $this->substr($this->sText, $this->iCurrentPosition, -1, $this->sCharset);
+		return $this->substr($this->sText, $this->iCurrentPosition, -1);
 	}
 
     private function substr($string, $start, $length){
