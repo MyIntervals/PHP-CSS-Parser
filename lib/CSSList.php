@@ -110,7 +110,7 @@ abstract class CSSList {
      * Retrieve a selector by id or name.
      *
      * @param $selector
-     * @return bool
+     * @return CSSList
      */
     public function getRuleBySelector($selector)
     {
