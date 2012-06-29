@@ -20,7 +20,7 @@ class CSSParser {
      *
      * @var bool
      */
-    private $bUseMbFunctions = FALSE;
+    private $bUseMbFunctions = TRUE;
 	
 	public function __construct($sText, $sDefaultCharset = 'utf-8') {
 		$this->sText = $sText;
