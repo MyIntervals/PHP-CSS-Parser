@@ -77,7 +77,11 @@ class CSSAtRule extends CSSRuleSet {
 		parent::__construct();
 		$this->sType = $sType;
 	}
-	
+
+    public function getType() {
+        return $this->sType;
+    }
+
 	public function __toString() {
 		$sResult = "@{$this->sType} {";
 		$sResult .= parent::__toString();
