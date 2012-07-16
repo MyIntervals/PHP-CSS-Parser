@@ -5,78 +5,84 @@ A Parser for CSS Files written in PHP. Allows extraction of CSS files into a dat
 
 ## Usage
 
-### Installation
+### Installation using composer
 
-Include the `CSSParser.php` file somewhere in your code using `require_once` (or `include_once`, if you prefer), the given `lib` folder needs to exist next to the file.
+Add php-css-parser to your composer.json
+
+        {
+            "require": {
+                "sabberworm/php-css-parser": "*"
+            }
+        }
 
 ### Extraction
 
 To use the CSS Parser, create a new instance. The constructor takes the following form:
 
-	new CSSParser($sCssContents, $sCharset = 'utf-8');
+	new Sabberworm\CSS\Parser($sText, $sDefaultCharset = 'utf-8');
 
 The charset is used only if no @charset declaration is found in the CSS file.
 
 To read a file, for example, you’d do the following:
 
-	$oCssParser = new CSSParser(file_get_contents('somefile.css'));
+	$oCssParser = new Sabberworm\CSS\Parser(file_get_contents('somefile.css'));
 	$oCssDocument = $oCssParser->parse();
 
 The resulting CSS document structure can be manipulated prior to being output.
 
 ### Manipulation
 
-The resulting data structure consists mainly of five basic types: `CSSList`, `CSSRuleSet`, `CSSRule`, `CSSSelector` and `CSSValue`. There are two additional types used: `CSSImport` and `CSSCharset` which you won’t use often.
+The resulting data structure consists mainly of five basic types: `CSSList`, `RuleSet`, `Rule`, `Selector` and `Value`. There are two additional types used: `Import` and `Charset` which you won’t use often.
 
 #### CSSList
 
 `CSSList` represents a generic CSS container, most likely containing declaration blocks (rule sets with a selector) but it may also contain at-rules, charset declarations, etc. `CSSList` has the following concrete subtypes:
 
-* `CSSDocument` – representing the root of a CSS file.
-* `CSSMediaQuery` – represents a subsection of a CSSList that only applies to a output device matching the contained media query.
+* `Document` – representing the root of a CSS file.
+* `MediaQuery` – represents a subsection of a CSSList that only applies to a output device matching the contained media query.
 
-#### CSSRuleSet
+#### RuleSet
 
-`CSSRuleSet` is a container for individual rules. The most common form of a rule set is one constrained by a selector. The following concrete subtypes exist:
+`RuleSet` is a container for individual rules. The most common form of a rule set is one constrained by a selector. The following concrete subtypes exist:
 
-* `CSSAtRule` – for generic at-rules which do not match the ones specifically mentioned like @import, @charset or @media. A common example for this is @font-face.
-* `CSSDeclarationBlock` – a RuleSet constrained by a `CSSSelector; contains an array of selector objects (comma-separated in the CSS) as well as the rules to be applied to the matching elements.
+* `AtRule` – for generic at-rules which do not match the ones specifically mentioned like @import, @charset or @media. A common example for this is @font-face.
+* `DeclarationBlock` – a RuleSet constrained by a `Selector`; contains an array of selector objects (comma-separated in the CSS) as well as the rules to be applied to the matching elements.
 
-Note: A `CSSList` can contain other `CSSList`s (and `CSSImport`s as well as a `CSSCharset`) while a `CSSRuleSet` can only contain `CSSRule`s.
+Note: A `CSSList` can contain other `CSSList`s (and `Import`s as well as a `Charset`) while a `RuleSet` can only contain `Rule`s.
 
-#### CSSRule
+#### Rule
 
-`CSSRule`s just have a key (the rule) and multiple values (the part after the colon in the CSS file). This means the `values` attribute is an array consisting of arrays. The inner level of arrays is comma-separated in the CSS file while the outer level is whitespace-separated.
+`Rule`s just have a key (the rule) and multiple values (the part after the colon in the CSS file). This means the `values` attribute is an array consisting of arrays. The inner level of arrays is comma-separated in the CSS file while the outer level is whitespace-separated.
 
-#### CSSValue
+#### Value
 
-`CSSValue` is an abstract class that only defines the `__toString` method. The concrete subclasses are:
+`Value` is an abstract class that only defines the `__toString` method. The concrete subclasses are:
 
-* `CSSSize` – consists of a numeric `size` value and a unit.
-* `CSSColor` – colors can be input in the form #rrggbb, #rgb or schema(val1, val2, …) but are alwas stored as an array of ('s' => val1, 'c' => val2, 'h' => val3, …) and output in the second form.
-* `CSSString` – this is just a wrapper for quoted strings to distinguish them from keywords; always output with double quotes.
-* `CSSURL` – URLs in CSS; always output in URL("") notation.
+* `Size` – consists of a numeric `size` value and a unit.
+* `Color` – colors can be input in the form #rrggbb, #rgb or schema(val1, val2, …) but are alwas stored as an array of ('s' => val1, 'c' => val2, 'h' => val3, …) and output in the second form.
+* `String` – this is just a wrapper for quoted strings to distinguish them from keywords; always output with double quotes.
+* `URL` – URLs in CSS; always output in URL("") notation.
 
-To access the items stored in a `CSSList` – like the document you got back when calling `$oCssParser->parse()` –, use `getContents()`, then iterate over that collection and use instanceof to check whether you’re dealing with another `CSSList`, a `CSSRuleSet`, a `CSSImport` or a `CSSCharset`.
+To access the items stored in a `CSSList` – like the document you got back when calling `$oCssParser->parse()` –, use `getContents()`, then iterate over that collection and use instanceof to check whether you’re dealing with another `CSSList`, a `RuleSet`, a `Import` or a `Charset`.
 
 To append a new item (selector, media query, etc.) to an existing `CSSList`, construct it using the constructor for this class and use the `append($oItem)` method.
 
-If you want to manipulate a `CSSRuleSet`, use the methods `addRule(CSSRule $oRule)`, `getRules()` and `removeRule($mRule)` (which accepts either a CSSRule instance or a rule name; optionally suffixed by a dash to remove all related rules).
+If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $oRule)`, `getRules()` and `removeRule($mRule)` (which accepts either a Rule instance or a rule name; optionally suffixed by a dash to remove all related rules).
 
 #### Convenience methods
 
-There are a few convenience methods on CSSDocument to ease finding, manipulating and deleting rules:
+There are a few convenience methods on Document to ease finding, manipulating and deleting rules:
 
 * `getAllDeclarationBlocks()` – does what it says; no matter how deeply nested your selectors are. Aliased as `getAllSelectors()`.
 * `getAllRuleSets()` – does what it says; no matter how deeply nested your rule sets are.
-* `getAllValues()` – finds all `CSSValue` objects inside `CSSRule`s.
+* `getAllValues()` – finds all `Value` objects inside `Rule`s.
 
 ### Use cases
 
-#### Use `CSSParser` to prepend an id to all selectors
+#### Use `Parser` to prepend an id to all selectors
 
 	$sMyId = "#my_id";
-	$oParser = new CSSParser($sCssContents);
+	$oParser = new Sabberworm\CSS\Parser($sText);
 	$oCss = $oParser->parse();
 	foreach($oCss->getAllDeclarationBlocks() as $oBlock) {
 		foreach($oBlock->getSelectors() as $oSelector) {
@@ -87,7 +93,7 @@ There are a few convenience methods on CSSDocument to ease finding, manipulating
 	
 #### Shrink all absolute sizes to half
 
-	$oParser = new CSSParser($sCssContents);
+	$oParser = new Sabberworm\CSS\Parser($sText);
 	$oCss = $oParser->parse();
 	foreach($oCss->getAllValues() as $mValue) {
 		if($mValue instanceof CSSSize && !$mValue->isRelative()) {
@@ -97,7 +103,7 @@ There are a few convenience methods on CSSDocument to ease finding, manipulating
 
 #### Remove unwanted rules
 
-	$oParser = new CSSParser($sCssContents);
+	$oParser = new Sabberworm\CSS\Parser($sText);
 	$oCss = $oParser->parse();
 	foreach($oCss->getAllRuleSets() as $oRuleSet) {
 		$oRuleSet->removeRule('font-'); //Note that the added dash will make this remove all rules starting with font- (like font-size, font-weight, etc.) as well as a potential font-rule
@@ -108,7 +114,7 @@ There are a few convenience methods on CSSDocument to ease finding, manipulating
 
 To output the entire CSS document into a variable, just use `->__toString()`:
 
-	$oCssParser = new CSSParser(file_get_contents('somefile.css'));
+	$oCssParser = new Sabberworm\CSS\Parser(file_get_contents('somefile.css'));
 	$oCssDocument = $oCssParser->parse();
 	print $oCssDocument->__toString();
 
@@ -352,7 +358,7 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 * More convenience methods [like `selectorsWithElement($sId/Class/TagName)`, `removeSelector($oSelector)`, `attributesOfType($sType)`, `removeAttributesOfType($sType)`]
 * Options for output (compact, verbose, etc.)
 * Support for @namespace
-* Named color support (using `CSSColor` instead of an anonymous string literal)
+* Named color support (using `Color` instead of an anonymous string literal)
 * Test suite
 * Adopt lenient parsing rules
 * Support for @-rules (other than @media) that are CSSLists (to support @-webkit-keyframes)
