@@ -6,7 +6,7 @@
     "homepage": "http://www.sabberworm.com/blog/2010/6/10/php-css-parser",
     "license": "MIT",
     "authors": [
-        {"name": "Raphael Schweikert"},
+        {"name": "Raphael Schweikert"}
     ],
     "require": {
         "php": ">=5.3.2"
