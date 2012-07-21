@@ -7,22 +7,22 @@ namespace Sabberworm\CSS\RuleSet;
  */
 class AtRule extends RuleSet {
 
-    private $sType;
+	private $sType;
 
-    public function __construct($sType) {
-        parent::__construct();
-        $this->sType = $sType;
-    }
+	public function __construct($sType) {
+		parent::__construct();
+		$this->sType = $sType;
+	}
 
-    public function getType() {
-        return $this->sType;
-    }
+	public function getType() {
+		return $this->sType;
+	}
 
-    public function __toString() {
-        $sResult = "@{$this->sType} {";
-        $sResult .= parent::__toString();
-        $sResult .= '}';
-        return $sResult;
-    }
+	public function __toString() {
+		$sResult = "@{$this->sType} {";
+		$sResult .= parent::__toString();
+		$sResult .= '}';
+		return $sResult;
+	}
 
 }

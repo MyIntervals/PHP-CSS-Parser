@@ -7,26 +7,26 @@ namespace Sabberworm\CSS\CSSList;
  */
 class MediaQuery extends CSSList {
 
-    private $sQuery;
+	private $sQuery;
 
-    public function __construct() {
-        parent::__construct();
-        $this->sQuery = null;
-    }
+	public function __construct() {
+		parent::__construct();
+		$this->sQuery = null;
+	}
 
-    public function setQuery($sQuery) {
-        $this->sQuery = $sQuery;
-    }
+	public function setQuery($sQuery) {
+		$this->sQuery = $sQuery;
+	}
 
-    public function getQuery() {
-        return $this->sQuery;
-    }
+	public function getQuery() {
+		return $this->sQuery;
+	}
 
-    public function __toString() {
-        $sResult = "@media {$this->sQuery} {";
-        $sResult .= parent::__toString();
-        $sResult .= '}';
-        return $sResult;
-    }
+	public function __toString() {
+		$sResult = "@media {$this->sQuery} {";
+		$sResult .= parent::__toString();
+		$sResult .= '}';
+		return $sResult;
+	}
 
 }
