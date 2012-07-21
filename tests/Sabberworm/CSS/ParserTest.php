@@ -17,7 +17,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
                 if (strpos($sFileName, '.') === 0) {
                     continue;
                 }
-                if (strrpos($sFileName, '.') !== strlen($sFileName) - strlen('.')) {
+                if (strrpos($sFileName, '.css') !== strlen($sFileName) - strlen('.css')) {
                     continue;
                 }
                 if (strpos($sFileName, '-') === 0) {
