@@ -244,8 +244,9 @@ class Parser {
 			}
 			$oRule->setIsImportant(true);
 		}
-		if ($this->comes(';')) {
+		while ($this->comes(';')) {
 			$this->consume(';');
+			$this->consumeWhiteSpace();
 		}
 		return $oRule;
 	}
