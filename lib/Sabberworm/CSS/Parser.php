@@ -5,6 +5,7 @@ namespace Sabberworm\CSS;
 use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\CSSList\MediaQuery;
+use Sabberworm\CSS\CSSList\Keyframe;
 use Sabberworm\CSS\Property\Import;
 use Sabberworm\CSS\Property\Charset;
 use Sabberworm\CSS\RuleSet\AtRule;
@@ -88,7 +89,16 @@ class Parser {
 		$this->consume('@');
 		$sIdentifier = $this->parseIdentifier();
 		$this->consumeWhiteSpace();
-		if ($sIdentifier === 'media') {
+		if($sIdentifier == 'keyframes' || $sIdentifier == '-webkit-keyframes' || $sIdentifier == '-moz-keyframes' || $sIdentifier == '-o-keyframes') {
+			$oResult = new KeyFrame();
+			$oResult->setVendorKeyFrame($sIdentifier);
+			$oResult->setAnimationName(trim($this->consumeUntil('{')));
+			$this->consume('{');
+			$this->consumeWhiteSpace();
+			$this->parseList($oResult);
+			return $oResult;
+
+		} else if ($sIdentifier === 'media') {
 			$oResult = new MediaQuery();
 			$oResult->setQuery(trim($this->consumeUntil('{')));
 			$this->consume('{');
