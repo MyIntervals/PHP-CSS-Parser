@@ -2,6 +2,8 @@
 
 namespace Sabberworm\CSS;
 
+use Sabberworm\CSS\Property\CssNamespace;
+
 use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\CSSList\MediaQuery;
@@ -110,6 +112,20 @@ class Parser {
 			$this->consume(';');
 			$this->setCharset($sCharset->getString());
 			return new Charset($sCharset);
+		} else if ($sIdentifier === 'namespace') {
+			$this->consumeWhiteSpace();
+
+			if ($this->comes('"')) {
+				$prefix = "";
+				$namespace = $this->parseStringValue()->getString();
+				
+			}else{
+				$prefix = $this->parseIdentifier(false);
+				$this->consumeWhiteSpace();
+				$namespace = $this->parseStringValue()->getString();
+			}
+			$this->consume(';');
+			return new CssNamespace($namespace, $prefix);			
 		} else {
 			//Unknown other at rule (font-face or such)
 			$this->consume('{');
