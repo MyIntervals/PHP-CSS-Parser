@@ -2,6 +2,8 @@
 
 namespace Sabberworm\CSS;
 
+use Sabberworm\CSS\Property\CssNamespace;
+
 use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\CSSList\MediaQuery;
