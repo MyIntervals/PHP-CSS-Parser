@@ -89,7 +89,7 @@ class Parser {
 		$this->consume('@');
 		$sIdentifier = $this->parseIdentifier();
 		$this->consumeWhiteSpace();
-		if($sIdentifier == 'keyframes' || $sIdentifier == '-webkit-keyframes' || $sIdentifier == '-moz-keyframes' || $sIdentifier == '-o-keyframes') {
+		if($sIdentifier == '-webkit-keyframes' || $sIdentifier == '-moz-keyframes' || $sIdentifier == '-ms-keyframes' || $sIdentifier == '-o-keyframes' || $sIdentifier == 'keyframes') {
 			$oResult = new KeyFrame();
 			$oResult->setVendorKeyFrame($sIdentifier);
 			$oResult->setAnimationName(trim($this->consumeUntil('{')));
