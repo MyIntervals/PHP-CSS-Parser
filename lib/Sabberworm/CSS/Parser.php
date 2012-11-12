@@ -89,16 +89,7 @@ class Parser {
 		$this->consume('@');
 		$sIdentifier = $this->parseIdentifier();
 		$this->consumeWhiteSpace();
-		if($sIdentifier == '-webkit-keyframes' || $sIdentifier == '-moz-keyframes' || $sIdentifier == '-ms-keyframes' || $sIdentifier == '-o-keyframes' || $sIdentifier == 'keyframes') {
-			$oResult = new KeyFrame();
-			$oResult->setVendorKeyFrame($sIdentifier);
-			$oResult->setAnimationName(trim($this->consumeUntil('{')));
-			$this->consume('{');
-			$this->consumeWhiteSpace();
-			$this->parseList($oResult);
-			return $oResult;
-
-		} else if ($sIdentifier === 'media') {
+		if ($sIdentifier === 'media') {
 			$oResult = new MediaQuery();
 			$oResult->setQuery(trim($this->consumeUntil('{')));
 			$this->consume('{');
@@ -120,6 +111,14 @@ class Parser {
 			$this->consume(';');
 			$this->setCharset($sCharset->getString());
 			return new Charset($sCharset);
+		} else if(preg_match('/^(-\\w+-)?keyframes$/', $sIdentifier) === 1) {
+			$oResult = new KeyFrame();
+			$oResult->setVendorKeyFrame($sIdentifier);
+			$oResult->setAnimationName(trim($this->consumeUntil('{')));
+			$this->consume('{');
+			$this->consumeWhiteSpace();
+			$this->parseList($oResult);
+			return $oResult;
 		} else {
 			//Unknown other at rule (font-face or such)
 			$this->consume('{');
