@@ -362,11 +362,10 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 
 * More convenience methods [like `selectorsWithElement($sId/Class/TagName)`, `removeSelector($oSelector)`, `attributesOfType($sType)`, `removeAttributesOfType($sType)`]
 * Options for output (compact, verbose, etc.)
-* Support for @namespace
 * Named color support (using `Color` instead of an anonymous string literal)
 * Test suite
 * Adopt lenient parsing rules
-* Support for @-rules (other than @media) that are CSSLists (to support @-webkit-keyframes)
+* Support for @-rules that are CSSLists (other than @media and @keyframes).
 
 ## Contributors/Thanks to
 
@@ -375,6 +374,7 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 * [docteurklein](https://github.com/docteurklein) for output formatting and `CSSList->remove()` inspiration.
 * [nicolopignatelli](https://github.com/nicolopignatelli) for PSR-0 compatibility.
 * [diegoembarcadero](https://github.com/diegoembarcadero) for keyframe at-rule parsing.
+* [goetas](https://github.com/goetas) for @namespace at-rule support.
 
 ## Misc
 
