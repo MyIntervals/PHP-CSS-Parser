@@ -8,6 +8,7 @@ use Sabberworm\CSS\CSSList\MediaQuery;
 use Sabberworm\CSS\CSSList\Keyframe;
 use Sabberworm\CSS\Property\Import;
 use Sabberworm\CSS\Property\Charset;
+use Sabberworm\CSS\Property\CSSNamespace;
 use Sabberworm\CSS\RuleSet\AtRule;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Value\CSSFunction;
@@ -119,6 +120,21 @@ class Parser {
 			$this->consumeWhiteSpace();
 			$this->parseList($oResult);
 			return $oResult;
+		} else if ($sIdentifier === 'namespace') {
+			$sPrefix = null;
+			$mUrl = $this->parsePrimitiveValue();
+			if(!$this->comes(';')) {
+				$sPrefix = $mUrl;
+				$mUrl = $this->parsePrimitiveValue();
+			}
+			$this->consume(';');
+			if($sPrefix !== null && !is_string($sPrefix)) {
+				throw new \Exception('Wrong namespace prefix '.$sPrefix);
+			}
+			if(!($mUrl instanceof String || $mUrl instanceof URL)) {
+				throw new \Exception('Wrong namespace url of invalid type '.$mUrl);
+			}
+			return new CSSNamespace($mUrl, $sPrefix);
 		} else {
 			//Unknown other at rule (font-face or such)
 			$this->consume('{');
