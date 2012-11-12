@@ -5,7 +5,7 @@ namespace Sabberworm\CSS\CSSList;
 /**
  * A CSSList consisting of the CSSList and CSSList objects found in a @media query.
  */
-class MediaQuery extends CSSList {
+class MediaQuery extends CSSBlockList {
 
 	private $sQuery;
 

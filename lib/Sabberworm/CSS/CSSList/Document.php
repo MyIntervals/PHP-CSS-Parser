@@ -5,7 +5,7 @@ namespace Sabberworm\CSS\CSSList;
 /**
  * The root CSSList of a parsed file. Contains all top-level css contents, mostly declaration blocks, but also any @-rules encountered.
  */
-class Document extends CSSList {
+class Document extends CSSBlockList {
 
     /**
      * Gets all DeclarationBlock objects recursively.
