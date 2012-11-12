@@ -5,6 +5,7 @@ namespace Sabberworm\CSS;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\RuleSet\AtRule;
+use Sabberworm\CSS\CSSList\KeyFrame;
 
 class ParserTest extends \PHPUnit_Framework_TestCase {
 
@@ -149,14 +150,24 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 
 	function testManipulation() {
 		$oDoc = $this->parsedStructureForFile('atrules');
-		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}html, body {font-size: 1.6em;}' . "\n", $oDoc->__toString());
+		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}html, body {font-size: 1.6em;}
+@keyframes mymove {from {top: 0px;}
+to {top: 200px;}
+}@-moz-keyframes some-move {from {top: 0px;}
+to {top: 200px;}
+}', $oDoc->__toString());
 		foreach ($oDoc->getAllDeclarationBlocks() as $oBlock) {
 			foreach ($oBlock->getSelectors() as $oSelector) {
 				//Loop over all selector parts (the comma-separated strings in a selector) and prepend the id
 				$oSelector->setSelector('#my_id ' . $oSelector->getSelector());
 			}
 		}
-		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}#my_id html, #my_id body {font-size: 1.6em;}' . "\n", $oDoc->__toString());
+		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}#my_id html, #my_id body {font-size: 1.6em;}
+@keyframes mymove {from {top: 0px;}
+to {top: 200px;}
+}@-moz-keyframes some-move {from {top: 0px;}
+to {top: 200px;}
+}', $oDoc->__toString());
 
 		$oDoc = $this->parsedStructureForFile('values');
 		$this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;font-size: 10px;color: red !important;}
@@ -252,9 +263,9 @@ body {color: green;}' . "\n", $oDoc->__toString());
 	function testListValueRemoval() {
 		$oDoc = $this->parsedStructureForFile('atrules');
 		foreach ($oDoc->getContents() as $oItem) {
-			if ($oItem instanceof AtRule) {
+			if ($oItem instanceof AtRule || $oItem instanceof KeyFrame) {
 				$oDoc->remove($oItem);
-				break;
+				continue;
 			}
 		}
 		$this->assertSame('@charset "utf-8";html, body {font-size: 1.6em;}' . "\n", $oDoc->__toString());

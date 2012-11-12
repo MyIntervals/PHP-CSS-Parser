@@ -8,3 +8,13 @@
 html, body {
     font-size: 1.6em
 }
+
+@keyframes mymove {
+	from { top: 0px; }
+	to { top: 200px; }
+}
+
+@-moz-keyframes some-move {
+	from { top: 0px; }
+	to { top: 200px; }
+}
