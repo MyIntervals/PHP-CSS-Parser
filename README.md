@@ -374,6 +374,7 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 * [GaryJones](https://github.com/GaryJones) for lots of input and [http://css-specificity.info/](http://css-specificity.info/).
 * [docteurklein](https://github.com/docteurklein) for output formatting and `CSSList->remove()` inspiration.
 * [nicolopignatelli](https://github.com/nicolopignatelli) for PSR-0 compatibility.
+* [diegoembarcadero](https://github.com/diegoembarcadero) for keyframe at-rule parsing.
 
 ## Misc
 
