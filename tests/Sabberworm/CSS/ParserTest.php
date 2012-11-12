@@ -254,6 +254,13 @@ body {color: green;}' . "\n", $oDoc->__toString());
 		$this->assertSame($sExpected, $oDoc->__toString());
 	}
 
+	function testNamespaces() {
+		$oDoc = $this->parsedStructureForFile('namespaces');
+		$sExpected = '@namespace toto "http://toto.example.org";@namespace "http://example.com/foo";@namespace foo url("http://www.example.com/");@namespace foo url("http://www.example.com/");foo|test {gaga: 1;}
+|test {gaga: 2;}' . "\n";
+		$this->assertSame($sExpected, $oDoc->__toString());
+	}
+
 	function testPrefixedGradient() {
 		$oDoc = $this->parsedStructureForFile('webkit');
 		$sExpected = '.test {background: -webkit-linear-gradient(top right,white,black);}' . "\n";
