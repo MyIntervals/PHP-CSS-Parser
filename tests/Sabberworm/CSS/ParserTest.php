@@ -260,6 +260,12 @@ body {color: green;}' . "\n", $oDoc->__toString());
 |test {gaga: 2;}' . "\n";
 		$this->assertSame($sExpected, $oDoc->__toString());
 	}
+	
+	function testInnerColors() {
+		$oDoc = $this->parsedStructureForFile('inner-color');
+		$sExpected = 'test {background: -webkit-gradient(linear,0 0,0 bottom,from(rgb(0,108,173)),to(rgb(0,159,249)));}' . "\n";
+		$this->assertSame($sExpected, $oDoc->__toString());
+	}
 
 	function testPrefixedGradient() {
 		$oDoc = $this->parsedStructureForFile('webkit');
