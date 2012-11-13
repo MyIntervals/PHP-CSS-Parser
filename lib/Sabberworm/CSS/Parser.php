@@ -156,7 +156,8 @@ class Parser {
 		}
 		if ($bAllowFunctions && $this->comes('(')) {
 			$this->consume('(');
-			$sResult = new CSSFunction($sResult, $this->parseValue(array('=', ',', ' ')));
+			$aArguments = $this->parseValue(array('=', ' ', ','));
+			$sResult = new CSSFunction($sResult, $aArguments);
 			$this->consume(')');
 		}
 		return $sResult;
@@ -279,6 +280,7 @@ class Parser {
 	private function parseValue($aListDelimiters) {
 		$aStack = array();
 		$this->consumeWhiteSpace();
+		//Build a list of delimiters and parsed values
 		while (!($this->comes('}') || $this->comes(';') || $this->comes('!') || $this->comes(')'))) {
 			if (count($aStack) > 0) {
 				$bFoundDelimiter = false;
@@ -298,6 +300,7 @@ class Parser {
 			array_push($aStack, $this->parsePrimitiveValue());
 			$this->consumeWhiteSpace();
 		}
+		//Convert the list to list objects
 		foreach ($aListDelimiters as $sDelimiter) {
 			if (count($aStack) === 1) {
 				return $aStack[0];
