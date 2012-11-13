@@ -8,9 +8,7 @@ abstract class ValueList extends Value {
 	protected $sSeparator;
 
 	public function __construct($aComponents = array(), $sSeparator = ',') {
-		if ($aComponents instanceof ValueList && $aComponents->getListSeparator() === $sSeparator) {
-			$aComponents = $aComponents->getListComponents();
-		} else if (!is_array($aComponents)) {
+		if (!is_array($aComponents)) {
 			$aComponents = array($aComponents);
 		}
 		$this->aComponents = $aComponents;
