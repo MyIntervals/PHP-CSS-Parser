@@ -5,7 +5,7 @@ namespace Sabberworm\CSS;
 use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\CSSList\MediaQuery;
-use Sabberworm\CSS\CSSList\Keyframe;
+use Sabberworm\CSS\CSSList\KeyFrame;
 use Sabberworm\CSS\Property\Import;
 use Sabberworm\CSS\Property\Charset;
 use Sabberworm\CSS\Property\CSSNamespace;
