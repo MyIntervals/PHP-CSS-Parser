@@ -90,7 +90,7 @@ class DeclarationBlock extends RuleSet {
 		$aBorderSizes = array(
 			'thin', 'medium', 'thick'
 		);
-		$aRules = $this->getRules();
+		$aRules = $this->getRulesAssoc();
 		foreach ($aBorderRules as $sBorderRule) {
 			if (!isset($aRules[$sBorderRule]))
 				continue;
@@ -141,7 +141,7 @@ class DeclarationBlock extends RuleSet {
 			'border-style' => 'border-%s-style',
 			'border-width' => 'border-%s-width'
 		);
-		$aRules = $this->getRules();
+		$aRules = $this->getRulesAssoc();
 		foreach ($aExpansions as $sProperty => $sExpanded) {
 			if (!isset($aRules[$sProperty]))
 				continue;
@@ -190,7 +190,7 @@ class DeclarationBlock extends RuleSet {
 	 * into their constituent parts.
 	 * */
 	public function expandFontShorthand() {
-		$aRules = $this->getRules();
+		$aRules = $this->getRulesAssoc();
 		if (!isset($aRules['font']))
 			return;
 		$oRule = $aRules['font'];
@@ -256,7 +256,7 @@ class DeclarationBlock extends RuleSet {
 	 * */
 
 	public function expandBackgroundShorthand() {
-		$aRules = $this->getRules();
+		$aRules = $this->getRulesAssoc();
 		if (!isset($aRules['background']))
 			return;
 		$oRule = $aRules['background'];
@@ -331,7 +331,7 @@ class DeclarationBlock extends RuleSet {
 		$aListStylePositions = array(
 			'inside', 'outside'
 		);
-		$aRules = $this->getRules();
+		$aRules = $this->getRulesAssoc();
 		if (!isset($aRules['list-style']))
 			return;
 		$oRule = $aRules['list-style'];
@@ -374,7 +374,7 @@ class DeclarationBlock extends RuleSet {
 	}
 
 	public function createShorthandProperties(array $aProperties, $sShorthand) {
-		$aRules = $this->getRules();
+		$aRules = $this->getRulesAssoc();
 		$aNewValues = array();
 		foreach ($aProperties as $sProperty) {
 			if (!isset($aRules[$sProperty]))
@@ -444,7 +444,7 @@ class DeclarationBlock extends RuleSet {
 			'border-style' => 'border-%s-style',
 			'border-width' => 'border-%s-width'
 		);
-		$aRules = $this->getRules();
+		$aRules = $this->getRulesAssoc();
 		foreach ($aExpansions as $sProperty => $sExpanded) {
 			$aFoldable = array();
 			foreach ($aRules as $sRuleName => $oRule) {
@@ -509,7 +509,7 @@ class DeclarationBlock extends RuleSet {
 		$aFontProperties = array(
 			'font-style', 'font-variant', 'font-weight', 'font-size', 'line-height', 'font-family'
 		);
-		$aRules = $this->getRules();
+		$aRules = $this->getRulesAssoc();
 		if (!isset($aRules['font-size']) || !isset($aRules['font-family'])) {
 			return;
 		}

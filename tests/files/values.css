@@ -3,6 +3,8 @@
 	font-family: Verdana, Helvetica, "Gill Sans", sans-serif;
 	font-size: 10px;
 	color: red !important;
+	background-color: green;
+	background-color: rgba(0,128,0,0.7);
 }
 
 body {

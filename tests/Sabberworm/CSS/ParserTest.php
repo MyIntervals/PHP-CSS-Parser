@@ -49,16 +49,16 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 			$sSelector = $sSelector[0]->getSelector();
 			if ($sSelector == '#mine') {
 				$aColorRule = $oRuleSet->getRules('color');
-				$aValues = $aColorRule['color']->getValues();
+				$aValues = $aColorRule[0]->getValues();
 				$this->assertSame('red', $aValues[0][0]);
 				$aColorRule = $oRuleSet->getRules('background-');
-				$aValues = $aColorRule['background-color']->getValues();
+				$aValues = $aColorRule[0]->getValues();
 				$this->assertEquals(array('r' => new Size(35.0, null, true), 'g' => new Size(35.0, null, true), 'b' => new Size(35.0, null, true)), $aValues[0][0]->getColor());
 				$aColorRule = $oRuleSet->getRules('border-color');
-				$aValues = $aColorRule['border-color']->getValues();
+				$aValues = $aColorRule[0]->getValues();
 				$this->assertEquals(array('r' => new Size(10.0, null, true), 'g' => new Size(100.0, null, true), 'b' => new Size(230.0, null, true), 'a' => new Size(0.3, null, true)), $aValues[0][0]->getColor());
 				$aColorRule = $oRuleSet->getRules('outline-color');
-				$aValues = $aColorRule['outline-color']->getValues();
+				$aValues = $aColorRule[0]->getValues();
 				$this->assertEquals(array('r' => new Size(34.0, null, true), 'g' => new Size(34.0, null, true), 'b' => new Size(34.0, null, true)), $aValues[0][0]->getColor());
 			}
 		}
@@ -81,7 +81,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 				continue;
 			}
 			$aContentRules = $oRuleSet->getRules('content');
-			$aContents = $aContentRules['content']->getValues();
+			$aContents = $aContentRules[0]->getValues();
 			$sString = $aContents[0][0]->__toString();
 			if ($sSelector == '.test-1') {
 				$this->assertSame('" "', $sString);
@@ -170,13 +170,37 @@ to {top: 200px;}
 }', $oDoc->__toString());
 
 		$oDoc = $this->parsedStructureForFile('values');
-		$this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;font-size: 10px;color: red !important;}
+		$this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;font-size: 10px;color: red !important;background-color: green;background-color: rgba(0,128,0,0.7);}
 body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}' . "\n", $oDoc->__toString());
 		foreach ($oDoc->getAllRuleSets() as $oRuleSet) {
 			$oRuleSet->removeRule('font-');
 		}
+		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;background-color: green;background-color: rgba(0,128,0,0.7);}
+body {color: green;}' . "\n", $oDoc->__toString());
+		foreach ($oDoc->getAllRuleSets() as $oRuleSet) {
+			$oRuleSet->removeRule('background-');
+		}
 		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;}
 body {color: green;}' . "\n", $oDoc->__toString());
+	}
+	
+	function testRuleGetters() {
+		$oDoc = $this->parsedStructureForFile('values');
+		$aBlocks = $oDoc->getAllDeclarationBlocks();
+		$oHeaderBlock = $aBlocks[0];
+		$oBodyBlock = $aBlocks[1];
+		$aHeaderRules = $oHeaderBlock->getRules('background-');
+		$this->assertSame(2, count($aHeaderRules));
+		$this->assertSame('background-color', $aHeaderRules[0]->getRule());
+		$this->assertSame('background-color', $aHeaderRules[1]->getRule());
+		$aHeaderRules = $oHeaderBlock->getRulesAssoc('background-');
+		$this->assertSame(1, count($aHeaderRules));
+		$this->assertSame(true, $aHeaderRules['background-color']->getValue() instanceof \Sabberworm\CSS\Value\Color);
+		$this->assertSame('rgba', $aHeaderRules['background-color']->getValue()->getColorDescription());
+		$oHeaderBlock->removeRule($aHeaderRules['background-color']);
+		$aHeaderRules = $oHeaderBlock->getRules('background-');
+		$this->assertSame(1, count($aHeaderRules));
+		$this->assertSame('green', $aHeaderRules[0]->getValue());
 	}
 
 	function testSlashedValues() {
@@ -189,7 +213,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 		}
 		foreach ($oDoc->getAllDeclarationBlocks() as $oBlock) {
 			$oRule = $oBlock->getRules('font');
-			$oRule = $oRule['font'];
+			$oRule = $oRule[0];
 			$oSpaceList = $oRule->getValue();
 			$this->assertEquals(' ', $oSpaceList->getListSeparator());
 			$oSlashList = $oSpaceList->getListComponents();
@@ -198,7 +222,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 			$this->assertEquals(',', $oCommaList->getListSeparator());
 			$this->assertEquals('/', $oSlashList->getListSeparator());
 			$oRule = $oBlock->getRules('border-radius');
-			$oRule = $oRule['border-radius'];
+			$oRule = $oRule[0];
 			$oSlashList = $oRule->getValue();
 			$this->assertEquals('/', $oSlashList->getListSeparator());
 			$oSpaceList1 = $oSlashList->getListComponents();
