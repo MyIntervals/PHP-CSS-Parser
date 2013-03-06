@@ -249,7 +249,23 @@ class Parser {
 			$this->consumeWhiteSpace();
 		}
 		while (!$this->comes('}')) {
-			$oRuleSet->addRule($this->parseRule());
+			$oRule = null;
+			if($this->oParserSettings->bLenientParsing) {
+				try {
+					$oRule = $this->parseRule();
+				} catch (UnexpectedTokenException $e) {
+					$this->consumeUntil(array("\n", ";"), true);
+					$this->consumeWhiteSpace();
+					while ($this->comes(';')) {
+						$this->consume(';');
+					}
+				}
+			} else {
+				$oRule = $this->parseRule();
+			}
+			if($oRule) {
+				$oRuleSet->addRule($oRule);
+			}
 			$this->consumeWhiteSpace();
 		}
 		$this->consume('}');
@@ -506,10 +522,20 @@ class Parser {
 		return $this->iCurrentPosition >= $this->iLength;
 	}
 
-	private function consumeUntil($sEnd) {
-		$iEndPos = mb_strpos($this->sText, $sEnd, $this->iCurrentPosition, $this->sCharset);
-		if ($iEndPos === false) {
-			throw new UnexpectedTokenException($sEnd, $this->peek(5), 'search');
+	private function consumeUntil($aEnd, $bIncludeEnd = false) {
+		$aEnd = is_array($aEnd) ? $aEnd : array($aEnd);
+		$iEndPos = null;
+		foreach ($aEnd as $sEnd) {
+			$iCurrentEndPos = mb_strpos($this->sText, $sEnd, $this->iCurrentPosition, $this->sCharset);
+			if($iCurrentEndPos === false) {
+				continue;
+			}
+			if($iEndPos === null || $iCurrentEndPos < $iEndPos) {
+				$iEndPos = $iCurrentEndPos + ($bIncludeEnd ? $this->strlen($sEnd) : 0);
+			}
+		}
+		if ($iEndPos === null) {
+			throw new UnexpectedTokenException($aEnd, $this->peek(5), 'search');
 		}
 		return $this->consume($iEndPos - $this->iCurrentPosition);
 	}
