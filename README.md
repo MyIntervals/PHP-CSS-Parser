@@ -9,11 +9,11 @@ A Parser for CSS Files written in PHP. Allows extraction of CSS files into a dat
 
 Add php-css-parser to your composer.json
 
-        {
-            "require": {
-                "sabberworm/php-css-parser": "*"
-            }
-        }
+	{
+	    "require": {
+	        "sabberworm/php-css-parser": "*"
+	    }
+	}
 
 ### Extraction
 
@@ -29,6 +29,12 @@ To read a file, for example, you’d do the following:
 	$oCssDocument = $oCssParser->parse();
 
 The resulting CSS document structure can be manipulated prior to being output.
+
+### Strict parsing
+
+To have the parser choke on invalid rules, supply a Sabberworm\CSS\Settings object:
+
+	$oCssParser = new Sabberworm\CSS\Parser(file_get_contents('somefile.css'), Sabberworm\CSS\Settings::create()->beStrict());
 
 ### Manipulation
 
@@ -135,72 +141,83 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	  font-family: "CrassRoots";
 	  src: url("../media/cr.ttf")
 	}
-	
+
 	html, body {
-		font-size: 1.6em
+	    font-size: 1.6em
 	}
-	
+
+	@keyframes mymove {
+		from { top: 0px; }
+		to { top: 200px; }
+	}
+
 #### Structure (`var_dump()`)
 
-	object(Sabberworm\CSS\CSSList\Document)#219 (1) {
-	  ["aContents":"Sabberworm\CSS\CSSList\CSSList":private]=>
-	  array(3) {
+	object(Sabberworm\CSS\CSSList\Document)#4 (1) {
+	  ["aContents":protected]=>
+	  array(4) {
 	    [0]=>
-	    object(Sabberworm\CSS\Property\Charset)#11 (1) {
+	    object(Sabberworm\CSS\Property\Charset)#6 (1) {
 	      ["sCharset":"Sabberworm\CSS\Property\Charset":private]=>
-	      object(Sabberworm\CSS\Value\String)#220 (1) {
+	      object(Sabberworm\CSS\Value\String)#5 (1) {
 	        ["sString":"Sabberworm\CSS\Value\String":private]=>
 	        string(5) "utf-8"
 	      }
 	    }
 	    [1]=>
-	    object(Sabberworm\CSS\RuleSet\AtRule)#6 (2) {
+	    object(Sabberworm\CSS\RuleSet\AtRule)#7 (2) {
 	      ["sType":"Sabberworm\CSS\RuleSet\AtRule":private]=>
 	      string(9) "font-face"
 	      ["aRules":"Sabberworm\CSS\RuleSet\RuleSet":private]=>
 	      array(2) {
 	        ["font-family"]=>
-	        object(Sabberworm\CSS\Rule\Rule)#15 (3) {
-	          ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
-	          string(11) "font-family"
-	          ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	          object(Sabberworm\CSS\Value\String)#13 (1) {
-	            ["sString":"Sabberworm\CSS\Value\String":private]=>
-	            string(10) "CrassRoots"
+	        array(1) {
+	          [0]=>
+	          object(Sabberworm\CSS\Rule\Rule)#8 (3) {
+	            ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
+	            string(11) "font-family"
+	            ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
+	            object(Sabberworm\CSS\Value\String)#9 (1) {
+	              ["sString":"Sabberworm\CSS\Value\String":private]=>
+	              string(10) "CrassRoots"
+	            }
+	            ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
+	            bool(false)
 	          }
-	          ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
-	          bool(false)
 	        }
 	        ["src"]=>
-	        object(Sabberworm\CSS\Rule\Rule)#12 (3) {
-	          ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
-	          string(3) "src"
-	          ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	          object(Sabberworm\CSS\Value\URL)#14 (1) {
-	            ["oURL":"Sabberworm\CSS\Value\URL":private]=>
-	            object(Sabberworm\CSS\Value\String)#16 (1) {
-	              ["sString":"Sabberworm\CSS\Value\String":private]=>
-	              string(15) "../media/cr.ttf"
+	        array(1) {
+	          [0]=>
+	          object(Sabberworm\CSS\Rule\Rule)#10 (3) {
+	            ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
+	            string(3) "src"
+	            ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
+	            object(Sabberworm\CSS\Value\URL)#11 (1) {
+	              ["oURL":"Sabberworm\CSS\Value\URL":private]=>
+	              object(Sabberworm\CSS\Value\String)#12 (1) {
+	                ["sString":"Sabberworm\CSS\Value\String":private]=>
+	                string(15) "../media/cr.ttf"
+	              }
 	            }
+	            ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
+	            bool(false)
 	          }
-	          ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
-	          bool(false)
 	        }
 	      }
 	    }
 	    [2]=>
-	    object(Sabberworm\CSS\RuleSet\DeclarationBlock)#17 (2) {
+	    object(Sabberworm\CSS\RuleSet\DeclarationBlock)#13 (2) {
 	      ["aSelectors":"Sabberworm\CSS\RuleSet\DeclarationBlock":private]=>
 	      array(2) {
 	        [0]=>
-	        object(Sabberworm\CSS\Property\Selector)#18 (2) {
+	        object(Sabberworm\CSS\Property\Selector)#14 (2) {
 	          ["sSelector":"Sabberworm\CSS\Property\Selector":private]=>
 	          string(4) "html"
 	          ["iSpecificity":"Sabberworm\CSS\Property\Selector":private]=>
 	          NULL
 	        }
 	        [1]=>
-	        object(Sabberworm\CSS\Property\Selector)#19 (2) {
+	        object(Sabberworm\CSS\Property\Selector)#15 (2) {
 	          ["sSelector":"Sabberworm\CSS\Property\Selector":private]=>
 	          string(4) "body"
 	          ["iSpecificity":"Sabberworm\CSS\Property\Selector":private]=>
@@ -210,20 +227,103 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	      ["aRules":"Sabberworm\CSS\RuleSet\RuleSet":private]=>
 	      array(1) {
 	        ["font-size"]=>
-	        object(Sabberworm\CSS\Rule\Rule)#20 (3) {
-	          ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
-	          string(9) "font-size"
-	          ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	          object(Sabberworm\CSS\Value\Size)#21 (3) {
-	            ["fSize":"Sabberworm\CSS\Value\Size":private]=>
-	            float(1.6)
-	            ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
-	            string(2) "em"
-	            ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
+	        array(1) {
+	          [0]=>
+	          object(Sabberworm\CSS\Rule\Rule)#16 (3) {
+	            ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
+	            string(9) "font-size"
+	            ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
+	            object(Sabberworm\CSS\Value\Size)#17 (3) {
+	              ["fSize":"Sabberworm\CSS\Value\Size":private]=>
+	              float(1.6)
+	              ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
+	              string(2) "em"
+	              ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
+	              bool(false)
+	            }
+	            ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
 	            bool(false)
 	          }
-	          ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
-	          bool(false)
+	        }
+	      }
+	    }
+	    [3]=>
+	    object(Sabberworm\CSS\CSSList\KeyFrame)#18 (3) {
+	      ["vendorKeyFrame":"Sabberworm\CSS\CSSList\KeyFrame":private]=>
+	      string(9) "keyframes"
+	      ["animationName":"Sabberworm\CSS\CSSList\KeyFrame":private]=>
+	      string(6) "mymove"
+	      ["aContents":protected]=>
+	      array(2) {
+	        [0]=>
+	        object(Sabberworm\CSS\RuleSet\DeclarationBlock)#19 (2) {
+	          ["aSelectors":"Sabberworm\CSS\RuleSet\DeclarationBlock":private]=>
+	          array(1) {
+	            [0]=>
+	            object(Sabberworm\CSS\Property\Selector)#20 (2) {
+	              ["sSelector":"Sabberworm\CSS\Property\Selector":private]=>
+	              string(4) "from"
+	              ["iSpecificity":"Sabberworm\CSS\Property\Selector":private]=>
+	              NULL
+	            }
+	          }
+	          ["aRules":"Sabberworm\CSS\RuleSet\RuleSet":private]=>
+	          array(1) {
+	            ["top"]=>
+	            array(1) {
+	              [0]=>
+	              object(Sabberworm\CSS\Rule\Rule)#21 (3) {
+	                ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
+	                string(3) "top"
+	                ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
+	                object(Sabberworm\CSS\Value\Size)#22 (3) {
+	                  ["fSize":"Sabberworm\CSS\Value\Size":private]=>
+	                  float(0)
+	                  ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
+	                  string(2) "px"
+	                  ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
+	                  bool(false)
+	                }
+	                ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
+	                bool(false)
+	              }
+	            }
+	          }
+	        }
+	        [1]=>
+	        object(Sabberworm\CSS\RuleSet\DeclarationBlock)#23 (2) {
+	          ["aSelectors":"Sabberworm\CSS\RuleSet\DeclarationBlock":private]=>
+	          array(1) {
+	            [0]=>
+	            object(Sabberworm\CSS\Property\Selector)#24 (2) {
+	              ["sSelector":"Sabberworm\CSS\Property\Selector":private]=>
+	              string(2) "to"
+	              ["iSpecificity":"Sabberworm\CSS\Property\Selector":private]=>
+	              NULL
+	            }
+	          }
+	          ["aRules":"Sabberworm\CSS\RuleSet\RuleSet":private]=>
+	          array(1) {
+	            ["top"]=>
+	            array(1) {
+	              [0]=>
+	              object(Sabberworm\CSS\Rule\Rule)#25 (3) {
+	                ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
+	                string(3) "top"
+	                ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
+	                object(Sabberworm\CSS\Value\Size)#26 (3) {
+	                  ["fSize":"Sabberworm\CSS\Value\Size":private]=>
+	                  float(200)
+	                  ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
+	                  string(2) "px"
+	                  ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
+	                  bool(false)
+	                }
+	                ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
+	                bool(false)
+	              }
+	            }
+	          }
 	        }
 	      }
 	    }
@@ -233,6 +333,9 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 #### Output (`__toString()`)
 
 	@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}html, body {font-size: 1.6em;}
+	@keyframes mymove {from {top: 0px;}
+	to {top: 200px;}
+	}
 
 ### Example 2 (Values)
 
@@ -246,15 +349,15 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	
 #### Structure (`var_dump()`)
 
-	object(Sabberworm\CSS\CSSList\Document)#217 (1) {
-	  ["aContents":"Sabberworm\CSS\CSSList\CSSList":private]=>
+	object(Sabberworm\CSS\CSSList\Document)#4 (1) {
+	  ["aContents":protected]=>
 	  array(1) {
 	    [0]=>
-	    object(Sabberworm\CSS\RuleSet\DeclarationBlock)#17 (2) {
+	    object(Sabberworm\CSS\RuleSet\DeclarationBlock)#5 (2) {
 	      ["aSelectors":"Sabberworm\CSS\RuleSet\DeclarationBlock":private]=>
 	      array(1) {
 	        [0]=>
-	        object(Sabberworm\CSS\Property\Selector)#20 (2) {
+	        object(Sabberworm\CSS\Property\Selector)#6 (2) {
 	          ["sSelector":"Sabberworm\CSS\Property\Selector":private]=>
 	          string(7) "#header"
 	          ["iSpecificity":"Sabberworm\CSS\Property\Selector":private]=>
@@ -264,90 +367,99 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	      ["aRules":"Sabberworm\CSS\RuleSet\RuleSet":private]=>
 	      array(3) {
 	        ["margin"]=>
-	        object(Sabberworm\CSS\Rule\Rule)#21 (3) {
-	          ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
-	          string(6) "margin"
-	          ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	          object(Sabberworm\CSS\Value\RuleValueList)#14 (2) {
-	            ["aComponents":protected]=>
-	            array(4) {
-	              [0]=>
-	              object(Sabberworm\CSS\Value\Size)#19 (3) {
-	                ["fSize":"Sabberworm\CSS\Value\Size":private]=>
-	                float(10)
-	                ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
-	                string(2) "px"
-	                ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
-	                bool(false)
+	        array(1) {
+	          [0]=>
+	          object(Sabberworm\CSS\Rule\Rule)#7 (3) {
+	            ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
+	            string(6) "margin"
+	            ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
+	            object(Sabberworm\CSS\Value\RuleValueList)#12 (2) {
+	              ["aComponents":protected]=>
+	              array(4) {
+	                [0]=>
+	                object(Sabberworm\CSS\Value\Size)#8 (3) {
+	                  ["fSize":"Sabberworm\CSS\Value\Size":private]=>
+	                  float(10)
+	                  ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
+	                  string(2) "px"
+	                  ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
+	                  bool(false)
+	                }
+	                [1]=>
+	                object(Sabberworm\CSS\Value\Size)#9 (3) {
+	                  ["fSize":"Sabberworm\CSS\Value\Size":private]=>
+	                  float(2)
+	                  ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
+	                  string(2) "em"
+	                  ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
+	                  bool(false)
+	                }
+	                [2]=>
+	                object(Sabberworm\CSS\Value\Size)#10 (3) {
+	                  ["fSize":"Sabberworm\CSS\Value\Size":private]=>
+	                  float(1)
+	                  ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
+	                  string(2) "cm"
+	                  ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
+	                  bool(false)
+	                }
+	                [3]=>
+	                object(Sabberworm\CSS\Value\Size)#11 (3) {
+	                  ["fSize":"Sabberworm\CSS\Value\Size":private]=>
+	                  float(2)
+	                  ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
+	                  string(1) "%"
+	                  ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
+	                  bool(false)
+	                }
 	              }
-	              [1]=>
-	              object(Sabberworm\CSS\Value\Size)#18 (3) {
-	                ["fSize":"Sabberworm\CSS\Value\Size":private]=>
-	                float(2)
-	                ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
-	                string(2) "em"
-	                ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
-	                bool(false)
-	              }
-	              [2]=>
-	              object(Sabberworm\CSS\Value\Size)#6 (3) {
-	                ["fSize":"Sabberworm\CSS\Value\Size":private]=>
-	                float(1)
-	                ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
-	                string(2) "cm"
-	                ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
-	                bool(false)
-	              }
-	              [3]=>
-	              object(Sabberworm\CSS\Value\Size)#12 (3) {
-	                ["fSize":"Sabberworm\CSS\Value\Size":private]=>
-	                float(2)
-	                ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
-	                string(1) "%"
-	                ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
-	                bool(false)
-	              }
+	              ["sSeparator":protected]=>
+	              string(1) " "
 	            }
-	            ["sSeparator":protected]=>
-	            string(1) " "
+	            ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
+	            bool(false)
 	          }
-	          ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
-	          bool(false)
 	        }
 	        ["font-family"]=>
-	        object(Sabberworm\CSS\Rule\Rule)#16 (3) {
-	          ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
-	          string(11) "font-family"
-	          ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	          object(Sabberworm\CSS\Value\RuleValueList)#13 (2) {
-	            ["aComponents":protected]=>
-	            array(4) {
-	              [0]=>
-	              string(7) "Verdana"
-	              [1]=>
-	              string(9) "Helvetica"
-	              [2]=>
-	              object(Sabberworm\CSS\Value\String)#15 (1) {
-	                ["sString":"Sabberworm\CSS\Value\String":private]=>
-	                string(9) "Gill Sans"
+	        array(1) {
+	          [0]=>
+	          object(Sabberworm\CSS\Rule\Rule)#13 (3) {
+	            ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
+	            string(11) "font-family"
+	            ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
+	            object(Sabberworm\CSS\Value\RuleValueList)#15 (2) {
+	              ["aComponents":protected]=>
+	              array(4) {
+	                [0]=>
+	                string(7) "Verdana"
+	                [1]=>
+	                string(9) "Helvetica"
+	                [2]=>
+	                object(Sabberworm\CSS\Value\String)#14 (1) {
+	                  ["sString":"Sabberworm\CSS\Value\String":private]=>
+	                  string(9) "Gill Sans"
+	                }
+	                [3]=>
+	                string(10) "sans-serif"
 	              }
-	              [3]=>
-	              string(10) "sans-serif"
+	              ["sSeparator":protected]=>
+	              string(1) ","
 	            }
-	            ["sSeparator":protected]=>
-	            string(1) ","
+	            ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
+	            bool(false)
 	          }
-	          ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
-	          bool(false)
 	        }
 	        ["color"]=>
-	        object(Sabberworm\CSS\Rule\Rule)#11 (3) {
-	          ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
-	          string(5) "color"
-	          ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	          string(3) "red"
-	          ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
-	          bool(true)
+	        array(1) {
+	          [0]=>
+	          object(Sabberworm\CSS\Rule\Rule)#16 (3) {
+	            ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
+	            string(5) "color"
+	            ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
+	            string(3) "red"
+	            ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
+	            bool(true)
+	          }
 	        }
 	      }
 	    }
@@ -356,15 +468,14 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 
 #### Output (`__toString()`)
 
-	#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans", sans-serif;color: red !important;}
+	#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;color: red !important;}
+
 
 ## To-Do
 
 * More convenience methods [like `selectorsWithElement($sId/Class/TagName)`, `removeSelector($oSelector)`, `attributesOfType($sType)`, `removeAttributesOfType($sType)`]
 * Options for output (compact, verbose, etc.)
 * Named color support (using `Color` instead of an anonymous string literal)
-* Test suite
-* Adopt lenient parsing rules
 * Support for @-rules that are CSSLists (other than @media and @keyframes).
 
 ## Contributors/Thanks to
