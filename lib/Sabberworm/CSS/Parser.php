@@ -244,6 +244,10 @@ class Parser {
 	}
 
 	private function parseRuleSet($oRuleSet) {
+		while ($this->comes(';')) {
+			$this->consume(';');
+			$this->consumeWhiteSpace();
+		}
 		while (!$this->comes('}')) {
 			$oRuleSet->addRule($this->parseRule());
 			$this->consumeWhiteSpace();
