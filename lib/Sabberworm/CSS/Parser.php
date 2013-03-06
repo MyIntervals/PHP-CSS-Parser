@@ -18,6 +18,7 @@ use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\String;
 use Sabberworm\CSS\Rule\Rule;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 /**
  * Parser class parses CSS from text into a data structure.
@@ -26,19 +27,17 @@ class Parser {
 
 	private $sText;
 	private $iCurrentPosition;
+	private $oParserSettings;
+	private $sCharset;
 	private $iLength;
 
-	/**
-	 * Should we use mb_* string functions
-	 *
-	 * @var bool
-	 */
-	private $bUseMbFunctions = TRUE;
-
-	public function __construct($sText, $sDefaultCharset = 'utf-8') {
+	public function __construct($sText, Settings $oParserSettings = null) {
 		$this->sText = $sText;
 		$this->iCurrentPosition = 0;
-		$this->setCharset($sDefaultCharset);
+		if ($oParserSettings === null) {
+			$oParserSettings = Settings::create();
+		}
+		$this->oParserSettings = $oParserSettings;
 	}
 
 	public function setCharset($sCharset) {
@@ -51,13 +50,10 @@ class Parser {
 	}
 
 	public function parse() {
+		$this->setCharset($this->oParserSettings->sDefaultCharset);
 		$oResult = new Document();
 		$this->parseDocument($oResult);
 		return $oResult;
-	}
-
-	public function setUseMbFlag($bFlag) {
-		$this->bUseMbFunctions = (bool) $bFlag;
 	}
 
 	private function parseDocument(Document $oDocument) {
@@ -112,7 +108,7 @@ class Parser {
 			$this->consume(';');
 			$this->setCharset($sCharset->getString());
 			return new Charset($sCharset);
-		} else if(preg_match('/^(-\\w+-)?keyframes$/', $sIdentifier) === 1) {
+		} else if (preg_match('/^(-\\w+-)?keyframes$/', $sIdentifier) === 1) {
 			$oResult = new KeyFrame();
 			$oResult->setVendorKeyFrame($sIdentifier);
 			$oResult->setAnimationName(trim($this->consumeUntil('{')));
@@ -123,15 +119,15 @@ class Parser {
 		} else if ($sIdentifier === 'namespace') {
 			$sPrefix = null;
 			$mUrl = $this->parsePrimitiveValue();
-			if(!$this->comes(';')) {
+			if (!$this->comes(';')) {
 				$sPrefix = $mUrl;
 				$mUrl = $this->parsePrimitiveValue();
 			}
 			$this->consume(';');
-			if($sPrefix !== null && !is_string($sPrefix)) {
+			if ($sPrefix !== null && !is_string($sPrefix)) {
 				throw new \Exception('Wrong namespace prefix '.$sPrefix);
 			}
-			if(!($mUrl instanceof String || $mUrl instanceof URL)) {
+			if (!($mUrl instanceof String || $mUrl instanceof URL)) {
 				throw new \Exception('Wrong namespace url of invalid type '.$mUrl);
 			}
 			return new CSSNamespace($mUrl, $sPrefix);
@@ -148,9 +144,9 @@ class Parser {
 	private function parseIdentifier($bAllowFunctions = true) {
 		$sResult = $this->parseCharacter(true);
 		if ($sResult === null) {
-			throw new \Exception("Identifier expected, got {$this->peek(5)}");
+			throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier');
 		}
-		$sCharacter;
+		$sCharacter = null;
 		while (($sCharacter = $this->parseCharacter(true)) !== null) {
 			$sResult .= $sCharacter;
 		}
@@ -265,7 +261,7 @@ class Parser {
 			$this->consume('!');
 			$this->consumeWhiteSpace();
 			$sImportantMarker = $this->consume(strlen('important'));
-			if (mb_convert_case($sImportantMarker, MB_CASE_LOWER) !== 'important') {
+			if (mb_convert_case($sImportantMarker, MB_CASE_LOWER, $this->sCharset) !== 'important') {
 				throw new \Exception("! was followed by “" . $sImportantMarker . "”. Expected “important”");
 			}
 			$oRule->setIsImportant(true);
@@ -451,20 +447,25 @@ class Parser {
 		if (is_string($iOffset)) {
 			$iOffset = $this->strlen($iOffset);
 		}
-		return $this->substr($this->sText, $this->iCurrentPosition + $iOffset, $iLength);
+		$iOffset = $this->iCurrentPosition + $iOffset;
+		if ($iOffset >= $this->iLength) {
+			return '';
+		}
+		$iLength = min($iLength, $this->iLength-$iOffset);
+		return $this->substr($this->sText, $iOffset, $iLength);
 	}
 
 	private function consume($mValue = 1) {
 		if (is_string($mValue)) {
 			$iLength = $this->strlen($mValue);
 			if ($this->substr($this->sText, $this->iCurrentPosition, $iLength) !== $mValue) {
-				throw new \Exception("Expected $mValue, got " . $this->peek(5));
+				throw new UnexpectedTokenException($mValue, $this->peek(max($iLength, 5)));
 			}
 			$this->iCurrentPosition += $this->strlen($mValue);
 			return $mValue;
 		} else {
 			if ($this->iCurrentPosition + $mValue > $this->iLength) {
-				throw new \Exception("Tried to consume $mValue chars, exceeded file end");
+				throw new UnexpectedTokenException($mValue, $this->peek(5), 'count');
 			}
 			$sResult = $this->substr($this->sText, $this->iCurrentPosition, $mValue);
 			$this->iCurrentPosition += $mValue;
@@ -477,7 +478,7 @@ class Parser {
 		if (preg_match($mExpression, $this->inputLeft(), $aMatches, PREG_OFFSET_CAPTURE) === 1) {
 			return $this->consume($aMatches[0][0]);
 		}
-		throw new \Exception("Expected pattern $mExpression not found, got: {$this->peek(5)}");
+		throw new UnexpectedTokenException($mExpression, $this->peek(5), 'expression');
 	}
 
 	private function consumeWhiteSpace() {
@@ -504,7 +505,7 @@ class Parser {
 	private function consumeUntil($sEnd) {
 		$iEndPos = mb_strpos($this->sText, $sEnd, $this->iCurrentPosition, $this->sCharset);
 		if ($iEndPos === false) {
-			throw new \Exception("Required $sEnd not found, got {$this->peek(5)}");
+			throw new UnexpectedTokenException($sEnd, $this->peek(5), 'search');
 		}
 		return $this->consume($iEndPos - $this->iCurrentPosition);
 	}
@@ -514,7 +515,7 @@ class Parser {
 	}
 
 	private function substr($string, $start, $length) {
-		if ($this->bUseMbFunctions) {
+		if ($this->oParserSettings->bMultibyteSupport) {
 			return mb_substr($string, $start, $length, $this->sCharset);
 		} else {
 			return substr($string, $start, $length);
@@ -522,7 +523,7 @@ class Parser {
 	}
 
 	private function strlen($text) {
-		if ($this->bUseMbFunctions) {
+		if ($this->oParserSettings->bMultibyteSupport) {
 			return mb_strlen($text, $this->sCharset);
 		} else {
 			return strlen($text);
