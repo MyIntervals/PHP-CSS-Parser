@@ -1,7 +1,3 @@
 .some[selectors-may='contain-a-{'] {
 	
 }
-
-.some {
-	filters: may(contain, a, ')');
-}

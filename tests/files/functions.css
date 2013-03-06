@@ -19,4 +19,3 @@ div.main { background-image: linear-gradient(#000, #fff) }
     -moz-transition-duration: .3s;
 }
 .collapser.expanded + * { height: auto }
-
