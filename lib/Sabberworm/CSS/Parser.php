@@ -2,6 +2,7 @@
 
 namespace Sabberworm\CSS;
 
+use Sabberworm\CSS\CSSList\AtRule;
 use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\CSSList\MediaQuery;
@@ -9,7 +10,6 @@ use Sabberworm\CSS\CSSList\KeyFrame;
 use Sabberworm\CSS\Property\Import;
 use Sabberworm\CSS\Property\Charset;
 use Sabberworm\CSS\Property\CSSNamespace;
-use Sabberworm\CSS\RuleSet\AtRule;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Value\CSSFunction;
 use Sabberworm\CSS\Value\RuleValueList;
@@ -137,7 +137,7 @@ class Parser {
 			$this->consume('{');
 			$this->consumeWhiteSpace();
 			$oAtRule = new AtRule($sIdentifier);
-			$this->parseRuleSet($oAtRule);
+			$this->parseList($oAtRule);
 			return $oAtRule;
 		}
 	}

@@ -1,11 +1,11 @@
 <?php
 
-namespace Sabberworm\CSS\RuleSet;
+namespace Sabberworm\CSS\CSSList;
 
 /**
  * A RuleSet constructed by an unknown @-rule. @font-face rules are rendered into AtRule objects.
  */
-class AtRule extends RuleSet {
+class AtRule extends CSSBlockList {
 
 	private $sType;
 
