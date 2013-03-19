@@ -7,7 +7,7 @@ use Sabberworm\CSS\Value\URL;
 /**
 * Class representing an @import rule.
 */
-class Import {
+class Import implements AtRule {
 	private $oLocation;
 	private $sMediaQuery;
 	
@@ -26,5 +26,17 @@ class Import {
 	
 	public function __toString() {
 		return "@import ".$this->oLocation->__toString().($this->sMediaQuery === null ? '' : ' '.$this->sMediaQuery).';';
+	}
+
+	public function atRuleName() {
+		return 'import';
+	}
+
+	public function atRuleArgs() {
+		$aResult = array($this->oLocation);
+		if($this->sMediaQuery) {
+			array_push($aResult, $this->sMediaQuery);
+		}
+		return $aResult;
 	}
 }

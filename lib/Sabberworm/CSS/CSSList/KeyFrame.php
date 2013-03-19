@@ -2,8 +2,9 @@
 
 namespace Sabberworm\CSS\CSSList;
 
+use Sabberworm\CSS\Property\AtRule;
 
-class KeyFrame extends CSSList {
+class KeyFrame extends CSSList implements AtRule {
 
 	private $vendorKeyFrame;
 	private $animationName;
@@ -37,4 +38,11 @@ class KeyFrame extends CSSList {
 		return $sResult;
 	}
 
+	public function atRuleName() {
+		return $this->vendorKeyFrame;
+	}
+
+	public function atRuleArgs() {
+		return $this->animationName;
+	}
 }

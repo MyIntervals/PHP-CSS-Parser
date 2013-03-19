@@ -4,13 +4,12 @@ namespace Sabberworm\CSS;
 
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Property\Selector;
-use Sabberworm\CSS\RuleSet\AtRule;
-use Sabberworm\CSS\CSSList\KeyFrame;
+use Sabberworm\CSS\Property\AtRule;
 
 class ParserTest extends \PHPUnit_Framework_TestCase {
 
 	function testFiles() {
-
+	
 		$sDirectory = dirname(__FILE__) . '/../../files';
 		if ($rHandle = opendir($sDirectory)) {
 			/* This is the correct way to loop over the directory. */
@@ -155,6 +154,12 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 to {top: 200px;}
 }@-moz-keyframes some-move {from {top: 0px;}
 to {top: 200px;}
+}@supports ( (perspective: 10px) or (-moz-perspective: 10px) or (-webkit-perspective: 10px) or (-ms-perspective: 10px) or (-o-perspective: 10px) ) {body {font-family: "Helvetica";}
+}@page :pseudo-class {margin: 2in;}@-moz-document url(http://www.w3.org/),
+               url-prefix(http://www.w3.org/Style/),
+               domain(mozilla.org),
+               regexp("https:.*") {body {color: purple;background: yellow;}
+}@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}@region-style #intro {p {color: blue;}
 }', $oDoc->__toString());
 		foreach ($oDoc->getAllDeclarationBlocks() as $oBlock) {
 			foreach ($oBlock->getSelectors() as $oSelector) {
@@ -167,6 +172,12 @@ to {top: 200px;}
 to {top: 200px;}
 }@-moz-keyframes some-move {from {top: 0px;}
 to {top: 200px;}
+}@supports ( (perspective: 10px) or (-moz-perspective: 10px) or (-webkit-perspective: 10px) or (-ms-perspective: 10px) or (-o-perspective: 10px) ) {#my_id body {font-family: "Helvetica";}
+}@page :pseudo-class {margin: 2in;}@-moz-document url(http://www.w3.org/),
+               url-prefix(http://www.w3.org/Style/),
+               domain(mozilla.org),
+               regexp("https:.*") {#my_id body {color: purple;background: yellow;}
+}@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}@region-style #intro {#my_id p {color: blue;}
 }', $oDoc->__toString());
 
 		$oDoc = $this->parsedStructureForFile('values');
@@ -300,12 +311,12 @@ body {color: green;}' . "\n", $oDoc->__toString());
 	function testListValueRemoval() {
 		$oDoc = $this->parsedStructureForFile('atrules');
 		foreach ($oDoc->getContents() as $oItem) {
-			if ($oItem instanceof AtRule || $oItem instanceof KeyFrame) {
+			if ($oItem instanceof AtRule) {
 				$oDoc->remove($oItem);
 				continue;
 			}
 		}
-		$this->assertSame('@charset "utf-8";html, body {font-size: 1.6em;}' . "\n", $oDoc->__toString());
+		$this->assertSame('html, body {font-size: 1.6em;}' . "\n", $oDoc->__toString());
 
 		$oDoc = $this->parsedStructureForFile('nested');
 		foreach ($oDoc->getAllDeclarationBlocks() as $oBlock) {

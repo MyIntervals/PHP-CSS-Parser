@@ -5,7 +5,7 @@ namespace Sabberworm\CSS\Property;
 /**
 * CSSNamespace represents an @namespace rule.
 */
-class CSSNamespace {
+class CSSNamespace implements AtRule {
 	private $mUrl;
 	private $sPrefix;
 	
@@ -34,4 +34,15 @@ class CSSNamespace {
 		$this->sPrefix = $sPrefix;
 	}
 
+	public function atRuleName() {
+		return 'namespace';
+	}
+
+	public function atRuleArgs() {
+		$aResult = array($this->mUrl);
+		if($this->sPrefix) {
+			array_unshift($aResult, $this->sPrefix);
+		}
+		return $aResult;
+	}
 }

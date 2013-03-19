@@ -4,12 +4,13 @@ namespace Sabberworm\CSS;
 
 use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\CSSList\Document;
-use Sabberworm\CSS\CSSList\MediaQuery;
 use Sabberworm\CSS\CSSList\KeyFrame;
+use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Property\Import;
 use Sabberworm\CSS\Property\Charset;
 use Sabberworm\CSS\Property\CSSNamespace;
-use Sabberworm\CSS\RuleSet\AtRule;
+use Sabberworm\CSS\RuleSet\AtRuleSet;
+use Sabberworm\CSS\CSSList\AtRuleBlockList;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Value\CSSFunction;
 use Sabberworm\CSS\Value\RuleValueList;
@@ -86,14 +87,7 @@ class Parser {
 		$this->consume('@');
 		$sIdentifier = $this->parseIdentifier();
 		$this->consumeWhiteSpace();
-		if ($sIdentifier === 'media') {
-			$oResult = new MediaQuery();
-			$oResult->setQuery(trim($this->consumeUntil('{')));
-			$this->consume('{');
-			$this->consumeWhiteSpace();
-			$this->parseList($oResult);
-			return $oResult;
-		} else if ($sIdentifier === 'import') {
+		if ($sIdentifier === 'import') {
 			$oLocation = $this->parseURLValue();
 			$this->consumeWhiteSpace();
 			$sMediaQuery = null;
@@ -108,7 +102,7 @@ class Parser {
 			$this->consume(';');
 			$this->setCharset($sCharset->getString());
 			return new Charset($sCharset);
-		} else if (preg_match('/^(-\\w+-)?keyframes$/', $sIdentifier) === 1) {
+		} else if (self::identifierIs($sIdentifier, 'keyframes')) {
 			$oResult = new KeyFrame();
 			$oResult->setVendorKeyFrame($sIdentifier);
 			$oResult->setAnimationName(trim($this->consumeUntil('{')));
@@ -133,10 +127,23 @@ class Parser {
 			return new CSSNamespace($mUrl, $sPrefix);
 		} else {
 			//Unknown other at rule (font-face or such)
+			$sArgs = $this->consumeUntil('{');
 			$this->consume('{');
 			$this->consumeWhiteSpace();
-			$oAtRule = new AtRule($sIdentifier);
-			$this->parseRuleSet($oAtRule);
+			$bUseRuleSet = true;
+			foreach(explode('/', AtRule::BLOCK_RULES) as $sBlockRuleName) {
+				if(self::identifierIs($sIdentifier, $sBlockRuleName)) {
+					$bUseRuleSet = false;
+					break;
+				}
+			}
+			if($bUseRuleSet) {
+				$oAtRule = new AtRuleSet($sIdentifier, $sArgs);
+				$this->parseRuleSet($oAtRule);
+			} else {
+				$oAtRule = new AtRuleBlockList($sIdentifier, $sArgs);
+				$this->parseList($oAtRule);
+			}
 			return $oAtRule;
 		}
 	}
@@ -449,6 +456,13 @@ class Parser {
 		}
 		return $oResult;
 	}
+	
+	/**
+	* Tests an identifier for a given value. Since identifiers are all keywords, they can be vendor-prefixed. We need to check for these versions too.
+	*/
+	private static function identifierIs($sIdentifier, $sMatch) {
+	 	return preg_match("/^(-\\w+-)?$sMatch$/", $sIdentifier) === 1;
+	}
 
 	private function comes($sString, $iOffset = 0) {
 		if ($this->isEnd()) {
@@ -561,4 +575,3 @@ class Parser {
 	}
 
 }
-
