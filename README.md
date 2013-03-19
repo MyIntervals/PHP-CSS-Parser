@@ -165,8 +165,8 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	      }
 	    }
 	    [1]=>
-	    object(Sabberworm\CSS\RuleSet\AtRule)#7 (2) {
-	      ["sType":"Sabberworm\CSS\RuleSet\AtRule":private]=>
+	    object(Sabberworm\CSS\RuleSet\AtRuleSet)#7 (2) {
+	      ["sType":"Sabberworm\CSS\RuleSet\AtRuleSet":private]=>
 	      string(9) "font-face"
 	      ["aRules":"Sabberworm\CSS\RuleSet\RuleSet":private]=>
 	      array(2) {
@@ -476,7 +476,6 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 * More convenience methods [like `selectorsWithElement($sId/Class/TagName)`, `removeSelector($oSelector)`, `attributesOfType($sType)`, `removeAttributesOfType($sType)`]
 * Options for output (compact, verbose, etc.)
 * Named color support (using `Color` instead of an anonymous string literal)
-* Support for @-rules that are CSSLists (other than @media and @keyframes).
 
 ## Contributors/Thanks to
 
