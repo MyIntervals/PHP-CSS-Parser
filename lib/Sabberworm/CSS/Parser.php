@@ -133,6 +133,7 @@ class Parser {
 			return new CSSNamespace($mUrl, $sPrefix);
 		} else {
 			//Unknown other at rule (font-face or such)
+			$sIdentifier .= $this->consumeUntil('{');
 			$this->consume('{');
 			$this->consumeWhiteSpace();
 			$oAtRule = new AtRule($sIdentifier);
