@@ -149,7 +149,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 
 	function testManipulation() {
 		$oDoc = $this->parsedStructureForFile('atrules');
-		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}html, body {font-size: 1.6em;}
+		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}html, body {font-size: -0.6em;}
 @keyframes mymove {from {top: 0px;}
 to {top: 200px;}
 }@-moz-keyframes some-move {from {top: 0px;}
@@ -167,7 +167,7 @@ to {top: 200px;}
 				$oSelector->setSelector('#my_id ' . $oSelector->getSelector());
 			}
 		}
-		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}#my_id html, #my_id body {font-size: 1.6em;}
+		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}#my_id html, #my_id body {font-size: -0.6em;}
 @keyframes mymove {from {top: 0px;}
 to {top: 200px;}
 }@-moz-keyframes some-move {from {top: 0px;}
@@ -316,7 +316,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 				continue;
 			}
 		}
-		$this->assertSame('html, body {font-size: 1.6em;}' . "\n", $oDoc->__toString());
+		$this->assertSame('html, body {font-size: -0.6em;}' . "\n", $oDoc->__toString());
 
 		$oDoc = $this->parsedStructureForFile('nested');
 		foreach ($oDoc->getAllDeclarationBlocks() as $oBlock) {

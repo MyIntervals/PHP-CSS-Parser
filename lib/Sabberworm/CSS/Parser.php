@@ -357,7 +357,7 @@ class Parser {
 	private function parsePrimitiveValue() {
 		$oValue = null;
 		$this->consumeWhiteSpace();
-		if (is_numeric($this->peek()) || (($this->comes('-') || $this->comes('.')) && is_numeric($this->peek(1, 1)))) {
+		if (is_numeric($this->peek()) || ($this->comes('-.') && is_numeric($this->peek(1, 2))) || (($this->comes('-') || $this->comes('.')) && is_numeric($this->peek(1, 1)))) {
 			$oValue = $this->parseNumericValue();
 		} else if ($this->comes('#') || $this->comes('rgb') || $this->comes('hsl')) {
 			$oValue = $this->parseColorValue();
