@@ -4,6 +4,10 @@ namespace Sabberworm\CSS\Value;
 
 class Size extends PrimitiveValue {
 
+	const ABSOLUTE_SIZE_UNITS = 'px/deg/s/cm/pt/in/pc/cm/mm';
+	const RELATIVE_SIZE_UNITS = '%/em/ex';
+	const NON_SIZE_UNITS = 'deg/grad/rad/turns/s/ms/Hz/kHz';
+
 	private $fSize;
 	private $sUnit;
 	private $bIsColorComponent;
@@ -39,15 +43,14 @@ class Size extends PrimitiveValue {
 	 * @return false if the unit an angle, a duration, a frequency or the number is a component in a Color object.
 	 */
 	public function isSize() {
-		$aNonSizeUnits = array('deg', 'grad', 'rad', 'turns', 's', 'ms', 'Hz', 'kHz');
-		if (in_array($this->sUnit, $aNonSizeUnits)) {
+		if (in_array($this->sUnit, explode('/', self::NON_SIZE_UNITS))) {
 			return false;
 		}
 		return !$this->isColorComponent();
 	}
 
 	public function isRelative() {
-		if ($this->sUnit === '%' || $this->sUnit === 'em' || $this->sUnit === 'ex') {
+		if (in_array($this->sUnit, explode('/', self::RELATIVE_SIZE_UNITS))) {
 			return true;
 		}
 		if ($this->sUnit === null && $this->fSize != 0) {

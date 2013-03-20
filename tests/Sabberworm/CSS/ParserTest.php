@@ -188,17 +188,17 @@ to {top: 200px;}
 }', $oDoc->__toString());
 
 		$oDoc = $this->parsedStructureForFile('values');
-		$this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;font-size: 10px;color: red !important;background-color: green;background-color: rgba(0,128,0,.7);}
+		$this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;font-size: 10px;color: red !important;background-color: green;background-color: rgba(0,128,0,.7);frequency: 30Hz;}
 body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}' . "\n", $oDoc->__toString());
 		foreach ($oDoc->getAllRuleSets() as $oRuleSet) {
 			$oRuleSet->removeRule('font-');
 		}
-		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;background-color: green;background-color: rgba(0,128,0,.7);}
+		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;background-color: green;background-color: rgba(0,128,0,.7);frequency: 30Hz;}
 body {color: green;}' . "\n", $oDoc->__toString());
 		foreach ($oDoc->getAllRuleSets() as $oRuleSet) {
 			$oRuleSet->removeRule('background-');
 		}
-		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;}
+		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;frequency: 30Hz;}
 body {color: green;}' . "\n", $oDoc->__toString());
 	}
 	
