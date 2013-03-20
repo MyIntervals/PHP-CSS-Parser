@@ -389,7 +389,9 @@ class Parser {
 		$sUnit = null;
 		$units = array(
 			'%', 'em', 'ex', 'px', 'deg', 's', 'cm', 'pt', 'in', 'pc', 'cm',
-			'mm'
+			'mm',
+			// These are non "size" values, but they are still numeric
+			'deg', 'grad', 'rad', 'turns', 's', 'ms', 'Hz', 'kHz'
 		);
 
 		foreach ($units as $val) {
