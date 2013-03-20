@@ -55,7 +55,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 				$this->assertEquals(array('r' => new Size(35.0, null, true), 'g' => new Size(35.0, null, true), 'b' => new Size(35.0, null, true)), $aValues[0][0]->getColor());
 				$aColorRule = $oRuleSet->getRules('border-color');
 				$aValues = $aColorRule[0]->getValues();
-				$this->assertEquals(array('r' => new Size(10.0, null, true), 'g' => new Size(100.0, null, true), 'b' => new Size(230.0, null, true), 'a' => new Size(0.3, null, true)), $aValues[0][0]->getColor());
+				$this->assertEquals(array('r' => new Size(10.0, null, true), 'g' => new Size(100.0, null, true), 'b' => new Size(230.0, null, true), 'a' => new Size("0000.3", null, true)), $aValues[0][0]->getColor());
 				$aColorRule = $oRuleSet->getRules('outline-color');
 				$aValues = $aColorRule[0]->getValues();
 				$this->assertEquals(array('r' => new Size(34.0, null, true), 'g' => new Size(34.0, null, true), 'b' => new Size(34.0, null, true)), $aValues[0][0]->getColor());
@@ -149,7 +149,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 
 	function testManipulation() {
 		$oDoc = $this->parsedStructureForFile('atrules');
-		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}html, body {font-size: -0.6em;}
+		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}html, body {font-size: -.6em;}
 @keyframes mymove {from {top: 0px;}
 to {top: 200px;}
 }@-moz-keyframes some-move {from {top: 0px;}
@@ -167,7 +167,7 @@ to {top: 200px;}
 				$oSelector->setSelector('#my_id ' . $oSelector->getSelector());
 			}
 		}
-		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}#my_id html, #my_id body {font-size: -0.6em;}
+		$this->assertSame('@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}#my_id html, #my_id body {font-size: -.6em;}
 @keyframes mymove {from {top: 0px;}
 to {top: 200px;}
 }@-moz-keyframes some-move {from {top: 0px;}
@@ -181,12 +181,12 @@ to {top: 200px;}
 }', $oDoc->__toString());
 
 		$oDoc = $this->parsedStructureForFile('values');
-		$this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;font-size: 10px;color: red !important;background-color: green;background-color: rgba(0,128,0,0.7);}
+		$this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;font-size: 10px;color: red !important;background-color: green;background-color: rgba(0,128,0,.7);}
 body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}' . "\n", $oDoc->__toString());
 		foreach ($oDoc->getAllRuleSets() as $oRuleSet) {
 			$oRuleSet->removeRule('font-');
 		}
-		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;background-color: green;background-color: rgba(0,128,0,0.7);}
+		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;background-color: green;background-color: rgba(0,128,0,.7);}
 body {color: green;}' . "\n", $oDoc->__toString());
 		foreach ($oDoc->getAllRuleSets() as $oRuleSet) {
 			$oRuleSet->removeRule('background-');
@@ -248,9 +248,9 @@ body {color: green;}' . "\n", $oDoc->__toString());
 	function testFunctionSyntax() {
 		$oDoc = $this->parsedStructureForFile('functions');
 		$sExpected = 'div.main {background-image: linear-gradient(rgb(0,0,0),rgb(255,255,255));}
-.collapser::before, .collapser::-moz-before, .collapser::-webkit-before {content: "»";font-size: 1.2em;margin-right: 0.2em;-moz-transition-property: -moz-transform;-moz-transition-duration: 0.2s;-moz-transform-origin: center 60%;}
+.collapser::before, .collapser::-moz-before, .collapser::-webkit-before {content: "»";font-size: 1.2em;margin-right: .2em;-moz-transition-property: -moz-transform;-moz-transition-duration: .2s;-moz-transform-origin: center 60%;}
 .collapser.expanded::before, .collapser.expanded::-moz-before, .collapser.expanded::-webkit-before {-moz-transform: rotate(90deg);}
-.collapser + * {height: 0;overflow: hidden;-moz-transition-property: height;-moz-transition-duration: 0.3s;}
+.collapser + * {height: 0;overflow: hidden;-moz-transition-property: height;-moz-transition-duration: .3s;}
 .collapser.expanded + * {height: auto;}' . "\n";
 		$this->assertSame($sExpected, $oDoc->__toString());
 
@@ -259,7 +259,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 				$mValue->setSize($mValue->getSize() * 3);
 			}
 		}
-		$sExpected = str_replace(array('1.2em', '0.2em', '60%'), array('3.6em', '0.6em', '180%'), $sExpected);
+		$sExpected = str_replace(array('1.2em', '.2em', '60%'), array('3.6em', '.6em', '180%'), $sExpected);
 		$this->assertSame($sExpected, $oDoc->__toString());
 
 		foreach ($oDoc->getAllValues(null, true) as $mValue) {
@@ -267,7 +267,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 				$mValue->setSize($mValue->getSize() * 2);
 			}
 		}
-		$sExpected = str_replace(array('0.2s', '0.3s', '90deg'), array('0.4s', '0.6s', '180deg'), $sExpected);
+		$sExpected = str_replace(array('.2s', '.3s', '90deg'), array('.4s', '.6s', '180deg'), $sExpected);
 		$this->assertSame($sExpected, $oDoc->__toString());
 	}
 
@@ -316,7 +316,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 				continue;
 			}
 		}
-		$this->assertSame('html, body {font-size: -0.6em;}' . "\n", $oDoc->__toString());
+		$this->assertSame('html, body {font-size: -.6em;}' . "\n", $oDoc->__toString());
 
 		$oDoc = $this->parsedStructureForFile('nested');
 		foreach ($oDoc->getAllDeclarationBlocks() as $oBlock) {
