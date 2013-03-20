@@ -88,9 +88,16 @@ There are a few convenience methods on Document to ease finding, manipulating an
 * `getAllRuleSets()` – does what it says; no matter how deeply nested your rule sets are.
 * `getAllValues()` – finds all `Value` objects inside `Rule`s.
 
-### Use cases
+## To-Do
 
-#### Use `Parser` to prepend an id to all selectors
+* More convenience methods [like `selectorsWithElement($sId/Class/TagName)`, `removeSelector($oSelector)`, `attributesOfType($sType)`, `removeAttributesOfType($sType)`]
+* Options for output (compact, verbose, etc.)
+* Real multibyte support. Currently only multibyte charsets whose first 255 code points take up only one byte and are identical with ASCII are supported (yes, UTF-8 fits this description).
+* Named color support (using `Color` instead of an anonymous string literal)
+
+## Use cases
+
+### Use `Parser` to prepend an id to all selectors
 
 	$sMyId = "#my_id";
 	$oParser = new Sabberworm\CSS\Parser($sText);
@@ -102,7 +109,7 @@ There are a few convenience methods on Document to ease finding, manipulating an
 		}
 	}
 	
-#### Shrink all absolute sizes to half
+### Shrink all absolute sizes to half
 
 	$oParser = new Sabberworm\CSS\Parser($sText);
 	$oCss = $oParser->parse();
@@ -112,7 +119,7 @@ There are a few convenience methods on Document to ease finding, manipulating an
 		}
 	}
 
-#### Remove unwanted rules
+### Remove unwanted rules
 
 	$oParser = new Sabberworm\CSS\Parser($sText);
 	$oCss = $oParser->parse();
@@ -469,13 +476,6 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 #### Output (`__toString()`)
 
 	#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;color: red !important;}
-
-
-## To-Do
-
-* More convenience methods [like `selectorsWithElement($sId/Class/TagName)`, `removeSelector($oSelector)`, `attributesOfType($sType)`, `removeAttributesOfType($sType)`]
-* Options for output (compact, verbose, etc.)
-* Named color support (using `Color` instead of an anonymous string literal)
 
 ## Contributors/Thanks to
 
