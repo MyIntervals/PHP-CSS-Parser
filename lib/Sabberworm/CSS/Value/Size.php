@@ -57,7 +57,7 @@ class Size extends PrimitiveValue {
 	}
 
 	public function __toString() {
-		return $this->fSize . ($this->sUnit === null ? '' : $this->sUnit);
+		return str_replace('0.', '.', $this->fSize) . ($this->sUnit === null ? '' : $this->sUnit);
 	}
 
 }
