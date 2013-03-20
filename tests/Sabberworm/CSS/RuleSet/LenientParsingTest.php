@@ -23,4 +23,11 @@ class LenientParsingTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame('.test1 {}'."\n".'.test2 {hello: 2;}'."\n", $oResult->__toString());
 	}
 
+	public function testCaseInsensitivity() {
+		$sFile = dirname(__FILE__) . '/../../../files' . DIRECTORY_SEPARATOR . "case-insensitivity.css";
+		$oParser = new Parser(file_get_contents($sFile));
+		$oResult = $oParser->parse();
+		$this->assertSame('@charset "utf-8";@import url("test.css");@media screen {}#myid {case: insensitive !important;frequency: 30Hz;color: #ff0;color: hsl(40,40%,30%);font-family: Arial;}'."\n", $oResult->__toString());
+	}
+
 }

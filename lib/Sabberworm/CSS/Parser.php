@@ -87,7 +87,7 @@ class Parser {
 		$this->consume('@');
 		$sIdentifier = $this->parseIdentifier();
 		$this->consumeWhiteSpace();
-		if ($sIdentifier === 'import') {
+		if ($this->streql($sIdentifier, 'import')) {
 			$oLocation = $this->parseURLValue();
 			$this->consumeWhiteSpace();
 			$sMediaQuery = null;
@@ -96,7 +96,7 @@ class Parser {
 			}
 			$this->consume(';');
 			return new Import($oLocation, $sMediaQuery);
-		} else if ($sIdentifier === 'charset') {
+		} else if ($this->streql($sIdentifier, 'charset')) {
 			$sCharset = $this->parseStringValue();
 			$this->consumeWhiteSpace();
 			$this->consume(';');
@@ -110,7 +110,7 @@ class Parser {
 			$this->consumeWhiteSpace();
 			$this->parseList($oResult);
 			return $oResult;
-		} else if ($sIdentifier === 'namespace') {
+		} else if ($this->streql($sIdentifier, 'namespace')) {
 			$sPrefix = null;
 			$mUrl = $this->parsePrimitiveValue();
 			if (!$this->comes(';')) {
@@ -148,7 +148,7 @@ class Parser {
 		}
 	}
 
-	private function parseIdentifier($bAllowFunctions = true) {
+	private function parseIdentifier($bAllowFunctions = true, $bIgnoreCase = true) {
 		$sResult = $this->parseCharacter(true);
 		if ($sResult === null) {
 			throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier');
@@ -156,6 +156,9 @@ class Parser {
 		$sCharacter = null;
 		while (($sCharacter = $this->parseCharacter(true)) !== null) {
 			$sResult .= $sCharacter;
+		}
+		if ($bIgnoreCase) {
+			$sResult = $this->strtolower($sResult);
 		}
 		if ($bAllowFunctions && $this->comes('(')) {
 			$this->consume('(');
@@ -287,10 +290,7 @@ class Parser {
 		if ($this->comes('!')) {
 			$this->consume('!');
 			$this->consumeWhiteSpace();
-			$sImportantMarker = $this->consume(strlen('important'));
-			if (mb_convert_case($sImportantMarker, MB_CASE_LOWER, $this->sCharset) !== 'important') {
-				throw new \Exception("! was followed by “" . $sImportantMarker . "”. Expected “important”");
-			}
+			$this->consume('important');
 			$oRule->setIsImportant(true);
 		}
 		while ($this->comes(';')) {
@@ -366,7 +366,7 @@ class Parser {
 		} else if ($this->comes("'") || $this->comes('"')) {
 			$oValue = $this->parseStringValue();
 		} else {
-			$oValue = $this->parseIdentifier();
+			$oValue = $this->parseIdentifier(true, false);
 		}
 		$this->consumeWhiteSpace();
 		return $oValue;
@@ -385,22 +385,14 @@ class Parser {
 			}
 		}
 		$fSize = floatval($sSize);
-
 		$sUnit = null;
-		$units = array(
-			'%', 'em', 'ex', 'px', 'deg', 's', 'cm', 'pt', 'in', 'pc', 'cm',
-			'mm',
-			// These are non "size" values, but they are still numeric
-			'deg', 'grad', 'rad', 'turns', 's', 'ms', 'Hz', 'kHz'
-		);
-
-		foreach ($units as $val) {
-			if ($this->comes($val)) {
-				$sUnit = $this->consume($val);
+		foreach(explode('/', Size::ABSOLUTE_SIZE_UNITS.'/'.Size::RELATIVE_SIZE_UNITS.'/'.Size::NON_SIZE_UNITS) as $sDefinedUnit) {
+			if ($this->comes($sDefinedUnit, 0, true)) {
+				$sUnit = $sDefinedUnit;
+				$this->consume($sDefinedUnit);
 				break;
 			}
 		}
-
 		return new Size($fSize, $sUnit, $bForColor);
 	}
 
@@ -450,15 +442,16 @@ class Parser {
 	/**
 	* Tests an identifier for a given value. Since identifiers are all keywords, they can be vendor-prefixed. We need to check for these versions too.
 	*/
-	private static function identifierIs($sIdentifier, $sMatch) {
-	 	return preg_match("/^(-\\w+-)?$sMatch$/", $sIdentifier) === 1;
+	private static function identifierIs($sIdentifier, $sMatch, $bCaseInsensitive = true) {
+	 	return preg_match("/^(-\\w+-)?$sMatch$/".($bCaseInsensitive ? 'i' : ''), $sIdentifier) === 1;
 	}
 
-	private function comes($sString, $iOffset = 0) {
+	private function comes($sString, $iOffset = 0, $bCaseInsensitive = true) {
 		if ($this->isEnd()) {
 			return false;
 		}
-		return $this->peek($sString, $iOffset) == $sString;
+		$sPeek = $this->peek($sString, $iOffset);
+		return $this->streql($sPeek, $sString, $bCaseInsensitive);
 	}
 
 	private function peek($iLength = 1, $iOffset = 0) {
@@ -482,7 +475,7 @@ class Parser {
 	private function consume($mValue = 1) {
 		if (is_string($mValue)) {
 			$iLength = $this->strlen($mValue);
-			if ($this->substr($this->sText, $this->iCurrentPosition, $iLength) !== $mValue) {
+			if (!$this->streql($this->substr($this->sText, $this->iCurrentPosition, $iLength), $mValue)) {
 				throw new UnexpectedTokenException($mValue, $this->peek(max($iLength, 5)));
 			}
 			$this->iCurrentPosition += $this->strlen($mValue);
@@ -530,7 +523,7 @@ class Parser {
 		$aEnd = is_array($aEnd) ? $aEnd : array($aEnd);
 		$iEndPos = null;
 		foreach ($aEnd as $sEnd) {
-			$iCurrentEndPos = $this->strpos($this->sText, $sEnd, $this->iCurrentPosition, $this->sCharset);
+			$iCurrentEndPos = $this->strpos($this->sText, $sEnd, $this->iCurrentPosition);
 			if($iCurrentEndPos === false) {
 				continue;
 			}
@@ -548,27 +541,43 @@ class Parser {
 		return $this->substr($this->sText, $this->iCurrentPosition, -1);
 	}
 
-	private function substr($string, $start, $length) {
+	private function substr($sString, $iStart, $iLength) {
 		if ($this->oParserSettings->bMultibyteSupport) {
-			return mb_substr($string, $start, $length, $this->sCharset);
+			return mb_substr($sString, $iStart, $iLength, $this->sCharset);
 		} else {
-			return substr($string, $start, $length);
+			return substr($sString, $iStart, $iLength);
 		}
 	}
 
-	private function strlen($text) {
+	private function strlen($sString) {
 		if ($this->oParserSettings->bMultibyteSupport) {
-			return mb_strlen($text, $this->sCharset);
+			return mb_strlen($sString, $this->sCharset);
 		} else {
-			return strlen($text);
+			return strlen($sString);
 		}
 	}
 
-	private function strpos($text, $needle, $offset, $charset) {
-		if ($this->oParserSettings->bMultibyteSupport) {
-			return mb_strpos($text, $needle, $offset, $charset);
+	private function streql($sString1, $sString2, $bCaseInsensitive = true) {
+		if($bCaseInsensitive) {
+			return $this->strtolower($sString1) === $this->strtolower($sString2);
 		} else {
-			return strpos($text, $needle, $offset);
+			return $sString1 === $sString2;
+		}
+	}
+
+	private function strtolower($sString) {
+		if ($this->oParserSettings->bMultibyteSupport) {
+			return mb_strtolower($sString, $this->sCharset);
+		} else {
+			return strtolower($sString);
+		}
+	}
+
+	private function strpos($sString, $sNeedle, $iOffset) {
+		if ($this->oParserSettings->bMultibyteSupport) {
+			return mb_strpos($sString, $sNeedle, $iOffset, $this->sCharset);
+		} else {
+			return strpos($sString, $sNeedle, $iOffset);
 		}
 	}
 
