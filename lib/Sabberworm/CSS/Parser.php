@@ -540,7 +540,7 @@ class Parser {
 		$aEnd = is_array($aEnd) ? $aEnd : array($aEnd);
 		$iEndPos = null;
 		foreach ($aEnd as $sEnd) {
-			$iCurrentEndPos = mb_strpos($this->sText, $sEnd, $this->iCurrentPosition, $this->sCharset);
+			$iCurrentEndPos = $this->strpos($this->sText, $sEnd, $this->iCurrentPosition, $this->sCharset);
 			if($iCurrentEndPos === false) {
 				continue;
 			}
@@ -571,6 +571,14 @@ class Parser {
 			return mb_strlen($text, $this->sCharset);
 		} else {
 			return strlen($text);
+		}
+	}
+
+	private function strpos($text, $needle, $offset, $charset) {
+		if ($this->oParserSettings->bMultibyteSupport) {
+			return mb_strpos($text, $needle, $offset, $charset);
+		} else {
+			return strpos($text, $needle, $offset);
 		}
 	}
 
