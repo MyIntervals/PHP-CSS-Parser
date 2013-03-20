@@ -87,7 +87,7 @@ class Parser {
 		$this->consume('@');
 		$sIdentifier = $this->parseIdentifier();
 		$this->consumeWhiteSpace();
-		if ($this->streql($sIdentifier, 'import')) {
+		if ($sIdentifier === 'import') {
 			$oLocation = $this->parseURLValue();
 			$this->consumeWhiteSpace();
 			$sMediaQuery = null;
@@ -96,7 +96,7 @@ class Parser {
 			}
 			$this->consume(';');
 			return new Import($oLocation, $sMediaQuery);
-		} else if ($this->streql($sIdentifier, 'charset')) {
+		} else if ($sIdentifier === 'charset') {
 			$sCharset = $this->parseStringValue();
 			$this->consumeWhiteSpace();
 			$this->consume(';');
@@ -110,7 +110,7 @@ class Parser {
 			$this->consumeWhiteSpace();
 			$this->parseList($oResult);
 			return $oResult;
-		} else if ($this->streql($sIdentifier, 'namespace')) {
+		} else if ($sIdentifier === 'namespace') {
 			$sPrefix = null;
 			$mUrl = $this->parsePrimitiveValue();
 			if (!$this->comes(';')) {
