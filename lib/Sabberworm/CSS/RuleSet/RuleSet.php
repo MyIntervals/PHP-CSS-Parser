@@ -28,7 +28,7 @@ abstract class RuleSet {
 	 * Returns all rules matching the given rule name
 	 * @param (null|string|Rule) $mRule pattern to search for. If null, returns all rules. if the pattern ends with a dash, all rules starting with the pattern are returned as well as one matching the pattern with the dash excluded. passing a Rule behaves like calling getRules($mRule->getRule()).
 	 * @example $oRuleSet->getRules('font-') //returns an array of all rules either beginning with font- or matching font.
-	 * @example $oRuleSet->getRules('font') //returns array('font' => $oRule) or array().
+	 * @example $oRuleSet->getRules('font') //returns array(0 => $oRule, …) or array().
 	 */
 	public function getRules($mRule = null) {
 		if ($mRule instanceof Rule) {
