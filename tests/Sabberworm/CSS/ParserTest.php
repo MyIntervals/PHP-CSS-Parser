@@ -4,6 +4,7 @@ namespace Sabberworm\CSS;
 
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Property\Selector;
+use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Property\AtRule;
 
 class ParserTest extends \PHPUnit_Framework_TestCase {
@@ -46,29 +47,35 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 			}
 			$sSelector = $oRuleSet->getSelectors();
 			$sSelector = $sSelector[0]->getSelector();
-			if ($sSelector == '#mine') {
+			if ($sSelector === '#mine') {
 				$aColorRule = $oRuleSet->getRules('color');
-				$aValues = $aColorRule[0]->getValues();
-				$this->assertSame('red', $aValues[0][0]);
+				$oColor = $aColorRule[0]->getValue();
+				$this->assertSame('red', $oColor);
 				$aColorRule = $oRuleSet->getRules('background-');
-				$aValues = $aColorRule[0]->getValues();
-				$this->assertEquals(array('r' => new Size(35.0, null, true), 'g' => new Size(35.0, null, true), 'b' => new Size(35.0, null, true)), $aValues[0][0]->getColor());
+				$oColor = $aColorRule[0]->getValue();
+				$this->assertEquals(array('r' => new Size(35.0, null, true), 'g' => new Size(35.0, null, true), 'b' => new Size(35.0, null, true)), $oColor->getColor());
 				$aColorRule = $oRuleSet->getRules('border-color');
-				$aValues = $aColorRule[0]->getValues();
-				$this->assertEquals(array('r' => new Size(10.0, null, true), 'g' => new Size(100.0, null, true), 'b' => new Size(230.0, null, true), 'a' => new Size("0000.3", null, true)), $aValues[0][0]->getColor());
+				$oColor = $aColorRule[0]->getValue();
+				$this->assertEquals(array('r' => new Size(10.0, null, true), 'g' => new Size(100.0, null, true), 'b' => new Size(230.0, null, true)), $oColor->getColor());
+				$oColor = $aColorRule[1]->getValue();
+				$this->assertEquals(array('r' => new Size(10.0, null, true), 'g' => new Size(100.0, null, true), 'b' => new Size(231.0, null, true), 'a' => new Size("0000.3", null, true)), $oColor->getColor());
 				$aColorRule = $oRuleSet->getRules('outline-color');
-				$aValues = $aColorRule[0]->getValues();
-				$this->assertEquals(array('r' => new Size(34.0, null, true), 'g' => new Size(34.0, null, true), 'b' => new Size(34.0, null, true)), $aValues[0][0]->getColor());
-			}
-		}
-		foreach ($oDoc->getAllValues('background-') as $oColor) {
-			if ($oColor->getColorDescription() === 'hsl') {
-				$this->assertEquals(array('h' => new Size(220.0, null, true), 's' => new Size(10.0, null, true), 'l' => new Size(220.0, null, true)), $oColor->getColor());
+				$oColor = $aColorRule[0]->getValue();
+				$this->assertEquals(array('r' => new Size(34.0, null, true), 'g' => new Size(34.0, null, true), 'b' => new Size(34.0, null, true)), $oColor->getColor());
+			} else if($sSelector === '#yours') {
+				$aColorRule = $oRuleSet->getRules('background-color');
+				$oColor = $aColorRule[0]->getValue();
+				$this->assertEquals(array('h' => new Size(220.0, null, true), 's' => new Size(10.0, '%', true), 'l' => new Size(220.0, '%', true)), $oColor->getColor());
+				$oColor = $aColorRule[1]->getValue();
+				$this->assertEquals(array('h' => new Size(220.0, null, true), 's' => new Size(10.0, '%', true), 'l' => new Size(220.0, '%', true), 'a' => new Size(0000.3, null, true)), $oColor->getColor());
 			}
 		}
 		foreach ($oDoc->getAllValues('color') as $sColor) {
 			$this->assertSame('red', $sColor);
 		}
+		$this->assertSame('#mine {color: red;border-color: #0a64e6;border-color: rgba(10,100,231,.3);outline-color: #222;background-color: #232323;}
+#yours {background-color: hsl(220,10%,220%);background-color: hsla(220,10%,220%,.3);}
+', $oDoc->__toString());
 	}
 
 	function testUnicodeParsing() {
@@ -247,7 +254,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 
 	function testFunctionSyntax() {
 		$oDoc = $this->parsedStructureForFile('functions');
-		$sExpected = 'div.main {background-image: linear-gradient(rgb(0,0,0),rgb(255,255,255));}
+		$sExpected = 'div.main {background-image: linear-gradient(#000,#fff);}
 .collapser::before, .collapser::-moz-before, .collapser::-webkit-before {content: "»";font-size: 1.2em;margin-right: .2em;-moz-transition-property: -moz-transform;-moz-transition-duration: .2s;-moz-transform-origin: center 60%;}
 .collapser.expanded::before, .collapser.expanded::-moz-before, .collapser.expanded::-webkit-before {-moz-transform: rotate(90deg);}
 .collapser + * {height: 0;overflow: hidden;-moz-transition-property: height;-moz-transition-duration: .3s;}
@@ -273,19 +280,19 @@ body {color: green;}' . "\n", $oDoc->__toString());
 
 	function testExpandShorthands() {
 		$oDoc = $this->parsedStructureForFile('expand-shorthands');
-		$sExpected = 'body {font: italic 500 14px/1.618 "Trebuchet MS",Georgia,serif;border: 2px solid rgb(255,0,255);background: rgb(204,204,204) url("/images/foo.png") no-repeat left top;margin: 1em !important;padding: 2px 6px 3px;}' . "\n";
+		$sExpected = 'body {font: italic 500 14px/1.618 "Trebuchet MS",Georgia,serif;border: 2px solid #f0f;background: #ccc url("/images/foo.png") no-repeat left top;margin: 1em !important;padding: 2px 6px 3px;}' . "\n";
 		$this->assertSame($sExpected, $oDoc->__toString());
 		$oDoc->expandShorthands();
-		$sExpected = 'body {margin-top: 1em !important;margin-right: 1em !important;margin-bottom: 1em !important;margin-left: 1em !important;padding-top: 2px;padding-right: 6px;padding-bottom: 3px;padding-left: 6px;border-top-color: rgb(255,0,255);border-right-color: rgb(255,0,255);border-bottom-color: rgb(255,0,255);border-left-color: rgb(255,0,255);border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-width: 2px;border-right-width: 2px;border-bottom-width: 2px;border-left-width: 2px;font-style: italic;font-variant: normal;font-weight: 500;font-size: 14px;line-height: 1.618;font-family: "Trebuchet MS",Georgia,serif;background-color: rgb(204,204,204);background-image: url("/images/foo.png");background-repeat: no-repeat;background-attachment: scroll;background-position: left top;}' . "\n";
+		$sExpected = 'body {margin-top: 1em !important;margin-right: 1em !important;margin-bottom: 1em !important;margin-left: 1em !important;padding-top: 2px;padding-right: 6px;padding-bottom: 3px;padding-left: 6px;border-top-color: #f0f;border-right-color: #f0f;border-bottom-color: #f0f;border-left-color: #f0f;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-width: 2px;border-right-width: 2px;border-bottom-width: 2px;border-left-width: 2px;font-style: italic;font-variant: normal;font-weight: 500;font-size: 14px;line-height: 1.618;font-family: "Trebuchet MS",Georgia,serif;background-color: #ccc;background-image: url("/images/foo.png");background-repeat: no-repeat;background-attachment: scroll;background-position: left top;}' . "\n";
 		$this->assertSame($sExpected, $oDoc->__toString());
 	}
 
 	function testCreateShorthands() {
 		$oDoc = $this->parsedStructureForFile('create-shorthands');
-		$sExpected = 'body {font-size: 2em;font-family: Helvetica,Arial,sans-serif;font-weight: bold;border-width: 2px;border-color: rgb(153,153,153);border-style: dotted;background-color: rgb(255,255,255);background-image: url("foobar.png");background-repeat: repeat-y;margin-top: 2px;margin-right: 3px;margin-bottom: 4px;margin-left: 5px;}' . "\n";
+		$sExpected = 'body {font-size: 2em;font-family: Helvetica,Arial,sans-serif;font-weight: bold;border-width: 2px;border-color: #999;border-style: dotted;background-color: #fff;background-image: url("foobar.png");background-repeat: repeat-y;margin-top: 2px;margin-right: 3px;margin-bottom: 4px;margin-left: 5px;}' . "\n";
 		$this->assertSame($sExpected, $oDoc->__toString());
 		$oDoc->createShorthands();
-		$sExpected = 'body {background: rgb(255,255,255) url("foobar.png") repeat-y;margin: 2px 5px 4px 3px;border: 2px dotted rgb(153,153,153);font: bold 2em Helvetica,Arial,sans-serif;}' . "\n";
+		$sExpected = 'body {background: #fff url("foobar.png") repeat-y;margin: 2px 5px 4px 3px;border: 2px dotted #999;font: bold 2em Helvetica,Arial,sans-serif;}' . "\n";
 		$this->assertSame($sExpected, $oDoc->__toString());
 	}
 
@@ -298,7 +305,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 	
 	function testInnerColors() {
 		$oDoc = $this->parsedStructureForFile('inner-color');
-		$sExpected = 'test {background: -webkit-gradient(linear,0 0,0 bottom,from(rgb(0,108,173)),to(rgb(0,159,249)));}' . "\n";
+		$sExpected = 'test {background: -webkit-gradient(linear,0 0,0 bottom,from(#006cad),to(hsl(202,100%,49%)));}' . "\n";
 		$this->assertSame($sExpected, $oDoc->__toString());
 	}
 

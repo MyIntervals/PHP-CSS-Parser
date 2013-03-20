@@ -20,10 +20,10 @@ class DeclarationBlockTest extends \PHPUnit_Framework_TestCase {
 
 	public function expandBorderShorthandProvider() {
 		return array(
-			array('body{ border: 2px solid rgb(0,0,0) }', 'body {border-width: 2px;border-style: solid;border-color: rgb(0,0,0);}'),
+			array('body{ border: 2px solid #000 }', 'body {border-width: 2px;border-style: solid;border-color: #000;}'),
 			array('body{ border: none }', 'body {border-style: none;}'),
 			array('body{ border: 2px }', 'body {border-width: 2px;}'),
-			array('body{ border: rgb(255,0,0) }', 'body {border-color: rgb(255,0,0);}'),
+			array('body{ border: #f00 }', 'body {border-color: #f00;}'),
 			array('body{ border: 1em solid }', 'body {border-width: 1em;border-style: solid;}'),
 			array('body{ margin: 1em; }', 'body {margin: 1em;}')
 		);
@@ -85,11 +85,11 @@ class DeclarationBlockTest extends \PHPUnit_Framework_TestCase {
 	public function expandBackgroundShorthandProvider() {
 		return array(
 			array('body {border: 1px;}', 'body {border: 1px;}'),
-			array('body {background: rgb(255,0,0);}', 'body {background-color: rgb(255,0,0);background-image: none;background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;}'),
-			array('body {background: rgb(255,0,0) url("foobar.png");}', 'body {background-color: rgb(255,0,0);background-image: url("foobar.png");background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;}'),
-			array('body {background: rgb(255,0,0) url("foobar.png") no-repeat;}', 'body {background-color: rgb(255,0,0);background-image: url("foobar.png");background-repeat: no-repeat;background-attachment: scroll;background-position: 0% 0%;}'),
-			array('body {background: rgb(255,0,0) url("foobar.png") no-repeat center;}', 'body {background-color: rgb(255,0,0);background-image: url("foobar.png");background-repeat: no-repeat;background-attachment: scroll;background-position: center center;}'),
-			array('body {background: rgb(255,0,0) url("foobar.png") no-repeat top left;}', 'body {background-color: rgb(255,0,0);background-image: url("foobar.png");background-repeat: no-repeat;background-attachment: scroll;background-position: top left;}'),
+			array('body {background: #f00;}', 'body {background-color: #f00;background-image: none;background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;}'),
+			array('body {background: #f00 url("foobar.png");}', 'body {background-color: #f00;background-image: url("foobar.png");background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;}'),
+			array('body {background: #f00 url("foobar.png") no-repeat;}', 'body {background-color: #f00;background-image: url("foobar.png");background-repeat: no-repeat;background-attachment: scroll;background-position: 0% 0%;}'),
+			array('body {background: #f00 url("foobar.png") no-repeat center;}', 'body {background-color: #f00;background-image: url("foobar.png");background-repeat: no-repeat;background-attachment: scroll;background-position: center center;}'),
+			array('body {background: #f00 url("foobar.png") no-repeat top left;}', 'body {background-color: #f00;background-image: url("foobar.png");background-repeat: no-repeat;background-attachment: scroll;background-position: top left;}'),
 		);
 	}
 
@@ -129,7 +129,7 @@ class DeclarationBlockTest extends \PHPUnit_Framework_TestCase {
 
 	public function createBorderShorthandProvider() {
 		return array(
-			array('body {border-width: 2px;border-style: solid;border-color: rgb(0,0,0);}', 'body {border: 2px solid rgb(0,0,0);}'),
+			array('body {border-width: 2px;border-style: solid;border-color: #000;}', 'body {border: 2px solid #000;}'),
 			array('body {border-style: none;}', 'body {border: none;}'),
 			array('body {border-width: 1em;border-style: solid;}', 'body {border: 1em solid;}'),
 			array('body {margin: 1em;}', 'body {margin: 1em;}')
@@ -196,12 +196,12 @@ class DeclarationBlockTest extends \PHPUnit_Framework_TestCase {
 	public function createBackgroundShorthandProvider() {
 		return array(
 			array('body {border: 1px;}', 'body {border: 1px;}'),
-			array('body {background-color: rgb(255,0,0);}', 'body {background: rgb(255,0,0);}'),
-			array('body {background-color: rgb(255,0,0);background-image: url(foobar.png);}', 'body {background: rgb(255,0,0) url("foobar.png");}'),
-			array('body {background-color: rgb(255,0,0);background-image: url(foobar.png);background-repeat: no-repeat;}', 'body {background: rgb(255,0,0) url("foobar.png") no-repeat;}'),
-			array('body {background-color: rgb(255,0,0);background-image: url(foobar.png);background-repeat: no-repeat;}', 'body {background: rgb(255,0,0) url("foobar.png") no-repeat;}'),
-			array('body {background-color: rgb(255,0,0);background-image: url(foobar.png);background-repeat: no-repeat;background-position: center;}', 'body {background: rgb(255,0,0) url("foobar.png") no-repeat center;}'),
-			array('body {background-color: rgb(255,0,0);background-image: url(foobar.png);background-repeat: no-repeat;background-position: top left;}', 'body {background: rgb(255,0,0) url("foobar.png") no-repeat top left;}'),
+			array('body {background-color: #f00;}', 'body {background: #f00;}'),
+			array('body {background-color: #f00;background-image: url(foobar.png);}', 'body {background: #f00 url("foobar.png");}'),
+			array('body {background-color: #f00;background-image: url(foobar.png);background-repeat: no-repeat;}', 'body {background: #f00 url("foobar.png") no-repeat;}'),
+			array('body {background-color: #f00;background-image: url(foobar.png);background-repeat: no-repeat;}', 'body {background: #f00 url("foobar.png") no-repeat;}'),
+			array('body {background-color: #f00;background-image: url(foobar.png);background-repeat: no-repeat;background-position: center;}', 'body {background: #f00 url("foobar.png") no-repeat center;}'),
+			array('body {background-color: #f00;background-image: url(foobar.png);background-repeat: no-repeat;background-position: top left;}', 'body {background: #f00 url("foobar.png") no-repeat top left;}'),
 		);
 	}
 

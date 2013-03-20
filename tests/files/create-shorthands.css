@@ -1,5 +1,4 @@
-body
-{
+body {
   font-size: 2em; font-family: Helvetica,Arial,sans-serif; font-weight: bold;
   border-width: 2px; border-color: #999; border-style: dotted;
   background-color: #fff; background-image: url('foobar.png'); background-repeat: repeat-y;
