@@ -20,7 +20,15 @@ class LenientParsingTest extends \PHPUnit_Framework_TestCase {
 		$sFile = dirname(__FILE__) . '/../../../files' . DIRECTORY_SEPARATOR . "fault-tolerance.css";
 		$oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
 		$oResult = $oParser->parse();
-		$this->assertSame('.test1 {}'."\n".'.test2 {hello: 2;}'."\n", $oResult->__toString());
+		$this->assertSame('.test1 {}'."\n".'.test2 {hello: 2.2;hello: 200000000000.2;}'."\n", $oResult->__toString());
+	}
+
+	public function testLocaleTrap() {
+		setlocale(LC_ALL, "pt_PT", "no");
+		$sFile = dirname(__FILE__) . '/../../../files' . DIRECTORY_SEPARATOR . "fault-tolerance.css";
+		$oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
+		$oResult = $oParser->parse();
+		$this->assertSame('.test1 {}'."\n".'.test2 {hello: 2.2;hello: 200000000000.2;}'."\n", $oResult->__toString());
 	}
 
 	public function testCaseInsensitivity() {

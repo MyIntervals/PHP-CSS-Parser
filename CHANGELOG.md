@@ -31,6 +31,12 @@
 * *No backwards-incompatible changes*
 * *No deprecations*
 
+### 5.0.4 (2013-03-21)
+
+* Don’t output floats with locale-aware separator chars
+* *No backwards-incompatible changes*
+* *No deprecations*
+
 ## 4.0
 
 ### 4.0.0 (2013-03-19)
