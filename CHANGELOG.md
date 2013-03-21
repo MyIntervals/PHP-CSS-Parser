@@ -25,6 +25,12 @@
 * *No backwards-incompatible changes*
 * *No deprecations*
 
+### 5.0.3 (2013-03-21)
+
+* More size units recongnized
+* *No backwards-incompatible changes*
+* *No deprecations*
+
 ## 4.0
 
 ### 4.0.0 (2013-03-19)
