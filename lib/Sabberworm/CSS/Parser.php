@@ -542,7 +542,7 @@ class Parser {
 			}
 		}
 		if ($iEndPos === null) {
-			throw new UnexpectedTokenException(print_r($aEnd, true), $this->peek(5), 'search');
+			throw new UnexpectedTokenException('One of ("'.implode('","', $aEnd).'")', $this->peek(5), 'search');
 		}
 		return $this->consume($iEndPos - $this->iCurrentPosition);
 	}
