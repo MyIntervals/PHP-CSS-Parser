@@ -264,10 +264,20 @@ class Parser {
 				try {
 					$oRule = $this->parseRule();
 				} catch (UnexpectedTokenException $e) {
-					$this->consumeUntil(array("\n", ";"), true);
-					$this->consumeWhiteSpace();
-					while ($this->comes(';')) {
-						$this->consume(';');
+					try {
+						$sConsume = $this->consumeUntil(array("\n", ";", '}'), true);
+						// We need to “unfind” the matches to the end of the ruleSet as this will be matched later
+						if($this->streql($this->substr($sConsume, $this->strlen($sConsume)-1, 1), '}')) {
+							$this->iCurrentPosition--;
+						} else {
+							$this->consumeWhiteSpace();
+							while ($this->comes(';')) {
+								$this->consume(';');
+							}
+						}
+					} catch (UnexpectedTokenException $e) {
+						// We’ve reached the end of the document. Just close the RuleSet.
+						return;
 					}
 				}
 			} else {
