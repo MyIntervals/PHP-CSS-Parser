@@ -485,6 +485,7 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 * [nicolopignatelli](https://github.com/nicolopignatelli) for PSR-0 compatibility.
 * [diegoembarcadero](https://github.com/diegoembarcadero) for keyframe at-rule parsing.
 * [goetas](https://github.com/goetas) for @namespace at-rule support.
+* [View full list](https://github.com/sabberworm/PHP-CSS-Parser/contributors)
 
 ## Misc
 
