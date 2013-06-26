@@ -19,10 +19,7 @@ Add php-css-parser to your composer.json
 
 To use the CSS Parser, create a new instance. The constructor takes the following form:
 
-	$oSettings = Sabberworm\CSS\Settings::create()->withDefaultCharset('utf-8');
-	new Sabberworm\CSS\Parser($sText, $oSettings);
-
-The charset is used only if no @charset declaration is found in the CSS file. UTF-8 is the default, so you won’t have to create a settings object at all if you don’t intend to change that.
+	new Sabberworm\CSS\Parser($sText);
 
 To read a file, for example, you’d do the following:
 
@@ -31,11 +28,27 @@ To read a file, for example, you’d do the following:
 
 The resulting CSS document structure can be manipulated prior to being output.
 
-### Strict parsing
+### Options
 
-To have the parser choke on invalid rules, supply a Sabberworm\CSS\Settings object:
+#### Charset
+
+The charset option is used only if no @charset declaration is found in the CSS file. UTF-8 is the default, so you won’t have to create a settings object at all if you don’t intend to change that.
+
+	$oSettings = Sabberworm\CSS\Settings::create()->withDefaultCharset('windows-1252');
+	new Sabberworm\CSS\Parser($sText, $oSettings);
+
+#### Strict parsing
+
+To have the parser choke on invalid rules, supply a thusly configured Sabberworm\CSS\Settings object:
 
 	$oCssParser = new Sabberworm\CSS\Parser(file_get_contents('somefile.css'), Sabberworm\CSS\Settings::create()->beStrict());
+
+#### Disable multibyte functions
+
+To achieve faster parsing, you can choose to have PHP-CSS-Parser use regular string functions instead of `mb_*` functions. This should work fine in most cases, even for UTF-8 files, as all the multibyte characters are in string literals. Still it’s not recommended to use this with input you have no control over as it’s not thoroughly covered by test cases.
+
+	$oSettings = Sabberworm\CSS\Settings::create()->withMultibyteSupport(false);
+	new Sabberworm\CSS\Parser($sText, $oSettings);
 
 ### Manipulation
 
