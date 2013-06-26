@@ -21,7 +21,7 @@ class Settings {
 	public $sDefaultCharset = 'utf-8';
 
 	/**
-	* Lenient parsing. When used, the parser will not choke on unexpected tokens but simply ignore them.
+	* Lenient parsing. When used (which is true by default), the parser will not choke on unexpected tokens but simply ignore them.
 	*/
 	public $bLenientParsing = true;
 
