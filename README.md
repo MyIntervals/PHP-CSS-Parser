@@ -19,9 +19,10 @@ Add php-css-parser to your composer.json
 
 To use the CSS Parser, create a new instance. The constructor takes the following form:
 
-	new Sabberworm\CSS\Parser($sText, $oSettings = Sabberworm\CSS\Settings::create()->withDefaultCharset('utf-8'));
+	$oSettings = Sabberworm\CSS\Settings::create()->withDefaultCharset('utf-8');
+	new Sabberworm\CSS\Parser($sText, $oSettings);
 
-The charset is used only if no @charset declaration is found in the CSS file.
+The charset is used only if no @charset declaration is found in the CSS file. UTF-8 is the default, so you won’t have to create a settings object at all if you don’t intend to change that.
 
 To read a file, for example, you’d do the following:
 
