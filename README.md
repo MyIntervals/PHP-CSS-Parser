@@ -79,7 +79,7 @@ Note: A `CSSList` can contain other `CSSList`s (and `Import`s as well as a `Char
 `Value` is an abstract class that only defines the `__toString` method. The concrete subclasses for atomic value types are:
 
 * `Size` – consists of a numeric `size` value and a unit.
-* `Color` – colors can be input in the form #rrggbb, #rgb or schema(val1, val2, …) but are alwas stored as an array of ('s' => val1, 'c' => val2, 'h' => val3, …) and output in the second form.
+* `Color` – colors can be input in the form #rrggbb, #rgb or schema(val1, val2, …) but are always stored as an array of ('s' => val1, 'c' => val2, 'h' => val3, …) and output in the second form.
 * `String` – this is just a wrapper for quoted strings to distinguish them from keywords; always output with double quotes.
 * `URL` – URLs in CSS; always output in URL("") notation.
 
