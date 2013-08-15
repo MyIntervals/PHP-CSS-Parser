@@ -11,9 +11,9 @@ use Sabberworm\CSS\Rule\Rule;
  */
 class Settings {
 	/**
-	* Multi-byte string support. If true (default), will use (slower) mb_strlen, mb_convert_case, mb_substr and mb_strpos functions. Otherwise, the normal (ASCII-Only) functions will be used.
+	* Multi-byte string support. If true (mbstring extension must be enabled), will use (slower) mb_strlen, mb_convert_case, mb_substr and mb_strpos functions. Otherwise, the normal (ASCII-Only) functions will be used.
 	*/
-	public $bMultibyteSupport = true;
+	public $bMultibyteSupport;
 
 	/**
 	* The default charset for the CSS if no `@charset` rule is found. Defaults to utf-8.
@@ -25,7 +25,9 @@ class Settings {
 	*/
 	public $bLenientParsing = true;
 
-	private function __construct() {}
+	private function __construct() {
+        $this->bMultibyteSupport = extension_loaded('mbstring');
+    }
 
 	public static function create() {
 		return new Settings();
