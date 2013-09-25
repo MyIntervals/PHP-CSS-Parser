@@ -31,6 +31,7 @@ class Parser {
 	private $oParserSettings;
 	private $sCharset;
 	private $iLength;
+	private $peekCache = null;
 
 	public function __construct($sText, Settings $oParserSettings = null) {
 		$this->sText = $sText;
@@ -268,6 +269,7 @@ class Parser {
 						// We need to “unfind” the matches to the end of the ruleSet as this will be matched later
 						if($this->streql($this->substr($sConsume, $this->strlen($sConsume)-1, 1), '}')) {
 							--$this->iCurrentPosition;
+							$this->peekCache = null;
 						} else {
 							$this->consumeWhiteSpace();
 							while ($this->comes(';')) {
@@ -446,7 +448,7 @@ class Parser {
 		}
 		return $oResult;
 	}
-	
+
 	/**
 	* Tests an identifier for a given value. Since identifiers are all keywords, they can be vendor-prefixed. We need to check for these versions too.
 	*/
@@ -468,12 +470,25 @@ class Parser {
 		if (is_string($iOffset)) {
 			$iOffset = $this->strlen($iOffset);
 		}
-		$iOffset = $this->iCurrentPosition + $iOffset;
+		if (($peek = (!$iOffset && ($iLength == 1))) &&
+			!is_null($this->peekCache)) {
+			return $this->peekCache;
+		}
+		if (!is_null($this->peekCache) &&
+			$iLength == 1 &&
+			$iOffset = 0) {
+			return $this->peekCache;
+		}
+		$iOffset += $this->iCurrentPosition;
 		if ($iOffset >= $this->iLength) {
 			return '';
 		}
 		$iLength = min($iLength, $this->iLength-$iOffset);
-		return $this->substr($this->sText, $iOffset, $iLength);
+		$out = $this->substr($this->sText, $iOffset, $iLength);
+		if ($peek) {
+			$this->peekCache = $out;
+		}
+		return $out;
 	}
 
 	private function consume($mValue = 1) {
@@ -483,6 +498,7 @@ class Parser {
 				throw new UnexpectedTokenException($mValue, $this->peek(max($iLength, 5)));
 			}
 			$this->iCurrentPosition += $this->strlen($mValue);
+			$this->peekCache = null;
 			return $mValue;
 		} else {
 			if ($this->iCurrentPosition + $mValue > $this->iLength) {
@@ -490,6 +506,7 @@ class Parser {
 			}
 			$sResult = $this->substr($this->sText, $this->iCurrentPosition, $mValue);
 			$this->iCurrentPosition += $mValue;
+			$this->peekCache = null;
 			return $sResult;
 		}
 	}
