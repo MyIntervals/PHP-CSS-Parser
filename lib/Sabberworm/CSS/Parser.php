@@ -456,11 +456,10 @@ class Parser {
 	}
 
 	private function comes($sString, $iOffset = 0, $bCaseInsensitive = true) {
-		if ($this->isEnd()) {
-			return false;
-		}
 		$sPeek = $this->peek($sString, $iOffset);
-		return $this->streql($sPeek, $sString, $bCaseInsensitive);
+		return ($sPeek == '')
+			? false
+			: $this->streql($sPeek, $sString, $bCaseInsensitive);
 	}
 
 	private function peek($iLength = 1, $iOffset = 0) {
