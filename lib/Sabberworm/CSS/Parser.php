@@ -367,9 +367,9 @@ class Parser {
 		$this->consumeWhiteSpace();
 		if (is_numeric($this->peek()) || ($this->comes('-.') && is_numeric($this->peek(1, 2))) || (($this->comes('-') || $this->comes('.')) && is_numeric($this->peek(1, 1)))) {
 			$oValue = $this->parseNumericValue();
-		} else if ($this->comes('#') || $this->comes('rgb') || $this->comes('hsl')) {
+		} else if ($this->comes('#') || $this->comes('rgb', true) || $this->comes('hsl', true)) {
 			$oValue = $this->parseColorValue();
-		} else if ($this->comes('url')) {
+		} else if ($this->comes('url', true)) {
 			$oValue = $this->parseURLValue();
 		} else if ($this->comes("'") || $this->comes('"')) {
 			$oValue = $this->parseStringValue();
@@ -395,7 +395,7 @@ class Parser {
 		$fSize = floatval($sSize);
 		$sUnit = null;
 		foreach(explode('/', Size::ABSOLUTE_SIZE_UNITS.'/'.Size::RELATIVE_SIZE_UNITS.'/'.Size::NON_SIZE_UNITS) as $sDefinedUnit) {
-			if ($this->comes($sDefinedUnit, 0, true)) {
+			if ($this->comes($sDefinedUnit, true)) {
 				$sUnit = $sDefinedUnit;
 				$this->consume($sDefinedUnit);
 				break;
@@ -432,7 +432,7 @@ class Parser {
 	}
 
 	private function parseURLValue() {
-		$bUseUrl = $this->comes('url');
+		$bUseUrl = $this->comes('url', true);
 		if ($bUseUrl) {
 			$this->consume('url');
 			$this->consumeWhiteSpace();
@@ -454,11 +454,11 @@ class Parser {
 	 	return preg_match("/^(-\\w+-)?$sMatch$/".($bCaseInsensitive ? 'i' : ''), $sIdentifier) === 1;
 	}
 
-	private function comes($sString, $iOffset = 0, $bCaseInsensitive = true) {
-		$sPeek = $this->peek($sString, $iOffset);
+	private function comes($sString, $alpha = false) {
+		$sPeek = $this->peek($alpha ? strlen($sString) : $sString);
 		return ($sPeek == '')
 			? false
-			: $this->streql($sPeek, $sString, $bCaseInsensitive);
+			: $this->streql($sPeek, $sString, $alpha);
 	}
 
 	private function peek($iLength = 1, $iOffset = 0) {
