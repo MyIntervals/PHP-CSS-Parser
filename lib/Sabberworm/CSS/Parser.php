@@ -455,7 +455,7 @@ class Parser {
 	}
 
 	private function comes($sString, $alpha = false) {
-		$sPeek = $this->peek($alpha ? strlen($sString) : $sString);
+		$sPeek = $this->peek($alpha ? $sString : strlen($sString));
 		return ($sPeek == '')
 			? false
 			: $this->streql($sPeek, $sString, $alpha);
