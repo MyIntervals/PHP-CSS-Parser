@@ -470,13 +470,8 @@ class Parser {
 		if (is_string($iOffset)) {
 			$iOffset = $this->strlen($iOffset);
 		}
-		if (($peek = (!$iOffset && ($iLength == 1))) &&
+		if (($peek = (!$iOffset && ($iLength === 1))) &&
 			!is_null($this->peekCache)) {
-			return $this->peekCache;
-		}
-		if (!is_null($this->peekCache) &&
-			$iLength == 1 &&
-			$iOffset = 0) {
 			return $this->peekCache;
 		}
 		$iOffset += $this->iCurrentPosition;
