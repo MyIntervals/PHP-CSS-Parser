@@ -206,7 +206,6 @@ class Parser {
 			if ($this->comes('\n') || $this->comes('\r')) {
 				return '';
 			}
-			$aMatches;
 			if (preg_match('/[0-9a-fA-F]/Su', $this->peek()) === 0) {
 				return $this->consume(1);
 			}
