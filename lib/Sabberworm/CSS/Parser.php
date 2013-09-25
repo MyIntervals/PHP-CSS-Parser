@@ -463,9 +463,6 @@ class Parser {
 	}
 
 	private function peek($iLength = 1, $iOffset = 0) {
-		if ($this->isEnd()) {
-			return '';
-		}
 		if (is_string($iLength)) {
 			$iLength = $this->strlen($iLength);
 		}
