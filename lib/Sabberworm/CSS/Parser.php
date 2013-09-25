@@ -223,7 +223,7 @@ class Parser {
 			}
 			$iUnicode = intval($sUnicode, 16);
 			$sUtf32 = "";
-			for ($i = 0; $i < 4; $i++) {
+			for ($i = 0; $i < 4; ++$i) {
 				$sUtf32 .= chr($iUnicode & 0xff);
 				$iUnicode = $iUnicode >> 8;
 			}
@@ -268,7 +268,7 @@ class Parser {
 						$sConsume = $this->consumeUntil(array("\n", ";", '}'), true);
 						// We need to “unfind” the matches to the end of the ruleSet as this will be matched later
 						if($this->streql($this->substr($sConsume, $this->strlen($sConsume)-1, 1), '}')) {
-							$this->iCurrentPosition--;
+							--$this->iCurrentPosition;
 						} else {
 							$this->consumeWhiteSpace();
 							while ($this->comes(';')) {
@@ -341,11 +341,10 @@ class Parser {
 			$iStartPosition = null;
 			while (($iStartPosition = array_search($sDelimiter, $aStack, true)) !== false) {
 				$iLength = 2; //Number of elements to be joined
-				for ($i = $iStartPosition + 2; $i < count($aStack); $i+=2) {
+				for ($i = $iStartPosition + 2; $i < count($aStack); $i+=2, ++$iLength) {
 					if ($sDelimiter !== $aStack[$i]) {
 						break;
 					}
-					$iLength++;
 				}
 				$oList = new RuleValueList($sDelimiter);
 				for ($i = $iStartPosition - 1; $i - $iStartPosition + 1 < $iLength * 2; $i+=2) {
@@ -420,7 +419,7 @@ class Parser {
 			$this->consumeWhiteSpace();
 			$this->consume('(');
 			$iLength = $this->strlen($sColorMode);
-			for ($i = 0; $i < $iLength; $i++) {
+			for ($i = 0; $i < $iLength; ++$i) {
 				$this->consumeWhiteSpace();
 				$aColor[$sColorMode[$i]] = $this->parseNumericValue(true);
 				$this->consumeWhiteSpace();
