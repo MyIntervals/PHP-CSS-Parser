@@ -32,6 +32,8 @@ class Parser {
 	private $sCharset;
 	private $iLength;
 	private $peekCache = null;
+	private $blockRules;
+	private $sizeUnits;
 
 	public function __construct($sText, Settings $oParserSettings = null) {
 		$this->sText = $sText;
@@ -40,6 +42,8 @@ class Parser {
 			$oParserSettings = Settings::create();
 		}
 		$this->oParserSettings = $oParserSettings;
+		$this->blockRules = explode('/', AtRule::BLOCK_RULES);
+		$this->sizeUnits = explode('/', Size::ABSOLUTE_SIZE_UNITS.'/'.Size::RELATIVE_SIZE_UNITS.'/'.Size::NON_SIZE_UNITS);
 	}
 
 	public function setCharset($sCharset) {
@@ -130,7 +134,7 @@ class Parser {
 			$sArgs = $this->consumeUntil('{', false, true);
 			$this->consumeWhiteSpace();
 			$bUseRuleSet = true;
-			foreach(explode('/', AtRule::BLOCK_RULES) as $sBlockRuleName) {
+			foreach($this->blockRules as $sBlockRuleName) {
 				if(self::identifierIs($sIdentifier, $sBlockRuleName)) {
 					$bUseRuleSet = false;
 					break;
@@ -393,7 +397,7 @@ class Parser {
 		}
 		$fSize = floatval($sSize);
 		$sUnit = null;
-		foreach(explode('/', Size::ABSOLUTE_SIZE_UNITS.'/'.Size::RELATIVE_SIZE_UNITS.'/'.Size::NON_SIZE_UNITS) as $sDefinedUnit) {
+		foreach($this->sizeUnits as $sDefinedUnit) {
 			if ($this->comes($sDefinedUnit, true)) {
 				$sUnit = $sDefinedUnit;
 				$this->consume($sDefinedUnit);
