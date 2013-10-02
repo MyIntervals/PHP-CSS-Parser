@@ -515,13 +515,13 @@ class Parser {
 
 	private function consumeComment() {
 		if ($this->comes('/*')) {
-            $this->consume(2);
-            while ($this->consumeUntil('*', false, true)) {
-                if ($this->comes('/')) {
-                    $this->consume(1);
-                    return true;
-                }
-            }
+			$this->consume(2);
+			while ($this->consumeUntil('*', false, true)) {
+				if ($this->comes('/')) {
+					$this->consume(1);
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -532,22 +532,22 @@ class Parser {
 
 	private function consumeUntil($aEnd, $bIncludeEnd = false, $consumeEnd = false) {
 		$aEnd = is_array($aEnd) ? $aEnd : array($aEnd);
-        $out = '';
-        $start = $this->iCurrentPosition;
+		$out = '';
+		$start = $this->iCurrentPosition;
 
-        while (($char = $this->consume(1)) !== '') {
-            if (in_array($char, $aEnd)) {
-                if ($bIncludeEnd) {
-                    $out .= $char;
-                } elseif (!$consumeEnd) {
-                    $this->iCurrentPosition -= $this->strlen($char);
-                }
-                return $out;
-            }
-            $out .= $char;
-        }
+		while (($char = $this->consume(1)) !== '') {
+			if (in_array($char, $aEnd)) {
+				if ($bIncludeEnd) {
+					$out .= $char;
+				} elseif (!$consumeEnd) {
+					$this->iCurrentPosition -= $this->strlen($char);
+				}
+				return $out;
+			}
+			$out .= $char;
+		}
 
-        $this->iCurrentPosition = $start;
+		$this->iCurrentPosition = $start;
 		throw new UnexpectedTokenException('One of ("'.implode('","', $aEnd).'")', $this->peek(5), 'search');
 	}
 
