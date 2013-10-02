@@ -106,8 +106,7 @@ class Parser {
 		} else if (self::identifierIs($sIdentifier, 'keyframes')) {
 			$oResult = new KeyFrame();
 			$oResult->setVendorKeyFrame($sIdentifier);
-			$oResult->setAnimationName(trim($this->consumeUntil('{')));
-			$this->consume('{');
+			$oResult->setAnimationName(trim($this->consumeUntil('{', false, true)));
 			$this->consumeWhiteSpace();
 			$this->parseList($oResult);
 			return $oResult;
@@ -128,8 +127,7 @@ class Parser {
 			return new CSSNamespace($mUrl, $sPrefix);
 		} else {
 			//Unknown other at rule (font-face or such)
-			$sArgs = $this->consumeUntil('{');
-			$this->consume('{');
+			$sArgs = $this->consumeUntil('{', false, true);
 			$this->consumeWhiteSpace();
 			$bUseRuleSet = true;
 			foreach(explode('/', AtRule::BLOCK_RULES) as $sBlockRuleName) {
@@ -246,8 +244,7 @@ class Parser {
 
 	private function parseSelector() {
 		$oResult = new DeclarationBlock();
-		$oResult->setSelector($this->consumeUntil('{'));
-		$this->consume('{');
+		$oResult->setSelector($this->consumeUntil('{', false, true));
 		$this->consumeWhiteSpace();
 		$this->parseRuleSet($oResult);
 		return $oResult;
@@ -518,9 +515,13 @@ class Parser {
 
 	private function consumeComment() {
 		if ($this->comes('/*')) {
-			$this->consumeUntil('*/');
-			$this->consume('*/');
-			return true;
+            $this->consume(2);
+            while ($this->consumeUntil('*', false, true)) {
+                if ($this->comes('/')) {
+                    $this->consume(1);
+                    return true;
+                }
+            }
 		}
 		return false;
 	}
@@ -529,22 +530,25 @@ class Parser {
 		return $this->iCurrentPosition >= $this->iLength;
 	}
 
-	private function consumeUntil($aEnd, $bIncludeEnd = false) {
+	private function consumeUntil($aEnd, $bIncludeEnd = false, $consumeEnd = false) {
 		$aEnd = is_array($aEnd) ? $aEnd : array($aEnd);
-		$iEndPos = null;
-		foreach ($aEnd as $sEnd) {
-			$iCurrentEndPos = $this->strpos($this->sText, $sEnd, $this->iCurrentPosition);
-			if($iCurrentEndPos === false) {
-				continue;
-			}
-			if($iEndPos === null || $iCurrentEndPos < $iEndPos) {
-				$iEndPos = $iCurrentEndPos + ($bIncludeEnd ? $this->strlen($sEnd) : 0);
-			}
-		}
-		if ($iEndPos === null) {
-			throw new UnexpectedTokenException('One of ("'.implode('","', $aEnd).'")', $this->peek(5), 'search');
-		}
-		return $this->consume($iEndPos - $this->iCurrentPosition);
+        $out = '';
+        $start = $this->iCurrentPosition;
+
+        while (($char = $this->consume(1)) !== '') {
+            if (in_array($char, $aEnd)) {
+                if ($bIncludeEnd) {
+                    $out .= $char;
+                } elseif (!$consumeEnd) {
+                    $this->iCurrentPosition -= $this->strlen($char);
+                }
+                return $out;
+            }
+            $out .= $char;
+        }
+
+        $this->iCurrentPosition = $start;
+		throw new UnexpectedTokenException('One of ("'.implode('","', $aEnd).'")', $this->peek(5), 'search');
 	}
 
 	private function inputLeft() {
