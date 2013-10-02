@@ -107,7 +107,7 @@ class Parser {
 			$this->consume(';');
 			$this->setCharset($sCharset->getString());
 			return new Charset($sCharset);
-		} else if (self::identifierIs($sIdentifier, 'keyframes')) {
+		} else if ($this->identifierIs($sIdentifier, 'keyframes')) {
 			$oResult = new KeyFrame();
 			$oResult->setVendorKeyFrame($sIdentifier);
 			$oResult->setAnimationName(trim($this->consumeUntil('{', false, true)));
@@ -135,7 +135,7 @@ class Parser {
 			$this->consumeWhiteSpace();
 			$bUseRuleSet = true;
 			foreach($this->blockRules as $sBlockRuleName) {
-				if(self::identifierIs($sIdentifier, $sBlockRuleName)) {
+				if($this->identifierIs($sIdentifier, $sBlockRuleName)) {
 					$bUseRuleSet = false;
 					break;
 				}
@@ -454,8 +454,9 @@ class Parser {
 	/**
 	* Tests an identifier for a given value. Since identifiers are all keywords, they can be vendor-prefixed. We need to check for these versions too.
 	*/
-	private static function identifierIs($sIdentifier, $sMatch, $bCaseInsensitive = true) {
-	 	return preg_match("/^(-\\w+-)?$sMatch$/".($bCaseInsensitive ? 'i' : ''), $sIdentifier) === 1;
+	private function identifierIs($sIdentifier, $sMatch) {
+		return (strcasecmp($sIdentifier, $sMatch) === 0)
+			?: preg_match("/^(-\\w+-)?$sMatch$/i", $sIdentifier) === 1;
 	}
 
 	private function comes($sString, $alpha = false) {
