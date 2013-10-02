@@ -457,19 +457,13 @@ class Parser {
 	}
 
 	private function comes($sString, $alpha = false) {
-		$sPeek = $this->peek($alpha ? $sString : strlen($sString));
+		$sPeek = $this->peek($alpha ? $this->strlen($sString) : strlen($sString));
 		return ($sPeek == '')
 			? false
 			: $this->streql($sPeek, $sString, $alpha);
 	}
 
 	private function peek($iLength = 1, $iOffset = 0) {
-		if (is_string($iLength)) {
-			$iLength = $this->strlen($iLength);
-		}
-		if (is_string($iOffset)) {
-			$iOffset = $this->strlen($iOffset);
-		}
 		if (($peek = (!$iOffset && ($iLength === 1))) &&
 			!is_null($this->peekCache)) {
 			return $this->peekCache;
