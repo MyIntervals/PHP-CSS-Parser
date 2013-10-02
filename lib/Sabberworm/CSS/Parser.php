@@ -232,17 +232,19 @@ class Parser {
 			return iconv('utf-32le', $this->sCharset, $sUtf32);
 		}
 		if ($bIsForIdentifier) {
-			if (preg_match('/[a-zA-Z0-9]|-|_/u', $this->peek()) === 1) {
+			$peek = ord($this->peek());
+			// Ranges: a-z A-Z 0-9 - _
+			if (($peek >= 97 && $peek <= 122) ||
+				($peek >= 65 && $peek <= 90) ||
+				($peek >= 48 && $peek <= 57) ||
+				($peek === 45) ||
+				($peek === 95) ||
+				($peek > 0xa1)) {
 				return $this->consume(1);
-			} else if (ord($this->peek()) > 0xa1) {
-				return $this->consume(1);
-			} else {
-				return null;
 			}
 		} else {
 			return $this->consume(1);
 		}
-		// Does not reach here
 		return null;
 	}
 
