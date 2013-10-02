@@ -397,7 +397,6 @@ class Parser {
 				$sSize .= $this->consume(1);
 			}
 		}
-		$fSize = floatval($sSize);
 		$sUnit = null;
 		foreach($this->sizeUnits as $sDefinedUnit) {
 			if ($this->comes($sDefinedUnit, true)) {
@@ -406,7 +405,7 @@ class Parser {
 				break;
 			}
 		}
-		return new Size($fSize, $sUnit, $bForColor);
+		return new Size(floatval($sSize), $sUnit, $bForColor);
 	}
 
 	private function parseColorValue() {
