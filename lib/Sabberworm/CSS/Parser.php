@@ -31,6 +31,9 @@ class Parser {
 	private $oParserSettings;
 	private $sCharset;
 	private $iLength;
+	private $peekCache = null;
+	private $blockRules;
+	private $sizeUnits;
 
 	public function __construct($sText, Settings $oParserSettings = null) {
 		$this->sText = $sText;
@@ -39,6 +42,17 @@ class Parser {
 			$oParserSettings = Settings::create();
 		}
 		$this->oParserSettings = $oParserSettings;
+		$this->blockRules = explode('/', AtRule::BLOCK_RULES);
+
+		foreach (explode('/', Size::ABSOLUTE_SIZE_UNITS.'/'.Size::RELATIVE_SIZE_UNITS.'/'.Size::NON_SIZE_UNITS) as $val) {
+			$size = strlen($val);
+			if (isset($this->sizeUnits[$size])) {
+				$this->sizeUnits[$size][] = $val;
+			} else {
+				$this->sizeUnits[$size] = array($val);
+			}
+		}
+		ksort($this->sizeUnits, SORT_NUMERIC);
 	}
 
 	public function setCharset($sCharset) {
@@ -102,11 +116,10 @@ class Parser {
 			$this->consume(';');
 			$this->setCharset($sCharset->getString());
 			return new Charset($sCharset);
-		} else if (self::identifierIs($sIdentifier, 'keyframes')) {
+		} else if ($this->identifierIs($sIdentifier, 'keyframes')) {
 			$oResult = new KeyFrame();
 			$oResult->setVendorKeyFrame($sIdentifier);
-			$oResult->setAnimationName(trim($this->consumeUntil('{')));
-			$this->consume('{');
+			$oResult->setAnimationName(trim($this->consumeUntil('{', false, true)));
 			$this->consumeWhiteSpace();
 			$this->parseList($oResult);
 			return $oResult;
@@ -127,12 +140,11 @@ class Parser {
 			return new CSSNamespace($mUrl, $sPrefix);
 		} else {
 			//Unknown other at rule (font-face or such)
-			$sArgs = $this->consumeUntil('{');
-			$this->consume('{');
+			$sArgs = $this->consumeUntil('{', false, true);
 			$this->consumeWhiteSpace();
 			$bUseRuleSet = true;
-			foreach(explode('/', AtRule::BLOCK_RULES) as $sBlockRuleName) {
-				if(self::identifierIs($sIdentifier, $sBlockRuleName)) {
+			foreach($this->blockRules as $sBlockRuleName) {
+				if($this->identifierIs($sIdentifier, $sBlockRuleName)) {
 					$bUseRuleSet = false;
 					break;
 				}
@@ -206,7 +218,6 @@ class Parser {
 			if ($this->comes('\n') || $this->comes('\r')) {
 				return '';
 			}
-			$aMatches;
 			if (preg_match('/[0-9a-fA-F]/Su', $this->peek()) === 0) {
 				return $this->consume(1);
 			}
@@ -223,31 +234,32 @@ class Parser {
 			}
 			$iUnicode = intval($sUnicode, 16);
 			$sUtf32 = "";
-			for ($i = 0; $i < 4; $i++) {
+			for ($i = 0; $i < 4; ++$i) {
 				$sUtf32 .= chr($iUnicode & 0xff);
 				$iUnicode = $iUnicode >> 8;
 			}
 			return iconv('utf-32le', $this->sCharset, $sUtf32);
 		}
 		if ($bIsForIdentifier) {
-			if (preg_match('/[a-zA-Z0-9]|-|_/u', $this->peek()) === 1) {
+			$peek = ord($this->peek());
+			// Ranges: a-z A-Z 0-9 - _
+			if (($peek >= 97 && $peek <= 122) ||
+				($peek >= 65 && $peek <= 90) ||
+				($peek >= 48 && $peek <= 57) ||
+				($peek === 45) ||
+				($peek === 95) ||
+				($peek > 0xa1)) {
 				return $this->consume(1);
-			} else if (ord($this->peek()) > 0xa1) {
-				return $this->consume(1);
-			} else {
-				return null;
 			}
 		} else {
 			return $this->consume(1);
 		}
-		// Does not reach here
 		return null;
 	}
 
 	private function parseSelector() {
 		$oResult = new DeclarationBlock();
-		$oResult->setSelector($this->consumeUntil('{'));
-		$this->consume('{');
+		$oResult->setSelector($this->consumeUntil('{', false, true));
 		$this->consumeWhiteSpace();
 		$this->parseRuleSet($oResult);
 		return $oResult;
@@ -268,7 +280,8 @@ class Parser {
 						$sConsume = $this->consumeUntil(array("\n", ";", '}'), true);
 						// We need to “unfind” the matches to the end of the ruleSet as this will be matched later
 						if($this->streql($this->substr($sConsume, $this->strlen($sConsume)-1, 1), '}')) {
-							$this->iCurrentPosition--;
+							--$this->iCurrentPosition;
+							$this->peekCache = null;
 						} else {
 							$this->consumeWhiteSpace();
 							while ($this->comes(';')) {
@@ -341,11 +354,10 @@ class Parser {
 			$iStartPosition = null;
 			while (($iStartPosition = array_search($sDelimiter, $aStack, true)) !== false) {
 				$iLength = 2; //Number of elements to be joined
-				for ($i = $iStartPosition + 2; $i < count($aStack); $i+=2) {
+				for ($i = $iStartPosition + 2; $i < count($aStack); $i+=2, ++$iLength) {
 					if ($sDelimiter !== $aStack[$i]) {
 						break;
 					}
-					$iLength++;
 				}
 				$oList = new RuleValueList($sDelimiter);
 				for ($i = $iStartPosition - 1; $i - $iStartPosition + 1 < $iLength * 2; $i+=2) {
@@ -369,9 +381,9 @@ class Parser {
 		$this->consumeWhiteSpace();
 		if (is_numeric($this->peek()) || ($this->comes('-.') && is_numeric($this->peek(1, 2))) || (($this->comes('-') || $this->comes('.')) && is_numeric($this->peek(1, 1)))) {
 			$oValue = $this->parseNumericValue();
-		} else if ($this->comes('#') || $this->comes('rgb') || $this->comes('hsl')) {
+		} else if ($this->comes('#') || $this->comes('rgb', true) || $this->comes('hsl', true)) {
 			$oValue = $this->parseColorValue();
-		} else if ($this->comes('url')) {
+		} else if ($this->comes('url', true)) {
 			$oValue = $this->parseURLValue();
 		} else if ($this->comes("'") || $this->comes('"')) {
 			$oValue = $this->parseStringValue();
@@ -394,16 +406,16 @@ class Parser {
 				$sSize .= $this->consume(1);
 			}
 		}
-		$fSize = floatval($sSize);
+
 		$sUnit = null;
-		foreach(explode('/', Size::ABSOLUTE_SIZE_UNITS.'/'.Size::RELATIVE_SIZE_UNITS.'/'.Size::NON_SIZE_UNITS) as $sDefinedUnit) {
-			if ($this->comes($sDefinedUnit, 0, true)) {
-				$sUnit = $sDefinedUnit;
-				$this->consume($sDefinedUnit);
+		foreach ($this->sizeUnits as $len => $val) {
+			if (($pos = array_search($this->peek($len), $val)) !== false) {
+				$sUnit = $val[$pos];
+				$this->consume($len);
 				break;
 			}
 		}
-		return new Size($fSize, $sUnit, $bForColor);
+		return new Size(floatval($sSize), $sUnit, $bForColor);
 	}
 
 	private function parseColorValue() {
@@ -420,7 +432,7 @@ class Parser {
 			$this->consumeWhiteSpace();
 			$this->consume('(');
 			$iLength = $this->strlen($sColorMode);
-			for ($i = 0; $i < $iLength; $i++) {
+			for ($i = 0; $i < $iLength; ++$i) {
 				$this->consumeWhiteSpace();
 				$aColor[$sColorMode[$i]] = $this->parseNumericValue(true);
 				$this->consumeWhiteSpace();
@@ -434,7 +446,7 @@ class Parser {
 	}
 
 	private function parseURLValue() {
-		$bUseUrl = $this->comes('url');
+		$bUseUrl = $this->comes('url', true);
 		if ($bUseUrl) {
 			$this->consume('url');
 			$this->consumeWhiteSpace();
@@ -448,38 +460,37 @@ class Parser {
 		}
 		return $oResult;
 	}
-	
+
 	/**
 	* Tests an identifier for a given value. Since identifiers are all keywords, they can be vendor-prefixed. We need to check for these versions too.
 	*/
-	private static function identifierIs($sIdentifier, $sMatch, $bCaseInsensitive = true) {
-	 	return preg_match("/^(-\\w+-)?$sMatch$/".($bCaseInsensitive ? 'i' : ''), $sIdentifier) === 1;
+	private function identifierIs($sIdentifier, $sMatch) {
+		return (strcasecmp($sIdentifier, $sMatch) === 0)
+			?: preg_match("/^(-\\w+-)?$sMatch$/i", $sIdentifier) === 1;
 	}
 
-	private function comes($sString, $iOffset = 0, $bCaseInsensitive = true) {
-		if ($this->isEnd()) {
-			return false;
-		}
-		$sPeek = $this->peek($sString, $iOffset);
-		return $this->streql($sPeek, $sString, $bCaseInsensitive);
+	private function comes($sString, $alpha = false) {
+		$sPeek = $this->peek($alpha ? $this->strlen($sString) : strlen($sString));
+		return ($sPeek == '')
+			? false
+			: $this->streql($sPeek, $sString, $alpha);
 	}
 
 	private function peek($iLength = 1, $iOffset = 0) {
-		if ($this->isEnd()) {
-			return '';
+		if (($peek = (!$iOffset && ($iLength === 1))) &&
+			!is_null($this->peekCache)) {
+			return $this->peekCache;
 		}
-		if (is_string($iLength)) {
-			$iLength = $this->strlen($iLength);
-		}
-		if (is_string($iOffset)) {
-			$iOffset = $this->strlen($iOffset);
-		}
-		$iOffset = $this->iCurrentPosition + $iOffset;
+		$iOffset += $this->iCurrentPosition;
 		if ($iOffset >= $this->iLength) {
 			return '';
 		}
 		$iLength = min($iLength, $this->iLength-$iOffset);
-		return $this->substr($this->sText, $iOffset, $iLength);
+		$out = $this->substr($this->sText, $iOffset, $iLength);
+		if ($peek) {
+			$this->peekCache = $out;
+		}
+		return $out;
 	}
 
 	private function consume($mValue = 1) {
@@ -489,6 +500,7 @@ class Parser {
 				throw new UnexpectedTokenException($mValue, $this->peek(max($iLength, 5)));
 			}
 			$this->iCurrentPosition += $this->strlen($mValue);
+			$this->peekCache = null;
 			return $mValue;
 		} else {
 			if ($this->iCurrentPosition + $mValue > $this->iLength) {
@@ -496,6 +508,7 @@ class Parser {
 			}
 			$sResult = $this->substr($this->sText, $this->iCurrentPosition, $mValue);
 			$this->iCurrentPosition += $mValue;
+			$this->peekCache = null;
 			return $sResult;
 		}
 	}
@@ -518,9 +531,13 @@ class Parser {
 
 	private function consumeComment() {
 		if ($this->comes('/*')) {
-			$this->consumeUntil('*/');
-			$this->consume('*/');
-			return true;
+			$this->consume(2);
+			while ($this->consumeUntil('*', false, true)) {
+				if ($this->comes('/')) {
+					$this->consume(1);
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -529,22 +546,25 @@ class Parser {
 		return $this->iCurrentPosition >= $this->iLength;
 	}
 
-	private function consumeUntil($aEnd, $bIncludeEnd = false) {
+	private function consumeUntil($aEnd, $bIncludeEnd = false, $consumeEnd = false) {
 		$aEnd = is_array($aEnd) ? $aEnd : array($aEnd);
-		$iEndPos = null;
-		foreach ($aEnd as $sEnd) {
-			$iCurrentEndPos = $this->strpos($this->sText, $sEnd, $this->iCurrentPosition);
-			if($iCurrentEndPos === false) {
-				continue;
+		$out = '';
+		$start = $this->iCurrentPosition;
+
+		while (($char = $this->consume(1)) !== '') {
+			if (in_array($char, $aEnd)) {
+				if ($bIncludeEnd) {
+					$out .= $char;
+				} elseif (!$consumeEnd) {
+					$this->iCurrentPosition -= $this->strlen($char);
+				}
+				return $out;
 			}
-			if($iEndPos === null || $iCurrentEndPos < $iEndPos) {
-				$iEndPos = $iCurrentEndPos + ($bIncludeEnd ? $this->strlen($sEnd) : 0);
-			}
+			$out .= $char;
 		}
-		if ($iEndPos === null) {
-			throw new UnexpectedTokenException('One of ("'.implode('","', $aEnd).'")', $this->peek(5), 'search');
-		}
-		return $this->consume($iEndPos - $this->iCurrentPosition);
+
+		$this->iCurrentPosition = $start;
+		throw new UnexpectedTokenException('One of ("'.implode('","', $aEnd).'")', $this->peek(5), 'search');
 	}
 
 	private function inputLeft() {
