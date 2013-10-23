@@ -524,7 +524,18 @@ class Parser {
 			while (preg_match('/\\s/isSu', $this->peek()) === 1) {
 				$this->consume(1);
 			}
-		} while ($this->consumeComment());
+			if($this->oParserSettings->bLenientParsing) {
+				try {
+					$bHasComment = $this->consumeComment();
+				} catch(UnexpectedTokenException $e) {
+					// When we can’t find the end of a comment, we assume the document is finished.
+					$this->iCurrentPosition = $this->iLength;
+					return;
+				}
+			} else {
+				$bHasComment = $this->consumeComment();
+			}
+		} while($bHasComment);
 	}
 
 	private function consumeComment() {
