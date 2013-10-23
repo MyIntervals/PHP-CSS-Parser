@@ -61,7 +61,8 @@ class Size extends PrimitiveValue {
 
 	public function __toString() {
 		$l = localeconv();
-		return preg_replace(array('/' . preg_quote($l['decimal_point'], '/') . '/', '/^(-?)0\./'), '$1.', $this->fSize) . ($this->sUnit === null ? '' : $this->sUnit);
+		$sPoint = preg_quote($l['decimal_point'], '/');
+		return preg_replace(array("/$sPoint/", "/^(-?)0\./"), array('.', '$1.'), $this->fSize) . ($this->sUnit === null ? '' : $this->sUnit);
 	}
 
 }
