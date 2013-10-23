@@ -29,7 +29,30 @@ class LenientParsingTest extends \PHPUnit_Framework_TestCase {
 	public function testEndToken() {
 		$sFile = dirname(__FILE__) . '/../../../files' . DIRECTORY_SEPARATOR . "-end-token.css";
 		$oParser = new Parser(file_get_contents($sFile), Settings::create()->beStrict());
+		$oParser->parse();
+	}
+
+	/**
+	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+	*/
+	public function testEndToken2() {
+		$sFile = dirname(__FILE__) . '/../../../files' . DIRECTORY_SEPARATOR . "-end-token-2.css";
+		$oParser = new Parser(file_get_contents($sFile), Settings::create()->beStrict());
+		$oParser->parse();
+	}
+	
+	public function testEndTokenPositive() {
+		$sFile = dirname(__FILE__) . '/../../../files' . DIRECTORY_SEPARATOR . "-end-token.css";
+		$oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
 		$oResult = $oParser->parse();
+		$this->assertSame("", $oResult->__toString());
+	}
+
+	public function testEndToken2Positive() {
+		$sFile = dirname(__FILE__) . '/../../../files' . DIRECTORY_SEPARATOR . "-end-token-2.css";
+		$oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
+		$oResult = $oParser->parse();
+		$this->assertSame('#home .bg-layout {background-image: url("/bundles/main/img/bg1.png?5");}'."\n", $oResult->__toString());
 	}
 
 	public function testLocaleTrap() {
@@ -44,7 +67,7 @@ class LenientParsingTest extends \PHPUnit_Framework_TestCase {
 		$sFile = dirname(__FILE__) . '/../../../files' . DIRECTORY_SEPARATOR . "case-insensitivity.css";
 		$oParser = new Parser(file_get_contents($sFile));
 		$oResult = $oParser->parse();
-		$this->assertSame('@charset "utf-8";@import url("test.css");@media screen {}#myid {case: insensitive !important;frequency: 30Hz;color: #ff0;color: hsl(40,40%,30%);font-family: Arial;}'."\n", $oResult->__toString());
+		$this->assertSame('@charset "utf-8";@import url("test.css");@media screen {}#myid {case: insensitive !important;frequency: 30Hz;font-size: 1em;color: #ff0;color: hsl(40,40%,30%);font-family: Arial;}'."\n", $oResult->__toString());
 	}
 
 }
