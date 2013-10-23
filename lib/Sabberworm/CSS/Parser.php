@@ -33,7 +33,7 @@ class Parser {
 	private $iLength;
 	private $peekCache = null;
 	private $blockRules;
-	private $sizeUnits;
+	private $aSizeUnits;
 
 	public function __construct($sText, Settings $oParserSettings = null) {
 		$this->sText = $sText;
@@ -45,14 +45,13 @@ class Parser {
 		$this->blockRules = explode('/', AtRule::BLOCK_RULES);
 
 		foreach (explode('/', Size::ABSOLUTE_SIZE_UNITS.'/'.Size::RELATIVE_SIZE_UNITS.'/'.Size::NON_SIZE_UNITS) as $val) {
-			$size = strlen($val);
-			if (isset($this->sizeUnits[$size])) {
-				$this->sizeUnits[$size][] = $val;
-			} else {
-				$this->sizeUnits[$size] = array($val);
+			$iSize = strlen($val);
+			if(!isset($this->aSizeUnits[$iSize])) {
+				$this->aSizeUnits[$iSize] = array();
 			}
+			$this->aSizeUnits[$iSize][strtolower($val)] = $val;
 		}
-		ksort($this->sizeUnits, SORT_NUMERIC);
+		ksort($this->aSizeUnits, SORT_NUMERIC);
 	}
 
 	public function setCharset($sCharset) {
@@ -408,10 +407,9 @@ class Parser {
 		}
 
 		$sUnit = null;
-		foreach ($this->sizeUnits as $len => $val) {
-			if (($pos = array_search($this->peek($len), $val)) !== false) {
-				$sUnit = $val[$pos];
-				$this->consume($len);
+		foreach ($this->aSizeUnits as $iLength => &$aValues) {
+			if(($sUnit = @$aValues[strtolower($this->peek($iLength))]) !== null) {
+				$this->consume($iLength);
 				break;
 			}
 		}
@@ -469,11 +467,11 @@ class Parser {
 			?: preg_match("/^(-\\w+-)?$sMatch$/i", $sIdentifier) === 1;
 	}
 
-	private function comes($sString, $alpha = false) {
-		$sPeek = $this->peek($alpha ? $this->strlen($sString) : strlen($sString));
+	private function comes($sString, $bCaseInsensitive = false) {
+		$sPeek = $this->peek(strlen($sString));
 		return ($sPeek == '')
 			? false
-			: $this->streql($sPeek, $sString, $alpha);
+			: $this->streql($sPeek, $sString, $bCaseInsensitive);
 	}
 
 	private function peek($iLength = 1, $iOffset = 0) {
