@@ -43,16 +43,6 @@ class Parser {
 		}
 		$this->oParserSettings = $oParserSettings;
 		$this->blockRules = explode('/', AtRule::BLOCK_RULES);
-
-		foreach (explode('/', Size::ABSOLUTE_SIZE_UNITS.'/'.Size::RELATIVE_SIZE_UNITS.'/'.Size::NON_SIZE_UNITS) as $val) {
-			$size = strlen($val);
-			if (isset($this->sizeUnits[$size])) {
-				$this->sizeUnits[$size][] = $val;
-			} else {
-				$this->sizeUnits[$size] = array($val);
-			}
-		}
-		ksort($this->sizeUnits, SORT_NUMERIC);
 	}
 
 	public function setCharset($sCharset) {
@@ -66,6 +56,19 @@ class Parser {
 
 	public function parse() {
 		$this->setCharset($this->oParserSettings->sDefaultCharset);
+
+		$this->sizeUnits = array();
+		foreach (explode('/', Size::ABSOLUTE_SIZE_UNITS.'/'.Size::RELATIVE_SIZE_UNITS.'/'.Size::NON_SIZE_UNITS) as $val) {
+			$val = $this->strtolower($val);
+			$size = strlen($val);
+			if (isset($this->sizeUnits[$size])) {
+				$this->sizeUnits[$size][] = $val;
+			} else {
+				$this->sizeUnits[$size] = array($val);
+			}
+		}
+		ksort($this->sizeUnits, SORT_NUMERIC);
+
 		$oResult = new Document();
 		$this->parseDocument($oResult);
 		return $oResult;
@@ -409,8 +412,9 @@ class Parser {
 
 		$sUnit = null;
 		foreach ($this->sizeUnits as $len => $val) {
-			if (($pos = array_search($this->peek($len), $val)) !== false) {
-				$sUnit = $val[$pos];
+			$peek = $this->peek($len);
+			if (array_search($this->strtolower($peek), $val) !== false) {
+				$sUnit = $peek;
 				$this->consume($len);
 				break;
 			}
