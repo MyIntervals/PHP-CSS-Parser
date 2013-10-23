@@ -87,7 +87,13 @@ class Parser {
 					return;
 				}
 			} else {
-				$oList->append($this->parseSelector());
+				if($this->oParserSettings->bLenientParsing) {
+					try {
+						$oList->append($this->parseSelector());
+					} catch (UnexpectedTokenException $e) {}
+				} else {
+					$oList->append($this->parseSelector());
+				}
 			}
 			$this->consumeWhiteSpace();
 		}
