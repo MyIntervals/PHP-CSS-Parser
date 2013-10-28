@@ -27,13 +27,50 @@
 
 ### 5.0.3 (2013-03-21)
 
-* More size units recongnized
+* More size units recognized
 * *No backwards-incompatible changes*
 * *No deprecations*
 
 ### 5.0.4 (2013-03-21)
 
 * Don’t output floats with locale-aware separator chars
+* *No backwards-incompatible changes*
+* *No deprecations*
+
+### 5.0.5 (2013-04-17)
+
+* Initial support for lenient parsing (setting this parser option will catch some exceptions internally and recover the parser’s state as neatly as possible).
+* *No backwards-incompatible changes*
+* *No deprecations*
+
+### 5.0.6 (2013-05-31)
+
+* Fix broken unit test
+* *No backwards-incompatible changes*
+* *No deprecations*
+
+### 5.0.7 (2013-08-04)
+
+* Fix broken decimal point output optimization
+* *No backwards-incompatible changes*
+* *No deprecations*
+
+### 5.0.8 (2013-08-15)
+
+* Make default settings’ multibyte parsing option dependent on whether or not the mbstring extension is actually installed.
+* *No backwards-incompatible changes*
+* *No deprecations*
+
+### 5.1.0 (2013-10-24)
+
+* Performance enhancements by Michael M Slusarz
+* More rescue entry points for lenient parsing (unexpected tokens between declaration blocks and unclosed comments)
+* *No backwards-incompatible changes*
+* *No deprecations*
+
+### 5.1.1 (2013-10-28)
+
+* Updated CHANGELOG.md to reflect changes since 5.0.4
 * *No backwards-incompatible changes*
 * *No deprecations*
 
