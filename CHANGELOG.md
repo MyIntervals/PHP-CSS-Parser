@@ -74,6 +74,12 @@
 * *No backwards-incompatible changes*
 * *No deprecations*
 
+### 5.1.2 (2013-10-30)
+
+* Remove the use of consumeUntil in comment parsing. This makes it possible to parse comments such as “/** Perfectly valid **/”
+* *No backwards-incompatible changes*
+* *No deprecations*
+
 ## 4.0
 
 ### 4.0.0 (2013-03-19)
