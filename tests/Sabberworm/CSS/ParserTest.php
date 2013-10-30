@@ -343,6 +343,14 @@ body {color: green;}' . "\n", $oDoc->__toString());
 }#unrelated {other: yes;}' . "\n", $oDoc->__toString());
 	}
 
+	function testComments() {
+		$oDoc = $this->parsedStructureForFile('comments');
+		$sExpected = '@import url("some/url.css") screen;.foo, #bar {background-color: #000;}
+@media screen {#foo.bar {position: absolute;}
+}';
+		$this->assertSame($sExpected, $oDoc->__toString());
+	}
+
 	function parsedStructureForFile($sFileName) {
 		$sFile = dirname(__FILE__) . '/../../files' . DIRECTORY_SEPARATOR . "$sFileName.css";
 		$oParser = new Parser(file_get_contents($sFile));
