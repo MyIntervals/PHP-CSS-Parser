@@ -504,7 +504,7 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 ## Misc
 
 * Legacy Support: The latest pre-PSR-0 version of this project can be checked with the `0.9.0` tag.
-* Running Tests: To run all unit tests for this project, have `phpunit` installed, `cd` to the `tests` dir and run `phpunit .`.
+* Running Tests: To run all unit tests for this project, have `phpunit` installed and run `phpunit .`.
 
 ## License
 
