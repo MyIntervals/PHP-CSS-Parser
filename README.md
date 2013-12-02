@@ -1,6 +1,8 @@
 PHP CSS Parser
 --------------
 
+[![build status](https://travis-ci.org/sabberworm/PHP-CSS-Parser.png)](https://travis-ci.org/sabberworm/PHP-CSS-Parser)
+
 A Parser for CSS Files written in PHP. Allows extraction of CSS files into a data structure, manipulation of said structure and output as (optimized) CSS.
 
 ## Usage
