@@ -518,7 +518,7 @@ class Parser {
 	}
 
 	private function consumeExpression($mExpression) {
-		$aMatches;
+		$aMatches = null;
 		if (preg_match($mExpression, $this->inputLeft(), $aMatches, PREG_OFFSET_CAPTURE) === 1) {
 			return $this->consume($aMatches[0][0]);
 		}
