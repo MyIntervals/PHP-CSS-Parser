@@ -63,6 +63,10 @@ The resulting data structure consists mainly of five basic types: `CSSList`, `Ru
 * `Document` – representing the root of a CSS file.
 * `MediaQuery` – represents a subsection of a CSSList that only applies to a output device matching the contained media query.
 
+To access the items stored in a `CSSList` – like the document you got back when calling `$oCssParser->parse()` –, use `getContents()`, then iterate over that collection and use instanceof to check whether you’re dealing with another `CSSList`, a `RuleSet`, a `Import` or a `Charset`.
+
+To append a new item (selector, media query, etc.) to an existing `CSSList`, construct it using the constructor for this class and use the `append($oItem)` method.
+
 #### RuleSet
 
 `RuleSet` is a container for individual rules. The most common form of a rule set is one constrained by a selector. The following concrete subtypes exist:
@@ -71,6 +75,8 @@ The resulting data structure consists mainly of five basic types: `CSSList`, `Ru
 * `DeclarationBlock` – a RuleSet constrained by a `Selector`; contains an array of selector objects (comma-separated in the CSS) as well as the rules to be applied to the matching elements.
 
 Note: A `CSSList` can contain other `CSSList`s (and `Import`s as well as a `Charset`) while a `RuleSet` can only contain `Rule`s.
+
+If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $oRule)`, `getRules()` and `removeRule($mRule)` (which accepts either a Rule instance or a rule name; optionally suffixed by a dash to remove all related rules).
 
 #### Rule
 
@@ -89,12 +95,6 @@ There is another abstract subclass of `Value`, `ValueList`. A `ValueList` repres
 
 * `RuleValueList` – The default type, used to represent all multi-valued rules like `font: bold 12px/3 Helvetica, Verdana, sans-serif;` (where the value would be a whitespace-separated list of the primitive value `bold`, a slash-separated list and a comma-separated list).
 * `CSSFunction` – A special kind of value that also contains a function name and where the values are the function’s arguments. Also handles equals-sign-separated argument lists like `filter: alpha(opacity=90);`.
-
-To access the items stored in a `CSSList` – like the document you got back when calling `$oCssParser->parse()` –, use `getContents()`, then iterate over that collection and use instanceof to check whether you’re dealing with another `CSSList`, a `RuleSet`, a `Import` or a `Charset`.
-
-To append a new item (selector, media query, etc.) to an existing `CSSList`, construct it using the constructor for this class and use the `append($oItem)` method.
-
-If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $oRule)`, `getRules()` and `removeRule($mRule)` (which accepts either a Rule instance or a rule name; optionally suffixed by a dash to remove all related rules).
 
 #### Convenience methods
 
