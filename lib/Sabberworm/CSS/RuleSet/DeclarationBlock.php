@@ -590,12 +590,19 @@ class DeclarationBlock extends RuleSet {
 	}
 
 	public function __toString() {
+		return $this->render();
+	}
+
+	public function render($oOutputFormat = null) {
+		if($oOutputFormat === null) {
+			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();
+		}
 		if(count($this->aSelectors) === 0) {
 			// If all the selectors have been removed, this declaration block becomes invalid
 			throw new \Sabberworm\CSS\Parsing\OutputException("Attempt to print declaration block with missing selector");
 		}
 		$sResult = implode(', ', $this->aSelectors) . ' {';
-		$sResult .= parent::__toString();
+		$sResult .= parent::render($oOutputFormat);
 		$sResult .= '}' . "\n";
 		return $sResult;
 	}

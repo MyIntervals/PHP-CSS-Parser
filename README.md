@@ -84,7 +84,7 @@ If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $oRule)`, `
 
 #### Value
 
-`Value` is an abstract class that only defines the `__toString` method. The concrete subclasses for atomic value types are:
+`Value` is an abstract class that only defines the `render` method. The concrete subclasses for atomic value types are:
 
 * `Size` – consists of a numeric `size` value and a unit.
 * `Color` – colors can be input in the form #rrggbb, #rgb or schema(val1, val2, …) but are always stored as an array of ('s' => val1, 'c' => val2, 'h' => val3, …) and output in the second form.
@@ -146,11 +146,11 @@ There are a few convenience methods on Document to ease finding, manipulating an
 
 ### Output
 
-To output the entire CSS document into a variable, just use `->__toString()`:
+To output the entire CSS document into a variable, just use `->render()`:
 
 	$oCssParser = new Sabberworm\CSS\Parser(file_get_contents('somefile.css'));
 	$oCssDocument = $oCssParser->parse();
-	print $oCssDocument->__toString();
+	print $oCssDocument->render();
 
 ## Examples
 
@@ -353,7 +353,7 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	  }
 	}
 
-#### Output (`__toString()`)
+#### Output (`render()`)
 
 	@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}html, body {font-size: 1.6em;}
 	@keyframes mymove {from {top: 0px;}
@@ -489,7 +489,7 @@ To output the entire CSS document into a variable, just use `->__toString()`:
 	  }
 	}
 
-#### Output (`__toString()`)
+#### Output (`render()`)
 
 	#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;color: red !important;}
 

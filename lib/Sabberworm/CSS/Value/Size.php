@@ -60,6 +60,13 @@ class Size extends PrimitiveValue {
 	}
 
 	public function __toString() {
+		return $this->render();
+	}
+
+	public function render($oOutputFormat = null) {
+		if($oOutputFormat === null) {
+			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();
+		}
 		$l = localeconv();
 		$sPoint = preg_quote($l['decimal_point'], '/');
 		return preg_replace(array("/$sPoint/", "/^(-?)0\./"), array('.', '$1.'), $this->fSize) . ($this->sUnit === null ? '' : $this->sUnit);

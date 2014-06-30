@@ -1,5 +1,16 @@
 # Revision History
 
+## 6.0
+
+### 6.0.0
+
+* Format output using Sabberworm\CSS\OutputFormat
+* *No backwards-incompatible changes*
+
+#### Deprecations
+
+* The parse() method replaces __toString with an optional argument (instance of the OutputFormat class)
+
 ## 5.0
 
 ### 5.0.0 (2013-03-20)

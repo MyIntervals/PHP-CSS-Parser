@@ -22,17 +22,23 @@ class Color extends CSSFunction {
 	}
 
 	public function __toString() {
+		return $this->render();
+	}
+
+	public function render($oOutputFormat = null) {
+		if($oOutputFormat === null) {
+			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();
+		}
 		// Shorthand RGB color values
-		// TODO: Include in output settings (once they’re done)
-		if(implode('', array_keys($this->aComponents)) === 'rgb') {
+		if($oOutputFormat->get('RGBHashNotation') && implode('', array_keys($this->aComponents)) === 'rgb') {
 			$sResult = sprintf(
 				'%02x%02x%02x',
-				$this->aComponents['r']->__toString(),
-				$this->aComponents['g']->__toString(),
-				$this->aComponents['b']->__toString()
+				$this->aComponents['r']->getSize(),
+				$this->aComponents['g']->getSize(),
+				$this->aComponents['b']->getSize()
 			);
 			return '#'.(($sResult[0] == $sResult[1]) && ($sResult[2] == $sResult[3]) && ($sResult[4] == $sResult[5]) ? "$sResult[0]$sResult[2]$sResult[4]" : $sResult);
 		}
-		return parent::__toString();
+		return parent::render($oOutputFormat);
 	}
 }

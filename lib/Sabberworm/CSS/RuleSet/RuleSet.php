@@ -83,10 +83,17 @@ abstract class RuleSet {
 	}
 
 	public function __toString() {
+		return $this->render();
+	}
+
+	public function render($oOutputFormat = null) {
+		if($oOutputFormat === null) {
+			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();
+		}
 		$sResult = '';
 		foreach ($this->aRules as $aRules) {
 			foreach($aRules as $oRule) {
-				$sResult .= $oRule->__toString();
+				$sResult .= $oRule->render($oOutputFormat->nextLevel());
 			}
 		}
 		return $sResult;

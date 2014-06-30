@@ -69,9 +69,16 @@ abstract class CSSList {
 	}
 
 	public function __toString() {
+		return $this->render();
+	}
+
+	public function render($oOutputFormat = null) {
+		if($oOutputFormat === null) {
+			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();
+		}
 		$sResult = '';
 		foreach ($this->aContents as $oContent) {
-			$sResult .= $oContent->__toString();
+			$sResult .= $oContent->render($oOutputFormat->nextLevel());
 		}
 		return $sResult;
 	}

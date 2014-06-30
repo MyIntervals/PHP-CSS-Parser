@@ -126,9 +126,16 @@ class Rule {
 	}
 
 	public function __toString() {
+		return $this->render();
+	}
+
+	public function render($oOutputFormat = null) {
+		if($oOutputFormat === null) {
+			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();
+		}
 		$sResult = "{$this->sRule}: ";
 		if ($this->mValue instanceof Value) { //Can also be a ValueList
-			$sResult .= $this->mValue->__toString();
+			$sResult .= $this->mValue->render($oOutputFormat);
 		} else {
 			$sResult .= $this->mValue;
 		}

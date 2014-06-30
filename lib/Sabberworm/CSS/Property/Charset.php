@@ -26,7 +26,14 @@ class Charset implements AtRule {
 	}
 
 	public function __toString() {
-		return "@charset {$this->sCharset->__toString()};";
+		return $this->render();
+	}
+
+	public function render($oOutputFormat = null) {
+		if($oOutputFormat === null) {
+			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();
+		}
+		return "@charset {$this->sCharset->render($oOutputFormat)};";
 	}
 
 	public function atRuleName() {

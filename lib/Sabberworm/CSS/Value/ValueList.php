@@ -35,7 +35,14 @@ abstract class ValueList extends Value {
 		$this->sSeparator = $sSeparator;
 	}
 
-	function __toString() {
+	public function __toString() {
+		return $this->render();
+	}
+
+	public function render($oOutputFormat = null) {
+		if($oOutputFormat === null) {
+			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();
+		}
 		return implode($this->sSeparator, $this->aComponents);
 	}
 

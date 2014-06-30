@@ -27,8 +27,15 @@ class AtRuleSet extends RuleSet implements AtRule {
 	}
 
 	public function __toString() {
+		return $this->render();
+	}
+
+	public function render($oOutputFormat = null) {
+		if($oOutputFormat === null) {
+			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();
+		}
 		$sResult = "@{$this->sType} {$this->sArgs}{";
-		$sResult .= parent::__toString();
+		$sResult .= parent::render($oOutputFormat);
 		$sResult .= '}';
 		return $sResult;
 	}

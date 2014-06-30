@@ -9,7 +9,7 @@ $oDoc = $oParser->parse();
 echo '#### Structure (`var_dump()`)'."\n";
 var_dump($oDoc);
 
-echo '#### Output (`__toString()`)'."\n";
-print $oDoc->__toString();
+echo '#### Output (`render()`)'."\n";
+print $oDoc->render();
 echo "\n";
 

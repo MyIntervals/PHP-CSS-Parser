@@ -27,7 +27,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 				}
 				$oParser = new Parser(file_get_contents($sDirectory . DIRECTORY_SEPARATOR . $sFileName));
 				try {
-					$this->assertNotEquals('', $oParser->parse()->__toString());
+					$this->assertNotEquals('', $oParser->parse()->render());
 				} catch (\Exception $e) {
 					$this->fail($e);
 				}
@@ -75,7 +75,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 		}
 		$this->assertSame('#mine {color: red;border-color: #0a64e6;border-color: rgba(10,100,231,.3);outline-color: #222;background-color: #232323;}
 #yours {background-color: hsl(220,10%,220%);background-color: hsla(220,10%,220%,.3);}
-', $oDoc->__toString());
+', $oDoc->render());
 	}
 
 	function testUnicodeParsing() {
@@ -88,7 +88,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 			}
 			$aContentRules = $oRuleSet->getRules('content');
 			$aContents = $aContentRules[0]->getValues();
-			$sString = $aContents[0][0]->__toString();
+			$sString = $aContents[0][0]->render();
 			if ($sSelector == '.test-1') {
 				$this->assertSame('" "', $sString);
 			}
@@ -167,7 +167,7 @@ to {top: 200px;}
                domain(mozilla.org),
                regexp("https:.*") {body {color: purple;background: yellow;}
 }@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}@region-style #intro {p {color: blue;}
-}', $oDoc->__toString());
+}', $oDoc->render());
 		foreach ($oDoc->getAllDeclarationBlocks() as $oBlock) {
 			foreach ($oBlock->getSelectors() as $oSelector) {
 				//Loop over all selector parts (the comma-separated strings in a selector) and prepend the id
@@ -185,21 +185,21 @@ to {top: 200px;}
                domain(mozilla.org),
                regexp("https:.*") {#my_id body {color: purple;background: yellow;}
 }@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}@region-style #intro {#my_id p {color: blue;}
-}', $oDoc->__toString());
+}', $oDoc->render());
 
 		$oDoc = $this->parsedStructureForFile('values');
 		$this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;font-size: 10px;color: red !important;background-color: green;background-color: rgba(0,128,0,.7);frequency: 30Hz;}
-body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}' . "\n", $oDoc->__toString());
+body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}' . "\n", $oDoc->render());
 		foreach ($oDoc->getAllRuleSets() as $oRuleSet) {
 			$oRuleSet->removeRule('font-');
 		}
 		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;background-color: green;background-color: rgba(0,128,0,.7);frequency: 30Hz;}
-body {color: green;}' . "\n", $oDoc->__toString());
+body {color: green;}' . "\n", $oDoc->render());
 		foreach ($oDoc->getAllRuleSets() as $oRuleSet) {
 			$oRuleSet->removeRule('background-');
 		}
 		$this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;frequency: 30Hz;}
-body {color: green;}' . "\n", $oDoc->__toString());
+body {color: green;}' . "\n", $oDoc->render());
 	}
 	
 	function testRuleGetters() {
@@ -223,7 +223,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 
 	function testSlashedValues() {
 		$oDoc = $this->parsedStructureForFile('slashed');
-		$this->assertSame('.test {font: 12px/1.5 Verdana,Arial,sans-serif;border-radius: 5px 10px 5px 10px/10px 5px 10px 5px;}' . "\n", $oDoc->__toString());
+		$this->assertSame('.test {font: 12px/1.5 Verdana,Arial,sans-serif;border-radius: 5px 10px 5px 10px/10px 5px 10px 5px;}' . "\n", $oDoc->render());
 		foreach ($oDoc->getAllValues(null) as $mValue) {
 			if ($mValue instanceof Size && $mValue->isSize() && !$mValue->isRelative()) {
 				$mValue->setSize($mValue->getSize() * 3);
@@ -249,7 +249,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 			$this->assertEquals(' ', $oSpaceList1->getListSeparator());
 			$this->assertEquals(' ', $oSpaceList2->getListSeparator());
 		}
-		$this->assertSame('.test {font: 36px/1.5 Verdana,Arial,sans-serif;border-radius: 15px 30px 15px 30px/30px 15px 30px 15px;}' . "\n", $oDoc->__toString());
+		$this->assertSame('.test {font: 36px/1.5 Verdana,Arial,sans-serif;border-radius: 15px 30px 15px 30px/30px 15px 30px 15px;}' . "\n", $oDoc->render());
 	}
 
 	function testFunctionSyntax() {
@@ -259,7 +259,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 .collapser.expanded::before, .collapser.expanded::-moz-before, .collapser.expanded::-webkit-before {-moz-transform: rotate(90deg);}
 .collapser + * {height: 0;overflow: hidden;-moz-transition-property: height;-moz-transition-duration: .3s;}
 .collapser.expanded + * {height: auto;}' . "\n";
-		$this->assertSame($sExpected, $oDoc->__toString());
+		$this->assertSame($sExpected, $oDoc->render());
 
 		foreach ($oDoc->getAllValues(null, true) as $mValue) {
 			if ($mValue instanceof Size && $mValue->isSize()) {
@@ -267,7 +267,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 			}
 		}
 		$sExpected = str_replace(array('1.2em', '.2em', '60%'), array('3.6em', '.6em', '180%'), $sExpected);
-		$this->assertSame($sExpected, $oDoc->__toString());
+		$this->assertSame($sExpected, $oDoc->render());
 
 		foreach ($oDoc->getAllValues(null, true) as $mValue) {
 			if ($mValue instanceof Size && !$mValue->isRelative() && !$mValue->isColorComponent()) {
@@ -275,44 +275,44 @@ body {color: green;}' . "\n", $oDoc->__toString());
 			}
 		}
 		$sExpected = str_replace(array('.2s', '.3s', '90deg'), array('.4s', '.6s', '180deg'), $sExpected);
-		$this->assertSame($sExpected, $oDoc->__toString());
+		$this->assertSame($sExpected, $oDoc->render());
 	}
 
 	function testExpandShorthands() {
 		$oDoc = $this->parsedStructureForFile('expand-shorthands');
 		$sExpected = 'body {font: italic 500 14px/1.618 "Trebuchet MS",Georgia,serif;border: 2px solid #f0f;background: #ccc url("/images/foo.png") no-repeat left top;margin: 1em !important;padding: 2px 6px 3px;}' . "\n";
-		$this->assertSame($sExpected, $oDoc->__toString());
+		$this->assertSame($sExpected, $oDoc->render());
 		$oDoc->expandShorthands();
 		$sExpected = 'body {margin-top: 1em !important;margin-right: 1em !important;margin-bottom: 1em !important;margin-left: 1em !important;padding-top: 2px;padding-right: 6px;padding-bottom: 3px;padding-left: 6px;border-top-color: #f0f;border-right-color: #f0f;border-bottom-color: #f0f;border-left-color: #f0f;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-width: 2px;border-right-width: 2px;border-bottom-width: 2px;border-left-width: 2px;font-style: italic;font-variant: normal;font-weight: 500;font-size: 14px;line-height: 1.618;font-family: "Trebuchet MS",Georgia,serif;background-color: #ccc;background-image: url("/images/foo.png");background-repeat: no-repeat;background-attachment: scroll;background-position: left top;}' . "\n";
-		$this->assertSame($sExpected, $oDoc->__toString());
+		$this->assertSame($sExpected, $oDoc->render());
 	}
 
 	function testCreateShorthands() {
 		$oDoc = $this->parsedStructureForFile('create-shorthands');
 		$sExpected = 'body {font-size: 2em;font-family: Helvetica,Arial,sans-serif;font-weight: bold;border-width: 2px;border-color: #999;border-style: dotted;background-color: #fff;background-image: url("foobar.png");background-repeat: repeat-y;margin-top: 2px;margin-right: 3px;margin-bottom: 4px;margin-left: 5px;}' . "\n";
-		$this->assertSame($sExpected, $oDoc->__toString());
+		$this->assertSame($sExpected, $oDoc->render());
 		$oDoc->createShorthands();
 		$sExpected = 'body {background: #fff url("foobar.png") repeat-y;margin: 2px 5px 4px 3px;border: 2px dotted #999;font: bold 2em Helvetica,Arial,sans-serif;}' . "\n";
-		$this->assertSame($sExpected, $oDoc->__toString());
+		$this->assertSame($sExpected, $oDoc->render());
 	}
 
 	function testNamespaces() {
 		$oDoc = $this->parsedStructureForFile('namespaces');
 		$sExpected = '@namespace toto "http://toto.example.org";@namespace "http://example.com/foo";@namespace foo url("http://www.example.com/");@namespace foo url("http://www.example.com/");foo|test {gaga: 1;}
 |test {gaga: 2;}' . "\n";
-		$this->assertSame($sExpected, $oDoc->__toString());
+		$this->assertSame($sExpected, $oDoc->render());
 	}
 	
 	function testInnerColors() {
 		$oDoc = $this->parsedStructureForFile('inner-color');
 		$sExpected = 'test {background: -webkit-gradient(linear,0 0,0 bottom,from(#006cad),to(hsl(202,100%,49%)));}' . "\n";
-		$this->assertSame($sExpected, $oDoc->__toString());
+		$this->assertSame($sExpected, $oDoc->render());
 	}
 
 	function testPrefixedGradient() {
 		$oDoc = $this->parsedStructureForFile('webkit');
 		$sExpected = '.test {background: -webkit-linear-gradient(top right,white,black);}' . "\n";
-		$this->assertSame($sExpected, $oDoc->__toString());
+		$this->assertSame($sExpected, $oDoc->render());
 	}
 
 	function testListValueRemoval() {
@@ -323,7 +323,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 				continue;
 			}
 		}
-		$this->assertSame('html, body {font-size: -.6em;}' . "\n", $oDoc->__toString());
+		$this->assertSame('html, body {font-size: -.6em;}' . "\n", $oDoc->render());
 
 		$oDoc = $this->parsedStructureForFile('nested');
 		foreach ($oDoc->getAllDeclarationBlocks() as $oBlock) {
@@ -332,7 +332,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 		}
 		$this->assertSame('html {some-other: -test(val1);}
 @media screen {html {some: -test(val2);}
-}#unrelated {other: yes;}' . "\n", $oDoc->__toString());
+}#unrelated {other: yes;}' . "\n", $oDoc->render());
 
 		$oDoc = $this->parsedStructureForFile('nested');
 		foreach ($oDoc->getAllDeclarationBlocks() as $oBlock) {
@@ -340,7 +340,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 			break;
 		}
 		$this->assertSame('@media screen {html {some: -test(val2);}
-}#unrelated {other: yes;}' . "\n", $oDoc->__toString());
+}#unrelated {other: yes;}' . "\n", $oDoc->render());
 	}
   
 	/**
@@ -353,11 +353,11 @@ body {color: green;}' . "\n", $oDoc->__toString());
 		$this->assertSame(true, $oBlock1->removeSelector('html'));
 		$sExpected = '@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}body {font-size: 1.6em;}
 ';
-		$this->assertSame($sExpected, $oDoc->__toString());
+		$this->assertSame($sExpected, $oDoc->render());
 		$this->assertSame(false, $oBlock1->removeSelector('html'));
 		$this->assertSame(true, $oBlock1->removeSelector('body'));
 		// This tries to output a declaration block without a selector and throws.
-		$oDoc->__toString();
+		$oDoc->render();
 	}
 
 	function testComments() {
@@ -365,7 +365,7 @@ body {color: green;}' . "\n", $oDoc->__toString());
 		$sExpected = '@import url("some/url.css") screen;.foo, #bar {background-color: #000;}
 @media screen {#foo.bar {position: absolute;}
 }';
-		$this->assertSame($sExpected, $oDoc->__toString());
+		$this->assertSame($sExpected, $oDoc->render());
 	}
 
 	function parsedStructureForFile($sFileName) {
