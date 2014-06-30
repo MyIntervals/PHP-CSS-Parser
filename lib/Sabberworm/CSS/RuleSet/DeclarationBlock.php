@@ -36,6 +36,14 @@ class DeclarationBlock extends RuleSet {
 		}
 	}
 
+	// remove one of the selector of the block
+	public function removeSelector($mSelector) {
+		$iKey = array_search($mSelector, $this->aSelectors, true);
+		if ($iKey !== false) {
+			unset($this->aSelectors[$iKey]);
+		}
+	}
+
 	/**
 	 * @deprecated use getSelectors()
 	 */
