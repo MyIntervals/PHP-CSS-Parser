@@ -80,6 +80,17 @@
 * *No backwards-incompatible changes*
 * *No deprecations*
 
+### 5.2.0 (2013-10-30)
+
+* Support removing a selector from a declaration block using `$oBlock->removeSelector($mSelector)`
+* Introduce a specialized exception (Sabberworm\CSS\Parsing\OuputException) for exceptions during output rendering
+
+* *No deprecations*
+
+#### Backwards-incompatible changes
+
+* Outputting a declaration block that has no selectors throws an OuputException instead of outputting an invalid ` {…}` into the CSS document.
+
 ## 4.0
 
 ### 4.0.0 (2013-03-19)
