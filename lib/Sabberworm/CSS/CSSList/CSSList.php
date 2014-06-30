@@ -33,9 +33,16 @@ abstract class CSSList {
 		$iKey = array_search($oItemToRemove, $this->aContents, true);
 		if ($iKey !== false) {
 			unset($this->aContents[$iKey]);
+			return true;
 		}
+		return false;
 	}
 
+	/**
+	 * Removes a declaration block from the CSS list if it matches all given selectors.
+	 * @param array|string $mSelector The selectors to match.
+	 * @param boolean $bRemoveAll Whether to stop at the first declaration block found or remove all blocks
+	 */
 	public function removeDeclarationBlockBySelector($mSelector, $bRemoveAll = false) {
 		if ($mSelector instanceof DeclarationBlock) {
 			$mSelector = $mSelector->getSelectors();

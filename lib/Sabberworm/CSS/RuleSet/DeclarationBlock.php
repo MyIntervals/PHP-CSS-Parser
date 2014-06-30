@@ -36,6 +36,20 @@ class DeclarationBlock extends RuleSet {
 		}
 	}
 
+	// remove one of the selector of the block
+	public function removeSelector($mSelector) {
+		if($mSelector instanceof Selector) {
+			$mSelector = $mSelector->getSelector();
+		}
+		foreach($this->aSelectors as $iKey => $oSelector) {
+			if($oSelector->getSelector() === $mSelector) {
+				unset($this->aSelectors[$iKey]);
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * @deprecated use getSelectors()
 	 */
@@ -576,6 +590,10 @@ class DeclarationBlock extends RuleSet {
 	}
 
 	public function __toString() {
+		if(count($this->aSelectors) === 0) {
+			// If all the selectors have been removed, this declaration block becomes invalid
+			throw new \Sabberworm\CSS\Parsing\OutputException("Attempt to print declaration block with missing selector");
+		}
 		$sResult = implode(', ', $this->aSelectors) . ' {';
 		$sResult .= parent::__toString();
 		$sResult .= '}' . "\n";

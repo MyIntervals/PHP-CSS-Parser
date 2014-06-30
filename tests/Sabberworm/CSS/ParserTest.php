@@ -10,7 +10,7 @@ use Sabberworm\CSS\Property\AtRule;
 class ParserTest extends \PHPUnit_Framework_TestCase {
 
 	function testFiles() {
-	
+
 		$sDirectory = dirname(__FILE__) . '/../../files';
 		if ($rHandle = opendir($sDirectory)) {
 			/* This is the correct way to loop over the directory. */
@@ -341,6 +341,23 @@ body {color: green;}' . "\n", $oDoc->__toString());
 		}
 		$this->assertSame('@media screen {html {some: -test(val2);}
 }#unrelated {other: yes;}' . "\n", $oDoc->__toString());
+	}
+  
+	/**
+	* @expectedException Sabberworm\CSS\Parsing\OutputException
+	*/
+	function testSelectorRemoval() {
+		$oDoc = $this->parsedStructureForFile('1readme');
+		$aBlocks = $oDoc->getAllDeclarationBlocks();
+		$oBlock1 = $aBlocks[0];
+		$this->assertSame(true, $oBlock1->removeSelector('html'));
+		$sExpected = '@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}body {font-size: 1.6em;}
+';
+		$this->assertSame($sExpected, $oDoc->__toString());
+		$this->assertSame(false, $oBlock1->removeSelector('html'));
+		$this->assertSame(true, $oBlock1->removeSelector('body'));
+		// This tries to output a declaration block without a selector and throws.
+		$oDoc->__toString();
 	}
 
 	function testComments() {
