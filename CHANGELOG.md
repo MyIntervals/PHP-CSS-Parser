@@ -80,7 +80,7 @@
 * *No backwards-incompatible changes*
 * *No deprecations*
 
-### 5.2.0 (2013-10-30)
+### 5.2.0 (2014-06-30)
 
 * Support removing a selector from a declaration block using `$oBlock->removeSelector($mSelector)`
 * Introduce a specialized exception (Sabberworm\CSS\Parsing\OuputException) for exceptions during output rendering
