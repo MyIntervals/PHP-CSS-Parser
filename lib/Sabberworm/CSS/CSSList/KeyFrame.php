@@ -32,14 +32,10 @@ class KeyFrame extends CSSList implements AtRule {
 	}
 
 	public function __toString() {
-		return $this->render();
+		return $this->render(new \Sabberworm\CSS\OutputFormat());
 	}
 
-	public function render($oOutputFormat = null) {
-
-		if($oOutputFormat === null) {
-			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();
-		}
+	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		$sResult = "@{$this->vendorKeyFrame} {$this->animationName} {";
 		$sResult .= parent::render($oOutputFormat->nextLevel());
 		$sResult .= '}';

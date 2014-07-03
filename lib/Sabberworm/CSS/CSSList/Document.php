@@ -74,14 +74,21 @@ class Document extends CSSBlockList {
 		}
 	}
 
-	/*
+	/**
 	 * Create shorthands properties whenever possible
 	 */
-
 	public function createShorthands() {
 		foreach ($this->getAllDeclarationBlocks() as $oDeclaration) {
 			$oDeclaration->createShorthands();
 		}
+	}
+
+	// Override render() to make format argument optional
+	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat = null) {
+		if($oOutputFormat === null) {
+			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();
+		}
+		return parent::render($oOutputFormat);
 	}
 
 }

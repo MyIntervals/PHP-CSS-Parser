@@ -19,13 +19,10 @@ class String extends PrimitiveValue {
 	}
 
 	public function __toString() {
-		return $this->render();
+		return $this->render(new \Sabberworm\CSS\OutputFormat());
 	}
 
-	public function render($oOutputFormat = null) {
-		if($oOutputFormat === null) {
-			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();
-		}
+	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		$sString = addslashes($this->sString);
 		$sString = str_replace("\n", '\A', $sString);
 		return '"' . $sString . '"';

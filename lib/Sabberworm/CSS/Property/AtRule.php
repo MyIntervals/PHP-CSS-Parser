@@ -10,5 +10,5 @@ interface AtRule {
 	public function atRuleName();
 	public function atRuleArgs();
 	public function __toString();
-	public function render($oOutputFormat = null);
+	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat);
 }

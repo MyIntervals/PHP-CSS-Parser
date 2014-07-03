@@ -5,7 +5,7 @@ namespace Sabberworm\CSS\RuleSet;
 use Sabberworm\CSS\Property\AtRule;
 
 /**
- * A RuleSet constructed by an unknown @-rule. @font-face rules are rendered into AtRule objects.
+ * A RuleSet constructed by an unknown @-rule. @font-face rules are rendered into AtRuleSet objects.
  */
 class AtRuleSet extends RuleSet implements AtRule {
 
@@ -27,13 +27,10 @@ class AtRuleSet extends RuleSet implements AtRule {
 	}
 
 	public function __toString() {
-		return $this->render();
+		return $this->render(new \Sabberworm\CSS\OutputFormat());
 	}
 
-	public function render($oOutputFormat = null) {
-		if($oOutputFormat === null) {
-			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();
-		}
+	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		$sResult = "@{$this->sType} {$this->sArgs}{";
 		$sResult .= parent::render($oOutputFormat);
 		$sResult .= '}';

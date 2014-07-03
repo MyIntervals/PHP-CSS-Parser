@@ -88,7 +88,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 			}
 			$aContentRules = $oRuleSet->getRules('content');
 			$aContents = $aContentRules[0]->getValues();
-			$sString = $aContents[0][0]->render();
+			$sString = $aContents[0][0]->__toString();
 			if ($sSelector == '.test-1') {
 				$this->assertSame('" "', $sString);
 			}
