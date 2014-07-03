@@ -27,7 +27,7 @@ class Color extends CSSFunction {
 
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		// Shorthand RGB color values
-		if($oOutputFormat->get('RGBHashNotation') && implode('', array_keys($this->aComponents)) === 'rgb') {
+		if($oOutputFormat->getRGBHashNotation() && implode('', array_keys($this->aComponents)) === 'rgb') {
 			$sResult = sprintf(
 				'%02x%02x%02x',
 				$this->aComponents['r']->getSize(),

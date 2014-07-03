@@ -74,11 +74,33 @@ abstract class CSSList {
 
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		$sResult = '';
-		foreach ($this->aContents as $oContent) {
-			$sResult .= $oContent->render($oOutputFormat->nextLevel());
+		$bIsFirst = true;
+		$oNextLevel = $oOutputFormat;
+		if(!$this->isRootList()) {
+			$oNextLevel = $oOutputFormat->nextLevel();
 		}
+		foreach ($this->aContents as $oContent) {
+			if($bIsFirst) {
+				$bIsFirst = false;
+				$sResult .= $oNextLevel->spaceBeforeBlocks();
+			} else {
+				$sResult .= $oNextLevel->spaceBetweenBlocks();
+			}
+			$sResult .= $oContent->render($oNextLevel);
+		}
+
+		if(!$bIsFirst) {
+			// Had some output
+			$sResult .= $oOutputFormat->spaceAfterBlocks();
+		}
+
 		return $sResult;
 	}
+	
+	/**
+	* Return true if the list can not be further outdented. Only important when rendering.
+	*/
+	public abstract function isRootList();
 
 	public function getContents() {
 		return $this->aContents;

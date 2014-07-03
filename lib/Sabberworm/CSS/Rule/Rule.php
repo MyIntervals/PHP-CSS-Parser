@@ -130,7 +130,7 @@ class Rule {
 	}
 
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
-		$sResult = "{$this->sRule}: ";
+		$sResult = "{$this->sRule}:{$oOutputFormat->spaceAfterRuleName()}";
 		if ($this->mValue instanceof Value) { //Can also be a ValueList
 			$sResult .= $this->mValue->render($oOutputFormat);
 		} else {

@@ -25,7 +25,7 @@ class String extends PrimitiveValue {
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		$sString = addslashes($this->sString);
 		$sString = str_replace("\n", '\A', $sString);
-		return '"' . $sString . '"';
+		return $oOutputFormat->getStringQuotingType() . $sString . $oOutputFormat->getStringQuotingType();
 	}
 
 }

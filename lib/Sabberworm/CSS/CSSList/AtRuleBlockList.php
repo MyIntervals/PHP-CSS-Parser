@@ -31,10 +31,14 @@ class AtRuleBlockList extends CSSBlockList implements AtRule {
 	}
 
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
-		$sResult = "@{$this->sType} {$this->sArgs}{";
+		$sResult = "@{$this->sType} {$this->sArgs}{$oOutputFormat->spaceBeforeOpeningBrace()}{";
 		$sResult .= parent::render($oOutputFormat);
 		$sResult .= '}';
 		return $sResult;
+	}
+
+	public function isRootList() {
+		return false;
 	}
 
 }

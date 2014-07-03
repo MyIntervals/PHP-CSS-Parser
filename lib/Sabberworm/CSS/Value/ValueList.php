@@ -40,7 +40,7 @@ abstract class ValueList extends Value {
 	}
 
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
-		return implode($this->sSeparator, $this->aComponents);
+		return $oOutputFormat->implode($oOutputFormat->spaceBeforeListArgumentSeparator($this->sSeparator) . $this->sSeparator . $oOutputFormat->spaceAfterListArgumentSeparator($this->sSeparator), $this->aComponents);
 	}
 
 }

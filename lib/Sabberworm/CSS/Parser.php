@@ -145,7 +145,7 @@ class Parser {
 			return new CSSNamespace($mUrl, $sPrefix);
 		} else {
 			//Unknown other at rule (font-face or such)
-			$sArgs = $this->consumeUntil('{', false, true);
+			$sArgs = trim($this->consumeUntil('{', false, true));
 			$this->consumeWhiteSpace();
 			$bUseRuleSet = true;
 			foreach($this->blockRules as $sBlockRuleName) {

@@ -598,9 +598,9 @@ class DeclarationBlock extends RuleSet {
 			// If all the selectors have been removed, this declaration block becomes invalid
 			throw new \Sabberworm\CSS\Parsing\OutputException("Attempt to print declaration block with missing selector");
 		}
-		$sResult = implode(', ', $this->aSelectors) . ' {';
+		$sResult = $oOutputFormat->implode($oOutputFormat->spaceBeforeSelectorSeparator() . ',' . $oOutputFormat->spaceAfterSelectorSeparator(), $this->aSelectors) . $oOutputFormat->spaceBeforeOpeningBrace() . '{';
 		$sResult .= parent::render($oOutputFormat);
-		$sResult .= '}' . "\n";
+		$sResult .= '}';
 		return $sResult;
 	}
 

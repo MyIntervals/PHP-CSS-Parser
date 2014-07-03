@@ -91,4 +91,8 @@ class Document extends CSSBlockList {
 		return parent::render($oOutputFormat);
 	}
 
+	public function isRootList() {
+		return true;
+	}
+
 }

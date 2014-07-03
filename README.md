@@ -107,7 +107,6 @@ There are a few convenience methods on Document to ease finding, manipulating an
 ## To-Do
 
 * More convenience methods [like `selectorsWithElement($sId/Class/TagName)`, `attributesOfType($sType)`, `removeAttributesOfType($sType)`]
-* Options for output (compact, verbose, etc.)
 * Real multibyte support. Currently only multibyte charsets whose first 255 code points take up only one byte and are identical with ASCII are supported (yes, UTF-8 fits this description).
 * Named color support (using `Color` instead of an anonymous string literal)
 
@@ -151,6 +150,18 @@ To output the entire CSS document into a variable, just use `->render()`:
 	$oCssParser = new Sabberworm\CSS\Parser(file_get_contents('somefile.css'));
 	$oCssDocument = $oCssParser->parse();
 	print $oCssDocument->render();
+
+If you want to format the output, pass an instance of type `Sabberworm\CSS\OutputFormat`:
+
+	$oFormat = Sabberworm\CSS\OutputFormat::create()->indentWithSpaces(4)->setSpaceBetweenRules("\n");
+	print $oCssDocument->render(oFormat);
+
+Or use one of the predefined formats:
+
+	print $oCssDocument->render(Sabberworm\CSS\OutputFormat::createPretty());
+	print $oCssDocument->render(Sabberworm\CSS\OutputFormat::createCompact());
+
+To see what you can do with output formatting, look at the tests in `tests/Sabberworm/CSS/OutputFormatTest.php`.
 
 ## Examples
 
