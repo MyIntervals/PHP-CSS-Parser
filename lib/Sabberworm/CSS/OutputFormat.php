@@ -2,6 +2,8 @@
 
 namespace Sabberworm\CSS;
 
+use Sabberworm\CSS\Parsing\OutputException;
+
 class OutputFormat {
 	/**
 	* Value format
@@ -225,7 +227,7 @@ class OutputFormatter {
 	* Runs the given code, either swallowing or passing exceptions, depending on the bIgnoreExceptions setting.
 	*/
 	public function safely($cCode) {
-		if($this->oFormat->bIgnoreExceptions) {
+		if($this->oFormat->get('IgnoreExceptions')) {
 			// If output exceptions are ignored, run the code with exception guards
 			try {
 				return $cCode();

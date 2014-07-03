@@ -92,13 +92,19 @@ abstract class RuleSet implements Renderable {
 		$bIsFirst = true;
 		foreach ($this->aRules as $aRules) {
 			foreach($aRules as $oRule) {
+				$sRendered = $oOutputFormat->safely(function() use ($oRule, $oOutputFormat) {
+					return $oRule->render($oOutputFormat->nextLevel());
+				});
+				if($sRendered === null) {
+					continue;
+				}
 				if($bIsFirst) {
 					$bIsFirst = false;
 					$sResult .= $oOutputFormat->nextLevel()->spaceBeforeRules();
 				} else {
 					$sResult .= $oOutputFormat->nextLevel()->spaceBetweenRules();
 				}
-				$sResult .= $oRule->render($oOutputFormat->nextLevel());
+				$sResult .= $sRendered;
 			}
 		}
 		

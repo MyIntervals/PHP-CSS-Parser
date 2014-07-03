@@ -80,13 +80,19 @@ abstract class CSSList {
 			$oNextLevel = $oOutputFormat->nextLevel();
 		}
 		foreach ($this->aContents as $oContent) {
+			$sRendered = $oOutputFormat->safely(function() use ($oNextLevel, $oContent) {
+				return $oContent->render($oNextLevel);
+			});
+			if($sRendered === null) {
+				continue;
+			}
 			if($bIsFirst) {
 				$bIsFirst = false;
 				$sResult .= $oNextLevel->spaceBeforeBlocks();
 			} else {
 				$sResult .= $oNextLevel->spaceBetweenBlocks();
 			}
-			$sResult .= $oContent->render($oNextLevel);
+			$sResult .= $sRendered;
 		}
 
 		if(!$bIsFirst) {
