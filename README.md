@@ -154,7 +154,7 @@ To output the entire CSS document into a variable, just use `->render()`:
 If you want to format the output, pass an instance of type `Sabberworm\CSS\OutputFormat`:
 
 	$oFormat = Sabberworm\CSS\OutputFormat::create()->indentWithSpaces(4)->setSpaceBetweenRules("\n");
-	print $oCssDocument->render(oFormat);
+	print $oCssDocument->render($oFormat);
 
 Or use one of the predefined formats:
 
