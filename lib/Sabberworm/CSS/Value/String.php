@@ -4,7 +4,7 @@ namespace Sabberworm\CSS\Value;
 
 class String extends PrimitiveValue {
 
-	private $sString;
+	protected $sString;
 
 	public function __construct($sString) {
 		$this->sString = $sString;

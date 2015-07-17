@@ -56,9 +56,9 @@ class OutputFormat {
 	public $bIgnoreExceptions = false;
 	
 	
-	private $oFormatter = null;
-	private $oNextLevelFormat = null;
-	private $iIndentationLevel = 0;
+	protected $oFormatter = null;
+	protected $oNextLevelFormat = null;
+	protected $iIndentationLevel = 0;
 	
 	public function __construct() {
 	}
@@ -156,7 +156,7 @@ class OutputFormat {
 }
 
 class OutputFormatter {
-	private $oFormat;
+	protected $oFormat;
 	
 	public function __construct(OutputFormat $oFormat) {
 		$this->oFormat = $oFormat;
@@ -279,11 +279,11 @@ class OutputFormatter {
 		return implode(';', $sString);
 	}
 
-	private function prepareSpace($sSpaceString) {
+	protected function prepareSpace($sSpaceString) {
 		return str_replace("\n", "\n".$this->indent(), $sSpaceString);
 	}
 
-	private function indent() {
+	protected function indent() {
 		return str_repeat($this->oFormat->sIndentation, $this->oFormat->level());
 	}
 }

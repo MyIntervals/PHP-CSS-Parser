@@ -11,7 +11,7 @@ use Sabberworm\CSS\Renderable;
  */
 abstract class RuleSet implements Renderable {
 
-	private $aRules;
+	protected $aRules;
 
 	public function __construct() {
 		$this->aRules = array();

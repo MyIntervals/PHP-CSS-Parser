@@ -6,8 +6,8 @@ namespace Sabberworm\CSS\Property;
 * CSSNamespace represents an @namespace rule.
 */
 class CSSNamespace implements AtRule {
-	private $mUrl;
-	private $sPrefix;
+	protected $mUrl;
+	protected $sPrefix;
 	
 	public function __construct($mUrl, $sPrefix = null) {
 		$this->mUrl = $mUrl;

@@ -17,7 +17,7 @@ use Sabberworm\CSS\Parsing\OutputException;
  */
 class DeclarationBlock extends RuleSet {
 
-	private $aSelectors;
+	protected $aSelectors;
 
 	public function __construct() {
 		parent::__construct();

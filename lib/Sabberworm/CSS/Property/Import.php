@@ -8,8 +8,8 @@ use Sabberworm\CSS\Value\URL;
 * Class representing an @import rule.
 */
 class Import implements AtRule {
-	private $oLocation;
-	private $sMediaQuery;
+	protected $oLocation;
+	protected $sMediaQuery;
 	
 	public function __construct(URL $oLocation, $sMediaQuery) {
 		$this->oLocation = $oLocation;

@@ -25,7 +25,7 @@ class Settings {
 	*/
 	public $bLenientParsing = true;
 
-	private function __construct() {
+	protected function __construct() {
 		$this->bMultibyteSupport = extension_loaded('mbstring');
 	}
 

@@ -26,14 +26,14 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
  */
 class Parser {
 
-	private $sText;
-	private $iCurrentPosition;
-	private $oParserSettings;
-	private $sCharset;
-	private $iLength;
-	private $peekCache = null;
-	private $blockRules;
-	private $aSizeUnits;
+	protected $sText;
+	protected $iCurrentPosition;
+	protected $oParserSettings;
+	protected $sCharset;
+	protected $iLength;
+	protected $peekCache = null;
+	protected $blockRules;
+	protected $aSizeUnits;
 
 	public function __construct($sText, Settings $oParserSettings = null) {
 		$this->sText = $sText;
@@ -70,12 +70,12 @@ class Parser {
 		return $oResult;
 	}
 
-	private function parseDocument(Document $oDocument) {
+	protected function parseDocument(Document $oDocument) {
 		$this->consumeWhiteSpace();
 		$this->parseList($oDocument, true);
 	}
 
-	private function parseList(CSSList $oList, $bIsRoot = false) {
+	protected function parseList(CSSList $oList, $bIsRoot = false) {
 		while (!$this->isEnd()) {
 			if ($this->comes('@')) {
 				$oList->append($this->parseAtRule());
@@ -102,7 +102,7 @@ class Parser {
 		}
 	}
 
-	private function parseAtRule() {
+	protected function parseAtRule() {
 		$this->consume('@');
 		$sIdentifier = $this->parseIdentifier();
 		$this->consumeWhiteSpace();
@@ -165,7 +165,7 @@ class Parser {
 		}
 	}
 
-	private function parseIdentifier($bAllowFunctions = true, $bIgnoreCase = true) {
+	protected function parseIdentifier($bAllowFunctions = true, $bIgnoreCase = true) {
 		$sResult = $this->parseCharacter(true);
 		if ($sResult === null) {
 			throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier');
@@ -186,7 +186,7 @@ class Parser {
 		return $sResult;
 	}
 
-	private function parseStringValue() {
+	protected function parseStringValue() {
 		$sBegin = $this->peek();
 		$sQuote = null;
 		if ($sBegin === "'") {
@@ -217,7 +217,7 @@ class Parser {
 		return new String($sResult);
 	}
 
-	private function parseCharacter($bIsForIdentifier) {
+	protected function parseCharacter($bIsForIdentifier) {
 		if ($this->peek() === '\\') {
 			$this->consume('\\');
 			if ($this->comes('\n') || $this->comes('\r')) {
@@ -262,7 +262,7 @@ class Parser {
 		return null;
 	}
 
-	private function parseSelector() {
+	protected function parseSelector() {
 		$oResult = new DeclarationBlock();
 		$oResult->setSelector($this->consumeUntil('{', false, true));
 		$this->consumeWhiteSpace();
@@ -270,7 +270,7 @@ class Parser {
 		return $oResult;
 	}
 
-	private function parseRuleSet($oRuleSet) {
+	protected function parseRuleSet($oRuleSet) {
 		while ($this->comes(';')) {
 			$this->consume(';');
 			$this->consumeWhiteSpace();
@@ -309,7 +309,7 @@ class Parser {
 		$this->consume('}');
 	}
 
-	private function parseRule() {
+	protected function parseRule() {
 		$oRule = new Rule($this->parseIdentifier());
 		$this->consumeWhiteSpace();
 		$this->consume(':');
@@ -328,7 +328,7 @@ class Parser {
 		return $oRule;
 	}
 
-	private function parseValue($aListDelimiters) {
+	protected function parseValue($aListDelimiters) {
 		$aStack = array();
 		$this->consumeWhiteSpace();
 		//Build a list of delimiters and parsed values
@@ -374,14 +374,14 @@ class Parser {
 		return $aStack[0];
 	}
 
-	private static function listDelimiterForRule($sRule) {
+	protected static function listDelimiterForRule($sRule) {
 		if (preg_match('/^font($|-)/', $sRule)) {
 			return array(',', '/', ' ');
 		}
 		return array(',', ' ', '/');
 	}
 
-	private function parsePrimitiveValue() {
+	protected function parsePrimitiveValue() {
 		$oValue = null;
 		$this->consumeWhiteSpace();
 		if (is_numeric($this->peek()) || ($this->comes('-.') && is_numeric($this->peek(1, 2))) || (($this->comes('-') || $this->comes('.')) && is_numeric($this->peek(1, 1)))) {
@@ -399,7 +399,7 @@ class Parser {
 		return $oValue;
 	}
 
-	private function parseNumericValue($bForColor = false) {
+	protected function parseNumericValue($bForColor = false) {
 		$sSize = '';
 		if ($this->comes('-')) {
 			$sSize .= $this->consume('-');
@@ -422,7 +422,7 @@ class Parser {
 		return new Size(floatval($sSize), $sUnit, $bForColor);
 	}
 
-	private function parseColorValue() {
+	protected function parseColorValue() {
 		$aColor = array();
 		if ($this->comes('#')) {
 			$this->consume('#');
@@ -449,7 +449,7 @@ class Parser {
 		return new Color($aColor);
 	}
 
-	private function parseURLValue() {
+	protected function parseURLValue() {
 		$bUseUrl = $this->comes('url', true);
 		if ($bUseUrl) {
 			$this->consume('url');
@@ -468,19 +468,19 @@ class Parser {
 	/**
 	* Tests an identifier for a given value. Since identifiers are all keywords, they can be vendor-prefixed. We need to check for these versions too.
 	*/
-	private function identifierIs($sIdentifier, $sMatch) {
+	protected function identifierIs($sIdentifier, $sMatch) {
 		return (strcasecmp($sIdentifier, $sMatch) === 0)
 			?: preg_match("/^(-\\w+-)?$sMatch$/i", $sIdentifier) === 1;
 	}
 
-	private function comes($sString, $bCaseInsensitive = false) {
+	protected function comes($sString, $bCaseInsensitive = false) {
 		$sPeek = $this->peek(strlen($sString));
 		return ($sPeek == '')
 			? false
 			: $this->streql($sPeek, $sString, $bCaseInsensitive);
 	}
 
-	private function peek($iLength = 1, $iOffset = 0) {
+	protected function peek($iLength = 1, $iOffset = 0) {
 		if (($peek = (!$iOffset && ($iLength === 1))) &&
 			!is_null($this->peekCache)) {
 			return $this->peekCache;
@@ -497,7 +497,7 @@ class Parser {
 		return $out;
 	}
 
-	private function consume($mValue = 1) {
+	protected function consume($mValue = 1) {
 		if (is_string($mValue)) {
 			$iLength = $this->strlen($mValue);
 			if (!$this->streql($this->substr($this->sText, $this->iCurrentPosition, $iLength), $mValue)) {
@@ -517,7 +517,7 @@ class Parser {
 		}
 	}
 
-	private function consumeExpression($mExpression) {
+	protected function consumeExpression($mExpression) {
 		$aMatches = null;
 		if (preg_match($mExpression, $this->inputLeft(), $aMatches, PREG_OFFSET_CAPTURE) === 1) {
 			return $this->consume($aMatches[0][0]);
@@ -525,7 +525,7 @@ class Parser {
 		throw new UnexpectedTokenException($mExpression, $this->peek(5), 'expression');
 	}
 
-	private function consumeWhiteSpace() {
+	protected function consumeWhiteSpace() {
 		do {
 			while (preg_match('/\\s/isSu', $this->peek()) === 1) {
 				$this->consume(1);
@@ -544,7 +544,7 @@ class Parser {
 		} while($bHasComment);
 	}
 
-	private function consumeComment() {
+	protected function consumeComment() {
 		if ($this->comes('/*')) {
 			$this->consume(1);
 			while ($this->consume(1) !== '') {
@@ -557,11 +557,11 @@ class Parser {
 		return false;
 	}
 
-	private function isEnd() {
+	protected function isEnd() {
 		return $this->iCurrentPosition >= $this->iLength;
 	}
 
-	private function consumeUntil($aEnd, $bIncludeEnd = false, $consumeEnd = false) {
+	protected function consumeUntil($aEnd, $bIncludeEnd = false, $consumeEnd = false) {
 		$aEnd = is_array($aEnd) ? $aEnd : array($aEnd);
 		$out = '';
 		$start = $this->iCurrentPosition;
@@ -583,11 +583,11 @@ class Parser {
 		throw new UnexpectedTokenException('One of ("'.implode('","', $aEnd).'")', $this->peek(5), 'search');
 	}
 
-	private function inputLeft() {
+	protected function inputLeft() {
 		return $this->substr($this->sText, $this->iCurrentPosition, -1);
 	}
 
-	private function substr($sString, $iStart, $iLength) {
+	protected function substr($sString, $iStart, $iLength) {
 		if ($this->oParserSettings->bMultibyteSupport) {
 			return mb_substr($sString, $iStart, $iLength, $this->sCharset);
 		} else {
@@ -595,7 +595,7 @@ class Parser {
 		}
 	}
 
-	private function strlen($sString) {
+	protected function strlen($sString) {
 		if ($this->oParserSettings->bMultibyteSupport) {
 			return mb_strlen($sString, $this->sCharset);
 		} else {
@@ -603,7 +603,7 @@ class Parser {
 		}
 	}
 
-	private function streql($sString1, $sString2, $bCaseInsensitive = true) {
+	protected function streql($sString1, $sString2, $bCaseInsensitive = true) {
 		if($bCaseInsensitive) {
 			return $this->strtolower($sString1) === $this->strtolower($sString2);
 		} else {
@@ -611,7 +611,7 @@ class Parser {
 		}
 	}
 
-	private function strtolower($sString) {
+	protected function strtolower($sString) {
 		if ($this->oParserSettings->bMultibyteSupport) {
 			return mb_strtolower($sString, $this->sCharset);
 		} else {
@@ -619,7 +619,7 @@ class Parser {
 		}
 	}
 
-	private function strpos($sString, $sNeedle, $iOffset) {
+	protected function strpos($sString, $sNeedle, $iOffset) {
 		if ($this->oParserSettings->bMultibyteSupport) {
 			return mb_strpos($sString, $sNeedle, $iOffset, $this->sCharset);
 		} else {

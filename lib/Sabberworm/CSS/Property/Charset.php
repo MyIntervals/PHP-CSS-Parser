@@ -11,7 +11,7 @@ namespace Sabberworm\CSS\Property;
  */
 class Charset implements AtRule {
 
-	private $sCharset;
+	protected $sCharset;
 
 	public function __construct($sCharset) {
 		$this->sCharset = $sCharset;

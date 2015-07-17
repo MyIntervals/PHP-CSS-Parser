@@ -5,7 +5,7 @@ namespace Sabberworm\CSS\Value;
 
 class URL extends PrimitiveValue {
 
-	private $oURL;
+	protected $oURL;
 
 	public function __construct(String $oURL) {
 		$this->oURL = $oURL;

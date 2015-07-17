@@ -9,8 +9,8 @@ use Sabberworm\CSS\Property\AtRule;
  */
 class AtRuleSet extends RuleSet implements AtRule {
 
-	private $sType;
-	private $sArgs;
+	protected $sType;
+	protected $sArgs;
 
 	public function __construct($sType, $sArgs = '') {
 		parent::__construct();

@@ -6,8 +6,8 @@ use Sabberworm\CSS\Property\AtRule;
 
 class KeyFrame extends CSSList implements AtRule {
 
-	private $vendorKeyFrame;
-	private $animationName;
+	protected $vendorKeyFrame;
+	protected $animationName;
 
 	public function __construct() {
 		parent::__construct();

@@ -8,9 +8,9 @@ class Size extends PrimitiveValue {
 	const RELATIVE_SIZE_UNITS = '%/em/ex/ch/fr';
 	const NON_SIZE_UNITS = 'deg/grad/rad/s/ms/turns/Hz/kHz';
 
-	private $fSize;
-	private $sUnit;
-	private $bIsColorComponent;
+	protected $fSize;
+	protected $sUnit;
+	protected $bIsColorComponent;
 
 	public function __construct($fSize, $sUnit = null, $bIsColorComponent = false) {
 		$this->fSize = floatval($fSize);

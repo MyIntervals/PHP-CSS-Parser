@@ -35,8 +35,8 @@ class Selector {
 	))
 	/ix';
 
-	private $sSelector;
-	private $iSpecificity;
+	protected $sSelector;
+	protected $iSpecificity;
 
 	public function __construct($sSelector, $bCalculateSpecificity = false) {
 		$this->setSelector($sSelector);

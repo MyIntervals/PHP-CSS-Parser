@@ -11,9 +11,9 @@ use Sabberworm\CSS\Value\Value;
  */
 class Rule {
 
-	private $sRule;
-	private $mValue;
-	private $bIsImportant;
+	protected $sRule;
+	protected $mValue;
+	protected $bIsImportant;
 
 	public function __construct($sRule) {
 		$this->sRule = $sRule;
