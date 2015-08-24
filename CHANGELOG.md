@@ -1,5 +1,15 @@
 # Revision History
 
+## 7.0
+
+### 7.0.0 (2015-08-24)
+
+* Compatibility with PHP 7. Well timed, eh?
+
+#### Deprecations
+
+* The Sabberworm\CSS\Value\String class has been renamed to Sabberworm\CSS\Value\CSSString
+
 ## 6.0
 
 ### 6.0.0 (2014-07-03)
