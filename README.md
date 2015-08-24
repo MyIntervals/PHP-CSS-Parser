@@ -88,7 +88,7 @@ If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $oRule)`, `
 
 * `Size` – consists of a numeric `size` value and a unit.
 * `Color` – colors can be input in the form #rrggbb, #rgb or schema(val1, val2, …) but are always stored as an array of ('s' => val1, 'c' => val2, 'h' => val3, …) and output in the second form.
-* `String` – this is just a wrapper for quoted strings to distinguish them from keywords; always output with double quotes.
+* `CSSString` – this is just a wrapper for quoted strings to distinguish them from keywords; always output with double quotes.
 * `URL` – URLs in CSS; always output in URL("") notation.
 
 There is another abstract subclass of `Value`, `ValueList`. A `ValueList` represents a lists of `Value`s, separated by some separation character (mostly `,`, whitespace, or `/`). There are two types of `ValueList`s:
@@ -193,8 +193,8 @@ To see what you can do with output formatting, look at the tests in `tests/Sabbe
 	    [0]=>
 	    object(Sabberworm\CSS\Property\Charset)#6 (1) {
 	      ["sCharset":"Sabberworm\CSS\Property\Charset":private]=>
-	      object(Sabberworm\CSS\Value\String)#5 (1) {
-	        ["sString":"Sabberworm\CSS\Value\String":private]=>
+	      object(Sabberworm\CSS\Value\CSSString)#5 (1) {
+	        ["sString":"Sabberworm\CSS\Value\CSSString":private]=>
 	        string(5) "utf-8"
 	      }
 	    }
@@ -211,8 +211,8 @@ To see what you can do with output formatting, look at the tests in `tests/Sabbe
 	            ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
 	            string(11) "font-family"
 	            ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	            object(Sabberworm\CSS\Value\String)#9 (1) {
-	              ["sString":"Sabberworm\CSS\Value\String":private]=>
+	            object(Sabberworm\CSS\Value\CSSString)#9 (1) {
+	              ["sString":"Sabberworm\CSS\Value\CSSString":private]=>
 	              string(10) "CrassRoots"
 	            }
 	            ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
@@ -228,8 +228,8 @@ To see what you can do with output formatting, look at the tests in `tests/Sabbe
 	            ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
 	            object(Sabberworm\CSS\Value\URL)#11 (1) {
 	              ["oURL":"Sabberworm\CSS\Value\URL":private]=>
-	              object(Sabberworm\CSS\Value\String)#12 (1) {
-	                ["sString":"Sabberworm\CSS\Value\String":private]=>
+	              object(Sabberworm\CSS\Value\CSSString)#12 (1) {
+	                ["sString":"Sabberworm\CSS\Value\CSSString":private]=>
 	                string(15) "../media/cr.ttf"
 	              }
 	            }
@@ -469,8 +469,8 @@ To see what you can do with output formatting, look at the tests in `tests/Sabbe
 	                [1]=>
 	                string(9) "Helvetica"
 	                [2]=>
-	                object(Sabberworm\CSS\Value\String)#14 (1) {
-	                  ["sString":"Sabberworm\CSS\Value\String":private]=>
+	                object(Sabberworm\CSS\Value\CSSString)#14 (1) {
+	                  ["sString":"Sabberworm\CSS\Value\CSSString":private]=>
 	                  string(9) "Gill Sans"
 	                }
 	                [3]=>

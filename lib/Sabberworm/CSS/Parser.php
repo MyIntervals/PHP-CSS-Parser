@@ -17,7 +17,7 @@ use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\URL;
-use Sabberworm\CSS\Value\String;
+use Sabberworm\CSS\Value\CSSString;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
@@ -139,7 +139,7 @@ class Parser {
 			if ($sPrefix !== null && !is_string($sPrefix)) {
 				throw new \Exception('Wrong namespace prefix '.$sPrefix);
 			}
-			if (!($mUrl instanceof String || $mUrl instanceof URL)) {
+			if (!($mUrl instanceof CSSString || $mUrl instanceof URL)) {
 				throw new \Exception('Wrong namespace url of invalid type '.$mUrl);
 			}
 			return new CSSNamespace($mUrl, $sPrefix);
@@ -214,7 +214,7 @@ class Parser {
 			}
 			$this->consume($sQuote);
 		}
-		return new String($sResult);
+		return new CSSString($sResult);
 	}
 
 	private function parseCharacter($bIsForIdentifier) {
