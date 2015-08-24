@@ -2,7 +2,7 @@
 
 ## 6.0
 
-### 6.0.0
+### 6.0.0 (2014-07-03)
 
 * Format output using Sabberworm\CSS\OutputFormat
 * *No backwards-incompatible changes*
@@ -10,6 +10,11 @@
 #### Deprecations
 
 * The parse() method replaces __toString with an optional argument (instance of the OutputFormat class)
+
+### 6.0.1 (2014-08-24)
+
+* Remove some declarations in interfaces incompatible with PHP 5.3 (< 5.3.9)
+* *No deprecations*
 
 ## 5.0
 
