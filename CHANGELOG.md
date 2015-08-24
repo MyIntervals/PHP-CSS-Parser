@@ -8,7 +8,7 @@
 
 #### Deprecations
 
-* The Sabberworm\CSS\Value\String class has been renamed to Sabberworm\CSS\Value\CSSString
+* The `Sabberworm\CSS\Value\String` class has been renamed to `Sabberworm\CSS\Value\CSSString`.
 
 ## 6.0
 
