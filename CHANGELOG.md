@@ -11,7 +11,7 @@
 
 * The parse() method replaces __toString with an optional argument (instance of the OutputFormat class)
 
-### 6.0.1 (2014-08-24)
+### 6.0.1 (2015-08-24)
 
 * Remove some declarations in interfaces incompatible with PHP 5.3 (< 5.3.9)
 * *No deprecations*
