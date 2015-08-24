@@ -16,7 +16,7 @@
 </g>
 <!-- Node3 -->
 <g id="node3" class="node"><title>Node3</title>
-<g id="a_node3"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_at_rule_block_list.html" target="_top" xlink:title="A BlockList constructed by an unknown @&#45;rule. ">
+<g id="a_node3"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_at_rule_block_list.html" target="_top" target="_top" xlink:title="A BlockList constructed by an unknown @&#45;rule. ">
 <polygon fill="white" stroke="black" points="0,-0.5 0,-19.5 87,-19.5 87,-0.5 0,-0.5"/>
 <text text-anchor="middle" x="43.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">AtRuleBlockList</text>
 </a>
@@ -29,7 +29,7 @@
 </g>
 <!-- Node4 -->
 <g id="node4" class="node"><title>Node4</title>
-<g id="a_node4"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_document.html" target="_top" xlink:title="The root CSSList of a parsed file. ">
+<g id="a_node4"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_document.html" target="_top" target="_top" xlink:title="The root CSSList of a parsed file. ">
 <polygon fill="white" stroke="black" points="105.5,-0.5 105.5,-19.5 167.5,-19.5 167.5,-0.5 105.5,-0.5"/>
 <text text-anchor="middle" x="136.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">Document</text>
 </a>
@@ -42,7 +42,7 @@
 </g>
 <!-- Node2 -->
 <g id="node2" class="node"><title>Node2</title>
-<g id="a_node2"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_list.html" target="_top" xlink:title="A CSSList is the most generic container available. ">
+<g id="a_node2"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_list.html" target="_top" target="_top" xlink:title="A CSSList is the most generic container available. ">
 <polygon fill="white" stroke="black" points="63,-112.5 63,-131.5 116,-131.5 116,-112.5 63,-112.5"/>
 <text text-anchor="middle" x="89.5" y="-119.5" font-family="Helvetica,sans-Serif" font-size="10.00">CSSList</text>
 </a>

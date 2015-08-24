@@ -16,7 +16,7 @@
 </g>
 <!-- Node2 -->
 <g id="node2" class="node"><title>Node2</title>
-<g id="a_node2"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_list.html" target="_top" xlink:title="A CSSList is the most generic container available. ">
+<g id="a_node2"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_list.html" target="_top" target="_top" xlink:title="A CSSList is the most generic container available. ">
 <polygon fill="white" stroke="black" points="12,-56.5 12,-75.5 65,-75.5 65,-56.5 12,-56.5"/>
 <text text-anchor="middle" x="38.5" y="-63.5" font-family="Helvetica,sans-Serif" font-size="10.00">CSSList</text>
 </a>

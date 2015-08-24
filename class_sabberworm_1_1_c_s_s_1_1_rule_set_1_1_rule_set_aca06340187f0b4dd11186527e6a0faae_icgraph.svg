@@ -24,13 +24,13 @@ if (edges && edges.length) {
                 <circle id="rim" cx="0" cy="0" r="7"/>
                 <circle id="rim2" cx="0" cy="0" r="3.5"/>
                 <g id="zoomPlus">
-                        <use xlink:href="#rim" fill="#404040">
+                        <use xlink:href="#rim" target="_top" fill="#404040">
                                 <set attributeName="fill" to="#808080" begin="zoomplus.mouseover" end="zoomplus.mouseout"/>
                         </use>
                         <path d="M-4,0h8M0,-4v8" fill="none" stroke="white" stroke-width="1.5" pointer-events="none"/>
                 </g>
                 <g id="zoomMin">
-                        <use xlink:href="#rim" fill="#404040">
+                        <use xlink:href="#rim" target="_top" fill="#404040">
                                 <set attributeName="fill" to="#808080" begin="zoomminus.mouseover" end="zoomminus.mouseout"/>
                         </use>
                         <path d="M-4,0h8" fill="none" stroke="white" stroke-width="1.5" pointer-events="none"/>
@@ -39,7 +39,7 @@ if (edges && edges.length) {
                         <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
                <g id="resetDef">
-                       <use xlink:href="#rim2" fill="#404040">
+                       <use xlink:href="#rim2" target="_top" fill="#404040">
                                <set attributeName="fill" to="#808080" begin="reset.mouseover" end="reset.mouseout"/>
                        </use>
                </g>
@@ -50,7 +50,7 @@ var viewWidth = 513;
 var viewHeight = 230;
 var sectionId = 'dynsection-3';
 </script>
-<script xlink:href="svgpan.js"/>
+<script xlink:href="svgpan.js" target="_top"/>
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>removeRule</title>
@@ -62,7 +62,7 @@ var sectionId = 'dynsection-3';
 </g>
 <!-- Node2 -->
 <g id="node2" class="node"><title>Node2</title>
-<g id="a_node2"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9dd0036775357fd3c53cafaa10f45b55" target="_top" xlink:title="Split shorthand border declarations (e.g. ">
+<g id="a_node2"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9dd0036775357fd3c53cafaa10f45b55" target="_top" target="_top" xlink:title="Split shorthand border declarations (e.g. ">
 <polygon fill="white" stroke="black" points="117,-180.5 117,-221.5 277,-221.5 277,-180.5 117,-180.5"/>
 <text text-anchor="start" x="125" y="-209.5" font-family="Helvetica,sans-Serif" font-size="10.00">Sabberworm\CSS\RuleSet</text>
 <text text-anchor="start" x="125" y="-198.5" font-family="Helvetica,sans-Serif" font-size="10.00">\DeclarationBlock\expandBorder</text>
@@ -77,7 +77,7 @@ var sectionId = 'dynsection-3';
 </g>
 <!-- Node4 -->
 <g id="node4" class="node"><title>Node4</title>
-<g id="a_node4"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9ecde3bc4b8030c61ee2fc2a151728d7" target="_top" xlink:title="Split shorthand dimensional declarations (e.g. ">
+<g id="a_node4"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9ecde3bc4b8030c61ee2fc2a151728d7" target="_top" target="_top" xlink:title="Split shorthand dimensional declarations (e.g. ">
 <polygon fill="white" stroke="black" points="106,-120.5 106,-161.5 288,-161.5 288,-120.5 106,-120.5"/>
 <text text-anchor="start" x="114" y="-149.5" font-family="Helvetica,sans-Serif" font-size="10.00">Sabberworm\CSS\RuleSet</text>
 <text text-anchor="start" x="114" y="-138.5" font-family="Helvetica,sans-Serif" font-size="10.00">\DeclarationBlock\expandDimensions</text>
@@ -92,7 +92,7 @@ var sectionId = 'dynsection-3';
 </g>
 <!-- Node5 -->
 <g id="node5" class="node"><title>Node5</title>
-<g id="a_node5"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#ac04ad57b57030456e7e2b9e456a7dc42" target="_top" xlink:title="Convert shorthand font declarations (e.g. ">
+<g id="a_node5"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#ac04ad57b57030456e7e2b9e456a7dc42" target="_top" target="_top" xlink:title="Convert shorthand font declarations (e.g. ">
 <polygon fill="white" stroke="black" points="122,-60.5 122,-101.5 272,-101.5 272,-60.5 122,-60.5"/>
 <text text-anchor="start" x="130" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">Sabberworm\CSS\RuleSet</text>
 <text text-anchor="start" x="130" y="-78.5" font-family="Helvetica,sans-Serif" font-size="10.00">\DeclarationBlock\expandFont</text>
@@ -107,7 +107,7 @@ var sectionId = 'dynsection-3';
 </g>
 <!-- Node6 -->
 <g id="node6" class="node"><title>Node6</title>
-<g id="a_node6"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9957285c5dd0d6372e958d4b35f9ffcf" target="_top" xlink:title="Looks for long format CSS font properties (e.g. ">
+<g id="a_node6"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9957285c5dd0d6372e958d4b35f9ffcf" target="_top" target="_top" xlink:title="Looks for long format CSS font properties (e.g. ">
 <polygon fill="white" stroke="black" points="124.5,-0.5 124.5,-41.5 269.5,-41.5 269.5,-0.5 124.5,-0.5"/>
 <text text-anchor="start" x="132.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">Sabberworm\CSS\RuleSet</text>
 <text text-anchor="start" x="132.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">\DeclarationBlock\createFont</text>
@@ -122,7 +122,7 @@ var sectionId = 'dynsection-3';
 </g>
 <!-- Node3 -->
 <g id="node3" class="node"><title>Node3</title>
-<g id="a_node3"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#af0432da015f2bfee3dd9d81d39d8b4e6" target="_top" xlink:title="Split shorthand declarations (e.g. ">
+<g id="a_node3"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#af0432da015f2bfee3dd9d81d39d8b4e6" target="_top" target="_top" xlink:title="Split shorthand declarations (e.g. ">
 <polygon fill="white" stroke="black" points="324,-126 324,-156 505,-156 505,-126 324,-126"/>
 <text text-anchor="start" x="332" y="-144" font-family="Helvetica,sans-Serif" font-size="10.00">Sabberworm\CSS\RuleSet</text>
 <text text-anchor="middle" x="414.5" y="-133" font-family="Helvetica,sans-Serif" font-size="10.00">\DeclarationBlock\expandShorthands</text>
@@ -146,7 +146,7 @@ var sectionId = 'dynsection-3';
 </g>
 <!-- Node7 -->
 <g id="node7" class="node"><title>Node7</title>
-<g id="a_node7"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a02455b5dac22d0760454fc03c0880feb" target="_top" xlink:title="Create shorthand declarations (e.g. ">
+<g id="a_node7"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a02455b5dac22d0760454fc03c0880feb" target="_top" target="_top" xlink:title="Create shorthand declarations (e.g. ">
 <polygon fill="white" stroke="black" points="326.5,-6 326.5,-36 502.5,-36 502.5,-6 326.5,-6"/>
 <text text-anchor="start" x="334.5" y="-24" font-family="Helvetica,sans-Serif" font-size="10.00">Sabberworm\CSS\RuleSet</text>
 <text text-anchor="middle" x="414.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">\DeclarationBlock\createShorthands</text>
@@ -162,29 +162,29 @@ var sectionId = 'dynsection-3';
 </svg>
         <g id="navigator" transform="translate(0 0)" fill="#404254">
                 <rect fill="#f2f5e9" fill-opacity="0.5" stroke="#606060" stroke-width=".5" x="0" y="0" width="60" height="60"/>
-                <use id="zoomplus" xlink:href="#zoomPlus" x="17" y="9" onmousedown="handleZoom(evt,'in')"/>
-                <use id="zoomminus" xlink:href="#zoomMin" x="42" y="9" onmousedown="handleZoom(evt,'out')"/>
-                <use id="reset" xlink:href="#resetDef" x="30" y="36" onmousedown="handleReset()"/>
-                <g id="arrowUp" xlink:href="#dirArrow" transform="translate(30 24)" onmousedown="handlePan(0,-1)">
-                  <use xlink:href="#rim" fill="#404040">
+                <use id="zoomplus" xlink:href="#zoomPlus" target="_top" x="17" y="9" onmousedown="handleZoom(evt,'in')"/>
+                <use id="zoomminus" xlink:href="#zoomMin" target="_top" x="42" y="9" onmousedown="handleZoom(evt,'out')"/>
+                <use id="reset" xlink:href="#resetDef" target="_top" x="30" y="36" onmousedown="handleReset()"/>
+                <g id="arrowUp" xlink:href="#dirArrow" target="_top" transform="translate(30 24)" onmousedown="handlePan(0,-1)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowUp.mouseover" end="arrowUp.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowRight" xlink:href="#dirArrow" transform="rotate(90) translate(36 -43)" onmousedown="handlePan(1,0)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowRight" xlink:href="#dirArrow" target="_top" transform="rotate(90) translate(36 -43)" onmousedown="handlePan(1,0)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowRight.mouseover" end="arrowRight.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowDown" xlink:href="#dirArrow" transform="rotate(180) translate(-30 -48)" onmousedown="handlePan(0,1)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowDown" xlink:href="#dirArrow" target="_top" transform="rotate(180) translate(-30 -48)" onmousedown="handlePan(0,1)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowDown.mouseover" end="arrowDown.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
                 </g>
-                <g id="arrowLeft" xlink:href="#dirArrow" transform="rotate(270) translate(-36 17)" onmousedown="handlePan(-1,0)">
-                  <use xlink:href="#rim" fill="#404040">
+                <g id="arrowLeft" xlink:href="#dirArrow" target="_top" transform="rotate(270) translate(-36 17)" onmousedown="handlePan(-1,0)">
+                  <use xlink:href="#rim" target="_top" fill="#404040">
                         <set attributeName="fill" to="#808080" begin="arrowLeft.mouseover" end="arrowLeft.mouseout"/>
                   </use>
                   <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
@@ -192,7 +192,7 @@ var sectionId = 'dynsection-3';
         </g>
         <svg viewBox="0 0 15 15" width="100%" height="30px" preserveAspectRatio="xMaxYMin meet">
          <g id="arrow_out" transform="scale(0.3 0.3)">
-          <a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_rule_set_aca06340187f0b4dd11186527e6a0faae_icgraph_org.svg" target="_base">
+          <a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_rule_set_aca06340187f0b4dd11186527e6a0faae_icgraph_org.svg" target="_top" target="_base">
            <rect id="button" ry="5" rx="5" y="6" x="6" height="38" width="38"
                 fill="#f2f5e9" fill-opacity="0.5" stroke="#606060" stroke-width="1.0"/>
            <path id="arrow"

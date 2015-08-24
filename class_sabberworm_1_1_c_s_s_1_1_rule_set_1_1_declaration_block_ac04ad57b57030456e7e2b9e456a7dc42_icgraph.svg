@@ -16,7 +16,7 @@
 </g>
 <!-- Node2 -->
 <g id="node2" class="node"><title>Node2</title>
-<g id="a_node2"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#af0432da015f2bfee3dd9d81d39d8b4e6" target="_top" xlink:title="Split shorthand declarations (e.g. ">
+<g id="a_node2"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#af0432da015f2bfee3dd9d81d39d8b4e6" target="_top" target="_top" xlink:title="Split shorthand declarations (e.g. ">
 <polygon fill="white" stroke="black" points="151,-0.5 151,-19.5 251,-19.5 251,-0.5 151,-0.5"/>
 <text text-anchor="middle" x="201" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">expandShorthands</text>
 </a>

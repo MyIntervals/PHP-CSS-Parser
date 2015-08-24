@@ -16,7 +16,7 @@
 </g>
 <!-- Node2 -->
 <g id="node2" class="node"><title>Node2</title>
-<g id="a_node2"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a02455b5dac22d0760454fc03c0880feb" target="_top" xlink:title="Create shorthand declarations (e.g. ">
+<g id="a_node2"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a02455b5dac22d0760454fc03c0880feb" target="_top" target="_top" xlink:title="Create shorthand declarations (e.g. ">
 <polygon fill="white" stroke="black" points="146,-0.5 146,-19.5 241,-19.5 241,-0.5 146,-0.5"/>
 <text text-anchor="middle" x="193.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">createShorthands</text>
 </a>

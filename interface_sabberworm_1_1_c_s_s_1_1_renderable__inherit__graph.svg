@@ -16,7 +16,7 @@
 </g>
 <!-- Node2 -->
 <g id="node2" class="node"><title>Node2</title>
-<g id="a_node2"><a xlink:href="interface_sabberworm_1_1_c_s_s_1_1_property_1_1_at_rule.html" target="_top" xlink:title="AtRule">
+<g id="a_node2"><a xlink:href="interface_sabberworm_1_1_c_s_s_1_1_property_1_1_at_rule.html" target="_top" target="_top" xlink:title="AtRule">
 <polygon fill="white" stroke="black" points="106.5,-247.5 106.5,-266.5 153.5,-266.5 153.5,-247.5 106.5,-247.5"/>
 <text text-anchor="middle" x="130" y="-254.5" font-family="Helvetica,sans-Serif" font-size="10.00">AtRule</text>
 </a>
@@ -29,7 +29,7 @@
 </g>
 <!-- Node9 -->
 <g id="node9" class="node"><title>Node9</title>
-<g id="a_node9"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_rule_set.html" target="_top" xlink:title="RuleSet is a generic superclass denoting rules. ">
+<g id="a_node9"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_rule_set.html" target="_top" target="_top" xlink:title="RuleSet is a generic superclass denoting rules. ">
 <polygon fill="white" stroke="black" points="104,-152.5 104,-171.5 156,-171.5 156,-152.5 104,-152.5"/>
 <text text-anchor="middle" x="130" y="-159.5" font-family="Helvetica,sans-Serif" font-size="10.00">RuleSet</text>
 </a>
@@ -42,7 +42,7 @@
 </g>
 <!-- Node11 -->
 <g id="node11" class="node"><title>Node11</title>
-<g id="a_node11"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_value.html" target="_top" xlink:title="Value">
+<g id="a_node11"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_value.html" target="_top" target="_top" xlink:title="Value">
 <polygon fill="white" stroke="black" points="109,-95.5 109,-114.5 151,-114.5 151,-95.5 109,-95.5"/>
 <text text-anchor="middle" x="130" y="-102.5" font-family="Helvetica,sans-Serif" font-size="10.00">Value</text>
 </a>
@@ -55,7 +55,7 @@
 </g>
 <!-- Node3 -->
 <g id="node3" class="node"><title>Node3</title>
-<g id="a_node3"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_at_rule_block_list.html" target="_top" xlink:title="A BlockList constructed by an unknown @&#45;rule. ">
+<g id="a_node3"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_at_rule_block_list.html" target="_top" target="_top" xlink:title="A BlockList constructed by an unknown @&#45;rule. ">
 <polygon fill="white" stroke="black" points="194.5,-361.5 194.5,-380.5 281.5,-380.5 281.5,-361.5 194.5,-361.5"/>
 <text text-anchor="middle" x="238" y="-368.5" font-family="Helvetica,sans-Serif" font-size="10.00">AtRuleBlockList</text>
 </a>
@@ -68,7 +68,7 @@
 </g>
 <!-- Node4 -->
 <g id="node4" class="node"><title>Node4</title>
-<g id="a_node4"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_key_frame.html" target="_top" xlink:title="KeyFrame">
+<g id="a_node4"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_key_frame.html" target="_top" target="_top" xlink:title="KeyFrame">
 <polygon fill="white" stroke="black" points="206.5,-323.5 206.5,-342.5 269.5,-342.5 269.5,-323.5 206.5,-323.5"/>
 <text text-anchor="middle" x="238" y="-330.5" font-family="Helvetica,sans-Serif" font-size="10.00">KeyFrame</text>
 </a>
@@ -81,7 +81,7 @@
 </g>
 <!-- Node5 -->
 <g id="node5" class="node"><title>Node5</title>
-<g id="a_node5"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_property_1_1_charset.html" target="_top" xlink:title="Class representing an &#160;rule. ">
+<g id="a_node5"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_property_1_1_charset.html" target="_top" target="_top" xlink:title="Class representing an &#160;rule. ">
 <polygon fill="white" stroke="black" points="212,-285.5 212,-304.5 264,-304.5 264,-285.5 212,-285.5"/>
 <text text-anchor="middle" x="238" y="-292.5" font-family="Helvetica,sans-Serif" font-size="10.00">Charset</text>
 </a>
@@ -94,7 +94,7 @@
 </g>
 <!-- Node6 -->
 <g id="node6" class="node"><title>Node6</title>
-<g id="a_node6"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_property_1_1_c_s_s_namespace.html" target="_top" xlink:title="CSSNamespace">
+<g id="a_node6"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_property_1_1_c_s_s_namespace.html" target="_top" target="_top" xlink:title="CSSNamespace">
 <polygon fill="white" stroke="black" points="193,-247.5 193,-266.5 283,-266.5 283,-247.5 193,-247.5"/>
 <text text-anchor="middle" x="238" y="-254.5" font-family="Helvetica,sans-Serif" font-size="10.00">CSSNamespace</text>
 </a>
@@ -107,7 +107,7 @@
 </g>
 <!-- Node7 -->
 <g id="node7" class="node"><title>Node7</title>
-<g id="a_node7"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_property_1_1_import.html" target="_top" xlink:title="Class representing an &#160;rule. ">
+<g id="a_node7"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_property_1_1_import.html" target="_top" target="_top" xlink:title="Class representing an &#160;rule. ">
 <polygon fill="white" stroke="black" points="215.5,-209.5 215.5,-228.5 260.5,-228.5 260.5,-209.5 215.5,-209.5"/>
 <text text-anchor="middle" x="238" y="-216.5" font-family="Helvetica,sans-Serif" font-size="10.00">Import</text>
 </a>
@@ -120,7 +120,7 @@
 </g>
 <!-- Node8 -->
 <g id="node8" class="node"><title>Node8</title>
-<g id="a_node8"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_at_rule_set.html" target="_top" xlink:title="A RuleSet constructed by an unknown @&#45;rule. ">
+<g id="a_node8"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_at_rule_set.html" target="_top" target="_top" xlink:title="A RuleSet constructed by an unknown @&#45;rule. ">
 <polygon fill="white" stroke="black" points="207,-171.5 207,-190.5 269,-190.5 269,-171.5 207,-171.5"/>
 <text text-anchor="middle" x="238" y="-178.5" font-family="Helvetica,sans-Serif" font-size="10.00">AtRuleSet</text>
 </a>
@@ -138,7 +138,7 @@
 </g>
 <!-- Node10 -->
 <g id="node10" class="node"><title>Node10</title>
-<g id="a_node10"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html" target="_top" xlink:title="Declaration blocks are the parts of a css file which denote the rules belonging to a selector...">
+<g id="a_node10"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html" target="_top" target="_top" xlink:title="Declaration blocks are the parts of a css file which denote the rules belonging to a selector...">
 <polygon fill="white" stroke="black" points="192,-133.5 192,-152.5 284,-152.5 284,-133.5 192,-133.5"/>
 <text text-anchor="middle" x="238" y="-140.5" font-family="Helvetica,sans-Serif" font-size="10.00">DeclarationBlock</text>
 </a>
@@ -151,7 +151,7 @@
 </g>
 <!-- Node12 -->
 <g id="node12" class="node"><title>Node12</title>
-<g id="a_node12"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_primitive_value.html" target="_top" xlink:title="PrimitiveValue">
+<g id="a_node12"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_primitive_value.html" target="_top" target="_top" xlink:title="PrimitiveValue">
 <polygon fill="white" stroke="black" points="198,-95.5 198,-114.5 278,-114.5 278,-95.5 198,-95.5"/>
 <text text-anchor="middle" x="238" y="-102.5" font-family="Helvetica,sans-Serif" font-size="10.00">PrimitiveValue</text>
 </a>
@@ -164,7 +164,7 @@
 </g>
 <!-- Node16 -->
 <g id="node16" class="node"><title>Node16</title>
-<g id="a_node16"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_value_list.html" target="_top" xlink:title="ValueList">
+<g id="a_node16"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_value_list.html" target="_top" target="_top" xlink:title="ValueList">
 <polygon fill="white" stroke="black" points="209,-38.5 209,-57.5 267,-57.5 267,-38.5 209,-38.5"/>
 <text text-anchor="middle" x="238" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">ValueList</text>
 </a>
@@ -177,7 +177,7 @@
 </g>
 <!-- Node13 -->
 <g id="node13" class="node"><title>Node13</title>
-<g id="a_node13"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_size.html" target="_top" xlink:title="Size">
+<g id="a_node13"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_size.html" target="_top" target="_top" xlink:title="Size">
 <polygon fill="white" stroke="black" points="341,-152.5 341,-171.5 377,-171.5 377,-152.5 341,-152.5"/>
 <text text-anchor="middle" x="359" y="-159.5" font-family="Helvetica,sans-Serif" font-size="10.00">Size</text>
 </a>
@@ -190,7 +190,7 @@
 </g>
 <!-- Node14 -->
 <g id="node14" class="node"><title>Node14</title>
-<g id="a_node14"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_string.html" target="_top" xlink:title="String">
+<g id="a_node14"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_string.html" target="_top" target="_top" xlink:title="String">
 <polygon fill="white" stroke="black" points="337.5,-114.5 337.5,-133.5 380.5,-133.5 380.5,-114.5 337.5,-114.5"/>
 <text text-anchor="middle" x="359" y="-121.5" font-family="Helvetica,sans-Serif" font-size="10.00">String</text>
 </a>
@@ -203,7 +203,7 @@
 </g>
 <!-- Node15 -->
 <g id="node15" class="node"><title>Node15</title>
-<g id="a_node15"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_u_r_l.html" target="_top" xlink:title="URL">
+<g id="a_node15"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_u_r_l.html" target="_top" target="_top" xlink:title="URL">
 <polygon fill="white" stroke="black" points="340.5,-76.5 340.5,-95.5 377.5,-95.5 377.5,-76.5 340.5,-76.5"/>
 <text text-anchor="middle" x="359" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">URL</text>
 </a>
@@ -216,7 +216,7 @@
 </g>
 <!-- Node17 -->
 <g id="node17" class="node"><title>Node17</title>
-<g id="a_node17"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_c_s_s_function.html" target="_top" xlink:title="CSSFunction">
+<g id="a_node17"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_c_s_s_function.html" target="_top" target="_top" xlink:title="CSSFunction">
 <polygon fill="white" stroke="black" points="321.5,-38.5 321.5,-57.5 396.5,-57.5 396.5,-38.5 321.5,-38.5"/>
 <text text-anchor="middle" x="359" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">CSSFunction</text>
 </a>
@@ -229,7 +229,7 @@
 </g>
 <!-- Node19 -->
 <g id="node19" class="node"><title>Node19</title>
-<g id="a_node19"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_rule_value_list.html" target="_top" xlink:title="RuleValueList">
+<g id="a_node19"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_rule_value_list.html" target="_top" target="_top" xlink:title="RuleValueList">
 <polygon fill="white" stroke="black" points="320,-0.5 320,-19.5 398,-19.5 398,-0.5 320,-0.5"/>
 <text text-anchor="middle" x="359" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">RuleValueList</text>
 </a>
@@ -242,7 +242,7 @@
 </g>
 <!-- Node18 -->
 <g id="node18" class="node"><title>Node18</title>
-<g id="a_node18"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_color.html" target="_top" xlink:title="Color">
+<g id="a_node18"><a xlink:href="class_sabberworm_1_1_c_s_s_1_1_value_1_1_color.html" target="_top" target="_top" xlink:title="Color">
 <polygon fill="white" stroke="black" points="434,-38.5 434,-57.5 474,-57.5 474,-38.5 434,-38.5"/>
 <text text-anchor="middle" x="454" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">Color</text>
 </a>
