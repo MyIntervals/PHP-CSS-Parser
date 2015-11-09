@@ -8,4 +8,5 @@ php:
     - "nightly"
     - hhvm
 script: phpunit .
+sudo: false
 
