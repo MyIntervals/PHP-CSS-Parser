@@ -414,9 +414,12 @@ class Parser {
 
 		$sUnit = null;
 		foreach ($this->aSizeUnits as $iLength => &$aValues) {
-			if(($sUnit = @$aValues[strtolower($this->peek($iLength))]) !== null) {
-				$this->consume($iLength);
-				break;
+			$sKey = strtolower($this->peek($iLength));
+			if(array_key_exists($sKey, $aValues)) {
+				if (($sUnit = $aValues[$sKey]) !== null) {
+					$this->consume($iLength);
+					break;
+				}
 			}
 		}
 		return new Size(floatval($sSize), $sUnit, $bForColor);
