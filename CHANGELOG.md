@@ -10,6 +10,11 @@
 
 * The `Sabberworm\CSS\Value\String` class has been renamed to `Sabberworm\CSS\Value\CSSString`.
 
+### 7.0.1 (2015-12-25)
+
+* No more suppressed `E_NOTICE`
+* *No deprecations*
+
 ## 6.0
 
 ### 6.0.0 (2014-07-03)
