@@ -490,7 +490,6 @@ class Parser {
 		if ($iOffset >= $this->iLength) {
 			return '';
 		}
-		$iLength = min($iLength, $this->iLength-$iOffset);
 		$out = $this->substr($iOffset, $iLength);
 		return $out;
 	}
@@ -585,7 +584,7 @@ class Parser {
 
 	private function substr($iStart, $iLength) {
 		$out = '';
-		while ($iLength > 0) {
+		while ($iLength > 0 && $iStart < $this->iLength) {
 			$out .= $this->aText[$iStart];
 			$iStart++;
 			$iLength--;
