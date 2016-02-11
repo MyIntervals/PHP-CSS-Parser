@@ -31,7 +31,6 @@ class Parser {
 	private $oParserSettings;
 	private $sCharset;
 	private $iLength;
-	private $peekCache = null;
 	private $blockRules;
 	private $aSizeUnits;
 
@@ -290,7 +289,6 @@ class Parser {
 						// We need to “unfind” the matches to the end of the ruleSet as this will be matched later
 						if($this->streql(substr($sConsume, -1), '}')) {
 							--$this->iCurrentPosition;
-							$this->peekCache = null;
 						} else {
 							$this->consumeWhiteSpace();
 							while ($this->comes(';')) {
@@ -488,19 +486,12 @@ class Parser {
 	}
 
 	private function peek($iLength = 1, $iOffset = 0) {
-		if (($peek = (!$iOffset && ($iLength === 1))) &&
-			!is_null($this->peekCache)) {
-			return $this->peekCache;
-		}
 		$iOffset += $this->iCurrentPosition;
 		if ($iOffset >= $this->iLength) {
 			return '';
 		}
 		$iLength = min($iLength, $this->iLength-$iOffset);
 		$out = $this->substr($iOffset, $iLength);
-		if ($peek) {
-			$this->peekCache = $out;
-		}
 		return $out;
 	}
 
@@ -511,7 +502,6 @@ class Parser {
 				throw new UnexpectedTokenException($mValue, $this->peek(max($iLength, 5)));
 			}
 			$this->iCurrentPosition += $this->strlen($mValue);
-			$this->peekCache = null;
 			return $mValue;
 		} else {
 			if ($this->iCurrentPosition + $mValue > $this->iLength) {
@@ -519,7 +509,6 @@ class Parser {
 			}
 			$sResult = $this->substr($this->iCurrentPosition, $mValue);
 			$this->iCurrentPosition += $mValue;
-			$this->peekCache = null;
 			return $sResult;
 		}
 	}
