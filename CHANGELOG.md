@@ -13,6 +13,13 @@
 ### 7.0.1 (2015-12-25)
 
 * No more suppressed `E_NOTICE`
+* *No backwards-incompatible changes*
+* *No deprecations*
+
+### 7.0.2 (2016-02-11)
+
+* 150 time performance boost thanks to @[ossinkine](https://github.com/ossinkine)
+* *No backwards-incompatible changes*
 * *No deprecations*
 
 ## 6.0
