@@ -26,6 +26,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
  */
 class Parser {
 
+	private $sText;
 	private $aText;
 	private $iCurrentPosition;
 	private $oParserSettings;
@@ -35,16 +36,12 @@ class Parser {
 	private $aSizeUnits;
 
 	public function __construct($sText, Settings $oParserSettings = null) {
+		$this->sText = $sText;
 		$this->iCurrentPosition = 0;
 		if ($oParserSettings === null) {
 			$oParserSettings = Settings::create();
 		}
 		$this->oParserSettings = $oParserSettings;
-		if ($this->oParserSettings->bMultibyteSupport) {
-			$this->aText = preg_split('//u', $sText, null, PREG_SPLIT_NO_EMPTY);
-		} else {
-			$this->aText = str_split($sText);
-		}
 		$this->blockRules = explode('/', AtRule::BLOCK_RULES);
 
 		foreach (explode('/', Size::ABSOLUTE_SIZE_UNITS.'/'.Size::RELATIVE_SIZE_UNITS.'/'.Size::NON_SIZE_UNITS) as $val) {
@@ -59,6 +56,7 @@ class Parser {
 
 	public function setCharset($sCharset) {
 		$this->sCharset = $sCharset;
+		$this->aText = $this->strsplit($this->sText);
 		$this->iLength = count($this->aText);
 	}
 
@@ -619,6 +617,23 @@ class Parser {
 			return mb_strtolower($sString, $this->sCharset);
 		} else {
 			return strtolower($sString);
+		}
+	}
+
+	private function strsplit($sString) {
+		if ($this->oParserSettings->bMultibyteSupport) {
+			if ($this->streql($this->sCharset, 'utf-8')) {
+				return preg_split('//u', $sString, null, PREG_SPLIT_NO_EMPTY);
+			} else {
+				$iLength = mb_strlen($sString, $this->sCharset);
+				$out = [];
+				for ($i = 0; $i < $iLength; ++$i) {
+					$out[] = mb_substr($sString, $i, 1, $this->sCharset);
+				}
+				return $out;
+			}
+		} else {
+			return str_split($sString);
 		}
 	}
 
