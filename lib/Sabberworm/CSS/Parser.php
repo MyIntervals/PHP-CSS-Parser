@@ -26,7 +26,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
  */
 class Parser {
 
-	private $sText;
+	private $aText;
 	private $iCurrentPosition;
 	private $oParserSettings;
 	private $sCharset;
@@ -36,12 +36,16 @@ class Parser {
 	private $aSizeUnits;
 
 	public function __construct($sText, Settings $oParserSettings = null) {
-		$this->sText = $sText;
 		$this->iCurrentPosition = 0;
 		if ($oParserSettings === null) {
 			$oParserSettings = Settings::create();
 		}
 		$this->oParserSettings = $oParserSettings;
+		if ($this->oParserSettings->bMultibyteSupport) {
+			$this->aText = preg_split('//u', $sText, null, PREG_SPLIT_NO_EMPTY);
+		} else {
+			$this->aText = str_split($sText);
+		}
 		$this->blockRules = explode('/', AtRule::BLOCK_RULES);
 
 		foreach (explode('/', Size::ABSOLUTE_SIZE_UNITS.'/'.Size::RELATIVE_SIZE_UNITS.'/'.Size::NON_SIZE_UNITS) as $val) {
@@ -56,7 +60,7 @@ class Parser {
 
 	public function setCharset($sCharset) {
 		$this->sCharset = $sCharset;
-		$this->iLength = $this->strlen($this->sText);
+		$this->iLength = count($this->aText);
 	}
 
 	public function getCharset() {
@@ -284,7 +288,7 @@ class Parser {
 					try {
 						$sConsume = $this->consumeUntil(array("\n", ";", '}'), true);
 						// We need to “unfind” the matches to the end of the ruleSet as this will be matched later
-						if($this->streql($this->substr($sConsume, $this->strlen($sConsume)-1, 1), '}')) {
+						if($this->streql(substr($sConsume, -1), '}')) {
 							--$this->iCurrentPosition;
 							$this->peekCache = null;
 						} else {
@@ -469,8 +473,8 @@ class Parser {
 	}
 
 	/**
-	* Tests an identifier for a given value. Since identifiers are all keywords, they can be vendor-prefixed. We need to check for these versions too.
-	*/
+	 * Tests an identifier for a given value. Since identifiers are all keywords, they can be vendor-prefixed. We need to check for these versions too.
+	 */
 	private function identifierIs($sIdentifier, $sMatch) {
 		return (strcasecmp($sIdentifier, $sMatch) === 0)
 			?: preg_match("/^(-\\w+-)?$sMatch$/i", $sIdentifier) === 1;
@@ -493,7 +497,7 @@ class Parser {
 			return '';
 		}
 		$iLength = min($iLength, $this->iLength-$iOffset);
-		$out = $this->substr($this->sText, $iOffset, $iLength);
+		$out = $this->substr($iOffset, $iLength);
 		if ($peek) {
 			$this->peekCache = $out;
 		}
@@ -503,7 +507,7 @@ class Parser {
 	private function consume($mValue = 1) {
 		if (is_string($mValue)) {
 			$iLength = $this->strlen($mValue);
-			if (!$this->streql($this->substr($this->sText, $this->iCurrentPosition, $iLength), $mValue)) {
+			if (!$this->streql($this->substr($this->iCurrentPosition, $iLength), $mValue)) {
 				throw new UnexpectedTokenException($mValue, $this->peek(max($iLength, 5)));
 			}
 			$this->iCurrentPosition += $this->strlen($mValue);
@@ -513,7 +517,7 @@ class Parser {
 			if ($this->iCurrentPosition + $mValue > $this->iLength) {
 				throw new UnexpectedTokenException($mValue, $this->peek(5), 'count');
 			}
-			$sResult = $this->substr($this->sText, $this->iCurrentPosition, $mValue);
+			$sResult = $this->substr($this->iCurrentPosition, $mValue);
 			$this->iCurrentPosition += $mValue;
 			$this->peekCache = null;
 			return $sResult;
@@ -587,15 +591,17 @@ class Parser {
 	}
 
 	private function inputLeft() {
-		return $this->substr($this->sText, $this->iCurrentPosition, -1);
+		return $this->substr($this->iCurrentPosition, -1);
 	}
 
-	private function substr($sString, $iStart, $iLength) {
-		if ($this->oParserSettings->bMultibyteSupport) {
-			return mb_substr($sString, $iStart, $iLength, $this->sCharset);
-		} else {
-			return substr($sString, $iStart, $iLength);
+	private function substr($iStart, $iLength) {
+		$out = '';
+		while ($iLength > 0) {
+			$out .= $this->aText[$iStart];
+			$iStart++;
+			$iLength--;
 		}
+		return $out;
 	}
 
 	private function strlen($sString) {
