@@ -1,6 +1,6 @@
 <map id="AtRuleBlockList" name="AtRuleBlockList">
-<area shape="rect" id="node2" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_block_list.html" title="A CSSBlockList is a CSSList whose DeclarationBlocks are guaranteed to contain valid declaration block..." alt="" coords="5,80,108,107"/>
-<area shape="rect" id="node3" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_list.html" title="A CSSList is the most generic container available. " alt="" coords="21,5,92,32"/>
-<area shape="rect" id="node4" href="$interface_sabberworm_1_1_c_s_s_1_1_property_1_1_at_rule.html" title="AtRule" alt="" coords="132,80,195,107"/>
-<area shape="rect" id="node5" href="$interface_sabberworm_1_1_c_s_s_1_1_renderable.html" title="Renderable" alt="" coords="118,5,209,32"/>
+<area shape="rect" id="node2" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_block_list.html" title="A CSSBlockList is a CSSList whose DeclarationBlocks are guaranteed to contain valid declaration block..." alt="" coords="5,79,107,104"/>
+<area shape="rect" id="node3" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_list.html" title="A CSSList is the most generic container available. " alt="" coords="22,5,91,31"/>
+<area shape="rect" id="node4" href="$interface_sabberworm_1_1_c_s_s_1_1_property_1_1_at_rule.html" title="AtRule" alt="" coords="131,79,192,104"/>
+<area shape="rect" id="node5" href="$interface_sabberworm_1_1_c_s_s_1_1_renderable.html" title="Renderable" alt="" coords="117,5,207,31"/>
 </map>

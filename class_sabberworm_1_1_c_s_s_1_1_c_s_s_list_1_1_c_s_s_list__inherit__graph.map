@@ -1,6 +1,6 @@
 <map id="CSSList" name="CSSList">
-<area shape="rect" id="node2" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_block_list.html" title="A CSSBlockList is a CSSList whose DeclarationBlocks are guaranteed to contain valid declaration block..." alt="" coords="73,80,176,107"/>
-<area shape="rect" id="node5" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_key_frame.html" title="KeyFrame" alt="" coords="200,80,284,107"/>
-<area shape="rect" id="node3" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_at_rule_block_list.html" title="A BlockList constructed by an unknown @&#45;rule. " alt="" coords="5,155,121,181"/>
-<area shape="rect" id="node4" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_document.html" title="The root CSSList of a parsed file. " alt="" coords="146,155,229,181"/>
+<area shape="rect" id="node2" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_block_list.html" title="A CSSBlockList is a CSSList whose DeclarationBlocks are guaranteed to contain valid declaration block..." alt="" coords="73,79,175,104"/>
+<area shape="rect" id="node5" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_key_frame.html" title="KeyFrame" alt="" coords="199,79,281,104"/>
+<area shape="rect" id="node3" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_at_rule_block_list.html" title="A BlockList constructed by an unknown &#45;rule. " alt="" coords="5,152,120,177"/>
+<area shape="rect" id="node4" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_document.html" title="The root CSSList of a parsed file. " alt="" coords="144,152,226,177"/>
 </map>

@@ -1,7 +1,7 @@
 <map id="PrimitiveValue" name="PrimitiveValue">
-<area shape="rect" id="node4" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_size.html" title="Size" alt="" coords="5,229,53,256"/>
-<area shape="rect" id="node5" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_string.html" title="String" alt="" coords="78,229,135,256"/>
-<area shape="rect" id="node6" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_u_r_l.html" title="URL" alt="" coords="159,229,209,256"/>
-<area shape="rect" id="node2" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_value.html" title="Value" alt="" coords="79,80,135,107"/>
-<area shape="rect" id="node3" href="$interface_sabberworm_1_1_c_s_s_1_1_renderable.html" title="Renderable" alt="" coords="61,5,152,32"/>
+<area shape="rect" id="node4" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_c_s_s_string.html" title="CSSString" alt="" coords="5,225,89,251"/>
+<area shape="rect" id="node5" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_size.html" title="Size" alt="" coords="113,225,160,251"/>
+<area shape="rect" id="node6" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_u_r_l.html" title="URL" alt="" coords="184,225,232,251"/>
+<area shape="rect" id="node2" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_value.html" title="Value" alt="" coords="109,79,164,104"/>
+<area shape="rect" id="node3" href="$interface_sabberworm_1_1_c_s_s_1_1_renderable.html" title="Renderable" alt="" coords="91,5,182,31"/>
 </map>

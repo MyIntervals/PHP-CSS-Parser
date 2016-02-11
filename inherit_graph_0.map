@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node2" href="$class_sabberworm_1_1_c_s_s_1_1_parsing_1_1_output_exception.html" title="Thrown if the CSS parsers attempts to print something invalid. " alt="" coords="168,5,288,32"/>
-<area shape="rect" id="node3" href="$class_sabberworm_1_1_c_s_s_1_1_parsing_1_1_unexpected_token_exception.html" title="Thrown if the CSS parsers encounters a token it did not expect. " alt="" coords="133,56,323,83"/>
+<area shape="rect" id="node2" href="$class_sabberworm_1_1_c_s_s_1_1_parsing_1_1_output_exception.html" title="Thrown if the CSS parsers attempts to print something invalid. " alt="" coords="167,5,286,31"/>
+<area shape="rect" id="node3" href="$class_sabberworm_1_1_c_s_s_1_1_parsing_1_1_unexpected_token_exception.html" title="Thrown if the CSS parsers encounters a token it did not expect. " alt="" coords="133,55,320,80"/>
 </map>

@@ -1,8 +1,9 @@
 <map id="getRulesAssoc" name="getRulesAssoc">
-<area shape="rect" id="node2" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9dd0036775357fd3c53cafaa10f45b55" title="Split shorthand border declarations (e.g. " alt="" coords="179,5,392,61"/>
-<area shape="rect" id="node4" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9ecde3bc4b8030c61ee2fc2a151728d7" title="Split shorthand dimensional declarations (e.g. " alt="" coords="164,85,407,141"/>
-<area shape="rect" id="node5" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#ac04ad57b57030456e7e2b9e456a7dc42" title="Convert shorthand font declarations (e.g. " alt="" coords="185,165,385,221"/>
-<area shape="rect" id="node6" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9957285c5dd0d6372e958d4b35f9ffcf" title="Looks for long format CSS font properties (e.g. " alt="" coords="189,245,382,301"/>
-<area shape="rect" id="node3" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#af0432da015f2bfee3dd9d81d39d8b4e6" title="Split shorthand declarations (e.g. " alt="" coords="455,93,696,134"/>
-<area shape="rect" id="node7" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a02455b5dac22d0760454fc03c0880feb" title="Create shorthand declarations (e.g. " alt="" coords="458,253,693,294"/>
+<area shape="rect" id="node2" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9dd0036775357fd3c53cafaa10f45b55" title="Split shorthand border declarations (e.g. " alt="" coords="178,5,391,57"/>
+<area shape="rect" id="node4" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9ecde3bc4b8030c61ee2fc2a151728d7" title="Split shorthand dimensional declarations (e.g. " alt="" coords="164,81,406,133"/>
+<area shape="rect" id="node5" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#ac04ad57b57030456e7e2b9e456a7dc42" title="Convert shorthand font declarations (e.g. " alt="" coords="185,157,384,209"/>
+<area shape="rect" id="node6" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a4e9f90d5de60211f6bef2a1152a32e7d" title="Combine border&#45;color, border&#45;style and border&#45;width into border Should be run after create_dimensions..." alt="" coords="182,233,388,285"/>
+<area shape="rect" id="node8" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9957285c5dd0d6372e958d4b35f9ffcf" title="Looks for long format CSS font properties (e.g. " alt="" coords="188,309,381,361"/>
+<area shape="rect" id="node3" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#af0432da015f2bfee3dd9d81d39d8b4e6" title="Split shorthand declarations (e.g. " alt="" coords="454,88,695,127"/>
+<area shape="rect" id="node7" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a02455b5dac22d0760454fc03c0880feb" title="Create shorthand declarations (e.g. " alt="" coords="457,277,691,316"/>
 </map>
