@@ -114,7 +114,9 @@
 
 ### 5.1.2 (2013-10-30)
 
-* Remove the use of consumeUntil in comment parsing. This makes it possible to parse comments such as “/** Perfectly valid **/”
+* Remove the use of consumeUntil in comment parsing. This makes it possible to parse comments such as `/** Perfectly valid **/`
+* Add fr relative size unit
+* Fix some issues with HHVM
 * *No backwards-incompatible changes*
 * *No deprecations*
 
