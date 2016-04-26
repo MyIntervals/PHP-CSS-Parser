@@ -161,10 +161,10 @@ class Parser {
 			}
 			$this->consume(';');
 			if ($sPrefix !== null && !is_string($sPrefix)) {
-				throw new \Exception('Wrong namespace prefix '.$sPrefix);
+				throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom');
 			}
 			if (!($mUrl instanceof CSSString || $mUrl instanceof URL)) {
-				throw new \Exception('Wrong namespace url of invalid type '.$mUrl);
+				throw new UnexpectedTokenException('Wrong namespace url of invalid type', $mUrl, 'custom');
 			}
 			return new CSSNamespace($mUrl, $sPrefix);
 		} else {
