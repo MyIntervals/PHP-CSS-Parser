@@ -22,6 +22,12 @@
 * *No backwards-incompatible changes*
 * *No deprecations*
 
+### 7.0.3 (2016-04-27)
+
+* Fixed parsing empty CSS when multibyte is off
+* *No backwards-incompatible changes*
+* *No deprecations*
+
 ## 6.0
 
 ### 6.0.0 (2014-07-03)
