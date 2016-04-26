@@ -26,6 +26,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
  */
 class Parser {
 
+	private $sText;
 	private $aText;
 	private $iCurrentPosition;
 	private $oParserSettings;
@@ -35,20 +36,12 @@ class Parser {
 	private $aSizeUnits;
 
 	public function __construct($sText, Settings $oParserSettings = null) {
+		$this->sText = $sText;
 		$this->iCurrentPosition = 0;
 		if ($oParserSettings === null) {
 			$oParserSettings = Settings::create();
 		}
 		$this->oParserSettings = $oParserSettings;
-		if ($this->oParserSettings->bMultibyteSupport) {
-			$this->aText = preg_split('//u', $sText, null, PREG_SPLIT_NO_EMPTY);
-		} else {
-			if($sText === '') {
-				$this->aText = array();
-			} else {
-				$this->aText = str_split($sText);
-			}
-		}
 		$this->blockRules = explode('/', AtRule::BLOCK_RULES);
 
 		foreach (explode('/', Size::ABSOLUTE_SIZE_UNITS.'/'.Size::RELATIVE_SIZE_UNITS.'/'.Size::NON_SIZE_UNITS) as $val) {
@@ -63,6 +56,7 @@ class Parser {
 
 	public function setCharset($sCharset) {
 		$this->sCharset = $sCharset;
+		$this->aText = $this->strsplit($this->sText);
 		$this->iLength = count($this->aText);
 	}
 
@@ -494,8 +488,7 @@ class Parser {
 		if ($iOffset >= $this->iLength) {
 			return '';
 		}
-		$out = $this->substr($iOffset, $iLength);
-		return $out;
+		return $this->substr($iOffset, $iLength);
 	}
 
 	private function consume($mValue = 1) {
@@ -593,13 +586,13 @@ class Parser {
 		if ($iStart + $iLength > $this->iLength) {
 			$iLength = $this->iLength - $iStart;
 		}
-		$out = '';
+		$sResult = '';
 		while ($iLength > 0) {
-			$out .= $this->aText[$iStart];
+			$sResult .= $this->aText[$iStart];
 			$iStart++;
 			$iLength--;
 		}
-		return $out;
+		return $sResult;
 	}
 
 	private function strlen($sString) {
@@ -623,6 +616,27 @@ class Parser {
 			return mb_strtolower($sString, $this->sCharset);
 		} else {
 			return strtolower($sString);
+		}
+	}
+
+	private function strsplit($sString) {
+		if ($this->oParserSettings->bMultibyteSupport) {
+			if ($this->streql($this->sCharset, 'utf-8')) {
+				return preg_split('//u', $sString, null, PREG_SPLIT_NO_EMPTY);
+			} else {
+				$iLength = mb_strlen($sString, $this->sCharset);
+				$aResult = array();
+				for ($i = 0; $i < $iLength; ++$i) {
+					$aResult[] = mb_substr($sString, $i, 1, $this->sCharset);
+				}
+				return $aResult;
+			}
+		} else {
+			if($sString === '') {
+				return array();
+			} else {
+				return str_split($sString);
+			}
 		}
 	}
 
