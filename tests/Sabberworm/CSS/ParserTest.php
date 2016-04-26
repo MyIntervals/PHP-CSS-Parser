@@ -350,7 +350,7 @@ foo|test {gaga: 1;}
 		$this->assertSame('@media screen {html {some: -test(val2);}}
 #unrelated {other: yes;}', $oDoc->render());
 	}
-  
+	
 	/**
 	* @expectedException Sabberworm\CSS\Parsing\OutputException
 	*/
@@ -377,17 +377,43 @@ body {font-size: 1.6em;}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
-  function testEmptyFile() {
-    $oDoc = $this->parsedStructureForFile('-empty', Settings::create()->withMultibyteSupport(true));
+	function testEmptyFile() {
+		$oDoc = $this->parsedStructureForFile('-empty', Settings::create()->withMultibyteSupport(true));
 		$sExpected = '';
 		$this->assertSame($sExpected, $oDoc->render());
-  }
+	}
 
-  function testEmptyFileMbOff() {
-    $oDoc = $this->parsedStructureForFile('-empty', Settings::create()->withMultibyteSupport(false));
+	function testEmptyFileMbOff() {
+		$oDoc = $this->parsedStructureForFile('-empty', Settings::create()->withMultibyteSupport(false));
 		$sExpected = '';
 		$this->assertSame($sExpected, $oDoc->render());
-  }
+	}
+
+	function testCharsetLenient1() {
+		$oDoc = $this->parsedStructureForFile('-charset-after-rule', Settings::create()->withLenientParsing(true));
+		$sExpected = '#id {prop: var(--val);}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
+	function testCharsetLenient2() {
+		$oDoc = $this->parsedStructureForFile('-charset-in-block', Settings::create()->withLenientParsing(true));
+		$sExpected = '@media print {}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
+	/**
+	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+	*/
+	function testCharsetFailure1() {
+		$this->parsedStructureForFile('-charset-after-rule', Settings::create()->withLenientParsing(false));
+	}
+
+	/**
+	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+	*/
+	function testCharsetFailure2() {
+		$this->parsedStructureForFile('-charset-in-block', Settings::create()->withLenientParsing(false));
+	}
 
 	function parsedStructureForFile($sFileName, $oSettings = null) {
 		$sFile = dirname(__FILE__) . '/../../files' . DIRECTORY_SEPARATOR . "$sFileName.css";

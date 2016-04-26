@@ -78,28 +78,52 @@ class Parser {
 
 	private function parseList(CSSList $oList, $bIsRoot = false) {
 		while (!$this->isEnd()) {
-			if ($this->comes('@')) {
-				$oList->append($this->parseAtRule());
-			} else if ($this->comes('}')) {
-				$this->consume('}');
-				if ($bIsRoot) {
-					throw new \Exception("Unopened {");
-				} else {
-					return;
+			$oListItem = null;
+			if($this->oParserSettings->bLenientParsing) {
+				try {
+					$oListItem = $this->parseListItem($oList, $bIsRoot);
+				} catch (UnexpectedTokenException $e) {
+					$oListItem = false;
 				}
 			} else {
-				if($this->oParserSettings->bLenientParsing) {
-					try {
-						$oList->append($this->parseSelector());
-					} catch (UnexpectedTokenException $e) {}
-				} else {
-					$oList->append($this->parseSelector());
-				}
+				$oListItem = $this->parseListItem($oList, $bIsRoot);
+			}
+			if($oListItem === null) {
+				// List parsing finished
+				return;
+			}
+			if($oListItem) {
+				$oList->append($oListItem);
 			}
 			$this->consumeWhiteSpace();
 		}
 		if (!$bIsRoot) {
 			throw new \Exception("Unexpected end of document");
+		}
+	}
+	
+	private function parseListItem(CSSList $oList, $bIsRoot = false) {
+		if ($this->comes('@')) {
+			$oAtRule = $this->parseAtRule();
+			if($oAtRule instanceof Charset) {
+				if(!$bIsRoot) {
+					throw new UnexpectedTokenException('@charset may only occur in root document', '', 'custom');
+				}
+				if(count($oList->getContents()) > 0) {
+					throw new UnexpectedTokenException('@charset must be the first parseable token in a document', '', 'custom');
+				}
+				$this->setCharset($oAtRule->getCharset()->getString());
+			}
+			return $oAtRule;
+		} else if ($this->comes('}')) {
+			$this->consume('}');
+			if ($bIsRoot) {
+				throw new \Exception("Unopened {");
+			} else {
+				return null;
+			}
+		} else {
+			return $this->parseSelector();
 		}
 	}
 
@@ -120,7 +144,6 @@ class Parser {
 			$sCharset = $this->parseStringValue();
 			$this->consumeWhiteSpace();
 			$this->consume(';');
-			$this->setCharset($sCharset->getString());
 			return new Charset($sCharset);
 		} else if ($this->identifierIs($sIdentifier, 'keyframes')) {
 			$oResult = new KeyFrame();

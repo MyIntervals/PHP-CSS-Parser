@@ -22,6 +22,8 @@ class UnexpectedTokenException extends \Exception {
 			$sMessage = "Next token was expected to have {$sExpected} chars. Context: “{$sFound}”.";
 		} else if($this->sMatchType === 'identifier') {
 			$sMessage = "Identifier expected. Got “{$sFound}”";
+		} else if($this->sMatchType === 'custom') {
+			$sMessage = trim("$sExpected $sFound");
 		}
 		parent::__construct($sMessage);
 	}
