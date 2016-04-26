@@ -43,7 +43,11 @@ class Parser {
 		if ($this->oParserSettings->bMultibyteSupport) {
 			$this->aText = preg_split('//u', $sText, null, PREG_SPLIT_NO_EMPTY);
 		} else {
-			$this->aText = str_split($sText);
+			if($sText === '') {
+				$this->aText = array();
+			} else {
+				$this->aText = str_split($sText);
+			}
 		}
 		$this->blockRules = explode('/', AtRule::BLOCK_RULES);
 

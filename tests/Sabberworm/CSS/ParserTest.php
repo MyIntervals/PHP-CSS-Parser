@@ -377,9 +377,21 @@ body {font-size: 1.6em;}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
-	function parsedStructureForFile($sFileName) {
+  function testEmptyFile() {
+    $oDoc = $this->parsedStructureForFile('-empty', Settings::create()->withMultibyteSupport(true));
+		$sExpected = '';
+		$this->assertSame($sExpected, $oDoc->render());
+  }
+
+  function testEmptyFileMbOff() {
+    $oDoc = $this->parsedStructureForFile('-empty', Settings::create()->withMultibyteSupport(false));
+		$sExpected = '';
+		$this->assertSame($sExpected, $oDoc->render());
+  }
+
+	function parsedStructureForFile($sFileName, $oSettings = null) {
 		$sFile = dirname(__FILE__) . '/../../files' . DIRECTORY_SEPARATOR . "$sFileName.css";
-		$oParser = new Parser(file_get_contents($sFile));
+		$oParser = new Parser(file_get_contents($sFile), $oSettings);
 		return $oParser->parse();
 	}
 
