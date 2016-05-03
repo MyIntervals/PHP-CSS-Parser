@@ -377,6 +377,20 @@ body {font-size: 1.6em;}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+	function testUrlInFile() {
+		$oDoc = $this->parsedStructureForFile('url', Settings::create()->withMultibyteSupport(true));
+		$sExpected = 'body {background: #fff url("http://somesite.com/images/someimage.gif") repeat top center;}
+body {background-url: url("http://somesite.com/images/someimage.gif");}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
+	function testUrlInFileMbOff() {
+		$oDoc = $this->parsedStructureForFile('url', Settings::create()->withMultibyteSupport(false));
+		$sExpected = 'body {background: #fff url("http://somesite.com/images/someimage.gif") repeat top center;}
+body {background-url: url("http://somesite.com/images/someimage.gif");}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
 	function testEmptyFile() {
 		$oDoc = $this->parsedStructureForFile('-empty', Settings::create()->withMultibyteSupport(true));
 		$sExpected = '';
