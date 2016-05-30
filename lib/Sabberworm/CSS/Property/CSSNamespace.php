@@ -8,12 +8,21 @@ namespace Sabberworm\CSS\Property;
 class CSSNamespace implements AtRule {
 	private $mUrl;
 	private $sPrefix;
+	private $iLineNum;
 	
-	public function __construct($mUrl, $sPrefix = null) {
+	public function __construct($mUrl, $sPrefix = null, $iLineNum = 0) {
 		$this->mUrl = $mUrl;
 		$this->sPrefix = $sPrefix;
+		$this->iLineNum = $iLineNum;
 	}
-	
+
+	/**
+	 * @return int
+	 */
+	public function getLineNum() {
+		return $this->iLineNum;
+	}
+
 	public function __toString() {
 		return $this->render(new \Sabberworm\CSS\OutputFormat());
 	}

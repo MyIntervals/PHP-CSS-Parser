@@ -16,9 +16,19 @@ use Sabberworm\CSS\Value\CSSFunction;
 abstract class CSSList {
 
 	protected $aContents;
+	protected $iLineNum;
 
-	public function __construct() {
+	public function __construct($iLineNum = 0) {
 		$this->aContents = array();
+		$this->iLineNum = $iLineNum;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getLineNum()
+	{
+		return $this->iLineNum;
 	}
 
 	public function append($oItem) {

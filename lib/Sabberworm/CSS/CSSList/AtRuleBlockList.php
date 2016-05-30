@@ -12,8 +12,8 @@ class AtRuleBlockList extends CSSBlockList implements AtRule {
 	private $sType;
 	private $sArgs;
 
-	public function __construct($sType, $sArgs = '') {
-		parent::__construct();
+	public function __construct($sType, $sArgs = '', $iLineNum = 0) {
+		parent::__construct($iLineNum);
 		$this->sType = $sType;
 		$this->sArgs = $sArgs;
 	}

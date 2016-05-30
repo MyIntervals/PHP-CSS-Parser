@@ -34,6 +34,7 @@ class Parser {
 	private $iLength;
 	private $blockRules;
 	private $aSizeUnits;
+	private $iLineNum = 1;
 
 	public function __construct($sText, Settings $oParserSettings = null) {
 		$this->sText = $sText;
@@ -66,7 +67,7 @@ class Parser {
 
 	public function parse() {
 		$this->setCharset($this->oParserSettings->sDefaultCharset);
-		$oResult = new Document();
+		$oResult = new Document($this->iLineNum);
 		$this->parseDocument($oResult);
 		return $oResult;
 	}
@@ -139,14 +140,14 @@ class Parser {
 				$sMediaQuery = $this->consumeUntil(';');
 			}
 			$this->consume(';');
-			return new Import($oLocation, $sMediaQuery);
+			return new Import($oLocation, $sMediaQuery, $this->iLineNum);
 		} else if ($sIdentifier === 'charset') {
 			$sCharset = $this->parseStringValue();
 			$this->consumeWhiteSpace();
 			$this->consume(';');
-			return new Charset($sCharset);
+			return new Charset($sCharset, $this->iLineNum);
 		} else if ($this->identifierIs($sIdentifier, 'keyframes')) {
-			$oResult = new KeyFrame();
+			$oResult = new KeyFrame($this->iLineNum);
 			$oResult->setVendorKeyFrame($sIdentifier);
 			$oResult->setAnimationName(trim($this->consumeUntil('{', false, true)));
 			$this->consumeWhiteSpace();
@@ -166,7 +167,7 @@ class Parser {
 			if (!($mUrl instanceof CSSString || $mUrl instanceof URL)) {
 				throw new UnexpectedTokenException('Wrong namespace url of invalid type', $mUrl, 'custom');
 			}
-			return new CSSNamespace($mUrl, $sPrefix);
+			return new CSSNamespace($mUrl, $sPrefix, $this->iLineNum);
 		} else {
 			//Unknown other at rule (font-face or such)
 			$sArgs = trim($this->consumeUntil('{', false, true));
@@ -179,10 +180,10 @@ class Parser {
 				}
 			}
 			if($bUseRuleSet) {
-				$oAtRule = new AtRuleSet($sIdentifier, $sArgs);
+				$oAtRule = new AtRuleSet($sIdentifier, $sArgs, $this->iLineNum);
 				$this->parseRuleSet($oAtRule);
 			} else {
-				$oAtRule = new AtRuleBlockList($sIdentifier, $sArgs);
+				$oAtRule = new AtRuleBlockList($sIdentifier, $sArgs, $this->iLineNum);
 				$this->parseList($oAtRule);
 			}
 			return $oAtRule;
@@ -204,7 +205,7 @@ class Parser {
 		if ($bAllowFunctions && $this->comes('(')) {
 			$this->consume('(');
 			$aArguments = $this->parseValue(array('=', ' ', ','));
-			$sResult = new CSSFunction($sResult, $aArguments);
+			$sResult = new CSSFunction($sResult, $aArguments, ',', $this->iLineNum);
 			$this->consume(')');
 		}
 		return $sResult;
@@ -238,7 +239,7 @@ class Parser {
 			}
 			$this->consume($sQuote);
 		}
-		return new CSSString($sResult);
+		return new CSSString($sResult, $this->iLineNum);
 	}
 
 	private function parseCharacter($bIsForIdentifier) {
@@ -287,7 +288,7 @@ class Parser {
 	}
 
 	private function parseSelector() {
-		$oResult = new DeclarationBlock();
+		$oResult = new DeclarationBlock($this->iLineNum);
 		$oResult->setSelector($this->consumeUntil('{', false, true));
 		$this->consumeWhiteSpace();
 		$this->parseRuleSet($oResult);
@@ -333,7 +334,7 @@ class Parser {
 	}
 
 	private function parseRule() {
-		$oRule = new Rule($this->parseIdentifier());
+		$oRule = new Rule($this->parseIdentifier(), $this->iLineNum);
 		$this->consumeWhiteSpace();
 		$this->consume(':');
 		$oValue = $this->parseValue(self::listDelimiterForRule($oRule->getRule()));
@@ -387,7 +388,7 @@ class Parser {
 						break;
 					}
 				}
-				$oList = new RuleValueList($sDelimiter);
+				$oList = new RuleValueList($sDelimiter, $this->iLineNum);
 				for ($i = $iStartPosition - 1; $i - $iStartPosition + 1 < $iLength * 2; $i+=2) {
 					$oList->addListComponent($aStack[$i]);
 				}
@@ -445,7 +446,7 @@ class Parser {
 				}
 			}
 		}
-		return new Size(floatval($sSize), $sUnit, $bForColor);
+		return new Size(floatval($sSize), $sUnit, $bForColor, $this->iLineNum);
 	}
 
 	private function parseColorValue() {
@@ -456,7 +457,7 @@ class Parser {
 			if ($this->strlen($sValue) === 3) {
 				$sValue = $sValue[0] . $sValue[0] . $sValue[1] . $sValue[1] . $sValue[2] . $sValue[2];
 			}
-			$aColor = array('r' => new Size(intval($sValue[0] . $sValue[1], 16), null, true), 'g' => new Size(intval($sValue[2] . $sValue[3], 16), null, true), 'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true));
+			$aColor = array('r' => new Size(intval($sValue[0] . $sValue[1], 16), null, true, $this->iLineNum), 'g' => new Size(intval($sValue[2] . $sValue[3], 16), null, true, $this->iLineNum), 'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true, $this->iLineNum));
 		} else {
 			$sColorMode = $this->parseIdentifier(false);
 			$this->consumeWhiteSpace();
@@ -472,7 +473,7 @@ class Parser {
 			}
 			$this->consume(')');
 		}
-		return new Color($aColor);
+		return new Color($aColor, $this->iLineNum);
 	}
 
 	private function parseURLValue() {
@@ -483,7 +484,7 @@ class Parser {
 			$this->consume('(');
 		}
 		$this->consumeWhiteSpace();
-		$oResult = new URL($this->parseStringValue());
+		$oResult = new URL($this->parseStringValue(), $this->iLineNum);
 		if ($bUseUrl) {
 			$this->consumeWhiteSpace();
 			$this->consume(')');
@@ -516,13 +517,18 @@ class Parser {
 
 	private function consume($mValue = 1) {
 		if (is_string($mValue)) {
+			$noLines = substr_count($mValue, "\n");
 			$iLength = $this->strlen($mValue);
 			if (!$this->streql($this->substr($this->iCurrentPosition, $iLength), $mValue)) {
 				throw new UnexpectedTokenException($mValue, $this->peek(max($iLength, 5)));
 			}
+			$this->iLineNum += $noLines;
 			$this->iCurrentPosition += $this->strlen($mValue);
 			return $mValue;
 		} else {
+			$substring = $this->substr($this->iCurrentPosition, $mValue);
+			$noLines = substr_count($substring, "\n");
+			$this->iLineNum += $noLines;
 			if ($this->iCurrentPosition + $mValue > $this->iLength) {
 				throw new UnexpectedTokenException($mValue, $this->peek(5), 'count');
 			}

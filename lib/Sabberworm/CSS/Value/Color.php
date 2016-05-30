@@ -4,8 +4,8 @@ namespace Sabberworm\CSS\Value;
 
 class Color extends CSSFunction {
 
-	public function __construct($aColor) {
-		parent::__construct(implode('', array_keys($aColor)), $aColor);
+	public function __construct($aColor, $iLineNum = 0) {
+		parent::__construct(implode('', array_keys($aColor)), $aColor, ',', $iLineNum);
 	}
 
 	public function getColor() {

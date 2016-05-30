@@ -12,9 +12,19 @@ use Sabberworm\CSS\Renderable;
 abstract class RuleSet implements Renderable {
 
 	private $aRules;
+	protected $iLineNum;
 
-	public function __construct() {
+	public function __construct($iLineNum = 0) {
 		$this->aRules = array();
+		$this->iLineNum = $iLineNum;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getLineNum()
+	{
+		return $this->iLineNum;
 	}
 
 	public function addRule(Rule $oRule) {

@@ -12,10 +12,19 @@ class Size extends PrimitiveValue {
 	private $sUnit;
 	private $bIsColorComponent;
 
-	public function __construct($fSize, $sUnit = null, $bIsColorComponent = false) {
+	public function __construct($fSize, $sUnit = null, $bIsColorComponent = false, $iLineNum = 0) {
+		parent::__construct($iLineNum);
 		$this->fSize = floatval($fSize);
 		$this->sUnit = $sUnit;
 		$this->bIsColorComponent = $bIsColorComponent;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getLineNum()
+	{
+		return $this->iLineNum;
 	}
 
 	public function setUnit($sUnit) {
