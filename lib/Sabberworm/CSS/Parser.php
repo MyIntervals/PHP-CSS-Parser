@@ -132,6 +132,7 @@ class Parser {
 	private function parseAtRule() {
 		$this->consume('@');
 		$sIdentifier = $this->parseIdentifier();
+		$iIdentifierLineNum = $this->iLineNum;
 		$this->consumeWhiteSpace();
 		if ($sIdentifier === 'import') {
 			$oLocation = $this->parseURLValue();
@@ -141,14 +142,14 @@ class Parser {
 				$sMediaQuery = $this->consumeUntil(';');
 			}
 			$this->consume(';');
-			return new Import($oLocation, $sMediaQuery, $this->iLineNum);
+			return new Import($oLocation, $sMediaQuery, $iIdentifierLineNum);
 		} else if ($sIdentifier === 'charset') {
 			$sCharset = $this->parseStringValue();
 			$this->consumeWhiteSpace();
 			$this->consume(';');
-			return new Charset($sCharset, $this->iLineNum);
+			return new Charset($sCharset, $iIdentifierLineNum);
 		} else if ($this->identifierIs($sIdentifier, 'keyframes')) {
-			$oResult = new KeyFrame($this->iLineNum);
+			$oResult = new KeyFrame($iIdentifierLineNum);
 			$oResult->setVendorKeyFrame($sIdentifier);
 			$oResult->setAnimationName(trim($this->consumeUntil('{', false, true)));
 			$this->consumeWhiteSpace();
@@ -168,7 +169,7 @@ class Parser {
 			if (!($mUrl instanceof CSSString || $mUrl instanceof URL)) {
 				throw new UnexpectedTokenException('Wrong namespace url of invalid type', $mUrl, 'custom');
 			}
-			return new CSSNamespace($mUrl, $sPrefix, $this->iLineNum);
+			return new CSSNamespace($mUrl, $sPrefix, $iIdentifierLineNum);
 		} else {
 			//Unknown other at rule (font-face or such)
 			$sArgs = trim($this->consumeUntil('{', false, true));
@@ -181,10 +182,10 @@ class Parser {
 				}
 			}
 			if($bUseRuleSet) {
-				$oAtRule = new AtRuleSet($sIdentifier, $sArgs, $this->iLineNum);
+				$oAtRule = new AtRuleSet($sIdentifier, $sArgs, $iIdentifierLineNum);
 				$this->parseRuleSet($oAtRule);
 			} else {
-				$oAtRule = new AtRuleBlockList($sIdentifier, $sArgs, $this->iLineNum);
+				$oAtRule = new AtRuleBlockList($sIdentifier, $sArgs, $iIdentifierLineNum);
 				$this->parseList($oAtRule);
 			}
 			return $oAtRule;
