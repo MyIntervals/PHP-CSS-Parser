@@ -34,11 +34,12 @@ class Parser {
 	private $iLength;
 	private $blockRules;
 	private $aSizeUnits;
-	private $iLineNum = 1;
+	private $iLineNum;
 
-	public function __construct($sText, Settings $oParserSettings = null) {
+	public function __construct($sText, Settings $oParserSettings = null, $iLineNum = 0) {
 		$this->sText = $sText;
 		$this->iCurrentPosition = 0;
+		$this->iLineNum = $iLineNum;
 		if ($oParserSettings === null) {
 			$oParserSettings = Settings::create();
 		}
