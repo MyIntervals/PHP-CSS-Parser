@@ -52,21 +52,21 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 				$this->assertSame('red', $oColor);
 				$aColorRule = $oRuleSet->getRules('background-');
 				$oColor = $aColorRule[0]->getValue();
-				$this->assertEquals(array('r' => new Size(35.0, null, true), 'g' => new Size(35.0, null, true), 'b' => new Size(35.0, null, true)), $oColor->getColor());
+				$this->assertEquals(array('r' => new Size(35.0, null, true, 5), 'g' => new Size(35.0, null, true, 5), 'b' => new Size(35.0, null, true, 5)), $oColor->getColor());
 				$aColorRule = $oRuleSet->getRules('border-color');
 				$oColor = $aColorRule[0]->getValue();
-				$this->assertEquals(array('r' => new Size(10.0, null, true), 'g' => new Size(100.0, null, true), 'b' => new Size(230.0, null, true)), $oColor->getColor());
+				$this->assertEquals(array('r' => new Size(10.0, null, true, 2), 'g' => new Size(100.0, null, true, 2), 'b' => new Size(230.0, null, true, 2)), $oColor->getColor());
 				$oColor = $aColorRule[1]->getValue();
-				$this->assertEquals(array('r' => new Size(10.0, null, true), 'g' => new Size(100.0, null, true), 'b' => new Size(231.0, null, true), 'a' => new Size("0000.3", null, true)), $oColor->getColor());
+				$this->assertEquals(array('r' => new Size(10.0, null, true, 3), 'g' => new Size(100.0, null, true, 3), 'b' => new Size(231.0, null, true, 3), 'a' => new Size("0000.3", null, true, 3)), $oColor->getColor());
 				$aColorRule = $oRuleSet->getRules('outline-color');
 				$oColor = $aColorRule[0]->getValue();
-				$this->assertEquals(array('r' => new Size(34.0, null, true), 'g' => new Size(34.0, null, true), 'b' => new Size(34.0, null, true)), $oColor->getColor());
+				$this->assertEquals(array('r' => new Size(34.0, null, true, 4), 'g' => new Size(34.0, null, true, 4), 'b' => new Size(34.0, null, true, 4)), $oColor->getColor());
 			} else if($sSelector === '#yours') {
 				$aColorRule = $oRuleSet->getRules('background-color');
 				$oColor = $aColorRule[0]->getValue();
-				$this->assertEquals(array('h' => new Size(220.0, null, true), 's' => new Size(10.0, '%', true), 'l' => new Size(220.0, '%', true)), $oColor->getColor());
+				$this->assertEquals(array('h' => new Size(220.0, null, true, 9), 's' => new Size(10.0, '%', true, 9), 'l' => new Size(220.0, '%', true, 9)), $oColor->getColor());
 				$oColor = $aColorRule[1]->getValue();
-				$this->assertEquals(array('h' => new Size(220.0, null, true), 's' => new Size(10.0, '%', true), 'l' => new Size(220.0, '%', true), 'a' => new Size(0000.3, null, true)), $oColor->getColor());
+				$this->assertEquals(array('h' => new Size(220.0, null, true, 10), 's' => new Size(10.0, '%', true, 10), 'l' => new Size(220.0, '%', true, 10), 'a' => new Size(0000.3, null, true, 10)), $oColor->getColor());
 			}
 		}
 		foreach ($oDoc->getAllValues('color') as $sColor) {
