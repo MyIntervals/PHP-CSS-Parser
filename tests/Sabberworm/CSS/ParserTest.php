@@ -444,14 +444,14 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$oDoc = $this->parsedStructureForFile('line-numbers');
 		// array key is the expected line number
 		$aExpected = array(
-			1 => ['Sabberworm\CSS\Property\Charset'],
-			3 => ['Sabberworm\CSS\Property\CSSNamespace'],
-			5 => ['Sabberworm\CSS\RuleSet\AtRuleSet'],
-			11 => ['Sabberworm\CSS\RuleSet\DeclarationBlock'],
+			1 => array('Sabberworm\CSS\Property\Charset'),
+			3 => array('Sabberworm\CSS\Property\CSSNamespace'),
+			5 => array('Sabberworm\CSS\RuleSet\AtRuleSet'),
+			11 => array('Sabberworm\CSS\RuleSet\DeclarationBlock'),
 			// Line Numbers of the inner declaration blocks
-			17 => ['Sabberworm\CSS\CSSList\KeyFrame', 18, 20],
-			23 => ['Sabberworm\CSS\Property\Import'],
-			25 => ['Sabberworm\CSS\RuleSet\DeclarationBlock']
+			17 => array('Sabberworm\CSS\CSSList\KeyFrame', 18, 20),
+			23 => array('Sabberworm\CSS\Property\Import'),
+			25 => array('Sabberworm\CSS\RuleSet\DeclarationBlock')
 		);
 
 		$aActual = array();

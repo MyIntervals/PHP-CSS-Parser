@@ -1,10 +1,10 @@
-@charset "utf-8"; /* line 3 */
+@charset "utf-8"; /* line 1 */
 
-@namespace "http://toto.example.org"; /* line 1 */
+@namespace "http://toto.example.org"; /* line 3 */
 
 @font-face { /* line 5 */
     font-family: "CrassRoots";
-    src: url("http://example.com/media/cr.ttf")
+    src: url("http://example.com/media/cr.ttf") /* line 7 */
 }
 
 
