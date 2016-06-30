@@ -169,340 +169,421 @@ To see what you can do with output formatting, look at the tests in `tests/Sabbe
 
 #### Input
 
-	@charset "utf-8";
+```css
+@charset "utf-8";
 
-	@font-face {
-	  font-family: "CrassRoots";
-	  src: url("../media/cr.ttf")
-	}
+@font-face {
+  font-family: "CrassRoots";
+  src: url("../media/cr.ttf")
+}
 
-	html, body {
-	    font-size: 1.6em
-	}
+html, body {
+    font-size: 1.6em
+}
 
-	@keyframes mymove {
-		from { top: 0px; }
-		to { top: 200px; }
-	}
+@keyframes mymove {
+	from { top: 0px; }
+	to { top: 200px; }
+}
+
+```
 
 #### Structure (`var_dump()`)
 
-	object(Sabberworm\CSS\CSSList\Document)#4 (1) {
-	  ["aContents":protected]=>
-	  array(4) {
-	    [0]=>
-	    object(Sabberworm\CSS\Property\Charset)#6 (1) {
-	      ["sCharset":"Sabberworm\CSS\Property\Charset":private]=>
-	      object(Sabberworm\CSS\Value\CSSString)#5 (1) {
-	        ["sString":"Sabberworm\CSS\Value\CSSString":private]=>
-	        string(5) "utf-8"
-	      }
-	    }
-	    [1]=>
-	    object(Sabberworm\CSS\RuleSet\AtRuleSet)#7 (2) {
-	      ["sType":"Sabberworm\CSS\RuleSet\AtRuleSet":private]=>
-	      string(9) "font-face"
-	      ["aRules":"Sabberworm\CSS\RuleSet\RuleSet":private]=>
-	      array(2) {
-	        ["font-family"]=>
-	        array(1) {
-	          [0]=>
-	          object(Sabberworm\CSS\Rule\Rule)#8 (3) {
-	            ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
-	            string(11) "font-family"
-	            ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	            object(Sabberworm\CSS\Value\CSSString)#9 (1) {
-	              ["sString":"Sabberworm\CSS\Value\CSSString":private]=>
-	              string(10) "CrassRoots"
-	            }
-	            ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
-	            bool(false)
-	          }
-	        }
-	        ["src"]=>
-	        array(1) {
-	          [0]=>
-	          object(Sabberworm\CSS\Rule\Rule)#10 (3) {
-	            ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
-	            string(3) "src"
-	            ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	            object(Sabberworm\CSS\Value\URL)#11 (1) {
-	              ["oURL":"Sabberworm\CSS\Value\URL":private]=>
-	              object(Sabberworm\CSS\Value\CSSString)#12 (1) {
-	                ["sString":"Sabberworm\CSS\Value\CSSString":private]=>
-	                string(15) "../media/cr.ttf"
-	              }
-	            }
-	            ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
-	            bool(false)
-	          }
-	        }
-	      }
-	    }
-	    [2]=>
-	    object(Sabberworm\CSS\RuleSet\DeclarationBlock)#13 (2) {
-	      ["aSelectors":"Sabberworm\CSS\RuleSet\DeclarationBlock":private]=>
-	      array(2) {
-	        [0]=>
-	        object(Sabberworm\CSS\Property\Selector)#14 (2) {
-	          ["sSelector":"Sabberworm\CSS\Property\Selector":private]=>
-	          string(4) "html"
-	          ["iSpecificity":"Sabberworm\CSS\Property\Selector":private]=>
-	          NULL
-	        }
-	        [1]=>
-	        object(Sabberworm\CSS\Property\Selector)#15 (2) {
-	          ["sSelector":"Sabberworm\CSS\Property\Selector":private]=>
-	          string(4) "body"
-	          ["iSpecificity":"Sabberworm\CSS\Property\Selector":private]=>
-	          NULL
-	        }
-	      }
-	      ["aRules":"Sabberworm\CSS\RuleSet\RuleSet":private]=>
-	      array(1) {
-	        ["font-size"]=>
-	        array(1) {
-	          [0]=>
-	          object(Sabberworm\CSS\Rule\Rule)#16 (3) {
-	            ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
-	            string(9) "font-size"
-	            ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	            object(Sabberworm\CSS\Value\Size)#17 (3) {
-	              ["fSize":"Sabberworm\CSS\Value\Size":private]=>
-	              float(1.6)
-	              ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
-	              string(2) "em"
-	              ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
-	              bool(false)
-	            }
-	            ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
-	            bool(false)
-	          }
-	        }
-	      }
-	    }
-	    [3]=>
-	    object(Sabberworm\CSS\CSSList\KeyFrame)#18 (3) {
-	      ["vendorKeyFrame":"Sabberworm\CSS\CSSList\KeyFrame":private]=>
-	      string(9) "keyframes"
-	      ["animationName":"Sabberworm\CSS\CSSList\KeyFrame":private]=>
-	      string(6) "mymove"
-	      ["aContents":protected]=>
-	      array(2) {
-	        [0]=>
-	        object(Sabberworm\CSS\RuleSet\DeclarationBlock)#19 (2) {
-	          ["aSelectors":"Sabberworm\CSS\RuleSet\DeclarationBlock":private]=>
-	          array(1) {
-	            [0]=>
-	            object(Sabberworm\CSS\Property\Selector)#20 (2) {
-	              ["sSelector":"Sabberworm\CSS\Property\Selector":private]=>
-	              string(4) "from"
-	              ["iSpecificity":"Sabberworm\CSS\Property\Selector":private]=>
-	              NULL
-	            }
-	          }
-	          ["aRules":"Sabberworm\CSS\RuleSet\RuleSet":private]=>
-	          array(1) {
-	            ["top"]=>
-	            array(1) {
-	              [0]=>
-	              object(Sabberworm\CSS\Rule\Rule)#21 (3) {
-	                ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
-	                string(3) "top"
-	                ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	                object(Sabberworm\CSS\Value\Size)#22 (3) {
-	                  ["fSize":"Sabberworm\CSS\Value\Size":private]=>
-	                  float(0)
-	                  ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
-	                  string(2) "px"
-	                  ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
-	                  bool(false)
-	                }
-	                ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
-	                bool(false)
-	              }
-	            }
-	          }
-	        }
-	        [1]=>
-	        object(Sabberworm\CSS\RuleSet\DeclarationBlock)#23 (2) {
-	          ["aSelectors":"Sabberworm\CSS\RuleSet\DeclarationBlock":private]=>
-	          array(1) {
-	            [0]=>
-	            object(Sabberworm\CSS\Property\Selector)#24 (2) {
-	              ["sSelector":"Sabberworm\CSS\Property\Selector":private]=>
-	              string(2) "to"
-	              ["iSpecificity":"Sabberworm\CSS\Property\Selector":private]=>
-	              NULL
-	            }
-	          }
-	          ["aRules":"Sabberworm\CSS\RuleSet\RuleSet":private]=>
-	          array(1) {
-	            ["top"]=>
-	            array(1) {
-	              [0]=>
-	              object(Sabberworm\CSS\Rule\Rule)#25 (3) {
-	                ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
-	                string(3) "top"
-	                ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	                object(Sabberworm\CSS\Value\Size)#26 (3) {
-	                  ["fSize":"Sabberworm\CSS\Value\Size":private]=>
-	                  float(200)
-	                  ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
-	                  string(2) "px"
-	                  ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
-	                  bool(false)
-	                }
-	                ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
-	                bool(false)
-	              }
-	            }
-	          }
-	        }
-	      }
-	    }
-	  }
-	}
+```php
+class Sabberworm\CSS\CSSList\Document#4 (2) {
+  protected $aContents =>
+  array(4) {
+    [0] =>
+    class Sabberworm\CSS\Property\Charset#6 (2) {
+      private $sCharset =>
+      class Sabberworm\CSS\Value\CSSString#5 (2) {
+        private $sString =>
+        string(5) "utf-8"
+        protected $iLineNo =>
+        int(1)
+      }
+      protected $iLineNo =>
+      int(1)
+    }
+    [1] =>
+    class Sabberworm\CSS\RuleSet\AtRuleSet#7 (4) {
+      private $sType =>
+      string(9) "font-face"
+      private $sArgs =>
+      string(0) ""
+      private $aRules =>
+      array(2) {
+        'font-family' =>
+        array(1) {
+          [0] =>
+          class Sabberworm\CSS\Rule\Rule#8 (4) {
+            private $sRule =>
+            string(11) "font-family"
+            private $mValue =>
+            class Sabberworm\CSS\Value\CSSString#9 (2) {
+              private $sString =>
+              string(10) "CrassRoots"
+              protected $iLineNo =>
+              int(4)
+            }
+            private $bIsImportant =>
+            bool(false)
+            protected $iLineNo =>
+            int(4)
+          }
+        }
+        'src' =>
+        array(1) {
+          [0] =>
+          class Sabberworm\CSS\Rule\Rule#10 (4) {
+            private $sRule =>
+            string(3) "src"
+            private $mValue =>
+            class Sabberworm\CSS\Value\URL#11 (2) {
+              private $oURL =>
+              class Sabberworm\CSS\Value\CSSString#12 (2) {
+                private $sString =>
+                string(15) "../media/cr.ttf"
+                protected $iLineNo =>
+                int(5)
+              }
+              protected $iLineNo =>
+              int(5)
+            }
+            private $bIsImportant =>
+            bool(false)
+            protected $iLineNo =>
+            int(5)
+          }
+        }
+      }
+      protected $iLineNo =>
+      int(3)
+    }
+    [2] =>
+    class Sabberworm\CSS\RuleSet\DeclarationBlock#13 (3) {
+      private $aSelectors =>
+      array(2) {
+        [0] =>
+        class Sabberworm\CSS\Property\Selector#14 (2) {
+          private $sSelector =>
+          string(4) "html"
+          private $iSpecificity =>
+          NULL
+        }
+        [1] =>
+        class Sabberworm\CSS\Property\Selector#15 (2) {
+          private $sSelector =>
+          string(4) "body"
+          private $iSpecificity =>
+          NULL
+        }
+      }
+      private $aRules =>
+      array(1) {
+        'font-size' =>
+        array(1) {
+          [0] =>
+          class Sabberworm\CSS\Rule\Rule#16 (4) {
+            private $sRule =>
+            string(9) "font-size"
+            private $mValue =>
+            class Sabberworm\CSS\Value\Size#17 (4) {
+              private $fSize =>
+              double(1.6)
+              private $sUnit =>
+              string(2) "em"
+              private $bIsColorComponent =>
+              bool(false)
+              protected $iLineNo =>
+              int(9)
+            }
+            private $bIsImportant =>
+            bool(false)
+            protected $iLineNo =>
+            int(9)
+          }
+        }
+      }
+      protected $iLineNo =>
+      int(8)
+    }
+    [3] =>
+    class Sabberworm\CSS\CSSList\KeyFrame#18 (4) {
+      private $vendorKeyFrame =>
+      string(9) "keyframes"
+      private $animationName =>
+      string(6) "mymove"
+      protected $aContents =>
+      array(2) {
+        [0] =>
+        class Sabberworm\CSS\RuleSet\DeclarationBlock#19 (3) {
+          private $aSelectors =>
+          array(1) {
+            [0] =>
+            class Sabberworm\CSS\Property\Selector#20 (2) {
+              private $sSelector =>
+              string(4) "from"
+              private $iSpecificity =>
+              NULL
+            }
+          }
+          private $aRules =>
+          array(1) {
+            'top' =>
+            array(1) {
+              [0] =>
+              class Sabberworm\CSS\Rule\Rule#21 (4) {
+                private $sRule =>
+                string(3) "top"
+                private $mValue =>
+                class Sabberworm\CSS\Value\Size#22 (4) {
+                  private $fSize =>
+                  double(0)
+                  private $sUnit =>
+                  string(2) "px"
+                  private $bIsColorComponent =>
+                  bool(false)
+                  protected $iLineNo =>
+                  int(13)
+                }
+                private $bIsImportant =>
+                bool(false)
+                protected $iLineNo =>
+                int(13)
+              }
+            }
+          }
+          protected $iLineNo =>
+          int(13)
+        }
+        [1] =>
+        class Sabberworm\CSS\RuleSet\DeclarationBlock#23 (3) {
+          private $aSelectors =>
+          array(1) {
+            [0] =>
+            class Sabberworm\CSS\Property\Selector#24 (2) {
+              private $sSelector =>
+              string(2) "to"
+              private $iSpecificity =>
+              NULL
+            }
+          }
+          private $aRules =>
+          array(1) {
+            'top' =>
+            array(1) {
+              [0] =>
+              class Sabberworm\CSS\Rule\Rule#25 (4) {
+                private $sRule =>
+                string(3) "top"
+                private $mValue =>
+                class Sabberworm\CSS\Value\Size#26 (4) {
+                  private $fSize =>
+                  double(200)
+                  private $sUnit =>
+                  string(2) "px"
+                  private $bIsColorComponent =>
+                  bool(false)
+                  protected $iLineNo =>
+                  int(14)
+                }
+                private $bIsImportant =>
+                bool(false)
+                protected $iLineNo =>
+                int(14)
+              }
+            }
+          }
+          protected $iLineNo =>
+          int(14)
+        }
+      }
+      protected $iLineNo =>
+      int(12)
+    }
+  }
+  protected $iLineNo =>
+  int(1)
+}
+
+```
 
 #### Output (`render()`)
 
-	@charset "utf-8";@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}html, body {font-size: 1.6em;}
-	@keyframes mymove {from {top: 0px;}
-	to {top: 200px;}
-	}
+```css
+@charset "utf-8";
+@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}
+html, body {font-size: 1.6em;}
+@keyframes mymove {from {top: 0px;}
+	to {top: 200px;}}
+```
 
 ### Example 2 (Values)
 
 #### Input
 
-	#header {
-		margin: 10px 2em 1cm 2%;
-		font-family: Verdana, Helvetica, "Gill Sans", sans-serif;
-		color: red !important;
-	}
-	
+```css
+#header {
+	margin: 10px 2em 1cm 2%;
+	font-family: Verdana, Helvetica, "Gill Sans", sans-serif;
+	color: red !important;
+}
+
+```
+
 #### Structure (`var_dump()`)
 
-	object(Sabberworm\CSS\CSSList\Document)#4 (1) {
-	  ["aContents":protected]=>
-	  array(1) {
-	    [0]=>
-	    object(Sabberworm\CSS\RuleSet\DeclarationBlock)#5 (2) {
-	      ["aSelectors":"Sabberworm\CSS\RuleSet\DeclarationBlock":private]=>
-	      array(1) {
-	        [0]=>
-	        object(Sabberworm\CSS\Property\Selector)#6 (2) {
-	          ["sSelector":"Sabberworm\CSS\Property\Selector":private]=>
-	          string(7) "#header"
-	          ["iSpecificity":"Sabberworm\CSS\Property\Selector":private]=>
-	          NULL
-	        }
-	      }
-	      ["aRules":"Sabberworm\CSS\RuleSet\RuleSet":private]=>
-	      array(3) {
-	        ["margin"]=>
-	        array(1) {
-	          [0]=>
-	          object(Sabberworm\CSS\Rule\Rule)#7 (3) {
-	            ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
-	            string(6) "margin"
-	            ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	            object(Sabberworm\CSS\Value\RuleValueList)#12 (2) {
-	              ["aComponents":protected]=>
-	              array(4) {
-	                [0]=>
-	                object(Sabberworm\CSS\Value\Size)#8 (3) {
-	                  ["fSize":"Sabberworm\CSS\Value\Size":private]=>
-	                  float(10)
-	                  ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
-	                  string(2) "px"
-	                  ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
-	                  bool(false)
-	                }
-	                [1]=>
-	                object(Sabberworm\CSS\Value\Size)#9 (3) {
-	                  ["fSize":"Sabberworm\CSS\Value\Size":private]=>
-	                  float(2)
-	                  ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
-	                  string(2) "em"
-	                  ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
-	                  bool(false)
-	                }
-	                [2]=>
-	                object(Sabberworm\CSS\Value\Size)#10 (3) {
-	                  ["fSize":"Sabberworm\CSS\Value\Size":private]=>
-	                  float(1)
-	                  ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
-	                  string(2) "cm"
-	                  ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
-	                  bool(false)
-	                }
-	                [3]=>
-	                object(Sabberworm\CSS\Value\Size)#11 (3) {
-	                  ["fSize":"Sabberworm\CSS\Value\Size":private]=>
-	                  float(2)
-	                  ["sUnit":"Sabberworm\CSS\Value\Size":private]=>
-	                  string(1) "%"
-	                  ["bIsColorComponent":"Sabberworm\CSS\Value\Size":private]=>
-	                  bool(false)
-	                }
-	              }
-	              ["sSeparator":protected]=>
-	              string(1) " "
-	            }
-	            ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
-	            bool(false)
-	          }
-	        }
-	        ["font-family"]=>
-	        array(1) {
-	          [0]=>
-	          object(Sabberworm\CSS\Rule\Rule)#13 (3) {
-	            ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
-	            string(11) "font-family"
-	            ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	            object(Sabberworm\CSS\Value\RuleValueList)#15 (2) {
-	              ["aComponents":protected]=>
-	              array(4) {
-	                [0]=>
-	                string(7) "Verdana"
-	                [1]=>
-	                string(9) "Helvetica"
-	                [2]=>
-	                object(Sabberworm\CSS\Value\CSSString)#14 (1) {
-	                  ["sString":"Sabberworm\CSS\Value\CSSString":private]=>
-	                  string(9) "Gill Sans"
-	                }
-	                [3]=>
-	                string(10) "sans-serif"
-	              }
-	              ["sSeparator":protected]=>
-	              string(1) ","
-	            }
-	            ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
-	            bool(false)
-	          }
-	        }
-	        ["color"]=>
-	        array(1) {
-	          [0]=>
-	          object(Sabberworm\CSS\Rule\Rule)#16 (3) {
-	            ["sRule":"Sabberworm\CSS\Rule\Rule":private]=>
-	            string(5) "color"
-	            ["mValue":"Sabberworm\CSS\Rule\Rule":private]=>
-	            string(3) "red"
-	            ["bIsImportant":"Sabberworm\CSS\Rule\Rule":private]=>
-	            bool(true)
-	          }
-	        }
-	      }
-	    }
-	  }
-	}
+```php
+class Sabberworm\CSS\CSSList\Document#4 (2) {
+  protected $aContents =>
+  array(1) {
+    [0] =>
+    class Sabberworm\CSS\RuleSet\DeclarationBlock#5 (3) {
+      private $aSelectors =>
+      array(1) {
+        [0] =>
+        class Sabberworm\CSS\Property\Selector#6 (2) {
+          private $sSelector =>
+          string(7) "#header"
+          private $iSpecificity =>
+          NULL
+        }
+      }
+      private $aRules =>
+      array(3) {
+        'margin' =>
+        array(1) {
+          [0] =>
+          class Sabberworm\CSS\Rule\Rule#7 (4) {
+            private $sRule =>
+            string(6) "margin"
+            private $mValue =>
+            class Sabberworm\CSS\Value\RuleValueList#12 (3) {
+              protected $aComponents =>
+              array(4) {
+                [0] =>
+                class Sabberworm\CSS\Value\Size#8 (4) {
+                  private $fSize =>
+                  double(10)
+                  private $sUnit =>
+                  string(2) "px"
+                  private $bIsColorComponent =>
+                  bool(false)
+                  protected $iLineNo =>
+                  int(2)
+                }
+                [1] =>
+                class Sabberworm\CSS\Value\Size#9 (4) {
+                  private $fSize =>
+                  double(2)
+                  private $sUnit =>
+                  string(2) "em"
+                  private $bIsColorComponent =>
+                  bool(false)
+                  protected $iLineNo =>
+                  int(2)
+                }
+                [2] =>
+                class Sabberworm\CSS\Value\Size#10 (4) {
+                  private $fSize =>
+                  double(1)
+                  private $sUnit =>
+                  string(2) "cm"
+                  private $bIsColorComponent =>
+                  bool(false)
+                  protected $iLineNo =>
+                  int(2)
+                }
+                [3] =>
+                class Sabberworm\CSS\Value\Size#11 (4) {
+                  private $fSize =>
+                  double(2)
+                  private $sUnit =>
+                  string(1) "%"
+                  private $bIsColorComponent =>
+                  bool(false)
+                  protected $iLineNo =>
+                  int(2)
+                }
+              }
+              protected $sSeparator =>
+              string(1) " "
+              protected $iLineNo =>
+              int(2)
+            }
+            private $bIsImportant =>
+            bool(false)
+            protected $iLineNo =>
+            int(2)
+          }
+        }
+        'font-family' =>
+        array(1) {
+          [0] =>
+          class Sabberworm\CSS\Rule\Rule#13 (4) {
+            private $sRule =>
+            string(11) "font-family"
+            private $mValue =>
+            class Sabberworm\CSS\Value\RuleValueList#15 (3) {
+              protected $aComponents =>
+              array(4) {
+                [0] =>
+                string(7) "Verdana"
+                [1] =>
+                string(9) "Helvetica"
+                [2] =>
+                class Sabberworm\CSS\Value\CSSString#14 (2) {
+                  private $sString =>
+                  string(9) "Gill Sans"
+                  protected $iLineNo =>
+                  int(3)
+                }
+                [3] =>
+                string(10) "sans-serif"
+              }
+              protected $sSeparator =>
+              string(1) ","
+              protected $iLineNo =>
+              int(3)
+            }
+            private $bIsImportant =>
+            bool(false)
+            protected $iLineNo =>
+            int(3)
+          }
+        }
+        'color' =>
+        array(1) {
+          [0] =>
+          class Sabberworm\CSS\Rule\Rule#16 (4) {
+            private $sRule =>
+            string(5) "color"
+            private $mValue =>
+            string(3) "red"
+            private $bIsImportant =>
+            bool(true)
+            protected $iLineNo =>
+            int(4)
+          }
+        }
+      }
+      protected $iLineNo =>
+      int(1)
+    }
+  }
+  protected $iLineNo =>
+  int(1)
+}
+
+```
 
 #### Output (`render()`)
 
-	#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;color: red !important;}
+```css
+#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;color: red !important;}
+```
 
 ## Contributors/Thanks to
 
