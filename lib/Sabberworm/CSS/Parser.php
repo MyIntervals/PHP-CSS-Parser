@@ -37,7 +37,7 @@ class Parser {
 	private $aSizeUnits;
 	private $iLineNo;
 
-	public function __construct($sText, Settings $oParserSettings = null, $iLineNo = 0) {
+	public function __construct($sText, Settings $oParserSettings = null, $iLineNo = 1) {
 		$this->sText = $sText;
 		$this->iCurrentPosition = 0;
 		$this->iLineNo = $iLineNo;
