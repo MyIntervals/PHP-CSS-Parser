@@ -8,7 +8,7 @@ use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Value\URL;
-use Sabberworm\CSS\Value\Color;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 class ParserTest extends \PHPUnit_Framework_TestCase {
 
@@ -481,7 +481,7 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$aRules = $oDeclBlock->getRules();
 		// Choose the 2nd one
 		$oColor = $aRules[1]->getValue();
-		$this->assertEquals($aRules[1]->getLineNo(), 27);
+		$this->assertEquals(27, $aRules[1]->getLineNo());
 
 		foreach ($oColor->getColor() as $oSize) {
 			$aActualColorLines[] = $oSize->getLineNo();
@@ -493,14 +493,15 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 	}
 
 	/**
-	 * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+	 * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
+	 * Credit: This test by @sabberworm (from https://github.com/sabberworm/PHP-CSS-Parser/pull/105#issuecomment-229643910 )
 	 */
-	public function testUnexpectedTokenExceptionLineNo() {
+	function testUnexpectedTokenExceptionLineNo() {
 		$oParser = new Parser("\ntest: 1;", Settings::create()->beStrict());
 		try {
 			$oParser->parse();
 		} catch (UnexpectedTokenException $e) {
-			$this->assertSame($e->getLineNo(), 2);
+			$this->assertSame(2, $e->getLineNo());
 			throw $e;
 		}
 	}
