@@ -21,7 +21,7 @@ class Import implements AtRule {
 	/**
 	 * @return int
 	 */
-	public function getLineNum() {
+	public function getLineNo() {
 		return $this->iLineNum;
 	}
 

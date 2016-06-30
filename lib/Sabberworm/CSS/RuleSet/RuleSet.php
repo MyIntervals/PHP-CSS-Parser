@@ -22,7 +22,7 @@ abstract class RuleSet implements Renderable {
 	/**
 	 * @return int
 	 */
-	public function getLineNum()
+	public function getLineNo()
 	{
 		return $this->iLineNum;
 	}
