@@ -52,20 +52,26 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 				$this->assertSame('red', $oColor);
 				$aColorRule = $oRuleSet->getRules('background-');
 				$oColor = $aColorRule[0]->getValue();
+				$oColor->setLineNo(0);
 				$this->assertEquals(array('r' => new Size(35.0, null, true), 'g' => new Size(35.0, null, true), 'b' => new Size(35.0, null, true)), $oColor->getColor());
 				$aColorRule = $oRuleSet->getRules('border-color');
 				$oColor = $aColorRule[0]->getValue();
+				$oColor->setLineNo(0);
 				$this->assertEquals(array('r' => new Size(10.0, null, true), 'g' => new Size(100.0, null, true), 'b' => new Size(230.0, null, true)), $oColor->getColor());
 				$oColor = $aColorRule[1]->getValue();
+				$oColor->setLineNo(0);
 				$this->assertEquals(array('r' => new Size(10.0, null, true), 'g' => new Size(100.0, null, true), 'b' => new Size(231.0, null, true), 'a' => new Size("0000.3", null, true)), $oColor->getColor());
 				$aColorRule = $oRuleSet->getRules('outline-color');
 				$oColor = $aColorRule[0]->getValue();
+				$oColor->setLineNo(0);
 				$this->assertEquals(array('r' => new Size(34.0, null, true), 'g' => new Size(34.0, null, true), 'b' => new Size(34.0, null, true)), $oColor->getColor());
 			} else if($sSelector === '#yours') {
 				$aColorRule = $oRuleSet->getRules('background-color');
 				$oColor = $aColorRule[0]->getValue();
+				$oColor->setLineNo(0);
 				$this->assertEquals(array('h' => new Size(220.0, null, true), 's' => new Size(10.0, '%', true), 'l' => new Size(220.0, '%', true)), $oColor->getColor());
 				$oColor = $aColorRule[1]->getValue();
+				$oColor->setLineNo(0);
 				$this->assertEquals(array('h' => new Size(220.0, null, true), 's' => new Size(10.0, '%', true), 'l' => new Size(220.0, '%', true), 'a' => new Size(0000.3, null, true)), $oColor->getColor());
 			}
 		}
