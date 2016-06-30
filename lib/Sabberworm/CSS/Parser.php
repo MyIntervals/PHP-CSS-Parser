@@ -236,7 +236,7 @@ class Parser {
 			while (!$this->comes($sQuote)) {
 				$sContent = $this->parseCharacter(false);
 				if ($sContent === null) {
-					throw new \Exception("Non-well-formed quoted string {$this->peek(3)}", $this->iLineNo);
+					throw new SourceException("Non-well-formed quoted string {$this->peek(3)}", $this->iLineNo);
 				}
 				$sResult .= $sContent;
 			}
