@@ -519,22 +519,21 @@ class Parser {
 
 	private function consume($mValue = 1) {
 		if (is_string($mValue)) {
-			$noLines = substr_count($mValue, "\n");
+			$iLineCount = substr_count($mValue, "\n");
 			$iLength = $this->strlen($mValue);
 			if (!$this->streql($this->substr($this->iCurrentPosition, $iLength), $mValue)) {
 				throw new UnexpectedTokenException($mValue, $this->peek(max($iLength, 5)));
 			}
-			$this->iLineNum += $noLines;
+			$this->iLineNum += $iLineCount;
 			$this->iCurrentPosition += $this->strlen($mValue);
 			return $mValue;
 		} else {
-			$substring = $this->substr($this->iCurrentPosition, $mValue);
-			$noLines = substr_count($substring, "\n");
-			$this->iLineNum += $noLines;
 			if ($this->iCurrentPosition + $mValue > $this->iLength) {
 				throw new UnexpectedTokenException($mValue, $this->peek(5), 'count');
 			}
 			$sResult = $this->substr($this->iCurrentPosition, $mValue);
+			$iLineCount = substr_count($sResult, "\n");
+			$this->iLineNum += $iLineCount;
 			$this->iCurrentPosition += $mValue;
 			return $sResult;
 		}
