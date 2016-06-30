@@ -1,5 +1,16 @@
 # Revision History
 
+## 8.0
+
+### 8.0.0 (2016-06-30)
+
+* Store source CSS line numbers in tokens and parsing exceptions.
+* *No deprecations*
+
+#### Backwards-incompatible changes
+
+* Unrecoverable parser errors throw an exception of type `Sabberworm\CSS\Parsing\SourceException` instead of `\Exception`.
+
 ## 7.0
 
 ### 7.0.0 (2015-08-24)
