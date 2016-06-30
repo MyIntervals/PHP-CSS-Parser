@@ -8,6 +8,7 @@ use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Value\URL;
+use Sabberworm\CSS\Value\Color;
 
 class ParserTest extends \PHPUnit_Framework_TestCase {
 
@@ -471,6 +472,22 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 				$aUrlActual[] = $oValue->getLineNo();
 			}
 		}
+
+		// Checking for the multiline color rule lines 27-31
+		$aExpectedColorLines = array(28, 29, 30);
+		$aDeclBlocks = $oDoc->getAllDeclarationBlocks();
+		// Choose the 2nd one
+		$oDeclBlock = $aDeclBlocks[1];
+		$aRules = $oDeclBlock->getRules();
+		// Choose the 2nd one
+		$oColor = $aRules[1]->getValue();
+		$this->assertEquals($aRules[1]->getLineNo(), 27);
+
+		foreach ($oColor->getColor() as $oSize) {
+			$aActualColorLines[] = $oSize->getLineNo();
+		}
+
+		$this->assertEquals($aExpectedColorLines, $aActualColorLines);
 		$this->assertEquals($aUrlExpected, $aUrlActual);
 		$this->assertEquals($aExpected, $aActual);
 	}

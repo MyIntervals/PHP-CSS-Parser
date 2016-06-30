@@ -24,5 +24,9 @@
 
 body {
     background: #FFFFFF url("http://somesite.com/images/someimage.gif") repeat top center; /* line 25 */
-    color: rgb(233, 100, 450);
+    color: rgb(   /* line 27 */
+            233,  /* line 28 */
+            100,  /* line 29 */
+            450   /* line 30 */
+    );
 }
