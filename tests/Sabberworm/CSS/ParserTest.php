@@ -2,10 +2,12 @@
 
 namespace Sabberworm\CSS;
 
+use Sabberworm\CSS\CSSList\KeyFrame;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Property\AtRule;
+use Sabberworm\CSS\Value\URL;
 
 class ParserTest extends \PHPUnit_Framework_TestCase {
 
@@ -433,6 +435,44 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$sFile = dirname(__FILE__) . '/../../files' . DIRECTORY_SEPARATOR . "$sFileName.css";
 		$oParser = new Parser(file_get_contents($sFile), $oSettings);
 		return $oParser->parse();
+	}
+
+	/**
+	 * @depends testFiles
+	 */
+	function testLineNumbersParsing() {
+		$oDoc = $this->parsedStructureForFile('line-numbers');
+		// array key is the expected line number
+		$aExpected = [
+			1 => ['Sabberworm\CSS\Property\Charset'],
+			3 => ['Sabberworm\CSS\Property\CSSNamespace'],
+			5 => ['Sabberworm\CSS\RuleSet\AtRuleSet'],
+			11 => ['Sabberworm\CSS\RuleSet\DeclarationBlock'],
+			// Line Numbers of the inner declaration blocks
+			17 => ['Sabberworm\CSS\CSSList\KeyFrame', 18, 20],
+			23 => ['Sabberworm\CSS\Property\Import'],
+			25 => ['Sabberworm\CSS\RuleSet\DeclarationBlock']
+		];
+
+		$aActual = [];
+		foreach ($oDoc->getContents() as $oContent) {
+			$aActual[$oContent->getLineNo()] = [get_class($oContent)];
+			if ($oContent instanceof KeyFrame) {
+				foreach ($oContent->getContents() as $block) {
+					$aActual[$oContent->getLineNo()][] = $block->getLineNo();
+				}
+			}
+		}
+
+		$aUrlExpected = [7, 26]; // expected line numbers
+		$aUrlActual = [];
+		foreach ($oDoc->getAllValues() as $oValue) {
+			if ($oValue instanceof URL) {
+				$aUrlActual[] = $oValue->getLineNo();
+			}
+		}
+		$this->assertEquals($aUrlExpected, $aUrlActual);
+		$this->assertEquals($aExpected, $aActual);
 	}
 
 }
