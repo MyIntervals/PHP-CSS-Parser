@@ -6,12 +6,12 @@ namespace Sabberworm\CSS\Parsing;
 * Thrown if the CSS parsers attempts to print something invalid
 */
 class OutputException extends \Exception {
-    private $iLineNum;
-    public function __construct($sMessage, $iLineNum = 0)
+    private $iLineNo;
+    public function __construct($sMessage, $iLineNo = 0)
     {
-        $this->$iLineNum = $iLineNum;
-        if (!empty($iLineNum)) {
-            $sMessage .= " [line no: $iLineNum]";
+        $this->$iLineNo = $iLineNo;
+        if (!empty($iLineNo)) {
+            $sMessage .= " [line no: $iLineNo]";
         }
         parent::__construct($sMessage);
     }

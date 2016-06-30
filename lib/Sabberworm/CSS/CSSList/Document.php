@@ -8,11 +8,11 @@ namespace Sabberworm\CSS\CSSList;
 class Document extends CSSBlockList {
 	/**
 	 * Document constructor.
-	 * @param int $iLineNum
+	 * @param int $iLineNo
 	 */
-	public function __construct($iLineNum = 0)
+	public function __construct($iLineNo = 0)
 	{
-		parent::__construct($iLineNum);
+		parent::__construct($iLineNo);
 	}
 
 	/**

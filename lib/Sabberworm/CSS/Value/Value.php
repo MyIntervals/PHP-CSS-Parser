@@ -5,10 +5,10 @@ namespace Sabberworm\CSS\Value;
 use Sabberworm\CSS\Renderable;
 
 abstract class Value implements Renderable {
-    protected $iLineNum;
+    protected $iLineNo;
 
-    public function __construct($iLineNum = 0) {
-        $this->iLineNum = $iLineNum;
+    public function __construct($iLineNo = 0) {
+        $this->iLineNo = $iLineNo;
     }
     
     /**
@@ -16,15 +16,15 @@ abstract class Value implements Renderable {
      */
     public function getLineNo()
     {
-        return $this->iLineNum;
+        return $this->iLineNo;
     }
 
     /**
-     * @param int $iLineNum
+     * @param int $iLineNo
      */
-    public function setLineNo($iLineNum = 0)
+    public function setLineNo($iLineNo = 0)
     {
-        $this->iLineNum = $iLineNum;
+        $this->iLineNo = $iLineNo;
     }
 
     //Methods are commented out because re-declaring them here is a fatal error in PHP < 5.3.9

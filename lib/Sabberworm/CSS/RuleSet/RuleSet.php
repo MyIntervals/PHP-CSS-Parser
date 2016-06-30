@@ -12,11 +12,11 @@ use Sabberworm\CSS\Renderable;
 abstract class RuleSet implements Renderable {
 
 	private $aRules;
-	protected $iLineNum;
+	protected $iLineNo;
 
-	public function __construct($iLineNum = 0) {
+	public function __construct($iLineNo = 0) {
 		$this->aRules = array();
-		$this->iLineNum = $iLineNum;
+		$this->iLineNo = $iLineNo;
 	}
 
 	/**
@@ -24,15 +24,15 @@ abstract class RuleSet implements Renderable {
 	 */
 	public function getLineNo()
 	{
-		return $this->iLineNum;
+		return $this->iLineNo;
 	}
 
 	/**
-	 * @param int $iLineNum
+	 * @param int $iLineNo
 	 */
-	public function setLineNo($iLineNum = 0)
+	public function setLineNo($iLineNo = 0)
 	{
-		$this->iLineNum = $iLineNum;
+		$this->iLineNo = $iLineNo;
 	}
 
 	public function addRule(Rule $oRule) {

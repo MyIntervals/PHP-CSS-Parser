@@ -10,13 +10,13 @@ class UnexpectedTokenException extends \Exception {
 	private $sFound;
 	// Possible values: literal, identifier, count, expression, search
 	private $sMatchType;
-	private $iLineNum;
+	private $iLineNo;
 
-	public function __construct($sExpected, $sFound, $sMatchType = 'literal', $iLineNum = 0) {
+	public function __construct($sExpected, $sFound, $sMatchType = 'literal', $iLineNo = 0) {
 		$this->sExpected = $sExpected;
 		$this->sFound = $sFound;
 		$this->sMatchType = $sMatchType;
-		$this->iLineNum = $iLineNum;
+		$this->iLineNo = $iLineNo;
 		$sMessage = "Token “{$sExpected}” ({$sMatchType}) not found. Got “{$sFound}”.";
 		if($this->sMatchType === 'search') {
 			$sMessage = "Search for “{$sExpected}” returned no results. Context: “{$sFound}”.";
@@ -28,8 +28,8 @@ class UnexpectedTokenException extends \Exception {
 			$sMessage = trim("$sExpected $sFound");
 		}
 
-		if (!empty($iLineNum)) {
-			$sMessage .= " [line no: $iLineNum]";
+		if (!empty($iLineNo)) {
+			$sMessage .= " [line no: $iLineNo]";
 		}
 
 		parent::__construct($sMessage);

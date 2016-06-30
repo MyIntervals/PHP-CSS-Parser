@@ -6,9 +6,9 @@ class CSSString extends PrimitiveValue {
 
 	private $sString;
 
-	public function __construct($sString, $iLineNum = 0) {
+	public function __construct($sString, $iLineNo = 0) {
 		$this->sString = $sString;
-		parent::__construct($iLineNum);
+		parent::__construct($iLineNo);
 	}
 
 	public function setString($sString) {

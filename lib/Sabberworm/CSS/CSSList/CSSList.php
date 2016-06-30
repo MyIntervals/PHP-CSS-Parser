@@ -14,11 +14,11 @@ use Sabberworm\CSS\Property\Selector;
 abstract class CSSList implements Renderable {
 
 	protected $aContents;
-	protected $iLineNum;
+	protected $iLineNo;
 
-	public function __construct($iLineNum = 0) {
+	public function __construct($iLineNo = 0) {
 		$this->aContents = array();
-		$this->iLineNum = $iLineNum;
+		$this->iLineNo = $iLineNo;
 	}
 
 	/**
@@ -26,15 +26,15 @@ abstract class CSSList implements Renderable {
 	 */
 	public function getLineNo()
 	{
-		return $this->iLineNum;
+		return $this->iLineNo;
 	}
 
 	/**
-	 * @param int $iLineNum
+	 * @param int $iLineNo
 	 */
-	public function setLineNo($iLineNum = 0)
+	public function setLineNo($iLineNo = 0)
 	{
-		$this->iLineNum = $iLineNum;
+		$this->iLineNo = $iLineNo;
 	}
 
 	public function append($oItem) {

@@ -12,26 +12,26 @@ namespace Sabberworm\CSS\Property;
 class Charset implements AtRule {
 
 	private $sCharset;
-	protected $iLineNum;
+	protected $iLineNo;
 
-	public function __construct($sCharset, $iLineNum = 0) {
+	public function __construct($sCharset, $iLineNo = 0) {
 		$this->sCharset = $sCharset;
-		$this->iLineNum = $iLineNum;
+		$this->iLineNo = $iLineNo;
 	}
 
 	/**
 	 * @return int
 	 */
 	public function getLineNo() {
-		return $this->iLineNum;
+		return $this->iLineNo;
 	}
 
 	/**
-	 * @param int $iLineNum
+	 * @param int $iLineNo
 	 */
-	public function setLineNo($iLineNum = 0)
+	public function setLineNo($iLineNo = 0)
 	{
-		$this->iLineNum = $iLineNum;
+		$this->iLineNo = $iLineNo;
 	}
 
 	public function setCharset($sCharset) {

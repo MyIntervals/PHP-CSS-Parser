@@ -15,13 +15,13 @@ class Rule implements Renderable {
 	private $sRule;
 	private $mValue;
 	private $bIsImportant;
-	protected $iLineNum;
+	protected $iLineNo;
 
-	public function __construct($sRule, $iLineNum = 0) {
+	public function __construct($sRule, $iLineNo = 0) {
 		$this->sRule = $sRule;
 		$this->mValue = null;
 		$this->bIsImportant = false;
-		$this->iLineNum = $iLineNum;
+		$this->iLineNo = $iLineNo;
 	}
 
 	/**
@@ -29,15 +29,15 @@ class Rule implements Renderable {
 	 */
 	public function getLineNo()
 	{
-		return $this->iLineNum;
+		return $this->iLineNo;
 	}
 
 	/**
-	 * @param int $iLineNum
+	 * @param int $iLineNo
 	 */
-	public function setLineNo($iLineNum = 0)
+	public function setLineNo($iLineNo = 0)
 	{
-		$this->iLineNum = $iLineNum;
+		$this->iLineNo = $iLineNo;
 	}
 
 	public function setRule($sRule) {
@@ -62,12 +62,12 @@ class Rule implements Renderable {
 	public function setValues($aSpaceSeparatedValues) {
 		$oSpaceSeparatedList = null;
 		if (count($aSpaceSeparatedValues) > 1) {
-			$oSpaceSeparatedList = new RuleValueList(' ', $this->iLineNum);
+			$oSpaceSeparatedList = new RuleValueList(' ', $this->iLineNo);
 		}
 		foreach ($aSpaceSeparatedValues as $aCommaSeparatedValues) {
 			$oCommaSeparatedList = null;
 			if (count($aCommaSeparatedValues) > 1) {
-				$oCommaSeparatedList = new RuleValueList(',', $this->iLineNum);
+				$oCommaSeparatedList = new RuleValueList(',', $this->iLineNo);
 			}
 			foreach ($aCommaSeparatedValues as $mValue) {
 				if (!$oSpaceSeparatedList && !$oCommaSeparatedList) {
@@ -126,7 +126,7 @@ class Rule implements Renderable {
 		}
 		if (!$this->mValue instanceof RuleValueList || $this->mValue->getListSeparator() !== $sType) {
 			$mCurrentValue = $this->mValue;
-			$this->mValue = new RuleValueList($sType, $this->iLineNum);
+			$this->mValue = new RuleValueList($sType, $this->iLineNo);
 			if ($mCurrentValue) {
 				$this->mValue->addListComponent($mCurrentValue);
 			}

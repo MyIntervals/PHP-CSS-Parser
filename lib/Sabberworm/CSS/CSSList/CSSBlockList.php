@@ -14,8 +14,8 @@ use Sabberworm\CSS\Value\CSSFunction;
  * Most CSSLists conform to this category but some at-rules (such as @keyframes) do not.
  */
 abstract class CSSBlockList extends CSSList {
-	public function __construct($iLineNum = 0) {
-		parent::__construct($iLineNum);
+	public function __construct($iLineNo = 0) {
+		parent::__construct($iLineNo);
 	}
 
 	protected function allDeclarationBlocks(&$aResult) {
