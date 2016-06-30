@@ -19,14 +19,6 @@ class Size extends PrimitiveValue {
 		$this->bIsColorComponent = $bIsColorComponent;
 	}
 
-	/**
-	 * @return int
-	 */
-	public function getLineNo()
-	{
-		return $this->iLineNum;
-	}
-
 	public function setUnit($sUnit) {
 		$this->sUnit = $sUnit;
 	}
