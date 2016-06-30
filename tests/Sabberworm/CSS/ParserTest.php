@@ -492,4 +492,16 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$this->assertEquals($aExpected, $aActual);
 	}
 
+	/**
+	 * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+	 */
+	public function testUnexpectedTokenExceptionLineNo() {
+		$oParser = new Parser("\ntest: 1;", Settings::create()->beStrict());
+		try {
+			$oParser->parse();
+		} catch (UnexpectedTokenException $e) {
+			$this->assertSame($e->getLineNo(), 2);
+			throw $e;
+		}
+	}
 }
