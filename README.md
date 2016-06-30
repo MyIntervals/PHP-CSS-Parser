@@ -11,22 +11,28 @@ A Parser for CSS Files written in PHP. Allows extraction of CSS files into a dat
 
 Add php-css-parser to your composer.json
 
-	{
-	    "require": {
-	        "sabberworm/php-css-parser": "*"
-	    }
-	}
+```json
+{
+    "require": {
+        "sabberworm/php-css-parser": "*"
+    }
+}
+```
 
 ### Extraction
 
 To use the CSS Parser, create a new instance. The constructor takes the following form:
 
-	new Sabberworm\CSS\Parser($sText);
+```php
+new Sabberworm\CSS\Parser($sText);
+```
 
 To read a file, for example, you’d do the following:
 
-	$oCssParser = new Sabberworm\CSS\Parser(file_get_contents('somefile.css'));
-	$oCssDocument = $oCssParser->parse();
+```php
+$oCssParser = new Sabberworm\CSS\Parser(file_get_contents('somefile.css'));
+$oCssDocument = $oCssParser->parse();
+```
 
 The resulting CSS document structure can be manipulated prior to being output.
 
@@ -36,21 +42,27 @@ The resulting CSS document structure can be manipulated prior to being output.
 
 The charset option is used only if no @charset declaration is found in the CSS file. UTF-8 is the default, so you won’t have to create a settings object at all if you don’t intend to change that.
 
-	$oSettings = Sabberworm\CSS\Settings::create()->withDefaultCharset('windows-1252');
-	new Sabberworm\CSS\Parser($sText, $oSettings);
+```php
+$oSettings = Sabberworm\CSS\Settings::create()->withDefaultCharset('windows-1252');
+new Sabberworm\CSS\Parser($sText, $oSettings);
+```
 
 #### Strict parsing
 
 To have the parser choke on invalid rules, supply a thusly configured Sabberworm\CSS\Settings object:
 
-	$oCssParser = new Sabberworm\CSS\Parser(file_get_contents('somefile.css'), Sabberworm\CSS\Settings::create()->beStrict());
+```php
+$oCssParser = new Sabberworm\CSS\Parser(file_get_contents('somefile.css'), Sabberworm\CSS\Settings::create()->beStrict());
+```
 
 #### Disable multibyte functions
 
 To achieve faster parsing, you can choose to have PHP-CSS-Parser use regular string functions instead of `mb_*` functions. This should work fine in most cases, even for UTF-8 files, as all the multibyte characters are in string literals. Still it’s not recommended to use this with input you have no control over as it’s not thoroughly covered by test cases.
 
-	$oSettings = Sabberworm\CSS\Settings::create()->withMultibyteSupport(false);
-	new Sabberworm\CSS\Parser($sText, $oSettings);
+```php
+$oSettings = Sabberworm\CSS\Settings::create()->withMultibyteSupport(false);
+new Sabberworm\CSS\Parser($sText, $oSettings);
+```
 
 ### Manipulation
 
@@ -114,52 +126,64 @@ There are a few convenience methods on Document to ease finding, manipulating an
 
 ### Use `Parser` to prepend an id to all selectors
 
-	$sMyId = "#my_id";
-	$oParser = new Sabberworm\CSS\Parser($sText);
-	$oCss = $oParser->parse();
-	foreach($oCss->getAllDeclarationBlocks() as $oBlock) {
-		foreach($oBlock->getSelectors() as $oSelector) {
-			//Loop over all selector parts (the comma-separated strings in a selector) and prepend the id
-			$oSelector->setSelector($sMyId.' '.$oSelector->getSelector());
-		}
+```php
+$sMyId = "#my_id";
+$oParser = new Sabberworm\CSS\Parser($sText);
+$oCss = $oParser->parse();
+foreach($oCss->getAllDeclarationBlocks() as $oBlock) {
+	foreach($oBlock->getSelectors() as $oSelector) {
+		//Loop over all selector parts (the comma-separated strings in a selector) and prepend the id
+		$oSelector->setSelector($sMyId.' '.$oSelector->getSelector());
 	}
-	
+}
+```
+
 ### Shrink all absolute sizes to half
 
-	$oParser = new Sabberworm\CSS\Parser($sText);
-	$oCss = $oParser->parse();
-	foreach($oCss->getAllValues() as $mValue) {
-		if($mValue instanceof CSSSize && !$mValue->isRelative()) {
-			$mValue->setSize($mValue->getSize()/2);
-		}
+```php
+$oParser = new Sabberworm\CSS\Parser($sText);
+$oCss = $oParser->parse();
+foreach($oCss->getAllValues() as $mValue) {
+	if($mValue instanceof CSSSize && !$mValue->isRelative()) {
+		$mValue->setSize($mValue->getSize()/2);
 	}
+}
+```
 
 ### Remove unwanted rules
 
-	$oParser = new Sabberworm\CSS\Parser($sText);
-	$oCss = $oParser->parse();
-	foreach($oCss->getAllRuleSets() as $oRuleSet) {
-		$oRuleSet->removeRule('font-'); //Note that the added dash will make this remove all rules starting with font- (like font-size, font-weight, etc.) as well as a potential font-rule
-		$oRuleSet->removeRule('cursor');
-	}
+```php
+$oParser = new Sabberworm\CSS\Parser($sText);
+$oCss = $oParser->parse();
+foreach($oCss->getAllRuleSets() as $oRuleSet) {
+	$oRuleSet->removeRule('font-'); //Note that the added dash will make this remove all rules starting with font- (like font-size, font-weight, etc.) as well as a potential font-rule
+	$oRuleSet->removeRule('cursor');
+}
+```
 
 ### Output
 
 To output the entire CSS document into a variable, just use `->render()`:
 
-	$oCssParser = new Sabberworm\CSS\Parser(file_get_contents('somefile.css'));
-	$oCssDocument = $oCssParser->parse();
-	print $oCssDocument->render();
+```php
+$oCssParser = new Sabberworm\CSS\Parser(file_get_contents('somefile.css'));
+$oCssDocument = $oCssParser->parse();
+print $oCssDocument->render();
+```
 
 If you want to format the output, pass an instance of type `Sabberworm\CSS\OutputFormat`:
 
-	$oFormat = Sabberworm\CSS\OutputFormat::create()->indentWithSpaces(4)->setSpaceBetweenRules("\n");
-	print $oCssDocument->render($oFormat);
+```php
+$oFormat = Sabberworm\CSS\OutputFormat::create()->indentWithSpaces(4)->setSpaceBetweenRules("\n");
+print $oCssDocument->render($oFormat);
+```
 
 Or use one of the predefined formats:
 
-	print $oCssDocument->render(Sabberworm\CSS\OutputFormat::createPretty());
-	print $oCssDocument->render(Sabberworm\CSS\OutputFormat::createCompact());
+```php
+print $oCssDocument->render(Sabberworm\CSS\OutputFormat::createPretty());
+print $oCssDocument->render(Sabberworm\CSS\OutputFormat::createCompact());
+```
 
 To see what you can do with output formatting, look at the tests in `tests/Sabberworm/CSS/OutputFormatTest.php`.
 
