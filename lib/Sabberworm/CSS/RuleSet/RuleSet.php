@@ -26,13 +26,6 @@ abstract class RuleSet implements Renderable {
 		return $this->iLineNo;
 	}
 
-	/**
-	 * @param int $iLineNo
-	 */
-	public function setLineNo($iLineNo = 0) {
-		$this->iLineNo = $iLineNo;
-	}
-
 	public function addRule(Rule $oRule) {
 		$sRule = $oRule->getRule();
 		if(!isset($this->aRules[$sRule])) {

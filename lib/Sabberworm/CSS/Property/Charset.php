@@ -26,13 +26,6 @@ class Charset implements AtRule {
 		return $this->iLineNo;
 	}
 
-	/**
-	 * @param int $iLineNo
-	 */
-	public function setLineNo($iLineNo = 0) {
-		$this->iLineNo = $iLineNo;
-	}
-
 	public function setCharset($sCharset) {
 		$this->sCharset = $sCharset;
 	}

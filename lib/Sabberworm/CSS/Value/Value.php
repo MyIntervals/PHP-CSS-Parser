@@ -18,13 +18,6 @@ abstract class Value implements Renderable {
         return $this->iLineNo;
     }
 
-    /**
-     * @param int $iLineNo
-     */
-    public function setLineNo($iLineNo = 0) {
-        $this->iLineNo = $iLineNo;
-    }
-
     //Methods are commented out because re-declaring them here is a fatal error in PHP < 5.3.9
 	//public abstract function __toString();
 	//public abstract function render(\Sabberworm\CSS\OutputFormat $oOutputFormat);

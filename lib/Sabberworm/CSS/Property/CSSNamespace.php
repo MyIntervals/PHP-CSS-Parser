@@ -23,13 +23,6 @@ class CSSNamespace implements AtRule {
 		return $this->iLineNo;
 	}
 
-	/**
-	 * @param int $iLineNo
-	 */
-	public function setLineNo($iLineNo = 0) {
-		$this->iLineNo = $iLineNo;
-	}
-
 	public function __toString() {
 		return $this->render(new \Sabberworm\CSS\OutputFormat());
 	}

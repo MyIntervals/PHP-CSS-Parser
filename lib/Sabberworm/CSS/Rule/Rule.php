@@ -31,13 +31,6 @@ class Rule implements Renderable {
 		return $this->iLineNo;
 	}
 
-	/**
-	 * @param int $iLineNo
-	 */
-	public function setLineNo($iLineNo = 0) {
-		$this->iLineNo = $iLineNo;
-	}
-
 	public function setRule($sRule) {
 		$this->sRule = $sRule;
 	}
