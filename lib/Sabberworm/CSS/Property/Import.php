@@ -10,12 +10,21 @@ use Sabberworm\CSS\Value\URL;
 class Import implements AtRule {
 	private $oLocation;
 	private $sMediaQuery;
+	protected $iLineNo;
 	
-	public function __construct(URL $oLocation, $sMediaQuery) {
+	public function __construct(URL $oLocation, $sMediaQuery, $iLineNo = 0) {
 		$this->oLocation = $oLocation;
 		$this->sMediaQuery = $sMediaQuery;
+		$this->iLineNo = $iLineNo;
 	}
-	
+
+	/**
+	 * @return int
+	 */
+	public function getLineNo() {
+		return $this->iLineNo;
+	}
+
 	public function setLocation($oLocation) {
 			$this->oLocation = $oLocation;
 	}

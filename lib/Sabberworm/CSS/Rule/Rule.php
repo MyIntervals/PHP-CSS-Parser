@@ -2,6 +2,7 @@
 
 namespace Sabberworm\CSS\Rule;
 
+use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Value;
 
@@ -9,16 +10,25 @@ use Sabberworm\CSS\Value\Value;
  * RuleSets contains Rule objects which always have a key and a value.
  * In CSS, Rules are expressed as follows: “key: value[0][0] value[0][1], value[1][0] value[1][1];”
  */
-class Rule {
+class Rule implements Renderable {
 
 	private $sRule;
 	private $mValue;
 	private $bIsImportant;
+	protected $iLineNo;
 
-	public function __construct($sRule) {
+	public function __construct($sRule, $iLineNo = 0) {
 		$this->sRule = $sRule;
 		$this->mValue = null;
 		$this->bIsImportant = false;
+		$this->iLineNo = $iLineNo;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getLineNo() {
+		return $this->iLineNo;
 	}
 
 	public function setRule($sRule) {
@@ -43,12 +53,12 @@ class Rule {
 	public function setValues($aSpaceSeparatedValues) {
 		$oSpaceSeparatedList = null;
 		if (count($aSpaceSeparatedValues) > 1) {
-			$oSpaceSeparatedList = new RuleValueList(' ');
+			$oSpaceSeparatedList = new RuleValueList(' ', $this->iLineNo);
 		}
 		foreach ($aSpaceSeparatedValues as $aCommaSeparatedValues) {
 			$oCommaSeparatedList = null;
 			if (count($aCommaSeparatedValues) > 1) {
-				$oCommaSeparatedList = new RuleValueList(',');
+				$oCommaSeparatedList = new RuleValueList(',', $this->iLineNo);
 			}
 			foreach ($aCommaSeparatedValues as $mValue) {
 				if (!$oSpaceSeparatedList && !$oCommaSeparatedList) {
@@ -107,7 +117,7 @@ class Rule {
 		}
 		if (!$this->mValue instanceof RuleValueList || $this->mValue->getListSeparator() !== $sType) {
 			$mCurrentValue = $this->mValue;
-			$this->mValue = new RuleValueList($sType);
+			$this->mValue = new RuleValueList($sType, $this->iLineNo);
 			if ($mCurrentValue) {
 				$this->mValue->addListComponent($mCurrentValue);
 			}

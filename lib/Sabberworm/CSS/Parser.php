@@ -5,6 +5,7 @@ namespace Sabberworm\CSS;
 use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\CSSList\KeyFrame;
+use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Property\Import;
 use Sabberworm\CSS\Property\Charset;
@@ -34,10 +35,20 @@ class Parser {
 	private $iLength;
 	private $blockRules;
 	private $aSizeUnits;
+	private $iLineNo;
 
-	public function __construct($sText, Settings $oParserSettings = null) {
+	/**
+	 * Parser constructor.
+	 * Note that that iLineNo starts from 1 and not 0
+	 *
+	 * @param $sText
+	 * @param Settings|null $oParserSettings
+	 * @param int $iLineNo
+	 */
+	public function __construct($sText, Settings $oParserSettings = null, $iLineNo = 1) {
 		$this->sText = $sText;
 		$this->iCurrentPosition = 0;
+		$this->iLineNo = $iLineNo;
 		if ($oParserSettings === null) {
 			$oParserSettings = Settings::create();
 		}
@@ -66,7 +77,7 @@ class Parser {
 
 	public function parse() {
 		$this->setCharset($this->oParserSettings->sDefaultCharset);
-		$oResult = new Document();
+		$oResult = new Document($this->iLineNo);
 		$this->parseDocument($oResult);
 		return $oResult;
 	}
@@ -98,7 +109,7 @@ class Parser {
 			$this->consumeWhiteSpace();
 		}
 		if (!$bIsRoot) {
-			throw new \Exception("Unexpected end of document");
+			throw new SourceException("Unexpected end of document", $this->iLineNo);
 		}
 	}
 	
@@ -107,10 +118,10 @@ class Parser {
 			$oAtRule = $this->parseAtRule();
 			if($oAtRule instanceof Charset) {
 				if(!$bIsRoot) {
-					throw new UnexpectedTokenException('@charset may only occur in root document', '', 'custom');
+					throw new UnexpectedTokenException('@charset may only occur in root document', '', 'custom', $this->iLineNo);
 				}
 				if(count($oList->getContents()) > 0) {
-					throw new UnexpectedTokenException('@charset must be the first parseable token in a document', '', 'custom');
+					throw new UnexpectedTokenException('@charset must be the first parseable token in a document', '', 'custom', $this->iLineNo);
 				}
 				$this->setCharset($oAtRule->getCharset()->getString());
 			}
@@ -118,7 +129,7 @@ class Parser {
 		} else if ($this->comes('}')) {
 			$this->consume('}');
 			if ($bIsRoot) {
-				throw new \Exception("Unopened {");
+				throw new SourceException("Unopened {", $this->iLineNo);
 			} else {
 				return null;
 			}
@@ -130,6 +141,7 @@ class Parser {
 	private function parseAtRule() {
 		$this->consume('@');
 		$sIdentifier = $this->parseIdentifier();
+		$iIdentifierLineNum = $this->iLineNo;
 		$this->consumeWhiteSpace();
 		if ($sIdentifier === 'import') {
 			$oLocation = $this->parseURLValue();
@@ -139,14 +151,14 @@ class Parser {
 				$sMediaQuery = $this->consumeUntil(';');
 			}
 			$this->consume(';');
-			return new Import($oLocation, $sMediaQuery);
+			return new Import($oLocation, $sMediaQuery, $iIdentifierLineNum);
 		} else if ($sIdentifier === 'charset') {
 			$sCharset = $this->parseStringValue();
 			$this->consumeWhiteSpace();
 			$this->consume(';');
-			return new Charset($sCharset);
+			return new Charset($sCharset, $iIdentifierLineNum);
 		} else if ($this->identifierIs($sIdentifier, 'keyframes')) {
-			$oResult = new KeyFrame();
+			$oResult = new KeyFrame($iIdentifierLineNum);
 			$oResult->setVendorKeyFrame($sIdentifier);
 			$oResult->setAnimationName(trim($this->consumeUntil('{', false, true)));
 			$this->consumeWhiteSpace();
@@ -161,12 +173,12 @@ class Parser {
 			}
 			$this->consume(';');
 			if ($sPrefix !== null && !is_string($sPrefix)) {
-				throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom');
+				throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom', $iIdentifierLineNum);
 			}
 			if (!($mUrl instanceof CSSString || $mUrl instanceof URL)) {
-				throw new UnexpectedTokenException('Wrong namespace url of invalid type', $mUrl, 'custom');
+				throw new UnexpectedTokenException('Wrong namespace url of invalid type', $mUrl, 'custom', $iIdentifierLineNum);
 			}
-			return new CSSNamespace($mUrl, $sPrefix);
+			return new CSSNamespace($mUrl, $sPrefix, $iIdentifierLineNum);
 		} else {
 			//Unknown other at rule (font-face or such)
 			$sArgs = trim($this->consumeUntil('{', false, true));
@@ -179,10 +191,10 @@ class Parser {
 				}
 			}
 			if($bUseRuleSet) {
-				$oAtRule = new AtRuleSet($sIdentifier, $sArgs);
+				$oAtRule = new AtRuleSet($sIdentifier, $sArgs, $iIdentifierLineNum);
 				$this->parseRuleSet($oAtRule);
 			} else {
-				$oAtRule = new AtRuleBlockList($sIdentifier, $sArgs);
+				$oAtRule = new AtRuleBlockList($sIdentifier, $sArgs, $iIdentifierLineNum);
 				$this->parseList($oAtRule);
 			}
 			return $oAtRule;
@@ -192,7 +204,7 @@ class Parser {
 	private function parseIdentifier($bAllowFunctions = true, $bIgnoreCase = true) {
 		$sResult = $this->parseCharacter(true);
 		if ($sResult === null) {
-			throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier');
+			throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier', $this->iLineNo);
 		}
 		$sCharacter = null;
 		while (($sCharacter = $this->parseCharacter(true)) !== null) {
@@ -204,7 +216,7 @@ class Parser {
 		if ($bAllowFunctions && $this->comes('(')) {
 			$this->consume('(');
 			$aArguments = $this->parseValue(array('=', ' ', ','));
-			$sResult = new CSSFunction($sResult, $aArguments);
+			$sResult = new CSSFunction($sResult, $aArguments, ',', $this->iLineNo);
 			$this->consume(')');
 		}
 		return $sResult;
@@ -232,13 +244,13 @@ class Parser {
 			while (!$this->comes($sQuote)) {
 				$sContent = $this->parseCharacter(false);
 				if ($sContent === null) {
-					throw new \Exception("Non-well-formed quoted string {$this->peek(3)}");
+					throw new SourceException("Non-well-formed quoted string {$this->peek(3)}", $this->iLineNo);
 				}
 				$sResult .= $sContent;
 			}
 			$this->consume($sQuote);
 		}
-		return new CSSString($sResult);
+		return new CSSString($sResult, $this->iLineNo);
 	}
 
 	private function parseCharacter($bIsForIdentifier) {
@@ -287,7 +299,7 @@ class Parser {
 	}
 
 	private function parseSelector() {
-		$oResult = new DeclarationBlock();
+		$oResult = new DeclarationBlock($this->iLineNo);
 		$oResult->setSelector($this->consumeUntil('{', false, true));
 		$this->consumeWhiteSpace();
 		$this->parseRuleSet($oResult);
@@ -333,7 +345,7 @@ class Parser {
 	}
 
 	private function parseRule() {
-		$oRule = new Rule($this->parseIdentifier());
+		$oRule = new Rule($this->parseIdentifier(), $this->iLineNo);
 		$this->consumeWhiteSpace();
 		$this->consume(':');
 		$oValue = $this->parseValue(self::listDelimiterForRule($oRule->getRule()));
@@ -387,7 +399,7 @@ class Parser {
 						break;
 					}
 				}
-				$oList = new RuleValueList($sDelimiter);
+				$oList = new RuleValueList($sDelimiter, $this->iLineNo);
 				for ($i = $iStartPosition - 1; $i - $iStartPosition + 1 < $iLength * 2; $i+=2) {
 					$oList->addListComponent($aStack[$i]);
 				}
@@ -445,7 +457,7 @@ class Parser {
 				}
 			}
 		}
-		return new Size(floatval($sSize), $sUnit, $bForColor);
+		return new Size(floatval($sSize), $sUnit, $bForColor, $this->iLineNo);
 	}
 
 	private function parseColorValue() {
@@ -456,7 +468,7 @@ class Parser {
 			if ($this->strlen($sValue) === 3) {
 				$sValue = $sValue[0] . $sValue[0] . $sValue[1] . $sValue[1] . $sValue[2] . $sValue[2];
 			}
-			$aColor = array('r' => new Size(intval($sValue[0] . $sValue[1], 16), null, true), 'g' => new Size(intval($sValue[2] . $sValue[3], 16), null, true), 'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true));
+			$aColor = array('r' => new Size(intval($sValue[0] . $sValue[1], 16), null, true, $this->iLineNo), 'g' => new Size(intval($sValue[2] . $sValue[3], 16), null, true, $this->iLineNo), 'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true, $this->iLineNo));
 		} else {
 			$sColorMode = $this->parseIdentifier(false);
 			$this->consumeWhiteSpace();
@@ -472,7 +484,7 @@ class Parser {
 			}
 			$this->consume(')');
 		}
-		return new Color($aColor);
+		return new Color($aColor, $this->iLineNo);
 	}
 
 	private function parseURLValue() {
@@ -483,7 +495,7 @@ class Parser {
 			$this->consume('(');
 		}
 		$this->consumeWhiteSpace();
-		$oResult = new URL($this->parseStringValue());
+		$oResult = new URL($this->parseStringValue(), $this->iLineNo);
 		if ($bUseUrl) {
 			$this->consumeWhiteSpace();
 			$this->consume(')');
@@ -516,17 +528,21 @@ class Parser {
 
 	private function consume($mValue = 1) {
 		if (is_string($mValue)) {
+			$iLineCount = substr_count($mValue, "\n");
 			$iLength = $this->strlen($mValue);
 			if (!$this->streql($this->substr($this->iCurrentPosition, $iLength), $mValue)) {
-				throw new UnexpectedTokenException($mValue, $this->peek(max($iLength, 5)));
+				throw new UnexpectedTokenException($mValue, $this->peek(max($iLength, 5)), $this->iLineNo);
 			}
+			$this->iLineNo += $iLineCount;
 			$this->iCurrentPosition += $this->strlen($mValue);
 			return $mValue;
 		} else {
 			if ($this->iCurrentPosition + $mValue > $this->iLength) {
-				throw new UnexpectedTokenException($mValue, $this->peek(5), 'count');
+				throw new UnexpectedTokenException($mValue, $this->peek(5), 'count', $this->iLineNo);
 			}
 			$sResult = $this->substr($this->iCurrentPosition, $mValue);
+			$iLineCount = substr_count($sResult, "\n");
+			$this->iLineNo += $iLineCount;
 			$this->iCurrentPosition += $mValue;
 			return $sResult;
 		}
@@ -537,7 +553,7 @@ class Parser {
 		if (preg_match($mExpression, $this->inputLeft(), $aMatches, PREG_OFFSET_CAPTURE) === 1) {
 			return $this->consume($aMatches[0][0]);
 		}
-		throw new UnexpectedTokenException($mExpression, $this->peek(5), 'expression');
+		throw new UnexpectedTokenException($mExpression, $this->peek(5), 'expression', $this->iLineNo);
 	}
 
 	private function consumeWhiteSpace() {
@@ -595,7 +611,7 @@ class Parser {
 		}
 
 		$this->iCurrentPosition = $start;
-		throw new UnexpectedTokenException('One of ("'.implode('","', $aEnd).'")', $this->peek(5), 'search');
+		throw new UnexpectedTokenException('One of ("'.implode('","', $aEnd).'")', $this->peek(5), 'search', $this->iLineNo);
 	}
 
 	private function inputLeft() {

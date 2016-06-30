@@ -2,10 +2,13 @@
 
 namespace Sabberworm\CSS;
 
+use Sabberworm\CSS\CSSList\KeyFrame;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Property\AtRule;
+use Sabberworm\CSS\Value\URL;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 class ParserTest extends \PHPUnit_Framework_TestCase {
 
@@ -52,21 +55,21 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 				$this->assertSame('red', $oColor);
 				$aColorRule = $oRuleSet->getRules('background-');
 				$oColor = $aColorRule[0]->getValue();
-				$this->assertEquals(array('r' => new Size(35.0, null, true), 'g' => new Size(35.0, null, true), 'b' => new Size(35.0, null, true)), $oColor->getColor());
+				$this->assertEquals(array('r' => new Size(35.0, null, true, $oColor->getLineNo()), 'g' => new Size(35.0, null, true, $oColor->getLineNo()), 'b' => new Size(35.0, null, true, $oColor->getLineNo())), $oColor->getColor());
 				$aColorRule = $oRuleSet->getRules('border-color');
 				$oColor = $aColorRule[0]->getValue();
-				$this->assertEquals(array('r' => new Size(10.0, null, true), 'g' => new Size(100.0, null, true), 'b' => new Size(230.0, null, true)), $oColor->getColor());
+				$this->assertEquals(array('r' => new Size(10.0, null, true, $oColor->getLineNo()), 'g' => new Size(100.0, null, true, $oColor->getLineNo()), 'b' => new Size(230.0, null, true, $oColor->getLineNo())), $oColor->getColor());
 				$oColor = $aColorRule[1]->getValue();
-				$this->assertEquals(array('r' => new Size(10.0, null, true), 'g' => new Size(100.0, null, true), 'b' => new Size(231.0, null, true), 'a' => new Size("0000.3", null, true)), $oColor->getColor());
+				$this->assertEquals(array('r' => new Size(10.0, null, true, $oColor->getLineNo()), 'g' => new Size(100.0, null, true, $oColor->getLineNo()), 'b' => new Size(231.0, null, true, $oColor->getLineNo()), 'a' => new Size("0000.3", null, true, $oColor->getLineNo())), $oColor->getColor());
 				$aColorRule = $oRuleSet->getRules('outline-color');
 				$oColor = $aColorRule[0]->getValue();
-				$this->assertEquals(array('r' => new Size(34.0, null, true), 'g' => new Size(34.0, null, true), 'b' => new Size(34.0, null, true)), $oColor->getColor());
+				$this->assertEquals(array('r' => new Size(34.0, null, true, $oColor->getLineNo()), 'g' => new Size(34.0, null, true, $oColor->getLineNo()), 'b' => new Size(34.0, null, true, $oColor->getLineNo())), $oColor->getColor());
 			} else if($sSelector === '#yours') {
 				$aColorRule = $oRuleSet->getRules('background-color');
 				$oColor = $aColorRule[0]->getValue();
-				$this->assertEquals(array('h' => new Size(220.0, null, true), 's' => new Size(10.0, '%', true), 'l' => new Size(220.0, '%', true)), $oColor->getColor());
+				$this->assertEquals(array('h' => new Size(220.0, null, true, $oColor->getLineNo()), 's' => new Size(10.0, '%', true, $oColor->getLineNo()), 'l' => new Size(220.0, '%', true, $oColor->getLineNo())), $oColor->getColor());
 				$oColor = $aColorRule[1]->getValue();
-				$this->assertEquals(array('h' => new Size(220.0, null, true), 's' => new Size(10.0, '%', true), 'l' => new Size(220.0, '%', true), 'a' => new Size(0000.3, null, true)), $oColor->getColor());
+				$this->assertEquals(array('h' => new Size(220.0, null, true, $oColor->getLineNo()), 's' => new Size(10.0, '%', true, $oColor->getLineNo()), 'l' => new Size(220.0, '%', true, $oColor->getLineNo()), 'a' => new Size(0000.3, null, true, $oColor->getLineNo())), $oColor->getColor());
 			}
 		}
 		foreach ($oDoc->getAllValues('color') as $sColor) {
@@ -435,4 +438,71 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		return $oParser->parse();
 	}
 
+	/**
+	 * @depends testFiles
+	 */
+	function testLineNumbersParsing() {
+		$oDoc = $this->parsedStructureForFile('line-numbers');
+		// array key is the expected line number
+		$aExpected = array(
+			1 => array('Sabberworm\CSS\Property\Charset'),
+			3 => array('Sabberworm\CSS\Property\CSSNamespace'),
+			5 => array('Sabberworm\CSS\RuleSet\AtRuleSet'),
+			11 => array('Sabberworm\CSS\RuleSet\DeclarationBlock'),
+			// Line Numbers of the inner declaration blocks
+			17 => array('Sabberworm\CSS\CSSList\KeyFrame', 18, 20),
+			23 => array('Sabberworm\CSS\Property\Import'),
+			25 => array('Sabberworm\CSS\RuleSet\DeclarationBlock')
+		);
+
+		$aActual = array();
+		foreach ($oDoc->getContents() as $oContent) {
+			$aActual[$oContent->getLineNo()] = array(get_class($oContent));
+			if ($oContent instanceof KeyFrame) {
+				foreach ($oContent->getContents() as $block) {
+					$aActual[$oContent->getLineNo()][] = $block->getLineNo();
+				}
+			}
+		}
+
+		$aUrlExpected = array(7, 26); // expected line numbers
+		$aUrlActual = array();
+		foreach ($oDoc->getAllValues() as $oValue) {
+			if ($oValue instanceof URL) {
+				$aUrlActual[] = $oValue->getLineNo();
+			}
+		}
+
+		// Checking for the multiline color rule lines 27-31
+		$aExpectedColorLines = array(28, 29, 30);
+		$aDeclBlocks = $oDoc->getAllDeclarationBlocks();
+		// Choose the 2nd one
+		$oDeclBlock = $aDeclBlocks[1];
+		$aRules = $oDeclBlock->getRules();
+		// Choose the 2nd one
+		$oColor = $aRules[1]->getValue();
+		$this->assertEquals(27, $aRules[1]->getLineNo());
+
+		foreach ($oColor->getColor() as $oSize) {
+			$aActualColorLines[] = $oSize->getLineNo();
+		}
+
+		$this->assertEquals($aExpectedColorLines, $aActualColorLines);
+		$this->assertEquals($aUrlExpected, $aUrlActual);
+		$this->assertEquals($aExpected, $aActual);
+	}
+
+	/**
+	 * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
+	 * Credit: This test by @sabberworm (from https://github.com/sabberworm/PHP-CSS-Parser/pull/105#issuecomment-229643910 )
+	 */
+	function testUnexpectedTokenExceptionLineNo() {
+		$oParser = new Parser("\ntest: 1;", Settings::create()->beStrict());
+		try {
+			$oParser->parse();
+		} catch (UnexpectedTokenException $e) {
+			$this->assertSame(2, $e->getLineNo());
+			throw $e;
+		}
+	}
 }
