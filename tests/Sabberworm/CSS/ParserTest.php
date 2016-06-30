@@ -443,7 +443,7 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 	function testLineNumbersParsing() {
 		$oDoc = $this->parsedStructureForFile('line-numbers');
 		// array key is the expected line number
-		$aExpected = [
+		$aExpected = array(
 			1 => ['Sabberworm\CSS\Property\Charset'],
 			3 => ['Sabberworm\CSS\Property\CSSNamespace'],
 			5 => ['Sabberworm\CSS\RuleSet\AtRuleSet'],
@@ -452,9 +452,9 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 			17 => ['Sabberworm\CSS\CSSList\KeyFrame', 18, 20],
 			23 => ['Sabberworm\CSS\Property\Import'],
 			25 => ['Sabberworm\CSS\RuleSet\DeclarationBlock']
-		];
+		);
 
-		$aActual = [];
+		$aActual = array();
 		foreach ($oDoc->getContents() as $oContent) {
 			$aActual[$oContent->getLineNo()] = [get_class($oContent)];
 			if ($oContent instanceof KeyFrame) {
@@ -464,8 +464,8 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 			}
 		}
 
-		$aUrlExpected = [7, 26]; // expected line numbers
-		$aUrlActual = [];
+		$aUrlExpected = array(7, 26); // expected line numbers
+		$aUrlActual = array();
 		foreach ($oDoc->getAllValues() as $oValue) {
 			if ($oValue instanceof URL) {
 				$aUrlActual[] = $oValue->getLineNo();
