@@ -597,7 +597,7 @@ class DeclarationBlock extends RuleSet {
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		if(count($this->aSelectors) === 0) {
 			// If all the selectors have been removed, this declaration block becomes invalid
-			throw new OutputException("Attempt to print declaration block with missing selector");
+			throw new OutputException("Attempt to print declaration block with missing selector", $this->iLineNum);
 		}
 		$sResult = $oOutputFormat->implode($oOutputFormat->spaceBeforeSelectorSeparator() . ',' . $oOutputFormat->spaceAfterSelectorSeparator(), $this->aSelectors) . $oOutputFormat->spaceBeforeOpeningBrace() . '{';
 		$sResult .= parent::render($oOutputFormat);

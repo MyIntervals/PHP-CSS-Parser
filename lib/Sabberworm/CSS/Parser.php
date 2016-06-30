@@ -109,10 +109,10 @@ class Parser {
 			$oAtRule = $this->parseAtRule();
 			if($oAtRule instanceof Charset) {
 				if(!$bIsRoot) {
-					throw new UnexpectedTokenException('@charset may only occur in root document', '', 'custom');
+					throw new UnexpectedTokenException('@charset may only occur in root document', '', 'custom', $this->iLineNum);
 				}
 				if(count($oList->getContents()) > 0) {
-					throw new UnexpectedTokenException('@charset must be the first parseable token in a document', '', 'custom');
+					throw new UnexpectedTokenException('@charset must be the first parseable token in a document', '', 'custom', $this->iLineNum);
 				}
 				$this->setCharset($oAtRule->getCharset()->getString());
 			}
@@ -164,10 +164,10 @@ class Parser {
 			}
 			$this->consume(';');
 			if ($sPrefix !== null && !is_string($sPrefix)) {
-				throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom');
+				throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom', $iIdentifierLineNum);
 			}
 			if (!($mUrl instanceof CSSString || $mUrl instanceof URL)) {
-				throw new UnexpectedTokenException('Wrong namespace url of invalid type', $mUrl, 'custom');
+				throw new UnexpectedTokenException('Wrong namespace url of invalid type', $mUrl, 'custom', $iIdentifierLineNum);
 			}
 			return new CSSNamespace($mUrl, $sPrefix, $iIdentifierLineNum);
 		} else {
@@ -195,7 +195,7 @@ class Parser {
 	private function parseIdentifier($bAllowFunctions = true, $bIgnoreCase = true) {
 		$sResult = $this->parseCharacter(true);
 		if ($sResult === null) {
-			throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier');
+			throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier', $this->iLineNum);
 		}
 		$sCharacter = null;
 		while (($sCharacter = $this->parseCharacter(true)) !== null) {
@@ -522,14 +522,14 @@ class Parser {
 			$iLineCount = substr_count($mValue, "\n");
 			$iLength = $this->strlen($mValue);
 			if (!$this->streql($this->substr($this->iCurrentPosition, $iLength), $mValue)) {
-				throw new UnexpectedTokenException($mValue, $this->peek(max($iLength, 5)));
+				throw new UnexpectedTokenException($mValue, $this->peek(max($iLength, 5)), $this->iLineNum);
 			}
 			$this->iLineNum += $iLineCount;
 			$this->iCurrentPosition += $this->strlen($mValue);
 			return $mValue;
 		} else {
 			if ($this->iCurrentPosition + $mValue > $this->iLength) {
-				throw new UnexpectedTokenException($mValue, $this->peek(5), 'count');
+				throw new UnexpectedTokenException($mValue, $this->peek(5), 'count', $this->iLineNum);
 			}
 			$sResult = $this->substr($this->iCurrentPosition, $mValue);
 			$iLineCount = substr_count($sResult, "\n");
@@ -544,7 +544,7 @@ class Parser {
 		if (preg_match($mExpression, $this->inputLeft(), $aMatches, PREG_OFFSET_CAPTURE) === 1) {
 			return $this->consume($aMatches[0][0]);
 		}
-		throw new UnexpectedTokenException($mExpression, $this->peek(5), 'expression');
+		throw new UnexpectedTokenException($mExpression, $this->peek(5), 'expression', $this->iLineNum);
 	}
 
 	private function consumeWhiteSpace() {
@@ -602,7 +602,7 @@ class Parser {
 		}
 
 		$this->iCurrentPosition = $start;
-		throw new UnexpectedTokenException('One of ("'.implode('","', $aEnd).'")', $this->peek(5), 'search');
+		throw new UnexpectedTokenException('One of ("'.implode('","', $aEnd).'")', $this->peek(5), 'search', $this->iLineNum);
 	}
 
 	private function inputLeft() {
