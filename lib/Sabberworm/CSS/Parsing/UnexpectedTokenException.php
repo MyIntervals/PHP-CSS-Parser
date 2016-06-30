@@ -5,7 +5,7 @@ namespace Sabberworm\CSS\Parsing;
 /**
 * Thrown if the CSS parsers encounters a token it did not expect
 */
-class UnexpectedTokenException extends \Exception {
+class UnexpectedTokenException extends SourceException {
 	private $sExpected;
 	private $sFound;
 	// Possible values: literal, identifier, count, expression, search
@@ -28,11 +28,7 @@ class UnexpectedTokenException extends \Exception {
 			$sMessage = trim("$sExpected $sFound");
 		}
 
-		if (!empty($iLineNo)) {
-			$sMessage .= " [line no: $iLineNo]";
-		}
-
-		parent::__construct($sMessage);
+		parent::__construct($sMessage, $iLineNo);
 	}
 
 	public function getLineNo() {
