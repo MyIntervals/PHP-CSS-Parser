@@ -14,16 +14,14 @@ abstract class Value implements Renderable {
     /**
      * @return int
      */
-    public function getLineNo()
-    {
+    public function getLineNo() {
         return $this->iLineNo;
     }
 
     /**
      * @param int $iLineNo
      */
-    public function setLineNo($iLineNo = 0)
-    {
+    public function setLineNo($iLineNo = 0) {
         $this->iLineNo = $iLineNo;
     }
 
