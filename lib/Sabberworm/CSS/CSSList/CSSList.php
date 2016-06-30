@@ -2,18 +2,16 @@
 
 namespace Sabberworm\CSS\CSSList;
 
+use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\RuleSet\RuleSet;
 use Sabberworm\CSS\Property\Selector;
-use Sabberworm\CSS\Rule\Rule;
-use Sabberworm\CSS\Value\ValueList;
-use Sabberworm\CSS\Value\CSSFunction;
 
 /**
  * A CSSList is the most generic container available. Its contents include RuleSet as well as other CSSList objects.
  * Also, it may contain Import and Charset objects stemming from @-rules.
  */
-abstract class CSSList {
+abstract class CSSList implements Renderable {
 
 	protected $aContents;
 	protected $iLineNum;
