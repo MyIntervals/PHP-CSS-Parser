@@ -34,4 +34,8 @@ class UnexpectedTokenException extends \Exception {
 
 		parent::__construct($sMessage);
 	}
+
+	public function getLineNo() {
+		return $this->getLine();
+	}
 }
