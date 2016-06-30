@@ -456,7 +456,7 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 
 		$aActual = array();
 		foreach ($oDoc->getContents() as $oContent) {
-			$aActual[$oContent->getLineNo()] = [get_class($oContent)];
+			$aActual[$oContent->getLineNo()] = array(get_class($oContent));
 			if ($oContent instanceof KeyFrame) {
 				foreach ($oContent->getContents() as $block) {
 					$aActual[$oContent->getLineNo()][] = $block->getLineNo();
