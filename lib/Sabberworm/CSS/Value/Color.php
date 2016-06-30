@@ -17,8 +17,7 @@ class Color extends CSSFunction {
 		$this->aComponents = $aColor;
 	}
 
-	public function setLineNo($iLineNo = 0)
-	{
+	public function setLineNo($iLineNo = 0) {
 		foreach($this->aComponents as $color_component) {
 			$color_component->setLineNo($iLineNo);
 		}

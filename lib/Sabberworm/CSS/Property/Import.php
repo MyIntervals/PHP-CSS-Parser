@@ -28,8 +28,7 @@ class Import implements AtRule {
 	/**
 	 * @param int $iLineNo
 	 */
-	public function setLineNo($iLineNo = 0)
-	{
+	public function setLineNo($iLineNo = 0) {
 		$this->iLineNo = $iLineNo;
 	}
 
