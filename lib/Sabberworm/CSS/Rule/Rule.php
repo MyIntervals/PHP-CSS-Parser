@@ -2,6 +2,7 @@
 
 namespace Sabberworm\CSS\Rule;
 
+use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Value;
 
@@ -9,7 +10,7 @@ use Sabberworm\CSS\Value\Value;
  * RuleSets contains Rule objects which always have a key and a value.
  * In CSS, Rules are expressed as follows: “key: value[0][0] value[0][1], value[1][0] value[1][1];”
  */
-class Rule {
+class Rule implements Renderable {
 
 	private $sRule;
 	private $mValue;
