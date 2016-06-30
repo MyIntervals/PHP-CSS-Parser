@@ -25,6 +25,14 @@ class Import implements AtRule {
 		return $this->iLineNum;
 	}
 
+	/**
+	 * @param int $iLineNum
+	 */
+	public function setLineNo($iLineNum = 0)
+	{
+		$this->iLineNum = $iLineNum;
+	}
+
 	public function setLocation($oLocation) {
 			$this->oLocation = $oLocation;
 	}

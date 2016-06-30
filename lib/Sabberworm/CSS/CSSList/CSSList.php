@@ -29,6 +29,14 @@ abstract class CSSList implements Renderable {
 		return $this->iLineNum;
 	}
 
+	/**
+	 * @param int $iLineNum
+	 */
+	public function setLineNo($iLineNum = 0)
+	{
+		$this->iLineNum = $iLineNum;
+	}
+
 	public function append($oItem) {
 		$this->aContents[] = $oItem;
 	}
