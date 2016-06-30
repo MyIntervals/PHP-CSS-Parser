@@ -36,6 +36,6 @@ class UnexpectedTokenException extends \Exception {
 	}
 
 	public function getLineNo() {
-		return $this->getLine();
+		return $this->iLineNo;
 	}
 }
