@@ -5,6 +5,7 @@ namespace Sabberworm\CSS;
 use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\CSSList\KeyFrame;
+use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Property\Import;
 use Sabberworm\CSS\Property\Charset;
@@ -100,7 +101,7 @@ class Parser {
 			$this->consumeWhiteSpace();
 		}
 		if (!$bIsRoot) {
-			throw new \Exception("Unexpected end of document");
+			throw new SourceException("Unexpected end of document", $this->iLineNo);
 		}
 	}
 	
@@ -120,7 +121,7 @@ class Parser {
 		} else if ($this->comes('}')) {
 			$this->consume('}');
 			if ($bIsRoot) {
-				throw new \Exception("Unopened {");
+				throw new SourceException("Unopened {", $this->iLineNo);
 			} else {
 				return null;
 			}
@@ -235,7 +236,7 @@ class Parser {
 			while (!$this->comes($sQuote)) {
 				$sContent = $this->parseCharacter(false);
 				if ($sContent === null) {
-					throw new \Exception("Non-well-formed quoted string {$this->peek(3)}");
+					throw new \Exception("Non-well-formed quoted string {$this->peek(3)}", $this->iLineNo);
 				}
 				$sResult .= $sContent;
 			}
