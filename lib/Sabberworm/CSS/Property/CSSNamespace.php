@@ -9,11 +9,13 @@ class CSSNamespace implements AtRule {
 	private $mUrl;
 	private $sPrefix;
 	private $iLineNo;
+	protected $aComments;
 	
 	public function __construct($mUrl, $sPrefix = null, $iLineNo = 0) {
 		$this->mUrl = $mUrl;
 		$this->sPrefix = $sPrefix;
 		$this->iLineNo = $iLineNo;
+		$this->aComments = array();
 	}
 
 	/**
@@ -57,5 +59,17 @@ class CSSNamespace implements AtRule {
 			array_unshift($aResult, $this->sPrefix);
 		}
 		return $aResult;
+	}
+
+	public function addComments(array $aComments) {
+		$this->aComments = array_merge($this->aComments, $aComments);
+	}
+
+	public function getComments() {
+		return $this->aComments;
+	}
+
+	public function setComments(array $aComments) {
+		$this->aComments = $aComments;
 	}
 }

@@ -4,19 +4,22 @@ namespace Sabberworm\CSS\RuleSet;
 
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Renderable;
+use Sabberworm\CSS\Comment\Commentable;
 
 /**
  * RuleSet is a generic superclass denoting rules. The typical example for rule sets are declaration block.
  * However, unknown At-Rules (like @font-face) are also rule sets.
  */
-abstract class RuleSet implements Renderable {
+abstract class RuleSet implements Renderable, Commentable {
 
 	private $aRules;
 	protected $iLineNo;
+	protected $aComments;
 
 	public function __construct($iLineNo = 0) {
 		$this->aRules = array();
 		$this->iLineNo = $iLineNo;
+		$this->aComments = array();
 	}
 
 	/**
@@ -123,6 +126,27 @@ abstract class RuleSet implements Renderable {
 		}
 
 		return $oOutputFormat->removeLastSemicolon($sResult);
+	}
+
+	/**
+	 * @param array $aComments Array of comments.
+	 */
+	public function addComments(array $aComments) {
+		$this->aComments = array_merge($this->aComments, $aComments);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getComments() {
+		return $this->aComments;
+	}
+
+	/**
+	 * @param array $aComments Array containing Comment objects.
+	 */
+	public function setComments(array $aComments) {
+		$this->aComments = $aComments;
 	}
 
 }

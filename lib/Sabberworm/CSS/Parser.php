@@ -21,6 +21,7 @@ use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\CSSString;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\Comment\Comment;
 
 /**
  * Parser class parses CSS from text into a data structure.
@@ -83,12 +84,12 @@ class Parser {
 	}
 
 	private function parseDocument(Document $oDocument) {
-		$this->consumeWhiteSpace();
 		$this->parseList($oDocument, true);
 	}
 
 	private function parseList(CSSList $oList, $bIsRoot = false) {
 		while (!$this->isEnd()) {
+			$comments = $this->consumeWhiteSpace();
 			$oListItem = null;
 			if($this->oParserSettings->bLenientParsing) {
 				try {
@@ -104,9 +105,9 @@ class Parser {
 				return;
 			}
 			if($oListItem) {
+				$oListItem->setComments($comments);
 				$oList->append($oListItem);
 			}
-			$this->consumeWhiteSpace();
 		}
 		if (!$bIsRoot) {
 			throw new SourceException("Unexpected end of document", $this->iLineNo);
@@ -161,7 +162,6 @@ class Parser {
 			$oResult = new KeyFrame($iIdentifierLineNum);
 			$oResult->setVendorKeyFrame($sIdentifier);
 			$oResult->setAnimationName(trim($this->consumeUntil('{', false, true)));
-			$this->consumeWhiteSpace();
 			$this->parseList($oResult);
 			return $oResult;
 		} else if ($sIdentifier === 'namespace') {
@@ -182,7 +182,6 @@ class Parser {
 		} else {
 			//Unknown other at rule (font-face or such)
 			$sArgs = trim($this->consumeUntil('{', false, true));
-			$this->consumeWhiteSpace();
 			$bUseRuleSet = true;
 			foreach($this->blockRules as $sBlockRuleName) {
 				if($this->identifierIs($sIdentifier, $sBlockRuleName)) {
@@ -299,9 +298,10 @@ class Parser {
 	}
 
 	private function parseSelector() {
+		$aComments = $this->consumeWhiteSpace();
 		$oResult = new DeclarationBlock($this->iLineNo);
 		$oResult->setSelector($this->consumeUntil('{', false, true));
-		$this->consumeWhiteSpace();
+		$oResult->setComments($aComments);
 		$this->parseRuleSet($oResult);
 		return $oResult;
 	}
@@ -309,7 +309,6 @@ class Parser {
 	private function parseRuleSet($oRuleSet) {
 		while ($this->comes(';')) {
 			$this->consume(';');
-			$this->consumeWhiteSpace();
 		}
 		while (!$this->comes('}')) {
 			$oRule = null;
@@ -323,7 +322,6 @@ class Parser {
 						if($this->streql(substr($sConsume, -1), '}')) {
 							--$this->iCurrentPosition;
 						} else {
-							$this->consumeWhiteSpace();
 							while ($this->comes(';')) {
 								$this->consume(';');
 							}
@@ -339,14 +337,15 @@ class Parser {
 			if($oRule) {
 				$oRuleSet->addRule($oRule);
 			}
-			$this->consumeWhiteSpace();
 		}
 		$this->consume('}');
 	}
 
 	private function parseRule() {
+		$aComments = $this->consumeWhiteSpace();
 		$oRule = new Rule($this->parseIdentifier(), $this->iLineNo);
-		$this->consumeWhiteSpace();
+		$oRule->setComments($aComments);
+		$oRule->addComments($this->consumeWhiteSpace());
 		$this->consume(':');
 		$oValue = $this->parseValue(self::listDelimiterForRule($oRule->getRule()));
 		$oRule->setValue($oValue);
@@ -358,7 +357,6 @@ class Parser {
 		}
 		while ($this->comes(';')) {
 			$this->consume(';');
-			$this->consumeWhiteSpace();
 		}
 		return $oRule;
 	}
@@ -557,35 +555,53 @@ class Parser {
 	}
 
 	private function consumeWhiteSpace() {
+		$comments = array();
 		do {
 			while (preg_match('/\\s/isSu', $this->peek()) === 1) {
 				$this->consume(1);
 			}
 			if($this->oParserSettings->bLenientParsing) {
 				try {
-					$bHasComment = $this->consumeComment();
+					$oComment = $this->consumeComment();
 				} catch(UnexpectedTokenException $e) {
 					// When we can’t find the end of a comment, we assume the document is finished.
 					$this->iCurrentPosition = $this->iLength;
 					return;
 				}
 			} else {
-				$bHasComment = $this->consumeComment();
+				$oComment = $this->consumeComment();
 			}
-		} while($bHasComment);
+			if ($oComment !== false) {
+				$comments[] = $oComment;
+			}
+		} while($oComment !== false);
+		return $comments;
 	}
 
+	/**
+	 * @return false|Comment
+	 */
 	private function consumeComment() {
+		$mComment = false;
 		if ($this->comes('/*')) {
+			$iLineNo = $this->iLineNo;
 			$this->consume(1);
-			while ($this->consume(1) !== '') {
+			$mComment = '';
+			while (($char = $this->consume(1)) !== '') {
+				$mComment .= $char;
 				if ($this->comes('*/')) {
 					$this->consume(2);
-					return true;
+					break;
 				}
 			}
 		}
-		return false;
+
+		if ($mComment !== false) {
+			// We skip the * which was included in the comment.
+			return new Comment(substr($mComment, 1), $iLineNo);
+		}
+
+		return $mComment;
 	}
 
 	private function isEnd() {
