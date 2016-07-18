@@ -582,4 +582,10 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$this->assertCount(1, $comments);
 		$this->assertEquals("Find Me!", $comments[0]->getComment());
 	}
+
+	function testMicrosoftFilterParsing() {
+		$oDoc = $this->parsedStructureForFile('ms-filter');
+		$sExpected = ".test {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);}";
+		$this->assertSame($sExpected, $oDoc->render());
+	}
 }
