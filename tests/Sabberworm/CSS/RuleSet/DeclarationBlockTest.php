@@ -3,6 +3,7 @@
 namespace Sabberworm\CSS\RuleSet;
 
 use Sabberworm\CSS\Parser;
+use Sabberworm\CSS\Rule\Rule;
 
 class DeclarationBlockTest extends \PHPUnit_Framework_TestCase {
 
@@ -203,6 +204,24 @@ class DeclarationBlockTest extends \PHPUnit_Framework_TestCase {
 			array('body {background-color: #f00;background-image: url(foobar.png);background-repeat: no-repeat;background-position: center;}', 'body {background: #f00 url("foobar.png") no-repeat center;}'),
 			array('body {background-color: #f00;background-image: url(foobar.png);background-repeat: no-repeat;background-position: top left;}', 'body {background: #f00 url("foobar.png") no-repeat top left;}'),
 		);
+	}
+
+	public function testOverrideRules() {
+		$sCss = '.wrapper { left: 10px; text-align: left; }';
+		$oParser = new Parser($sCss);
+		$oDoc = $oParser->parse();
+		$oRule = new Rule('right');
+		$oRule->setValue('-10px');
+		$aContents = $oDoc->getContents();
+		$oWrapper = $aContents[0];
+
+		$this->assertCount(2, $oWrapper->getRules());
+		$aContents[0]->setRules(array($oRule));
+
+		$aRules = $oWrapper->getRules();
+		$this->assertCount(1, $aRules);
+		$this->assertEquals('right', $aRules[0]->getRule());
+		$this->assertEquals('-10px', $aRules[0]->getValue());
 	}
 
 }

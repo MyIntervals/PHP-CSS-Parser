@@ -49,6 +49,17 @@ abstract class CSSList implements Renderable, Commentable {
 	}
 
 	/**
+	 * Set the contents.
+	 * @param array $aContents Objects to set as content.
+	 */
+	public function setContents(array $aContents) {
+		$this->aContents = array();
+		foreach ($aContents as $content) {
+			$this->append($content);
+		}
+	}
+
+	/**
 	 * Removes a declaration block from the CSS list if it matches all given selectors.
 	 * @param array|string $mSelector The selectors to match.
 	 * @param boolean $bRemoveAll Whether to stop at the first declaration block found or remove all blocks
