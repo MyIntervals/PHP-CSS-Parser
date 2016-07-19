@@ -29,12 +29,22 @@ abstract class RuleSet implements Renderable, Commentable {
 		return $this->iLineNo;
 	}
 
-	public function addRule(Rule $oRule) {
+	public function addRule(Rule $oRule, Rule $oSibling = null, /* boolean */ $bPrepend = false) {
 		$sRule = $oRule->getRule();
 		if(!isset($this->aRules[$sRule])) {
 			$this->aRules[$sRule] = array();
 		}
-		$this->aRules[$sRule][] = $oRule;
+
+		$iPosition = $bPrepend ? 0 : count($this->aRules[$sRule]);
+
+		if ($oSibling !== null) {
+			$iSiblingPos = array_search($oSibling, $this->aRules[$sRule], true);
+			if ($iSiblingPos !== false) {
+				$iPosition = $bPrepend ? $iSiblingPos : $iSiblingPos + 1;
+			}
+		}
+
+		array_splice($this->aRules[$sRule], $iPosition, 0, array($oRule));
 	}
 
 	/**
