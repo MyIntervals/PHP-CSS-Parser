@@ -141,7 +141,7 @@ class Parser {
 
 	private function parseAtRule() {
 		$this->consume('@');
-		$sIdentifier = $this->parseIdentifier();
+		$sIdentifier = $this->parseIdentifier(false);
 		$iIdentifierLineNum = $this->iLineNo;
 		$this->consumeWhiteSpace();
 		if ($sIdentifier === 'import') {
