@@ -11,6 +11,15 @@
 
 * Unrecoverable parser errors throw an exception of type `Sabberworm\CSS\Parsing\SourceException` instead of `\Exception`.
 
+### 8.1.0 (2016-07-19)
+
+* Comments are no longer silently ignored but stored with the object with which they appear (no render support, though). Thanks to @FMCorz.
+* The IE hacks using `\0` and `\9` can now be parsed (and rendered) in lenient mode. Thanks (again) to @FMCorz.
+* Media queries with or without spaces before the query are parsed. Still no *real* parsing support, though. Sorry…
+* PHPUnit is now listed as a dev-dependency in composer.json.
+* *No backwards-incompatible changes*
+* *No deprecations*
+
 ## 7.0
 
 ### 7.0.0 (2015-08-24)
