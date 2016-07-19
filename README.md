@@ -611,10 +611,10 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 
 ## Contributors/Thanks to
 
-* [ju1ius](https://github.com/ju1ius) for the specificity parsing code and the ability to expand/compact shorthand properties.
-* [GaryJones](https://github.com/GaryJones) for lots of input and [http://css-specificity.info/](http://css-specificity.info/).
-* [ossinkine](https://github.com/ossinkine) for a 150 time performance boost.
 * [Lullabot](https://github.com/Lullabot) for a patch that allows to know the line number for each parsed token.
+* [ju1ius](https://github.com/ju1ius) for the specificity parsing code and the ability to expand/compact shorthand properties.
+* [ossinkine](https://github.com/ossinkine) for a 150 time performance boost.
+* [GaryJones](https://github.com/GaryJones) for lots of input and [http://css-specificity.info/](http://css-specificity.info/).
 * [docteurklein](https://github.com/docteurklein) for output formatting and `CSSList->remove()` inspiration.
 * [nicolopignatelli](https://github.com/nicolopignatelli) for PSR-0 compatibility.
 * [diegoembarcadero](https://github.com/diegoembarcadero) for keyframe at-rule parsing.
