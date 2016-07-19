@@ -542,6 +542,30 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$fooBarComments = $mediaRules[0]->getComments();
 		$this->assertCount(1, $fooBarComments);
 		$this->assertEquals("* Number 10 *", $fooBarComments[0]->getComment());
+
+		// Media -> declaration -> rule.
+		$fooBarRules = $mediaRules[0]->getRules();
+		$fooBarChildComments = $fooBarRules[0]->getComments();
+		$this->assertCount(1, $fooBarChildComments);
+		$this->assertEquals("* Number 10b *", $fooBarChildComments[0]->getComment());
 	}
 
+	function testFlatCommentExtracting() {
+		$parser = new Parser('div {/*Find Me!*/left:10px; text-align:left;}');
+		$doc = $parser->parse();
+		$contents = $doc->getContents();
+		$divRules = $contents[0]->getRules();
+		$comments = $divRules[0]->getComments();
+		$this->assertCount(1, $comments);
+		$this->assertEquals("Find Me!", $comments[0]->getComment());
+	}
+
+	function testTopLevelCommentExtracting() {
+		$parser = new Parser('/*Find Me!*/div {left:10px; text-align:left;}');
+		$doc = $parser->parse();
+		$contents = $doc->getContents();
+		$comments = $contents[0]->getComments();
+		$this->assertCount(1, $comments);
+		$this->assertEquals("Find Me!", $comments[0]->getComment());
+	}
 }

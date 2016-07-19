@@ -298,9 +298,9 @@ class Parser {
 	}
 
 	private function parseSelector() {
-		$aComments = $this->consumeWhiteSpace();
+		$aComments = array();
 		$oResult = new DeclarationBlock($this->iLineNo);
-		$oResult->setSelector($this->consumeUntil('{', false, true));
+		$oResult->setSelector($this->consumeUntil('{', false, true, $aComments));
 		$oResult->setComments($aComments);
 		$this->parseRuleSet($oResult);
 		return $oResult;
@@ -608,13 +608,12 @@ class Parser {
 		return $this->iCurrentPosition >= $this->iLength;
 	}
 
-	private function consumeUntil($aEnd, $bIncludeEnd = false, $consumeEnd = false) {
+	private function consumeUntil($aEnd, $bIncludeEnd = false, $consumeEnd = false, array &$comments = array()) {
 		$aEnd = is_array($aEnd) ? $aEnd : array($aEnd);
 		$out = '';
 		$start = $this->iCurrentPosition;
 
 		while (($char = $this->consume(1)) !== '') {
-			$this->consumeComment();
 			if (in_array($char, $aEnd)) {
 				if ($bIncludeEnd) {
 					$out .= $char;
@@ -624,6 +623,9 @@ class Parser {
 				return $out;
 			}
 			$out .= $char;
+			if ($comment = $this->consumeComment()) {
+				$comments[] = $comment;
+			}
 		}
 
 		$this->iCurrentPosition = $start;
