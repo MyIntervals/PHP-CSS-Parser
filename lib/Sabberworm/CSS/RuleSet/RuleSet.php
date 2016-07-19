@@ -53,7 +53,18 @@ abstract class RuleSet implements Renderable {
 		}
 		return $aResult;
 	}
-	
+
+	/**
+	 * Override all the rules of this set.
+	 * @param array $aRules The rules to override with.
+	 */
+	public function setRules(array $aRules) {
+		$this->aRules = array();
+		foreach ($aRules as $rule) {
+			$this->addRule($rule);
+		}
+	}
+
 	/**
 	 * Returns all rules matching the given pattern and returns them in an associative array with the rule’s name as keys. This method exists mainly for backwards-compatibility and is really only partially useful.
 	 * @param (string) $mRule pattern to search for. If null, returns all rules. if the pattern ends with a dash, all rules starting with the pattern are returned as well as one matching the pattern with the dash excluded. passing a Rule behaves like calling getRules($mRule->getRule()).
