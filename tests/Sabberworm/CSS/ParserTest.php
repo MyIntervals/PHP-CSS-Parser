@@ -505,4 +505,18 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 			throw $e;
 		}
 	}
+
+	/**
+	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+	*/
+	function testIeHacksStrictParsing() {
+		// We can't strictly parse IE hacks.
+		$this->parsedStructureForFile('ie-hacks', Settings::create()->beStrict());
+	}
+
+	function testIeHacksParsing() {
+		$oDoc = $this->parsedStructureForFile('ie-hacks', Settings::create()->withLenientParsing(true));
+		$sExpected = 'p {padding-right: .75rem \9;background-image: none \9;color: red \9\0;background-color: red \9\0;background-color: red \9\0 !important;content: "red 	\0";content: "red઼";}';
+		$this->assertEquals($sExpected, $oDoc->render());
+	}
 }

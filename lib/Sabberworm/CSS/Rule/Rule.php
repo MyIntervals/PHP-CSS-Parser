@@ -15,12 +15,14 @@ class Rule implements Renderable {
 	private $sRule;
 	private $mValue;
 	private $bIsImportant;
+	private $aIeHack;
 	protected $iLineNo;
 
 	public function __construct($sRule, $iLineNo = 0) {
 		$this->sRule = $sRule;
 		$this->mValue = null;
 		$this->bIsImportant = false;
+		$this->aIeHack = array();
 		$this->iLineNo = $iLineNo;
 	}
 
@@ -127,6 +129,18 @@ class Rule implements Renderable {
 		}
 	}
 
+	public function addIeHack($iModifier) {
+		$this->aIeHack[] = $iModifier;
+	}
+
+	public function setIeHack(array $aModifiers) {
+		$this->aIeHack = $aModifiers;
+	}
+
+	public function getIeHack() {
+		return $this->aIeHack;
+	}
+
 	public function setIsImportant($bIsImportant) {
 		$this->bIsImportant = $bIsImportant;
 	}
@@ -145,6 +159,9 @@ class Rule implements Renderable {
 			$sResult .= $this->mValue->render($oOutputFormat);
 		} else {
 			$sResult .= $this->mValue;
+		}
+		if (!empty($this->aIeHack)) {
+			$sResult .= ' \\' . implode('\\', $this->aIeHack);
 		}
 		if ($this->bIsImportant) {
 			$sResult .= ' !important';

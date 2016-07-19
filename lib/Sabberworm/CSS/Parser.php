@@ -255,6 +255,10 @@ class Parser {
 
 	private function parseCharacter($bIsForIdentifier) {
 		if ($this->peek() === '\\') {
+			if ($bIsForIdentifier && $this->oParserSettings->bLenientParsing && ($this->comes('\0') || $this->comes('\9'))) {
+				// Non-strings can contain \0 or \9 which is an IE hack supported in lenient parsing.
+				return null;
+			}
 			$this->consume('\\');
 			if ($this->comes('\n') || $this->comes('\r')) {
 				return '';
@@ -350,6 +354,13 @@ class Parser {
 		$this->consume(':');
 		$oValue = $this->parseValue(self::listDelimiterForRule($oRule->getRule()));
 		$oRule->setValue($oValue);
+		if ($this->oParserSettings->bLenientParsing) {
+			while ($this->comes('\\')) {
+				$this->consume('\\');
+				$oRule->addIeHack($this->consume());
+				$this->consumeWhiteSpace();
+			}
+		}
 		if ($this->comes('!')) {
 			$this->consume('!');
 			$this->consumeWhiteSpace();
@@ -367,7 +378,7 @@ class Parser {
 		$aStack = array();
 		$this->consumeWhiteSpace();
 		//Build a list of delimiters and parsed values
-		while (!($this->comes('}') || $this->comes(';') || $this->comes('!') || $this->comes(')'))) {
+		while (!($this->comes('}') || $this->comes(';') || $this->comes('!') || $this->comes(')') || $this->comes('\\'))) {
 			if (count($aStack) > 0) {
 				$bFoundDelimiter = false;
 				foreach ($aListDelimiters as $sDelimiter) {
