@@ -4,6 +4,7 @@ namespace Sabberworm\CSS\RuleSet;
 
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Rule\Rule;
+use Sabberworm\CSS\Value\Size;
 
 class DeclarationBlockTest extends \PHPUnit_Framework_TestCase {
 
@@ -222,6 +223,45 @@ class DeclarationBlockTest extends \PHPUnit_Framework_TestCase {
 		$this->assertCount(1, $aRules);
 		$this->assertEquals('right', $aRules[0]->getRule());
 		$this->assertEquals('-10px', $aRules[0]->getValue());
+	}
+	
+	public function testRuleInsertion() {
+		$sCss = '.wrapper { left: 10px; text-align: left; }';
+		$oParser = new Parser($sCss);
+		$oDoc = $oParser->parse();
+		$aContents = $oDoc->getContents();
+		$oWrapper = $aContents[0];
+
+		$oFirst = $oWrapper->getRules('left');
+		$this->assertCount(1, $oFirst);
+		$oFirst = $oFirst[0];
+
+		$oSecond = $oWrapper->getRules('text-');
+		$this->assertCount(1, $oSecond);
+		$oSecond = $oSecond[0];
+
+		$oBefore = new Rule('left');
+		$oBefore->setValue(new Size(16, 'em'));
+
+		$oMiddle = new Rule('text-align');
+		$oMiddle->setValue(new Size(1));
+
+		$oAfter = new Rule('border-bottom-width');
+		$oAfter->setValue(new Size(1, 'px'));
+
+		$oWrapper->addRule($oAfter);
+		$oWrapper->addRule($oBefore, $oFirst);
+		$oWrapper->addRule($oMiddle, $oSecond);
+
+		$aRules = $oWrapper->getRules();
+
+		$this->assertSame($oBefore, $aRules[0]);
+		$this->assertSame($oFirst, $aRules[1]);
+		$this->assertSame($oMiddle, $aRules[2]);
+		$this->assertSame($oSecond, $aRules[3]);
+		$this->assertSame($oAfter, $aRules[4]);
+
+		$this->assertSame('.wrapper {left: 16em;left: 10px;text-align: 1;text-align: left;border-bottom-width: 1px;}', $oDoc->render());
 	}
 
 }
