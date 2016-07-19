@@ -519,4 +519,67 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$sExpected = 'p {padding-right: .75rem \9;background-image: none \9;color: red \9\0;background-color: red \9\0;background-color: red \9\0 !important;content: "red 	\0";content: "red઼";}';
 		$this->assertEquals($sExpected, $oDoc->render());
 	}
+
+	/**
+	 * @depends testFiles
+	 */
+	function testCommentExtracting() {
+		$oDoc = $this->parsedStructureForFile('comments');
+		$aNodes = $oDoc->getContents();
+
+		// Import property.
+		$importComments = $aNodes[0]->getComments();
+		$this->assertCount(1, $importComments);
+		$this->assertEquals("*\n * Comments Hell.\n ", $importComments[0]->getComment());
+
+		// Declaration block.
+		$fooBarBlock = $aNodes[1];
+		$fooBarBlockComments = $fooBarBlock->getComments();
+		// TODO Support comments in selectors.
+		// $this->assertCount(2, $fooBarBlockComments);
+		// $this->assertEquals("* Number 4 *", $fooBarBlockComments[0]->getComment());
+		// $this->assertEquals("* Number 5 *", $fooBarBlockComments[1]->getComment());
+
+		// Declaration rules.
+		$fooBarRules = $fooBarBlock->getRules();
+		$fooBarRule = $fooBarRules[0];
+		$fooBarRuleComments = $fooBarRule->getComments();
+		$this->assertCount(1, $fooBarRuleComments);
+		$this->assertEquals(" Number 6 ", $fooBarRuleComments[0]->getComment());
+
+		// Media property.
+		$mediaComments = $aNodes[2]->getComments();
+		$this->assertCount(0, $mediaComments);
+
+		// Media children.
+		$mediaRules = $aNodes[2]->getContents();
+		$fooBarComments = $mediaRules[0]->getComments();
+		$this->assertCount(1, $fooBarComments);
+		$this->assertEquals("* Number 10 *", $fooBarComments[0]->getComment());
+
+		// Media -> declaration -> rule.
+		$fooBarRules = $mediaRules[0]->getRules();
+		$fooBarChildComments = $fooBarRules[0]->getComments();
+		$this->assertCount(1, $fooBarChildComments);
+		$this->assertEquals("* Number 10b *", $fooBarChildComments[0]->getComment());
+	}
+
+	function testFlatCommentExtracting() {
+		$parser = new Parser('div {/*Find Me!*/left:10px; text-align:left;}');
+		$doc = $parser->parse();
+		$contents = $doc->getContents();
+		$divRules = $contents[0]->getRules();
+		$comments = $divRules[0]->getComments();
+		$this->assertCount(1, $comments);
+		$this->assertEquals("Find Me!", $comments[0]->getComment());
+	}
+
+	function testTopLevelCommentExtracting() {
+		$parser = new Parser('/*Find Me!*/div {left:10px; text-align:left;}');
+		$doc = $parser->parse();
+		$contents = $doc->getContents();
+		$comments = $contents[0]->getComments();
+		$this->assertCount(1, $comments);
+		$this->assertEquals("Find Me!", $comments[0]->getComment());
+	}
 }

@@ -5,18 +5,20 @@ namespace Sabberworm\CSS\Rule;
 use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Value;
+use Sabberworm\CSS\Comment\Commentable;
 
 /**
  * RuleSets contains Rule objects which always have a key and a value.
  * In CSS, Rules are expressed as follows: “key: value[0][0] value[0][1], value[1][0] value[1][1];”
  */
-class Rule implements Renderable {
+class Rule implements Renderable, Commentable {
 
 	private $sRule;
 	private $mValue;
 	private $bIsImportant;
 	private $aIeHack;
 	protected $iLineNo;
+	protected $aComments;
 
 	public function __construct($sRule, $iLineNo = 0) {
 		$this->sRule = $sRule;
@@ -24,6 +26,7 @@ class Rule implements Renderable {
 		$this->bIsImportant = false;
 		$this->aIeHack = array();
 		$this->iLineNo = $iLineNo;
+		$this->aComments = array();
 	}
 
 	/**
@@ -168,6 +171,27 @@ class Rule implements Renderable {
 		}
 		$sResult .= ';';
 		return $sResult;
+	}
+
+	/**
+	 * @param array $aComments Array of comments.
+	 */
+	public function addComments(array $aComments) {
+		$this->aComments = array_merge($this->aComments, $aComments);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getComments() {
+		return $this->aComments;
+	}
+
+	/**
+	 * @param array $aComments Array containing Comment objects.
+	 */
+	public function setComments(array $aComments) {
+		$this->aComments = $aComments;
 	}
 
 }
