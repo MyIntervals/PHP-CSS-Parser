@@ -436,6 +436,8 @@ class Parser {
 			$oValue = $this->parseURLValue();
 		} else if ($this->comes("'") || $this->comes('"')) {
 			$oValue = $this->parseStringValue();
+		} else if ($this->comes("progid:") && $this->oParserSettings->bLenientParsing) {
+			$oValue = $this->parseMicrosoftFilter();
 		} else {
 			$oValue = $this->parseIdentifier(true, false);
 		}
@@ -494,6 +496,12 @@ class Parser {
 			$this->consume(')');
 		}
 		return new Color($aColor, $this->iLineNo);
+	}
+
+	private function parseMicrosoftFilter() {
+		$sFunction = $this->consumeUntil('(', false, true);
+		$aArguments = $this->parseValue(array(',', '='));
+		return new CSSFunction($sFunction, $aArguments, ',', $this->iLineNo);
 	}
 
 	private function parseURLValue() {
