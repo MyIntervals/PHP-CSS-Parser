@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['safely',['safely',['../class_sabberworm_1_1_c_s_s_1_1_output_formatter.html#a15f5d6955bfcd21c5c857b530fc971a3',1,'Sabberworm::CSS::OutputFormatter']]],
-  ['setselector',['setSelector',['../class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#adb4515748db8eb42bc8414909d5c27d5',1,'Sabberworm::CSS::RuleSet::DeclarationBlock']]],
-  ['setvalues',['setValues',['../class_sabberworm_1_1_c_s_s_1_1_rule_1_1_rule.html#a81c90efd5f1baf10f89fe368208098a9',1,'Sabberworm::CSS::Rule::Rule']]]
+  ['remove',['remove',['../class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_list.html#afb372eac8d4c12dfd920e27058c592e2',1,'Sabberworm::CSS::CSSList::CSSList']]],
+  ['removedeclarationblockbyselector',['removeDeclarationBlockBySelector',['../class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_list.html#ac1988363980d1fcb59345e8cc34354f7',1,'Sabberworm::CSS::CSSList::CSSList']]],
+  ['removerule',['removeRule',['../class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_rule_set.html#aca06340187f0b4dd11186527e6a0faae',1,'Sabberworm::CSS::RuleSet::RuleSet']]],
+  ['render',['render',['../class_sabberworm_1_1_c_s_s_1_1_comment_1_1_comment.html#a8e907dc04d9e47ae4b44fc43e9186c89',1,'Sabberworm::CSS::Comment::Comment']]]
 ];

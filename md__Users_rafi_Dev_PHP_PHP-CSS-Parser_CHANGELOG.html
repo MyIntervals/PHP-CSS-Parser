@@ -24,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Sabberworm/PHP-CSS-Parser
-   &#160;<span id="projectnumber">7.0.0</span>
+   &#160;<span id="projectnumber">8.1.0</span>
    </div>
    <div id="projectbrief">A Parser for CSS Files written in PHP. Allows extraction of CSS files into a data structure, manipulation of said structure and output as (optimized) CSS</div>
   </td>
@@ -81,12 +81,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Revision History </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2>7.0</h2>
+<div class="textblock"><h2>8.0</h2>
+<h3>8.0.0 (2016-06-30)</h3>
+<ul>
+<li>Store source CSS line numbers in tokens and parsing exceptions.</li>
+<li><em>No deprecations</em></li>
+</ul>
+<h4>Backwards-incompatible changes</h4>
+<ul>
+<li>Unrecoverable parser errors throw an exception of type <code>Sabberworm\CSS\Parsing\SourceException</code> instead of <code>\Exception</code>.</li>
+</ul>
+<h3>8.1.0 (2016-07-19)</h3>
+<ul>
+<li>Comments are no longer silently ignored but stored with the object with which they appear (no render support, though). Thanks to .</li>
+<li>The IE hacks using <code>\0</code> and <code>\9</code> can now be parsed (and rendered) in lenient mode. Thanks (again) to .</li>
+<li>Media queries with or without spaces before the query are parsed. Still no <em>real</em> parsing support, though. Sorry…</li>
+<li>PHPUnit is now listed as a dev-dependency in composer.json.</li>
+<li><em>No backwards-incompatible changes</em></li>
+<li><em>No deprecations</em></li>
+</ul>
+<h2>7.0</h2>
 <h3>7.0.0 (2015-08-24)</h3>
 <ul>
 <li>Compatibility with PHP 7. Well timed, eh?</li>
+<li><em>No deprecations</em></li>
 </ul>
-<h4>Deprecations</h4>
+<h4>Backwards-incompatible changes</h4>
 <ul>
 <li>The <code>Sabberworm\CSS\Value\String</code> class has been renamed to <code>Sabberworm\CSS\Value\CSSString</code>.</li>
 </ul>
@@ -99,6 +119,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h3>7.0.2 (2016-02-11)</h3>
 <ul>
 <li>150 time performance boost thanks to &lt;a href="https://github.com/ossinkine"&gt;ossinkine</li>
+<li><em>No backwards-incompatible changes</em></li>
+<li><em>No deprecations</em></li>
+</ul>
+<h3>7.0.3 (2016-04-27)</h3>
+<ul>
+<li>Fixed parsing empty CSS when multibyte is off</li>
 <li><em>No backwards-incompatible changes</em></li>
 <li><em>No deprecations</em></li>
 </ul>
@@ -192,7 +218,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </ul>
 <h3>5.1.2 (2013-10-30)</h3>
 <ul>
-<li>Remove the use of consumeUntil in comment parsing. This makes it possible to parse comments such as “/** Perfectly valid **/”</li>
+<li>Remove the use of consumeUntil in comment parsing. This makes it possible to parse comments such as <code>/** Perfectly valid **/</code></li>
+<li>Add fr relative size unit</li>
+<li>Fix some issues with HHVM</li>
 <li><em>No backwards-incompatible changes</em></li>
 <li><em>No deprecations</em></li>
 </ul>
@@ -247,7 +275,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 11 2016 12:17:17 for Sabberworm/PHP-CSS-Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 20 2016 23:28:53 for Sabberworm/PHP-CSS-Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

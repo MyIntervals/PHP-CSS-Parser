@@ -24,7 +24,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Sabberworm/PHP-CSS-Parser
-   &#160;<span id="projectnumber">7.0.0</span>
+   &#160;<span id="projectnumber">8.1.0</span>
    </div>
    <div id="projectbrief">A Parser for CSS Files written in PHP. Allows extraction of CSS files into a data structure, manipulation of said structure and output as (optimized) CSS</div>
   </td>
@@ -91,6 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_sabberworm_1_1_c_s_s_1_1_rule_1_1_rule-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Rule Class Reference</div>  </div>
@@ -99,12 +100,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>RuleSets contains <a class="el" href="class_sabberworm_1_1_c_s_s_1_1_rule_1_1_rule.html" title="RuleSets contains Rule objects which always have a key and a value. ">Rule</a> objects which always have a key and a value.  
  <a href="class_sabberworm_1_1_c_s_s_1_1_rule_1_1_rule.html#details">More...</a></p>
+<div class="dynheader">
+Inheritance diagram for Rule:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 0 -->
+</div>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for Rule:</div>
+<div class="dyncontent">
+<div class="center"><!-- SVG 1 -->
+</div>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a26141192a9a8480da930983882751d38"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a26141192a9a8480da930983882751d38"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>__construct</b> ($sRule)</td></tr>
-<tr class="separator:a26141192a9a8480da930983882751d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3870ad92566a80ec40789a12e97deb63"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3870ad92566a80ec40789a12e97deb63"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>__construct</b> ($sRule, $iLineNo=0)</td></tr>
+<tr class="separator:a3870ad92566a80ec40789a12e97deb63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16d247e18fc050dffcf5ed26439b2905"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sabberworm_1_1_c_s_s_1_1_rule_1_1_rule.html#a16d247e18fc050dffcf5ed26439b2905">getLineNo</a> ()</td></tr>
+<tr class="separator:a16d247e18fc050dffcf5ed26439b2905"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace09bc41c54c40b989a0930217bbf70a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ace09bc41c54c40b989a0930217bbf70a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>setRule</b> ($sRule)</td></tr>
 <tr class="separator:ace09bc41c54c40b989a0930217bbf70a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -124,6 +139,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad4f696e3b0b9832f7ec0136f249895f4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sabberworm_1_1_c_s_s_1_1_rule_1_1_rule.html#ad4f696e3b0b9832f7ec0136f249895f4">addValue</a> ($mValue, $sType= ' ')</td></tr>
 <tr class="memdesc:ad4f696e3b0b9832f7ec0136f249895f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a value to the existing value.  <a href="#ad4f696e3b0b9832f7ec0136f249895f4">More...</a><br /></td></tr>
 <tr class="separator:ad4f696e3b0b9832f7ec0136f249895f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bf04ef34507b82e902c2eddd636b9d3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0bf04ef34507b82e902c2eddd636b9d3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>addIeHack</b> ($iModifier)</td></tr>
+<tr class="separator:a0bf04ef34507b82e902c2eddd636b9d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e0cb3bcc22996460072796e7eeee855"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6e0cb3bcc22996460072796e7eeee855"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>setIeHack</b> (array $aModifiers)</td></tr>
+<tr class="separator:a6e0cb3bcc22996460072796e7eeee855"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab349f002e94306b44b7147f11ec7cec2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab349f002e94306b44b7147f11ec7cec2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>getIeHack</b> ()</td></tr>
+<tr class="separator:ab349f002e94306b44b7147f11ec7cec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a944ca1fc5ef88e8bca7ed083e018302b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a944ca1fc5ef88e8bca7ed083e018302b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>setIsImportant</b> ($bIsImportant)</td></tr>
 <tr class="separator:a944ca1fc5ef88e8bca7ed083e018302b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,11 +160,50 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8e907dc04d9e47ae4b44fc43e9186c89"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e907dc04d9e47ae4b44fc43e9186c89"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>render</b> (\<a class="el" href="class_sabberworm_1_1_c_s_s_1_1_output_format.html">Sabberworm\CSS\OutputFormat</a> $oOutputFormat)</td></tr>
 <tr class="separator:a8e907dc04d9e47ae4b44fc43e9186c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab61516f4d219d8eb3fbf503f191e09aa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sabberworm_1_1_c_s_s_1_1_rule_1_1_rule.html#ab61516f4d219d8eb3fbf503f191e09aa">addComments</a> (array $aComments)</td></tr>
+<tr class="separator:ab61516f4d219d8eb3fbf503f191e09aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3034ead082330d2c046a69814009808"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sabberworm_1_1_c_s_s_1_1_rule_1_1_rule.html#af3034ead082330d2c046a69814009808">getComments</a> ()</td></tr>
+<tr class="separator:af3034ead082330d2c046a69814009808"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9366ed3d173d3580395c96cda3005564"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_sabberworm_1_1_c_s_s_1_1_rule_1_1_rule.html#a9366ed3d173d3580395c96cda3005564">setComments</a> (array $aComments)</td></tr>
+<tr class="separator:a9366ed3d173d3580395c96cda3005564"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a1019368868955f64e3173e8f40d62582"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1019368868955f64e3173e8f40d62582"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>$iLineNo</b></td></tr>
+<tr class="separator:a1019368868955f64e3173e8f40d62582"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac812e339f6635f2838c73a1436247e44"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac812e339f6635f2838c73a1436247e44"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>$aComments</b></td></tr>
+<tr class="separator:ac812e339f6635f2838c73a1436247e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>RuleSets contains <a class="el" href="class_sabberworm_1_1_c_s_s_1_1_rule_1_1_rule.html" title="RuleSets contains Rule objects which always have a key and a value. ">Rule</a> objects which always have a key and a value. </p>
 <p>In CSS, Rules are expressed as follows: “key: value[0][0] value[0][1], value[1][0] value[1][1];” </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ab61516f4d219d8eb3fbf503f191e09aa"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">addComments </td>
+          <td>(</td>
+          <td class="paramtype">array&#160;</td>
+          <td class="paramname"><em>$aComments</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">array</td><td class="paramname">$aComments</td><td>Array of comments. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="interface_sabberworm_1_1_c_s_s_1_1_comment_1_1_commentable.html#ab61516f4d219d8eb3fbf503f191e09aa">Commentable</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ad4f696e3b0b9832f7ec0136f249895f4"></a>
 <div class="memitem">
 <div class="memproto">
@@ -170,6 +233,42 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="af3034ead082330d2c046a69814009808"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">getComments </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>array </dd></dl>
+
+<p>Implements <a class="el" href="interface_sabberworm_1_1_c_s_s_1_1_comment_1_1_commentable.html#af3034ead082330d2c046a69814009808">Commentable</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a16d247e18fc050dffcf5ed26439b2905"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">getLineNo </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
+
+<p>Implements <a class="el" href="interface_sabberworm_1_1_c_s_s_1_1_renderable.html">Renderable</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a70a0fe08035189260c72e32a9e20d30c"></a>
 <div class="memitem">
 <div class="memproto">
@@ -184,6 +283,30 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000003">Deprecated:</a></b></dt><dd>Old-Style 2-dimensional array returned.</dd></dl>
 <p>Retained for (some) backwards-compatibility. Use getValue() instead and check for the existance of a (nested set of) ValueList object(s). </p>
+
+</div>
+</div>
+<a class="anchor" id="a9366ed3d173d3580395c96cda3005564"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">setComments </td>
+          <td>(</td>
+          <td class="paramtype">array&#160;</td>
+          <td class="paramname"><em>$aComments</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">array</td><td class="paramname">$aComments</td><td>Array containing Comment objects. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="interface_sabberworm_1_1_c_s_s_1_1_comment_1_1_commentable.html#a9366ed3d173d3580395c96cda3005564">Commentable</a>.</p>
 
 </div>
 </div>
@@ -211,7 +334,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 11 2016 12:17:17 for Sabberworm/PHP-CSS-Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 20 2016 23:28:53 for Sabberworm/PHP-CSS-Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

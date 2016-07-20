@@ -1,0 +1,25 @@
+digraph "getRulesAssoc"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="getRulesAssoc",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Sabberworm\\CSS\\RuleSet\l\\DeclarationBlock\\expandBorder\lShorthand",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9dd0036775357fd3c53cafaa10f45b55",tooltip="Split shorthand border declarations (e.g. "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Sabberworm\\CSS\\RuleSet\l\\DeclarationBlock\\expandShorthands",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#af0432da015f2bfee3dd9d81d39d8b4e6",tooltip="Split shorthand declarations (e.g. "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Sabberworm\\CSS\\RuleSet\l\\DeclarationBlock\\expandDimensions\lShorthand",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9ecde3bc4b8030c61ee2fc2a151728d7",tooltip="Split shorthand dimensional declarations (e.g. "];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Sabberworm\\CSS\\RuleSet\l\\DeclarationBlock\\expandFont\lShorthand",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#ac04ad57b57030456e7e2b9e456a7dc42",tooltip="Convert shorthand font declarations (e.g. "];
+  Node5 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Sabberworm\\CSS\\RuleSet\l\\DeclarationBlock\\createBorder\lShorthand",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a4e9f90d5de60211f6bef2a1152a32e7d",tooltip="Combine border-color, border-style and border-width into border Should be run after create_dimensions..."];
+  Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="Sabberworm\\CSS\\RuleSet\l\\DeclarationBlock\\createShorthands",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a02455b5dac22d0760454fc03c0880feb",tooltip="Create shorthand declarations (e.g. "];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="Sabberworm\\CSS\\RuleSet\l\\DeclarationBlock\\createFont\lShorthand",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9957285c5dd0d6372e958d4b35f9ffcf",tooltip="Looks for long format CSS font properties (e.g. "];
+  Node8 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

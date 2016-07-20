@@ -1,0 +1,8 @@
+digraph "Graphical Class Hierarchy"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="OutputFormatter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sabberworm_1_1_c_s_s_1_1_output_formatter.html"];
+}

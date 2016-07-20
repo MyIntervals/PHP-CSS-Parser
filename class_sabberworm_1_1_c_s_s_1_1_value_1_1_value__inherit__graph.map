@@ -1,11 +1,11 @@
 <map id="Value" name="Value">
-<area shape="rect" id="node3" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_primitive_value.html" title="PrimitiveValue" alt="" coords="110,152,216,177"/>
-<area shape="rect" id="node7" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_value_list.html" title="ValueList" alt="" coords="268,152,343,177"/>
-<area shape="rect" id="node2" href="$interface_sabberworm_1_1_c_s_s_1_1_renderable.html" title="Renderable" alt="" coords="202,5,292,31"/>
-<area shape="rect" id="node4" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_c_s_s_string.html" title="CSSString" alt="" coords="5,225,89,251"/>
-<area shape="rect" id="node5" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_size.html" title="Size" alt="" coords="113,225,160,251"/>
-<area shape="rect" id="node6" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_u_r_l.html" title="URL" alt="" coords="184,225,232,251"/>
-<area shape="rect" id="node8" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_c_s_s_function.html" title="CSSFunction" alt="" coords="256,225,356,251"/>
-<area shape="rect" id="node10" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_rule_value_list.html" title="RuleValueList" alt="" coords="380,225,482,251"/>
-<area shape="rect" id="node9" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_color.html" title="Color" alt="" coords="279,299,332,324"/>
+<area shape="rect" id="node3" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_primitive_value.html" title="PrimitiveValue" alt="" coords="83,155,189,181"/>
+<area shape="rect" id="node7" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_value_list.html" title="ValueList" alt="" coords="244,155,321,181"/>
+<area shape="rect" id="node2" href="$interface_sabberworm_1_1_c_s_s_1_1_renderable.html" title="Renderable" alt="" coords="179,5,269,32"/>
+<area shape="rect" id="node4" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_size.html" title="Size" alt="" coords="5,229,53,256"/>
+<area shape="rect" id="node5" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_string.html" title="String" alt="" coords="78,229,135,256"/>
+<area shape="rect" id="node6" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_u_r_l.html" title="URL" alt="" coords="159,229,209,256"/>
+<area shape="rect" id="node8" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_c_s_s_function.html" title="CSSFunction" alt="" coords="233,229,333,256"/>
+<area shape="rect" id="node10" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_rule_value_list.html" title="RuleValueList" alt="" coords="357,229,461,256"/>
+<area shape="rect" id="node9" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_color.html" title="Color" alt="" coords="256,304,309,331"/>
 </map>

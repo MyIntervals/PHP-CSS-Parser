@@ -1,0 +1,15 @@
+digraph "Document"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="Document",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="CSSBlockList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_block_list.html",tooltip="A CSSBlockList is a CSSList whose DeclarationBlocks are guaranteed to contain valid declaration block..."];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="CSSList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_list.html",tooltip="A CSSList is the most generic container available. "];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Renderable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_sabberworm_1_1_c_s_s_1_1_renderable.html"];
+  Node5 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Commentable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_sabberworm_1_1_c_s_s_1_1_comment_1_1_commentable.html"];
+}

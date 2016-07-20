@@ -1,24 +1,24 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_list.html" title="A CSSList is the most generic container available. " alt="" coords="16,79,85,104"/>
-<area shape="rect" id="node2" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_block_list.html" title="A CSSBlockList is a CSSList whose DeclarationBlocks are guaranteed to contain valid declaration block..." alt="" coords="144,53,246,79"/>
-<area shape="rect" id="node5" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_key_frame.html" title="KeyFrame" alt="" coords="313,104,396,129"/>
-<area shape="rect" id="node3" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_at_rule_block_list.html" title="A BlockList constructed by an unknown &#45;rule. " alt="" coords="297,55,412,80"/>
-<area shape="rect" id="node4" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_document.html" title="The root CSSList of a parsed file. " alt="" coords="313,5,395,31"/>
-<area shape="rect" id="node6" href="$interface_sabberworm_1_1_c_s_s_1_1_renderable.html" title="Renderable" alt="" coords="5,325,96,351"/>
-<area shape="rect" id="node7" href="$interface_sabberworm_1_1_c_s_s_1_1_property_1_1_at_rule.html" title="AtRule" alt="" coords="164,203,225,228"/>
-<area shape="rect" id="node12" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_rule_set.html" title="RuleSet is a generic superclass denoting rules. " alt="" coords="160,325,229,351"/>
-<area shape="rect" id="node14" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_value.html" title="Value" alt="" coords="167,400,222,425"/>
-<area shape="rect" id="node8" href="$class_sabberworm_1_1_c_s_s_1_1_property_1_1_charset.html" title="Class representing an &#160;rule. " alt="" coords="320,153,388,179"/>
-<area shape="rect" id="node9" href="$class_sabberworm_1_1_c_s_s_1_1_property_1_1_c_s_s_namespace.html" title="CSSNamespace" alt="" coords="294,203,414,228"/>
-<area shape="rect" id="node10" href="$class_sabberworm_1_1_c_s_s_1_1_property_1_1_import.html" title="Class representing an &#160;rule. " alt="" coords="325,252,384,277"/>
-<area shape="rect" id="node11" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_at_rule_set.html" title="A RuleSet constructed by an unknown &#45;rule. " alt="" coords="314,301,395,327"/>
-<area shape="rect" id="node13" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html" title="Declaration blocks are the parts of a css file which denote the rules belonging to a selector..." alt="" coords="294,351,415,376"/>
-<area shape="rect" id="node15" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_primitive_value.html" title="PrimitiveValue" alt="" coords="302,400,407,425"/>
-<area shape="rect" id="node19" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_value_list.html" title="ValueList" alt="" coords="317,473,392,499"/>
-<area shape="rect" id="node16" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_c_s_s_string.html" title="CSSString" alt="" coords="473,325,556,351"/>
-<area shape="rect" id="node17" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_size.html" title="Size" alt="" coords="491,375,538,400"/>
-<area shape="rect" id="node18" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_u_r_l.html" title="URL" alt="" coords="490,424,538,449"/>
-<area shape="rect" id="node20" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_c_s_s_function.html" title="CSSFunction" alt="" coords="464,473,564,499"/>
-<area shape="rect" id="node22" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_rule_value_list.html" title="RuleValueList" alt="" coords="463,523,566,548"/>
-<area shape="rect" id="node21" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_color.html" title="Color" alt="" coords="614,473,667,499"/>
+<area shape="rect" id="node1" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_list.html" title="A CSSList is the most generic container available. " alt="" coords="15,81,86,108"/>
+<area shape="rect" id="node2" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_block_list.html" title="A CSSBlockList is a CSSList whose DeclarationBlocks are guaranteed to contain valid declaration block..." alt="" coords="144,56,247,83"/>
+<area shape="rect" id="node5" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_key_frame.html" title="KeyFrame" alt="" coords="314,107,398,133"/>
+<area shape="rect" id="node3" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_at_rule_block_list.html" title="A BlockList constructed by an unknown @&#45;rule. " alt="" coords="298,56,414,83"/>
+<area shape="rect" id="node4" href="$class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_document.html" title="The root CSSList of a parsed file. " alt="" coords="315,5,397,32"/>
+<area shape="rect" id="node6" href="$interface_sabberworm_1_1_c_s_s_1_1_renderable.html" title="Renderable" alt="" coords="5,335,96,361"/>
+<area shape="rect" id="node7" href="$interface_sabberworm_1_1_c_s_s_1_1_property_1_1_at_rule.html" title="AtRule" alt="" coords="164,208,227,235"/>
+<area shape="rect" id="node12" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_rule_set.html" title="RuleSet is a generic superclass denoting rules. " alt="" coords="161,335,230,361"/>
+<area shape="rect" id="node14" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_value.html" title="Value" alt="" coords="167,411,223,437"/>
+<area shape="rect" id="node8" href="$class_sabberworm_1_1_c_s_s_1_1_property_1_1_charset.html" title="Class representing an &#160;rule. " alt="" coords="321,157,391,184"/>
+<area shape="rect" id="node9" href="$class_sabberworm_1_1_c_s_s_1_1_property_1_1_c_s_s_namespace.html" title="CSSNamespace" alt="" coords="296,208,416,235"/>
+<area shape="rect" id="node10" href="$class_sabberworm_1_1_c_s_s_1_1_property_1_1_import.html" title="Class representing an &#160;rule. " alt="" coords="326,259,386,285"/>
+<area shape="rect" id="node11" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_at_rule_set.html" title="A RuleSet constructed by an unknown @&#45;rule. " alt="" coords="315,309,397,336"/>
+<area shape="rect" id="node13" href="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html" title="Declaration blocks are the parts of a css file which denote the rules belonging to a selector..." alt="" coords="295,360,417,387"/>
+<area shape="rect" id="node15" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_primitive_value.html" title="PrimitiveValue" alt="" coords="303,411,409,437"/>
+<area shape="rect" id="node19" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_value_list.html" title="ValueList" alt="" coords="317,487,395,513"/>
+<area shape="rect" id="node16" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_size.html" title="Size" alt="" coords="493,335,541,361"/>
+<area shape="rect" id="node17" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_string.html" title="String" alt="" coords="489,385,546,412"/>
+<area shape="rect" id="node18" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_u_r_l.html" title="URL" alt="" coords="493,436,542,463"/>
+<area shape="rect" id="node20" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_c_s_s_function.html" title="CSSFunction" alt="" coords="467,487,567,513"/>
+<area shape="rect" id="node22" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_rule_value_list.html" title="RuleValueList" alt="" coords="465,537,569,564"/>
+<area shape="rect" id="node21" href="$class_sabberworm_1_1_c_s_s_1_1_value_1_1_color.html" title="Color" alt="" coords="617,487,671,513"/>
 </map>

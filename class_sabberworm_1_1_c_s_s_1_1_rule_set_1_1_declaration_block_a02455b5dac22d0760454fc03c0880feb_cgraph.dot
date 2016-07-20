@@ -1,0 +1,18 @@
+digraph "createShorthands"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="createShorthands",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="createBorderShorthand",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a4e9f90d5de60211f6bef2a1152a32e7d",tooltip="Combine border-color, border-style and border-width into border Should be run after create_dimensions..."];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Sabberworm\\CSS\\RuleSet\l\\RuleSet\\getRulesAssoc",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_rule_set.html#a4c3d0bd0fd1b0755a724d99b93af944b",tooltip="Returns all rules matching the given pattern and returns them in an associative array with the rule’..."];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Sabberworm\\CSS\\RuleSet\l\\RuleSet\\removeRule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_rule_set.html#aca06340187f0b4dd11186527e6a0faae",tooltip="Remove a rule from this RuleSet. "];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="createFontShorthand",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_declaration_block.html#a9957285c5dd0d6372e958d4b35f9ffcf",tooltip="Looks for long format CSS font properties (e.g. "];
+  Node5 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

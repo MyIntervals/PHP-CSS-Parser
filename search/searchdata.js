@@ -1,9 +1,9 @@
 var indexSectionsWithContent =
 {
-  0: "$acdegikoprstuv",
+  0: "$_acdegikoprstuv",
   1: "acdikoprsuv",
   2: "ar",
-  3: "acegirs",
+  3: "_acegirs",
   4: "$",
   5: "dprt"
 };

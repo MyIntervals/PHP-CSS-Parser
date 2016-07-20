@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['remove',['remove',['../class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_list.html#afb372eac8d4c12dfd920e27058c592e2',1,'Sabberworm::CSS::CSSList::CSSList']]],
-  ['removedeclarationblockbyselector',['removeDeclarationBlockBySelector',['../class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_list.html#ac1988363980d1fcb59345e8cc34354f7',1,'Sabberworm::CSS::CSSList::CSSList']]],
-  ['removerule',['removeRule',['../class_sabberworm_1_1_c_s_s_1_1_rule_set_1_1_rule_set.html#aca06340187f0b4dd11186527e6a0faae',1,'Sabberworm::CSS::RuleSet::RuleSet']]]
+  ['implode',['implode',['../class_sabberworm_1_1_c_s_s_1_1_output_formatter.html#aedc75581a198ec427591630c3c57714c',1,'Sabberworm::CSS::OutputFormatter']]],
+  ['isrootlist',['isRootList',['../class_sabberworm_1_1_c_s_s_1_1_c_s_s_list_1_1_c_s_s_list.html#a827f83adf41390e115070cc74a6c7be0',1,'Sabberworm::CSS::CSSList::CSSList']]],
+  ['issize',['isSize',['../class_sabberworm_1_1_c_s_s_1_1_value_1_1_size.html#a4064f7063dc6891f64f5b22589cbc445',1,'Sabberworm::CSS::Value::Size']]]
 ];
