@@ -583,9 +583,16 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$this->assertEquals("Find Me!", $comments[0]->getComment());
 	}
 
+	/**
+	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+	*/
+	function testMicrosoftFilterStrictParsing() {
+		$oDoc = $this->parsedStructureForFile('ms-filter', Settings::create()->beStrict());
+	}
+
 	function testMicrosoftFilterParsing() {
 		$oDoc = $this->parsedStructureForFile('ms-filter');
-		$sExpected = ".test {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);}";
+		$sExpected = ".test {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=\"#80000000\",endColorstr=\"#00000000\",GradientType=1);}";
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 }
