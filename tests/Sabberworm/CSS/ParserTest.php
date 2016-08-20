@@ -89,40 +89,236 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 			}
 			$aContentRules = $oRuleSet->getRules('content');
 			$aContents = $aContentRules[0]->getValues();
-			$sString = $aContents[0][0]->__toString();
 			if ($sSelector == '.test-1') {
-				$this->assertSame('" "', $sString);
+				$this->assertSame(' ', $aContents[0][0]->getString());
+				$this->assertSame('" "', $aContents[0][0]->__toString());
 			}
 			if ($sSelector == '.test-2') {
-				$this->assertSame('"é"', $sString);
+				$this->assertSame('é', $aContents[0][0]->getString());
+				$this->assertSame('"\e9"', $aContents[0][0]->__toString());
 			}
 			if ($sSelector == '.test-3') {
-				$this->assertSame('" "', $sString);
+				$this->assertSame(' ', $aContents[0][0]->getString());
+				$this->assertSame('" "', $aContents[0][0]->__toString());
 			}
 			if ($sSelector == '.test-4') {
-				$this->assertSame('"𝄞"', $sString);
+				$this->assertSame('𝄞', $aContents[0][0]->getString());
+				$this->assertSame('"\1d11e"', $aContents[0][0]->__toString());
 			}
 			if ($sSelector == '.test-5') {
-				$this->assertSame('"水"', $sString);
+				$this->assertSame('水', $aContents[0][0]->getString());
+				$this->assertSame('"\6c34"', $aContents[0][0]->__toString());
 			}
 			if ($sSelector == '.test-6') {
-				$this->assertSame('"¥"', $sString);
+				$this->assertSame('¥', $aContents[0][0]->getString());
+				$this->assertSame('"\a5"', $aContents[0][0]->__toString());
 			}
 			if ($sSelector == '.test-7') {
-				$this->assertSame('"\A"', $sString);
+				$this->assertSame("\n", $aContents[0][0]->getString());
+				$this->assertSame('"\a"', $aContents[0][0]->__toString());
 			}
 			if ($sSelector == '.test-8') {
-				$this->assertSame('"\"\""', $sString);
+				$this->assertSame('""', $aContents[0][0]->getString());
+				$this->assertSame('"\22\22"', $aContents[0][0]->__toString());
 			}
 			if ($sSelector == '.test-9') {
-				$this->assertSame('"\"\\\'"', $sString);
+				$this->assertSame('"\'', $aContents[0][0]->getString());
+				$this->assertSame('"\22\'"', $aContents[0][0]->__toString());
 			}
 			if ($sSelector == '.test-10') {
-				$this->assertSame('"\\\'\\\\"', $sString);
+				$this->assertSame("'\\", $aContents[0][0]->getString());
+				$this->assertSame('"\'\5c"', $aContents[0][0]->__toString());
 			}
 			if ($sSelector == '.test-11') {
-				$this->assertSame('"test"', $sString);
+				$this->assertSame('test', $aContents[0][0]->getString());
+				$this->assertSame('"test"', $aContents[0][0]->__toString());
 			}
+			if ($sSelector == '.test-12') {
+				$this->assertSame('test', $aContents[0][0]->getString());
+				$this->assertSame('"test"', $aContents[0][0]->__toString());
+			}
+			if ($sSelector == '.test-13') {
+				$this->assertSame('éo', $aContents[0][0]->getString());
+				$this->assertSame('"\e9o"', $aContents[0][0]->__toString());
+			}
+			if ($sSelector == '.test-14') {
+				$this->assertSame('éo', $aContents[0][0]->getString());
+				$this->assertSame('"\e9o"', $aContents[0][0]->__toString());
+			}
+			if ($sSelector == '.test-15') {
+				$this->assertSame('é o', $aContents[0][0]->getString());
+				$this->assertSame('"\e9  o"', $aContents[0][0]->__toString());
+			}
+		}
+
+		$sExpected = $oDoc->render();
+		$oDoc = $this->parsedStructureForFile('unicode', Settings::create()->withMultibyteSupport(true));
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('unicode', Settings::create()->withMultibyteSupport(false));
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
+	function testCharsetConversionsLenient() {
+		$oDoc = $this->parsedStructureForFile('charset-utf-8');
+		$sExpected = $oDoc->render();
+		$oDoc = $this->parsedStructureForFile('charset-utf-8-bom');
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('-charset-iso-8859-2', Settings::create()->withDefaultCharset('iso-8859-2'));
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-16be');
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-16le');
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-32be');
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-32le');
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-8-bom', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-16be', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-16le', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-32be', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-32le', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame($sExpected, $oDoc->render());
+
+		$oDoc = $this->parsedStructureForFile('charset-utf-8-declared');
+		$sExpected = $oDoc->render();
+		$oDoc = $this->parsedStructureForFile('charset-utf-8-bom-misdeclared');
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-16be-misdeclared');
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-16le-misdeclared');
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-32be-misdeclared');
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-32le-misdeclared');
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-iso-8859-2-declared');
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-8-bom-misdeclared', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-16be-misdeclared', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-16le-misdeclared', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-32be-misdeclared', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-utf-32le-misdeclared', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame($sExpected, $oDoc->render());
+		$oDoc = $this->parsedStructureForFile('charset-iso-8859-2-declared', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
+	function testCharsetConversionsStrict() {
+		$this->parsedStructureForFile('charset-utf-8', Settings::create()->withLenientParsing(false));
+		$this->parsedStructureForFile('charset-utf-8-bom', Settings::create()->withLenientParsing(false));
+		$this->parsedStructureForFile('charset-utf-8-declared', Settings::create()->withLenientParsing(false));
+		try {
+			$this->parsedStructureForFile('charset-utf-8-bom-misdeclared', Settings::create()->withLenientParsing(false));
+			$this->fail('Exception expected when @charset does not match BOM');
+		} catch (UnexpectedTokenException $e) {
+			$this->assertSame('@charset value does not match detected value [line no: 1]', $e->getMessage());
+		}
+
+		$this->parsedStructureForFile('charset-utf-16be', Settings::create()->withLenientParsing(false));
+		$this->parsedStructureForFile('charset-utf-16be-declared', Settings::create()->withLenientParsing(false));
+		try {
+			$this->parsedStructureForFile('charset-utf-16be-misdeclared', Settings::create()->withLenientParsing(false));
+			$this->fail('Exception expected when @charset does not match BOM');
+		} catch (UnexpectedTokenException $e) {
+			$this->assertSame('@charset value does not match detected value [line no: 1]', $e->getMessage());
+		}
+
+		$this->parsedStructureForFile('charset-utf-16le', Settings::create()->withLenientParsing(false));
+		$this->parsedStructureForFile('charset-utf-16le-declared', Settings::create()->withLenientParsing(false));
+		try {
+			$this->parsedStructureForFile('charset-utf-16le-misdeclared', Settings::create()->withLenientParsing(false));
+			$this->fail('Exception expected when @charset does not match BOM');
+		} catch (UnexpectedTokenException $e) {
+			$this->assertSame('@charset value does not match detected value [line no: 1]', $e->getMessage());
+		}
+
+		$this->parsedStructureForFile('charset-utf-32be', Settings::create()->withLenientParsing(false));
+		$this->parsedStructureForFile('charset-utf-32be-declared', Settings::create()->withLenientParsing(false));
+		try {
+			$this->parsedStructureForFile('charset-utf-32be-misdeclared', Settings::create()->withLenientParsing(false));
+			$this->fail('Exception expected when @charset does not match BOM');
+		} catch (UnexpectedTokenException $e) {
+			$this->assertSame('@charset value does not match detected value [line no: 1]', $e->getMessage());
+		}
+
+		$this->parsedStructureForFile('charset-utf-32le', Settings::create()->withLenientParsing(false));
+		$this->parsedStructureForFile('charset-utf-32le-declared', Settings::create()->withLenientParsing(false));
+		try {
+			$this->parsedStructureForFile('charset-utf-32le-misdeclared', Settings::create()->withLenientParsing(false));
+			$this->fail('Exception expected when @charset does not match BOM in non-lenient mode');
+		} catch (UnexpectedTokenException $e) {
+			$this->assertSame('@charset value does not match detected value [line no: 1]', $e->getMessage());
+		}
+	}
+
+	function testOriginalCharset() {
+		$oParser = $this->parserForFile('charset-utf-8');
+		$this->assertSame('utf-8', $oParser->getOriginalCharset());
+
+		$oParser = $this->parserForFile('charset-utf-8-declared');
+		$this->assertSame('utf-8', $oParser->getOriginalCharset());
+		$oParser = $this->parserForFile('charset-utf-8-declared', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame('utf-8', $oParser->getOriginalCharset());
+
+		$oParser = $this->parserForFile('charset-utf-16be');
+		$this->assertSame('utf-16be', $oParser->getOriginalCharset());
+		$oParser = $this->parserForFile('charset-utf-16be', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame('utf-16be', $oParser->getOriginalCharset());
+
+		$oParser = $this->parserForFile('charset-utf-16le');
+		$this->assertSame('utf-16le', $oParser->getOriginalCharset());
+		$oParser = $this->parserForFile('charset-utf-16le', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame('utf-16le', $oParser->getOriginalCharset());
+
+		$oParser = $this->parserForFile('charset-utf-32be');
+		$this->assertSame('utf-32be', $oParser->getOriginalCharset());
+		$oParser = $this->parserForFile('charset-utf-32be', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame('utf-32be', $oParser->getOriginalCharset());
+
+		$oParser = $this->parserForFile('charset-utf-32le');
+		$this->assertSame('utf-32le', $oParser->getOriginalCharset());
+		$oParser = $this->parserForFile('charset-utf-32le', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame('utf-32le', $oParser->getOriginalCharset());
+
+		$oParser = $this->parserForFile('charset-utf-8-bom');
+		$this->assertSame('utf-8', $oParser->getOriginalCharset());
+		$oParser = $this->parserForFile('charset-utf-8-bom', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame('utf-8', $oParser->getOriginalCharset());
+
+		$oParser = $this->parserForFile('-charset-iso-8859-2', Settings::create()->withDefaultCharset('iso-8859-2'));
+		$this->assertSame('iso-8859-2', $oParser->getOriginalCharset());
+
+		$oParser = $this->parserForFile('charset-iso-8859-2-declared');
+		$this->assertSame('iso-8859-2', $oParser->getOriginalCharset());
+		$oParser = $this->parserForFile('charset-iso-8859-2-declared', Settings::create()->withDefaultCharset('iso-8859-1'));
+		$this->assertSame('iso-8859-2', $oParser->getOriginalCharset());
+	}
+
+	function testMultipleCharsets() {
+		$sDoubleCharset = "@charset 'utf-8';
+@charset 'utf-16';
+.test {}";
+		$sExpected = "@charset \"utf-8\";
+.test {}";
+		$parser = new Parser($sDoubleCharset);
+		$doc = $parser->parse();
+		$this->assertSame($sExpected, $doc->render());
+
+		try {
+			$parser = new Parser($sDoubleCharset, Settings::create()->withLenientParsing(false));
+			$doc = $parser->parse();
+			$this->fail('Exception expected when @charset is repeated in non-lenient mode');
+		} catch (UnexpectedTokenException $e) {
+			$this->assertSame('@charset value does not match detected value [line no: 2]', $e->getMessage());
 		}
 	}
 
@@ -262,7 +458,7 @@ body {color: green;}', $oDoc->render());
 	function testFunctionSyntax() {
 		$oDoc = $this->parsedStructureForFile('functions');
 		$sExpected = 'div.main {background-image: linear-gradient(#000,#fff);}
-.collapser::before, .collapser::-moz-before, .collapser::-webkit-before {content: "»";font-size: 1.2em;margin-right: .2em;-moz-transition-property: -moz-transform;-moz-transition-duration: .2s;-moz-transform-origin: center 60%;}
+.collapser::before, .collapser::-moz-before, .collapser::-webkit-before {content: "\bb";font-size: 1.2em;margin-right: .2em;-moz-transition-property: -moz-transform;-moz-transition-duration: .2s;-moz-transform-origin: center 60%;}
 .collapser.expanded::before, .collapser.expanded::-moz-before, .collapser.expanded::-webkit-before {-moz-transform: rotate(90deg);}
 .collapser + * {height: 0;overflow: hidden;-moz-transition-property: height;-moz-transition-duration: .3s;}
 .collapser.expanded + * {height: auto;}';
@@ -355,7 +551,7 @@ foo|test {gaga: 1;}
 	}
 	
 	/**
-	* @expectedException Sabberworm\CSS\Parsing\OutputException
+	* @expectedException \Sabberworm\CSS\Parsing\OutputException
 	*/
 	function testSelectorRemoval() {
 		$oDoc = $this->parsedStructureForFile('1readme');
@@ -419,22 +615,38 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 	}
 
 	/**
-	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+	* @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
 	*/
 	function testCharsetFailure1() {
 		$this->parsedStructureForFile('-charset-after-rule', Settings::create()->withLenientParsing(false));
 	}
 
 	/**
-	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+	* @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
 	*/
 	function testCharsetFailure2() {
 		$this->parsedStructureForFile('-charset-in-block', Settings::create()->withLenientParsing(false));
 	}
 
-	function parsedStructureForFile($sFileName, $oSettings = null) {
+	/**
+	 * Get parser instance for the given file
+	 * @param $sFileName
+	 * @param Settings $oSettings
+	 * @return Parser
+	 */
+	protected function parserForFile($sFileName, $oSettings = null) {
 		$sFile = dirname(__FILE__) . '/../../files' . DIRECTORY_SEPARATOR . "$sFileName.css";
-		$oParser = new Parser(file_get_contents($sFile), $oSettings);
+		return new Parser(file_get_contents($sFile), $oSettings);
+	}
+
+	/**
+	 * Get parser document instance for the given file
+	 * @param string $sFileName
+	 * @param Settings $oSettings
+	 * @return CSSList\Document
+	 */
+	protected function parsedStructureForFile($sFileName, $oSettings = null) {
+		$oParser = $this->parserForFile($sFileName, $oSettings);
 		return $oParser->parse();
 	}
 
@@ -507,7 +719,7 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 	}
 
 	/**
-	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+	* @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
 	*/
 	function testIeHacksStrictParsing() {
 		// We can't strictly parse IE hacks.
@@ -516,7 +728,40 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 
 	function testIeHacksParsing() {
 		$oDoc = $this->parsedStructureForFile('ie-hacks', Settings::create()->withLenientParsing(true));
-		$sExpected = 'p {padding-right: .75rem \9;background-image: none \9;color: red \9\0;background-color: red \9\0;background-color: red \9\0 !important;content: "red 	\0";content: "red઼";}';
+		foreach ($oDoc->getAllRuleSets() as $oRuleSet) {
+			if (!$oRuleSet instanceof DeclarationBlock) {
+				continue;
+			}
+			$sSelector = $oRuleSet->getSelectors();
+			$sSelector = $sSelector[0]->getSelector();
+			if ($sSelector === 'p') {
+				$aRule = $oRuleSet->getRules('padding-right');
+				$this->assertCount(1, $aRule);
+				$this->assertSame('.75rem', (string)$aRule[0]->getValue());
+
+				$aRule = $oRuleSet->getRules('background-image');
+				$this->assertCount(1, $aRule);
+				$this->assertSame('none', (string)$aRule[0]->getValue());
+
+				$aRule = $oRuleSet->getRules('color');
+				$this->assertCount(1, $aRule);
+				$this->assertSame('red', (string)$aRule[0]->getValue());
+
+				$aRule = $oRuleSet->getRules('background-color');
+				$this->assertCount(2, $aRule);
+				$this->assertSame('red', (string)$aRule[0]->getValue());
+				$this->assertSame('red', (string)$aRule[1]->getValue());
+
+				$aRule = $oRuleSet->getRules('content');
+				$this->assertCount(2, $aRule);
+				$this->assertSame('"red \9"', (string)$aRule[0]->getValue());
+				$this->assertSame('red ' . chr(9), $aRule[0]->getValue()->getString());
+				$this->assertSame('"red\abc"', (string)$aRule[1]->getValue());
+				$this->assertSame('red' . urldecode('%E0%AA%BC'), $aRule[1]->getValue()->getString());
+			}
+		}
+
+		$sExpected = 'p {padding-right: .75rem \9;background-image: none \9;color: red \9\0;background-color: red \9\0;background-color: red \9\0 !important;content: "red \9";content: "red\abc";}';
 		$this->assertEquals($sExpected, $oDoc->render());
 	}
 
@@ -584,7 +829,7 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 	}
 
 	/**
-	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+	* @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
 	*/
 	function testMicrosoftFilterStrictParsing() {
 		$oDoc = $this->parsedStructureForFile('ms-filter', Settings::create()->beStrict());

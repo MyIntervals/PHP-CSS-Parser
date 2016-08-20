@@ -1,6 +1,7 @@
 <?php
 
 namespace Sabberworm\CSS\Property;
+use Sabberworm\CSS\Value\CSSString;
 
 /**
  * Class representing an @charset rule.
@@ -11,12 +12,16 @@ namespace Sabberworm\CSS\Property;
  */
 class Charset implements AtRule {
 
-	private $sCharset;
+	private $oCharset;
 	protected $iLineNo;
-	protected $aComment;
+	protected $aComments;
 
-	public function __construct($sCharset, $iLineNo = 0) {
-		$this->sCharset = $sCharset;
+	/**
+	 * @param CSSString $oCharset
+	 * @param int $iLineNo
+	 */
+	public function __construct(CSSString $oCharset, $iLineNo = 0) {
+		$this->oCharset = $oCharset;
 		$this->iLineNo = $iLineNo;
 		$this->aComments = array();
 	}
@@ -28,12 +33,18 @@ class Charset implements AtRule {
 		return $this->iLineNo;
 	}
 
-	public function setCharset($sCharset) {
-		$this->sCharset = $sCharset;
+	/**
+	 * @param CSSString $oCharset
+	 */
+	public function setCharset(CSSString $oCharset) {
+		$this->oCharset = $oCharset;
 	}
 
+	/**
+	 * @return CSSString
+	 */
 	public function getCharset() {
-		return $this->sCharset;
+		return $this->oCharset;
 	}
 
 	public function __toString() {
@@ -41,7 +52,7 @@ class Charset implements AtRule {
 	}
 
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
-		return "@charset {$this->sCharset->render($oOutputFormat)};";
+		return "@charset {$this->oCharset->render($oOutputFormat)};";
 	}
 
 	public function atRuleName() {
@@ -49,7 +60,7 @@ class Charset implements AtRule {
 	}
 
 	public function atRuleArgs() {
-		return $this->sCharset;
+		return $this->oCharset;
 	}
 
 	public function addComments(array $aComments) {

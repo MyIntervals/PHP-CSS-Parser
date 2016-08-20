@@ -226,7 +226,11 @@ class DeclarationBlock extends RuleSet {
 		}
 		foreach ($aValues as $mValue) {
 			if (!$mValue instanceof Value) {
-				$mValue = mb_strtolower($mValue);
+				if (function_exists('mb_strtolower')) {
+					$mValue = mb_strtolower($mValue, 'utf-8');
+				} else {
+					$mValue = strtolower($mValue);
+				}
 			}
 			if (in_array($mValue, array('normal', 'inherit'))) {
 				foreach (array('font-style', 'font-weight', 'font-variant') as $sProperty) {
@@ -300,7 +304,11 @@ class DeclarationBlock extends RuleSet {
 		$iNumBgPos = 0;
 		foreach ($aValues as $mValue) {
 			if (!$mValue instanceof Value) {
-				$mValue = mb_strtolower($mValue);
+				if (function_exists('mb_strtolower')) {
+					$mValue = mb_strtolower($mValue, 'utf-8');
+				} else {
+					$mValue = strtolower($mValue);
+				}
 			}
 			if ($mValue instanceof URL) {
 				$aBgProperties['background-image'] = $mValue;
@@ -369,7 +377,11 @@ class DeclarationBlock extends RuleSet {
 		}
 		foreach ($aValues as $mValue) {
 			if (!$mValue instanceof Value) {
-				$mValue = mb_strtolower($mValue);
+				if (function_exists('mb_strtolower')) {
+					$mValue = mb_strtolower($mValue, 'utf-8');
+				} else {
+					$mValue = strtolower($mValue);
+				}
 			}
 			if ($mValue instanceof Url) {
 				$aListProperties['list-style-image'] = $mValue;

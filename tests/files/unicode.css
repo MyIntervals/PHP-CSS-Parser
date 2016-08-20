@@ -2,11 +2,14 @@
 .test-2 { content: "\E9"; } /* Same as "é" */
 .test-3 { content: "\0020"; } /* Same as " " */
 .test-5 { content: "\6C34" } /* Same as "水" */
+.test-4 { content: "\1D11E" } /* Beyond the Basic Multilingual Plane */
 .test-6 { content: "\00A5" } /* Same as "¥" */
 .test-7 { content: '\a' } /* Same as "\A" (Newline) */
 .test-8 { content: "\"\22" } /* Same as "\"\"" */
 .test-9 { content: "\"\27" } /* Same as ""\"\'"" */
 .test-10 { content: "\'\\" } /* Same as "'\" */
 .test-11 { content: "\test" } /* Same as "test" */
-
-.test-4 { content: "\1D11E" } /* Beyond the Basic Multilingual Plane */
+.test-12 { content: "te\0st" } /* Same as "test" without the null character */
+.test-13 { content: "\e9o" } /* Same as "éo" */
+.test-14 { content: "\e9 o" } /* Same as "éo" */
+.test-15 { content: "\e9  o" } /* Same as "é o" */

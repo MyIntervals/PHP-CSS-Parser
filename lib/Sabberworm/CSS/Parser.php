@@ -32,11 +32,18 @@ class Parser {
 	private $aText;
 	private $iCurrentPosition;
 	private $oParserSettings;
-	private $sCharset;
+	private $sOriginalCharset;
 	private $iLength;
 	private $blockRules;
 	private $aSizeUnits;
 	private $iLineNo;
+	private $sTextLibrary;
+
+	const BOM8 = "\xef\xbb\xbf";
+	const BOM16BE = "\xfe\xff";
+	const BOM16LE = "\xff\xfe";
+	const BOM32BE = "\x00\x00\xfe\xff";
+	const BOM32LE = "\xff\xfe\x00\x00";
 
 	/**
 	 * Parser constructor.
@@ -64,20 +71,91 @@ class Parser {
 			$this->aSizeUnits[$iSize][strtolower($val)] = $val;
 		}
 		ksort($this->aSizeUnits, SORT_NUMERIC);
+		$this->fixCharset();
 	}
 
-	public function setCharset($sCharset) {
-		$this->sCharset = $sCharset;
-		$this->aText = $this->strsplit($this->sText);
-		$this->iLength = count($this->aText);
+	private function fixCharset() {
+		// We need to know the charset before the parsing starts,
+		// UTF BOMs have the highest precedence and must ve removed before other processing.
+		$this->sOriginalCharset = strtolower($this->oParserSettings->sDefaultCharset);
+		if (strpos($this->sText, self::BOM8) === 0) {
+			$this->sText = substr($this->sText, strlen(self::BOM8));
+			$this->sOriginalCharset = 'utf-8';
+		} else if (strpos($this->sText, self::BOM32BE) === 0) {
+			$this->sText = substr($this->sText, strlen(self::BOM32BE));
+			$this->sOriginalCharset = 'utf-32be';
+		} else if (strpos($this->sText, self::BOM32LE) === 0) {
+			$this->sText = substr($this->sText, strlen(self::BOM32LE));
+			$this->sOriginalCharset = 'utf-32le';
+		} else if (strpos($this->sText, self::BOM16BE) === 0) {
+			$this->sText = substr($this->sText, strlen(self::BOM16BE));
+			$this->sOriginalCharset = 'utf-16be';
+		} else if (strpos($this->sText, self::BOM16LE) === 0) {
+			$this->sText = substr($this->sText, strlen(self::BOM16LE));
+			$this->sOriginalCharset = 'utf-16le';
+		} else if (preg_match('/(.*)@charset\s+["\']([a-z0-9-]+)["\']\s*;/ims', $this->sText, $aMatches)) {
+			// This is a simplified guessing, the charset atRule location is validated later,
+			// hopefully this is not used much these days.
+			if (trim($aMatches[1]) === '' and preg_match('/^@charset\s+["\']([a-z0-9-]+)["\']\s*;/im', $aMatches[0])) {
+				$this->sOriginalCharset = strtolower($aMatches[2]);
+			}
+		}
+
+		// Convert all text to utf-8 so that code does not have to deal with encoding conversions and incompatible characters.
+		if ($this->sOriginalCharset !== 'utf-8') {
+			if (function_exists('mb_convert_encoding')) {
+				$this->sText = mb_convert_encoding($this->sText, 'utf-8', $this->sOriginalCharset);
+			} else {
+				$this->sText = iconv($this->sOriginalCharset, 'utf-8', $this->sText);
+			}
+		}
+
+		// Multibyte support can make the parsing slower,
+		// but even if it is disabled the unicode characters usually survive this parsing unharmed.
+		$this->sTextLibrary = 'ascii';
+		if (!$this->oParserSettings->bMultibyteSupport) {
+			$this->iLength = strlen($this->sText);
+			return;
+		}
+
+		// If there are only ASCII characters in the CSS then we can safely use good old PHP string functions here.
+		if (function_exists('mb_convert_encoding')) {
+			$sSubst = mb_substitute_character();
+			mb_substitute_character('none');
+			$asciiText = mb_convert_encoding($this->sText, 'ASCII', 'utf-8');
+			mb_substitute_character($sSubst);
+		} else {
+			$asciiText = @iconv('utf-8', 'ASCII//IGNORE', $this->sText);
+		}
+		if ($this->sText !== $asciiText) {
+			if (function_exists('mb_convert_encoding')) {
+				// Usually mbstring extension is much faster than iconv.
+				$this->sTextLibrary = 'mb';
+			} else {
+				$this->sTextLibrary = 'iconv';
+			}
+		}
+		unset($asciiText);
+		$this->iLength = $this->strlen($this->sText);
+
+		// Substring operations are slower with unicode, aText array is used for faster emulation.
+		if ($this->sTextLibrary !== 'ascii') {
+			$this->aText = preg_split('//u', $this->sText, null, PREG_SPLIT_NO_EMPTY);
+			if (!is_array($this->aText) || count($this->aText) !== $this->iLength) {
+				$this->aText = null;
+			}
+		}
 	}
 
 	public function getCharset() {
-		return $this->sCharset;
+		return 'utf-8';
+	}
+
+	public function getOriginalCharset() {
+		return $this->sOriginalCharset;
 	}
 
 	public function parse() {
-		$this->setCharset($this->oParserSettings->sDefaultCharset);
 		$oResult = new Document($this->iLineNo);
 		$this->parseDocument($oResult);
 		return $oResult;
@@ -88,8 +166,12 @@ class Parser {
 	}
 
 	private function parseList(CSSList $oList, $bIsRoot = false) {
-		while (!$this->isEnd()) {
+		while (true) {
 			$comments = $this->consumeWhiteSpace();
+			if ($this->isEnd()) {
+				// End of file, ignore any trailing comments.
+				break;
+			}
 			$oListItem = null;
 			if($this->oParserSettings->bLenientParsing) {
 				try {
@@ -113,7 +195,7 @@ class Parser {
 			throw new SourceException("Unexpected end of document", $this->iLineNo);
 		}
 	}
-	
+
 	private function parseListItem(CSSList $oList, $bIsRoot = false) {
 		if ($this->comes('@')) {
 			$oAtRule = $this->parseAtRule();
@@ -124,11 +206,11 @@ class Parser {
 				if(count($oList->getContents()) > 0) {
 					throw new UnexpectedTokenException('@charset must be the first parseable token in a document', '', 'custom', $this->iLineNo);
 				}
-				$this->setCharset($oAtRule->getCharset()->getString());
+				// We have already guessed the charset in the constructor, it cannot be changed now.
 			}
 			return $oAtRule;
 		} else if ($this->comes('}')) {
-			$this->consume('}');
+			$this->consumeUnsafe(1);
 			if ($bIsRoot) {
 				throw new SourceException("Unopened {", $this->iLineNo);
 			} else {
@@ -154,10 +236,22 @@ class Parser {
 			$this->consume(';');
 			return new Import($oLocation, $sMediaQuery, $iIdentifierLineNum);
 		} else if ($sIdentifier === 'charset') {
-			$sCharset = $this->parseStringValue();
+			$oCharset = $this->parseStringValue();
 			$this->consumeWhiteSpace();
 			$this->consume(';');
-			return new Charset($sCharset, $iIdentifierLineNum);
+			if (!$this->oParserSettings->bLenientParsing) {
+				$sExpectedCharset = $this->getOriginalCharset();
+				if ($sExpectedCharset === 'utf-16le' || $sExpectedCharset === 'utf-16be') {
+					$sExpectedCharset = 'utf-16';
+				} else if ($sExpectedCharset === 'utf-32le' || $sExpectedCharset === 'utf-32be') {
+					$sExpectedCharset = 'utf-32';
+				}
+				if (strtolower($oCharset->getString() !== $sExpectedCharset)) {
+					throw new UnexpectedTokenException('@charset value does not match detected value', '', 'custom', $this->iLineNo);
+				}
+			}
+			// Replace the original charset with utf-8 because we have changed the encoding in the constructor.
+			return new Charset(new CSSString('utf-8', $this->iLineNo), $iIdentifierLineNum);
 		} else if ($this->identifierIs($sIdentifier, 'keyframes')) {
 			$oResult = new KeyFrame($iIdentifierLineNum);
 			$oResult->setVendorKeyFrame($sIdentifier);
@@ -213,7 +307,7 @@ class Parser {
 			$sResult = $this->strtolower($sResult);
 		}
 		if ($bAllowFunctions && $this->comes('(')) {
-			$this->consume('(');
+			$this->consumeUnsafe(1);
 			$aArguments = $this->parseValue(array('=', ' ', ','));
 			$sResult = new CSSFunction($sResult, $aArguments, ',', $this->iLineNo);
 			$this->consume(')');
@@ -230,7 +324,7 @@ class Parser {
 			$sQuote = '"';
 		}
 		if ($sQuote !== null) {
-			$this->consume($sQuote);
+			$this->consumeUnsafe(1);
 		}
 		$sResult = "";
 		$sContent = null;
@@ -247,33 +341,39 @@ class Parser {
 				}
 				$sResult .= $sContent;
 			}
-			$this->consume($sQuote);
+			$this->consumeUnsafe(1); // Consuming quote.
 		}
 		return new CSSString($sResult, $this->iLineNo);
 	}
 
 	private function parseCharacter($bIsForIdentifier) {
-		if ($this->peek() === '\\') {
+		$peek = $this->peek();
+		if ($peek === '\\') {
 			if ($bIsForIdentifier && $this->oParserSettings->bLenientParsing && ($this->comes('\0') || $this->comes('\9'))) {
 				// Non-strings can contain \0 or \9 which is an IE hack supported in lenient parsing.
 				return null;
 			}
-			$this->consume('\\');
-			if ($this->comes('\n') || $this->comes('\r')) {
+			$this->consumeUnsafe(1); // Consuming \
+			$peek = $this->peek();
+			if ($peek === '\n' || $peek === '\r') {
 				return '';
 			}
-			if (preg_match('/[0-9a-fA-F]/Su', $this->peek()) === 0) {
-				return $this->consume(1);
+			if (preg_match('/[0-9a-fA-F]/Su', $peek) === 0) {
+				$this->consumeUnsafe($peek);
+				return $peek;
 			}
-			$sUnicode = $this->consumeExpression('/^[0-9a-fA-F]{1,6}/u');
-			if ($this->strlen($sUnicode) < 6) {
-				//Consume whitespace after incomplete unicode escape
-				if (preg_match('/\\s/isSu', $this->peek())) {
-					if ($this->comes('\r\n')) {
-						$this->consume(2);
-					} else {
-						$this->consume(1);
-					}
+			$peek6 = $this->peek(6);
+			if (!preg_match('/^[0-9a-fA-F]{1,6}/', $peek6, $aMatches)) {
+				throw new UnexpectedTokenException('Invalid hex encoded unicode character', $peek6, 'custom', $this->iLineNo);
+			}
+			$sUnicode = $aMatches[0];
+			$iUnicodeLength = strlen($sUnicode);
+			$this->consumeUnsafe($iUnicodeLength); // Consuming hex string
+			if ($iUnicodeLength < 6) {
+				// Consume one space after incomplete unicode escape if present
+				$peek = $this->peek();
+				if ($peek === ' ') {
+					$this->consumeUnsafe(1);
 				}
 			}
 			$iUnicode = intval($sUnicode, 16);
@@ -282,23 +382,30 @@ class Parser {
 				$sUtf32 .= chr($iUnicode & 0xff);
 				$iUnicode = $iUnicode >> 8;
 			}
-			return iconv('utf-32le', $this->sCharset, $sUtf32);
+			$sChar = iconv('utf-32le', 'utf-8', $sUtf32);
+			if ($sChar === chr(0)) {
+				// PHP does not like null characters in strings for security reasons, just ignore them.
+				return '';
+			}
+			return $sChar;
 		}
 		if ($bIsForIdentifier) {
-			$peek = ord($this->peek());
+			$ordPeek = ord($peek);
 			// Ranges: a-z A-Z 0-9 - _
-			if (($peek >= 97 && $peek <= 122) ||
-				($peek >= 65 && $peek <= 90) ||
-				($peek >= 48 && $peek <= 57) ||
-				($peek === 45) ||
-				($peek === 95) ||
-				($peek > 0xa1)) {
-				return $this->consume(1);
+			if (($ordPeek >= 97 && $ordPeek <= 122) ||
+				($ordPeek >= 65 && $ordPeek <= 90) ||
+				($ordPeek >= 48 && $ordPeek <= 57) ||
+				($ordPeek === 45) ||
+				($ordPeek === 95) ||
+				($ordPeek > 0xa1)) {
+				$this->consumeUnsafe($peek);
+				return $peek;
 			}
+			return null;
 		} else {
-			return $this->consume(1);
+			$this->consumeUnsafe($peek);
+			return $peek;
 		}
-		return null;
 	}
 
 	private function parseSelector() {
@@ -312,9 +419,19 @@ class Parser {
 
 	private function parseRuleSet($oRuleSet) {
 		while ($this->comes(';')) {
-			$this->consume(';');
+			$this->consumeUnsafe(1);
 		}
-		while (!$this->comes('}')) {
+		while (true) {
+			$peek = $this->peek();
+			if ($peek === '}') {
+				$this->consumeUnsafe(1);
+				return;
+			}
+			if ($peek === '') {
+				// End of file reached
+				return;
+			}
+
 			$oRule = null;
 			if($this->oParserSettings->bLenientParsing) {
 				try {
@@ -323,11 +440,11 @@ class Parser {
 					try {
 						$sConsume = $this->consumeUntil(array("\n", ";", '}'), true);
 						// We need to “unfind” the matches to the end of the ruleSet as this will be matched later
-						if($this->streql(substr($sConsume, -1), '}')) {
+						if(substr($sConsume, -1) === '}') { // Safe with utf-8 now
 							--$this->iCurrentPosition;
 						} else {
 							while ($this->comes(';')) {
-								$this->consume(';');
+								$this->consumeUnsafe(1);
 							}
 						}
 					} catch (UnexpectedTokenException $e) {
@@ -342,11 +459,14 @@ class Parser {
 				$oRuleSet->addRule($oRule);
 			}
 		}
-		$this->consume('}');
 	}
 
 	private function parseRule() {
 		$aComments = $this->consumeWhiteSpace();
+		if ($this->peek() === '}') {
+			// We have reached the end of rule set, any comments at the end will be ignored
+			return null;
+		}
 		$oRule = new Rule($this->parseIdentifier(), $this->iLineNo);
 		$oRule->setComments($aComments);
 		$oRule->addComments($this->consumeWhiteSpace());
@@ -355,19 +475,19 @@ class Parser {
 		$oRule->setValue($oValue);
 		if ($this->oParserSettings->bLenientParsing) {
 			while ($this->comes('\\')) {
-				$this->consume('\\');
+				$this->consumeUnsafe(1);
 				$oRule->addIeHack($this->consume());
 				$this->consumeWhiteSpace();
 			}
 		}
 		if ($this->comes('!')) {
-			$this->consume('!');
+			$this->consumeUnsafe(1);
 			$this->consumeWhiteSpace();
 			$this->consume('important');
 			$oRule->setIsImportant(true);
 		}
 		while ($this->comes(';')) {
-			$this->consume(';');
+			$this->consumeUnsafe(1);
 		}
 		return $oRule;
 	}
@@ -428,16 +548,18 @@ class Parser {
 	private function parsePrimitiveValue() {
 		$oValue = null;
 		$this->consumeWhiteSpace();
-		if (is_numeric($this->peek()) || ($this->comes('-.') && is_numeric($this->peek(1, 2))) || (($this->comes('-') || $this->comes('.')) && is_numeric($this->peek(1, 1)))) {
-			$oValue = $this->parseNumericValue();
-		} else if ($this->comes('#') || $this->comes('rgb', true) || $this->comes('hsl', true)) {
-			$oValue = $this->parseColorValue();
-		} else if ($this->comes('url', true)) {
-			$oValue = $this->parseURLValue();
-		} else if ($this->comes("'") || $this->comes('"')) {
+		$peek = $this->peek();
+		$lowerpeek = $this->strtolower($peek);
+		if ($peek === "'" || $peek === '"') {
 			$oValue = $this->parseStringValue();
-		} else if ($this->comes("progid:") && $this->oParserSettings->bLenientParsing) {
+		} else if ($peek === '#' || ($lowerpeek === 'r' && $this->comes('rgb', true)) || ($lowerpeek === 'h' &&$this->comes('hsl', true))) {
+			$oValue = $this->parseColorValue();
+		} else if ($lowerpeek === 'u' && $this->comes('url', true)) {
+			$oValue = $this->parseURLValue();
+		} else if ($lowerpeek === 'p' && $this->oParserSettings->bLenientParsing && $this->comes("progid:")) {
 			$oValue = $this->parseMicrosoftFilter();
+		} else if (is_numeric($peek) || ($this->comes('-.') && is_numeric($this->peek(1, 2))) || (($peek === '-' || $peek === '.') && is_numeric($this->peek(1, 1)))) {
+			$oValue = $this->parseNumericValue();
 		} else {
 			$oValue = $this->parseIdentifier(true, false);
 		}
@@ -447,20 +569,35 @@ class Parser {
 
 	private function parseNumericValue($bForColor = false) {
 		$sSize = '';
-		if ($this->comes('-')) {
-			$sSize .= $this->consume('-');
-		}
-		while (is_numeric($this->peek()) || $this->comes('.')) {
-			if ($this->comes('.')) {
-				$sSize .= $this->consume('.');
-			} else {
-				$sSize .= $this->consume(1);
+		$bHasDot = false;
+		while (true) {
+			$peek = $this->peek();
+			if ($peek === '') {
+				// End of file, this is weird
+				break;
 			}
+			if ($sSize === '' && $peek === '-') {
+				$sSize .= '-';
+				$this->consumeUnsafe(1);
+				continue;
+			}
+			if (!$bHasDot && $peek === '.') {
+				$bHasDot = true;
+				$sSize .= '.';
+				$this->consumeUnsafe(1);
+				continue;
+			}
+			if (is_numeric($peek)) {
+				$sSize .= $peek;
+				$this->consumeUnsafe($peek);
+				continue;
+			}
+			break;
 		}
 
 		$sUnit = null;
 		foreach ($this->aSizeUnits as $iLength => &$aValues) {
-			$sKey = strtolower($this->peek($iLength));
+			$sKey = strtolower($this->peek($iLength)); // Length is always ascii
 			if(array_key_exists($sKey, $aValues)) {
 				if (($sUnit = $aValues[$sKey]) !== null) {
 					$this->consume($iLength);
@@ -474,7 +611,7 @@ class Parser {
 	private function parseColorValue() {
 		$aColor = array();
 		if ($this->comes('#')) {
-			$this->consume('#');
+			$this->consumeUnsafe(1);
 			$sValue = $this->parseIdentifier(false);
 			if ($this->strlen($sValue) === 3) {
 				$sValue = $sValue[0] . $sValue[0] . $sValue[1] . $sValue[1] . $sValue[2] . $sValue[2];
@@ -529,8 +666,8 @@ class Parser {
 	}
 
 	private function comes($sString, $bCaseInsensitive = false) {
-		$sPeek = $this->peek(strlen($sString));
-		return ($sPeek == '')
+		$sPeek = $this->peek($this->strlen($sString));
+		return ($sPeek === '')
 			? false
 			: $this->streql($sPeek, $sString, $bCaseInsensitive);
 	}
@@ -539,6 +676,13 @@ class Parser {
 		$iOffset += $this->iCurrentPosition;
 		if ($iOffset >= $this->iLength) {
 			return '';
+		}
+		if ($iLength === 1) {
+			if ($this->aText !== null) {
+				return $this->aText[$iOffset];
+			} else {
+				return $this->sText[$iOffset];
+			}
 		}
 		return $this->substr($iOffset, $iLength);
 	}
@@ -565,19 +709,32 @@ class Parser {
 		}
 	}
 
-	private function consumeExpression($mExpression) {
-		$aMatches = null;
-		if (preg_match($mExpression, $this->inputLeft(), $aMatches, PREG_OFFSET_CAPTURE) === 1) {
-			return $this->consume($aMatches[0][0]);
+	/**
+	 * Consume characters without any safety checks.
+	 *
+	 * Make sure there are no newlines when giving integer value.
+	 *
+	 * NOTE: use only after peek() and comes()!
+	 *
+	 * @param int|string $mValue
+	 * @return void
+	 */
+	private function consumeUnsafe($mValue) {
+		if (is_string($mValue)) {
+			$iLineCount = substr_count($mValue, "\n");
+			$this->iLineNo += $iLineCount;
+			$this->iCurrentPosition += $this->strlen($mValue);
+		} else {
+			// Must not have newlines!!!
+			$this->iCurrentPosition += $mValue;
 		}
-		throw new UnexpectedTokenException($mExpression, $this->peek(5), 'expression', $this->iLineNo);
 	}
 
 	private function consumeWhiteSpace() {
 		$comments = array();
 		do {
-			while (preg_match('/\\s/isSu', $this->peek()) === 1) {
-				$this->consume(1);
+			while (preg_match('/^\\s/isSu', $this->peek(), $aMatches)) {
+				$this->consumeUnsafe($aMatches[0]);
 			}
 			if($this->oParserSettings->bLenientParsing) {
 				try {
@@ -585,7 +742,7 @@ class Parser {
 				} catch(UnexpectedTokenException $e) {
 					// When we can’t find the end of a comment, we assume the document is finished.
 					$this->iCurrentPosition = $this->iLength;
-					return;
+					return $comments;
 				}
 			} else {
 				$oComment = $this->consumeComment();
@@ -601,26 +758,28 @@ class Parser {
 	 * @return false|Comment
 	 */
 	private function consumeComment() {
-		$mComment = false;
 		if ($this->comes('/*')) {
 			$iLineNo = $this->iLineNo;
-			$this->consume(1);
+			$this->consumeUnsafe(2);
 			$mComment = '';
-			while (($char = $this->consume(1)) !== '') {
-				$mComment .= $char;
-				if ($this->comes('*/')) {
-					$this->consume(2);
+			while (true) {
+				$peek = $this->peek();
+				if ($peek === '') {
+					if (!$this->oParserSettings->bLenientParsing) {
+						throw new UnexpectedTokenException('*/', '', 'search', $this->iLineNo);
+					}
 					break;
 				}
+				if ($peek === '*' && $this->comes('*/')) {
+					$this->consumeUnsafe(2);
+					break;
+				}
+				$this->consumeUnsafe($peek);
+				$mComment .= $peek;
 			}
+			return new Comment($mComment, $iLineNo);
 		}
-
-		if ($mComment !== false) {
-			// We skip the * which was included in the comment.
-			return new Comment(substr($mComment, 1), $iLineNo);
-		}
-
-		return $mComment;
+		return false;
 	}
 
 	private function isEnd() {
@@ -651,14 +810,21 @@ class Parser {
 		throw new UnexpectedTokenException('One of ("'.implode('","', $aEnd).'")', $this->peek(5), 'search', $this->iLineNo);
 	}
 
-	private function inputLeft() {
-		return $this->substr($this->iCurrentPosition, -1);
-	}
-
 	private function substr($iStart, $iLength) {
-		if ($iLength < 0) {
-			$iLength = $this->iLength - $iStart + $iLength;
+		if ($iLength <= 0 || $iStart >= $this->iLength) {
+			return '';
 		}
+		if ($this->sTextLibrary === 'ascii') {
+			return substr($this->sText, $iStart, $iLength);
+		}
+		if ($iLength > 100 || $iStart < 0 || !isset($this->aText)) {
+			if ($this->sTextLibrary === 'mb') {
+				return mb_substr($this->sText, $iStart, $iLength, 'utf-8');
+			} else {
+				return iconv_substr($this->sText, $iStart, $iLength, 'utf-8');
+			}
+		}
+		// Use faster substr emulation for short unicode lengths.
 		if ($iStart + $iLength > $this->iLength) {
 			$iLength = $this->iLength - $iStart;
 		}
@@ -672,8 +838,10 @@ class Parser {
 	}
 
 	private function strlen($sString) {
-		if ($this->oParserSettings->bMultibyteSupport) {
-			return mb_strlen($sString, $this->sCharset);
+		if ($this->sTextLibrary === 'mb') {
+			return mb_strlen($sString, 'utf-8');
+		} else if ($this->sTextLibrary === 'iconv') {
+			return iconv_strlen($sString, 'utf-8');
 		} else {
 			return strlen($sString);
 		}
@@ -688,39 +856,11 @@ class Parser {
 	}
 
 	private function strtolower($sString) {
-		if ($this->oParserSettings->bMultibyteSupport) {
-			return mb_strtolower($sString, $this->sCharset);
+		if ($this->sTextLibrary === 'mb') {
+			return mb_strtolower($sString, 'utf-8');
 		} else {
+			// Iconv cannot lowercase strings, bad luck
 			return strtolower($sString);
-		}
-	}
-
-	private function strsplit($sString) {
-		if ($this->oParserSettings->bMultibyteSupport) {
-			if ($this->streql($this->sCharset, 'utf-8')) {
-				return preg_split('//u', $sString, null, PREG_SPLIT_NO_EMPTY);
-			} else {
-				$iLength = mb_strlen($sString, $this->sCharset);
-				$aResult = array();
-				for ($i = 0; $i < $iLength; ++$i) {
-					$aResult[] = mb_substr($sString, $i, 1, $this->sCharset);
-				}
-				return $aResult;
-			}
-		} else {
-			if($sString === '') {
-				return array();
-			} else {
-				return str_split($sString);
-			}
-		}
-	}
-
-	private function strpos($sString, $sNeedle, $iOffset) {
-		if ($this->oParserSettings->bMultibyteSupport) {
-			return mb_strpos($sString, $sNeedle, $iOffset, $this->sCharset);
-		} else {
-			return strpos($sString, $sNeedle, $iOffset);
 		}
 	}
 
