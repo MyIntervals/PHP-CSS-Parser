@@ -1,15 +1,13 @@
 language: php
 php:
     - "5.4"
-    - "5.3"
     - "5.5"
     - "5.6"
     - "7.0"
     - "7.1"
     - "nightly"
     - hhvm
+sudo: false
 dist: trusty
 before_script: rm composer.lock && composer install
 script: ./vendor/phpunit/phpunit/phpunit
-sudo: false
-
