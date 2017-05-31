@@ -12,7 +12,7 @@
         "php": ">=5.3.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "~4.8"
     },
     "autoload": {
         "psr-0": { "Sabberworm\\CSS": "lib/" }
