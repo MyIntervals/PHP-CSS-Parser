@@ -7,6 +7,7 @@ php:
     - "7.0"
     - "nightly"
     - hhvm
+before_script: composer install
 script: ./vendor/phpunit/phpunit/phpunit
 sudo: false
 
