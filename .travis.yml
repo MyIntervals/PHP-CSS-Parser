@@ -9,5 +9,11 @@ php:
     - hhvm
 sudo: false
 dist: trusty
+matrix:
+    include:
+        -
+            php: "5.3"
+            dist: precise
+            sudo: false
 before_script: rm composer.lock && composer install
 script: ./vendor/phpunit/phpunit/phpunit
