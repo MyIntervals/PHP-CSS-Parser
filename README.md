@@ -625,7 +625,7 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 ## Misc
 
 * Legacy Support: The latest pre-PSR-0 version of this project can be checked with the `0.9.0` tag.
-* Running Tests: To run all unit tests for this project, have `phpunit` installed and run `phpunit .`.
+* Running Tests: To run all unit tests for this project, run `composer install` to install phpunit and use `./vendor/phpunit/phpunit/phpunit`.
 
 ## License
 
