@@ -9,7 +9,7 @@ php:
     - "nightly"
     - hhvm
 dist: trusty
-before_script: composer install
+before_script: rm composer.lock && composer install
 script: ./vendor/phpunit/phpunit/phpunit
 sudo: false
 
