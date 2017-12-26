@@ -2,6 +2,8 @@
 
 namespace Sabberworm\CSS\Rule;
 
+use Sabberworm\CSS\Comment\Comment;
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Value;
@@ -152,11 +154,17 @@ class Rule implements Renderable, Commentable {
 		return $this->bIsImportant;
 	}
 
+    /**
+     * {@inheritdoc}
+     */
 	public function __toString() {
-		return $this->render(new \Sabberworm\CSS\OutputFormat());
+		return $this->render(new OutputFormat());
 	}
 
-	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
+    /**
+     * {@inheritdoc}
+     */
+	public function render(OutputFormat $oOutputFormat) {
 		$sResult = "{$this->sRule}:{$oOutputFormat->spaceAfterRuleName()}";
 		if ($this->mValue instanceof Value) { //Can also be a ValueList
 			$sResult .= $this->mValue->render($oOutputFormat);
@@ -174,21 +182,21 @@ class Rule implements Renderable, Commentable {
 	}
 
 	/**
-	 * @param array $aComments Array of comments.
+	 * {@inheritdoc}
 	 */
 	public function addComments(array $aComments) {
 		$this->aComments = array_merge($this->aComments, $aComments);
 	}
 
 	/**
-	 * @return array
+	 * {@inheritdoc}
 	 */
 	public function getComments() {
 		return $this->aComments;
 	}
 
 	/**
-	 * @param array $aComments Array containing Comment objects.
+	 * {@inheritdoc}
 	 */
 	public function setComments(array $aComments) {
 		$this->aComments = $aComments;

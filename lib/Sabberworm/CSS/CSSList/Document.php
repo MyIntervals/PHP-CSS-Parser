@@ -2,6 +2,8 @@
 
 namespace Sabberworm\CSS\CSSList;
 
+use Sabberworm\CSS\OutputFormat;
+
 /**
  * The root CSSList of a parsed file. Contains all top-level css contents, mostly declaration blocks, but also any @-rules encountered.
  */
@@ -90,10 +92,16 @@ class Document extends CSSBlockList {
 		}
 	}
 
-	// Override render() to make format argument optional
-	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat = null) {
+    /**
+     * {@inheritdoc}
+     *
+     * @param OutputFormat|null $oOutputFormat
+     *
+     * @return string
+     */
+	public function render(OutputFormat $oOutputFormat = null) {
 		if($oOutputFormat === null) {
-			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();
+			$oOutputFormat = new OutputFormat();
 		}
 		return parent::render($oOutputFormat);
 	}
