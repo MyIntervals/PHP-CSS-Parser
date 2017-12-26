@@ -76,6 +76,12 @@ class OutputFormat {
 	 */
 	public $sIndentation = "\t";
 
+    /**
+     * Indicates if comments should be kept or thrown away
+     * @var bool
+     */
+	private $bKeepComments = false;
+
 	/**
 	 * Output exceptions.
      * @var bool
@@ -221,6 +227,26 @@ class OutputFormat {
     }
 
     /**
+     * Indicates if comments should be kept or thrown away
+     * @param bool $toggle
+     * @return $this
+     */
+    public function setKeepComments($toggle)
+    {
+        $this->bKeepComments = $toggle;
+        return $this;
+    }
+
+    /**
+     * Indicates if comments should be kept or thrown away
+     * @return bool
+     */
+    public function getKeepComments()
+    {
+        return $this->bKeepComments;
+    }
+
+    /**
      * @return OutputFormat
      */
     public static function create()
@@ -247,6 +273,7 @@ class OutputFormat {
     public static function createPretty()
     {
         return self::create()
+            ->setKeepComments(true)
             ->set('Space*Rules', "\n")
             ->set('Space*Blocks', "\n")
             ->setSpaceBetweenBlocks("\n\n")

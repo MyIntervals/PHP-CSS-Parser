@@ -604,7 +604,29 @@ class DeclarationBlock extends RuleSet {
 			// If all the selectors have been removed, this declaration block becomes invalid
 			throw new OutputException("Attempt to print declaration block with missing selector", $this->iLineNo);
 		}
-		$sResult = $oOutputFormat->implode($oOutputFormat->spaceBeforeSelectorSeparator() . ',' . $oOutputFormat->spaceAfterSelectorSeparator(), $this->aSelectors) . $oOutputFormat->spaceBeforeOpeningBrace() . '{';
+
+        $sResult = '';
+
+		// render comments
+		if ($oOutputFormat->getKeepComments()) {
+            $comments = $this->getCommentsBefore();
+            if (!empty($comments)) {
+                $sResult .= implode(
+                    '',
+                    array_map(
+                        function (Comment $comment) use ($oOutputFormat) {
+                            return '/*' . $comment->getComment() . "*/\n";
+                        },
+                        $comments
+                    )
+                );
+            }
+        }
+
+		$sResult .= $oOutputFormat->implode(
+		    $oOutputFormat->spaceBeforeSelectorSeparator() . ',' . $oOutputFormat->spaceAfterSelectorSeparator(),
+            $this->aSelectors
+        ) . $oOutputFormat->spaceBeforeOpeningBrace() . '{';
 		$sResult .= parent::render($oOutputFormat);
 		$sResult .= '}';
 		return $sResult;

@@ -15,6 +15,9 @@ class OutputFormatTest extends \PHPUnit_Framework_TestCase
 
     private static $testCSS = <<<EOT
 
+/**
+ * LICENSE comment
+ */
 .main, .test {
 	font: italic normal bold 16px/1.2 "Helvetica", Verdana, sans-serif;
 	background: white;
@@ -50,6 +53,23 @@ EOT;
         $this->assertSame(
             '.main,.test{font:italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background:white;}@media screen{.main{background-size:100% 100%;font-size:1.3em;background-color:#fff;}}',
             $this->oDocument->render(OutputFormat::createCompact())
+        );
+    }
+
+    public function testCompactWithComments()
+    {
+        $expected = <<<EOT
+/**
+ * LICENSE comment
+ */
+.main,.test{font:italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background:white;}@media screen{.main{background-size:100% 100%;font-size:1.3em;background-color:#fff;}}
+EOT;
+        $this->assertSame(
+            $expected,
+            $this->oDocument->render(
+                OutputFormat::createCompact()
+                    ->setKeepComments(true)
+            )
         );
     }
 
