@@ -94,40 +94,40 @@ abstract class CSSList implements Renderable, Commentable {
 		return $this->render(new OutputFormat());
 	}
 
-    /**
-     * {@inheritdoc}
-     */
+	/**
+	 * {@inheritdoc}
+	 */
 	public function render(OutputFormat $oOutputFormat) {
-        $sResult = '';
-        $bIsFirst = true;
-        $oNextLevel = $oOutputFormat;
-        if (!$this->isRootList()) {
-            $oNextLevel = $oOutputFormat->nextLevel();
-        }
-        foreach ($this->aContents as $oContent) {
-            $sRendered = $oOutputFormat->safely(
-                function () use ($oNextLevel, $oContent) {
-                    return $oContent->render($oNextLevel);
-                }
-            );
-            if ($sRendered === null) {
-                continue;
-            }
-            if ($bIsFirst) {
-                $bIsFirst = false;
-                $sResult .= $oNextLevel->spaceBeforeBlocks();
-            } else {
-                $sResult .= $oNextLevel->spaceBetweenBlocks();
-            }
-            $sResult .= $sRendered;
-        }
+		$sResult = '';
+		$bIsFirst = true;
+		$oNextLevel = $oOutputFormat;
+		if (!$this->isRootList()) {
+			$oNextLevel = $oOutputFormat->nextLevel();
+		}
+		foreach ($this->aContents as $oContent) {
+			$sRendered = $oOutputFormat->safely(
+				function () use ($oNextLevel, $oContent) {
+					return $oContent->render($oNextLevel);
+				}
+			);
+			if ($sRendered === null) {
+				continue;
+			}
+			if ($bIsFirst) {
+				$bIsFirst = false;
+				$sResult .= $oNextLevel->spaceBeforeBlocks();
+			} else {
+				$sResult .= $oNextLevel->spaceBetweenBlocks();
+			}
+			$sResult .= $sRendered;
+		}
 
-        if (!$bIsFirst) {
-            // Had some output
-            $sResult .= $oOutputFormat->spaceAfterBlocks();
-        }
+		if (!$bIsFirst) {
+			// Had some output
+			$sResult .= $oOutputFormat->spaceAfterBlocks();
+		}
 
-        return $sResult;
+		return $sResult;
 	}
 
 	/**

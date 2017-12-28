@@ -596,37 +596,37 @@ class DeclarationBlock extends RuleSet {
 		return $this->render(new OutputFormat());
 	}
 
-    /**
-     * {@inheritdoc}
-     */
+	/**
+	 * {@inheritdoc}
+	 */
 	public function render(OutputFormat $oOutputFormat) {
 		if(count($this->aSelectors) === 0) {
 			// If all the selectors have been removed, this declaration block becomes invalid
 			throw new OutputException("Attempt to print declaration block with missing selector", $this->iLineNo);
 		}
 
-        $sResult = '';
+		$sResult = '';
 
 		// render comments
 		if ($oOutputFormat->getKeepComments()) {
-            $comments = $this->getCommentsBefore();
-            if (!empty($comments)) {
-                $sResult .= implode(
-                    '',
-                    array_map(
-                        function (Comment $comment) use ($oOutputFormat) {
-                            return '/*' . $comment->getComment() . "*/\n";
-                        },
-                        $comments
-                    )
-                );
-            }
-        }
+			$comments = $this->getCommentsBefore();
+			if (!empty($comments)) {
+				$sResult .= implode(
+					'',
+					array_map(
+						function (Comment $comment) use ($oOutputFormat) {
+							return '/*' . $comment->getComment() . "*/\n";
+						},
+						$comments
+					)
+				);
+			}
+		}
 
 		$sResult .= $oOutputFormat->implode(
-		    $oOutputFormat->spaceBeforeSelectorSeparator() . ',' . $oOutputFormat->spaceAfterSelectorSeparator(),
-            $this->aSelectors
-        ) . $oOutputFormat->spaceBeforeOpeningBrace() . '{';
+			$oOutputFormat->spaceBeforeSelectorSeparator() . ',' . $oOutputFormat->spaceAfterSelectorSeparator(),
+			$this->aSelectors
+		) . $oOutputFormat->spaceBeforeOpeningBrace() . '{';
 		$sResult .= parent::render($oOutputFormat);
 		$sResult .= '}';
 		return $sResult;

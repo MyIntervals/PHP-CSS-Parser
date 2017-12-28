@@ -92,13 +92,13 @@ class Document extends CSSBlockList {
 		}
 	}
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param OutputFormat|null $oOutputFormat
-     *
-     * @return string
-     */
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @param OutputFormat|null $oOutputFormat
+	 *
+	 * @return string
+	 */
 	public function render(OutputFormat $oOutputFormat = null) {
 		if($oOutputFormat === null) {
 			$oOutputFormat = new OutputFormat();

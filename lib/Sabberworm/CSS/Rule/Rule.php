@@ -154,16 +154,16 @@ class Rule implements Renderable, Commentable {
 		return $this->bIsImportant;
 	}
 
-    /**
-     * {@inheritdoc}
-     */
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __toString() {
 		return $this->render(new OutputFormat());
 	}
 
-    /**
-     * {@inheritdoc}
-     */
+	/**
+	 * {@inheritdoc}
+	 */
 	public function render(OutputFormat $oOutputFormat) {
 		$sResult = "{$this->sRule}:{$oOutputFormat->spaceAfterRuleName()}";
 		if ($this->mValue instanceof Value) { //Can also be a ValueList
