@@ -530,6 +530,8 @@ class Parser {
 		$this->consumeWhiteSpace();
 		$this->consume('(');
 		$aArguments = $this->parseValue(array('+', '-', '*', '/', ' '), '\Sabberworm\CSS\Value\CalcRuleValueList');
+		$this->consumeWhiteSpace();
+		$this->consume(')');
 		return new CalcFunction($func, $aArguments, ',', $this->iLineNo);
 	}
 

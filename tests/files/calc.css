@@ -1,4 +1,4 @@
 div { width: calc(100% / 4); }
 div {
-	height: -webkit-calc(9/16 * 100%);
+	height: -webkit-calc(9/16 * 100%)!important;
 }
