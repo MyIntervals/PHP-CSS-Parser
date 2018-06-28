@@ -14,7 +14,9 @@ use Sabberworm\CSS\RuleSet\AtRuleSet;
 use Sabberworm\CSS\CSSList\AtRuleBlockList;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Value\CSSFunction;
+use Sabberworm\CSS\Value\CalcFunction;
 use Sabberworm\CSS\Value\RuleValueList;
+use Sabberworm\CSS\Value\CalcRuleValueList;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\URL;
@@ -372,7 +374,7 @@ class Parser {
 		return $oRule;
 	}
 
-	private function parseValue($aListDelimiters) {
+	private function parseValue($aListDelimiters, $ruleValueListClass = '\Sabberworm\CSS\Value\RuleValueList') {
 		$aStack = array();
 		$this->consumeWhiteSpace();
 		//Build a list of delimiters and parsed values
@@ -408,7 +410,7 @@ class Parser {
 						break;
 					}
 				}
-				$oList = new RuleValueList($sDelimiter, $this->iLineNo);
+				$oList = new $ruleValueListClass($sDelimiter, $this->iLineNo);
 				for ($i = $iStartPosition - 1; $i - $iStartPosition + 1 < $iLength * 2; $i+=2) {
 					$oList->addListComponent($aStack[$i]);
 				}
@@ -527,8 +529,8 @@ class Parser {
 		$this->consume($func);
 		$this->consumeWhiteSpace();
 		$this->consume('(');
-		$aArguments = $this->parseValue(array('+', '-', '*', '/', ' '));
-		return new CSSFunction($func, $aArguments, ',', $this->iLineNo);
+		$aArguments = $this->parseValue(array('+', '-', '*', '/', ' '), '\Sabberworm\CSS\Value\CalcRuleValueList');
+		return new CalcFunction($func, $aArguments, ',', $this->iLineNo);
 	}
 
 	/**
