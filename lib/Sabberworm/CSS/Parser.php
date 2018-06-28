@@ -434,6 +434,8 @@ class Parser {
 			$oValue = $this->parseColorValue();
 		} else if ($this->comes('url', true)) {
 			$oValue = $this->parseURLValue();
+		} else if ($this->comes('calc', true) || $this->comes('-webkit-calc', true)) {
+			$oValue = $this->parseCalcValue();
 		} else if ($this->comes("'") || $this->comes('"')) {
 			$oValue = $this->parseStringValue();
 		} else if ($this->comes("progid:") && $this->oParserSettings->bLenientParsing) {
@@ -518,6 +520,15 @@ class Parser {
 			$this->consume(')');
 		}
 		return $oResult;
+	}
+
+	private function parseCalcValue() {
+		$func = $this->comes('calc', true) ? 'calc' : '-webkit-calc';
+		$this->consume($func);
+		$this->consumeWhiteSpace();
+		$this->consume('(');
+		$aArguments = $this->parseValue(array('+', '-', '*', '/', ' '));
+		return new CSSFunction($func, $aArguments, ',', $this->iLineNo);
 	}
 
 	/**

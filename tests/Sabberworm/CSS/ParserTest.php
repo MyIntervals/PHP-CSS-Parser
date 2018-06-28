@@ -387,6 +387,13 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+	function testCalcInFile() {
+		$oDoc = $this->parsedStructureForFile('calc', Settings::create()->withMultibyteSupport(true));
+		$sExpected = 'div {width: calc(100%/4);}
+div {height: -webkit-calc(9/16*100%);}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
 	function testUrlInFileMbOff() {
 		$oDoc = $this->parsedStructureForFile('url', Settings::create()->withMultibyteSupport(false));
 		$sExpected = 'body {background: #fff url("http://somesite.com/images/someimage.gif") repeat top center;}
