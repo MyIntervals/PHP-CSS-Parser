@@ -41,10 +41,6 @@ class OutputFormat {
 	// This is what’s printed after the comma of value lists
 	public $sSpaceBeforeListArgumentSeparator = '';
 	public $sSpaceAfterListArgumentSeparator = '';
-
-	// This is what’s printed after the operators in a calc function
-	public $sSpaceBeforeCalcListArgumentSeparator = ' ';
-	public $sSpaceAfterCalcListArgumentSeparator = ' ';
 	
 	public $sSpaceBeforeOpeningBrace = ' ';
 	
@@ -221,14 +217,6 @@ class OutputFormatter {
 
 	public function spaceAfterListArgumentSeparator($sSeparator) {
 		return $this->space('AfterListArgumentSeparator', $sSeparator);
-	}
-
-	public function spaceBeforeCalcListArgumentSeparator($sSeparator) {
-		return $this->space('BeforeCalcListArgumentSeparator', $sSeparator);
-	}
-
-	public function spaceAfterCalcListArgumentSeparator($sSeparator) {
-		return $this->space('AfterCalcListArgumentSeparator', $sSeparator);
 	}
 
 	public function spaceBeforeOpeningBrace() {

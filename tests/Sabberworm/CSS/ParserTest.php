@@ -390,8 +390,15 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 	function testCalcInFile() {
 		$oDoc = $this->parsedStructureForFile('calc', Settings::create()->withMultibyteSupport(true));
 		$sExpected = 'div {width: calc(100% / 4);}
-div {height: -webkit-calc(9 / 16 * 100%) !important;width: -moz-calc(50px - 50%);}';
+div {height: -webkit-calc(9 / 16 * 100%) !important;width: -moz-calc(( 50px - 50% ) * 2);}';
 		$this->assertSame($sExpected, $oDoc->render());
+	}
+
+	/**
+	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+	*/
+	function testCalcFailure() {
+		$this->parsedStructureForFile('-calc-no-space-around-minus', Settings::create()->withLenientParsing(false));
 	}
 
 	function testUrlInFileMbOff() {

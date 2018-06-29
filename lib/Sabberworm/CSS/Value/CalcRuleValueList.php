@@ -3,9 +3,12 @@
 namespace Sabberworm\CSS\Value;
 
 class CalcRuleValueList extends RuleValueList {
+	public function __construct($iLineNo = 0) {
+		parent::__construct(array(), ',', $iLineNo);
+	}
 
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
-		return $oOutputFormat->implode($oOutputFormat->spaceBeforeCalcListArgumentSeparator($this->sSeparator) . $this->sSeparator . $oOutputFormat->spaceAfterCalcListArgumentSeparator($this->sSeparator), $this->aComponents);
+		return $oOutputFormat->implode(' ', $this->aComponents);
 	}
 
 }
