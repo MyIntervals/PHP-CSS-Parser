@@ -436,7 +436,7 @@ class Parser {
 			$oValue = $this->parseColorValue();
 		} else if ($this->comes('url', true)) {
 			$oValue = $this->parseURLValue();
-		} else if ($this->comes('calc', true) || $this->comes('-webkit-calc', true)) {
+		} else if ($this->comes('calc', true) || $this->comes('-webkit-calc', true) || $this->comes('-moz-calc', true)) {
 			$oValue = $this->parseCalcValue();
 		} else if ($this->comes("'") || $this->comes('"')) {
 			$oValue = $this->parseStringValue();
