@@ -525,13 +525,9 @@ class Parser {
 	}
 
 	private function parseCalcValue() {
-		$func = $this->comes('calc', true) ? 'calc' : '-webkit-calc';
-		$this->consume($func);
-		$this->consumeWhiteSpace();
-		$this->consume('(');
+		$func = trim($this->consumeUntil('(', false, true));
 		$aArguments = $this->parseValue(array('+', '-', '*', '/', ' '), '\Sabberworm\CSS\Value\CalcRuleValueList');
-		$this->consumeWhiteSpace();
-		$this->consume(')');
+		$this->consumeUntil(')', false, true);
 		return new CalcFunction($func, $aArguments, ',', $this->iLineNo);
 	}
 
