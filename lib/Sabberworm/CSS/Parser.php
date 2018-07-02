@@ -14,7 +14,9 @@ use Sabberworm\CSS\RuleSet\AtRuleSet;
 use Sabberworm\CSS\CSSList\AtRuleBlockList;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Value\CSSFunction;
+use Sabberworm\CSS\Value\CalcFunction;
 use Sabberworm\CSS\Value\RuleValueList;
+use Sabberworm\CSS\Value\CalcRuleValueList;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\URL;
@@ -434,6 +436,8 @@ class Parser {
 			$oValue = $this->parseColorValue();
 		} else if ($this->comes('url', true)) {
 			$oValue = $this->parseURLValue();
+		} else if ($this->comes('calc', true) || $this->comes('-webkit-calc', true) || $this->comes('-moz-calc', true)) {
+			$oValue = $this->parseCalcValue();
 		} else if ($this->comes("'") || $this->comes('"')) {
 			$oValue = $this->parseStringValue();
 		} else if ($this->comes("progid:") && $this->oParserSettings->bLenientParsing) {
@@ -518,6 +522,42 @@ class Parser {
 			$this->consume(')');
 		}
 		return $oResult;
+	}
+
+	private function parseCalcValue() {
+		$aOperators = array('+', '-', '*', '/', '(', ')');
+		$sFunction = trim($this->consumeUntil('(', false, true));
+		$oCalcList = new CalcRuleValueList($this->iLineNo);
+		$oList = new RuleValueList(',', $this->iLineNo);
+		$iNestingLevel = 0;
+		$iLastComponentType = NULL;
+		while(!$this->comes(')') || $iNestingLevel > 0) {
+			$this->consumeWhiteSpace();
+			if (in_array($this->peek(), $aOperators)) {
+				if (($this->comes('-') || $this->comes('+'))) {
+					if ($this->peek(1, -1) != ' ' || !($this->comes('- ') || $this->comes('+ '))) {
+						throw new UnexpectedTokenException(" {$this->peek()} ", $this->peek(1, -1) . $this->peek(2), 'literal', $this->iLineNo);
+					}
+				} else if ($this->comes('(')) {
+					$iNestingLevel++;
+				} else if ($this->comes(')')) {
+					$iNestingLevel--;
+				}
+				$oCalcList->addListComponent($this->consume(1));
+				$iLastComponentType = CalcFunction::T_OPERATOR;
+			} else {
+				$oVal = $this->parsePrimitiveValue();
+				if ($iLastComponentType == CalcFunction::T_OPERAND) {
+					throw new UnexpectedTokenException(sprintf('Next token was expected to be an operand of type %s. Instead "%s" was found.', implode(', ', $aOperators), $oVal), '', 'custom', $this->iLineNo);
+				}
+
+				$oCalcList->addListComponent($oVal);
+				$iLastComponentType = CalcFunction::T_OPERAND;
+			}
+		}
+		$oList->addListComponent($oCalcList);
+		$this->consume(')');
+		return new CalcFunction($sFunction, $oList, ',', $this->iLineNo);
 	}
 
 	/**

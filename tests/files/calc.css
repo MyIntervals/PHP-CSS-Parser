@@ -1,0 +1,5 @@
+div { width: calc(100% / 4); }
+div {
+	height: -webkit-calc(9/16 * 100%)!important;
+	width: -moz-calc((50px - 50%)*2);
+}
