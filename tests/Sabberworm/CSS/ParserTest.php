@@ -432,6 +432,13 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$this->parsedStructureForFile('-charset-in-block', Settings::create()->withLenientParsing(false));
 	}
 
+	/**
+	* @expectedException Sabberworm\CSS\Parsing\SourceException
+	*/
+	function testUnopenedClosingBracketFailure() {
+		$this->parsedStructureForFile('unopened-close-brackets', Settings::create()->withLenientParsing(false));
+	}
+
 	function parsedStructureForFile($sFileName, $oSettings = null) {
 		$sFile = dirname(__FILE__) . '/../../files' . DIRECTORY_SEPARATOR . "$sFileName.css";
 		$oParser = new Parser(file_get_contents($sFile), $oSettings);
