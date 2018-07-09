@@ -129,7 +129,7 @@ class Parser {
 			return $oAtRule;
 		} else if ($this->comes('}')) {
 			$this->consume('}');
-			if ($bIsRoot) {
+			if ($bIsRoot && !$this->oParserSettings->bLenientParsing) {
 				throw new SourceException("Unopened {", $this->iLineNo);
 			} else {
 				return null;
