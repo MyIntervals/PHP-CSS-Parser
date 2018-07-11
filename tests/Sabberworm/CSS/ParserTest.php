@@ -394,6 +394,12 @@ div {height: -webkit-calc(9 / 16 * 100%) !important;width: -moz-calc(( 50px - 50
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+	function testGridLineNameInFile() {
+		$oDoc = $this->parsedStructureForFile('grid-linename', Settings::create()->withMultibyteSupport(true));
+		$sExpected = '.test {grid-template-columns: [linename] 100px;}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
 	/**
 	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
 	*/

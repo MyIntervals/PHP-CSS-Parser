@@ -21,6 +21,7 @@ use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\CSSString;
+use Sabberworm\CSS\Value\LineName;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Comment\Comment;
@@ -447,6 +448,8 @@ class Parser {
 			$oValue = $this->parseStringValue();
 		} else if ($this->comes("progid:") && $this->oParserSettings->bLenientParsing) {
 			$oValue = $this->parseMicrosoftFilter();
+		} else if ($this->comes("[")) {
+			$oValue = $this->parseLineNameValue();
 		} else {
 			$oValue = $this->parseIdentifier(true, false);
 		}
@@ -478,6 +481,16 @@ class Parser {
 			}
 		}
 		return new Size(floatval($sSize), $sUnit, $bForColor, $this->iLineNo);
+	}
+
+	private function parseLineNameValue() {
+		$this->consume('[');
+		$sName = '';
+		while(!$this->comes(']')) {
+			$sName .= $this->consume(1);
+		}
+		$this->consume(']');
+		return new LineName($sName, $this->iLineNo);
 	}
 
 	private function parseColorValue() {
