@@ -485,10 +485,12 @@ class Parser {
 
 	private function parseLineNameValue() {
 		$this->consume('[');
+		$this->consumeWhiteSpace();
 		$sName = '';
 		while(!$this->comes(']')) {
-			$sName .= $this->consume(1);
+			$sName .= $this->parseCharacter(true);
 		}
+		$this->consumeWhiteSpace();
 		$this->consume(']');
 		return new LineName($sName, $this->iLineNo);
 	}
