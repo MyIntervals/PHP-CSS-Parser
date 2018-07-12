@@ -396,8 +396,21 @@ div {height: -webkit-calc(9 / 16 * 100%) !important;width: -moz-calc(( 50px - 50
 
 	function testGridLineNameInFile() {
 		$oDoc = $this->parsedStructureForFile('grid-linename', Settings::create()->withMultibyteSupport(true));
-		$sExpected = '.test {grid-template-columns: [linename] 100px;}';
+		$sExpected = "div {grid-template-columns: [linename] 100px;}\nspan {grid-template-columns: [linename1 linename2] 100px;}";
 		$this->assertSame($sExpected, $oDoc->render());
+	}
+
+	function testEmptyGridLineNameLenientInFile() {
+		$oDoc = $this->parsedStructureForFile('empty-grid-linename');
+		$sExpected = '.test {grid-template-columns: [] 100px;}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
+	/**
+	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+	*/
+	function testLineNameFailure() {
+		$this->parsedStructureForFile('-empty-grid-linename', Settings::create()->withLenientParsing(false));
 	}
 
 	/**
