@@ -111,6 +111,7 @@ class Parser {
 				$oListItem->setComments($comments);
 				$oList->append($oListItem);
 			}
+			$this->consumeWhiteSpace();
 		}
 		if (!$bIsRoot) {
 			throw new SourceException("Unexpected end of document", $this->iLineNo);
@@ -368,15 +369,18 @@ class Parser {
 				$this->consumeWhiteSpace();
 			}
 		}
+		$this->consumeWhiteSpace();
 		if ($this->comes('!')) {
 			$this->consume('!');
 			$this->consumeWhiteSpace();
 			$this->consume('important');
 			$oRule->setIsImportant(true);
 		}
+		$this->consumeWhiteSpace();
 		while ($this->comes(';')) {
 			$this->consume(';');
 		}
+		$this->consumeWhiteSpace();
 		return $oRule;
 	}
 
