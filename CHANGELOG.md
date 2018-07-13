@@ -20,6 +20,15 @@
 * *No backwards-incompatible changes*
 * *No deprecations*
 
+### 8.2.0 (2018-07-13)
+
+* Support parsing `calc()`, thanks to @raxbg.
+* Support parsing grid-lines, again thanks to @raxbg.
+* Support parsing legacy IE filters (`progid:`) in lenient mode, thanks to @FMCorz
+* Performance improvements parsing large files, again thanks to @FMCorz
+* *No backwards-incompatible changes*
+* *No deprecations*
+
 ## 7.0
 
 ### 7.0.0 (2015-08-24)
