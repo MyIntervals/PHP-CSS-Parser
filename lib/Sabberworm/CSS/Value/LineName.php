@@ -2,20 +2,9 @@
 
 namespace Sabberworm\CSS\Value;
 
-class LineName extends PrimitiveValue {
-	private $sName;
-
-	public function __construct($sName, $iLineNo = 0) {
-		parent::__construct($iLineNo);
-		$this->sName = $sName;
-	}
-
-	public function setName($sName) {
-		$this->sName = $sName;
-	}
-
-	public function getName() {
-		return $this->sName;
+class LineName extends ValueList {
+	public function __construct($aComponents = array(), $iLineNo = 0) {
+		parent::__construct($aComponents, ' ', $iLineNo);
 	}
 
 	public function __toString() {
@@ -23,7 +12,7 @@ class LineName extends PrimitiveValue {
 	}
 
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
-		return "[{$this->sName}]";
+		return '[' . parent::render(\Sabberworm\CSS\OutputFormat::createCompact()) . ']';
 	}
 
 }

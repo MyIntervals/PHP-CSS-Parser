@@ -485,19 +485,20 @@ class Parser {
 
 	private function parseLineNameValue() {
 		$this->consume('[');
-		$sName = '';
-		try {
-			do {
-				$this->consumeWhiteSpace();
-				$sName .= $this->parseIdentifier(false, true) . ' ';
-			} while (!$this->comes(']'));
-		} catch (UnexpectedTokenException $e) {
-			if(!$this->oParserSettings->bLenientParsing && (!$sName || !$this->comes(']'))) {// This handles constructs like this [ linename ] in non lenient mode
-				throw $e;
+		$this->consumeWhiteSpace();
+		$aNames = array();
+		do {
+			if($this->oParserSettings->bLenientParsing) {
+				try {
+					$aNames[] = $this->parseIdentifier(false, true);
+				} catch(UnexpectedTokenException $e) {}
+			} else {
+				$aNames[] = $this->parseIdentifier(false, true);
 			}
-		}
+			$this->consumeWhiteSpace();
+		} while (!$this->comes(']'));
 		$this->consume(']');
-		return new LineName(rtrim($sName), $this->iLineNo);
+		return new LineName($aNames, $this->iLineNo);
 	}
 
 	private function parseColorValue() {
