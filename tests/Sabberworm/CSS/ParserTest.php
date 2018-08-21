@@ -390,6 +390,7 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 	function testCalcInFile() {
 		$oDoc = $this->parsedStructureForFile('calc', Settings::create()->withMultibyteSupport(true));
 		$sExpected = 'div {width: calc(100% / 4);}
+div {margin-top: calc(-120% - 4px);}
 div {height: -webkit-calc(9 / 16 * 100%) !important;width: -moz-calc(( 50px - 50% ) * 2);}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
