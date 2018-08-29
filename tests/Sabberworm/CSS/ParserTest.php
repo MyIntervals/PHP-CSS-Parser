@@ -395,6 +395,12 @@ div {height: -webkit-calc(9 / 16 * 100%) !important;width: -moz-calc(( 50px - 50
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+	function testCalcNestedInFile() {
+		$oDoc = $this->parsedStructureForFile('calc-nested', Settings::create()->withMultibyteSupport(true));
+		$sExpected = '.test {font-size: calc(( 3 * 4px ) + -2px);top: calc(200px - calc(20 * 3px));}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
 	function testGridLineNameInFile() {
 		$oDoc = $this->parsedStructureForFile('grid-linename', Settings::create()->withMultibyteSupport(true));
 		$sExpected = "div {grid-template-columns: [linename] 100px;}\nspan {grid-template-columns: [linename1 linename2] 100px;}";
