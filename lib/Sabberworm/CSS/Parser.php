@@ -555,7 +555,7 @@ class Parser {
 	}
 
 	private function parseCalcValue() {
-		$aOperators = array('+', '-', '*', '/', '(', ')');
+		$aOperators = array('+', '-', '*', '/');
 		$sFunction = trim($this->consumeUntil('(', false, true));
 		$oCalcList = new CalcRuleValueList($this->iLineNo);
 		$oList = new RuleValueList(',', $this->iLineNo);
@@ -563,26 +563,31 @@ class Parser {
 		$iLastComponentType = NULL;
 		while(!$this->comes(')') || $iNestingLevel > 0) {
 			$this->consumeWhiteSpace();
-			if (in_array($this->peek(), $aOperators)) {
-				if (($this->comes('-') || $this->comes('+'))) {
-					if ($this->peek(1, -1) != ' ' || !($this->comes('- ') || $this->comes('+ '))) {
-						throw new UnexpectedTokenException(" {$this->peek()} ", $this->peek(1, -1) . $this->peek(2), 'literal', $this->iLineNo);
-					}
-				} else if ($this->comes('(')) {
-					$iNestingLevel++;
-				} else if ($this->comes(')')) {
-					$iNestingLevel--;
-				}
+			if ($this->comes('(')) {
+				$iNestingLevel++;
 				$oCalcList->addListComponent($this->consume(1));
-				$iLastComponentType = CalcFunction::T_OPERATOR;
-			} else {
+				continue;
+			} else if ($this->comes(')')) {
+				$iNestingLevel--;
+				$oCalcList->addListComponent($this->consume(1));
+				continue;
+			}
+			if ($iLastComponentType != CalcFunction::T_OPERAND) {
 				$oVal = $this->parsePrimitiveValue();
-				if ($iLastComponentType == CalcFunction::T_OPERAND) {
-					throw new UnexpectedTokenException(sprintf('Next token was expected to be an operand of type %s. Instead "%s" was found.', implode(', ', $aOperators), $oVal), '', 'custom', $this->iLineNo);
-				}
-
 				$oCalcList->addListComponent($oVal);
 				$iLastComponentType = CalcFunction::T_OPERAND;
+			} else {
+				if (in_array($this->peek(), $aOperators)) {
+					if (($this->comes('-') || $this->comes('+'))) {
+						if ($this->peek(1, -1) != ' ' || !($this->comes('- ') || $this->comes('+ '))) {
+							throw new UnexpectedTokenException(" {$this->peek()} ", $this->peek(1, -1) . $this->peek(2), 'literal', $this->iLineNo);
+						}
+					}
+					$oCalcList->addListComponent($this->consume(1));
+					$iLastComponentType = CalcFunction::T_OPERATOR;
+				} else {
+					throw new UnexpectedTokenException(sprintf('Next token was expected to be an operand of type %s. Instead "%s" was found.', implode(', ', $aOperators), $oVal), '', 'custom', $this->iLineNo);
+				}
 			}
 		}
 		$oList->addListComponent($oCalcList);
