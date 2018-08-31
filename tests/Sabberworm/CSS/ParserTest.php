@@ -387,6 +387,13 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+	function testHexAlphaInFile() {
+		$oDoc = $this->parsedStructureForFile('hex-alpha', Settings::create()->withMultibyteSupport(true));
+		$sExpected = 'div {background: rgba(17,34,51,.27);}
+div {background: rgba(17,34,51,.27);}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
 	function testCalcInFile() {
 		$oDoc = $this->parsedStructureForFile('calc', Settings::create()->withMultibyteSupport(true));
 		$sExpected = 'div {width: calc(100% / 4);}

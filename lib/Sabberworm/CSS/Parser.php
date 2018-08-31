@@ -512,8 +512,15 @@ class Parser {
 			$sValue = $this->parseIdentifier(false);
 			if ($this->strlen($sValue) === 3) {
 				$sValue = $sValue[0] . $sValue[0] . $sValue[1] . $sValue[1] . $sValue[2] . $sValue[2];
+			} else if ($this->strlen($sValue) === 4) {
+				$sValue = $sValue[0] . $sValue[0] . $sValue[1] . $sValue[1] . $sValue[2] . $sValue[2] . $sValue[3] . $sValue[3];
 			}
-			$aColor = array('r' => new Size(intval($sValue[0] . $sValue[1], 16), null, true, $this->iLineNo), 'g' => new Size(intval($sValue[2] . $sValue[3], 16), null, true, $this->iLineNo), 'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true, $this->iLineNo));
+
+			if ($this->strlen($sValue) === 8) {
+				$aColor = array('r' => new Size(intval($sValue[0] . $sValue[1], 16), null, true, $this->iLineNo), 'g' => new Size(intval($sValue[2] . $sValue[3], 16), null, true, $this->iLineNo), 'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true, $this->iLineNo), 'a' => new Size(round($this->mapRange(intval($sValue[6] . $sValue[7], 16), 0, 255, 0, 1), 2), null, true, $this->iLineNo));
+			} else {
+				$aColor = array('r' => new Size(intval($sValue[0] . $sValue[1], 16), null, true, $this->iLineNo), 'g' => new Size(intval($sValue[2] . $sValue[3], 16), null, true, $this->iLineNo), 'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true, $this->iLineNo));
+			}
 		} else {
 			$sColorMode = $this->parseIdentifier(false);
 			$this->consumeWhiteSpace();
@@ -798,6 +805,15 @@ class Parser {
 		} else {
 			return strpos($sString, $sNeedle, $iOffset);
 		}
+	}
+
+	private function mapRange($fVal, $fFromMin, $fFromMax, $fToMin, $fToMax) {
+		$fFromRange = $fFromMax - $fFromMin;
+		$fToRange = $fToMax - $fToMin;
+		$fMultiplier = $fToRange / $fFromRange;
+		$fNewVal = $fVal - $fFromMin;
+		$fNewVal *= $fMultiplier;
+		return $fNewVal + $fToMin;
 	}
 
 }
