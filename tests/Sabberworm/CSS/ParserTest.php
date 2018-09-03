@@ -148,6 +148,12 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 				case "li.green":
 					$this->assertSame(11, $oSelector->getSpecificity());
 					break;
+				case "div:not(.foo[title=\"a,b\"], .bar)":
+					$this->assertSame(31, $oSelector->getSpecificity());
+					break;
+				case "div[title=\"a,b\"]":
+					$this->assertSame(11, $oSelector->getSpecificity());
+					break;
 				default:
 					$this->fail("specificity: untested selector " . $oSelector->getSelector());
 			}

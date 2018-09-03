@@ -28,13 +28,71 @@ class DeclarationBlock extends RuleSet {
 		if (is_array($mSelector)) {
 			$this->aSelectors = $mSelector;
 		} else {
-			$this->aSelectors = explode(',', $mSelector);
+			list( $sSelectors, $aPlaceholders ) = $this->addSelectorExpressionPlaceholders( $mSelector );
+			if ( empty( $aPlaceholders ) ) {
+				$this->aSelectors = explode(',', $sSelectors);
+			} else {
+				$aSearches = array_keys( $aPlaceholders );
+				$aReplaces = array_values( $aPlaceholders );
+				$this->aSelectors = array_map(
+					function( $sSelector ) use ( $aSearches, $aReplaces ) {
+						return str_replace( $aSearches, $aReplaces, $sSelector );
+					},
+					explode(',', $sSelectors)
+				);
+			}
 		}
 		foreach ($this->aSelectors as $iKey => $mSelector) {
 			if (!($mSelector instanceof Selector)) {
 				$this->aSelectors[$iKey] = new Selector($mSelector);
 			}
 		}
+	}
+
+	/**
+	 * Add placeholders for parenthetical/bracketed expressions in selectors which may contain commas that break exploding.
+	 *
+	 * This prevents a single selector like `.widget:not(.foo, .bar)` from erroneously getting parsed in setSelectors as
+	 * two selectors `.widget:not(.foo` and `.bar)`.
+	 *
+	 * @param string $sSelectors Selectors.
+	 * @return array First array value is the selectors with placeholders, and second value is the array of placeholders mapped to the original expressions.
+	 */
+	private function addSelectorExpressionPlaceholders( $sSelectors ) {
+		$iOffset = 0;
+		$aPlaceholders = array();
+
+		while ( preg_match( '/\(|\[/', $sSelectors, $aMatches, PREG_OFFSET_CAPTURE, $iOffset ) ) {
+			$sMatchString = $aMatches[0][0];
+			$iMatchOffset = $aMatches[0][1];
+			$iStyleLength = strlen( $sSelectors );
+			$iOpenParens  = 1;
+			$iStartOffset = $iMatchOffset + strlen( $sMatchString );
+			$iFinalOffset = $iStartOffset;
+			for ( ; $iFinalOffset < $iStyleLength; $iFinalOffset++ ) {
+				if ( '(' === $sSelectors[ $iFinalOffset ] || '[' === $sSelectors[ $iFinalOffset ] ) {
+					$iOpenParens++;
+				} elseif ( ')' === $sSelectors[ $iFinalOffset ] || ']' === $sSelectors[ $iFinalOffset ] ) {
+					$iOpenParens--;
+				}
+
+				// Found the end of the expression, so replace it with a placeholder.
+				if ( 0 === $iOpenParens ) {
+					$sMatchedExpr = substr( $sSelectors, $iMatchOffset, $iFinalOffset - $iMatchOffset + 1 );
+					$sPlaceholder = sprintf( '{placeholder:%d}', count( $aPlaceholders ) + 1 );
+					$aPlaceholders[ $sPlaceholder ] = $sMatchedExpr;
+
+					// Update the CSS to replace the matched calc() with the placeholder function.
+					$sSelectors = substr( $sSelectors, 0, $iMatchOffset ) . $sPlaceholder . substr( $sSelectors, $iFinalOffset + 1 );
+					// Update offset based on difference of length of placeholder vs original matched calc().
+					$iFinalOffset += strlen( $sPlaceholder ) - strlen( $sMatchedExpr );
+					break;
+				}
+			}
+			// Start matching at the next byte after the match.
+			$iOffset = $iFinalOffset + 1;
+		}
+		return array( $sSelectors, $aPlaceholders );
 	}
 
 	// remove one of the selector of the block

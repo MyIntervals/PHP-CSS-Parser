@@ -2,6 +2,8 @@
 #file,
 .help:hover,
 li.green,
-ol li::before {
+ol li::before,
+div:not(.foo[title="a,b"], .bar),
+div[title="a,b"] {
 	font-family: Helvetica;
 }
