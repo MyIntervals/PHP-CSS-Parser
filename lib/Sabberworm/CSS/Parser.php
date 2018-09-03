@@ -113,7 +113,7 @@ class Parser {
 			}
 			$this->consumeWhiteSpace();
 		}
-		if (!$bIsRoot) {
+		if (!$bIsRoot && !$this->oParserSettings->bLenientParsing) {
 			throw new SourceException("Unexpected end of document", $this->iLineNo);
 		}
 	}
