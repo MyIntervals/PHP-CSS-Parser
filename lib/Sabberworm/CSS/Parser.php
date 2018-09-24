@@ -454,6 +454,8 @@ class Parser {
 			$oValue = $this->parseMicrosoftFilter();
 		} else if ($this->comes("[")) {
 			$oValue = $this->parseLineNameValue();
+		} else if ($this->comes("U+")) {
+			$oValue = $this->parseUnicodeRangeValue();
 		} else {
 			$oValue = $this->parseIdentifier(true, false);
 		}
@@ -503,6 +505,14 @@ class Parser {
 		} while (!$this->comes(']'));
 		$this->consume(']');
 		return new LineName($aNames, $this->iLineNo);
+	}
+
+	private function parseUnicodeRangeValue() {
+		$sRange = "";
+		do {
+			$sRange .= $this->consume(1);
+		} while (!$this->comes(',') && !$this->comes(';') && !$this->comes('}'));
+		return $sRange;
 	}
 
 	private function parseColorValue() {
