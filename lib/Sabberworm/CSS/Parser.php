@@ -508,11 +508,14 @@ class Parser {
 	}
 
 	private function parseUnicodeRangeValue() {
+		$iCodepointMaxLenth = 6; // Code points outside BMP can use up to six digits
 		$sRange = "";
+		$this->consume("U+");
 		do {
+			if ($this->comes('-')) $iCodepointMaxLenth = 13; // Max length is 2 six digit code points + the dash(-) between them
 			$sRange .= $this->consume(1);
-		} while (!$this->comes(',') && !$this->comes(';') && !$this->comes('}'));
-		return $sRange;
+		} while (strlen($sRange) < $iCodepointMaxLenth && preg_match("/[A-Fa-f0-9\?-]/", $this->peek()));
+		return "U+{$sRange}";
 	}
 
 	private function parseColorValue() {
