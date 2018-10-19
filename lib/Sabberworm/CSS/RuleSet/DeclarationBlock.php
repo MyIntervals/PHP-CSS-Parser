@@ -2,6 +2,8 @@
 
 namespace Sabberworm\CSS\RuleSet;
 
+use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\OutputException;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Value\RuleValueList;
@@ -9,7 +11,6 @@ use Sabberworm\CSS\Value\Value;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\URL;
-use Sabberworm\CSS\Parsing\OutputException;
 
 /**
  * Declaration blocks are the parts of a css file which denote the rules belonging to a selector.
@@ -23,6 +24,16 @@ class DeclarationBlock extends RuleSet {
 		parent::__construct($iLineNo);
 		$this->aSelectors = array();
 	}
+
+	public static function parse(ParserState $oParserState) {
+		$aComments = array();
+		$oResult = new DeclarationBlock($oParserState->currentLine());
+		$oResult->setSelector($oParserState->consumeUntil('{', false, true, $aComments));
+		$oResult->setComments($aComments);
+		RuleSet::parseRuleSet($oParserState, $oResult);
+		return $oResult;
+	}
+
 
 	public function setSelectors($mSelector) {
 		if (is_array($mSelector)) {
