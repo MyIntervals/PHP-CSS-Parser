@@ -37,7 +37,8 @@ class Size extends PrimitiveValue {
 		}
 
 		$sUnit = null;
-		foreach (self::getSizeUnits() as $iLength => &$aValues) {
+		$aSizeUnits = self::getSizeUnits();
+		foreach($aSizeUnits as $iLength => &$aValues) {
 			$sKey = strtolower($oParserState->peek($iLength));
 			if(array_key_exists($sKey, $aValues)) {
 				if (($sUnit = $aValues[$sKey]) !== null) {
@@ -51,7 +52,7 @@ class Size extends PrimitiveValue {
 
 	private static function getSizeUnits() {
 		if(self::$SIZE_UNITS === null) {
-			self::$SIZE_UNITS = [];
+			self::$SIZE_UNITS = array();
 			foreach (explode('/', Size::ABSOLUTE_SIZE_UNITS.'/'.Size::RELATIVE_SIZE_UNITS.'/'.Size::NON_SIZE_UNITS) as $val) {
 				$iSize = strlen($val);
 				if(!isset(self::$SIZE_UNITS[$iSize])) {
