@@ -2,9 +2,11 @@
 
 namespace Sabberworm\CSS\RuleSet;
 
-use Sabberworm\CSS\Rule\Rule;
-use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Comment\Commentable;
+use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\Renderable;
+use Sabberworm\CSS\Rule\Rule;
 
 /**
  * RuleSet is a generic superclass denoting rules. The typical example for rule sets are declaration block.
@@ -20,6 +22,41 @@ abstract class RuleSet implements Renderable, Commentable {
 		$this->aRules = array();
 		$this->iLineNo = $iLineNo;
 		$this->aComments = array();
+	}
+
+	public static function parseRuleSet(ParserState $oParserState, RuleSet $oRuleSet) {
+		while ($oParserState->comes(';')) {
+			$oParserState->consume(';');
+		}
+		while (!$oParserState->comes('}')) {
+			$oRule = null;
+			if($oParserState->getSettings()->bLenientParsing) {
+				try {
+					$oRule = Rule::parse($oParserState);
+				} catch (UnexpectedTokenException $e) {
+					try {
+						$sConsume = $oParserState->consumeUntil(array("\n", ";", '}'), true);
+						// We need to “unfind” the matches to the end of the ruleSet as this will be matched later
+						if($oParserState->streql(substr($sConsume, -1), '}')) {
+							$oParserState->backtrack(1);
+						} else {
+							while ($oParserState->comes(';')) {
+								$oParserState->consume(';');
+							}
+						}
+					} catch (UnexpectedTokenException $e) {
+						// We’ve reached the end of the document. Just close the RuleSet.
+						return;
+					}
+				}
+			} else {
+				$oRule = Rule::parse($oParserState);
+			}
+			if($oRule) {
+				$oRuleSet->addRule($oRule);
+			}
+		}
+		$oParserState->consume('}');
 	}
 
 	/**
