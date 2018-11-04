@@ -2,10 +2,13 @@
 
 namespace Sabberworm\CSS\Property;
 
+use Sabberworm\CSS\Renderable;
+use Sabberworm\CSS\Parsing\ParserState;
+
 /**
  * Class representing a single CSS selector. Selectors have to be split by the comma prior to being passed into this class.
  */
-class Selector {
+class Selector implements Renderable {
 
 	//Regexes for specificity calculations
 	const NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX = '/
@@ -37,12 +40,18 @@ class Selector {
 
 	private $sSelector;
 	private $iSpecificity;
+	private $iLineNo;
 
-	public function __construct($sSelector, $bCalculateSpecificity = false) {
+	public function __construct($sSelector, $bCalculateSpecificity = false, $iLineNo = 0) {
 		$this->setSelector($sSelector);
+		$this->iLineNo = $iLineNo;
 		if ($bCalculateSpecificity) {
 			$this->getSpecificity();
 		}
+	}
+
+	public static function parse(ParserState $oParserState, $aExpectedEnd = array('{', ',')) {
+		
 	}
 
 	public function getSelector() {
@@ -55,6 +64,10 @@ class Selector {
 	}
 
 	public function __toString() {
+		return $this->getSelector();
+	}
+
+	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		return $this->getSelector();
 	}
 

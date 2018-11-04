@@ -38,6 +38,11 @@ class OutputFormat {
 	// This is what’s printed before and after the comma if a declaration block contains multiple selectors.
 	public $sSpaceBeforeSelectorSeparator = '';
 	public $sSpaceAfterSelectorSeparator = ' ';
+
+	// This is what’s printed before and after combinators in selectors
+	public $sSpaceBeforeSelectorCombinator = ' ';
+	public $sSpaceAfterSelectorCombinator = ' ';
+
 	// This is what’s printed after the comma of value lists
 	public $sSpaceBeforeListArgumentSeparator = '';
 	public $sSpaceAfterListArgumentSeparator = '';
@@ -147,11 +152,22 @@ class OutputFormat {
 	}
 	
 	public static function createCompact() {
-		return self::create()->set('Space*Rules', "")->set('Space*Blocks', "")->setSpaceAfterRuleName('')->setSpaceBeforeOpeningBrace('')->setSpaceAfterSelectorSeparator('');
+		return self::create()
+			->set('Space*Rules', "")
+			->set('Space*Blocks', "")
+			->setSpaceAfterRuleName('')
+			->setSpaceBeforeOpeningBrace('')
+			->setSpaceAfterSelectorSeparator('')
+			->setSpaceBeforeSelectorCombinator('')
+			->setSpaceAfterSelectorCombinator('');
 	}
 	
 	public static function createPretty() {
-		return self::create()->set('Space*Rules', "\n")->set('Space*Blocks', "\n")->setSpaceBetweenBlocks("\n\n")->set('SpaceAfterListArgumentSeparator', array('default' => '', ',' => ' '));
+		return self::create()
+			->set('Space*Rules', "\n")
+			->set('Space*Blocks', "\n")
+			->setSpaceBetweenBlocks("\n\n")
+			->set('SpaceAfterListArgumentSeparator', array('default' => '', ',' => ' '));
 	}
 }
 
@@ -208,6 +224,14 @@ class OutputFormatter {
 	}
 
 	public function spaceAfterSelectorSeparator() {
+		return $this->space('AfterSelectorSeparator');
+	}
+
+	public function spaceBeforeSelectorCombinator() {
+		return $this->space('AfterSelectorSeparator');
+	}
+
+	public function spaceAfterSelectorCombinator() {
 		return $this->space('AfterSelectorSeparator');
 	}
 
