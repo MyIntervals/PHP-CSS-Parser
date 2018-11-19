@@ -16,4 +16,6 @@ matrix:
             dist: precise
             sudo: false
 before_script: rm composer.lock && composer install
-script: ./vendor/phpunit/phpunit/phpunit
+script: ./vendor/bin/phpunit --coverage-clover build/coverage/xml
+after_script: ./vendor/bin/codacycoverage clover build/coverage/xml
+
