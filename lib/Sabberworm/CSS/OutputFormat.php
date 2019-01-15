@@ -35,6 +35,10 @@ class OutputFormat {
 	public $sSpaceAfterBlocks = '';
 	public $sSpaceBetweenBlocks = "\n";
 
+	// Content injected in and around @-rule blocks.
+	public $sBeforeAtRuleBlock = '';
+	public $sAfterAtRuleBlock = '';
+
 	// This is what’s printed before and after the comma if a declaration block contains multiple selectors.
 	public $sSpaceBeforeSelectorSeparator = '';
 	public $sSpaceAfterSelectorSeparator = ' ';
@@ -43,7 +47,12 @@ class OutputFormat {
 	public $sSpaceAfterListArgumentSeparator = '';
 	
 	public $sSpaceBeforeOpeningBrace = ' ';
-	
+
+	// Content injected in and around declaration blocks.
+	public $sBeforeDeclarationBlock = '';
+	public $sAfterDeclarationBlockSelectors = '';
+	public $sAfterDeclarationBlock = '';
+
 	/**
 	* Indentation
 	*/
