@@ -107,7 +107,7 @@ abstract class RuleSet implements Renderable, Commentable {
 
 	/**
 	 * Override all the rules of this set.
-	 * @param array $aRules The rules to override with.
+	 * @param Rule[] $aRules The rules to override with.
 	 */
 	public function setRules(array $aRules) {
 		$this->aRules = array();
@@ -120,7 +120,7 @@ abstract class RuleSet implements Renderable, Commentable {
 	 * Returns all rules matching the given pattern and returns them in an associative array with the rule’s name as keys. This method exists mainly for backwards-compatibility and is really only partially useful.
 	 * @param (string) $mRule pattern to search for. If null, returns all rules. if the pattern ends with a dash, all rules starting with the pattern are returned as well as one matching the pattern with the dash excluded. passing a Rule behaves like calling getRules($mRule->getRule()).
 	 * Note: This method loses some information: Calling this (with an argument of 'background-') on a declaration block like { background-color: green; background-color; rgba(0, 127, 0, 0.7); } will only yield an associative array containing the rgba-valued rule while @link{getRules()} would yield an indexed array containing both.
-	 * @return array Rules.
+	 * @return Rule[] Rules.
 	 */
 	public function getRulesAssoc($mRule = null) {
 		$aResult = array();
