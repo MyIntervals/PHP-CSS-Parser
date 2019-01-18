@@ -55,6 +55,9 @@ abstract class Value implements Renderable {
 				array_splice($aStack, $iStartPosition - 1, $iLength * 2 - 1, array($oList));
 			}
 		}
+		if (!isset($aStack[0])) {
+			return null;
+		}
 		return $aStack[0];
 	}
 
