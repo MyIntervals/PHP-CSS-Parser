@@ -76,6 +76,11 @@ class DeclarationBlock extends RuleSet {
 		$this->setSelectors($mSelector);
 	}
 
+	/**
+	 * Get selectors.
+	 *
+	 * @return Selector[] Selectors.
+	 */
 	public function getSelectors() {
 		return $this->aSelectors;
 	}
@@ -610,9 +615,13 @@ class DeclarationBlock extends RuleSet {
 			// If all the selectors have been removed, this declaration block becomes invalid
 			throw new OutputException("Attempt to print declaration block with missing selector", $this->iLineNo);
 		}
-		$sResult = $oOutputFormat->implode($oOutputFormat->spaceBeforeSelectorSeparator() . ',' . $oOutputFormat->spaceAfterSelectorSeparator(), $this->aSelectors) . $oOutputFormat->spaceBeforeOpeningBrace() . '{';
+		$sResult = $oOutputFormat->sBeforeDeclarationBlock;
+		$sResult .= $oOutputFormat->implode($oOutputFormat->spaceBeforeSelectorSeparator() . ',' . $oOutputFormat->spaceAfterSelectorSeparator(), $this->aSelectors);
+		$sResult .= $oOutputFormat->sAfterDeclarationBlockSelectors;
+		$sResult .= $oOutputFormat->spaceBeforeOpeningBrace() . '{';
 		$sResult .= parent::render($oOutputFormat);
 		$sResult .= '}';
+		$sResult .= $oOutputFormat->sAfterDeclarationBlock;
 		return $sResult;
 	}
 
