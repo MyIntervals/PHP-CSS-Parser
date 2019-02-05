@@ -176,18 +176,57 @@ abstract class CSSList implements Renderable, Commentable {
 		return $this->iLineNo;
 	}
 
+	/**
+	 * Prepend item to list of contents.
+	 *
+	 * @param object $oItem Item.
+	 */
+	public function prepend($oItem) {
+		array_unshift($this->aContents, $oItem);
+	}
+
+	/**
+	 * Append item to list of contents.
+	 *
+	 * @param object $oItem Item.
+	 */
 	public function append($oItem) {
 		$this->aContents[] = $oItem;
 	}
 
 	/**
+	 * Splice the list of contents.
+	 *
+	 * @param int       $iOffset      Offset.
+	 * @param int       $iLength      Length. Optional.
+	 * @param RuleSet[] $mReplacement Replacement. Optional.
+	 */
+	public function splice($iOffset, $iLength = null, $mReplacement = null) {
+		array_splice($this->aContents, $iOffset, $iLength, $mReplacement);
+	}
+
+	/**
 	 * Removes an item from the CSS list.
 	 * @param RuleSet|Import|Charset|CSSList $oItemToRemove May be a RuleSet (most likely a DeclarationBlock), a Import, a Charset or another CSSList (most likely a MediaQuery)
+	 * @return bool Whether the item was removed.
 	 */
 	public function remove($oItemToRemove) {
 		$iKey = array_search($oItemToRemove, $this->aContents, true);
 		if ($iKey !== false) {
 			unset($this->aContents[$iKey]);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Replaces an item from the CSS list.
+	 * @param RuleSet|Import|Charset|CSSList $oItemToRemove May be a RuleSet (most likely a DeclarationBlock), a Import, a Charset or another CSSList (most likely a MediaQuery)
+	 */
+	public function replace($oOldItem, $oNewItem) {
+		$iKey = array_search($oOldItem, $this->aContents, true);
+		if ($iKey !== false) {
+			array_splice($this->aContents, $iKey, 1, $oNewItem);
 			return true;
 		}
 		return false;

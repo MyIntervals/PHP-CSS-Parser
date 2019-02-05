@@ -478,26 +478,63 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 	}
 
 	/**
-	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
-	*/
+	 * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
+	 */
 	function testCharsetFailure1() {
 		$this->parsedStructureForFile('-charset-after-rule', Settings::create()->withLenientParsing(false));
 	}
 
 	/**
-	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
-	*/
+	 * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
+	 */
 	function testCharsetFailure2() {
 		$this->parsedStructureForFile('-charset-in-block', Settings::create()->withLenientParsing(false));
 	}
 
 	/**
-	* @expectedException Sabberworm\CSS\Parsing\SourceException
-	*/
+	 * @expectedException \Sabberworm\CSS\Parsing\SourceException
+	 */
 	function testUnopenedClosingBracketFailure() {
 		$this->parsedStructureForFile('unopened-close-brackets', Settings::create()->withLenientParsing(false));
 	}
 
+	/**
+	 * Ensure that a missing property value raises an exception.
+	 *
+	 * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
+	 * @covers \Sabberworm\CSS\Value\Value::parseValue()
+	 */
+	function testMissingPropertyValueStrict() {
+		$this->parsedStructureForFile('missing-property-value', Settings::create()->withLenientParsing(false));
+	}
+
+	/**
+	 * Ensure that a missing property value is ignored when in lenient parsing mode.
+	 *
+	 * @covers \Sabberworm\CSS\Value\Value::parseValue()
+	 */
+	function testMissingPropertyValueLenient() {
+		$parsed = $this->parsedStructureForFile('missing-property-value', Settings::create()->withLenientParsing(true));
+		$rulesets = $parsed->getAllRuleSets();
+		$this->assertCount( 1, $rulesets );
+		$block = $rulesets[0];
+		$this->assertTrue( $block instanceof DeclarationBlock );
+		$this->assertEquals( array( 'div' ), $block->getSelectors() );
+		$rules = $block->getRules();
+		$this->assertCount( 1, $rules );
+		$rule = $rules[0];
+		$this->assertEquals( 'display', $rule->getRule() );
+		$this->assertEquals( 'inline-block', $rule->getValue() );
+	}
+
+	/**
+	 * Parse structure for file.
+	 *
+	 * @param string      $sFileName Filename.
+	 * @param null|obJeCt $oSettings Settings.
+	 *
+	 * @return CSSList\Document Parsed document.
+	 */
 	function parsedStructureForFile($sFileName, $oSettings = null) {
 		$sFile = dirname(__FILE__) . '/../../files' . DIRECTORY_SEPARATOR . "$sFileName.css";
 		$oParser = new Parser(file_get_contents($sFile), $oSettings);

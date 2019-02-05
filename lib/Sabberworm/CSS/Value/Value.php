@@ -3,6 +3,7 @@
 namespace Sabberworm\CSS\Value;
 
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Renderable;
 
 abstract class Value implements Renderable {
@@ -54,6 +55,9 @@ abstract class Value implements Renderable {
 				}
 				array_splice($aStack, $iStartPosition - 1, $iLength * 2 - 1, array($oList));
 			}
+		}
+		if (!isset($aStack[0])) {
+			throw new UnexpectedTokenException(" {$oParserState->peek()} ", $oParserState->peek(1, -1) . $oParserState->peek(2), 'literal', $oParserState->currentLine());
 		}
 		return $aStack[0];
 	}
