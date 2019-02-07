@@ -142,6 +142,13 @@ abstract class CSSList implements Renderable, Commentable {
 		} else {
 			//Unknown other at rule (font-face or such)
 			$sArgs = trim($oParserState->consumeUntil('{', false, true));
+			if (substr_count($sArgs, "(") != substr_count($sArgs, ")")) {
+				if($oParserState->getSettings()->bLenientParsing) {
+					return NULL;
+				} else {
+					throw new SourceException("Unmatched brace count in media query", $oParserState->currentLine());
+				}
+			}
 			$bUseRuleSet = true;
 			foreach(explode('/', AtRule::BLOCK_RULES) as $sBlockRuleName) {
 				if(self::identifierIs($sIdentifier, $sBlockRuleName)) {
