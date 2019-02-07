@@ -420,8 +420,8 @@ div {height: -webkit-calc(9 / 16 * 100%) !important;width: -moz-calc(( 50px - 50
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
-	function testUnmachedBracesInFile() {
-		$oDoc = $this->parsedStructureForFile('unmached_braces', Settings::create()->withMultibyteSupport(true));
+	function testUnmatchedBracesInFile() {
+		$oDoc = $this->parsedStructureForFile('unmatched_braces', Settings::create()->withMultibyteSupport(true));
 		$sExpected = 'button, input, checkbox, textarea {outline: 0;margin: 0;}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
