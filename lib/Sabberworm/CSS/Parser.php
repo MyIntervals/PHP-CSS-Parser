@@ -9,9 +9,6 @@ use Sabberworm\CSS\Parsing\ParserState;
  * Parser class parses CSS from text into a data structure.
  */
 class Parser {
-	private $sText;
-	private $iLineNo;
-
 	private $oParserState;
 
 	/**
@@ -23,24 +20,21 @@ class Parser {
 	 * @param int $iLineNo
 	 */
 	public function __construct($sText, Settings $oParserSettings = null, $iLineNo = 1) {
-		$this->sText = $sText;
 		if ($oParserSettings === null) {
 			$oParserSettings = Settings::create();
 		}
-		$this->oParserSettings = $oParserSettings;
-		$this->iLineNo = $iLineNo;
+		$this->oParserState = new ParserState($sText, $oParserSettings, $iLineNo);
 	}
 
 	public function setCharset($sCharset) {
-		$this->oParserHelper->setCharset($sCharset);
+		$this->oParserState->setCharset($sCharset);
 	}
 
 	public function getCharset() {
-		$this->oParserHelper->getCharset();
+		$this->oParserState->getCharset();
 	}
 
 	public function parse() {
-		$this->oParserState = new ParserState($this->sText, $this->oParserSettings);
 		return Document::parse($this->oParserState);
 	}
 
