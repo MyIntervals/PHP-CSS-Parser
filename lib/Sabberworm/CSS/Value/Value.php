@@ -92,6 +92,8 @@ abstract class Value implements Renderable {
 			$oValue = self::parseMicrosoftFilter($oParserState);
 		} else if ($oParserState->comes("[")) {
 			$oValue = LineName::parse($oParserState);
+		} else if ($oParserState->comes("U+")) {
+			$oValue = self::parseUnicodeRangeValue($oParserState);
 		} else {
 			$oValue = self::parseIdentifierOrFunction($oParserState);
 		}
@@ -103,6 +105,17 @@ abstract class Value implements Renderable {
 		$sFunction = $oParserState->consumeUntil('(', false, true);
 		$aArguments = Value::parseValue($oParserState, array(',', '='));
 		return new CSSFunction($sFunction, $aArguments, ',', $oParserState->currentLine());
+	}
+
+	private static function parseUnicodeRangeValue(ParserState $oParserState) {
+		$iCodepointMaxLenth = 6; // Code points outside BMP can use up to six digits
+		$sRange = "";
+		$oParserState->consume("U+");
+		do {
+			if ($oParserState->comes('-')) $iCodepointMaxLenth = 13; // Max length is 2 six digit code points + the dash(-) between them
+			$sRange .= $oParserState->consume(1);
+		} while (strlen($sRange) < $iCodepointMaxLenth && preg_match("/[A-Fa-f0-9\?-]/", $oParserState->peek()));
+		return "U+{$sRange}";
 	}
 	
 	/**

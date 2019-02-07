@@ -126,6 +126,12 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
+	function testUnicodeRangeParsing() {
+		$oDoc = $this->parsedStructureForFile('unicode-range');
+		$sExpected = "@font-face {unicode-range: U+0100-024F,U+0259,U+1E??-2EFF,U+202F;}";
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
 	function testSpecificity() {
 		$oDoc = $this->parsedStructureForFile('specificity');
 		$oDeclarationBlock = $oDoc->getAllDeclarationBlocks();
