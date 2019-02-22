@@ -7,7 +7,7 @@ php:
     - "7.1"
     - "7.2"
     - "7.3"
-    - hhvm-3.30.3
+    - hhvm-3.30
 sudo: false
 dist: trusty
 matrix:
