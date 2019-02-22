@@ -612,6 +612,7 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 ## Contributors/Thanks to
 
 * [raxbg](https://github.com/raxbg) for contributions to parse `calc`, grid lines, and various bugfixes.
+* [westonruter](https://github.com/westonruter) for bugfixes and improvements.
 * [FMCorz](https://github.com/FMCorz) for many patches and suggestions, for being able to parse comments and IE hacks (in lenient mode).
 * [Lullabot](https://github.com/Lullabot) for a patch that allows to know the line number for each parsed token.
 * [ju1ius](https://github.com/ju1ius) for the specificity parsing code and the ability to expand/compact shorthand properties.
