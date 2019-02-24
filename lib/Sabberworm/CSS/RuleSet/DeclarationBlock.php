@@ -4,6 +4,7 @@ namespace Sabberworm\CSS\RuleSet;
 
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\OutputException;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Value\RuleValueList;
@@ -28,7 +29,15 @@ class DeclarationBlock extends RuleSet {
 	public static function parse(ParserState $oParserState) {
 		$aComments = array();
 		$oResult = new DeclarationBlock($oParserState->currentLine());
-		$oResult->setSelector($oParserState->consumeUntil('{', false, true, $aComments));
+		try {
+			$oResult->setSelector($oParserState->consumeUntil('{', false, true, $aComments));
+		} catch (UnexpectedTokenException $e) {
+			if($oParserState->getSettings()->bLenientParsing) {
+				return NULL;
+			} else {
+				throw $e;
+			}
+		}
 		$oResult->setComments($aComments);
 		RuleSet::parseRuleSet($oParserState, $oResult);
 		return $oResult;
