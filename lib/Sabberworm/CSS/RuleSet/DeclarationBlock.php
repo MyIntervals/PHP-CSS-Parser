@@ -33,7 +33,8 @@ class DeclarationBlock extends RuleSet {
 			$oResult->setSelector($oParserState->consumeUntil('{', false, true, $aComments));
 		} catch (UnexpectedTokenException $e) {
 			if($oParserState->getSettings()->bLenientParsing) {
-				return NULL;
+				$oParserState->consumeUntil('}', false, true);
+				return false;
 			} else {
 				throw $e;
 			}
