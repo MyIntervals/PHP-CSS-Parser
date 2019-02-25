@@ -432,6 +432,14 @@ div {height: -webkit-calc(9 / 16 * 100%) !important;width: -moz-calc(( 50px - 50
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+	function testInvalidSelectorsInFile() {
+		$oDoc = $this->parsedStructureForFile('invalid-selectors', Settings::create()->withMultibyteSupport(true));
+		$sExpected = '@keyframes mymove {from {top: 0px;}}
+#test {color: white;background: green;}
+#test {display: block;background: white;color: black;}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
 	/**
 	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
 	*/
