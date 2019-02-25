@@ -501,7 +501,7 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 	 * @expectedException \Sabberworm\CSS\Parsing\SourceException
 	 */
 	function testUnopenedClosingBracketFailure() {
-		$this->parsedStructureForFile('unopened-close-brackets', Settings::create()->withLenientParsing(false));
+		$this->parsedStructureForFile('-unopened-close-brackets', Settings::create()->withLenientParsing(false));
 	}
 
 	/**

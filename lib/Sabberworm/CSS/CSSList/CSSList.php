@@ -83,10 +83,8 @@ abstract class CSSList implements Renderable, Commentable {
 			}
 			return $oAtRule;
 		} else if ($oParserState->comes('}')) {
-			$oParserState->consume('}');
 			if ($bIsRoot) {
 				if ($oParserState->getSettings()->bLenientParsing) {
-					while ($oParserState->comes('}')) $oParserState->consume('}');
 					return DeclarationBlock::parse($oParserState);
 				} else {
 					throw new SourceException("Unopened {", $oParserState->currentLine());
@@ -123,6 +121,9 @@ abstract class CSSList implements Renderable, Commentable {
 			$oResult->setVendorKeyFrame($sIdentifier);
 			$oResult->setAnimationName(trim($oParserState->consumeUntil('{', false, true)));
 			CSSList::parseList($oParserState, $oResult);
+			if ($oParserState->comes('}')) {
+				$oParserState->consume('}');
+			}
 			return $oResult;
 		} else if ($sIdentifier === 'namespace') {
 			$sPrefix = null;
@@ -162,6 +163,9 @@ abstract class CSSList implements Renderable, Commentable {
 			} else {
 				$oAtRule = new AtRuleBlockList($sIdentifier, $sArgs, $iIdentifierLineNum);
 				CSSList::parseList($oParserState, $oAtRule);
+				if ($oParserState->comes('}')) {
+					$oParserState->consume('}');
+				}
 			}
 			return $oAtRule;
 		}
