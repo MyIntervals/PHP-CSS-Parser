@@ -30,10 +30,15 @@ class DeclarationBlock extends RuleSet {
 		$aComments = array();
 		$oResult = new DeclarationBlock($oParserState->currentLine());
 		try {
-			$oResult->setSelector($oParserState->consumeUntil('{', false, true, $aComments));
+			$oResult->setSelector($oParserState->consume(1) . $oParserState->consumeUntil(array('{', '}'), false, false, $aComments));
+			if ($oParserState->comes('{')) {
+				$oParserState->consume(1);
+			}
 		} catch (UnexpectedTokenException $e) {
 			if($oParserState->getSettings()->bLenientParsing) {
-				$oParserState->consumeUntil('}', false, true);
+				if(!$oParserState->comes('}')) {
+					$oParserState->consumeUntil('}', false, true);
+				}
 				return false;
 			} else {
 				throw $e;
