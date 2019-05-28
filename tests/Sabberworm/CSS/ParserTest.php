@@ -438,6 +438,15 @@ div {height: -webkit-calc(9 / 16 * 100%) !important;width: -moz-calc(( 50px - 50
 #test {color: white;background: green;}
 #test {display: block;background: white;color: black;}';
 		$this->assertSame($sExpected, $oDoc->render());
+
+		$oDoc = $this->parsedStructureForFile('invalid-selectors-2', Settings::create()->withMultibyteSupport(true));
+		$sExpected = '@media only screen and (max-width: 1215px) {.breadcrumb {padding-left: 10px;}
+	.super-menu > li:first-of-type {border-left-width: 0;}
+	.super-menu > li:last-of-type {border-right-width: 0;}
+	html[dir="rtl"] .super-menu > li:first-of-type {border-left-width: 1px;border-right-width: 0;}
+	html[dir="rtl"] .super-menu > li:last-of-type {border-left-width: 0;}}
+body {background-color: red;}';
+		$this->assertSame($sExpected, $oDoc->render());
 	}
 
 	/**
