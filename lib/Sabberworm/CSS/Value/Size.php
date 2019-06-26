@@ -116,7 +116,8 @@ class Size extends PrimitiveValue {
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		$l = localeconv();
 		$sPoint = preg_quote($l['decimal_point'], '/');
-		return preg_replace(array("/$sPoint/", "/^(-?)0\./"), array('.', '$1.'), $this->fSize) . ($this->sUnit === null ? '' : $this->sUnit);
+		$sSize = $this->fSize != 0 ? preg_replace("/$sPoint?0+$/", "", sprintf("%f", $this->fSize)) : 0;
+		return preg_replace(array("/$sPoint/", "/^(-?)0\./"), array('.', '$1.'), $sSize) . ($this->sUnit === null ? '' : $this->sUnit);
 	}
 
 }
