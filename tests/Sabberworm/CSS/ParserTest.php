@@ -449,6 +449,22 @@ body {background-color: red;}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+	function testSelectorEscapesInFile() {
+		$oDoc = $this->parsedStructureForFile('selector-escapes', Settings::create()->withMultibyteSupport(true));
+		$sExpected = '#\# {color: red;}
+.col-sm-1\/5 {width: 20%;}';
+		$this->assertSame($sExpected, $oDoc->render());
+
+		$oDoc = $this->parsedStructureForFile('invalid-selectors-2', Settings::create()->withMultibyteSupport(true));
+		$sExpected = '@media only screen and (max-width: 1215px) {.breadcrumb {padding-left: 10px;}
+	.super-menu > li:first-of-type {border-left-width: 0;}
+	.super-menu > li:last-of-type {border-right-width: 0;}
+	html[dir="rtl"] .super-menu > li:first-of-type {border-left-width: 1px;border-right-width: 0;}
+	html[dir="rtl"] .super-menu > li:last-of-type {border-left-width: 0;}}
+body {background-color: red;}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
 	/**
 	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
 	*/

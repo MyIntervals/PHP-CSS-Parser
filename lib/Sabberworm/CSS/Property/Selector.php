@@ -37,16 +37,20 @@ class Selector {
 	))
 	/ix';
 
+	const SELECTOR_VALIDATION_RX = '/
+	^((?:[a-zA-Z0-9\x{00A0}-\x{FFFF}_\^\$\|\*\=\"\'\~\[\]\(\)\-\s\.:#\+\>]*(?:\\\\.)?)*|\s*?[\+-]?\d+\%\s*)$
+	/ux';
+
 	private $sSelector;
 	private $iSpecificity;
 
 	public static function isValid($sSelector) {
-		return preg_match("/^([a-zA-Z0-9\x{00A0}-\x{FFFF}_\^\$\|\*\=\"\'\~\[\]\(\)\-\s\.:#\+\>]*|\s*?[\+-]?\d+\%\s*)$/u", $sSelector);
+		return preg_match(self::SELECTOR_VALIDATION_RX, $sSelector);
 	}
 
 	public function __construct($sSelector, $bCalculateSpecificity = false) {
 		if (!Selector::isValid($sSelector)) {
-			throw new UnexpectedTokenException("Selector did not match '/^([a-zA-Z0-9\x{00A0}-\x{FFFF}_\^\$\|\*\=\"\'\~\[\]\(\)\-\s\.:#\+\>]*|\s*?[\+-]?\d+\%\s*)$/u'.", $sSelector, "custom");
+			throw new UnexpectedTokenException("Selector did not match '{self::SELECTOR_VALIDATION_RX}'.", $sSelector, "custom");
 		}
 		$this->setSelector($sSelector);
 		if ($bCalculateSpecificity) {
