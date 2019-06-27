@@ -704,4 +704,10 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$sExpected = ".test {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=\"#80000000\",endColorstr=\"#00000000\",GradientType=1);}";
 		$this->assertSame($sExpected, $oDoc->render());
 	}
+
+	function testLargeSizeValuesInFile() {
+		$oDoc = $this->parsedStructureForFile('large-z-index', Settings::create()->withMultibyteSupport(false));
+		$sExpected = '.overlay {z-index: 10000000000000000000000;}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
 }
