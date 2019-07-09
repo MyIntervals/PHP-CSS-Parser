@@ -404,7 +404,8 @@ div {background: rgba(17,34,51,.27);}';
 		$oDoc = $this->parsedStructureForFile('calc', Settings::create()->withMultibyteSupport(true));
 		$sExpected = 'div {width: calc(100% / 4);}
 div {margin-top: calc(-120% - 4px);}
-div {height: -webkit-calc(9 / 16 * 100%) !important;width: -moz-calc(( 50px - 50% ) * 2);}';
+div {height: -webkit-calc(9 / 16 * 100%) !important;width: -moz-calc(( 50px - 50% ) * 2);}
+div {width: calc(50% - ( ( 4% ) * .5 ));}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
