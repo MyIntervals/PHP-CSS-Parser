@@ -465,6 +465,14 @@ body {background-color: red;}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+	function testSelectorIgnoresInFile() {
+		$oDoc = $this->parsedStructureForFile('selector-ignores', Settings::create()->withMultibyteSupport(true));
+		$sExpected = '.some[selectors-may=\'contain-a-{\'] {}
+.this-selector  .valid {width: 100px;}
+@media only screen and (min-width: 200px) {.test {prop: val;}}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
 	/**
 	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
 	*/

@@ -30,7 +30,19 @@ class DeclarationBlock extends RuleSet {
 		$aComments = array();
 		$oResult = new DeclarationBlock($oParserState->currentLine());
 		try {
-			$oResult->setSelector($oParserState->consume(1) . $oParserState->consumeUntil(array('{', '}'), false, false, $aComments));
+			$aSelectorParts = array();
+			$sStringWrapperChar = false;
+			do {
+				$aSelectorParts[] = $oParserState->consume(1) . $oParserState->consumeUntil(array('{', '}', '\'', '"'), false, false, $aComments);
+				if ( in_array($oParserState->peek(), array('\'', '"')) && substr(end($aSelectorParts), -1) != "\\" ) {
+					if ( $sStringWrapperChar === false ) {
+						$sStringWrapperChar = $oParserState->peek();
+					} else if ($sStringWrapperChar == $oParserState->peek()) {
+						$sStringWrapperChar = false;
+					}
+				}
+			} while (!in_array($oParserState->peek(), array('{', '}')) || $sStringWrapperChar !== false);
+			$oResult->setSelector(implode('', $aSelectorParts));
 			if ($oParserState->comes('{')) {
 				$oParserState->consume(1);
 			}
