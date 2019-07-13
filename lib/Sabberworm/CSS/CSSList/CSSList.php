@@ -272,6 +272,9 @@ abstract class CSSList implements Renderable, Commentable {
 		}
 		foreach ($mSelector as $iKey => &$mSel) {
 			if (!($mSel instanceof Selector)) {
+				if (!Selector::isValid($mSel)) {
+					throw new UnexpectedTokenException("Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.", $mSel, "custom");
+				}
 				$mSel = new Selector($mSel);
 			}
 		}

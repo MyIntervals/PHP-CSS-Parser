@@ -49,9 +49,6 @@ class Selector {
 	}
 
 	public function __construct($sSelector, $bCalculateSpecificity = false) {
-		if (!Selector::isValid($sSelector)) {
-			throw new UnexpectedTokenException("Selector did not match '" . self::SELECTOR_VALIDATION_RX . "'.", $sSelector, "custom");
-		}
 		$this->setSelector($sSelector);
 		if ($bCalculateSpecificity) {
 			$this->getSpecificity();

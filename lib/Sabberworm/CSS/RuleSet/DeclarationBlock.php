@@ -70,6 +70,9 @@ class DeclarationBlock extends RuleSet {
 		}
 		foreach ($this->aSelectors as $iKey => $mSelector) {
 			if (!($mSelector instanceof Selector)) {
+				if (!Selector::isValid($mSelector)) {
+					throw new UnexpectedTokenException("Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.", $mSelector, "custom");
+				}
 				$this->aSelectors[$iKey] = new Selector($mSelector);
 			}
 		}
