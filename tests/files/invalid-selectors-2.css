@@ -1,0 +1,33 @@
+@media only screen and (max-width: 1215px) {
+.breadcrumb{
+padding-left:10px;
+}
+.super-menu > li:first-of-type{
+border-left-width:0;
+}
+.super-menu > li:last-of-type{
+border-right-width:0;
+}
+html[dir="rtl"] .super-menu > li:first-of-type{
+border-left-width:1px;
+border-right-width:0;
+}
+html[dir="rtl"] .super-menu > li:last-of-type{
+border-left-width:0;
+}
+html[dir="rtl"] .super-menu.menu-floated > li:first-of-type
+border-right-width:0;
+}
+}
+
+
+.super-menu.menu-floated{
+border-right-width:1px;
+border-left-width:1px;
+border-color:rgb(90, 66, 66);
+border-style:dotted;
+}
+
+body {
+  background-color: red;
+}

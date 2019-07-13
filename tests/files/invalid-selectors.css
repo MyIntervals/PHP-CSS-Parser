@@ -1,0 +1,24 @@
+@keyframes mymove {
+  from { top: 0px; }
+}
+
+#test {
+  color: white;
+  background: green;
+}
+
+body 
+  background: black;
+  }
+
+#test {
+  display: block;
+  background: red;
+  color: white;
+}
+#test {
+  display: block;
+  background: white;
+  color: black;
+}
+

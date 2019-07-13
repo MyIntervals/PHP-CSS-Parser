@@ -432,6 +432,47 @@ div {height: -webkit-calc(9 / 16 * 100%) !important;width: -moz-calc(( 50px - 50
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+	function testInvalidSelectorsInFile() {
+		$oDoc = $this->parsedStructureForFile('invalid-selectors', Settings::create()->withMultibyteSupport(true));
+		$sExpected = '@keyframes mymove {from {top: 0px;}}
+#test {color: white;background: green;}
+#test {display: block;background: white;color: black;}';
+		$this->assertSame($sExpected, $oDoc->render());
+
+		$oDoc = $this->parsedStructureForFile('invalid-selectors-2', Settings::create()->withMultibyteSupport(true));
+		$sExpected = '@media only screen and (max-width: 1215px) {.breadcrumb {padding-left: 10px;}
+	.super-menu > li:first-of-type {border-left-width: 0;}
+	.super-menu > li:last-of-type {border-right-width: 0;}
+	html[dir="rtl"] .super-menu > li:first-of-type {border-left-width: 1px;border-right-width: 0;}
+	html[dir="rtl"] .super-menu > li:last-of-type {border-left-width: 0;}}
+body {background-color: red;}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
+	function testSelectorEscapesInFile() {
+		$oDoc = $this->parsedStructureForFile('selector-escapes', Settings::create()->withMultibyteSupport(true));
+		$sExpected = '#\# {color: red;}
+.col-sm-1\/5 {width: 20%;}';
+		$this->assertSame($sExpected, $oDoc->render());
+
+		$oDoc = $this->parsedStructureForFile('invalid-selectors-2', Settings::create()->withMultibyteSupport(true));
+		$sExpected = '@media only screen and (max-width: 1215px) {.breadcrumb {padding-left: 10px;}
+	.super-menu > li:first-of-type {border-left-width: 0;}
+	.super-menu > li:last-of-type {border-right-width: 0;}
+	html[dir="rtl"] .super-menu > li:first-of-type {border-left-width: 1px;border-right-width: 0;}
+	html[dir="rtl"] .super-menu > li:last-of-type {border-left-width: 0;}}
+body {background-color: red;}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
+	function testSelectorIgnoresInFile() {
+		$oDoc = $this->parsedStructureForFile('selector-ignores', Settings::create()->withMultibyteSupport(true));
+		$sExpected = '.some[selectors-may=\'contain-a-{\'] {}
+.this-selector  .valid {width: 100px;}
+@media only screen and (min-width: 200px) {.test {prop: val;}}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
 	/**
 	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
 	*/
@@ -501,7 +542,7 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 	 * @expectedException \Sabberworm\CSS\Parsing\SourceException
 	 */
 	function testUnopenedClosingBracketFailure() {
-		$this->parsedStructureForFile('unopened-close-brackets', Settings::create()->withLenientParsing(false));
+		$this->parsedStructureForFile('-unopened-close-brackets', Settings::create()->withLenientParsing(false));
 	}
 
 	/**

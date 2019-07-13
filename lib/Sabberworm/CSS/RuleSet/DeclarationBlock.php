@@ -4,6 +4,7 @@ namespace Sabberworm\CSS\RuleSet;
 
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\OutputException;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Value\RuleValueList;
@@ -28,7 +29,33 @@ class DeclarationBlock extends RuleSet {
 	public static function parse(ParserState $oParserState) {
 		$aComments = array();
 		$oResult = new DeclarationBlock($oParserState->currentLine());
-		$oResult->setSelector($oParserState->consumeUntil('{', false, true, $aComments));
+		try {
+			$aSelectorParts = array();
+			$sStringWrapperChar = false;
+			do {
+				$aSelectorParts[] = $oParserState->consume(1) . $oParserState->consumeUntil(array('{', '}', '\'', '"'), false, false, $aComments);
+				if ( in_array($oParserState->peek(), array('\'', '"')) && substr(end($aSelectorParts), -1) != "\\" ) {
+					if ( $sStringWrapperChar === false ) {
+						$sStringWrapperChar = $oParserState->peek();
+					} else if ($sStringWrapperChar == $oParserState->peek()) {
+						$sStringWrapperChar = false;
+					}
+				}
+			} while (!in_array($oParserState->peek(), array('{', '}')) || $sStringWrapperChar !== false);
+			$oResult->setSelector(implode('', $aSelectorParts));
+			if ($oParserState->comes('{')) {
+				$oParserState->consume(1);
+			}
+		} catch (UnexpectedTokenException $e) {
+			if($oParserState->getSettings()->bLenientParsing) {
+				if(!$oParserState->comes('}')) {
+					$oParserState->consumeUntil('}', false, true);
+				}
+				return false;
+			} else {
+				throw $e;
+			}
+		}
 		$oResult->setComments($aComments);
 		RuleSet::parseRuleSet($oParserState, $oResult);
 		return $oResult;
@@ -43,6 +70,9 @@ class DeclarationBlock extends RuleSet {
 		}
 		foreach ($this->aSelectors as $iKey => $mSelector) {
 			if (!($mSelector instanceof Selector)) {
+				if (!Selector::isValid($mSelector)) {
+					throw new UnexpectedTokenException("Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.", $mSelector, "custom");
+				}
 				$this->aSelectors[$iKey] = new Selector($mSelector);
 			}
 		}
