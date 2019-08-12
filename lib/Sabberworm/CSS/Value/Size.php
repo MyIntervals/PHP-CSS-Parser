@@ -61,8 +61,7 @@ class Size extends PrimitiveValue {
 				self::$SIZE_UNITS[$iSize][strtolower($val)] = $val;
 			}
 
-			// FIXME: Should we not order the longest units first?
-			ksort(self::$SIZE_UNITS, SORT_NUMERIC);
+			krsort(self::$SIZE_UNITS, SORT_NUMERIC);
 		}
 
 		return self::$SIZE_UNITS;
