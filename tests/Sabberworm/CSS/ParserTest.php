@@ -474,6 +474,15 @@ body {background-color: red;}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+	function testInvalidRulesInFile() {
+		$oDoc = $this->parsedStructureForFile('invalid-rule', Settings::create()->withMultibyteSupport(true));
+        $sExpected = 'fusion-max-sh-shbp {}
+@media only screen and (max-width: 800px) {.has-sidebar #content {order: 1;}
+	.has-sidebar #sidebar {order: 2;margin-top: 50px;}
+	.has-sidebar #sidebar-2 {order: 3;margin-top: 50px;}}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
 	/**
 	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
 	*/
