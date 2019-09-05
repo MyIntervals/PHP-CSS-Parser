@@ -35,9 +35,11 @@ abstract class RuleSet implements Renderable, Commentable {
 					$oRule = Rule::parse($oParserState);
 				} catch (UnexpectedTokenException $e) {
 					try {
-						$sConsume = $oParserState->consumeUntil(array("\n", ";", '}'), true);
+						$sConsume = $oParserState->consumeUntil(array("\n", ";", '{', '}'), true);
 						// We need to “unfind” the matches to the end of the ruleSet as this will be matched later
-						if($oParserState->streql(substr($sConsume, -1), '}')) {
+						if($oParserState->streql(substr($sConsume, -1), '{')) { // We need to skip the entire block
+							$oParserState->consumeUntil('}', true);
+						} else if($oParserState->streql(substr($sConsume, -1), '}')) {
 							$oParserState->backtrack(1);
 						} else {
 							while ($oParserState->comes(';')) {
