@@ -11,7 +11,12 @@ class CalcFunction extends CSSFunction {
 
 	public static function parse(ParserState $oParserState) {
 		$aOperators = array('+', '-', '*', '/');
-		$sFunction = trim($oParserState->consumeUntil('(', false, true));
+		$aTerminators = array('(', ';', "\n", "\r");
+		$sFunction = trim($oParserState->consumeUntil($aTerminators, false, true));
+		if ($oParserState->peek(1, -1) != '(') {
+			// Found ; or end of line before an opening bracket
+			throw new UnexpectedTokenException('(', $oParserState->peek(1, -1), 'literal', $oParserState->currentLine());
+		}
 		$oCalcList = new CalcRuleValueList($oParserState->currentLine());
 		$oList = new RuleValueList(',', $oParserState->currentLine());
 		$iNestingLevel = 0;
