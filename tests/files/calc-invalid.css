@@ -1,0 +1,22 @@
+div{
+  height: calc (25% - 1em);
+}
+
+div{
+  height: calc
+  (25% - 1em);
+}
+
+div{
+  height: calc
+  width: 100px
+}
+
+div{
+  height: -moz-calc;
+}
+
+div{
+  height: calc
+  ;
+}
