@@ -3,6 +3,7 @@ namespace Sabberworm\CSS\Parsing;
 
 use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Settings;
 
 class ParserState {
@@ -158,7 +159,7 @@ class ParserState {
 			return $mValue;
 		} else {
 			if ($this->iCurrentPosition + $mValue > $this->iLength) {
-				throw new UnexpectedTokenException($mValue, $this->peek(5), 'count', $this->iLineNo);
+				throw new UnexpectedEOFException($mValue, $this->peek(5), 'count', $this->iLineNo);
 			}
 			$sResult = $this->substr($this->iCurrentPosition, $mValue);
 			$iLineCount = substr_count($sResult, "\n");
@@ -212,19 +213,25 @@ class ParserState {
 		$out = '';
 		$start = $this->iCurrentPosition;
 
-		while (($char = $this->consume(1)) !== '') {
-			if (in_array($char, $aEnd)) {
-				if ($bIncludeEnd) {
-					$out .= $char;
-				} elseif (!$consumeEnd) {
-					$this->iCurrentPosition -= $this->strlen($char);
+		try {
+			while (($char = $this->consume(1)) !== '') {
+				if (in_array($char, $aEnd)) {
+					if ($bIncludeEnd) {
+						$out .= $char;
+					} elseif (!$consumeEnd) {
+						$this->iCurrentPosition -= $this->strlen($char);
+					}
+					return $out;
 				}
-				return $out;
+				$out .= $char;
+				if ($comment = $this->consumeComment()) {
+					$comments[] = $comment;
+				}
 			}
-			$out .= $char;
-			if ($comment = $this->consumeComment()) {
-				$comments[] = $comment;
-			}
+		} catch (UnexpectedEOFException $e) {
+			// Reset the position and forward the EOF exception, so the caller can distinguish between EOF and the standard unexpected token error
+			$this->iCurrentPosition = $start;
+			throw $e;
 		}
 
 		$this->iCurrentPosition = $start;

@@ -6,6 +6,7 @@ use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Property\Charset;
 use Sabberworm\CSS\Property\CSSNamespace;
@@ -110,15 +111,34 @@ abstract class CSSList implements Renderable, Commentable {
 			$oLocation = URL::parse($oParserState);
 			$oParserState->consumeWhiteSpace();
 			$sMediaQuery = null;
-			if (!$oParserState->comes(';')) {
-				$sMediaQuery = $oParserState->consumeUntil(';');
+			try {
+				if (!$oParserState->comes(';')) {
+					$sMediaQuery = $oParserState->consumeUntil(';');
+				}
+				$oParserState->consume(';');
+			} catch (UnexpectedEOFException $e) {
+				// Save the media query if present
+				$sMediaQuery = '';
+				try {
+					while (!$oParserState->isEnd()) {
+						$sMediaQuery .= $oParserState->consume(1);
+					}
+				} catch (UnexpectedEOFException $e) {}
+
+				$sMediaQuery = trim($sMediaQuery);
+				if ($sMediaQuery === '') {
+					$sMediaQuery = null;
+				}
 			}
-			$oParserState->consume(';');
 			return new Import($oLocation, $sMediaQuery, $iIdentifierLineNum);
 		} else if ($sIdentifier === 'charset') {
 			$sCharset = CSSString::parse($oParserState);
-			$oParserState->consumeWhiteSpace();
-			$oParserState->consume(';');
+			try {
+				$oParserState->consumeWhiteSpace();
+				$oParserState->consume(';');
+			} catch (UnexpectedEOFException $e) {
+				// Nothing fatal, file ended before ; was found
+			}
 			return new Charset($sCharset, $iIdentifierLineNum);
 		} else if (self::identifierIs($sIdentifier, 'keyframes')) {
 			$oResult = new KeyFrame($iIdentifierLineNum);
@@ -136,7 +156,11 @@ abstract class CSSList implements Renderable, Commentable {
 				$sPrefix = $mUrl;
 				$mUrl = Value::parsePrimitiveValue($oParserState);
 			}
-			$oParserState->consume(';');
+			try {
+				$oParserState->consume(';');
+			} catch (UnexpectedEOFException $e) {
+				// Nothing fatal, file ended before ; was found
+			}
 			if ($sPrefix !== null && !is_string($sPrefix)) {
 				throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom', $iIdentifierLineNum);
 			}

@@ -746,4 +746,10 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$sExpected = ".test {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=\"#80000000\",endColorstr=\"#00000000\",GradientType=1);}";
 		$this->assertSame($sExpected, $oDoc->render());
 	}
+
+	function testLonelyImport() {
+		$oDoc = $this->parsedStructureForFile('lonely-import');
+		$sExpected = "@import url(\"example.css\") only screen and (max-width: 600px);";
+		$this->assertSame($sExpected, $oDoc->render());
+	}
 }
