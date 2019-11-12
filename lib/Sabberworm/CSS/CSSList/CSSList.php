@@ -112,7 +112,7 @@ abstract class CSSList implements Renderable, Commentable {
 			$oParserState->consumeWhiteSpace();
 			$sMediaQuery = null;
 			if (!$oParserState->comes(';')) {
-				$sMediaQuery = $oParserState->consumeUntil(array(';', ParserState::EOF));
+				$sMediaQuery = trim($oParserState->consumeUntil(array(';', ParserState::EOF)));
 			}
 			if (!$oParserState->isEnd()) {
 				$oParserState->consume(';');
