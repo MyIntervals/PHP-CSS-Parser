@@ -760,4 +760,10 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$sExpected = '.overlay {z-index: 10000000000000000000000;}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
+
+	function testLonelyImport() {
+		$oDoc = $this->parsedStructureForFile('lonely-import');
+		$sExpected = "@import url(\"example.css\") only screen and (max-width: 600px);";
+		$this->assertSame($sExpected, $oDoc->render());
+	}
 }
