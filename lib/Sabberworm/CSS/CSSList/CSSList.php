@@ -244,7 +244,7 @@ abstract class CSSList implements Renderable, Commentable {
 			if (is_array($mNewItem)) {
 				array_splice($this->aContents, $iKey, 1, $mNewItem);
 			} else {
-				array_splice($this->aContents, $iKey, 1, [$mNewItem]);
+				array_splice($this->aContents, $iKey, 1, array($mNewItem));
 			}
 			return true;
 		}
