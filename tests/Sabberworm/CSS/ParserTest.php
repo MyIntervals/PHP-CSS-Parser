@@ -474,6 +474,14 @@ body {background-color: red;}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+	function testKeyframeSelectors() {
+		$oDoc = $this->parsedStructureForFile('keyframe-selector-validation', Settings::create()->withMultibyteSupport(true));
+        $sExpected = '@-webkit-keyframes zoom {0% {-webkit-transform: scale(1,1);}
+	50% {-webkit-transform: scale(1.2,1.2);}
+	100% {-webkit-transform: scale(1,1);}}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
 	/**
 	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
 	*/
@@ -744,6 +752,12 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 	function testMicrosoftFilterParsing() {
 		$oDoc = $this->parsedStructureForFile('ms-filter');
 		$sExpected = ".test {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=\"#80000000\",endColorstr=\"#00000000\",GradientType=1);}";
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
+	function testLargeSizeValuesInFile() {
+		$oDoc = $this->parsedStructureForFile('large-z-index', Settings::create()->withMultibyteSupport(false));
+		$sExpected = '.overlay {z-index: 10000000000000000000000;}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 

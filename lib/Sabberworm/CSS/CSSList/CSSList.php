@@ -98,7 +98,7 @@ abstract class CSSList implements Renderable, Commentable {
 				}
 			}
 		} else {
-			return DeclarationBlock::parse($oParserState);
+			return DeclarationBlock::parse($oParserState, $oList);
 		}
 	}
 
@@ -262,10 +262,14 @@ abstract class CSSList implements Renderable, Commentable {
 	 * Replaces an item from the CSS list.
 	 * @param RuleSet|Import|Charset|CSSList $oItemToRemove May be a RuleSet (most likely a DeclarationBlock), a Import, a Charset or another CSSList (most likely a MediaQuery)
 	 */
-	public function replace($oOldItem, $oNewItem) {
+	public function replace($oOldItem, $mNewItem) {
 		$iKey = array_search($oOldItem, $this->aContents, true);
 		if ($iKey !== false) {
-			array_splice($this->aContents, $iKey, 1, $oNewItem);
+			if (is_array($mNewItem)) {
+				array_splice($this->aContents, $iKey, 1, $mNewItem);
+			} else {
+				array_splice($this->aContents, $iKey, 1, array($mNewItem));
+			}
 			return true;
 		}
 		return false;
