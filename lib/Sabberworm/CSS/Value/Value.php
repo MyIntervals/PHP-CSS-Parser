@@ -68,7 +68,15 @@ abstract class Value implements Renderable {
 		if ($oParserState->comes('(')) {
 			$oParserState->consume('(');
 			$aArguments = Value::parseValue($oParserState, array('=', ' ', ','));
-			$sResult = new CSSFunction($sResult, $aArguments, ',', $oParserState->currentLine());
+
+			if ($sResult == 'url') {
+				$sResult = new URL($aArguments, $oParserState->currentLine());
+			} else if ($sResult == 'calc') {
+				$sResult = new CalcFunction($sResult, $aArguments, ',', $oParserState->currentLine());
+			} else {
+				$sResult = new CSSFunction($sResult, $aArguments, ',', $oParserState->currentLine());
+			}
+
 			$oParserState->consume(')');
 		}
 

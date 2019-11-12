@@ -746,4 +746,14 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$sExpected = ".test {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=\"#80000000\",endColorstr=\"#00000000\",GradientType=1);}";
 		$this->assertSame($sExpected, $oDoc->render());
 	}
+
+	function testEscapedSpecialCaseTokens() {
+		$oDoc = $this->parsedStructureForFile('escaped-tokens');
+		$contents = $oDoc->getContents();
+		$rules = $contents[0]->getRules();
+		$urlRule = $rules[0];
+		$calcRule = $rules[1];
+		$this->assertEquals(true, is_a($urlRule->getValue(), '\Sabberworm\CSS\Value\URL'));
+		$this->assertEquals(true, is_a($calcRule->getValue(), '\Sabberworm\CSS\Value\CalcFunction'));
+	}
 }
