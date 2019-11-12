@@ -27,7 +27,9 @@ class ParserState {
 	public function setCharset($sCharset) {
 		$this->sCharset = $sCharset;
 		$this->aText = $this->strsplit($this->sText);
-		$this->iLength = count($this->aText);
+		if( is_array($this->aText) ) {
+			$this->iLength = count($this->aText);
+		}
 	}
 
 	public function getCharset() {
