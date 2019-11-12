@@ -217,7 +217,8 @@ class ParserState {
 		$start = $this->iCurrentPosition;
 
 		try {
-			while (($char = $this->consume(1)) !== '') {
+			while (true) {
+				$char = $this->consume(1);
 				if (in_array($char, $aEnd)) {
 					if ($bIncludeEnd) {
 						$out .= $char;
