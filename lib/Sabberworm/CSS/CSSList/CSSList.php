@@ -114,16 +114,12 @@ abstract class CSSList implements Renderable, Commentable {
 			if (!$oParserState->comes(';')) {
 				$sMediaQuery = trim($oParserState->consumeUntil(array(';', ParserState::EOF)));
 			}
-			if (!$oParserState->isEnd()) {
-				$oParserState->consume(';');
-			}
+			$oParserState->consumeUntil(array(';', ParserState::EOF), true, true);
 			return new Import($oLocation, $sMediaQuery, $iIdentifierLineNum);
 		} else if ($sIdentifier === 'charset') {
 			$sCharset = CSSString::parse($oParserState);
 			$oParserState->consumeWhiteSpace();
-			if (!$oParserState->isEnd()) {
-				$oParserState->consume(';');
-			}
+			$oParserState->consumeUntil(array(';', ParserState::EOF), true, true);
 			return new Charset($sCharset, $iIdentifierLineNum);
 		} else if (self::identifierIs($sIdentifier, 'keyframes')) {
 			$oResult = new KeyFrame($iIdentifierLineNum);
@@ -141,9 +137,7 @@ abstract class CSSList implements Renderable, Commentable {
 				$sPrefix = $mUrl;
 				$mUrl = Value::parsePrimitiveValue($oParserState);
 			}
-			if (!$oParserState->isEnd()) {
-				$oParserState->consume(';');
-			}
+			$oParserState->consumeUntil(array(';', ParserState::EOF), true, true);
 			if ($sPrefix !== null && !is_string($sPrefix)) {
 				throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom', $iIdentifierLineNum);
 			}

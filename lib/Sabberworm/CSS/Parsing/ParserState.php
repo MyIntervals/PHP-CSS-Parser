@@ -237,7 +237,7 @@ class ParserState {
 		}
 
 		$this->iCurrentPosition = $start;
-		throw new UnexpectedTokenException('One of ("'.implode('","', $aEnd).'")', $this->peek(5), 'search', $this->iLineNo);
+		throw new UnexpectedEOFException('One of ("'.implode('","', $aEnd).'")', $this->peek(5), 'search', $this->iLineNo);
 	}
 
 	private function inputLeft() {
