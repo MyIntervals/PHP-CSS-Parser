@@ -141,7 +141,9 @@ abstract class CSSList implements Renderable, Commentable {
 				$sPrefix = $mUrl;
 				$mUrl = Value::parsePrimitiveValue($oParserState);
 			}
-			$oParserState->consume(';');
+			if (!$oParserState->isEnd()) {
+				$oParserState->consume(';');
+			}
 			if ($sPrefix !== null && !is_string($sPrefix)) {
 				throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom', $iIdentifierLineNum);
 			}
