@@ -7,6 +7,8 @@ use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Settings;
 
 class ParserState {
+	const EOF = null;
+
 	private $oParserSettings;
 
 	private $sText;
@@ -230,9 +232,13 @@ class ParserState {
 				}
 			}
 		} catch (UnexpectedEOFException $e) {
-			// Reset the position and forward the EOF exception, so the caller can distinguish between EOF and the standard unexpected token error
-			$this->iCurrentPosition = $start;
-			throw $e;
+			if (in_array(self::EOF, $aEnd)) {
+				return $out;
+			} else {
+				// Reset the position and forward the EOF exception, so the caller can distinguish between EOF and the standard unexpected token error
+				$this->iCurrentPosition = $start;
+				throw $e;
+			}
 		}
 
 		$this->iCurrentPosition = $start;

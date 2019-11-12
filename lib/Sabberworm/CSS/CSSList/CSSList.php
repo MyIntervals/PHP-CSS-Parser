@@ -111,24 +111,11 @@ abstract class CSSList implements Renderable, Commentable {
 			$oLocation = URL::parse($oParserState);
 			$oParserState->consumeWhiteSpace();
 			$sMediaQuery = null;
-			try {
-				if (!$oParserState->comes(';')) {
-					$sMediaQuery = $oParserState->consumeUntil(';');
-				}
+			if (!$oParserState->comes(';')) {
+				$sMediaQuery = $oParserState->consumeUntil(array(';', ParserState::EOF));
+			}
+			if (!$oParserState->isEnd()) {
 				$oParserState->consume(';');
-			} catch (UnexpectedEOFException $e) {
-				// Save the media query if present
-				$sMediaQuery = '';
-				try {
-					while (!$oParserState->isEnd()) {
-						$sMediaQuery .= $oParserState->consume(1);
-					}
-				} catch (UnexpectedEOFException $e) {}
-
-				$sMediaQuery = trim($sMediaQuery);
-				if ($sMediaQuery === '') {
-					$sMediaQuery = null;
-				}
 			}
 			return new Import($oLocation, $sMediaQuery, $iIdentifierLineNum);
 		} else if ($sIdentifier === 'charset') {
