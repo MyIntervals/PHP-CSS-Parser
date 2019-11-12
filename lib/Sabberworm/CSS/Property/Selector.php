@@ -51,7 +51,7 @@ class Selector {
 	private $iSpecificity;
 
 	public static function isValid($sSelector) {
-		return preg_match(self::SELECTOR_VALIDATION_RX, $sSelector);
+		return preg_match(static::SELECTOR_VALIDATION_RX, $sSelector);
 	}
 
 	public function __construct($sSelector, $bCalculateSpecificity = false) {

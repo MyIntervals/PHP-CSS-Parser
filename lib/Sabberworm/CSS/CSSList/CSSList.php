@@ -97,7 +97,7 @@ abstract class CSSList implements Renderable, Commentable {
 				}
 			}
 		} else {
-			return DeclarationBlock::parse($oParserState);
+			return DeclarationBlock::parse($oParserState, $oList);
 		}
 	}
 

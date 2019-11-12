@@ -474,6 +474,14 @@ body {background-color: red;}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+	function testKeyframeSelectors() {
+		$oDoc = $this->parsedStructureForFile('keyframe-selector-validation', Settings::create()->withMultibyteSupport(true));
+        $sExpected = '@-webkit-keyframes zoom {0% {-webkit-transform: scale(1,1);}
+	50% {-webkit-transform: scale(1.2,1.2);}
+	100% {-webkit-transform: scale(1,1);}}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
 	/**
 	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
 	*/
