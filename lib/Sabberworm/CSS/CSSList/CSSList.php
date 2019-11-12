@@ -120,11 +120,9 @@ abstract class CSSList implements Renderable, Commentable {
 			return new Import($oLocation, $sMediaQuery, $iIdentifierLineNum);
 		} else if ($sIdentifier === 'charset') {
 			$sCharset = CSSString::parse($oParserState);
-			try {
-				$oParserState->consumeWhiteSpace();
+			$oParserState->consumeWhiteSpace();
+			if (!$oParserState->isEnd()) {
 				$oParserState->consume(';');
-			} catch (UnexpectedEOFException $e) {
-				// Nothing fatal, file ended before ; was found
 			}
 			return new Charset($sCharset, $iIdentifierLineNum);
 		} else if (self::identifierIs($sIdentifier, 'keyframes')) {
@@ -143,11 +141,7 @@ abstract class CSSList implements Renderable, Commentable {
 				$sPrefix = $mUrl;
 				$mUrl = Value::parsePrimitiveValue($oParserState);
 			}
-			try {
-				$oParserState->consume(';');
-			} catch (UnexpectedEOFException $e) {
-				// Nothing fatal, file ended before ; was found
-			}
+			$oParserState->consume(';');
 			if ($sPrefix !== null && !is_string($sPrefix)) {
 				throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom', $iIdentifierLineNum);
 			}

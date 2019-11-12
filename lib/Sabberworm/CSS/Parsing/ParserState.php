@@ -216,30 +216,24 @@ class ParserState {
 		$out = '';
 		$start = $this->iCurrentPosition;
 
-		try {
-			while (true) {
-				$char = $this->consume(1);
-				if (in_array($char, $aEnd)) {
-					if ($bIncludeEnd) {
-						$out .= $char;
-					} elseif (!$consumeEnd) {
-						$this->iCurrentPosition -= $this->strlen($char);
-					}
-					return $out;
+		while (!$this->isEnd()) {
+			$char = $this->consume(1);
+			if (in_array($char, $aEnd)) {
+				if ($bIncludeEnd) {
+					$out .= $char;
+				} elseif (!$consumeEnd) {
+					$this->iCurrentPosition -= $this->strlen($char);
 				}
-				$out .= $char;
-				if ($comment = $this->consumeComment()) {
-					$comments[] = $comment;
-				}
-			}
-		} catch (UnexpectedEOFException $e) {
-			if (in_array(self::EOF, $aEnd)) {
 				return $out;
-			} else {
-				// Reset the position and forward the EOF exception, so the caller can distinguish between EOF and the standard unexpected token error
-				$this->iCurrentPosition = $start;
-				throw $e;
 			}
+			$out .= $char;
+			if ($comment = $this->consumeComment()) {
+				$comments[] = $comment;
+			}
+		}
+
+		if (in_array(self::EOF, $aEnd)) {
+			return $out;
 		}
 
 		$this->iCurrentPosition = $start;
