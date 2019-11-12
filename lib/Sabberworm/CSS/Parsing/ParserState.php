@@ -119,8 +119,7 @@ class ParserState {
 			if($this->oParserSettings->bLenientParsing) {
 				try {
 					$oComment = $this->consumeComment();
-				} catch(UnexpectedTokenException $e) {
-					// When we can’t find the end of a comment, we assume the document is finished.
+				} catch(UnexpectedEOFException $e) {
 					$this->iCurrentPosition = $this->iLength;
 					return;
 				}
