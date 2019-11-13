@@ -420,8 +420,8 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
 		$sExpected = 'div {}
 div {}
 div {}
-div {}
-div {}';
+div {height: -moz-calc;}
+div {height: calc;}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
