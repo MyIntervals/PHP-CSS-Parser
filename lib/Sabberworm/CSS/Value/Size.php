@@ -28,9 +28,11 @@ class Size extends PrimitiveValue {
 		if ($oParserState->comes('-')) {
 			$sSize .= $oParserState->consume('-');
 		}
-		while (is_numeric($oParserState->peek()) || $oParserState->comes('.')) {
+		while (is_numeric($oParserState->peek()) || $oParserState->comes('.') || $oParserState->comes('e+', true) || $oParserState->comes('e-', true)) {
 			if ($oParserState->comes('.')) {
 				$sSize .= $oParserState->consume('.');
+			} else if ($oParserState->comes('e', true)) {
+				$sSize .= $oParserState->consume(2);
 			} else {
 				$sSize .= $oParserState->consume(1);
 			}
