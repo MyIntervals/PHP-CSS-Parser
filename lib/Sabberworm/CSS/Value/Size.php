@@ -28,11 +28,16 @@ class Size extends PrimitiveValue {
 		if ($oParserState->comes('-')) {
 			$sSize .= $oParserState->consume('-');
 		}
-		while (is_numeric($oParserState->peek()) || $oParserState->comes('.') || $oParserState->comes('e+', true) || $oParserState->comes('e-', true)) {
+		while (is_numeric($oParserState->peek()) || $oParserState->comes('.') || $oParserState->comes('e', true)) {
 			if ($oParserState->comes('.')) {
 				$sSize .= $oParserState->consume('.');
 			} else if ($oParserState->comes('e', true)) {
-				$sSize .= $oParserState->consume(2);
+				$sLookahead = $oParserState->peek(1, 1);
+				if (is_numeric($sLookahead) || $sLookahead === '+' || $sLookahead === '-') {
+					$sSize .= $oParserState->consume(2);
+				} else {
+					break; // Reached the unit part of the number like "em" or "ex"
+				}
 			} else {
 				$sSize .= $oParserState->consume(1);
 			}
