@@ -11,7 +11,7 @@ class CalcFunction extends CSSFunction {
 
 	public static function parse(ParserState $oParserState) {
 		$aOperators = array('+', '-', '*', '/');
-		$aTerminators = array('(', ';', "\n", "\r");
+		$aTerminators = array('(', ';', "\n", "\r", ParserState::EOF);
 		$sFunction = $oParserState->consumeUntil($aTerminators, false, true);
 		if ($oParserState->peek(1, -1) != '(') {
 			// Found ; or end of line before an opening bracket
@@ -25,6 +25,7 @@ class CalcFunction extends CSSFunction {
 		$iNestingLevel = 0;
 		$iLastComponentType = NULL;
 		while(!$oParserState->comes(')') || $iNestingLevel > 0) {
+			if ($oParserState->isEnd() && $iNestingLevel === 0) break;
 			$oParserState->consumeWhiteSpace();
 			if ($oParserState->comes('(')) {
 				$iNestingLevel++;
@@ -66,7 +67,9 @@ class CalcFunction extends CSSFunction {
 			$oParserState->consumeWhiteSpace();
 		}
 		$oList->addListComponent($oCalcList);
-		$oParserState->consume(')');
+		if (!$oParserState->isEnd()) {
+			$oParserState->consume(')');
+		}
 		return new CalcFunction($sFunction, $oList, ',', $oParserState->currentLine());
 	}
 

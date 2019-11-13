@@ -17,7 +17,7 @@ abstract class Value implements Renderable {
 		$aStack = array();
 		$oParserState->consumeWhiteSpace();
 		//Build a list of delimiters and parsed values
-		while (!($oParserState->comes('}') || $oParserState->comes(';') || $oParserState->comes('!') || $oParserState->comes(')') || $oParserState->comes('\\'))) {
+		while (!($oParserState->comes('}') || $oParserState->comes(';') || $oParserState->comes('!') || $oParserState->comes(')') || $oParserState->comes('\\') || $oParserState->isEnd())) {
 			if (count($aStack) > 0) {
 				$bFoundDelimiter = false;
 				foreach ($aListDelimiters as $sDelimiter) {

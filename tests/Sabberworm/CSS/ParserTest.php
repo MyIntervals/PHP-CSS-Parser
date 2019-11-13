@@ -425,6 +425,32 @@ div {}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+	function testInvalidCalc() {
+		$parser = new Parser('div { height: calc(100px');
+		$oDoc = $parser->parse();
+		$this->assertSame('div {height: calc(100px);}', $oDoc->render());
+
+		$parser = new Parser('div { height: calc(100px)');
+		$oDoc = $parser->parse();
+		$this->assertSame('div {height: calc(100px);}', $oDoc->render());
+
+		$parser = new Parser('div { height: calc(100px);');
+		$oDoc = $parser->parse();
+		$this->assertSame('div {height: calc(100px);}', $oDoc->render());
+
+		$parser = new Parser('div { height: calc(100px}');
+		$oDoc = $parser->parse();
+		$this->assertSame('div {}', $oDoc->render());
+
+		$parser = new Parser('div { height: calc(100px;');
+		$oDoc = $parser->parse();
+		$this->assertSame('div {}', $oDoc->render());
+
+		$parser = new Parser('div { height: calc(100px;}');
+		$oDoc = $parser->parse();
+		$this->assertSame('div {}', $oDoc->render());
+	}
+
 	function testGridLineNameInFile() {
 		$oDoc = $this->parsedStructureForFile('grid-linename', Settings::create()->withMultibyteSupport(true));
 		$sExpected = "div {grid-template-columns: [linename] 100px;}\nspan {grid-template-columns: [linename1 linename2] 100px;}";
