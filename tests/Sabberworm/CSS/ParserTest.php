@@ -733,6 +733,16 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$this->assertEquals("Find Me!", $comments[0]->getComment());
 	}
 
+	function testInnerCommentExtracting() {
+		$parser = new Parser('div {left:10px;/*Find Me!*/text-align:left;}');
+		$doc = $parser->parse();
+		$contents = $doc->getContents();
+		$divRules = $contents[0]->getRules();
+		$comments = $divRules[1]->getComments();
+		$this->assertCount(1, $comments);
+		$this->assertEquals("Find Me!", $comments[0]->getComment());
+	}
+
 	function testTopLevelCommentExtracting() {
 		$parser = new Parser('/*Find Me!*/div {left:10px; text-align:left;}');
 		$doc = $parser->parse();

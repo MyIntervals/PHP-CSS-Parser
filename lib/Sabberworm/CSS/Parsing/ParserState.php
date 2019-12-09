@@ -112,11 +112,14 @@ class ParserState {
 		return null;
 	}
 
-	public function consumeWhiteSpace() {
+	public function consumeWhiteSpace($consumeComments = true) {
 		$comments = array();
 		do {
 			while (preg_match('/\\s/isSu', $this->peek()) === 1) {
 				$this->consume(1);
+			}
+			if (!$consumeComments) {
+				return;
 			}
 			if($this->oParserSettings->bLenientParsing) {
 				try {
