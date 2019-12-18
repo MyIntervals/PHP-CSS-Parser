@@ -3,6 +3,7 @@
 namespace Sabberworm\CSS\Value;
 
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 class Color extends CSSFunction {
 
@@ -28,12 +29,14 @@ class Color extends CSSFunction {
 					'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true, $oParserState->currentLine()),
 					'a' => new Size(round(self::mapRange(intval($sValue[6] . $sValue[7], 16), 0, 255, 0, 1), 2), null, true, $oParserState->currentLine())
 				);
-			} else {
+			} else if ($oParserState->strlen($sValue) === 6) {
 				$aColor = array(
 					'r' => new Size(intval($sValue[0] . $sValue[1], 16), null, true, $oParserState->currentLine()),
 					'g' => new Size(intval($sValue[2] . $sValue[3], 16), null, true, $oParserState->currentLine()),
 					'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true, $oParserState->currentLine())
 				);
+			} else {
+				throw new UnexpectedTokenException("RGB(A) HEX value", $sValue, 'literal', $oParserState->currentLine());
 			}
 		} else {
 			$sColorMode = $oParserState->parseIdentifier(true);
