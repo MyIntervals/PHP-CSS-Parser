@@ -33,6 +33,10 @@ class DeclarationBlock extends RuleSet {
 		$oResult = new DeclarationBlock($oParserState->currentLine());
 		try {
 			$aSelectorParts = array();
+			$sSelectorBuffer = $oParserState->consumeSelectorBuffer();
+			if ($sSelectorBuffer) {
+				$aSelectorParts[] = $sSelectorBuffer;
+			}
 			$sStringWrapperChar = false;
 			do {
 				$aSelectorParts[] = $oParserState->consume(1) . $oParserState->consumeUntil(array('{', '}', '\'', '"'), false, false, $aComments);

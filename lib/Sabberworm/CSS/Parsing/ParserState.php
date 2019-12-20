@@ -18,6 +18,7 @@ class ParserState {
 	private $sCharset;
 	private $iLength;
 	private $iLineNo;
+	private $sSelectorBuffer;
 
 	public function __construct($sText, Settings $oParserSettings, $iLineNo = 1) {
 		$this->oParserSettings = $oParserSettings;
@@ -25,6 +26,7 @@ class ParserState {
 		$this->iCurrentPosition = 0;
 		$this->iLineNo = $iLineNo;
 		$this->setCharset($this->oParserSettings->sDefaultCharset);
+		$this->sSelectorBuffer = "";
 	}
 
 	public function setCharset($sCharset) {
@@ -46,6 +48,16 @@ class ParserState {
 
 	public function getSettings() {
 		return $this->oParserSettings;
+	}
+
+	public function bufferForSelector($iCount) {
+		$this->sSelectorBuffer .= $this->consume($iCount);
+	}
+
+	public function consumeSelectorBuffer() {
+		$sResult = $this->sSelectorBuffer;
+		$this->sSelectorBuffer = "";
+		return $sResult;
 	}
 
 	public function parseIdentifier($bIgnoreCase = true) {
