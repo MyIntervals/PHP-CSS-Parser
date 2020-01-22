@@ -48,8 +48,30 @@ class ParserState {
 		return $this->oParserSettings;
 	}
 
-	public function parseIdentifier($bIgnoreCase = true) {
-		$sResult = $this->parseCharacter(true);
+	public function parseIdentifier($bIgnoreCase = true, $bNameStartCodePoint = true) {
+        $sResult = null;
+        $bCanParseCharacter = true;
+
+        if ( $bNameStartCodePoint ) {
+            // Check if 3 code points would start an identifier. See <https://drafts.csswg.org/css-syntax-3/#would-start-an-identifier>.
+            $sNameStartCodePoint = '[a-zA-Z_]|[\x80-\xFF}]';
+            $sEscapeCode = '\\[^\r\n\f]';
+
+            if (
+                ! (
+                    preg_match("/-([-${sNameStartCodePoint}]|${sEscapeCode})/isSu", $this->peek(3)) ||
+                    preg_match("/${sNameStartCodePoint}/isSu", $this->peek()) ||
+                    preg_match("/${sEscapeCode}/isS", $this->peek(2))
+                )
+            ) {
+                $bCanParseCharacter = false;
+            }
+        }
+
+        if ( $bCanParseCharacter ) {
+            $sResult = $this->parseCharacter(true);
+        }
+
 		if ($sResult === null) {
 			throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier', $this->iLineNo);
 		}
@@ -97,13 +119,13 @@ class ParserState {
 		}
 		if ($bIsForIdentifier) {
 			$peek = ord($this->peek());
-			// Ranges: a-z A-Z 0-9 - _
+			// Matches a name code point. See <https://drafts.csswg.org/css-syntax-3/#name-code-point>.
 			if (($peek >= 97 && $peek <= 122) ||
 				($peek >= 65 && $peek <= 90) ||
 				($peek >= 48 && $peek <= 57) ||
 				($peek === 45) ||
 				($peek === 95) ||
-				($peek > 0xa1)) {
+				($peek > 0x81)) {
 				return $this->consume(1);
 			}
 		} else {
@@ -261,22 +283,22 @@ class ParserState {
 			return mb_strlen($sString, $this->sCharset);
 		} else {
 			return strlen($sString);
-		}	
-	}	
+		}
+	}
 
 	private function substr($iStart, $iLength) {
 		if ($iLength < 0) {
 			$iLength = $this->iLength - $iStart + $iLength;
-		}	
+		}
 		if ($iStart + $iLength > $this->iLength) {
 			$iLength = $this->iLength - $iStart;
-		}	
+		}
 		$sResult = '';
 		while ($iLength > 0) {
 			$sResult .= $this->aText[$iStart];
 			$iStart++;
 			$iLength--;
-		}	
+		}
 		return $sResult;
 	}
 

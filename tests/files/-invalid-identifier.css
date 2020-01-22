@@ -1,0 +1,6 @@
+body {
+    transition: all .3s ease-in-out;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -0-transition: all .3s ease-in-out;
+}
