@@ -54,14 +54,14 @@ class ParserState {
 
         if ( $bNameStartCodePoint ) {
             // Check if 3 code points would start an identifier. See <https://drafts.csswg.org/css-syntax-3/#would-start-an-identifier>.
-            $sNameStartCodePoint = '[a-zA-Z_]|[\x80-\xFF}]';
+            $sNameStartCodePoint = '[a-zA-Z_]|[\x80-\xFF]';
             $sEscapeCode = '\\[^\r\n\f]';
 
             if (
                 ! (
-                    preg_match("/-([-${sNameStartCodePoint}]|${sEscapeCode})/isSu", $this->peek(3)) ||
-                    preg_match("/${sNameStartCodePoint}/isSu", $this->peek()) ||
-                    preg_match("/${sEscapeCode}/isS", $this->peek(2))
+                    preg_match("/^-([-${sNameStartCodePoint}]|${sEscapeCode})/isSu", $this->peek(3)) ||
+                    preg_match("/^${sNameStartCodePoint}/isSu", $this->peek()) ||
+                    preg_match("/^${sEscapeCode}/isS", $this->peek(2))
                 )
             ) {
                 $bCanParseCharacter = false;

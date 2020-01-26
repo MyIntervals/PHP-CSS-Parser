@@ -767,10 +767,30 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+    function getInvalidIdentifiers() {
+        return array(
+            array(
+                'body { -0-transition: all .3s ease-in-out; }',
+                'Identifier expected. Got “-0-tr” [line no: 1]'
+            ),
+            array(
+                'body { 4-o-transition: all .3s ease-in-out; }',
+                'Identifier expected. Got “4-o-t” [line no: 1]'
+            )
+        );
+	}
+
     /**
-     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
+     * @dataProvider getInvalidIdentifiers
      */
-    function testInvalidIdentifier() {
-        $this->parsedStructureForFile('-invalid-identifier', Settings::create()->withLenientParsing(false));
+    function testInvalidIdentifier($css, $errorMessage) {
+        try {
+            $settings = Settings::create()->withLenientParsing(false);
+            $parser = new Parser($css, $settings);
+            $parser->parse();
+            $this->fail( 'UnexpectedTokenException not thrown' );
+        } catch ( UnexpectedTokenException $e ) {
+            $this->assertEquals( $errorMessage, $e->getMessage() );
+        }
     }
 }
