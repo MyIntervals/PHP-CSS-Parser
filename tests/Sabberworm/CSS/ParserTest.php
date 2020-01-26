@@ -769,28 +769,21 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 
     function getInvalidIdentifiers() {
         return array(
-            array(
-                'body { -0-transition: all .3s ease-in-out; }',
-                'Identifier expected. Got “-0-tr” [line no: 1]'
-            ),
-            array(
-                'body { 4-o-transition: all .3s ease-in-out; }',
-                'Identifier expected. Got “4-o-t” [line no: 1]'
-            )
+            array('body { -0-transition: all .3s ease-in-out; }' ),
+            array('body { 4-o-transition: all .3s ease-in-out; }' ),
         );
 	}
 
     /**
      * @dataProvider getInvalidIdentifiers
+     *
+     * @param string $css CSS text.
      */
-    function testInvalidIdentifier($css, $errorMessage) {
-        try {
-            $settings = Settings::create()->withLenientParsing(false);
-            $parser = new Parser($css, $settings);
-            $parser->parse();
-            $this->fail( 'UnexpectedTokenException not thrown' );
-        } catch ( UnexpectedTokenException $e ) {
-            $this->assertEquals( $errorMessage, $e->getMessage() );
-        }
+    function testInvalidIdentifier($css) {
+        $this->setExpectedException( 'Sabberworm\CSS\Parsing\UnexpectedTokenException' );
+
+        $oSettings = Settings::create()->withLenientParsing(false);
+        $oParser = new Parser($css, $oSettings);
+        $oParser->parse();
     }
 }
