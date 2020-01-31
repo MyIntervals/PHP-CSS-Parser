@@ -769,8 +769,8 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 
     function getInvalidIdentifiers() {
         return array(
-            array('body { -0-transition: all .3s ease-in-out; }' ),
-            array('body { 4-o-transition: all .3s ease-in-out; }' ),
+            array('body { -0-transition: all .3s ease-in-out; }'),
+            array('body { 4-o-transition: all .3s ease-in-out; }'),
         );
 	}
 
