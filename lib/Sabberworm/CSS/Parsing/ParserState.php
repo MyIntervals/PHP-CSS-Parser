@@ -72,7 +72,7 @@ class ParserState {
             $sResult = $this->parseCharacter(true);
         }
 
-		if (!$this->oParserSettings->bLenientParsing && $sResult === null) {
+		if ($sResult === null) {
 			throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier', $this->iLineNo);
 		}
 		$sCharacter = null;
