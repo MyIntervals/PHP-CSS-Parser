@@ -32,7 +32,7 @@ class Rule implements Renderable, Commentable {
 
 	public static function parse(ParserState $oParserState) {
 		$aComments = $oParserState->consumeWhiteSpace();
-		$oRule = new Rule($oParserState->parseIdentifier(), $oParserState->currentLine());
+		$oRule = new Rule($oParserState->parseIdentifier(!$oParserState->comes("--")), $oParserState->currentLine());
 		$oRule->setComments($aComments);
 		$oRule->addComments($oParserState->consumeWhiteSpace());
 		$oParserState->consume(':');
