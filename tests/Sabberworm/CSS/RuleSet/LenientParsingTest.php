@@ -5,7 +5,7 @@ namespace Sabberworm\CSS\RuleSet;
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Settings;
 
-class LenientParsingTest extends \PHPUnit_Framework_TestCase {
+class LenientParsingTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	* @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException

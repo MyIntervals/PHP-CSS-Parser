@@ -6,7 +6,7 @@ use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Value\Size;
 
-class DeclarationBlockTest extends \PHPUnit_Framework_TestCase {
+class DeclarationBlockTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider expandBorderShorthandProvider

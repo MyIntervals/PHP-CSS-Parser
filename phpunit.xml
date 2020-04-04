@@ -7,4 +7,10 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">lib/Sabberworm/CSS</directory>
+        </whitelist>
+    </filter>
 </phpunit>

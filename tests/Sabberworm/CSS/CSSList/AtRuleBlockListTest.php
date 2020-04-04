@@ -4,7 +4,7 @@ namespace Sabberworm\CSS\CSSList;
 
 use Sabberworm\CSS\Parser;
 
-class AtRuleBlockListTest extends \PHPUnit_Framework_TestCase {
+class AtRuleBlockListTest extends \PHPUnit\Framework\TestCase {
 
 	public function testMediaQueries() {
 		$sCss = '@media(min-width: 768px){.class{color:red}}';
