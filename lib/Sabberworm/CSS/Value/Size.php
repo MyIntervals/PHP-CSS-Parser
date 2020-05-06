@@ -8,7 +8,7 @@ class Size extends PrimitiveValue {
 
 	const ABSOLUTE_SIZE_UNITS = 'px/cm/mm/mozmm/in/pt/pc/vh/vw/vmin/vmax/rem'; //vh/vw/vm(ax)/vmin/rem are absolute insofar as they don’t scale to the immediate parent (only the viewport)
 	const RELATIVE_SIZE_UNITS = '%/em/ex/ch/fr';
-	const NON_SIZE_UNITS = 'deg/grad/rad/s/ms/turns/Hz/kHz';
+	const NON_SIZE_UNITS = 'deg/grad/rad/s/ms/turn/Hz/kHz';
 
 	private static $SIZE_UNITS = null;
 
