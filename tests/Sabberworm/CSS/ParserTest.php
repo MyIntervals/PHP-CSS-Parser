@@ -466,6 +466,12 @@ body {background-color: red;}';
 		$this->assertSame($sExpected, $oDoc->render());
 	}
 
+	function testIdentifierEscapesInFile() {
+		$oDoc = $this->parsedStructureForFile('identifier-escapes', Settings::create()->withMultibyteSupport(true));
+		$sExpected = 'div {font: 14px Font Awesome\ 5 Pro;font: 14px Font Awesome\} 5 Pro;font: 14px Font Awesome\; 5 Pro;f\;ont: 14px Font Awesome\; 5 Pro;}';
+		$this->assertSame($sExpected, $oDoc->render());
+	}
+
 	function testSelectorIgnoresInFile() {
 		$oDoc = $this->parsedStructureForFile('selector-ignores', Settings::create()->withMultibyteSupport(true));
 		$sExpected = '.some[selectors-may=\'contain-a-{\'] {}

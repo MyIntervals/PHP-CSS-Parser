@@ -55,7 +55,11 @@ class ParserState {
 		}
 		$sCharacter = null;
 		while (($sCharacter = $this->parseCharacter(true)) !== null) {
-			$sResult .= $sCharacter;
+			if (preg_match('/[a-zA-Z0-9\x{00A0}-\x{FFFF}_-]/Sux', $sCharacter)) {
+				$sResult .= $sCharacter;
+			} else {
+				$sResult .= '\\' . $sCharacter;
+			}
 		}
 		if ($bIgnoreCase) {
 			$sResult = $this->strtolower($sResult);
