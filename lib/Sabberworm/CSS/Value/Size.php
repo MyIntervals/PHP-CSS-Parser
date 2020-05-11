@@ -3,6 +3,7 @@
 namespace Sabberworm\CSS\Value;
 
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 class Size extends PrimitiveValue {
 
@@ -38,11 +39,21 @@ class Size extends PrimitiveValue {
 
 		$sUnit = null;
 		$aSizeUnits = self::getSizeUnits();
-		foreach($aSizeUnits as $iLength => &$aValues) {
+		$sUnit = strtolower($oParserState->parseIdentifier());
+		$oParserState->backtrack(strlen($sUnit));
+
+		foreach($aSizeUnits as $iLength => $aValues) {
+		    $iConsumeLength = $iLength;
 			$sKey = strtolower($oParserState->peek($iLength));
 			if(array_key_exists($sKey, $aValues)) {
+			    if ($sUnit !== $sKey) {
+                    if (!$oParserState->getSettings()->bLenientParsing) {
+                        throw new UnexpectedTokenException('Unit', $sUnit, 'identifier', $oParserState->currentLine());
+                    }
+                    $iConsumeLength = strlen($sUnit);
+                }
 				if (($sUnit = $aValues[$sKey]) !== null) {
-					$oParserState->consume($iLength);
+					$oParserState->consume($iConsumeLength);
 					break;
 				}
 			}

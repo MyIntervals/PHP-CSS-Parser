@@ -787,4 +787,22 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 		$sExpected = "@import url(\"example.css\") only screen and (max-width: 600px);";
 		$this->assertSame($sExpected, $oDoc->render());
 	}
+
+    function testTurnUnitLenient() {
+        $sText = ".foo {transform: rotate(1turn);}\n.bar {transform: rotate(1turns);}";
+        $sExpected = ".foo {transform: rotate(1turn);}\n.bar {transform: rotate(1turn);}";
+
+        $oParser = new Parser($sText);
+        $this->assertSame($sExpected, $oParser->parse()->render());
+    }
+
+    function testTurnUnitStrict() {
+        $sText = ".foo {transform: rotate(1turn);}\n.bar {transform: rotate(1turns);}";
+
+        $oParser = new Parser($sText, Settings::create()->beStrict());
+
+        // Line 2 contains the invalid unit and so should be reported.
+        $this->setExpectedException( 'Sabberworm\CSS\Parsing\UnexpectedTokenException', 'Identifier expected. Got “turns” [line no: 2]' );
+        $oParser->parse();
+    }
 }
