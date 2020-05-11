@@ -37,26 +37,14 @@ class Size extends PrimitiveValue {
 			}
 		}
 
-		$sParsedUnit = '';
-		$iOffset = 0;
-		while (true) {
-			$sChar = $oParserState->peek(1, $iOffset);
-			$iPeek = ord($sChar);
-
-			// Ranges: a-z A-Z 0-9 %
-			if (($iPeek >= 97 && $iPeek <= 122) ||
-				($iPeek >= 65 && $iPeek <= 90) ||
-				($iPeek >= 48 && $iPeek <= 57) ||
-				($iPeek === 37)) {
-				$sParsedUnit .= $sChar;
-				$iOffset++;
-			} else {
-				break;
-			}
-		}
-
 		$sUnit = null;
+		$sParsedUnit = null;
 		$aSizeUnits = self::getSizeUnits();
+
+		$iMaxSizeUnitLength = max(array_keys($aSizeUnits));
+		if ( preg_match( '/^[a-zA-Z0-9%]+/', $oParserState->peek($iMaxSizeUnitLength), $matches ) ) {
+			$sParsedUnit = $matches[0];
+		}
 
 		foreach($aSizeUnits as $iLength => $aValues) {
 			$sKey = strtolower($oParserState->peek($iLength));
