@@ -38,26 +38,21 @@ class Size extends PrimitiveValue {
 		}
 
 		$sUnit = null;
-		$sParsedUnit = null;
 		$aSizeUnits = self::getSizeUnits();
-
 		$iMaxSizeUnitLength = max(array_keys($aSizeUnits));
-		if ( preg_match( '/^[a-zA-Z0-9%]+/', $oParserState->peek($iMaxSizeUnitLength), $matches ) ) {
-			$sParsedUnit = $matches[0];
-		}
 
-		foreach($aSizeUnits as $iLength => $aValues) {
-			$sKey = strtolower($oParserState->peek($iLength));
-			if(array_key_exists($sKey, $aValues)) {
-				if (strtolower($sParsedUnit) !== $sKey) {
-					throw new UnexpectedTokenException('Unit', $sParsedUnit, 'identifier', $oParserState->currentLine());
-				}
-				if (($sUnit = $aValues[$sKey]) !== null) {
-					$oParserState->consume($iLength);
-					break;
-				}
+		if ( preg_match( '/^[a-zA-Z0-9%]+/', $oParserState->peek($iMaxSizeUnitLength), $matches ) ) {
+			$sUnit = strtolower($matches[0]);
+			$iUnitLength = strlen($sUnit);
+
+			if (isset($aSizeUnits[$iUnitLength][$sUnit])) {
+				$sUnit = $aSizeUnits[$iUnitLength][$sUnit];
+				$oParserState->consume($iUnitLength);
+			} else {
+				throw new UnexpectedTokenException('Unit', $sUnit, 'identifier', $oParserState->currentLine());
 			}
 		}
+
 		return new Size(floatval($sSize), $sUnit, $bIsColorComponent, $oParserState->currentLine());
 	}
 
