@@ -41,7 +41,7 @@ class Size extends PrimitiveValue {
 		$aSizeUnits = self::getSizeUnits();
 		$iMaxSizeUnitLength = max(array_keys($aSizeUnits));
 
-		if ( preg_match( '/^[a-zA-Z0-9%]+/', $oParserState->peek($iMaxSizeUnitLength), $matches ) ) {
+		if ( preg_match( '/^(%|[a-zA-Z0-9]+)/', $oParserState->peek($iMaxSizeUnitLength), $matches ) ) {
 			$sUnit = strtolower($matches[0]);
 			$iUnitLength = strlen($sUnit);
 
