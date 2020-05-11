@@ -37,20 +37,36 @@ class Size extends PrimitiveValue {
 			}
 		}
 
-		$sUnit = null;
-		$aSizeUnits = self::getSizeUnits();
-		$sUnit = strtolower($oParserState->parseIdentifier());
-		$oParserState->backtrack(strlen($sUnit));
+        $sParsedUnit = '';
+        $iOffset = 0;
+		while (true) {
+		    $sChar = $oParserState->peek(1, $iOffset);
+            $iPeek = ord($sChar);
+
+            // Ranges: a-z A-Z 0-9 %
+            if (($iPeek >= 97 && $iPeek <= 122) ||
+                ($iPeek >= 65 && $iPeek <= 90) ||
+                ($iPeek >= 48 && $iPeek <= 57) ||
+                ($iPeek === 37)) {
+                $sParsedUnit .= $sChar;
+                $iOffset++;
+            } else {
+                break;
+            }
+        }
+
+        $sUnit = null;
+        $aSizeUnits = self::getSizeUnits();
 
 		foreach($aSizeUnits as $iLength => $aValues) {
 		    $iConsumeLength = $iLength;
 			$sKey = strtolower($oParserState->peek($iLength));
 			if(array_key_exists($sKey, $aValues)) {
-			    if ($sUnit !== $sKey) {
+			    if (strtolower($sParsedUnit) !== $sKey) {
                     if (!$oParserState->getSettings()->bLenientParsing) {
-                        throw new UnexpectedTokenException('Unit', $sUnit, 'identifier', $oParserState->currentLine());
+                        throw new UnexpectedTokenException('Unit', $sParsedUnit, 'identifier', $oParserState->currentLine());
                     }
-                    $iConsumeLength = strlen($sUnit);
+                    $iConsumeLength = strlen($sParsedUnit);
                 }
 				if (($sUnit = $aValues[$sKey]) !== null) {
 					$oParserState->consume($iConsumeLength);
