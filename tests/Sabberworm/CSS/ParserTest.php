@@ -159,6 +159,13 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 			}
 		}
 		$this->assertEquals(array(new Selector('#test .help', true)), $oDoc->getSelectorsBySpecificity('> 100'));
+		$this->assertEquals(array(new Selector('#test .help', true), new Selector('#file', true)), $oDoc->getSelectorsBySpecificity('>= 100'));
+		$this->assertEquals(array(new Selector('#file', true)), $oDoc->getSelectorsBySpecificity('=== 100'));
+		$this->assertEquals(array(new Selector('#file', true)), $oDoc->getSelectorsBySpecificity('== 100'));
+		$this->assertEquals(array(new Selector('#file', true), new Selector('.help:hover', true), new Selector('li.green', true), new Selector('ol li::before', true)), $oDoc->getSelectorsBySpecificity('<= 100'));
+		$this->assertEquals(array(new Selector('.help:hover', true), new Selector('li.green', true), new Selector('ol li::before', true)), $oDoc->getSelectorsBySpecificity('< 100'));
+		$this->assertEquals(array(new Selector('li.green', true)), $oDoc->getSelectorsBySpecificity('11'));
+		$this->assertEquals(array(new Selector('ol li::before', true)), $oDoc->getSelectorsBySpecificity(3));
 	}
 
 	function testManipulation() {
