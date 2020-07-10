@@ -10,3 +10,19 @@
 	background-color: hsl(220, 10%, 220%);
 	background-color: hsla(220, 10%, 220%, 0.3);
 }
+
+#variables {
+	background-color: rgb(var(--some-rgb));
+	background-color: rgb(var(--r), var(--g), var(--b));
+	background-color: rgb(255, var(--g), var(--b));
+	background-color: rgb(255, 255, var(--b));
+	background-color: rgb(255, var(--rg));
+
+	background-color: hsl(var(--some-hsl));
+}
+
+#variables-alpha {
+	background-color: rgba(var(--some-rgb), 0.1);
+	background-color: rgba(var(--some-rg), 255, 0.1);
+	background-color: hsla(var(--some-hsl), 0.1);
+}

@@ -39,10 +39,31 @@ class Color extends CSSFunction {
 			$sColorMode = $oParserState->parseIdentifier(true);
 			$oParserState->consumeWhiteSpace();
 			$oParserState->consume('(');
+
+			$bContainsVar = false;
 			$iLength = $oParserState->strlen($sColorMode);
 			for ($i = 0; $i < $iLength; ++$i) {
 				$oParserState->consumeWhiteSpace();
-				$aColor[$sColorMode[$i]] = Size::parse($oParserState, true);
+				if ($oParserState->comes('var')) {
+					$aColor[$sColorMode[$i]] = CSSFunction::parseIdentifierOrFunction($oParserState);
+					$bContainsVar = true;
+				} else {
+					$aColor[$sColorMode[$i]] = Size::parse($oParserState, true);
+				}
+
+				if ($bContainsVar && $oParserState->comes(')')) {
+					// With a var argument the function can have fewer arguments and the assignment to the color
+					// channels does not make sense
+					if ($i < $iLength - 1) {
+						// Add remaining characters to last item
+						$remainingChars = substr($sColorMode, $i + 1);
+						$aColor[$sColorMode[$i] . $remainingChars] = $aColor[$sColorMode[$i]];
+						unset($aColor[$sColorMode[$i]]);
+					}
+
+					break;
+				}
+
 				$oParserState->consumeWhiteSpace();
 				if ($i < ($iLength - 1)) {
 					$oParserState->consume(',');
@@ -81,14 +102,20 @@ class Color extends CSSFunction {
 
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		// Shorthand RGB color values
-		if($oOutputFormat->getRGBHashNotation() && implode('', array_keys($this->aComponents)) === 'rgb') {
-			$sResult = sprintf(
-				'%02x%02x%02x',
-				$this->aComponents['r']->getSize(),
-				$this->aComponents['g']->getSize(),
-				$this->aComponents['b']->getSize()
-			);
-			return '#'.(($sResult[0] == $sResult[1]) && ($sResult[2] == $sResult[3]) && ($sResult[4] == $sResult[5]) ? "$sResult[0]$sResult[2]$sResult[4]" : $sResult);
+		if($oOutputFormat->getRGBHashNotation() && implode('', array_keys($this->aComponents)) === 'rgb' && count($this->aComponents) == 3) {
+			$bAllAreSizes = count(array_filter($this->aComponents, function ($component) {
+				return $component instanceof Size;
+			})) === 3;
+
+			if ($bAllAreSizes) {
+				$sResult = sprintf(
+					'%02x%02x%02x',
+					$this->aComponents['r']->getSize(),
+					$this->aComponents['g']->getSize(),
+					$this->aComponents['b']->getSize()
+				);
+				return '#'.(($sResult[0] == $sResult[1]) && ($sResult[2] == $sResult[3]) && ($sResult[4] == $sResult[5]) ? "$sResult[0]$sResult[2]$sResult[4]" : $sResult);
+			}
 		}
 		return parent::render($oOutputFormat);
 	}
