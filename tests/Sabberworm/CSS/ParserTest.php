@@ -76,7 +76,9 @@ class ParserTest extends \PHPUnit_Framework_TestCase {
 			$this->assertSame('red', $sColor);
 		}
 		$this->assertSame('#mine {color: red;border-color: #0a64e6;border-color: rgba(10,100,231,.3);outline-color: #222;background-color: #232323;}
-#yours {background-color: hsl(220,10%,220%);background-color: hsla(220,10%,220%,.3);}', $oDoc->render());
+#yours {background-color: hsl(220,10%,220%);background-color: hsla(220,10%,220%,.3);}
+#variables {background-color: rgb(var(--some-rgb));background-color: rgb(var(--r),var(--g),var(--b));background-color: rgb(255,var(--g),var(--b));background-color: rgb(255,255,var(--b));background-color: rgb(255,var(--rg));background-color: hsl(var(--some-hsl));}
+#variables-alpha {background-color: rgba(var(--some-rgb),.1);background-color: rgba(var(--some-rg),255,.1);background-color: hsla(var(--some-hsl),.1);}', $oDoc->render());
 	}
 
 	function testUnicodeParsing() {
