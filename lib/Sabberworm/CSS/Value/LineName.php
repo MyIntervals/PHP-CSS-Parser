@@ -18,7 +18,11 @@ class LineName extends ValueList {
 			if($oParserState->getSettings()->bLenientParsing) {
 				try {
 					$aNames[] = $oParserState->parseIdentifier();
-				} catch(UnexpectedTokenException $e) {}
+				} catch(UnexpectedTokenException $e) {
+					if (!$oParserState->comes(']')) {
+						throw $e;
+					}
+				}
 			} else {
 				$aNames[] = $oParserState->parseIdentifier();
 			}
@@ -27,8 +31,6 @@ class LineName extends ValueList {
 		$oParserState->consume(']');
 		return new LineName($aNames, $oParserState->currentLine());
 	}
-
-
 
 	public function __toString() {
 		return $this->render(new \Sabberworm\CSS\OutputFormat());
