@@ -4,7 +4,7 @@ namespace Sabberworm\CSS\CSSList;
 
 use Sabberworm\CSS\Parser;
 
-class DocumentTest extends \PHPUnit_Framework_TestCase {
+class DocumentTest extends \PHPUnit\Framework\TestCase {
 
 	public function testOverrideContents() {
 		$sCss = '.thing { left: 10px; }';

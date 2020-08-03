@@ -7,6 +7,7 @@ php:
     - "7.1"
     - "7.2"
     - "7.3"
+    - "7.4"
     - hhvm-3.30
 sudo: false
 dist: trusty
@@ -19,4 +20,3 @@ matrix:
 before_script: rm composer.lock && composer install
 script: ./vendor/bin/phpunit --coverage-clover build/coverage/xml
 after_script: ./vendor/bin/codacycoverage clover build/coverage/xml
-
