@@ -102,12 +102,12 @@ abstract class RuleSet implements Renderable, Commentable {
 				$aResult = array_merge($aResult, $aRules);
 			}
 		}
-                                    usort($aResult, function (Rule $first, Rule $second) {
-                                        if ($first->getLineNo() === $second->getLineNo()) {
-                                            return $first->getColNo() - $second->getColNo();
-                                        }
-                                        return $first->getLineNo() - $second->getLineNo();
-                                    });
+		usort($aResult, function (Rule $first, Rule $second) {
+			if ($first->getLineNo() === $second->getLineNo()) {
+				return $first->getColNo() - $second->getColNo();
+			}
+			return $first->getLineNo() - $second->getLineNo();
+		});
 		return $aResult;
 	}
 
