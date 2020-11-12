@@ -264,4 +264,27 @@ class DeclarationBlockTest extends \PHPUnit\Framework\TestCase {
 		$this->assertSame('.wrapper {left: 16em;left: 10px;text-align: 1;text-align: left;border-bottom-width: 1px;}', $oDoc->render());
 	}
 
+	public function testOrderOfElementsMatchingOriginalOrderAfterExpandingShorthands()
+	{
+		$sCss = '.rule{padding:5px;padding-top: 20px}';
+		$oParser = new Parser($sCss);
+		$oDoc = $oParser->parse();
+		$aDocs = $oDoc->getAllDeclarationBlocks();
+
+		$this->assertCount(1, $aDocs);
+
+		$oDeclaration = array_pop($aDocs);
+		$oDeclaration->expandShorthands();
+
+		$this->assertEqual(
+			array(
+				'padding-top' => 'padding-top:20px',
+				'padding-left' => 'padding-top:5px',
+				'padding-rigth' => 'padding-top:5px',
+				'padding-bottom' => 'padding-top:5px',
+			),
+			array_map('strval', $oDeclaration->getRulesAssoc())
+		);
+	}
+
 }
