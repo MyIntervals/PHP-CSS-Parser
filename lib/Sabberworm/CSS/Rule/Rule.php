@@ -84,6 +84,11 @@ class Rule implements Renderable, Commentable {
 		return $this->iColNo;
 	}
 
+	public function setPosition($iLine, $iColumn) {
+		$this->iColNo = $iColumn;
+		$this->iLineNo = $iLine;
+	}
+
 	public function setRule($sRule) {
 		$this->sRule = $sRule;
 	}

@@ -78,6 +78,7 @@ abstract class RuleSet implements Renderable, Commentable {
 			$iSiblingPos = array_search($oSibling, $this->aRules[$sRule], true);
 			if ($iSiblingPos !== false) {
 				$iPosition = $iSiblingPos;
+                                                                        $oRule->setPosition($oSibling->getLineNo(), $oSibling->getColNo() - 1);
 			}
 		}
 
