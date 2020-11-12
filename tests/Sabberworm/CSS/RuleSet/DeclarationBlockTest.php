@@ -276,12 +276,12 @@ class DeclarationBlockTest extends \PHPUnit\Framework\TestCase {
 		$oDeclaration = array_pop($aDocs);
 		$oDeclaration->expandShorthands();
 
-		$this->assertEqual(
+		$this->assertEquals(
 			array(
-				'padding-top' => 'padding-top:20px',
-				'padding-left' => 'padding-top:5px',
-				'padding-rigth' => 'padding-top:5px',
-				'padding-bottom' => 'padding-top:5px',
+				'padding-top' => 'padding-top: 20px;',
+				'padding-right' => 'padding-right: 5px;',
+				'padding-bottom' => 'padding-bottom: 5px;',
+				'padding-left' => 'padding-left: 5px;',
 			),
 			array_map('strval', $oDeclaration->getRulesAssoc())
 		);
