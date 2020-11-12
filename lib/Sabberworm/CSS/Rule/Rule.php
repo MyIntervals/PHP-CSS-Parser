@@ -19,20 +19,22 @@ class Rule implements Renderable, Commentable {
 	private $bIsImportant;
 	private $aIeHack;
 	protected $iLineNo;
+	protected $iColNo;
 	protected $aComments;
 
-	public function __construct($sRule, $iLineNo = 0) {
+	public function __construct($sRule, $iLineNo = 0, $iColNo = 0) {
 		$this->sRule = $sRule;
 		$this->mValue = null;
 		$this->bIsImportant = false;
 		$this->aIeHack = array();
 		$this->iLineNo = $iLineNo;
+		$this->iColNo = $iColNo;
 		$this->aComments = array();
 	}
 
 	public static function parse(ParserState $oParserState) {
 		$aComments = $oParserState->consumeWhiteSpace();
-		$oRule = new Rule($oParserState->parseIdentifier(!$oParserState->comes("--")), $oParserState->currentLine());
+		$oRule = new Rule($oParserState->parseIdentifier(!$oParserState->comes("--")), $oParserState->currentLine(), $oParserState->currentColumn());
 		$oRule->setComments($aComments);
 		$oRule->addComments($oParserState->consumeWhiteSpace());
 		$oParserState->consume(':');
@@ -73,6 +75,13 @@ class Rule implements Renderable, Commentable {
 	 */
 	public function getLineNo() {
 		return $this->iLineNo;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getColNo() {
+		return $this->iColNo;
 	}
 
 	public function setRule($sRule) {

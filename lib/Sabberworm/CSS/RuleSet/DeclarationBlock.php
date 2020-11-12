@@ -189,7 +189,7 @@ class DeclarationBlock extends RuleSet {
 						$sNewRuleName = $sBorderRule . "-style";
 					}
 				}
-				$oNewRule = new Rule($sNewRuleName, $this->iLineNo);
+				$oNewRule = new Rule($sNewRuleName, $oRule->getLineNo(), $oRule->getColNo());
 				$oNewRule->setIsImportant($oRule->getIsImportant());
 				$oNewRule->addValue(array($mNewValue));
 				$this->addRule($oNewRule);
@@ -245,7 +245,7 @@ class DeclarationBlock extends RuleSet {
 					break;
 			}
 			foreach (array('top', 'right', 'bottom', 'left') as $sPosition) {
-				$oNewRule = new Rule(sprintf($sExpanded, $sPosition), $this->iLineNo);
+				$oNewRule = new Rule(sprintf($sExpanded, $sPosition), $oRule->getLineNo(), $oRule->getColNo());
 				$oNewRule->setIsImportant($oRule->getIsImportant());
 				$oNewRule->addValue(${$sPosition});
 				$this->addRule($oNewRule);
@@ -310,7 +310,7 @@ class DeclarationBlock extends RuleSet {
 			}
 		}
 		foreach ($aFontProperties as $sProperty => $mValue) {
-			$oNewRule = new Rule($sProperty, $this->iLineNo);
+			$oNewRule = new Rule($sProperty, $oRule->getLineNo(), $oRule->getColNo());
 			$oNewRule->addValue($mValue);
 			$oNewRule->setIsImportant($oRule->getIsImportant());
 			$this->addRule($oNewRule);
@@ -344,7 +344,7 @@ class DeclarationBlock extends RuleSet {
 		}
 		if (count($aValues) == 1 && $aValues[0] == 'inherit') {
 			foreach ($aBgProperties as $sProperty => $mValue) {
-				$oNewRule = new Rule($sProperty, $this->iLineNo);
+				$oNewRule = new Rule($sProperty, $oRule->getLineNo(), $oRule->getColNo());
 				$oNewRule->addValue('inherit');
 				$oNewRule->setIsImportant($oRule->getIsImportant());
 				$this->addRule($oNewRule);
@@ -378,7 +378,7 @@ class DeclarationBlock extends RuleSet {
 			}
 		}
 		foreach ($aBgProperties as $sProperty => $mValue) {
-			$oNewRule = new Rule($sProperty, $this->iLineNo);
+			$oNewRule = new Rule($sProperty, $oRule->getLineNo(), $oRule->getColNo());
 			$oNewRule->setIsImportant($oRule->getIsImportant());
 			$oNewRule->addValue($mValue);
 			$this->addRule($oNewRule);
@@ -414,7 +414,7 @@ class DeclarationBlock extends RuleSet {
 		}
 		if (count($aValues) == 1 && $aValues[0] == 'inherit') {
 			foreach ($aListProperties as $sProperty => $mValue) {
-				$oNewRule = new Rule($sProperty, $this->iLineNo);
+				$oNewRule = new Rule($sProperty, $oRule->getLineNo(), $oRule->getColNo());
 				$oNewRule->addValue('inherit');
 				$oNewRule->setIsImportant($oRule->getIsImportant());
 				$this->addRule($oNewRule);
@@ -435,7 +435,7 @@ class DeclarationBlock extends RuleSet {
 			}
 		}
 		foreach ($aListProperties as $sProperty => $mValue) {
-			$oNewRule = new Rule($sProperty, $this->iLineNo);
+			$oNewRule = new Rule($sProperty, $oRule->getLineNo(), $oRule->getColNo());
 			$oNewRule->setIsImportant($oRule->getIsImportant());
 			$oNewRule->addValue($mValue);
 			$this->addRule($oNewRule);
@@ -465,7 +465,7 @@ class DeclarationBlock extends RuleSet {
 			}
 		}
 		if (count($aNewValues)) {
-			$oNewRule = new Rule($sShorthand, $this->iLineNo);
+			$oNewRule = new Rule($sShorthand, $oRule->getLineNo(), $oRule->getColNo());
 			foreach ($aNewValues as $mValue) {
 				$oNewRule->addValue($mValue);
 			}
@@ -538,7 +538,7 @@ class DeclarationBlock extends RuleSet {
 					}
 					$aValues[$sPosition] = $aRuleValues;
 				}
-				$oNewRule = new Rule($sProperty, $this->iLineNo);
+				$oNewRule = new Rule($sProperty, $oRule->getLineNo(), $oRule->getColNo());
 				if ((string) $aValues['left'][0] == (string) $aValues['right'][0]) {
 					if ((string) $aValues['top'][0] == (string) $aValues['bottom'][0]) {
 						if ((string) $aValues['top'][0] == (string) $aValues['left'][0]) {
@@ -583,7 +583,9 @@ class DeclarationBlock extends RuleSet {
 		if (!isset($aRules['font-size']) || !isset($aRules['font-family'])) {
 			return;
 		}
-		$oNewRule = new Rule('font', $this->iLineNo);
+                                    $oOldRule = isset($aRules['font-size']) ? $aRules['font-size'] : $aRules['font-family'];
+		$oNewRule = new Rule('font', $oOldRule->getLineNo(), $oOldRule->getColNo());
+                                    unset($oOldRule);
 		foreach (array('font-style', 'font-variant', 'font-weight') as $sProperty) {
 			if (isset($aRules[$sProperty])) {
 				$oRule = $aRules[$sProperty];
