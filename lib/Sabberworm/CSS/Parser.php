@@ -9,6 +9,9 @@ use Sabberworm\CSS\Parsing\ParserState;
  * Parser class parses CSS from text into a data structure.
  */
 class Parser {
+	/**
+	 * @var ParserState
+	 */
 	private $oParserState;
 
 	/**
@@ -34,8 +37,12 @@ class Parser {
 		$this->oParserState->getCharset();
 	}
 
+	/**
+	 * @return Document
+	 *
+	 * @throws Parsing\SourceException
+	 */
 	public function parse() {
 		return Document::parse($this->oParserState);
 	}
-
 }

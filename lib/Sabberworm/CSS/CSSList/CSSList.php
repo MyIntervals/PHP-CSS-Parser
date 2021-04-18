@@ -25,11 +25,24 @@ use Sabberworm\CSS\Value\Value;
  * Also, it may contain Import and Charset objects stemming from @-rules.
  */
 abstract class CSSList implements Renderable, Commentable {
-
+	/**
+	 * @var array
+	 */
 	protected $aComments;
+
+	/**
+	 * @var array<int, RuleSet|Import|Charset|CSSList>
+	 */
 	protected $aContents;
+
+	/**
+	 * @var int
+	 */
 	protected $iLineNo;
 
+	/**
+	 * @param int $iLineNo
+	 */
 	public function __construct($iLineNo = 0) {
 		$this->aComments = array();
 		$this->aContents = array();
@@ -195,7 +208,7 @@ abstract class CSSList implements Renderable, Commentable {
 	/**
 	 * Prepend item to list of contents.
 	 *
-	 * @param object $oItem Item.
+	 * @param RuleSet|Import|Charset|CSSList $oItem Item.
 	 */
 	public function prepend($oItem) {
 		array_unshift($this->aContents, $oItem);
@@ -204,7 +217,7 @@ abstract class CSSList implements Renderable, Commentable {
 	/**
 	 * Append item to list of contents.
 	 *
-	 * @param object $oItem Item.
+	 * @param RuleSet|Import|Charset|CSSList $oItem Item.
 	 */
 	public function append($oItem) {
 		$this->aContents[] = $oItem;
@@ -237,6 +250,7 @@ abstract class CSSList implements Renderable, Commentable {
 
 	/**
 	 * Replaces an item from the CSS list.
+	 *
 	 * @param RuleSet|Import|Charset|CSSList $oItemToRemove May be a RuleSet (most likely a DeclarationBlock), a Import, a Charset or another CSSList (most likely a MediaQuery)
 	 */
 	public function replace($oOldItem, $mNewItem) {
@@ -254,7 +268,7 @@ abstract class CSSList implements Renderable, Commentable {
 
 	/**
 	 * Set the contents.
-	 * @param array $aContents Objects to set as content.
+	 * @param array<int, RuleSet|Import|Charset|CSSList> $aContents Objects to set as content.
 	 */
 	public function setContents(array $aContents) {
 		$this->aContents = array();
@@ -300,6 +314,9 @@ abstract class CSSList implements Renderable, Commentable {
 		return $this->render(new \Sabberworm\CSS\OutputFormat());
 	}
 
+	/**
+	 * @return string
+	 */
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		$sResult = '';
 		$bIsFirst = true;
@@ -330,12 +347,15 @@ abstract class CSSList implements Renderable, Commentable {
 
 		return $sResult;
 	}
-	
+
 	/**
 	* Return true if the list can not be further outdented. Only important when rendering.
 	*/
 	public abstract function isRootList();
 
+	/**
+	 * @return array<int, RuleSet|Import|Charset|CSSList>
+	 */
 	public function getContents() {
 		return $this->aContents;
 	}

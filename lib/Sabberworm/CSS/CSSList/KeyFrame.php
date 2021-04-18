@@ -5,8 +5,14 @@ namespace Sabberworm\CSS\CSSList;
 use Sabberworm\CSS\Property\AtRule;
 
 class KeyFrame extends CSSList implements AtRule {
-
+	/**
+	 * @var string|null
+	 */
 	private $vendorKeyFrame;
+
+	/**
+	 * @var string|null
+	 */
 	private $animationName;
 
 	public function __construct($iLineNo = 0) {
@@ -35,6 +41,11 @@ class KeyFrame extends CSSList implements AtRule {
 		return $this->render(new \Sabberworm\CSS\OutputFormat());
 	}
 
+	/**
+	 * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+	 *
+	 * @return string
+	 */
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		$sResult = "@{$this->vendorKeyFrame} {$this->animationName}{$oOutputFormat->spaceBeforeOpeningBrace()}{";
 		$sResult .= parent::render($oOutputFormat);
@@ -46,10 +57,16 @@ class KeyFrame extends CSSList implements AtRule {
 		return false;
 	}
 
+	/**
+	 * @return string|null
+	 */
 	public function atRuleName() {
 		return $this->vendorKeyFrame;
 	}
 
+	/**
+	 * @return string|null
+	 */
 	public function atRuleArgs() {
 		return $this->animationName;
 	}

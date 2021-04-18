@@ -8,11 +8,31 @@ use Sabberworm\CSS\Value\URL;
 * Class representing an @import rule.
 */
 class Import implements AtRule {
+	/**
+	 * @var URL
+	 */
 	private $oLocation;
+
+	/**
+	 * @var string
+	 */
 	private $sMediaQuery;
+
+	/**
+	 * @var int
+	 */
 	protected $iLineNo;
+
+	/**
+	 * @var array
+	 */
 	protected $aComments;
-	
+
+	/**
+	 * @param URL $oLocation
+	 * @param string $sMediaQuery
+	 * @param int $iLineNo
+	 */
 	public function __construct(URL $oLocation, $sMediaQuery, $iLineNo = 0) {
 		$this->oLocation = $oLocation;
 		$this->sMediaQuery = $sMediaQuery;
@@ -27,26 +47,37 @@ class Import implements AtRule {
 		return $this->iLineNo;
 	}
 
-	public function setLocation($oLocation) {
+    public function setLocation($oLocation) {
 			$this->oLocation = $oLocation;
 	}
 
 	public function getLocation() {
 			return $this->oLocation;
 	}
-	
+
 	public function __toString() {
 		return $this->render(new \Sabberworm\CSS\OutputFormat());
 	}
 
+	/**
+	 * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+	 *
+	 * @return string
+	 */
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		return "@import ".$this->oLocation->render($oOutputFormat).($this->sMediaQuery === null ? '' : ' '.$this->sMediaQuery).';';
 	}
 
+	/**
+	 * @return string
+	 */
 	public function atRuleName() {
 		return 'import';
 	}
 
+	/**
+	 * @return array<int, URL|string>
+	 */
 	public function atRuleArgs() {
 		$aResult = array($this->oLocation);
 		if($this->sMediaQuery) {

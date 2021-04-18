@@ -8,20 +8,37 @@ use Sabberworm\CSS\Property\AtRule;
  * A RuleSet constructed by an unknown @-rule. @font-face rules are rendered into AtRuleSet objects.
  */
 class AtRuleSet extends RuleSet implements AtRule {
-
+	/**
+	 * @var string
+	 */
 	private $sType;
+
+	/**
+	 * @var string
+	 */
 	private $sArgs;
 
+	/**
+	 * @param string $sType
+	 * @param string $sArgs
+	 * @param int $iLineNo
+	 */
 	public function __construct($sType, $sArgs = '', $iLineNo = 0) {
 		parent::__construct($iLineNo);
 		$this->sType = $sType;
 		$this->sArgs = $sArgs;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function atRuleName() {
 		return $this->sType;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function atRuleArgs() {
 		return $this->sArgs;
 	}
@@ -30,6 +47,11 @@ class AtRuleSet extends RuleSet implements AtRule {
 		return $this->render(new \Sabberworm\CSS\OutputFormat());
 	}
 
+	/**
+	 * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+	 *
+	 * @return string
+	 */
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		$sArgs = $this->sArgs;
 		if($sArgs) {

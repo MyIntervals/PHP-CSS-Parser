@@ -10,11 +10,21 @@ namespace Sabberworm\CSS\Property;
  * • Must not appear more than once.
  */
 class Charset implements AtRule {
-
+	/**
+	 * @var string
+	 */
 	private $sCharset;
+
+	/**
+	 * @var int
+	 */
 	protected $iLineNo;
 	protected $aComment;
 
+	/**
+	 * @param string $sCharset
+	 * @param int $iLineNo
+	 */
 	public function __construct($sCharset, $iLineNo = 0) {
 		$this->sCharset = $sCharset;
 		$this->iLineNo = $iLineNo;
@@ -40,14 +50,25 @@ class Charset implements AtRule {
 		return $this->render(new \Sabberworm\CSS\OutputFormat());
 	}
 
+	/**
+	 * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+	 *
+	 * @return string
+	 */
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		return "@charset {$this->sCharset->render($oOutputFormat)};";
 	}
 
+	/**
+	 * @return string
+	 */
 	public function atRuleName() {
 		return 'charset';
 	}
 
+	/**
+	 * @return string
+	 */
 	public function atRuleArgs() {
 		return $this->sCharset;
 	}

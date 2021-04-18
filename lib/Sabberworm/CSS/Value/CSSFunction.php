@@ -32,6 +32,11 @@ class CSSFunction extends ValueList {
 		return $this->render(new \Sabberworm\CSS\OutputFormat());
 	}
 
+	/**
+	 * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+	 *
+	 * @return string
+	 */
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		$aArguments = parent::render($oOutputFormat);
 		return "{$this->sName}({$aArguments})";
