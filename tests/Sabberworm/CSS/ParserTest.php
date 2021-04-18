@@ -13,7 +13,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 class ParserTest extends \PHPunit\Framework\TestCase {
 
 	function testFiles() {
-		$sDirectory = dirname(__FILE__) . '/../../files';
+		$sDirectory = __DIR__ . '/../../files';
 		if ($rHandle = opendir($sDirectory)) {
 			/* This is the correct way to loop over the directory. */
 			while (false !== ($sFileName = readdir($rHandle))) {
@@ -613,7 +613,7 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
 	 * @return CSSList\Document Parsed document.
 	 */
 	function parsedStructureForFile($sFileName, $oSettings = null) {
-		$sFile = dirname(__FILE__) . '/../../files' . DIRECTORY_SEPARATOR . "$sFileName.css";
+		$sFile = __DIR__ . '/../../files' . DIRECTORY_SEPARATOR . "$sFileName.css";
 		$oParser = new Parser(file_get_contents($sFile), $oSettings);
 		return $oParser->parse();
 	}

@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-require_once(dirname(__FILE__).'/bootstrap.php');
+require_once(__DIR__.'/bootstrap.php');
 
 $sSource = file_get_contents('php://stdin');
 $oParser = new Sabberworm\CSS\Parser($sSource);
