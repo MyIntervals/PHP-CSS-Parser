@@ -1,0 +1,56 @@
+# https://help.github.com/en/categories/automating-your-workflow-with-github-actions
+
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: '3 3 * * 1'
+
+name: CI
+
+jobs:
+  unit-tests:
+    name: Unit tests
+
+    runs-on: ubuntu-20.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - 5.3
+          - 5.4
+          - 5.5
+          - 5.6
+          - 7.0
+          - 7.1
+          - 7.2
+          - 7.3
+          - 7.4
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache dependencies installed with composer
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/composer
+          key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            php${{ matrix.php-version }}-composer-
+
+      - name: Install Composer dependencies
+        run: |
+          composer update --with-dependencies --no-progress;
+          composer show;
+
+      - name: Run Tests
+        run: ./vendor/bin/phpunit
