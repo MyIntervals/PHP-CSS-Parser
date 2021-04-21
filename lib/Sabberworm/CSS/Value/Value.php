@@ -117,7 +117,7 @@ abstract class Value implements Renderable {
 		} while (strlen($sRange) < $iCodepointMaxLenth && preg_match("/[A-Fa-f0-9\?-]/", $oParserState->peek()));
 		return "U+{$sRange}";
 	}
-	
+
 	/**
 	 * @return int
 	 */
