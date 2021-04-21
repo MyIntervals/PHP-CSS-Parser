@@ -9,10 +9,32 @@ on:
 name: CI
 
 jobs:
+  php-lint:
+    name: PHP Lint
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        php-version: [ '5.3', '5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4' ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+
+      - name: PHP Lint
+        run: find lib tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
+
   unit-tests:
     name: Unit tests
 
     runs-on: ubuntu-20.04
+
+    needs: [ php-lint ]
 
     strategy:
       fail-fast: false
