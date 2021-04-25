@@ -3,7 +3,7 @@
     "type": "library",
     "description": "Parser for CSS Files written in PHP",
     "keywords": ["parser", "css", "stylesheet"],
-    "homepage": "http://www.sabberworm.com/blog/2010/6/10/php-css-parser",
+    "homepage": "https://www.sabberworm.com/blog/2010/6/10/php-css-parser",
     "license": "MIT",
     "authors": [
         {"name": "Raphael Schweikert"}
