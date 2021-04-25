@@ -1,5 +1,11 @@
 # Revision History
 
+## x.y
+
+## x.y.z
+
+* Require PHP >= 5.6
+
 ## 8.0
 
 ### 8.0.0 (2016-06-30)
