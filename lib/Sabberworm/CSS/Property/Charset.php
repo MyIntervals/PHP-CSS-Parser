@@ -19,6 +19,10 @@ class Charset implements AtRule {
 	 * @var int
 	 */
 	protected $iLineNo;
+
+	/**
+	 * @var array
+	 */
 	protected $aComment;
 
 	/**
