@@ -60,7 +60,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.cache/composer
-          key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: |
             php${{ matrix.php-version }}-composer-
 
