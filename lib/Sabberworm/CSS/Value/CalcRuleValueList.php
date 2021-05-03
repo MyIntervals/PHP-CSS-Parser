@@ -7,6 +7,11 @@ class CalcRuleValueList extends RuleValueList {
 		parent::__construct(array(), ',', $iLineNo);
 	}
 
+	/**
+	 * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+	 *
+	 * @return string
+	 */
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		return $oOutputFormat->implode(' ', $this->aComponents);
 	}

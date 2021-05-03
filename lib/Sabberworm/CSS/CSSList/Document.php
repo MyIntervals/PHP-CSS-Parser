@@ -16,6 +16,13 @@ class Document extends CSSBlockList {
 		parent::__construct($iLineNo);
 	}
 
+	/**
+	 * @param ParserState $oParserState
+	 *
+	 * @return Document
+	 *
+	 * @throws \Sabberworm\CSS\Parsing\SourceException
+	 */
 	public static function parse(ParserState $oParserState) {
 		$oDocument = new Document($oParserState->currentLine());
 		CSSList::parseList($oParserState, $oDocument);
@@ -95,7 +102,14 @@ class Document extends CSSBlockList {
 		}
 	}
 
-	// Override render() to make format argument optional
+
+	/**
+	 * Override render() to make format argument optional
+	 *
+	 * @param \Sabberworm\CSS\OutputFormat|null $oOutputFormat
+	 *
+	 * @return string
+	 */
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat = null) {
 		if($oOutputFormat === null) {
 			$oOutputFormat = new \Sabberworm\CSS\OutputFormat();

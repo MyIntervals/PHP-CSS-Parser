@@ -20,7 +20,9 @@ use Sabberworm\CSS\CSSList\KeyFrame;
  * Declaration blocks usually appear directly inside a Document or another CSSList (mostly a MediaQuery).
  */
 class DeclarationBlock extends RuleSet {
-
+	/**
+	 * @var array<int, Selector>
+	 */
 	private $aSelectors;
 
 	public function __construct($iLineNo = 0) {
@@ -118,7 +120,7 @@ class DeclarationBlock extends RuleSet {
 	/**
 	 * Get selectors.
 	 *
-	 * @return Selector[] Selectors.
+	 * @return array<int, Selector> Selectors.
 	 */
 	public function getSelectors() {
 		return $this->aSelectors;
@@ -142,7 +144,7 @@ class DeclarationBlock extends RuleSet {
 	public function createShorthands() {
 		$this->createBackgroundShorthand();
 		$this->createDimensionsShorthand();
-		// border must be shortened after dimensions 
+		// border must be shortened after dimensions
 		$this->createBorderShorthand();
 		$this->createFontShorthand();
 		$this->createListStyleShorthand();
@@ -501,7 +503,7 @@ class DeclarationBlock extends RuleSet {
 
 	/*
 	 * Looks for long format CSS dimensional properties
-	 * (margin, padding, border-color, border-style and border-width) 
+	 * (margin, padding, border-color, border-style and border-width)
 	 * and converts them into shorthand CSS properties.
 	 * */
 
@@ -556,7 +558,7 @@ class DeclarationBlock extends RuleSet {
 						$oNewRule->addValue($aValues['bottom']);
 					}
 				} else {
-					// No sides are equal 
+					// No sides are equal
 					$oNewRule->addValue($aValues['top']);
 					$oNewRule->addValue($aValues['left']);
 					$oNewRule->addValue($aValues['bottom']);
@@ -571,8 +573,8 @@ class DeclarationBlock extends RuleSet {
 	}
 
 	/**
-	 * Looks for long format CSS font properties (e.g. <tt>font-weight</tt>) and 
-	 * tries to convert them into a shorthand CSS <tt>font</tt> property. 
+	 * Looks for long format CSS font properties (e.g. <tt>font-weight</tt>) and
+	 * tries to convert them into a shorthand CSS <tt>font</tt> property.
 	 * At least font-size AND font-family must be present in order to create a shorthand declaration.
 	 * */
 	public function createFontShorthand() {
@@ -651,6 +653,13 @@ class DeclarationBlock extends RuleSet {
 		return $this->render(new \Sabberworm\CSS\OutputFormat());
 	}
 
+	/**
+	 * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+	 *
+	 * @return string
+	 *
+	 * @throws OutputException
+	 */
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		if(count($this->aSelectors) === 0) {
 			// If all the selectors have been removed, this declaration block becomes invalid

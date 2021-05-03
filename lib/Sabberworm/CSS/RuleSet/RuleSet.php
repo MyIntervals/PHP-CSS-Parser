@@ -96,10 +96,13 @@ abstract class RuleSet implements Renderable, Commentable {
 
 	/**
 	 * Returns all rules matching the given rule name
-	 * @param (null|string|Rule) $mRule pattern to search for. If null, returns all rules. if the pattern ends with a dash, all rules starting with the pattern are returned as well as one matching the pattern with the dash excluded. passing a Rule behaves like calling getRules($mRule->getRule()).
+	 *
+	 * @param null|string|Rule $mRule pattern to search for. If null, returns all rules. if the pattern ends with a dash, all rules starting with the pattern are returned as well as one matching the pattern with the dash excluded. passing a Rule behaves like calling getRules($mRule->getRule()).
+	 *
 	 * @example $oRuleSet->getRules('font-') //returns an array of all rules either beginning with font- or matching font.
 	 * @example $oRuleSet->getRules('font') //returns array(0 => $oRule, …) or array().
-	 * @return Rule[] Rules.
+	 *
+	 * @return array<int, Rule> Rules.
 	 */
 	public function getRules($mRule = null) {
 		if ($mRule instanceof Rule) {
@@ -175,6 +178,11 @@ abstract class RuleSet implements Renderable, Commentable {
 		return $this->render(new \Sabberworm\CSS\OutputFormat());
 	}
 
+	/**
+	 * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+	 *
+	 * @return string
+	 */
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		$sResult = '';
 		$bIsFirst = true;
@@ -195,7 +203,7 @@ abstract class RuleSet implements Renderable, Commentable {
 				$sResult .= $sRendered;
 			}
 		}
-		
+
 		if(!$bIsFirst) {
 			// Had some output
 			$sResult .= $oOutputFormat->spaceAfterRules();

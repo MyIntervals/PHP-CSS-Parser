@@ -10,7 +10,14 @@ interface AtRule extends Renderable, Commentable {
 	const BLOCK_RULES = 'media/document/supports/region-style/font-feature-values';
 	// …and more font-specific ones (to be used inside font-feature-values)
 	const SET_RULES = 'font-face/counter-style/page/swash/styleset/annotation';
-	
+
+	/**
+	 * @return string|null
+	 */
 	public function atRuleName();
+
+	/**
+	 * @return string|null
+	 */
 	public function atRuleArgs();
 }

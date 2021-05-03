@@ -57,6 +57,11 @@ class CSSString extends PrimitiveValue {
 		return $this->render(new \Sabberworm\CSS\OutputFormat());
 	}
 
+	/**
+	 * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+	 *
+	 * @return string
+	 */
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		$sString = addslashes($this->sString);
 		$sString = str_replace("\n", '\A', $sString);
