@@ -39,16 +39,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version:
-          - 5.3
-          - 5.4
-          - 5.5
-          - 5.6
-          - 7.0
-          - 7.1
-          - 7.2
-          - 7.3
-          - 7.4
+        php-version: [ '5.3', '5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3' ]
+        coverage: [ 'none' ]
+        include:
+          - php-version: 7.4
+            coverage: xdebug
 
     steps:
       - name: Checkout
@@ -59,7 +54,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
-          coverage: none
+          coverage: "${{ matrix.coverage }}"
 
       - name: Cache dependencies installed with composer
         uses: actions/cache@v1
@@ -75,4 +70,11 @@ jobs:
           composer show;
 
       - name: Run Tests
-        run: ./vendor/bin/phpunit
+        run: ./vendor/bin/phpunit --coverage-clover build/coverage/xml
+
+      - name: Upload coverage results to Coveralls
+        if: "${{ matrix.coverage != 'none' }}"
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        run: |
+          ./vendor/bin/codacycoverage clover build/coverage/xml
