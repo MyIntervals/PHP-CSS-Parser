@@ -4,7 +4,7 @@
 
 ## x.y.z
 
-* Require PHP >= 5.6
+* Require PHP ≥ 5.6
 
 ## 8.0
 
