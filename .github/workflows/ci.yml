@@ -72,9 +72,9 @@ jobs:
       - name: Run Tests
         run: ./vendor/bin/phpunit --coverage-clover build/coverage/xml
 
-      - name: Upload coverage results to Coveralls
-        if: "${{ matrix.coverage != 'none' }}"
+      - name: Upload coverage results to Codacy
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        if: "${{ matrix.coverage != 'none' && env.CODACY_PROJECT_TOKEN != '' }}"
         run: |
           ./vendor/bin/codacycoverage clover build/coverage/xml
