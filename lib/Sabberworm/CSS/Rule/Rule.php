@@ -28,10 +28,10 @@ class Rule implements Renderable, Commentable
         $this->sRule = $sRule;
         $this->mValue = null;
         $this->bIsImportant = false;
-        $this->aIeHack = array();
+        $this->aIeHack = [];
         $this->iLineNo = $iLineNo;
         $this->iColNo = $iColNo;
-        $this->aComments = array();
+        $this->aComments = [];
     }
 
     public static function parse(ParserState $oParserState)
@@ -69,9 +69,9 @@ class Rule implements Renderable, Commentable
     private static function listDelimiterForRule($sRule)
     {
         if (preg_match('/^font($|-)/', $sRule)) {
-            return array(',', '/', ' ');
+            return [',', '/', ' '];
         }
-        return array(',', ' ', '/');
+        return [',', ' ', '/'];
     }
 
     /**
@@ -158,19 +158,19 @@ class Rule implements Renderable, Commentable
     public function getValues()
     {
         if (!$this->mValue instanceof RuleValueList) {
-            return array(array($this->mValue));
+            return [[$this->mValue]];
         }
         if ($this->mValue->getListSeparator() === ',') {
-            return array($this->mValue->getListComponents());
+            return [$this->mValue->getListComponents()];
         }
-        $aResult = array();
+        $aResult = [];
         foreach ($this->mValue->getListComponents() as $mValue) {
             if (!$mValue instanceof RuleValueList || $mValue->getListSeparator() !== ',') {
-                $aResult[] = array($mValue);
+                $aResult[] = [$mValue];
                 continue;
             }
             if ($this->mValue->getListSeparator() === ' ' || count($aResult) === 0) {
-                $aResult[] = array();
+                $aResult[] = [];
             }
             foreach ($mValue->getListComponents() as $mValue) {
                 $aResult[count($aResult) - 1][] = $mValue;
@@ -185,7 +185,7 @@ class Rule implements Renderable, Commentable
     public function addValue($mValue, $sType = ' ')
     {
         if (!is_array($mValue)) {
-            $mValue = array($mValue);
+            $mValue = [$mValue];
         }
         if (!$this->mValue instanceof RuleValueList || $this->mValue->getListSeparator() !== $sType) {
             $mCurrentValue = $this->mValue;

@@ -68,7 +68,7 @@ abstract class CSSBlockList extends CSSList
 
     protected function allSelectors(&$aResult, $sSpecificitySearch = null)
     {
-        $aDeclarationBlocks = array();
+        $aDeclarationBlocks = [];
         $this->allDeclarationBlocks($aDeclarationBlocks);
         foreach ($aDeclarationBlocks as $oBlock) {
             foreach ($oBlock->getSelectors() as $oSelector) {

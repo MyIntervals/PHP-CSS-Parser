@@ -20,7 +20,7 @@ class Size extends PrimitiveValue
     public function __construct($fSize, $sUnit = null, $bIsColorComponent = false, $iLineNo = 0)
     {
         parent::__construct($iLineNo);
-        $this->fSize = floatval($fSize);
+        $this->fSize = (float)$fSize;
         $this->sUnit = $sUnit;
         $this->bIsColorComponent = $bIsColorComponent;
     }
@@ -50,17 +50,17 @@ class Size extends PrimitiveValue
                 }
             }
         }
-        return new Size(floatval($sSize), $sUnit, $bIsColorComponent, $oParserState->currentLine());
+        return new Size((float)$sSize, $sUnit, $bIsColorComponent, $oParserState->currentLine());
     }
 
     private static function getSizeUnits()
     {
         if (self::$SIZE_UNITS === null) {
-            self::$SIZE_UNITS = array();
+            self::$SIZE_UNITS = [];
             foreach (explode('/', Size::ABSOLUTE_SIZE_UNITS . '/' . Size::RELATIVE_SIZE_UNITS . '/' . Size::NON_SIZE_UNITS) as $val) {
                 $iSize = strlen($val);
                 if (!isset(self::$SIZE_UNITS[$iSize])) {
-                    self::$SIZE_UNITS[$iSize] = array();
+                    self::$SIZE_UNITS[$iSize] = [];
                 }
                 self::$SIZE_UNITS[$iSize][strtolower($val)] = $val;
             }
@@ -83,7 +83,7 @@ class Size extends PrimitiveValue
 
     public function setSize($fSize)
     {
-        $this->fSize = floatval($fSize);
+        $this->fSize = (float)$fSize;
     }
 
     public function getSize()
@@ -134,6 +134,6 @@ class Size extends PrimitiveValue
         $l = localeconv();
         $sPoint = preg_quote($l['decimal_point'], '/');
         $sSize = preg_match("/[\d\.]+e[+-]?\d+/i", (string)$this->fSize) ? preg_replace("/$sPoint?0+$/", "", sprintf("%f", $this->fSize)) : $this->fSize;
-        return preg_replace(array("/$sPoint/", "/^(-?)0\./"), array('.', '$1.'), $sSize) . ($this->sUnit === null ? '' : $this->sUnit);
+        return preg_replace(["/$sPoint/", "/^(-?)0\./"], ['.', '$1.'], $sSize) . ($this->sUnit === null ? '' : $this->sUnit);
     }
 }

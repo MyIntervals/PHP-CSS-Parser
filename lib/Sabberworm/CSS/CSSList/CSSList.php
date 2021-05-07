@@ -46,8 +46,8 @@ abstract class CSSList implements Renderable, Commentable
      */
     public function __construct($iLineNo = 0)
     {
-        $this->aComments = array();
-        $this->aContents = array();
+        $this->aComments = [];
+        $this->aContents = [];
         $this->iLineNo = $iLineNo;
     }
 
@@ -130,14 +130,14 @@ abstract class CSSList implements Renderable, Commentable
             $oParserState->consumeWhiteSpace();
             $sMediaQuery = null;
             if (!$oParserState->comes(';')) {
-                $sMediaQuery = trim($oParserState->consumeUntil(array(';', ParserState::EOF)));
+                $sMediaQuery = trim($oParserState->consumeUntil([';', ParserState::EOF]));
             }
-            $oParserState->consumeUntil(array(';', ParserState::EOF), true, true);
+            $oParserState->consumeUntil([';', ParserState::EOF], true, true);
             return new Import($oLocation, $sMediaQuery ?: null, $iIdentifierLineNum);
         } elseif ($sIdentifier === 'charset') {
             $sCharset = CSSString::parse($oParserState);
             $oParserState->consumeWhiteSpace();
-            $oParserState->consumeUntil(array(';', ParserState::EOF), true, true);
+            $oParserState->consumeUntil([';', ParserState::EOF], true, true);
             return new Charset($sCharset, $iIdentifierLineNum);
         } elseif (self::identifierIs($sIdentifier, 'keyframes')) {
             $oResult = new KeyFrame($iIdentifierLineNum);
@@ -155,7 +155,7 @@ abstract class CSSList implements Renderable, Commentable
                 $sPrefix = $mUrl;
                 $mUrl = Value::parsePrimitiveValue($oParserState);
             }
-            $oParserState->consumeUntil(array(';', ParserState::EOF), true, true);
+            $oParserState->consumeUntil([';', ParserState::EOF], true, true);
             if ($sPrefix !== null && !is_string($sPrefix)) {
                 throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom', $iIdentifierLineNum);
             }
@@ -271,7 +271,7 @@ abstract class CSSList implements Renderable, Commentable
             if (is_array($mNewItem)) {
                 array_splice($this->aContents, $iKey, 1, $mNewItem);
             } else {
-                array_splice($this->aContents, $iKey, 1, array($mNewItem));
+                array_splice($this->aContents, $iKey, 1, [$mNewItem]);
             }
             return true;
         }
@@ -284,7 +284,7 @@ abstract class CSSList implements Renderable, Commentable
      */
     public function setContents(array $aContents)
     {
-        $this->aContents = array();
+        $this->aContents = [];
         foreach ($aContents as $content) {
             $this->append($content);
         }

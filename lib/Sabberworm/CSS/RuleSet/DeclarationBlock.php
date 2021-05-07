@@ -29,26 +29,26 @@ class DeclarationBlock extends RuleSet
     public function __construct($iLineNo = 0)
     {
         parent::__construct($iLineNo);
-        $this->aSelectors = array();
+        $this->aSelectors = [];
     }
 
     public static function parse(ParserState $oParserState, $oList = null)
     {
-        $aComments = array();
+        $aComments = [];
         $oResult = new DeclarationBlock($oParserState->currentLine());
         try {
-            $aSelectorParts = array();
+            $aSelectorParts = [];
             $sStringWrapperChar = false;
             do {
-                $aSelectorParts[] = $oParserState->consume(1) . $oParserState->consumeUntil(array('{', '}', '\'', '"'), false, false, $aComments);
-                if (in_array($oParserState->peek(), array('\'', '"')) && substr(end($aSelectorParts), -1) != "\\") {
+                $aSelectorParts[] = $oParserState->consume(1) . $oParserState->consumeUntil(['{', '}', '\'', '"'], false, false, $aComments);
+                if (in_array($oParserState->peek(), ['\'', '"']) && substr(end($aSelectorParts), -1) != "\\") {
                     if ($sStringWrapperChar === false) {
                         $sStringWrapperChar = $oParserState->peek();
                     } elseif ($sStringWrapperChar == $oParserState->peek()) {
                         $sStringWrapperChar = false;
                     }
                 }
-            } while (!in_array($oParserState->peek(), array('{', '}')) || $sStringWrapperChar !== false);
+            } while (!in_array($oParserState->peek(), ['{', '}']) || $sStringWrapperChar !== false);
             $oResult->setSelector(implode('', $aSelectorParts), $oList);
             if ($oParserState->comes('{')) {
                 $oParserState->consume(1);
@@ -167,12 +167,12 @@ class DeclarationBlock extends RuleSet
      * */
     public function expandBorderShorthand()
     {
-        $aBorderRules = array(
+        $aBorderRules = [
             'border', 'border-left', 'border-right', 'border-top', 'border-bottom'
-        );
-        $aBorderSizes = array(
+        ];
+        $aBorderSizes = [
             'thin', 'medium', 'thick'
-        );
+        ];
         $aRules = $this->getRulesAssoc();
         foreach ($aBorderRules as $sBorderRule) {
             if (!isset($aRules[$sBorderRule])) {
@@ -180,7 +180,7 @@ class DeclarationBlock extends RuleSet
             }
             $oRule = $aRules[$sBorderRule];
             $mRuleValue = $oRule->getValue();
-            $aValues = array();
+            $aValues = [];
             if (!$mRuleValue instanceof RuleValueList) {
                 $aValues[] = $mRuleValue;
             } else {
@@ -205,7 +205,7 @@ class DeclarationBlock extends RuleSet
                 }
                 $oNewRule = new Rule($sNewRuleName, $oRule->getLineNo(), $oRule->getColNo());
                 $oNewRule->setIsImportant($oRule->getIsImportant());
-                $oNewRule->addValue(array($mNewValue));
+                $oNewRule->addValue([$mNewValue]);
                 $this->addRule($oNewRule);
             }
             $this->removeRule($sBorderRule);
@@ -219,13 +219,13 @@ class DeclarationBlock extends RuleSet
      * */
     public function expandDimensionsShorthand()
     {
-        $aExpansions = array(
+        $aExpansions = [
             'margin' => 'margin-%s',
             'padding' => 'padding-%s',
             'border-color' => 'border-%s-color',
             'border-style' => 'border-%s-style',
             'border-width' => 'border-%s-width'
-        );
+        ];
         $aRules = $this->getRulesAssoc();
         foreach ($aExpansions as $sProperty => $sExpanded) {
             if (!isset($aRules[$sProperty])) {
@@ -233,7 +233,7 @@ class DeclarationBlock extends RuleSet
             }
             $oRule = $aRules[$sProperty];
             $mRuleValue = $oRule->getValue();
-            $aValues = array();
+            $aValues = [];
             if (!$mRuleValue instanceof RuleValueList) {
                 $aValues[] = $mRuleValue;
             } else {
@@ -260,7 +260,7 @@ class DeclarationBlock extends RuleSet
                     $left = $aValues[3];
                     break;
             }
-            foreach (array('top', 'right', 'bottom', 'left') as $sPosition) {
+            foreach (['top', 'right', 'bottom', 'left'] as $sPosition) {
                 $oNewRule = new Rule(sprintf($sExpanded, $sPosition), $oRule->getLineNo(), $oRule->getColNo());
                 $oNewRule->setIsImportant($oRule->getIsImportant());
                 $oNewRule->addValue(${$sPosition});
@@ -283,15 +283,15 @@ class DeclarationBlock extends RuleSet
         }
         $oRule = $aRules['font'];
         // reset properties to 'normal' per http://www.w3.org/TR/21/fonts.html#font-shorthand
-        $aFontProperties = array(
+        $aFontProperties = [
             'font-style' => 'normal',
             'font-variant' => 'normal',
             'font-weight' => 'normal',
             'font-size' => 'normal',
             'line-height' => 'normal'
-        );
+        ];
         $mRuleValue = $oRule->getValue();
-        $aValues = array();
+        $aValues = [];
         if (!$mRuleValue instanceof RuleValueList) {
             $aValues[] = $mRuleValue;
         } else {
@@ -301,18 +301,18 @@ class DeclarationBlock extends RuleSet
             if (!$mValue instanceof Value) {
                 $mValue = mb_strtolower($mValue);
             }
-            if (in_array($mValue, array('normal', 'inherit'))) {
-                foreach (array('font-style', 'font-weight', 'font-variant') as $sProperty) {
+            if (in_array($mValue, ['normal', 'inherit'])) {
+                foreach (['font-style', 'font-weight', 'font-variant'] as $sProperty) {
                     if (!isset($aFontProperties[$sProperty])) {
                         $aFontProperties[$sProperty] = $mValue;
                     }
                 }
-            } elseif (in_array($mValue, array('italic', 'oblique'))) {
+            } elseif (in_array($mValue, ['italic', 'oblique'])) {
                 $aFontProperties['font-style'] = $mValue;
             } elseif ($mValue == 'small-caps') {
                 $aFontProperties['font-variant'] = $mValue;
             } elseif (
-                    in_array($mValue, array('bold', 'bolder', 'lighter'))
+                    in_array($mValue, ['bold', 'bolder', 'lighter'])
                     || ($mValue instanceof Size
                     && in_array($mValue->getSize(), range(100, 900, 100)))
             ) {
@@ -350,13 +350,13 @@ class DeclarationBlock extends RuleSet
             return;
         }
         $oRule = $aRules['background'];
-        $aBgProperties = array(
-            'background-color' => array('transparent'), 'background-image' => array('none'),
-            'background-repeat' => array('repeat'), 'background-attachment' => array('scroll'),
-            'background-position' => array(new Size(0, '%', null, false, $this->iLineNo), new Size(0, '%', null, false, $this->iLineNo))
-        );
+        $aBgProperties = [
+            'background-color' => ['transparent'], 'background-image' => ['none'],
+            'background-repeat' => ['repeat'], 'background-attachment' => ['scroll'],
+            'background-position' => [new Size(0, '%', null, false, $this->iLineNo), new Size(0, '%', null, false, $this->iLineNo)]
+        ];
         $mRuleValue = $oRule->getValue();
-        $aValues = array();
+        $aValues = [];
         if (!$mRuleValue instanceof RuleValueList) {
             $aValues[] = $mRuleValue;
         } else {
@@ -381,12 +381,12 @@ class DeclarationBlock extends RuleSet
                 $aBgProperties['background-image'] = $mValue;
             } elseif ($mValue instanceof Color) {
                 $aBgProperties['background-color'] = $mValue;
-            } elseif (in_array($mValue, array('scroll', 'fixed'))) {
+            } elseif (in_array($mValue, ['scroll', 'fixed'])) {
                 $aBgProperties['background-attachment'] = $mValue;
-            } elseif (in_array($mValue, array('repeat', 'no-repeat', 'repeat-x', 'repeat-y'))) {
+            } elseif (in_array($mValue, ['repeat', 'no-repeat', 'repeat-x', 'repeat-y'])) {
                 $aBgProperties['background-repeat'] = $mValue;
             } elseif (
-                in_array($mValue, array('left', 'center', 'right', 'top', 'bottom'))
+                in_array($mValue, ['left', 'center', 'right', 'top', 'bottom'])
                     || $mValue instanceof Size
             ) {
                 if ($iNumBgPos == 0) {
@@ -409,27 +409,27 @@ class DeclarationBlock extends RuleSet
 
     public function expandListStyleShorthand()
     {
-        $aListProperties = array(
+        $aListProperties = [
             'list-style-type' => 'disc',
             'list-style-position' => 'outside',
             'list-style-image' => 'none'
-        );
-        $aListStyleTypes = array(
+        ];
+        $aListStyleTypes = [
             'none', 'disc', 'circle', 'square', 'decimal-leading-zero', 'decimal',
             'lower-roman', 'upper-roman', 'lower-greek', 'lower-alpha', 'lower-latin',
             'upper-alpha', 'upper-latin', 'hebrew', 'armenian', 'georgian', 'cjk-ideographic',
             'hiragana', 'hira-gana-iroha', 'katakana-iroha', 'katakana'
-        );
-        $aListStylePositions = array(
+        ];
+        $aListStylePositions = [
             'inside', 'outside'
-        );
+        ];
         $aRules = $this->getRulesAssoc();
         if (!isset($aRules['list-style'])) {
             return;
         }
         $oRule = $aRules['list-style'];
         $mRuleValue = $oRule->getValue();
-        $aValues = array();
+        $aValues = [];
         if (!$mRuleValue instanceof RuleValueList) {
             $aValues[] = $mRuleValue;
         } else {
@@ -469,7 +469,7 @@ class DeclarationBlock extends RuleSet
     public function createShorthandProperties(array $aProperties, $sShorthand)
     {
         $aRules = $this->getRulesAssoc();
-        $aNewValues = array();
+        $aNewValues = [];
         foreach ($aProperties as $sProperty) {
             if (!isset($aRules[$sProperty])) {
                 continue;
@@ -477,7 +477,7 @@ class DeclarationBlock extends RuleSet
             $oRule = $aRules[$sProperty];
             if (!$oRule->getIsImportant()) {
                 $mRuleValue = $oRule->getValue();
-                $aValues = array();
+                $aValues = [];
                 if (!$mRuleValue instanceof RuleValueList) {
                     $aValues[] = $mRuleValue;
                 } else {
@@ -500,18 +500,18 @@ class DeclarationBlock extends RuleSet
 
     public function createBackgroundShorthand()
     {
-        $aProperties = array(
+        $aProperties = [
             'background-color', 'background-image', 'background-repeat',
             'background-position', 'background-attachment'
-        );
+        ];
         $this->createShorthandProperties($aProperties, 'background');
     }
 
     public function createListStyleShorthand()
     {
-        $aProperties = array(
+        $aProperties = [
             'list-style-type', 'list-style-position', 'list-style-image'
-        );
+        ];
         $this->createShorthandProperties($aProperties, 'list-style');
     }
 
@@ -521,9 +521,9 @@ class DeclarationBlock extends RuleSet
      * */
     public function createBorderShorthand()
     {
-        $aProperties = array(
+        $aProperties = [
             'border-width', 'border-style', 'border-color'
-        );
+        ];
         $this->createShorthandProperties($aProperties, 'border');
     }
 
@@ -535,17 +535,17 @@ class DeclarationBlock extends RuleSet
 
     public function createDimensionsShorthand()
     {
-        $aPositions = array('top', 'right', 'bottom', 'left');
-        $aExpansions = array(
+        $aPositions = ['top', 'right', 'bottom', 'left'];
+        $aExpansions = [
             'margin' => 'margin-%s',
             'padding' => 'padding-%s',
             'border-color' => 'border-%s-color',
             'border-style' => 'border-%s-style',
             'border-width' => 'border-%s-width'
-        );
+        ];
         $aRules = $this->getRulesAssoc();
         foreach ($aExpansions as $sProperty => $sExpanded) {
-            $aFoldable = array();
+            $aFoldable = [];
             foreach ($aRules as $sRuleName => $oRule) {
                 foreach ($aPositions as $sPosition) {
                     if ($sRuleName == sprintf($sExpanded, $sPosition)) {
@@ -555,11 +555,11 @@ class DeclarationBlock extends RuleSet
             }
             // All four dimensions must be present
             if (count($aFoldable) == 4) {
-                $aValues = array();
+                $aValues = [];
                 foreach ($aPositions as $sPosition) {
                     $oRule = $aRules[sprintf($sExpanded, $sPosition)];
                     $mRuleValue = $oRule->getValue();
-                    $aRuleValues = array();
+                    $aRuleValues = [];
                     if (!$mRuleValue instanceof RuleValueList) {
                         $aRuleValues[] = $mRuleValue;
                     } else {
@@ -606,9 +606,9 @@ class DeclarationBlock extends RuleSet
      * */
     public function createFontShorthand()
     {
-        $aFontProperties = array(
+        $aFontProperties = [
             'font-style', 'font-variant', 'font-weight', 'font-size', 'line-height', 'font-family'
-        );
+        ];
         $aRules = $this->getRulesAssoc();
         if (!isset($aRules['font-size']) || !isset($aRules['font-family'])) {
             return;
@@ -616,11 +616,11 @@ class DeclarationBlock extends RuleSet
         $oOldRule = isset($aRules['font-size']) ? $aRules['font-size'] : $aRules['font-family'];
         $oNewRule = new Rule('font', $oOldRule->getLineNo(), $oOldRule->getColNo());
         unset($oOldRule);
-        foreach (array('font-style', 'font-variant', 'font-weight') as $sProperty) {
+        foreach (['font-style', 'font-variant', 'font-weight'] as $sProperty) {
             if (isset($aRules[$sProperty])) {
                 $oRule = $aRules[$sProperty];
                 $mRuleValue = $oRule->getValue();
-                $aValues = array();
+                $aValues = [];
                 if (!$mRuleValue instanceof RuleValueList) {
                     $aValues[] = $mRuleValue;
                 } else {
@@ -634,7 +634,7 @@ class DeclarationBlock extends RuleSet
         // Get the font-size value
         $oRule = $aRules['font-size'];
         $mRuleValue = $oRule->getValue();
-        $aFSValues = array();
+        $aFSValues = [];
         if (!$mRuleValue instanceof RuleValueList) {
             $aFSValues[] = $mRuleValue;
         } else {
@@ -644,7 +644,7 @@ class DeclarationBlock extends RuleSet
         if (isset($aRules['line-height'])) {
             $oRule = $aRules['line-height'];
             $mRuleValue = $oRule->getValue();
-            $aLHValues = array();
+            $aLHValues = [];
             if (!$mRuleValue instanceof RuleValueList) {
                 $aLHValues[] = $mRuleValue;
             } else {
@@ -661,7 +661,7 @@ class DeclarationBlock extends RuleSet
         }
         $oRule = $aRules['font-family'];
         $mRuleValue = $oRule->getValue();
-        $aFFValues = array();
+        $aFFValues = [];
         if (!$mRuleValue instanceof RuleValueList) {
             $aFFValues[] = $mRuleValue;
         } else {

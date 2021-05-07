@@ -9,6 +9,10 @@ use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\Property\Import;
+use Sabberworm\CSS\RuleSet\AtRuleSet;
+use Sabberworm\CSS\Property\CSSNamespace;
+use Sabberworm\CSS\Property\Charset;
 
 class ParserTest extends \PHPunit\Framework\TestCase
 {
@@ -58,21 +62,21 @@ class ParserTest extends \PHPunit\Framework\TestCase
                 $this->assertSame('red', $oColor);
                 $aColorRule = $oRuleSet->getRules('background-');
                 $oColor = $aColorRule[0]->getValue();
-                $this->assertEquals(array('r' => new Size(35.0, null, true, $oColor->getLineNo()), 'g' => new Size(35.0, null, true, $oColor->getLineNo()), 'b' => new Size(35.0, null, true, $oColor->getLineNo())), $oColor->getColor());
+                $this->assertEquals(['r' => new Size(35.0, null, true, $oColor->getLineNo()), 'g' => new Size(35.0, null, true, $oColor->getLineNo()), 'b' => new Size(35.0, null, true, $oColor->getLineNo())], $oColor->getColor());
                 $aColorRule = $oRuleSet->getRules('border-color');
                 $oColor = $aColorRule[0]->getValue();
-                $this->assertEquals(array('r' => new Size(10.0, null, true, $oColor->getLineNo()), 'g' => new Size(100.0, null, true, $oColor->getLineNo()), 'b' => new Size(230.0, null, true, $oColor->getLineNo())), $oColor->getColor());
+                $this->assertEquals(['r' => new Size(10.0, null, true, $oColor->getLineNo()), 'g' => new Size(100.0, null, true, $oColor->getLineNo()), 'b' => new Size(230.0, null, true, $oColor->getLineNo())], $oColor->getColor());
                 $oColor = $aColorRule[1]->getValue();
-                $this->assertEquals(array('r' => new Size(10.0, null, true, $oColor->getLineNo()), 'g' => new Size(100.0, null, true, $oColor->getLineNo()), 'b' => new Size(231.0, null, true, $oColor->getLineNo()), 'a' => new Size("0000.3", null, true, $oColor->getLineNo())), $oColor->getColor());
+                $this->assertEquals(['r' => new Size(10.0, null, true, $oColor->getLineNo()), 'g' => new Size(100.0, null, true, $oColor->getLineNo()), 'b' => new Size(231.0, null, true, $oColor->getLineNo()), 'a' => new Size("0000.3", null, true, $oColor->getLineNo())], $oColor->getColor());
                 $aColorRule = $oRuleSet->getRules('outline-color');
                 $oColor = $aColorRule[0]->getValue();
-                $this->assertEquals(array('r' => new Size(34.0, null, true, $oColor->getLineNo()), 'g' => new Size(34.0, null, true, $oColor->getLineNo()), 'b' => new Size(34.0, null, true, $oColor->getLineNo())), $oColor->getColor());
+                $this->assertEquals(['r' => new Size(34.0, null, true, $oColor->getLineNo()), 'g' => new Size(34.0, null, true, $oColor->getLineNo()), 'b' => new Size(34.0, null, true, $oColor->getLineNo())], $oColor->getColor());
             } elseif ($sSelector === '#yours') {
                 $aColorRule = $oRuleSet->getRules('background-color');
                 $oColor = $aColorRule[0]->getValue();
-                $this->assertEquals(array('h' => new Size(220.0, null, true, $oColor->getLineNo()), 's' => new Size(10.0, '%', true, $oColor->getLineNo()), 'l' => new Size(220.0, '%', true, $oColor->getLineNo())), $oColor->getColor());
+                $this->assertEquals(['h' => new Size(220.0, null, true, $oColor->getLineNo()), 's' => new Size(10.0, '%', true, $oColor->getLineNo()), 'l' => new Size(220.0, '%', true, $oColor->getLineNo())], $oColor->getColor());
                 $oColor = $aColorRule[1]->getValue();
-                $this->assertEquals(array('h' => new Size(220.0, null, true, $oColor->getLineNo()), 's' => new Size(10.0, '%', true, $oColor->getLineNo()), 'l' => new Size(220.0, '%', true, $oColor->getLineNo()), 'a' => new Size(0000.3, null, true, $oColor->getLineNo())), $oColor->getColor());
+                $this->assertEquals(['h' => new Size(220.0, null, true, $oColor->getLineNo()), 's' => new Size(10.0, '%', true, $oColor->getLineNo()), 'l' => new Size(220.0, '%', true, $oColor->getLineNo()), 'a' => new Size(0000.3, null, true, $oColor->getLineNo())], $oColor->getColor());
             }
         }
         foreach ($oDoc->getAllValues('color') as $sColor) {
@@ -166,14 +170,14 @@ class ParserTest extends \PHPunit\Framework\TestCase
                     $this->fail("specificity: untested selector " . $oSelector->getSelector());
             }
         }
-        $this->assertEquals(array(new Selector('#test .help', true)), $oDoc->getSelectorsBySpecificity('> 100'));
-        $this->assertEquals(array(new Selector('#test .help', true), new Selector('#file', true)), $oDoc->getSelectorsBySpecificity('>= 100'));
-        $this->assertEquals(array(new Selector('#file', true)), $oDoc->getSelectorsBySpecificity('=== 100'));
-        $this->assertEquals(array(new Selector('#file', true)), $oDoc->getSelectorsBySpecificity('== 100'));
-        $this->assertEquals(array(new Selector('#file', true), new Selector('.help:hover', true), new Selector('li.green', true), new Selector('ol li::before', true)), $oDoc->getSelectorsBySpecificity('<= 100'));
-        $this->assertEquals(array(new Selector('.help:hover', true), new Selector('li.green', true), new Selector('ol li::before', true)), $oDoc->getSelectorsBySpecificity('< 100'));
-        $this->assertEquals(array(new Selector('li.green', true)), $oDoc->getSelectorsBySpecificity('11'));
-        $this->assertEquals(array(new Selector('ol li::before', true)), $oDoc->getSelectorsBySpecificity(3));
+        $this->assertEquals([new Selector('#test .help', true)], $oDoc->getSelectorsBySpecificity('> 100'));
+        $this->assertEquals([new Selector('#test .help', true), new Selector('#file', true)], $oDoc->getSelectorsBySpecificity('>= 100'));
+        $this->assertEquals([new Selector('#file', true)], $oDoc->getSelectorsBySpecificity('=== 100'));
+        $this->assertEquals([new Selector('#file', true)], $oDoc->getSelectorsBySpecificity('== 100'));
+        $this->assertEquals([new Selector('#file', true), new Selector('.help:hover', true), new Selector('li.green', true), new Selector('ol li::before', true)], $oDoc->getSelectorsBySpecificity('<= 100'));
+        $this->assertEquals([new Selector('.help:hover', true), new Selector('li.green', true), new Selector('ol li::before', true)], $oDoc->getSelectorsBySpecificity('< 100'));
+        $this->assertEquals([new Selector('li.green', true)], $oDoc->getSelectorsBySpecificity('11'));
+        $this->assertEquals([new Selector('ol li::before', true)], $oDoc->getSelectorsBySpecificity(3));
     }
 
     function testManipulation()
@@ -298,7 +302,7 @@ body {color: green;}', $oDoc->render());
                 $mValue->setSize($mValue->getSize() * 3);
             }
         }
-        $sExpected = str_replace(array('1.2em', '.2em', '60%'), array('3.6em', '.6em', '180%'), $sExpected);
+        $sExpected = str_replace(['1.2em', '.2em', '60%'], ['3.6em', '.6em', '180%'], $sExpected);
         $this->assertSame($sExpected, $oDoc->render());
 
         foreach ($oDoc->getAllValues(null, true) as $mValue) {
@@ -306,7 +310,7 @@ body {color: green;}', $oDoc->render());
                 $mValue->setSize($mValue->getSize() * 2);
             }
         }
-        $sExpected = str_replace(array('.2s', '.3s', '90deg'), array('.4s', '.6s', '180deg'), $sExpected);
+        $sExpected = str_replace(['.2s', '.3s', '90deg'], ['.4s', '.6s', '180deg'], $sExpected);
         $this->assertSame($sExpected, $oDoc->render());
     }
 
@@ -640,7 +644,7 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
         $this->assertCount(1, $rulesets);
         $block = $rulesets[0];
         $this->assertTrue($block instanceof DeclarationBlock);
-        $this->assertEquals(array( 'div' ), $block->getSelectors());
+        $this->assertEquals(['div'], $block->getSelectors());
         $rules = $block->getRules();
         $this->assertCount(1, $rules);
         $rule = $rules[0];
@@ -670,20 +674,20 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
     {
         $oDoc = $this->parsedStructureForFile('line-numbers');
         // array key is the expected line number
-        $aExpected = array(
-            1 => array('Sabberworm\CSS\Property\Charset'),
-            3 => array('Sabberworm\CSS\Property\CSSNamespace'),
-            5 => array('Sabberworm\CSS\RuleSet\AtRuleSet'),
-            11 => array('Sabberworm\CSS\RuleSet\DeclarationBlock'),
+        $aExpected = [
+            1 => [Charset::class],
+            3 => [CSSNamespace::class],
+            5 => [AtRuleSet::class],
+            11 => [DeclarationBlock::class],
             // Line Numbers of the inner declaration blocks
-            17 => array('Sabberworm\CSS\CSSList\KeyFrame', 18, 20),
-            23 => array('Sabberworm\CSS\Property\Import'),
-            25 => array('Sabberworm\CSS\RuleSet\DeclarationBlock')
-        );
+            17 => [KeyFrame::class, 18, 20],
+            23 => [Import::class],
+            25 => [DeclarationBlock::class]
+        ];
 
-        $aActual = array();
+        $aActual = [];
         foreach ($oDoc->getContents() as $oContent) {
-            $aActual[$oContent->getLineNo()] = array(get_class($oContent));
+            $aActual[$oContent->getLineNo()] = [get_class($oContent)];
             if ($oContent instanceof KeyFrame) {
                 foreach ($oContent->getContents() as $block) {
                     $aActual[$oContent->getLineNo()][] = $block->getLineNo();
@@ -691,8 +695,8 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
             }
         }
 
-        $aUrlExpected = array(7, 26); // expected line numbers
-        $aUrlActual = array();
+        $aUrlExpected = [7, 26]; // expected line numbers
+        $aUrlActual = [];
         foreach ($oDoc->getAllValues() as $oValue) {
             if ($oValue instanceof URL) {
                 $aUrlActual[] = $oValue->getLineNo();
@@ -700,7 +704,7 @@ body {background-url: url("http://somesite.com/images/someimage.gif");}';
         }
 
         // Checking for the multiline color rule lines 27-31
-        $aExpectedColorLines = array(28, 29, 30);
+        $aExpectedColorLines = [28, 29, 30];
         $aDeclBlocks = $oDoc->getAllDeclarationBlocks();
         // Choose the 2nd one
         $oDeclBlock = $aDeclBlocks[1];

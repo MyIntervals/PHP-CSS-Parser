@@ -8,11 +8,11 @@ abstract class ValueList extends Value
     protected $aComponents;
     protected $sSeparator;
 
-    public function __construct($aComponents = array(), $sSeparator = ',', $iLineNo = 0)
+    public function __construct($aComponents = [], $sSeparator = ',', $iLineNo = 0)
     {
         parent::__construct($iLineNo);
         if (!is_array($aComponents)) {
-            $aComponents = array($aComponents);
+            $aComponents = [$aComponents];
         }
         $this->aComponents = $aComponents;
         $this->sSeparator = $sSeparator;

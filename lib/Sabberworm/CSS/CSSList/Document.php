@@ -37,7 +37,7 @@ class Document extends CSSBlockList
      */
     public function getAllDeclarationBlocks()
     {
-        $aResult = array();
+        $aResult = [];
         $this->allDeclarationBlocks($aResult);
         return $aResult;
     }
@@ -55,7 +55,7 @@ class Document extends CSSBlockList
      */
     public function getAllRuleSets()
     {
-        $aResult = array();
+        $aResult = [];
         $this->allRuleSets($aResult);
         return $aResult;
     }
@@ -74,7 +74,7 @@ class Document extends CSSBlockList
             $sSearchString = $mElement;
             $mElement = $this;
         }
-        $aResult = array();
+        $aResult = [];
         $this->allValues($mElement, $aResult, $sSearchString, $bSearchInFunctionArguments);
         return $aResult;
     }
@@ -87,7 +87,7 @@ class Document extends CSSBlockList
      */
     public function getSelectorsBySpecificity($sSpecificitySearch = null)
     {
-        $aResult = array();
+        $aResult = [];
         $this->allSelectors($aResult, $sSpecificitySearch);
         return $aResult;
     }

@@ -7,7 +7,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 class LineName extends ValueList
 {
-    public function __construct($aComponents = array(), $iLineNo = 0)
+    public function __construct($aComponents = [], $iLineNo = 0)
     {
         parent::__construct($aComponents, ' ', $iLineNo);
     }
@@ -16,7 +16,7 @@ class LineName extends ValueList
     {
         $oParserState->consume('[');
         $oParserState->consumeWhiteSpace();
-        $aNames = array();
+        $aNames = [];
         do {
             if ($oParserState->getSettings()->bLenientParsing) {
                 try {
