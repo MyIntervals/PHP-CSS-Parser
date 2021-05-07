@@ -29,7 +29,7 @@ class OutputFormatTest extends \PHPunit\Framework\TestCase
     private $oParser;
     private $oDocument;
 
-    function setUp()
+    protected function setUp()
     {
         global $TEST_CSS;
         $this->oParser = new Parser($TEST_CSS);
