@@ -21,9 +21,9 @@ abstract class RuleSet implements Renderable, Commentable
 
     public function __construct($iLineNo = 0)
     {
-        $this->aRules = array();
+        $this->aRules = [];
         $this->iLineNo = $iLineNo;
-        $this->aComments = array();
+        $this->aComments = [];
     }
 
     public static function parseRuleSet(ParserState $oParserState, RuleSet $oRuleSet)
@@ -38,7 +38,7 @@ abstract class RuleSet implements Renderable, Commentable
                     $oRule = Rule::parse($oParserState);
                 } catch (UnexpectedTokenException $e) {
                     try {
-                        $sConsume = $oParserState->consumeUntil(array("\n", ";", '}'), true);
+                        $sConsume = $oParserState->consumeUntil(["\n", ";", '}'], true);
                         // We need to “unfind” the matches to the end of the ruleSet as this will be matched later
                         if ($oParserState->streql(substr($sConsume, -1), '}')) {
                             $oParserState->backtrack(1);
@@ -74,7 +74,7 @@ abstract class RuleSet implements Renderable, Commentable
     {
         $sRule = $oRule->getRule();
         if (!isset($this->aRules[$sRule])) {
-            $this->aRules[$sRule] = array();
+            $this->aRules[$sRule] = [];
         }
 
         $iPosition = count($this->aRules[$sRule]);
@@ -96,7 +96,7 @@ abstract class RuleSet implements Renderable, Commentable
             }
         }
 
-        array_splice($this->aRules[$sRule], $iPosition, 0, array($oRule));
+        array_splice($this->aRules[$sRule], $iPosition, 0, [$oRule]);
     }
 
     /**
@@ -114,7 +114,7 @@ abstract class RuleSet implements Renderable, Commentable
         if ($mRule instanceof Rule) {
             $mRule = $mRule->getRule();
         }
-        $aResult = array();
+        $aResult = [];
         foreach ($this->aRules as $sName => $aRules) {
             // Either no search rule is given or the search rule matches the found rule exactly or the search rule ends in “-” and the found rule starts with the search rule.
             if (!$mRule || $sName === $mRule || (strrpos($mRule, '-') === strlen($mRule) - strlen('-') && (strpos($sName, $mRule) === 0 || $sName === substr($mRule, 0, -1)))) {
@@ -136,7 +136,7 @@ abstract class RuleSet implements Renderable, Commentable
      */
     public function setRules(array $aRules)
     {
-        $this->aRules = array();
+        $this->aRules = [];
         foreach ($aRules as $rule) {
             $this->addRule($rule);
         }
@@ -150,7 +150,7 @@ abstract class RuleSet implements Renderable, Commentable
      */
     public function getRulesAssoc($mRule = null)
     {
-        $aResult = array();
+        $aResult = [];
         foreach ($this->getRules($mRule) as $oRule) {
             $aResult[$oRule->getRule()] = $oRule;
         }

@@ -12,7 +12,7 @@ class CalcFunction extends CSSFunction
 
     public static function parse(ParserState $oParserState)
     {
-        $aOperators = array('+', '-', '*', '/');
+        $aOperators = ['+', '-', '*', '/'];
         $sFunction = trim($oParserState->consumeUntil('(', false, true));
         $oCalcList = new CalcRuleValueList($oParserState->currentLine());
         $oList = new RuleValueList(',', $oParserState->currentLine());

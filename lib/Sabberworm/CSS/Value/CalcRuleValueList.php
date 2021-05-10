@@ -6,7 +6,7 @@ class CalcRuleValueList extends RuleValueList
 {
     public function __construct($iLineNo = 0)
     {
-        parent::__construct(array(), ',', $iLineNo);
+        parent::__construct([], ',', $iLineNo);
     }
 
     /**

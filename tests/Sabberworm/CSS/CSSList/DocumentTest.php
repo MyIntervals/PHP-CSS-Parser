@@ -20,7 +20,7 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
         $oDoc2 = $oParser2->parse();
         $aContents2 = $oDoc2->getContents();
 
-        $oDoc->setContents(array($aContents[0], $aContents2[0]));
+        $oDoc->setContents([$aContents[0], $aContents2[0]]);
         $aFinalContents = $oDoc->getContents();
         $this->assertCount(2, $aFinalContents);
     }

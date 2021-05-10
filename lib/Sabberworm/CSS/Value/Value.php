@@ -15,9 +15,9 @@ abstract class Value implements Renderable
         $this->iLineNo = $iLineNo;
     }
 
-    public static function parseValue(ParserState $oParserState, $aListDelimiters = array())
+    public static function parseValue(ParserState $oParserState, $aListDelimiters = [])
     {
-        $aStack = array();
+        $aStack = [];
         $oParserState->consumeWhiteSpace();
         //Build a list of delimiters and parsed values
         while (!($oParserState->comes('}') || $oParserState->comes(';') || $oParserState->comes('!') || $oParserState->comes(')') || $oParserState->comes('\\'))) {
@@ -56,7 +56,7 @@ abstract class Value implements Renderable
                 for ($i = $iStartPosition - 1; $i - $iStartPosition + 1 < $iLength * 2; $i += 2) {
                     $oList->addListComponent($aStack[$i]);
                 }
-                array_splice($aStack, $iStartPosition - 1, $iLength * 2 - 1, array($oList));
+                array_splice($aStack, $iStartPosition - 1, $iLength * 2 - 1, [$oList]);
             }
         }
         if (!isset($aStack[0])) {
@@ -71,7 +71,7 @@ abstract class Value implements Renderable
 
         if ($oParserState->comes('(')) {
             $oParserState->consume('(');
-            $aArguments = Value::parseValue($oParserState, array('=', ' ', ','));
+            $aArguments = Value::parseValue($oParserState, ['=', ' ', ',']);
             $sResult = new CSSFunction($sResult, $aArguments, ',', $oParserState->currentLine());
             $oParserState->consume(')');
         }
@@ -109,7 +109,7 @@ abstract class Value implements Renderable
     private static function parseMicrosoftFilter(ParserState $oParserState)
     {
         $sFunction = $oParserState->consumeUntil('(', false, true);
-        $aArguments = Value::parseValue($oParserState, array(',', '='));
+        $aArguments = Value::parseValue($oParserState, [',', '=']);
         return new CSSFunction($sFunction, $aArguments, ',', $oParserState->currentLine());
     }
 

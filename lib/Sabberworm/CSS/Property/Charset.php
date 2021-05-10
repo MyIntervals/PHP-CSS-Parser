@@ -34,7 +34,7 @@ class Charset implements AtRule
     {
         $this->sCharset = $sCharset;
         $this->iLineNo = $iLineNo;
-        $this->aComments = array();
+        $this->aComments = [];
     }
 
     /**

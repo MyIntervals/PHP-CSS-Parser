@@ -39,7 +39,7 @@ class Import implements AtRule
         $this->oLocation = $oLocation;
         $this->sMediaQuery = $sMediaQuery;
         $this->iLineNo = $iLineNo;
-        $this->aComments = array();
+        $this->aComments = [];
     }
 
     /**
@@ -88,7 +88,7 @@ class Import implements AtRule
      */
     public function atRuleArgs()
     {
-        $aResult = array($this->oLocation);
+        $aResult = [$this->oLocation];
         if ($this->sMediaQuery) {
             array_push($aResult, $this->sMediaQuery);
         }

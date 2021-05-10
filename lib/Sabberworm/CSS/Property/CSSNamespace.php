@@ -17,7 +17,7 @@ class CSSNamespace implements AtRule
         $this->mUrl = $mUrl;
         $this->sPrefix = $sPrefix;
         $this->iLineNo = $iLineNo;
-        $this->aComments = array();
+        $this->aComments = [];
     }
 
     /**
@@ -76,7 +76,7 @@ class CSSNamespace implements AtRule
      */
     public function atRuleArgs()
     {
-        $aResult = array($this->mUrl);
+        $aResult = [$this->mUrl];
         if ($this->sPrefix) {
             array_unshift($aResult, $this->sPrefix);
         }

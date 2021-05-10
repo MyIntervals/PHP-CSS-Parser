@@ -14,7 +14,7 @@ class Color extends CSSFunction
 
     public static function parse(ParserState $oParserState)
     {
-        $aColor = array();
+        $aColor = [];
         if ($oParserState->comes('#')) {
             $oParserState->consume('#');
             $sValue = $oParserState->parseIdentifier(false);
@@ -25,18 +25,18 @@ class Color extends CSSFunction
             }
 
             if ($oParserState->strlen($sValue) === 8) {
-                $aColor = array(
+                $aColor = [
                     'r' => new Size(intval($sValue[0] . $sValue[1], 16), null, true, $oParserState->currentLine()),
                     'g' => new Size(intval($sValue[2] . $sValue[3], 16), null, true, $oParserState->currentLine()),
                     'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true, $oParserState->currentLine()),
                     'a' => new Size(round(self::mapRange(intval($sValue[6] . $sValue[7], 16), 0, 255, 0, 1), 2), null, true, $oParserState->currentLine())
-                );
+                ];
             } else {
-                $aColor = array(
+                $aColor = [
                     'r' => new Size(intval($sValue[0] . $sValue[1], 16), null, true, $oParserState->currentLine()),
                     'g' => new Size(intval($sValue[2] . $sValue[3], 16), null, true, $oParserState->currentLine()),
                     'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true, $oParserState->currentLine())
-                );
+                ];
             }
         } else {
             $sColorMode = $oParserState->parseIdentifier(true);
