@@ -188,8 +188,8 @@ html, body {font-size: -.6em;}
 	to {top: 200px;}}
 @supports ( (perspective: 10px) or (-moz-perspective: 10px) or (-webkit-perspective: 10px) or (-ms-perspective: 10px) or (-o-perspective: 10px) ) {body {font-family: "Helvetica";}}
 @page :pseudo-class {margin: 2in;}
-@-moz-document url(http://www.w3.org/),
-               url-prefix(http://www.w3.org/Style/),
+@-moz-document url(https://www.w3.org/),
+               url-prefix(https://www.w3.org/Style/),
                domain(mozilla.org),
                regexp("https:.*") {body {color: purple;background: yellow;}}
 @media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}
@@ -209,8 +209,8 @@ html, body {font-size: -.6em;}
 	to {top: 200px;}}
 @supports ( (perspective: 10px) or (-moz-perspective: 10px) or (-webkit-perspective: 10px) or (-ms-perspective: 10px) or (-o-perspective: 10px) ) {#my_id body {font-family: "Helvetica";}}
 @page :pseudo-class {margin: 2in;}
-@-moz-document url(http://www.w3.org/),
-               url-prefix(http://www.w3.org/Style/),
+@-moz-document url(https://www.w3.org/),
+               url-prefix(https://www.w3.org/Style/),
                domain(mozilla.org),
                regexp("https:.*") {#my_id body {color: purple;background: yellow;}}
 @media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}
@@ -416,8 +416,8 @@ body {font-size: 1.6em;}';
     public function testUrlInFile()
     {
         $oDoc = $this->parsedStructureForFile('url', Settings::create()->withMultibyteSupport(true));
-        $sExpected = 'body {background: #fff url("http://somesite.com/images/someimage.gif") repeat top center;}
-body {background-url: url("http://somesite.com/images/someimage.gif");}';
+        $sExpected = 'body {background: #fff url("https://somesite.com/images/someimage.gif") repeat top center;}
+body {background-url: url("https://somesite.com/images/someimage.gif");}';
         $this->assertSame($sExpected, $oDoc->render());
     }
 
@@ -553,8 +553,8 @@ body {background-color: red;}';
     public function testUrlInFileMbOff()
     {
         $oDoc = $this->parsedStructureForFile('url', Settings::create()->withMultibyteSupport(false));
-        $sExpected = 'body {background: #fff url("http://somesite.com/images/someimage.gif") repeat top center;}
-body {background-url: url("http://somesite.com/images/someimage.gif");}';
+        $sExpected = 'body {background: #fff url("https://somesite.com/images/someimage.gif") repeat top center;}
+body {background-url: url("https://somesite.com/images/someimage.gif");}';
         $this->assertSame($sExpected, $oDoc->render());
     }
 

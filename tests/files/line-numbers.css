@@ -4,7 +4,7 @@
 
 @font-face { /* line 5 */
     font-family: "CrassRoots";
-    src: url("http://example.com/media/cr.ttf") /* line 7 */
+    src: url("https://example.com/media/cr.ttf") /* line 7 */
 }
 
 
@@ -23,7 +23,7 @@
 @IMPORT uRL(test.css); /* line 23 */
 
 body {
-    background: #FFFFFF url("http://somesite.com/images/someimage.gif") repeat top center; /* line 25 */
+    background: #FFFFFF url("https://somesite.com/images/someimage.gif") repeat top center; /* line 25 */
     color: rgb(   /* line 27 */
             233,  /* line 28 */
             100,  /* line 29 */
