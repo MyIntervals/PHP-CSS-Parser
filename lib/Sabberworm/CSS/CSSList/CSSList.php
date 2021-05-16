@@ -246,11 +246,18 @@ abstract class CSSList implements Renderable, Commentable
 
     /**
      * Removes an item from the CSS list.
-     * @param RuleSet|Import|Charset|CSSList $oItemToRemove May be a RuleSet (most likely a DeclarationBlock), a Import, a Charset or another CSSList (most likely a MediaQuery)
+     *
+     * @param RuleSet|Import|Charset|CSSList|int $oItemToRemove May be a RuleSet (most likely a DeclarationBlock), a Import, a Charset or another CSSList (most likely a MediaQuery)
      * @return bool Whether the item was removed.
      */
     public function remove($oItemToRemove)
     {
+        if (is_numeric($oItemToRemove) && array_key_exists($oItemToRemove, $this->aContents)) {
+            unset($this->aContents[$oItemToRemove]);
+
+            return true;
+        }
+
         $iKey = array_search($oItemToRemove, $this->aContents, true);
         if ($iKey !== false) {
             unset($this->aContents[$iKey]);

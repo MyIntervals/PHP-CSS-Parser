@@ -389,6 +389,18 @@ foo|test {gaga: 1;}
 #unrelated {other: yes;}', $oDoc->render());
     }
 
+    public function testListValueRemovalByKey()
+    {
+        $oDoc = $this->parsedStructureForFile('atrules');
+        foreach ($oDoc->getContents() as $key => $oItem) {
+            if ($oItem instanceof AtRule) {
+                $oDoc->remove($key);
+            }
+        }
+
+        $this->assertSame('html, body {font-size: -.6em;}', $oDoc->render());
+    }
+
     /**
     * @expectedException Sabberworm\CSS\Parsing\OutputException
     */
