@@ -3,7 +3,6 @@
 namespace Sabberworm\CSS;
 
 use Sabberworm\CSS\Parsing\OutputException;
-use Sabberworm\CSS\OutputFormatter;
 
 /**
  * Class OutputFormat

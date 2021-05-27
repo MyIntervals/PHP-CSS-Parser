@@ -2,8 +2,6 @@
 
 namespace Sabberworm\CSS\Property;
 
-use Sabberworm\CSS\Parsing\UnexpectedTokenException;
-
 class KeyframeSelector extends Selector
 {
 

@@ -6,7 +6,6 @@ use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
-use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Property\Charset;
 use Sabberworm\CSS\Property\CSSNamespace;

@@ -3,16 +3,16 @@
 namespace Sabberworm\CSS;
 
 use Sabberworm\CSS\CSSList\KeyFrame;
-use Sabberworm\CSS\Value\Size;
-use Sabberworm\CSS\Property\Selector;
-use Sabberworm\CSS\RuleSet\DeclarationBlock;
-use Sabberworm\CSS\Property\AtRule;
-use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
-use Sabberworm\CSS\Property\Import;
-use Sabberworm\CSS\RuleSet\AtRuleSet;
-use Sabberworm\CSS\Property\CSSNamespace;
+use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Property\Charset;
+use Sabberworm\CSS\Property\CSSNamespace;
+use Sabberworm\CSS\Property\Import;
+use Sabberworm\CSS\Property\Selector;
+use Sabberworm\CSS\RuleSet\AtRuleSet;
+use Sabberworm\CSS\RuleSet\DeclarationBlock;
+use Sabberworm\CSS\Value\Size;
+use Sabberworm\CSS\Value\URL;
 
 class ParserTest extends \PHPunit\Framework\TestCase
 {
