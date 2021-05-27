@@ -23,12 +23,15 @@
             "@ci:static"
         ],
         "ci:php:sniff": "@php ./.phive/phpcs.phar lib tests",
+        "ci:php:stan": "@php ./.phive/phpstan.phar",
         "ci:static": [
-            "@ci:php:sniff"
+            "@ci:php:sniff",
+            "@ci:php:stan"
         ],
         "fix:php": [
             "@fix:php:sniff"
         ],
-        "fix:php:sniff": "@php ./.phive/phpcbf.phar lib tests"
+        "fix:php:sniff": "@php ./.phive/phpcbf.phar lib tests",
+        "phpstan:baseline": "@php ./.phive/phpstan.phar --generate-baseline"
     }
 }

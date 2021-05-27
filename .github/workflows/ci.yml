@@ -78,3 +78,41 @@ jobs:
         if: "${{ matrix.coverage != 'none' && env.CODACY_PROJECT_TOKEN != '' }}"
         run: |
           ./vendor/bin/codacycoverage clover build/coverage/xml
+
+  phpstan:
+    name: PHPStan
+
+    runs-on: ubuntu-20.04
+
+    needs: [ php-lint ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          tools: "composer:v2, phive"
+          coverage: none
+
+      - name: Cache dependencies installed with composer
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/composer
+          key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            php${{ matrix.php-version }}-composer-
+
+      - name: Install Composer dependencies
+        run: |
+          composer update --with-dependencies --no-progress;
+          composer show;
+
+      - name: Install development tools
+        run: |
+          echo y | phive --no-progress update phpstan;
+
+      - name: Run PHPStan
+        run: "composer ci:php:stan"

@@ -1,5 +1,6 @@
 /.phive/*
 /.php_cs.cache
 /composer.lock
+/phpstan.neon
 /vendor/
 !/.phive/phars.xml
