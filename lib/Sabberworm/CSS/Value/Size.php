@@ -7,7 +7,8 @@ use Sabberworm\CSS\Parsing\ParserState;
 class Size extends PrimitiveValue
 {
 
-    const ABSOLUTE_SIZE_UNITS = 'px/cm/mm/mozmm/in/pt/pc/vh/vw/vmin/vmax/rem'; //vh/vw/vm(ax)/vmin/rem are absolute insofar as they don’t scale to the immediate parent (only the viewport)
+    // vh/vw/vm(ax)/vmin/rem are absolute insofar as they don’t scale to the immediate parent (only the viewport)
+    const ABSOLUTE_SIZE_UNITS = 'px/cm/mm/mozmm/in/pt/pc/vh/vw/vmin/vmax/rem';
     const RELATIVE_SIZE_UNITS = '%/em/ex/ch/fr';
     const NON_SIZE_UNITS = 'deg/grad/rad/s/ms/turns/Hz/kHz';
 
@@ -57,7 +58,9 @@ class Size extends PrimitiveValue
     {
         if (self::$SIZE_UNITS === null) {
             self::$SIZE_UNITS = [];
-            foreach (explode('/', Size::ABSOLUTE_SIZE_UNITS . '/' . Size::RELATIVE_SIZE_UNITS . '/' . Size::NON_SIZE_UNITS) as $val) {
+            foreach (
+                explode('/', Size::ABSOLUTE_SIZE_UNITS . '/' . Size::RELATIVE_SIZE_UNITS . '/' . Size::NON_SIZE_UNITS) as $val
+            ) {
                 $iSize = strlen($val);
                 if (!isset(self::$SIZE_UNITS[$iSize])) {
                     self::$SIZE_UNITS[$iSize] = [];
@@ -133,7 +136,9 @@ class Size extends PrimitiveValue
     {
         $l = localeconv();
         $sPoint = preg_quote($l['decimal_point'], '/');
-        $sSize = preg_match("/[\d\.]+e[+-]?\d+/i", (string)$this->fSize) ? preg_replace("/$sPoint?0+$/", "", sprintf("%f", $this->fSize)) : $this->fSize;
-        return preg_replace(["/$sPoint/", "/^(-?)0\./"], ['.', '$1.'], $sSize) . ($this->sUnit === null ? '' : $this->sUnit);
+        $sSize = preg_match("/[\d\.]+e[+-]?\d+/i", (string)$this->fSize)
+            ? preg_replace("/$sPoint?0+$/", "", sprintf("%f", $this->fSize)) : $this->fSize;
+        return preg_replace(["/$sPoint/", "/^(-?)0\./"], ['.', '$1.'], $sSize)
+            . ($this->sUnit === null ? '' : $this->sUnit);
     }
 }

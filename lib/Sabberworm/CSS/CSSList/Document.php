@@ -5,7 +5,8 @@ namespace Sabberworm\CSS\CSSList;
 use Sabberworm\CSS\Parsing\ParserState;
 
 /**
- * The root CSSList of a parsed file. Contains all top-level css contents, mostly declaration blocks, but also any @-rules encountered.
+ * The root CSSList of a parsed file. Contains all top-level css contents, mostly declaration blocks,
+ * but also any @-rules encountered.
  */
 class Document extends CSSBlockList
 {
@@ -62,7 +63,9 @@ class Document extends CSSBlockList
 
     /**
      * Returns all Value objects found recursively in the tree.
-     * @param (object|string) $mElement the CSSList or RuleSet to start the search from (defaults to the whole document). If a string is given, it is used as rule name filter (@see{RuleSet->getRules()}).
+     * @param (object|string) $mElement
+     *        the CSSList or RuleSet to start the search from (defaults to the whole document).
+     *        If a string is given, it is used as rule name filter (@see{RuleSet->getRules()}).
      * @param (bool) $bSearchInFunctionArguments whether to also return Value objects used as Function arguments.
      */
     public function getAllValues($mElement = null, $bSearchInFunctionArguments = false)
@@ -81,8 +84,12 @@ class Document extends CSSBlockList
 
     /**
      * Returns all Selector objects found recursively in the tree.
-     * Note that this does not yield the full DeclarationBlock that the selector belongs to (and, currently, there is no way to get to that).
-     * @param $sSpecificitySearch An optional filter by specificity. May contain a comparison operator and a number or just a number (defaults to "==").
+     * Note that this does not yield the full DeclarationBlock that the selector belongs to
+     * (and, currently, there is no way to get to that).
+     *
+     * @param string $sSpecificitySearch
+     *        An optional filter by specificity.
+     *        May contain a comparison operator and a number or just a number (defaults to "==").
      * @example getSelectorsBySpecificity('>= 100')
      */
     public function getSelectorsBySpecificity($sSpecificitySearch = null)

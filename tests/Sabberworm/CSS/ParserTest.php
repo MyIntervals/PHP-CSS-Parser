@@ -258,7 +258,10 @@ body {color: green;}', $oDoc->render());
     public function testSlashedValues()
     {
         $oDoc = $this->parsedStructureForFile('slashed');
-        $this->assertSame('.test {font: 12px/1.5 Verdana,Arial,sans-serif;border-radius: 5px 10px 5px 10px/10px 5px 10px 5px;}', $oDoc->render());
+        $this->assertSame(
+            '.test {font: 12px/1.5 Verdana,Arial,sans-serif;border-radius: 5px 10px 5px 10px/10px 5px 10px 5px;}',
+            $oDoc->render()
+        );
         foreach ($oDoc->getAllValues(null) as $mValue) {
             if ($mValue instanceof Size && $mValue->isSize() && !$mValue->isRelative()) {
                 $mValue->setSize($mValue->getSize() * 3);
@@ -284,7 +287,10 @@ body {color: green;}', $oDoc->render());
             $this->assertEquals(' ', $oSpaceList1->getListSeparator());
             $this->assertEquals(' ', $oSpaceList2->getListSeparator());
         }
-        $this->assertSame('.test {font: 36px/1.5 Verdana,Arial,sans-serif;border-radius: 15px 30px 15px 30px/30px 15px 30px 15px;}', $oDoc->render());
+        $this->assertSame(
+            '.test {font: 36px/1.5 Verdana,Arial,sans-serif;border-radius: 15px 30px 15px 30px/30px 15px 30px 15px;}',
+            $oDoc->render()
+        );
     }
 
     public function testFunctionSyntax()

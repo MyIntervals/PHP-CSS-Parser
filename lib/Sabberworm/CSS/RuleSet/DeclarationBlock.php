@@ -40,7 +40,8 @@ class DeclarationBlock extends RuleSet
             $aSelectorParts = [];
             $sStringWrapperChar = false;
             do {
-                $aSelectorParts[] = $oParserState->consume(1) . $oParserState->consumeUntil(['{', '}', '\'', '"'], false, false, $aComments);
+                $aSelectorParts[] = $oParserState->consume(1)
+                    . $oParserState->consumeUntil(['{', '}', '\'', '"'], false, false, $aComments);
                 if (in_array($oParserState->peek(), ['\'', '"']) && substr(end($aSelectorParts), -1) != "\\") {
                     if ($sStringWrapperChar === false) {
                         $sStringWrapperChar = $oParserState->peek();
@@ -80,12 +81,20 @@ class DeclarationBlock extends RuleSet
             if (!($mSelector instanceof Selector)) {
                 if ($oList === null || !($oList instanceof KeyFrame)) {
                     if (!Selector::isValid($mSelector)) {
-                        throw new UnexpectedTokenException("Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.", $mSelector, "custom");
+                        throw new UnexpectedTokenException(
+                            "Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.",
+                            $mSelector,
+                            "custom"
+                        );
                     }
                     $this->aSelectors[$iKey] = new Selector($mSelector);
                 } else {
                     if (!KeyframeSelector::isValid($mSelector)) {
-                        throw new UnexpectedTokenException("Selector did not match '" . KeyframeSelector::SELECTOR_VALIDATION_RX . "'.", $mSelector, "custom");
+                        throw new UnexpectedTokenException(
+                            "Selector did not match '" . KeyframeSelector::SELECTOR_VALIDATION_RX . "'.",
+                            $mSelector,
+                            "custom"
+                        );
                     }
                     $this->aSelectors[$iKey] = new KeyframeSelector($mSelector);
                 }
@@ -353,7 +362,9 @@ class DeclarationBlock extends RuleSet
         $aBgProperties = [
             'background-color' => ['transparent'], 'background-image' => ['none'],
             'background-repeat' => ['repeat'], 'background-attachment' => ['scroll'],
-            'background-position' => [new Size(0, '%', null, false, $this->iLineNo), new Size(0, '%', null, false, $this->iLineNo)]
+            'background-position' => [
+                new Size(0, '%', null, false, $this->iLineNo), new Size(0, '%', null, false, $this->iLineNo)
+            ]
         ];
         $mRuleValue = $oRule->getValue();
         $aValues = [];
@@ -696,7 +707,10 @@ class DeclarationBlock extends RuleSet
             throw new OutputException("Attempt to print declaration block with missing selector", $this->iLineNo);
         }
         $sResult = $oOutputFormat->sBeforeDeclarationBlock;
-        $sResult .= $oOutputFormat->implode($oOutputFormat->spaceBeforeSelectorSeparator() . ',' . $oOutputFormat->spaceAfterSelectorSeparator(), $this->aSelectors);
+        $sResult .= $oOutputFormat->implode(
+            $oOutputFormat->spaceBeforeSelectorSeparator() . ',' . $oOutputFormat->spaceAfterSelectorSeparator(),
+            $this->aSelectors
+        );
         $sResult .= $oOutputFormat->sAfterDeclarationBlockSelectors;
         $sResult .= $oOutputFormat->spaceBeforeOpeningBrace() . '{';
         $sResult .= parent::render($oOutputFormat);

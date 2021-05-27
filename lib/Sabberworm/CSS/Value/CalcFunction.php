@@ -39,7 +39,12 @@ class CalcFunction extends CSSFunction
                 if (in_array($oParserState->peek(), $aOperators)) {
                     if (($oParserState->comes('-') || $oParserState->comes('+'))) {
                         if ($oParserState->peek(1, -1) != ' ' || !($oParserState->comes('- ') || $oParserState->comes('+ '))) {
-                            throw new UnexpectedTokenException(" {$oParserState->peek()} ", $oParserState->peek(1, -1) . $oParserState->peek(2), 'literal', $oParserState->currentLine());
+                            throw new UnexpectedTokenException(
+                                " {$oParserState->peek()} ",
+                                $oParserState->peek(1, -1) . $oParserState->peek(2),
+                                'literal',
+                                $oParserState->currentLine()
+                            );
                         }
                     }
                     $oCalcList->addListComponent($oParserState->consume(1));

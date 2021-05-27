@@ -23,7 +23,10 @@ class LenientParsingTest extends \PHPUnit\Framework\TestCase
         $sFile = __DIR__ . '/../../../files' . DIRECTORY_SEPARATOR . "-fault-tolerance.css";
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
-        $this->assertSame('.test1 {}' . "\n" . '.test2 {hello: 2.2;hello: 2000000000000.2;}' . "\n" . '#test {}' . "\n" . '#test2 {help: none;}', $oResult->render());
+        $this->assertSame(
+            '.test1 {}' . "\n" . '.test2 {hello: 2.2;hello: 2000000000000.2;}' . "\n" . '#test {}' . "\n" . '#test2 {help: none;}',
+            $oResult->render()
+        );
     }
 
     /**
@@ -68,7 +71,10 @@ class LenientParsingTest extends \PHPUnit\Framework\TestCase
         $sFile = __DIR__ . '/../../../files' . DIRECTORY_SEPARATOR . "-fault-tolerance.css";
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
-        $this->assertSame('.test1 {}' . "\n" . '.test2 {hello: 2.2;hello: 2000000000000.2;}' . "\n" . '#test {}' . "\n" . '#test2 {help: none;}', $oResult->render());
+        $this->assertSame(
+            '.test1 {}' . "\n" . '.test2 {hello: 2.2;hello: 2000000000000.2;}' . "\n" . '#test {}' . "\n" . '#test2 {help: none;}',
+            $oResult->render()
+        );
     }
 
     public function testCaseInsensitivity()
