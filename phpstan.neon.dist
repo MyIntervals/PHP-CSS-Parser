@@ -9,8 +9,8 @@ parameters:
   level: 0
 
   scanDirectories:
-    - %currentWorkingDirectory%/lib/
+    - %currentWorkingDirectory%/src/
     - %currentWorkingDirectory%/tests/
   paths:
-    - %currentWorkingDirectory%/lib/
+    - %currentWorkingDirectory%/src/
     - %currentWorkingDirectory%/tests/

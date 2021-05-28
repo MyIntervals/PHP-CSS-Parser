@@ -27,7 +27,7 @@ jobs:
           coverage: none
 
       - name: PHP Lint
-        run: find lib tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
+        run: find src tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
 
   unit-tests:
     name: Unit tests
