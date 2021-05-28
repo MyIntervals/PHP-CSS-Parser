@@ -2,8 +2,6 @@
 
 namespace Sabberworm\CSS;
 
-use Sabberworm\CSS\Rule\Rule;
-
 /**
  * Parser settings class.
  *

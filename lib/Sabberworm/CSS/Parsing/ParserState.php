@@ -3,8 +3,6 @@
 namespace Sabberworm\CSS\Parsing;
 
 use Sabberworm\CSS\Comment\Comment;
-use Sabberworm\CSS\Parsing\UnexpectedTokenException;
-use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Settings;
 
 class ParserState

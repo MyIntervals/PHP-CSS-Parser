@@ -2,9 +2,6 @@
 
 namespace Sabberworm\CSS;
 
-use Sabberworm\CSS\Parser;
-use Sabberworm\CSS\OutputFormat;
-
 global $TEST_CSS;
 
 $TEST_CSS = <<<EOT
