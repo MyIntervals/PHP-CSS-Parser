@@ -1,7 +1,6 @@
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/4.8/phpunit.xsd"
-    bootstrap="tests/bootstrap.php">
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/4.8/phpunit.xsd">
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
