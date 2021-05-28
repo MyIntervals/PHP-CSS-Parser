@@ -185,7 +185,8 @@ class OutputFormat
     public static function createCompact()
     {
         $format = self::create();
-        $format->set('Space*Rules', "")->set('Space*Blocks', "")->setSpaceAfterRuleName('')->setSpaceBeforeOpeningBrace('')->setSpaceAfterSelectorSeparator('');
+        $format->set('Space*Rules', "")->set('Space*Blocks', "")->setSpaceAfterRuleName('')
+            ->setSpaceBeforeOpeningBrace('')->setSpaceAfterSelectorSeparator('');
         return $format;
     }
 
@@ -197,7 +198,8 @@ class OutputFormat
     public static function createPretty()
     {
         $format = self::create();
-        $format->set('Space*Rules', "\n")->set('Space*Blocks', "\n")->setSpaceBetweenBlocks("\n\n")->set('SpaceAfterListArgumentSeparator', ['default' => '', ',' => ' ']);
+        $format->set('Space*Rules', "\n")->set('Space*Blocks', "\n")
+            ->setSpaceBetweenBlocks("\n\n")->set('SpaceAfterListArgumentSeparator', ['default' => '', ',' => ' ']);
         return $format;
     }
 }
@@ -214,7 +216,8 @@ class OutputFormatter
     public function space($sName, $sType = null)
     {
         $sSpaceString = $this->oFormat->get("Space$sName");
-        // If $sSpaceString is an array, we have multple values configured depending on the type of object the space applies to
+        // If $sSpaceString is an array, we have multple values configured
+        // depending on the type of object the space applies to
         if (is_array($sSpaceString)) {
             if ($sType !== null && isset($sSpaceString[$sType])) {
                 $sSpaceString = $sSpaceString[$sType];

@@ -91,10 +91,20 @@ abstract class CSSList implements Renderable, Commentable
             $oAtRule = self::parseAtRule($oParserState);
             if ($oAtRule instanceof Charset) {
                 if (!$bIsRoot) {
-                    throw new UnexpectedTokenException('@charset may only occur in root document', '', 'custom', $oParserState->currentLine());
+                    throw new UnexpectedTokenException(
+                        '@charset may only occur in root document',
+                        '',
+                        'custom',
+                        $oParserState->currentLine()
+                    );
                 }
                 if (count($oList->getContents()) > 0) {
-                    throw new UnexpectedTokenException('@charset must be the first parseable token in a document', '', 'custom', $oParserState->currentLine());
+                    throw new UnexpectedTokenException(
+                        '@charset must be the first parseable token in a document',
+                        '',
+                        'custom',
+                        $oParserState->currentLine()
+                    );
                 }
                 $oParserState->setCharset($oAtRule->getCharset()->getString());
             }
@@ -159,7 +169,12 @@ abstract class CSSList implements Renderable, Commentable
                 throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom', $iIdentifierLineNum);
             }
             if (!($mUrl instanceof CSSString || $mUrl instanceof URL)) {
-                throw new UnexpectedTokenException('Wrong namespace url of invalid type', $mUrl, 'custom', $iIdentifierLineNum);
+                throw new UnexpectedTokenException(
+                    'Wrong namespace url of invalid type',
+                    $mUrl,
+                    'custom',
+                    $iIdentifierLineNum
+                );
             }
             return new CSSNamespace($mUrl, $sPrefix, $iIdentifierLineNum);
         } else {
@@ -193,8 +208,9 @@ abstract class CSSList implements Renderable, Commentable
         }
     }
 
-        /**
-     * Tests an identifier for a given value. Since identifiers are all keywords, they can be vendor-prefixed. We need to check for these versions too.
+    /**
+     * Tests an identifier for a given value. Since identifiers are all keywords, they can be vendor-prefixed.
+     * We need to check for these versions too.
      */
     private static function identifierIs($sIdentifier, $sMatch)
     {
@@ -245,7 +261,11 @@ abstract class CSSList implements Renderable, Commentable
 
     /**
      * Removes an item from the CSS list.
-     * @param RuleSet|Import|Charset|CSSList $oItemToRemove May be a RuleSet (most likely a DeclarationBlock), a Import, a Charset or another CSSList (most likely a MediaQuery)
+     *
+     * @param RuleSet|Import|Charset|CSSList $oItemToRemove
+     *        May be a RuleSet (most likely a DeclarationBlock), a Import,
+     *        a Charset or another CSSList (most likely a MediaQuery)
+     *
      * @return bool Whether the item was removed.
      */
     public function remove($oItemToRemove)
@@ -261,7 +281,9 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Replaces an item from the CSS list.
      *
-     * @param RuleSet|Import|Charset|CSSList $oItemToRemove May be a RuleSet (most likely a DeclarationBlock), a Import, a Charset or another CSSList (most likely a MediaQuery)
+     * @param RuleSet|Import|Charset|CSSList $oItemToRemove
+     *        May be a RuleSet (most likely a DeclarationBlock), a Import, a Charset
+     *        or another CSSList (most likely a MediaQuery)
      */
     public function replace($oOldItem, $mNewItem)
     {
@@ -305,7 +327,11 @@ abstract class CSSList implements Renderable, Commentable
         foreach ($mSelector as $iKey => &$mSel) {
             if (!($mSel instanceof Selector)) {
                 if (!Selector::isValid($mSel)) {
-                    throw new UnexpectedTokenException("Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.", $mSel, "custom");
+                    throw new UnexpectedTokenException(
+                        "Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.",
+                        $mSel,
+                        "custom"
+                    );
                 }
                 $mSel = new Selector($mSel);
             }

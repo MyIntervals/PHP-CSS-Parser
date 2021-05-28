@@ -72,7 +72,8 @@ class Import implements AtRule
      */
     public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat)
     {
-        return "@import " . $this->oLocation->render($oOutputFormat) . ($this->sMediaQuery === null ? '' : ' ' . $this->sMediaQuery) . ';';
+        return "@import " . $this->oLocation->render($oOutputFormat)
+            . ($this->sMediaQuery === null ? '' : ' ' . $this->sMediaQuery) . ';';
     }
 
     /**

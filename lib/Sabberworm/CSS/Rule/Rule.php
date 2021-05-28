@@ -37,7 +37,11 @@ class Rule implements Renderable, Commentable
     public static function parse(ParserState $oParserState)
     {
         $aComments = $oParserState->consumeWhiteSpace();
-        $oRule = new Rule($oParserState->parseIdentifier(!$oParserState->comes("--")), $oParserState->currentLine(), $oParserState->currentColumn());
+        $oRule = new Rule(
+            $oParserState->parseIdentifier(!$oParserState->comes("--")),
+            $oParserState->currentLine(),
+            $oParserState->currentColumn()
+        );
         $oRule->setComments($aComments);
         $oRule->addComments($oParserState->consumeWhiteSpace());
         $oParserState->consume(':');
@@ -117,7 +121,8 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     *  @deprecated Old-Style 2-dimensional array given. Retained for (some) backwards-compatibility. Use setValue() instead and wrapp the value inside a RuleValueList if necessary.
+     *  @deprecated Old-Style 2-dimensional array given. Retained for (some) backwards-compatibility.
+     *              Use setValue() instead and wrap the value inside a RuleValueList if necessary.
      */
     public function setValues($aSpaceSeparatedValues)
     {
@@ -153,7 +158,8 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     *  @deprecated Old-Style 2-dimensional array returned. Retained for (some) backwards-compatibility. Use getValue() instead and check for the existance of a (nested set of) ValueList object(s).
+     *  @deprecated Old-Style 2-dimensional array returned. Retained for (some) backwards-compatibility.
+     *              Use getValue() instead and check for the existance of a (nested set of) ValueList object(s).
      */
     public function getValues()
     {
@@ -180,7 +186,8 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * Adds a value to the existing value. Value will be appended if a RuleValueList exists of the given type. Otherwise, the existing value will be wrapped by one.
+     * Adds a value to the existing value. Value will be appended if a RuleValueList exists of the given type.
+     * Otherwise, the existing value will be wrapped by one.
      */
     public function addValue($mValue, $sType = ' ')
     {

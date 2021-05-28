@@ -81,7 +81,10 @@ class ParserState
     public function parseCharacter($bIsForIdentifier)
     {
         if ($this->peek() === '\\') {
-            if ($bIsForIdentifier && $this->oParserSettings->bLenientParsing && ($this->comes('\0') || $this->comes('\9'))) {
+            if (
+                $bIsForIdentifier && $this->oParserSettings->bLenientParsing
+                && ($this->comes('\0') || $this->comes('\9'))
+            ) {
                 // Non-strings can contain \0 or \9 which is an IE hack supported in lenient parsing.
                 return null;
             }
@@ -263,7 +266,12 @@ class ParserState
         }
 
         $this->iCurrentPosition = $start;
-        throw new UnexpectedEOFException('One of ("' . implode('","', $aEnd) . '")', $this->peek(5), 'search', $this->iLineNo);
+        throw new UnexpectedEOFException(
+            'One of ("' . implode('","', $aEnd) . '")',
+            $this->peek(5),
+            'search',
+            $this->iLineNo
+        );
     }
 
     private function inputLeft()

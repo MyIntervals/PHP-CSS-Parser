@@ -21,7 +21,8 @@ class Color extends CSSFunction
             if ($oParserState->strlen($sValue) === 3) {
                 $sValue = $sValue[0] . $sValue[0] . $sValue[1] . $sValue[1] . $sValue[2] . $sValue[2];
             } elseif ($oParserState->strlen($sValue) === 4) {
-                $sValue = $sValue[0] . $sValue[0] . $sValue[1] . $sValue[1] . $sValue[2] . $sValue[2] . $sValue[3] . $sValue[3];
+                $sValue = $sValue[0] . $sValue[0] . $sValue[1] . $sValue[1] . $sValue[2] . $sValue[2] . $sValue[3]
+                    . $sValue[3];
             }
 
             if ($oParserState->strlen($sValue) === 8) {
@@ -29,7 +30,12 @@ class Color extends CSSFunction
                     'r' => new Size(intval($sValue[0] . $sValue[1], 16), null, true, $oParserState->currentLine()),
                     'g' => new Size(intval($sValue[2] . $sValue[3], 16), null, true, $oParserState->currentLine()),
                     'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true, $oParserState->currentLine()),
-                    'a' => new Size(round(self::mapRange(intval($sValue[6] . $sValue[7], 16), 0, 255, 0, 1), 2), null, true, $oParserState->currentLine())
+                    'a' => new Size(
+                        round(self::mapRange(intval($sValue[6] . $sValue[7], 16), 0, 255, 0, 1), 2),
+                        null,
+                        true,
+                        $oParserState->currentLine()
+                    )
                 ];
             } else {
                 $aColor = [
@@ -119,7 +125,8 @@ class Color extends CSSFunction
                 $this->aComponents['g']->getSize(),
                 $this->aComponents['b']->getSize()
             );
-            return '#' . (($sResult[0] == $sResult[1]) && ($sResult[2] == $sResult[3]) && ($sResult[4] == $sResult[5]) ? "$sResult[0]$sResult[2]$sResult[4]" : $sResult);
+            return '#' . (($sResult[0] == $sResult[1]) && ($sResult[2] == $sResult[3]) && ($sResult[4] == $sResult[5])
+                    ? "$sResult[0]$sResult[2]$sResult[4]" : $sResult);
         }
         return parent::render($oOutputFormat);
     }

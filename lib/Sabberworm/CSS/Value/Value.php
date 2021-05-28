@@ -20,7 +20,10 @@ abstract class Value implements Renderable
         $aStack = [];
         $oParserState->consumeWhiteSpace();
         //Build a list of delimiters and parsed values
-        while (!($oParserState->comes('}') || $oParserState->comes(';') || $oParserState->comes('!') || $oParserState->comes(')') || $oParserState->comes('\\'))) {
+        while (
+            !($oParserState->comes('}') || $oParserState->comes(';') || $oParserState->comes('!')
+            || $oParserState->comes(')') || $oParserState->comes('\\'))
+        ) {
             if (count($aStack) > 0) {
                 $bFoundDelimiter = false;
                 foreach ($aListDelimiters as $sDelimiter) {
@@ -60,7 +63,12 @@ abstract class Value implements Renderable
             }
         }
         if (!isset($aStack[0])) {
-            throw new UnexpectedTokenException(" {$oParserState->peek()} ", $oParserState->peek(1, -1) . $oParserState->peek(2), 'literal', $oParserState->currentLine());
+            throw new UnexpectedTokenException(
+                " {$oParserState->peek()} ",
+                $oParserState->peek(1, -1) . $oParserState->peek(2),
+                'literal',
+                $oParserState->currentLine()
+            );
         }
         return $aStack[0];
     }
@@ -83,13 +91,19 @@ abstract class Value implements Renderable
     {
         $oValue = null;
         $oParserState->consumeWhiteSpace();
-        if (is_numeric($oParserState->peek()) || ($oParserState->comes('-.') && is_numeric($oParserState->peek(1, 2))) || (($oParserState->comes('-') || $oParserState->comes('.')) && is_numeric($oParserState->peek(1, 1)))) {
+        if (
+            is_numeric($oParserState->peek()) || ($oParserState->comes('-.')
+                && is_numeric($oParserState->peek(1, 2))) || (($oParserState->comes('-') || $oParserState->comes('.')) && is_numeric($oParserState->peek(1, 1)))
+        ) {
             $oValue = Size::parse($oParserState);
         } elseif ($oParserState->comes('#') || $oParserState->comes('rgb', true) || $oParserState->comes('hsl', true)) {
             $oValue = Color::parse($oParserState);
         } elseif ($oParserState->comes('url', true)) {
             $oValue = URL::parse($oParserState);
-        } elseif ($oParserState->comes('calc', true) || $oParserState->comes('-webkit-calc', true) || $oParserState->comes('-moz-calc', true)) {
+        } elseif (
+            $oParserState->comes('calc', true) || $oParserState->comes('-webkit-calc', true)
+            || $oParserState->comes('-moz-calc', true)
+        ) {
             $oValue = CalcFunction::parse($oParserState);
         } elseif ($oParserState->comes("'") || $oParserState->comes('"')) {
             $oValue = CSSString::parse($oParserState);
