@@ -161,7 +161,7 @@ abstract class RuleSet implements Renderable, Commentable
      * like { background-color: green; background-color; rgba(0, 127, 0, 0.7); } will only yield an associative array
      * containing the rgba-valued rule while @link{getRules()} would yield an indexed array containing both.
      *
-     * @param (string) $mRule
+     * @param string $mRule
      *        pattern to search for. If null, returns all rules. if the pattern ends with a dash,
      *        all rules starting with the pattern are returned as well as one matching the pattern with the dash
      *        excluded. passing a Rule behaves like calling getRules($mRule->getRule()).
@@ -184,7 +184,7 @@ abstract class RuleSet implements Renderable, Commentable
      * Note: this is different from pre-v.2.0 behaviour of PHP-CSS-Parser, where passing a Rule instance would
      * remove all rules with the same name. To get the old behvaiour, use removeRule($oRule->getRule()).
      *
-     * @param (null|string|Rule) $mRule
+     * @param null|string|Rule $mRule
      *        pattern to remove. If $mRule is null, all rules are removed. If the pattern ends in a dash,
      *        all rules starting with the pattern are removed as well as one matching the pattern with the dash
      *        excluded. Passing a Rule behaves matches by identity.
