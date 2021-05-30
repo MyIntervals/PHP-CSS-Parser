@@ -63,10 +63,10 @@ class Document extends CSSBlockList
 
     /**
      * Returns all Value objects found recursively in the tree.
-     * @param (object|string) $mElement
+     * @param object|string $mElement
      *        the CSSList or RuleSet to start the search from (defaults to the whole document).
-     *        If a string is given, it is used as rule name filter (@see{RuleSet->getRules()}).
-     * @param (bool) $bSearchInFunctionArguments whether to also return Value objects used as Function arguments.
+     *        If a string is given, it is used as rule name filter (@see RuleSet->getRules()).
+     * @param bool $bSearchInFunctionArguments whether to also return Value objects used as Function arguments.
      */
     public function getAllValues($mElement = null, $bSearchInFunctionArguments = false)
     {
