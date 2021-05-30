@@ -2,4 +2,5 @@
 <phive xmlns="https://phar.io/phive">
   <phar name="phpcbf" version="^3.6.0" location="./.phive/phpcbf.phar" copy="false" installed="3.6.0"/>
   <phar name="phpcs" version="^3.6.0" location="./.phive/phpcs.phar" copy="false" installed="3.6.0"/>
+  <phar name="phpstan" version="^0.12.88" installed="0.12.88" location="./.phive/phpstan.phar" copy="false"/>
 </phive>
