@@ -14,7 +14,7 @@ use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\URL;
 
-class ParserTest extends \PHPunit\Framework\TestCase
+class ParserTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testFiles()
