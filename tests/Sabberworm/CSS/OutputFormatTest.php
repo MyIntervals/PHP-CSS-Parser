@@ -21,7 +21,7 @@ $TEST_CSS = <<<EOT
 
 EOT;
 
-class OutputFormatTest extends \PHPunit\Framework\TestCase
+class OutputFormatTest extends \PHPUnit\Framework\TestCase
 {
     private $oParser;
     private $oDocument;

@@ -15,13 +15,3 @@ parameters:
 			count: 5
 			path: lib/Sabberworm/CSS/Property/Charset.php
 
-		-
-			message: "#^Class PHPUnit\\\\Framework\\\\TestCase referenced with incorrect case\\: PHPunit\\\\Framework\\\\TestCase\\.$#"
-			count: 1
-			path: tests/Sabberworm/CSS/OutputFormatTest.php
-
-		-
-			message: "#^Class PHPUnit\\\\Framework\\\\TestCase referenced with incorrect case\\: PHPunit\\\\Framework\\\\TestCase\\.$#"
-			count: 1
-			path: tests/Sabberworm/CSS/ParserTest.php
-
