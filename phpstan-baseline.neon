@@ -1,7 +1,37 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Call to an undefined method Sabberworm\\\\CSS\\\\OutputFormat\\:\\:setIndentation\\(\\)\\.$#"
+			count: 2
+			path: lib/Sabberworm/CSS/OutputFormat.php
+
+		-
 			message: "#^Access to an undefined property Sabberworm\\\\CSS\\\\Parsing\\\\ParserState\\:\\:\\$oParserHelper\\.$#"
 			count: 1
 			path: lib/Sabberworm/CSS/Parsing/ParserState.php
+
+		-
+			message: "#^Class Sabberworm\\\\CSS\\\\Value\\\\Size constructor invoked with 5 parameters, 1\\-4 required\\.$#"
+			count: 2
+			path: lib/Sabberworm/CSS/RuleSet/DeclarationBlock.php
+
+		-
+			message: "#^Variable \\$oRule might not be defined\\.$#"
+			count: 2
+			path: lib/Sabberworm/CSS/RuleSet/DeclarationBlock.php
+
+		-
+			message: "#^Variable \\$oVal might not be defined\\.$#"
+			count: 1
+			path: lib/Sabberworm/CSS/Value/CalcFunction.php
+
+		-
+			message: "#^Method Sabberworm\\\\CSS\\\\Value\\\\RuleValueList\\:\\:__construct\\(\\) invoked with 3 parameters, 0\\-2 required\\.$#"
+			count: 1
+			path: lib/Sabberworm/CSS/Value/CalcRuleValueList.php
+
+		-
+			message: "#^Variable \\$aActualColorLines might not be defined\\.$#"
+			count: 1
+			path: tests/Sabberworm/CSS/ParserTest.php
 
