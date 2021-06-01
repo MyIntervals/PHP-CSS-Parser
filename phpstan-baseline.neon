@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Class Sabberworm\\\\CSS\\\\Parsing\\\\ParserState constructor invoked with 1 parameter, 2\\-3 required\\.$#"
-			count: 1
-			path: lib/Sabberworm/CSS/CSSList/CSSList.php
-
-		-
 			message: "#^Access to an undefined property Sabberworm\\\\CSS\\\\Parsing\\\\ParserState\\:\\:\\$oParserHelper\\.$#"
 			count: 1
 			path: lib/Sabberworm/CSS/Parsing/ParserState.php
