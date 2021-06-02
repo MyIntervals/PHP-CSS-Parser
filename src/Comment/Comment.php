@@ -7,6 +7,7 @@ use Sabberworm\CSS\Renderable;
 class Comment implements Renderable
 {
     protected $iLineNo;
+
     protected $sComment;
 
     public function __construct($sComment = '', $iLineNo = 0)

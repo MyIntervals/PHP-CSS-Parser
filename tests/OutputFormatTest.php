@@ -25,6 +25,7 @@ class OutputFormatTest extends \PHPUnit\Framework\TestCase
 EOT;
 
     private $oParser;
+
     private $oDocument;
 
     protected function setUp()
@@ -69,7 +70,12 @@ EOT;
         $this->assertSame(
             '.main, .test {font: italic normal bold 16px/1.2 "Helvetica",	Verdana,	sans-serif;background: white;}
 @media screen {.main {background-size: 100% 100%;font-size: 1.3em;background-color: #fff;}}',
-            $this->oDocument->render(OutputFormat::create()->setSpaceAfterListArgumentSeparator(['default' => ' ', ',' => "\t", '/' => '', ' ' => '']))
+            $this->oDocument->render(OutputFormat::create()->setSpaceAfterListArgumentSeparator([
+                'default' => ' ',
+                ',' => "\t",
+                '/' => '',
+                ' ' => '',
+            ]))
         );
     }
 
@@ -85,26 +91,38 @@ EOT;
 
     public function testStringQuotingType()
     {
-        $this->assertSame('.main, .test {font: italic normal bold 16px/1.2 \'Helvetica\',Verdana,sans-serif;background: white;}
-@media screen {.main {background-size: 100% 100%;font-size: 1.3em;background-color: #fff;}}', $this->oDocument->render(OutputFormat::create()->setStringQuotingType("'")));
+        $this->assertSame(
+            '.main, .test {font: italic normal bold 16px/1.2 \'Helvetica\',Verdana,sans-serif;background: white;}
+@media screen {.main {background-size: 100% 100%;font-size: 1.3em;background-color: #fff;}}',
+            $this->oDocument->render(OutputFormat::create()->setStringQuotingType("'"))
+        );
     }
 
     public function testRGBHashNotation()
     {
-        $this->assertSame('.main, .test {font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white;}
-@media screen {.main {background-size: 100% 100%;font-size: 1.3em;background-color: rgb(255,255,255);}}', $this->oDocument->render(OutputFormat::create()->setRGBHashNotation(false)));
+        $this->assertSame(
+            '.main, .test {font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white;}
+@media screen {.main {background-size: 100% 100%;font-size: 1.3em;background-color: rgb(255,255,255);}}',
+            $this->oDocument->render(OutputFormat::create()->setRGBHashNotation(false))
+        );
     }
 
     public function testSemicolonAfterLastRule()
     {
-        $this->assertSame('.main, .test {font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white}
-@media screen {.main {background-size: 100% 100%;font-size: 1.3em;background-color: #fff}}', $this->oDocument->render(OutputFormat::create()->setSemicolonAfterLastRule(false)));
+        $this->assertSame(
+            '.main, .test {font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white}
+@media screen {.main {background-size: 100% 100%;font-size: 1.3em;background-color: #fff}}',
+            $this->oDocument->render(OutputFormat::create()->setSemicolonAfterLastRule(false))
+        );
     }
 
     public function testSpaceAfterRuleName()
     {
-        $this->assertSame('.main, .test {font:	italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background:	white;}
-@media screen {.main {background-size:	100% 100%;font-size:	1.3em;background-color:	#fff;}}', $this->oDocument->render(OutputFormat::create()->setSpaceAfterRuleName("\t")));
+        $this->assertSame(
+            '.main, .test {font:	italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background:	white;}
+@media screen {.main {background-size:	100% 100%;font-size:	1.3em;background-color:	#fff;}}',
+            $this->oDocument->render(OutputFormat::create()->setSpaceAfterRuleName("\t"))
+        );
     }
 
     public function testSpaceRules()
@@ -169,7 +187,10 @@ font-size: 1.3em;
 background-color: #fff;
 }
 }
-', $this->oDocument->render(OutputFormat::create()->set('Space*Rules', "\n")->set('Space*Blocks', "\n")->setIndentation('')));
+', $this->oDocument->render(OutputFormat::create()
+            ->set('Space*Rules', "\n")
+            ->set('Space*Blocks', "\n")
+            ->setIndentation('')));
     }
 
     public function testSpaceBeforeBraces()
@@ -182,8 +203,8 @@ background-color: #fff;
     }
 
     /**
-    * @expectedException Sabberworm\CSS\Parsing\OutputException
-    */
+     * @expectedException Sabberworm\CSS\Parsing\OutputException
+     */
     public function testIgnoreExceptionsOff()
     {
         $aBlocks = $this->oDocument->getAllDeclarationBlocks();

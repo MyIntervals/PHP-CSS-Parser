@@ -35,13 +35,13 @@ class Color extends CSSFunction
                         null,
                         true,
                         $oParserState->currentLine()
-                    )
+                    ),
                 ];
             } else {
                 $aColor = [
                     'r' => new Size(intval($sValue[0] . $sValue[1], 16), null, true, $oParserState->currentLine()),
                     'g' => new Size(intval($sValue[2] . $sValue[3], 16), null, true, $oParserState->currentLine()),
-                    'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true, $oParserState->currentLine())
+                    'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true, $oParserState->currentLine()),
                 ];
             }
         } else {

@@ -219,7 +219,6 @@ abstract class CSSList implements Renderable, Commentable
             ?: preg_match("/^(-\\w+-)?$sMatch$/i", $sIdentifier) === 1;
     }
 
-
     /**
      * @return int
      */
@@ -251,8 +250,8 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Splice the list of contents.
      *
-     * @param int       $iOffset      Offset.
-     * @param int       $iLength      Length. Optional.
+     * @param int $iOffset Offset.
+     * @param int $iLength Length. Optional.
      * @param RuleSet[] $mReplacement Replacement. Optional.
      */
     public function splice($iOffset, $iLength = null, $mReplacement = null)
@@ -302,6 +301,7 @@ abstract class CSSList implements Renderable, Commentable
 
     /**
      * Set the contents.
+     *
      * @param array<int, RuleSet|Import|Charset|CSSList> $aContents Objects to set as content.
      */
     public function setContents(array $aContents)
@@ -314,6 +314,7 @@ abstract class CSSList implements Renderable, Commentable
 
     /**
      * Removes a declaration block from the CSS list if it matches all given selectors.
+     *
      * @param array|string $mSelector The selectors to match.
      * @param boolean $bRemoveAll Whether to stop at the first declaration block found or remove all blocks
      */
@@ -391,8 +392,8 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-    * Return true if the list can not be further outdented. Only important when rendering.
-    */
+     * Return true if the list can not be further outdented. Only important when rendering.
+     */
     abstract public function isRootList();
 
     /**

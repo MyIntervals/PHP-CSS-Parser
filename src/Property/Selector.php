@@ -3,7 +3,8 @@
 namespace Sabberworm\CSS\Property;
 
 /**
- * Class representing a single CSS selector. Selectors have to be split by the comma prior to being passed into this class.
+ * Class representing a single CSS selector. Selectors have to be split by the comma prior to being passed into this
+ * class.
  */
 class Selector
 {
@@ -47,6 +48,7 @@ class Selector
 	/ux';
 
     private $sSelector;
+
     private $iSpecificity;
 
     public static function isValid($sSelector)

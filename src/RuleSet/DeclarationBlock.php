@@ -69,7 +69,6 @@ class DeclarationBlock extends RuleSet
         return $oResult;
     }
 
-
     public function setSelectors($mSelector, $oList = null)
     {
         if (is_array($mSelector)) {
@@ -177,10 +176,16 @@ class DeclarationBlock extends RuleSet
     public function expandBorderShorthand()
     {
         $aBorderRules = [
-            'border', 'border-left', 'border-right', 'border-top', 'border-bottom'
+            'border',
+            'border-left',
+            'border-right',
+            'border-top',
+            'border-bottom',
         ];
         $aBorderSizes = [
-            'thin', 'medium', 'thick'
+            'thin',
+            'medium',
+            'thick',
         ];
         $aRules = $this->getRulesAssoc();
         foreach ($aBorderRules as $sBorderRule) {
@@ -233,7 +238,7 @@ class DeclarationBlock extends RuleSet
             'padding' => 'padding-%s',
             'border-color' => 'border-%s-color',
             'border-style' => 'border-%s-style',
-            'border-width' => 'border-%s-width'
+            'border-width' => 'border-%s-width',
         ];
         $aRules = $this->getRulesAssoc();
         foreach ($aExpansions as $sProperty => $sExpanded) {
@@ -297,7 +302,7 @@ class DeclarationBlock extends RuleSet
             'font-variant' => 'normal',
             'font-weight' => 'normal',
             'font-size' => 'normal',
-            'line-height' => 'normal'
+            'line-height' => 'normal',
         ];
         $mRuleValue = $oRule->getValue();
         $aValues = [];
@@ -321,8 +326,8 @@ class DeclarationBlock extends RuleSet
             } elseif ($mValue == 'small-caps') {
                 $aFontProperties['font-variant'] = $mValue;
             } elseif (
-                    in_array($mValue, ['bold', 'bolder', 'lighter'])
-                    || ($mValue instanceof Size
+                in_array($mValue, ['bold', 'bolder', 'lighter'])
+                || ($mValue instanceof Size
                     && in_array($mValue->getSize(), range(100, 900, 100)))
             ) {
                 $aFontProperties['font-weight'] = $mValue;
@@ -360,11 +365,14 @@ class DeclarationBlock extends RuleSet
         }
         $oRule = $aRules['background'];
         $aBgProperties = [
-            'background-color' => ['transparent'], 'background-image' => ['none'],
-            'background-repeat' => ['repeat'], 'background-attachment' => ['scroll'],
+            'background-color' => ['transparent'],
+            'background-image' => ['none'],
+            'background-repeat' => ['repeat'],
+            'background-attachment' => ['scroll'],
             'background-position' => [
-                new Size(0, '%', null, false, $this->iLineNo), new Size(0, '%', null, false, $this->iLineNo)
-            ]
+                new Size(0, '%', null, false, $this->iLineNo),
+                new Size(0, '%', null, false, $this->iLineNo),
+            ],
         ];
         $mRuleValue = $oRule->getValue();
         $aValues = [];
@@ -398,7 +406,7 @@ class DeclarationBlock extends RuleSet
                 $aBgProperties['background-repeat'] = $mValue;
             } elseif (
                 in_array($mValue, ['left', 'center', 'right', 'top', 'bottom'])
-                    || $mValue instanceof Size
+                || $mValue instanceof Size
             ) {
                 if ($iNumBgPos == 0) {
                     $aBgProperties['background-position'][0] = $mValue;
@@ -423,16 +431,34 @@ class DeclarationBlock extends RuleSet
         $aListProperties = [
             'list-style-type' => 'disc',
             'list-style-position' => 'outside',
-            'list-style-image' => 'none'
+            'list-style-image' => 'none',
         ];
         $aListStyleTypes = [
-            'none', 'disc', 'circle', 'square', 'decimal-leading-zero', 'decimal',
-            'lower-roman', 'upper-roman', 'lower-greek', 'lower-alpha', 'lower-latin',
-            'upper-alpha', 'upper-latin', 'hebrew', 'armenian', 'georgian', 'cjk-ideographic',
-            'hiragana', 'hira-gana-iroha', 'katakana-iroha', 'katakana'
+            'none',
+            'disc',
+            'circle',
+            'square',
+            'decimal-leading-zero',
+            'decimal',
+            'lower-roman',
+            'upper-roman',
+            'lower-greek',
+            'lower-alpha',
+            'lower-latin',
+            'upper-alpha',
+            'upper-latin',
+            'hebrew',
+            'armenian',
+            'georgian',
+            'cjk-ideographic',
+            'hiragana',
+            'hira-gana-iroha',
+            'katakana-iroha',
+            'katakana',
         ];
         $aListStylePositions = [
-            'inside', 'outside'
+            'inside',
+            'outside',
         ];
         $aRules = $this->getRulesAssoc();
         if (!isset($aRules['list-style'])) {
@@ -512,8 +538,11 @@ class DeclarationBlock extends RuleSet
     public function createBackgroundShorthand()
     {
         $aProperties = [
-            'background-color', 'background-image', 'background-repeat',
-            'background-position', 'background-attachment'
+            'background-color',
+            'background-image',
+            'background-repeat',
+            'background-position',
+            'background-attachment',
         ];
         $this->createShorthandProperties($aProperties, 'background');
     }
@@ -521,7 +550,9 @@ class DeclarationBlock extends RuleSet
     public function createListStyleShorthand()
     {
         $aProperties = [
-            'list-style-type', 'list-style-position', 'list-style-image'
+            'list-style-type',
+            'list-style-position',
+            'list-style-image',
         ];
         $this->createShorthandProperties($aProperties, 'list-style');
     }
@@ -533,7 +564,9 @@ class DeclarationBlock extends RuleSet
     public function createBorderShorthand()
     {
         $aProperties = [
-            'border-width', 'border-style', 'border-color'
+            'border-width',
+            'border-style',
+            'border-color',
         ];
         $this->createShorthandProperties($aProperties, 'border');
     }
@@ -552,7 +585,7 @@ class DeclarationBlock extends RuleSet
             'padding' => 'padding-%s',
             'border-color' => 'border-%s-color',
             'border-style' => 'border-%s-style',
-            'border-width' => 'border-%s-width'
+            'border-width' => 'border-%s-width',
         ];
         $aRules = $this->getRulesAssoc();
         foreach ($aExpansions as $sProperty => $sExpanded) {
@@ -579,9 +612,9 @@ class DeclarationBlock extends RuleSet
                     $aValues[$sPosition] = $aRuleValues;
                 }
                 $oNewRule = new Rule($sProperty, $oRule->getLineNo(), $oRule->getColNo());
-                if ((string) $aValues['left'][0] == (string) $aValues['right'][0]) {
-                    if ((string) $aValues['top'][0] == (string) $aValues['bottom'][0]) {
-                        if ((string) $aValues['top'][0] == (string) $aValues['left'][0]) {
+                if ((string)$aValues['left'][0] == (string)$aValues['right'][0]) {
+                    if ((string)$aValues['top'][0] == (string)$aValues['bottom'][0]) {
+                        if ((string)$aValues['top'][0] == (string)$aValues['left'][0]) {
                             // All 4 sides are equal
                             $oNewRule->addValue($aValues['top']);
                         } else {
@@ -618,7 +651,12 @@ class DeclarationBlock extends RuleSet
     public function createFontShorthand()
     {
         $aFontProperties = [
-            'font-style', 'font-variant', 'font-weight', 'font-size', 'line-height', 'font-family'
+            'font-style',
+            'font-variant',
+            'font-weight',
+            'font-size',
+            'line-height',
+            'font-family',
         ];
         $aRules = $this->getRulesAssoc();
         if (!isset($aRules['font-size']) || !isset($aRules['font-family'])) {

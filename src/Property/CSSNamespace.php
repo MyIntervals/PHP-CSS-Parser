@@ -3,13 +3,16 @@
 namespace Sabberworm\CSS\Property;
 
 /**
-* CSSNamespace represents an @namespace rule.
-*/
+ * CSSNamespace represents an @namespace rule.
+ */
 class CSSNamespace implements AtRule
 {
     private $mUrl;
+
     private $sPrefix;
+
     private $iLineNo;
+
     protected $aComments;
 
     public function __construct($mUrl, $sPrefix = null, $iLineNo = 0)
@@ -40,7 +43,8 @@ class CSSNamespace implements AtRule
      */
     public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat)
     {
-        return '@namespace ' . ($this->sPrefix === null ? '' : $this->sPrefix . ' ') . $this->mUrl->render($oOutputFormat) . ';';
+        return '@namespace ' . ($this->sPrefix === null ? '' : $this->sPrefix . ' ')
+            . $this->mUrl->render($oOutputFormat) . ';';
     }
 
     public function getUrl()

@@ -3,12 +3,14 @@
 namespace Sabberworm\CSS\Parsing;
 
 /**
-* Thrown if the CSS parsers encounters a token it did not expect
-*/
+ * Thrown if the CSS parsers encounters a token it did not expect
+ */
 class UnexpectedTokenException extends SourceException
 {
     private $sExpected;
+
     private $sFound;
+
     // Possible values: literal, identifier, count, expression, search
     private $sMatchType;
 
