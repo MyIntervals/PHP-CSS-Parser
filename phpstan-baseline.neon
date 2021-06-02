@@ -8,7 +8,7 @@ parameters:
 		-
 			message: "#^Access to an undefined property Sabberworm\\\\CSS\\\\Parsing\\\\ParserState\\:\\:\\$oParserHelper\\.$#"
 			count: 1
-			path: lib/Sabberworm/CSS/Parsing/ParserState.php
+			path: src/Parsing/ParserState.php
 
 		-
 			message: "#^Class Sabberworm\\\\CSS\\\\Value\\\\Size constructor invoked with 5 parameters, 1\\-4 required\\.$#"

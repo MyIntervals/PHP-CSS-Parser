@@ -16,13 +16,13 @@
         "codacy/coverage": "^1.4"
     },
     "autoload": {
-        "psr-4": { "Sabberworm\\CSS\\": "lib/Sabberworm/CSS/" }
+        "psr-4": { "Sabberworm\\CSS\\": "src/" }
     },
     "scripts": {
         "ci": [
             "@ci:static"
         ],
-        "ci:php:sniff": "@php ./.phive/phpcs.phar lib tests",
+        "ci:php:sniff": "@php ./.phive/phpcs.phar src tests",
         "ci:php:stan": "@php ./.phive/phpstan.phar",
         "ci:static": [
             "@ci:php:sniff",
@@ -31,7 +31,7 @@
         "fix:php": [
             "@fix:php:sniff"
         ],
-        "fix:php:sniff": "@php ./.phive/phpcbf.phar lib tests",
+        "fix:php:sniff": "@php ./.phive/phpcbf.phar src tests",
         "phpstan:baseline": "@php ./.phive/phpstan.phar --generate-baseline"
     }
 }
