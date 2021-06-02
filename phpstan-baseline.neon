@@ -10,8 +10,3 @@ parameters:
 			count: 1
 			path: lib/Sabberworm/CSS/Parsing/ParserState.php
 
-		-
-			message: "#^Access to an undefined property Sabberworm\\\\CSS\\\\Property\\\\Charset\\:\\:\\$aComments\\.$#"
-			count: 5
-			path: lib/Sabberworm/CSS/Property/Charset.php
-

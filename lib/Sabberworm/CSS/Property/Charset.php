@@ -24,7 +24,7 @@ class Charset implements AtRule
     /**
      * @var array
      */
-    protected $aComment;
+    protected $aComments;
 
     /**
      * @param string $sCharset
