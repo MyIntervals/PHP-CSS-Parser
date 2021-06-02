@@ -15,6 +15,7 @@ use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\RuleSet\AtRuleSet;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\RuleSet\RuleSet;
+use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\CSSString;
 use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\Value;
@@ -54,7 +55,7 @@ abstract class CSSList implements Renderable, Commentable
     {
         $bIsRoot = $oList instanceof Document;
         if (is_string($oParserState)) {
-            $oParserState = new ParserState($oParserState);
+            $oParserState = new ParserState($oParserState, Settings::create());
         }
         $bLenientParsing = $oParserState->getSettings()->bLenientParsing;
         while (!$oParserState->isEnd()) {
