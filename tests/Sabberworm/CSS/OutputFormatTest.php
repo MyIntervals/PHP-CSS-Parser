@@ -2,9 +2,12 @@
 
 namespace Sabberworm\CSS;
 
-global $TEST_CSS;
-
-$TEST_CSS = <<<EOT
+class OutputFormatTest extends \PHPUnit\Framework\TestCase
+{
+    /**
+     * @var string
+     */
+    const TEST_CSS = <<<EOT
 
 .main, .test {
 	font: italic normal bold 16px/1.2 "Helvetica", Verdana, sans-serif;
@@ -21,15 +24,12 @@ $TEST_CSS = <<<EOT
 
 EOT;
 
-class OutputFormatTest extends \PHPUnit\Framework\TestCase
-{
     private $oParser;
     private $oDocument;
 
     protected function setUp()
     {
-        global $TEST_CSS;
-        $this->oParser = new Parser($TEST_CSS);
+        $this->oParser = new Parser(self::TEST_CSS);
         $this->oDocument = $this->oParser->parse();
     }
 
@@ -52,8 +52,7 @@ class OutputFormatTest extends \PHPUnit\Framework\TestCase
 
     public function testPretty()
     {
-        global $TEST_CSS;
-        $this->assertSame($TEST_CSS, $this->oDocument->render(OutputFormat::createPretty()));
+        $this->assertSame(self::TEST_CSS, $this->oDocument->render(OutputFormat::createPretty()));
     }
 
     public function testSpaceAfterListArgumentSeparator()
