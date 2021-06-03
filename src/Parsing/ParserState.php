@@ -39,7 +39,6 @@ class ParserState
 
     public function getCharset()
     {
-        $this->oParserHelper->getCharset();
         return $this->sCharset;
     }
 
