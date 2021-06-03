@@ -15,7 +15,9 @@ class Size extends PrimitiveValue
     private static $SIZE_UNITS = null;
 
     private $fSize;
+
     private $sUnit;
+
     private $bIsColorComponent;
 
     public function __construct($fSize, $sUnit = null, $bIsColorComponent = false, $iLineNo = 0)
@@ -59,7 +61,8 @@ class Size extends PrimitiveValue
         if (self::$SIZE_UNITS === null) {
             self::$SIZE_UNITS = [];
             foreach (
-                explode('/', Size::ABSOLUTE_SIZE_UNITS . '/' . Size::RELATIVE_SIZE_UNITS . '/' . Size::NON_SIZE_UNITS) as $val
+                explode('/', Size::ABSOLUTE_SIZE_UNITS . '/' . Size::RELATIVE_SIZE_UNITS . '/' . Size::NON_SIZE_UNITS)
+                as $val
             ) {
                 $iSize = strlen($val);
                 if (!isset(self::$SIZE_UNITS[$iSize])) {
@@ -101,6 +104,7 @@ class Size extends PrimitiveValue
 
     /**
      * Returns whether the number stored in this Size really represents a size (as in a length of something on screen).
+     *
      * @return false if the unit an angle, a duration, a frequency or the number is a component in a Color object.
      */
     public function isSize()

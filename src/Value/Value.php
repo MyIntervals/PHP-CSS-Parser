@@ -22,7 +22,8 @@ abstract class Value implements Renderable
         //Build a list of delimiters and parsed values
         while (
             !($oParserState->comes('}') || $oParserState->comes(';') || $oParserState->comes('!')
-            || $oParserState->comes(')') || $oParserState->comes('\\'))
+            || $oParserState->comes(')')
+            || $oParserState->comes('\\'))
         ) {
             if (count($aStack) > 0) {
                 $bFoundDelimiter = false;
@@ -92,8 +93,10 @@ abstract class Value implements Renderable
         $oValue = null;
         $oParserState->consumeWhiteSpace();
         if (
-            is_numeric($oParserState->peek()) || ($oParserState->comes('-.')
-                && is_numeric($oParserState->peek(1, 2))) || (($oParserState->comes('-') || $oParserState->comes('.')) && is_numeric($oParserState->peek(1, 1)))
+            is_numeric($oParserState->peek())
+            || ($oParserState->comes('-.')
+                && is_numeric($oParserState->peek(1, 2)))
+            || (($oParserState->comes('-') || $oParserState->comes('.')) && is_numeric($oParserState->peek(1, 1)))
         ) {
             $oValue = Size::parse($oParserState);
         } elseif ($oParserState->comes('#') || $oParserState->comes('rgb', true) || $oParserState->comes('hsl', true)) {

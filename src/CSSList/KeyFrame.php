@@ -20,7 +20,7 @@ class KeyFrame extends CSSList implements AtRule
     {
         parent::__construct($iLineNo);
         $this->vendorKeyFrame = null;
-        $this->animationName  = null;
+        $this->animationName = null;
     }
 
     public function setVendorKeyFrame($vendorKeyFrame)

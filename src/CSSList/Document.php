@@ -12,6 +12,7 @@ class Document extends CSSBlockList
 {
     /**
      * Document constructor.
+     *
      * @param int $iLineNo
      */
     public function __construct($iLineNo = 0)
@@ -63,10 +64,13 @@ class Document extends CSSBlockList
 
     /**
      * Returns all Value objects found recursively in the tree.
+     *
      * @param object|string $mElement
      *        the CSSList or RuleSet to start the search from (defaults to the whole document).
-     *        If a string is given, it is used as rule name filter (@see RuleSet->getRules()).
+     *        If a string is given, it is used as rule name filter.
      * @param bool $bSearchInFunctionArguments whether to also return Value objects used as Function arguments.
+     *
+     * @see RuleSet->getRules()
      */
     public function getAllValues($mElement = null, $bSearchInFunctionArguments = false)
     {
@@ -90,6 +94,7 @@ class Document extends CSSBlockList
      * @param string $sSpecificitySearch
      *        An optional filter by specificity.
      *        May contain a comparison operator and a number or just a number (defaults to "==").
+     *
      * @example getSelectorsBySpecificity('>= 100')
      */
     public function getSelectorsBySpecificity($sSpecificitySearch = null)
@@ -118,7 +123,6 @@ class Document extends CSSBlockList
             $oDeclaration->createShorthands();
         }
     }
-
 
     /**
      * Override render() to make format argument optional

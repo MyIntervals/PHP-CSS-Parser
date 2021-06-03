@@ -5,72 +5,85 @@ namespace Sabberworm\CSS;
 /**
  * Class OutputFormat
  *
- * @method OutputFormat setSemicolonAfterLastRule( bool $bSemicolonAfterLastRule ) Set whether semicolons are added after last rule.
+ * @method OutputFormat setSemicolonAfterLastRule(bool $bSemicolonAfterLastRule) Set whether semicolons are added after
+ *     last rule.
  */
 class OutputFormat
 {
     /**
-    * Value format
-    */
+     * Value format
+     */
     // " means double-quote, ' means single-quote
     public $sStringQuotingType = '"';
+
     // Output RGB colors in hash notation if possible
     public $bRGBHashNotation = true;
 
     /**
-    * Declaration format
-    */
+     * Declaration format
+     */
     // Semicolon after the last rule of a declaration block can be omitted. To do that, set this false.
     public $bSemicolonAfterLastRule = true;
 
     /**
-    * Spacing
-    * Note that these strings are not sanity-checked: the value should only consist of whitespace
-    * Any newline character will be indented according to the current level.
-    * The triples (After, Before, Between) can be set using a wildcard (e.g. `$oFormat->set('Space*Rules', "\n");`)
-    */
+     * Spacing
+     * Note that these strings are not sanity-checked: the value should only consist of whitespace
+     * Any newline character will be indented according to the current level.
+     * The triples (After, Before, Between) can be set using a wildcard (e.g. `$oFormat->set('Space*Rules', "\n");`)
+     */
     public $sSpaceAfterRuleName = ' ';
 
     public $sSpaceBeforeRules = '';
+
     public $sSpaceAfterRules = '';
+
     public $sSpaceBetweenRules = '';
 
     public $sSpaceBeforeBlocks = '';
+
     public $sSpaceAfterBlocks = '';
+
     public $sSpaceBetweenBlocks = "\n";
 
     // Content injected in and around @-rule blocks.
     public $sBeforeAtRuleBlock = '';
+
     public $sAfterAtRuleBlock = '';
 
     // This is what’s printed before and after the comma if a declaration block contains multiple selectors.
     public $sSpaceBeforeSelectorSeparator = '';
+
     public $sSpaceAfterSelectorSeparator = ' ';
+
     // This is what’s printed after the comma of value lists
     public $sSpaceBeforeListArgumentSeparator = '';
+
     public $sSpaceAfterListArgumentSeparator = '';
 
     public $sSpaceBeforeOpeningBrace = ' ';
 
     // Content injected in and around declaration blocks.
     public $sBeforeDeclarationBlock = '';
+
     public $sAfterDeclarationBlockSelectors = '';
+
     public $sAfterDeclarationBlock = '';
 
     /**
-    * Indentation
-    */
+     * Indentation
+     */
     // Indentation character(s) per level. Only applicable if newlines are used in any of the spacing settings.
     public $sIndentation = "\t";
 
     /**
-    * Output exceptions.
-    */
+     * Output exceptions.
+     */
     public $bIgnoreExceptions = false;
 
-
     private $oFormatter = null;
+
     private $oNextLevelFormat = null;
+
     private $iIndentationLevel = 0;
 
     public function __construct()
@@ -93,7 +106,12 @@ class OutputFormat
     {
         $aVarPrefixes = ['a', 's', 'm', 'b', 'f', 'o', 'c', 'i'];
         if (is_string($aNames) && strpos($aNames, '*') !== false) {
-            $aNames = [str_replace('*', 'Before', $aNames), str_replace('*', 'Between', $aNames), str_replace('*', 'After', $aNames)];
+            $aNames =
+                [
+                    str_replace('*', 'Before', $aNames),
+                    str_replace('*', 'Between', $aNames),
+                    str_replace('*', 'After', $aNames),
+                ];
         } elseif (!is_array($aNames)) {
             $aNames = [$aNames];
         }

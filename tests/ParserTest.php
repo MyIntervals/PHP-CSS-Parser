@@ -62,30 +62,59 @@ class ParserTest extends \PHPUnit\Framework\TestCase
                 $this->assertSame('red', $oColor);
                 $aColorRule = $oRuleSet->getRules('background-');
                 $oColor = $aColorRule[0]->getValue();
-                $this->assertEquals(['r' => new Size(35.0, null, true, $oColor->getLineNo()), 'g' => new Size(35.0, null, true, $oColor->getLineNo()), 'b' => new Size(35.0, null, true, $oColor->getLineNo())], $oColor->getColor());
+                $this->assertEquals([
+                    'r' => new Size(35.0, null, true, $oColor->getLineNo()),
+                    'g' => new Size(35.0, null, true, $oColor->getLineNo()),
+                    'b' => new Size(35.0, null, true, $oColor->getLineNo()),
+                ], $oColor->getColor());
                 $aColorRule = $oRuleSet->getRules('border-color');
                 $oColor = $aColorRule[0]->getValue();
-                $this->assertEquals(['r' => new Size(10.0, null, true, $oColor->getLineNo()), 'g' => new Size(100.0, null, true, $oColor->getLineNo()), 'b' => new Size(230.0, null, true, $oColor->getLineNo())], $oColor->getColor());
+                $this->assertEquals([
+                    'r' => new Size(10.0, null, true, $oColor->getLineNo()),
+                    'g' => new Size(100.0, null, true, $oColor->getLineNo()),
+                    'b' => new Size(230.0, null, true, $oColor->getLineNo()),
+                ], $oColor->getColor());
                 $oColor = $aColorRule[1]->getValue();
-                $this->assertEquals(['r' => new Size(10.0, null, true, $oColor->getLineNo()), 'g' => new Size(100.0, null, true, $oColor->getLineNo()), 'b' => new Size(231.0, null, true, $oColor->getLineNo()), 'a' => new Size("0000.3", null, true, $oColor->getLineNo())], $oColor->getColor());
+                $this->assertEquals([
+                    'r' => new Size(10.0, null, true, $oColor->getLineNo()),
+                    'g' => new Size(100.0, null, true, $oColor->getLineNo()),
+                    'b' => new Size(231.0, null, true, $oColor->getLineNo()),
+                    'a' => new Size("0000.3", null, true, $oColor->getLineNo()),
+                ], $oColor->getColor());
                 $aColorRule = $oRuleSet->getRules('outline-color');
                 $oColor = $aColorRule[0]->getValue();
-                $this->assertEquals(['r' => new Size(34.0, null, true, $oColor->getLineNo()), 'g' => new Size(34.0, null, true, $oColor->getLineNo()), 'b' => new Size(34.0, null, true, $oColor->getLineNo())], $oColor->getColor());
+                $this->assertEquals([
+                    'r' => new Size(34.0, null, true, $oColor->getLineNo()),
+                    'g' => new Size(34.0, null, true, $oColor->getLineNo()),
+                    'b' => new Size(34.0, null, true, $oColor->getLineNo()),
+                ], $oColor->getColor());
             } elseif ($sSelector === '#yours') {
                 $aColorRule = $oRuleSet->getRules('background-color');
                 $oColor = $aColorRule[0]->getValue();
-                $this->assertEquals(['h' => new Size(220.0, null, true, $oColor->getLineNo()), 's' => new Size(10.0, '%', true, $oColor->getLineNo()), 'l' => new Size(220.0, '%', true, $oColor->getLineNo())], $oColor->getColor());
+                $this->assertEquals([
+                    'h' => new Size(220.0, null, true, $oColor->getLineNo()),
+                    's' => new Size(10.0, '%', true, $oColor->getLineNo()),
+                    'l' => new Size(220.0, '%', true, $oColor->getLineNo()),
+                ], $oColor->getColor());
                 $oColor = $aColorRule[1]->getValue();
-                $this->assertEquals(['h' => new Size(220.0, null, true, $oColor->getLineNo()), 's' => new Size(10.0, '%', true, $oColor->getLineNo()), 'l' => new Size(220.0, '%', true, $oColor->getLineNo()), 'a' => new Size(0000.3, null, true, $oColor->getLineNo())], $oColor->getColor());
+                $this->assertEquals([
+                    'h' => new Size(220.0, null, true, $oColor->getLineNo()),
+                    's' => new Size(10.0, '%', true, $oColor->getLineNo()),
+                    'l' => new Size(220.0, '%', true, $oColor->getLineNo()),
+                    'a' => new Size(0000.3, null, true, $oColor->getLineNo()),
+                ], $oColor->getColor());
             }
         }
         foreach ($oDoc->getAllValues('color') as $sColor) {
             $this->assertSame('red', $sColor);
         }
-        $this->assertSame('#mine {color: red;border-color: #0a64e6;border-color: rgba(10,100,231,.3);outline-color: #222;background-color: #232323;}
+        $this->assertSame(
+            '#mine {color: red;border-color: #0a64e6;border-color: rgba(10,100,231,.3);outline-color: #222;background-color: #232323;}
 #yours {background-color: hsl(220,10%,220%);background-color: hsla(220,10%,220%,.3);}
 #variables {background-color: rgb(var(--some-rgb));background-color: rgb(var(--r),var(--g),var(--b));background-color: rgb(255,var(--g),var(--b));background-color: rgb(255,255,var(--b));background-color: rgb(255,var(--rg));background-color: hsl(var(--some-hsl));}
-#variables-alpha {background-color: rgba(var(--some-rgb),.1);background-color: rgba(var(--some-rg),255,.1);background-color: hsla(var(--some-hsl),.1);}', $oDoc->render());
+#variables-alpha {background-color: rgba(var(--some-rgb),.1);background-color: rgba(var(--some-rg),255,.1);background-color: hsla(var(--some-hsl),.1);}',
+            $oDoc->render()
+        );
     }
 
     public function testUnicodeParsing()
@@ -171,11 +200,23 @@ class ParserTest extends \PHPUnit\Framework\TestCase
             }
         }
         $this->assertEquals([new Selector('#test .help', true)], $oDoc->getSelectorsBySpecificity('> 100'));
-        $this->assertEquals([new Selector('#test .help', true), new Selector('#file', true)], $oDoc->getSelectorsBySpecificity('>= 100'));
+        $this->assertEquals(
+            [new Selector('#test .help', true), new Selector('#file', true)],
+            $oDoc->getSelectorsBySpecificity('>= 100')
+        );
         $this->assertEquals([new Selector('#file', true)], $oDoc->getSelectorsBySpecificity('=== 100'));
         $this->assertEquals([new Selector('#file', true)], $oDoc->getSelectorsBySpecificity('== 100'));
-        $this->assertEquals([new Selector('#file', true), new Selector('.help:hover', true), new Selector('li.green', true), new Selector('ol li::before', true)], $oDoc->getSelectorsBySpecificity('<= 100'));
-        $this->assertEquals([new Selector('.help:hover', true), new Selector('li.green', true), new Selector('ol li::before', true)], $oDoc->getSelectorsBySpecificity('< 100'));
+        $this->assertEquals([
+            new Selector('#file', true),
+            new Selector('.help:hover', true),
+            new Selector('li.green', true),
+            new Selector('ol li::before', true),
+        ], $oDoc->getSelectorsBySpecificity('<= 100'));
+        $this->assertEquals([
+            new Selector('.help:hover', true),
+            new Selector('li.green', true),
+            new Selector('ol li::before', true),
+        ], $oDoc->getSelectorsBySpecificity('< 100'));
         $this->assertEquals([new Selector('li.green', true)], $oDoc->getSelectorsBySpecificity('11'));
         $this->assertEquals([new Selector('ol li::before', true)], $oDoc->getSelectorsBySpecificity(3));
     }
@@ -323,20 +364,24 @@ body {color: green;}', $oDoc->render());
     public function testExpandShorthands()
     {
         $oDoc = $this->parsedStructureForFile('expand-shorthands');
-        $sExpected = 'body {font: italic 500 14px/1.618 "Trebuchet MS",Georgia,serif;border: 2px solid #f0f;background: #ccc url("/images/foo.png") no-repeat left top;margin: 1em !important;padding: 2px 6px 3px;}';
+        $sExpected =
+            'body {font: italic 500 14px/1.618 "Trebuchet MS",Georgia,serif;border: 2px solid #f0f;background: #ccc url("/images/foo.png") no-repeat left top;margin: 1em !important;padding: 2px 6px 3px;}';
         $this->assertSame($sExpected, $oDoc->render());
         $oDoc->expandShorthands();
-        $sExpected = 'body {margin-top: 1em !important;margin-right: 1em !important;margin-bottom: 1em !important;margin-left: 1em !important;padding-top: 2px;padding-right: 6px;padding-bottom: 3px;padding-left: 6px;border-top-color: #f0f;border-right-color: #f0f;border-bottom-color: #f0f;border-left-color: #f0f;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-width: 2px;border-right-width: 2px;border-bottom-width: 2px;border-left-width: 2px;font-style: italic;font-variant: normal;font-weight: 500;font-size: 14px;line-height: 1.618;font-family: "Trebuchet MS",Georgia,serif;background-color: #ccc;background-image: url("/images/foo.png");background-repeat: no-repeat;background-attachment: scroll;background-position: left top;}';
+        $sExpected =
+            'body {margin-top: 1em !important;margin-right: 1em !important;margin-bottom: 1em !important;margin-left: 1em !important;padding-top: 2px;padding-right: 6px;padding-bottom: 3px;padding-left: 6px;border-top-color: #f0f;border-right-color: #f0f;border-bottom-color: #f0f;border-left-color: #f0f;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-width: 2px;border-right-width: 2px;border-bottom-width: 2px;border-left-width: 2px;font-style: italic;font-variant: normal;font-weight: 500;font-size: 14px;line-height: 1.618;font-family: "Trebuchet MS",Georgia,serif;background-color: #ccc;background-image: url("/images/foo.png");background-repeat: no-repeat;background-attachment: scroll;background-position: left top;}';
         $this->assertSame($sExpected, $oDoc->render());
     }
 
     public function testCreateShorthands()
     {
         $oDoc = $this->parsedStructureForFile('create-shorthands');
-        $sExpected = 'body {font-size: 2em;font-family: Helvetica,Arial,sans-serif;font-weight: bold;border-width: 2px;border-color: #999;border-style: dotted;background-color: #fff;background-image: url("foobar.png");background-repeat: repeat-y;margin-top: 2px;margin-right: 3px;margin-bottom: 4px;margin-left: 5px;}';
+        $sExpected =
+            'body {font-size: 2em;font-family: Helvetica,Arial,sans-serif;font-weight: bold;border-width: 2px;border-color: #999;border-style: dotted;background-color: #fff;background-image: url("foobar.png");background-repeat: repeat-y;margin-top: 2px;margin-right: 3px;margin-bottom: 4px;margin-left: 5px;}';
         $this->assertSame($sExpected, $oDoc->render());
         $oDoc->createShorthands();
-        $sExpected = 'body {background: #fff url("foobar.png") repeat-y;margin: 2px 5px 4px 3px;border: 2px dotted #999;font: bold 2em Helvetica,Arial,sans-serif;}';
+        $sExpected =
+            'body {background: #fff url("foobar.png") repeat-y;margin: 2px 5px 4px 3px;border: 2px dotted #999;font: bold 2em Helvetica,Arial,sans-serif;}';
         $this->assertSame($sExpected, $oDoc->render());
     }
 
@@ -396,8 +441,8 @@ foo|test {gaga: 1;}
     }
 
     /**
-    * @expectedException Sabberworm\CSS\Parsing\OutputException
-    */
+     * @expectedException Sabberworm\CSS\Parsing\OutputException
+     */
     public function testSelectorRemoval()
     {
         $oDoc = $this->parsedStructureForFile('1readme');
@@ -459,7 +504,8 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
     public function testGridLineNameInFile()
     {
         $oDoc = $this->parsedStructureForFile('grid-linename', Settings::create()->withMultibyteSupport(true));
-        $sExpected = "div {grid-template-columns: [linename] 100px;}\nspan {grid-template-columns: [linename1 linename2] 100px;}";
+        $sExpected =
+            "div {grid-template-columns: [linename] 100px;}\nspan {grid-template-columns: [linename1 linename2] 100px;}";
         $this->assertSame($sExpected, $oDoc->render());
     }
 
@@ -522,7 +568,8 @@ body {background-color: red;}';
     public function testIdentifierEscapesInFile()
     {
         $oDoc = $this->parsedStructureForFile('identifier-escapes', Settings::create()->withMultibyteSupport(true));
-        $sExpected = 'div {font: 14px Font Awesome\ 5 Pro;font: 14px Font Awesome\} 5 Pro;font: 14px Font Awesome\; 5 Pro;f\;ont: 14px Font Awesome\; 5 Pro;}';
+        $sExpected =
+            'div {font: 14px Font Awesome\ 5 Pro;font: 14px Font Awesome\} 5 Pro;font: 14px Font Awesome\; 5 Pro;f\;ont: 14px Font Awesome\; 5 Pro;}';
         $this->assertSame($sExpected, $oDoc->render());
     }
 
@@ -537,7 +584,11 @@ body {background-color: red;}';
 
     public function testKeyframeSelectors()
     {
-        $oDoc = $this->parsedStructureForFile('keyframe-selector-validation', Settings::create()->withMultibyteSupport(true));
+        $oDoc =
+            $this->parsedStructureForFile(
+                'keyframe-selector-validation',
+                Settings::create()->withMultibyteSupport(true)
+            );
         $sExpected = '@-webkit-keyframes zoom {0% {-webkit-transform: scale(1,1);}
 	50% {-webkit-transform: scale(1.2,1.2);}
 	100% {-webkit-transform: scale(1,1);}}';
@@ -545,16 +596,16 @@ body {background-color: red;}';
     }
 
     /**
-    * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
-    */
+     * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+     */
     public function testLineNameFailure()
     {
         $this->parsedStructureForFile('-empty-grid-linename', Settings::create()->withLenientParsing(false));
     }
 
     /**
-    * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
-    */
+     * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+     */
     public function testCalcFailure()
     {
         $this->parsedStructureForFile('-calc-no-space-around-minus', Settings::create()->withLenientParsing(false));
@@ -661,7 +712,7 @@ body {background-url: url("https://somesite.com/images/someimage.gif");}';
     /**
      * Parse structure for file.
      *
-     * @param string      $sFileName Filename.
+     * @param string $sFileName Filename.
      * @param null|obJeCt $oSettings Settings.
      *
      * @return CSSList\Document Parsed document.
@@ -688,7 +739,7 @@ body {background-url: url("https://somesite.com/images/someimage.gif");}';
             // Line Numbers of the inner declaration blocks
             17 => [KeyFrame::class, 18, 20],
             23 => [Import::class],
-            25 => [DeclarationBlock::class]
+            25 => [DeclarationBlock::class],
         ];
 
         $aActual = [];
@@ -730,7 +781,8 @@ body {background-url: url("https://somesite.com/images/someimage.gif");}';
 
     /**
      * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
-     * Credit: This test by @sabberworm (from https://github.com/sabberworm/PHP-CSS-Parser/pull/105#issuecomment-229643910 )
+     * Credit: This test by @sabberworm (from
+     *     https://github.com/sabberworm/PHP-CSS-Parser/pull/105#issuecomment-229643910 )
      */
     public function testUnexpectedTokenExceptionLineNo()
     {
@@ -744,8 +796,8 @@ body {background-url: url("https://somesite.com/images/someimage.gif");}';
     }
 
     /**
-    * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
-    */
+     * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+     */
     public function testIeHacksStrictParsing()
     {
         // We can't strictly parse IE hacks.
@@ -755,7 +807,8 @@ body {background-url: url("https://somesite.com/images/someimage.gif");}';
     public function testIeHacksParsing()
     {
         $oDoc = $this->parsedStructureForFile('ie-hacks', Settings::create()->withLenientParsing(true));
-        $sExpected = 'p {padding-right: .75rem \9;background-image: none \9;color: red \9\0;background-color: red \9\0;background-color: red \9\0 !important;content: "red 	\0";content: "red઼";}';
+        $sExpected =
+            'p {padding-right: .75rem \9;background-image: none \9;color: red \9\0;background-color: red \9\0;background-color: red \9\0 !important;content: "red 	\0";content: "red઼";}';
         $this->assertEquals($sExpected, $oDoc->render());
     }
 
@@ -826,8 +879,8 @@ body {background-url: url("https://somesite.com/images/someimage.gif");}';
     }
 
     /**
-    * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
-    */
+     * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+     */
     public function testMicrosoftFilterStrictParsing()
     {
         $oDoc = $this->parsedStructureForFile('ms-filter', Settings::create()->beStrict());
@@ -836,7 +889,8 @@ body {background-url: url("https://somesite.com/images/someimage.gif");}';
     public function testMicrosoftFilterParsing()
     {
         $oDoc = $this->parsedStructureForFile('ms-filter');
-        $sExpected = ".test {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=\"#80000000\",endColorstr=\"#00000000\",GradientType=1);}";
+        $sExpected =
+            ".test {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=\"#80000000\",endColorstr=\"#00000000\",GradientType=1);}";
         $this->assertSame($sExpected, $oDoc->render());
     }
 

@@ -5,8 +5,8 @@ namespace Sabberworm\CSS\Property;
 use Sabberworm\CSS\Value\URL;
 
 /**
-* Class representing an @import rule.
-*/
+ * Class representing an @import rule.
+ */
 class Import implements AtRule
 {
     /**
@@ -52,12 +52,12 @@ class Import implements AtRule
 
     public function setLocation($oLocation)
     {
-            $this->oLocation = $oLocation;
+        $this->oLocation = $oLocation;
     }
 
     public function getLocation()
     {
-            return $this->oLocation;
+        return $this->oLocation;
     }
 
     public function __toString()

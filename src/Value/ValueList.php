@@ -6,6 +6,7 @@ abstract class ValueList extends Value
 {
 
     protected $aComponents;
+
     protected $sSeparator;
 
     public function __construct($aComponents = [], $sSeparator = ',', $iLineNo = 0)
@@ -56,7 +57,8 @@ abstract class ValueList extends Value
     public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat)
     {
         return $oOutputFormat->implode(
-            $oOutputFormat->spaceBeforeListArgumentSeparator($this->sSeparator) . $this->sSeparator . $oOutputFormat->spaceAfterListArgumentSeparator($this->sSeparator),
+            $oOutputFormat->spaceBeforeListArgumentSeparator($this->sSeparator) . $this->sSeparator
+            . $oOutputFormat->spaceAfterListArgumentSeparator($this->sSeparator),
             $this->aComponents
         );
     }

@@ -7,7 +7,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 class CalcFunction extends CSSFunction
 {
-    const T_OPERAND  = 1;
+    const T_OPERAND = 1;
     const T_OPERATOR = 2;
 
     public static function parse(ParserState $oParserState)
@@ -38,7 +38,11 @@ class CalcFunction extends CSSFunction
             } else {
                 if (in_array($oParserState->peek(), $aOperators)) {
                     if (($oParserState->comes('-') || $oParserState->comes('+'))) {
-                        if ($oParserState->peek(1, -1) != ' ' || !($oParserState->comes('- ') || $oParserState->comes('+ '))) {
+                        if (
+                            $oParserState->peek(1, -1) != ' '
+                            || !($oParserState->comes('- ')
+                                || $oParserState->comes('+ '))
+                        ) {
                             throw new UnexpectedTokenException(
                                 " {$oParserState->peek()} ",
                                 $oParserState->peek(1, -1) . $oParserState->peek(2),

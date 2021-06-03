@@ -16,11 +16,17 @@ class Rule implements Renderable, Commentable
 {
 
     private $sRule;
+
     private $mValue;
+
     private $bIsImportant;
+
     private $aIeHack;
+
     protected $iLineNo;
+
     protected $iColNo;
+
     protected $aComments;
 
     public function __construct($sRule, $iLineNo = 0, $iColNo = 0)
@@ -121,7 +127,7 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     *  @deprecated Old-Style 2-dimensional array given. Retained for (some) backwards-compatibility.
+     * @deprecated Old-Style 2-dimensional array given. Retained for (some) backwards-compatibility.
      *              Use setValue() instead and wrap the value inside a RuleValueList if necessary.
      */
     public function setValues($aSpaceSeparatedValues)
@@ -158,7 +164,7 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     *  @deprecated Old-Style 2-dimensional array returned. Retained for (some) backwards-compatibility.
+     * @deprecated Old-Style 2-dimensional array returned. Retained for (some) backwards-compatibility.
      *              Use getValue() instead and check for the existance of a (nested set of) ValueList object(s).
      */
     public function getValues()
