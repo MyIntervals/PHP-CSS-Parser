@@ -4,6 +4,7 @@
 /.gitignore export-ignore
 /.phive/ export-ignore
 /Doxyfile export-ignore
+/bin/ export-ignore
 /phpcs.xml export-ignore
 /phpstan-baseline.neon export-ignore
 /phpstan.neon.dist export-ignore

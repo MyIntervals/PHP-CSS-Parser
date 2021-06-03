@@ -1,7 +1,11 @@
 #!/usr/bin/env php
 <?php
 
-require_once(__DIR__ . '/bootstrap.php');
+/**
+ * This script is used for generating the examples in the README.
+ */
+
+require_once(__DIR__ . '/../vendor/autoload.php');
 
 $sSource = file_get_contents('php://stdin');
 $oParser = new Sabberworm\CSS\Parser($sSource);
