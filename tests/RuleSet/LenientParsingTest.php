@@ -1,6 +1,6 @@
 <?php
 
-namespace Sabberworm\CSS\RuleSet;
+namespace Sabberworm\CSS\Tests\RuleSet;
 
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Settings;
@@ -9,7 +9,7 @@ class LenientParsingTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
-     * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
      */
     public function testFaultToleranceOff()
     {
@@ -31,7 +31,7 @@ class LenientParsingTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
      */
     public function testEndToken()
     {
@@ -41,7 +41,7 @@ class LenientParsingTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
      */
     public function testEndToken2()
     {

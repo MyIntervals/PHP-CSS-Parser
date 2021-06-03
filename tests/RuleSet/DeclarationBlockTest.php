@@ -1,6 +1,6 @@
 <?php
 
-namespace Sabberworm\CSS\RuleSet;
+namespace Sabberworm\CSS\Tests\RuleSet;
 
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Rule\Rule;

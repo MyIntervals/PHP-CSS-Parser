@@ -18,6 +18,9 @@
     "autoload": {
         "psr-4": { "Sabberworm\\CSS\\": "src/" }
     },
+    "autoload-dev": {
+        "psr-4": { "Sabberworm\\CSS\\Tests\\": "tests/" }
+    },
     "scripts": {
         "ci": [
             "@ci:static"

@@ -1,8 +1,10 @@
 <?php
 
-namespace Sabberworm\CSS;
+namespace Sabberworm\CSS\Tests;
 
+use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\CSSList\KeyFrame;
+use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Property\Charset;
@@ -11,6 +13,7 @@ use Sabberworm\CSS\Property\Import;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\RuleSet\AtRuleSet;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
+use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\URL;
 
@@ -522,7 +525,7 @@ foo|test {gaga: 1;}
     }
 
     /**
-     * @expectedException Sabberworm\CSS\Parsing\OutputException
+     * @expectedException \Sabberworm\CSS\Parsing\OutputException
      */
     public function testSelectorRemoval()
     {
@@ -680,7 +683,7 @@ body {background-color: red;}';
     }
 
     /**
-     * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
      */
     public function testLineNameFailure()
     {
@@ -688,7 +691,7 @@ body {background-color: red;}';
     }
 
     /**
-     * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
      */
     public function testCalcFailure()
     {
@@ -800,7 +803,7 @@ body {background-color: red;}';
      * @param string $sFileName Filename.
      * @param null|obJeCt $oSettings Settings.
      *
-     * @return CSSList\Document Parsed document.
+     * @return Document Parsed document.
      */
     private function parsedStructureForFile($sFileName, $oSettings = null)
     {
@@ -881,7 +884,7 @@ body {background-color: red;}';
     }
 
     /**
-     * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
      */
     public function testIeHacksStrictParsing()
     {
@@ -964,7 +967,7 @@ body {background-color: red;}';
     }
 
     /**
-     * @expectedException Sabberworm\CSS\Parsing\UnexpectedTokenException
+     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
      */
     public function testMicrosoftFilterStrictParsing()
     {
