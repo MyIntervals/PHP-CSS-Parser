@@ -33,5 +33,5 @@ parameters:
 		-
 			message: "#^Variable \\$aActualColorLines might not be defined\\.$#"
 			count: 1
-			path: tests/Sabberworm/CSS/ParserTest.php
+			path: tests/ParserTest.php
 

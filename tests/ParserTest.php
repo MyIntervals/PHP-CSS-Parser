@@ -19,7 +19,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testFiles()
     {
-        $sDirectory = __DIR__ . '/../../files';
+        $sDirectory = __DIR__ . '/fixtures';
         if ($rHandle = opendir($sDirectory)) {
             /* This is the correct way to loop over the directory. */
             while (false !== ($sFileName = readdir($rHandle))) {
@@ -668,7 +668,7 @@ body {background-url: url("https://somesite.com/images/someimage.gif");}';
      */
     private function parsedStructureForFile($sFileName, $oSettings = null)
     {
-        $sFile = __DIR__ . '/../../files' . DIRECTORY_SEPARATOR . "$sFileName.css";
+        $sFile = __DIR__ . '/fixtures' . DIRECTORY_SEPARATOR . "$sFileName.css";
         $oParser = new Parser(file_get_contents($sFile), $oSettings);
         return $oParser->parse();
     }
