@@ -30,7 +30,8 @@ class ParserTest extends \PHPUnit\Framework\TestCase
                     continue;
                 }
                 if (strpos($sFileName, '-') === 0) {
-                    //Either a file which SHOULD fail (at least in strict mode) or a future test of a as-of-now missing feature
+                    // Either a file which SHOULD fail (at least in strict mode)
+                    // or a future test of a as-of-now missing feature
                     continue;
                 }
                 $oParser = new Parser(file_get_contents($sDirectory . DIRECTORY_SEPARATOR . $sFileName));
@@ -109,10 +110,17 @@ class ParserTest extends \PHPUnit\Framework\TestCase
             $this->assertSame('red', $sColor);
         }
         $this->assertSame(
-            '#mine {color: red;border-color: #0a64e6;border-color: rgba(10,100,231,.3);outline-color: #222;background-color: #232323;}
-#yours {background-color: hsl(220,10%,220%);background-color: hsla(220,10%,220%,.3);}
-#variables {background-color: rgb(var(--some-rgb));background-color: rgb(var(--r),var(--g),var(--b));background-color: rgb(255,var(--g),var(--b));background-color: rgb(255,255,var(--b));background-color: rgb(255,var(--rg));background-color: hsl(var(--some-hsl));}
-#variables-alpha {background-color: rgba(var(--some-rgb),.1);background-color: rgba(var(--some-rg),255,.1);background-color: hsla(var(--some-hsl),.1);}',
+            '#mine {color: red;border-color: #0a64e6;border-color: rgba(10,100,231,.3);outline-color: #222;'
+            . 'background-color: #232323;}'
+            . "\n"
+            . '#yours {background-color: hsl(220,10%,220%);background-color: hsla(220,10%,220%,.3);}'
+            . "\n"
+            . '#variables {background-color: rgb(var(--some-rgb));background-color: rgb(var(--r),var(--g),var(--b));'
+            . 'background-color: rgb(255,var(--g),var(--b));background-color: rgb(255,255,var(--b));'
+            . 'background-color: rgb(255,var(--rg));background-color: hsl(var(--some-hsl));}'
+            . "\n"
+            . '#variables-alpha {background-color: rgba(var(--some-rgb),.1);'
+            . 'background-color: rgba(var(--some-rg),255,.1);background-color: hsla(var(--some-hsl),.1);}',
             $oDoc->render()
         );
     }
@@ -224,56 +232,104 @@ class ParserTest extends \PHPUnit\Framework\TestCase
     public function testManipulation()
     {
         $oDoc = $this->parsedStructureForFile('atrules');
-        $this->assertSame('@charset "utf-8";
-@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}
-html, body {font-size: -.6em;}
-@keyframes mymove {from {top: 0px;}
-	to {top: 200px;}}
-@-moz-keyframes some-move {from {top: 0px;}
-	to {top: 200px;}}
-@supports ( (perspective: 10px) or (-moz-perspective: 10px) or (-webkit-perspective: 10px) or (-ms-perspective: 10px) or (-o-perspective: 10px) ) {body {font-family: "Helvetica";}}
-@page :pseudo-class {margin: 2in;}
-@-moz-document url(https://www.w3.org/),
-               url-prefix(https://www.w3.org/Style/),
-               domain(mozilla.org),
-               regexp("https:.*") {body {color: purple;background: yellow;}}
-@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}
-@region-style #intro {p {color: blue;}}', $oDoc->render());
+        $this->assertSame(
+            '@charset "utf-8";'
+            . "\n"
+            . '@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}'
+            . "\n"
+            . 'html, body {font-size: -.6em;}'
+            . "\n"
+            . '@keyframes mymove {from {top: 0px;}'
+            . "\n\t"
+            . 'to {top: 200px;}}'
+            . "\n"
+            . '@-moz-keyframes some-move {from {top: 0px;}'
+            . "\n\t"
+            . 'to {top: 200px;}}'
+            . "\n"
+            . '@supports ( (perspective: 10px) or (-moz-perspective: 10px) or (-webkit-perspective: 10px) or '
+            . '(-ms-perspective: 10px) or (-o-perspective: 10px) ) {body {font-family: "Helvetica";}}'
+            . "\n"
+            . '@page :pseudo-class {margin: 2in;}'
+            . "\n"
+            . '@-moz-document url(https://www.w3.org/),'
+            . "\n"
+            . '               url-prefix(https://www.w3.org/Style/),'
+            . "\n"
+            . '               domain(mozilla.org),'
+            . "\n"
+            . '               regexp("https:.*") {body {color: purple;background: yellow;}}'
+            . "\n"
+            . '@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}'
+            . "\n"
+            . '@region-style #intro {p {color: blue;}}',
+            $oDoc->render()
+        );
         foreach ($oDoc->getAllDeclarationBlocks() as $oBlock) {
             foreach ($oBlock->getSelectors() as $oSelector) {
                 //Loop over all selector parts (the comma-separated strings in a selector) and prepend the id
                 $oSelector->setSelector('#my_id ' . $oSelector->getSelector());
             }
         }
-        $this->assertSame('@charset "utf-8";
-@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}
-#my_id html, #my_id body {font-size: -.6em;}
-@keyframes mymove {from {top: 0px;}
-	to {top: 200px;}}
-@-moz-keyframes some-move {from {top: 0px;}
-	to {top: 200px;}}
-@supports ( (perspective: 10px) or (-moz-perspective: 10px) or (-webkit-perspective: 10px) or (-ms-perspective: 10px) or (-o-perspective: 10px) ) {#my_id body {font-family: "Helvetica";}}
-@page :pseudo-class {margin: 2in;}
-@-moz-document url(https://www.w3.org/),
-               url-prefix(https://www.w3.org/Style/),
-               domain(mozilla.org),
-               regexp("https:.*") {#my_id body {color: purple;background: yellow;}}
-@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}
-@region-style #intro {#my_id p {color: blue;}}', $oDoc->render());
+        $this->assertSame(
+            '@charset "utf-8";'
+            . "\n"
+            . '@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}'
+            . "\n"
+            . '#my_id html, #my_id body {font-size: -.6em;}'
+            . "\n"
+            . '@keyframes mymove {from {top: 0px;}'
+            . "\n\t"
+            . 'to {top: 200px;}}'
+            . "\n"
+            . '@-moz-keyframes some-move {from {top: 0px;}'
+            . "\n\t"
+            . 'to {top: 200px;}}'
+            . "\n"
+            . '@supports ( (perspective: 10px) or (-moz-perspective: 10px) or (-webkit-perspective: 10px) '
+            . 'or (-ms-perspective: 10px) or (-o-perspective: 10px) ) {#my_id body {font-family: "Helvetica";}}'
+            . "\n"
+            . '@page :pseudo-class {margin: 2in;}'
+            . "\n"
+            . '@-moz-document url(https://www.w3.org/),'
+            . "\n"
+            . '               url-prefix(https://www.w3.org/Style/),'
+            . "\n"
+            . '               domain(mozilla.org),'
+            . "\n"
+            . '               regexp("https:.*") {#my_id body {color: purple;background: yellow;}}'
+            . "\n"
+            . '@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}'
+            . "\n"
+            . '@region-style #intro {#my_id p {color: blue;}}',
+            $oDoc->render()
+        );
 
         $oDoc = $this->parsedStructureForFile('values');
-        $this->assertSame('#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;font-size: 10px;color: red !important;background-color: green;background-color: rgba(0,128,0,.7);frequency: 30Hz;}
-body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}', $oDoc->render());
+        $this->assertSame(
+            '#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;'
+            . 'font-size: 10px;color: red !important;background-color: green;'
+            . 'background-color: rgba(0,128,0,.7);frequency: 30Hz;}
+body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}',
+            $oDoc->render()
+        );
         foreach ($oDoc->getAllRuleSets() as $oRuleSet) {
             $oRuleSet->removeRule('font-');
         }
-        $this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;background-color: green;background-color: rgba(0,128,0,.7);frequency: 30Hz;}
-body {color: green;}', $oDoc->render());
+        $this->assertSame(
+            '#header {margin: 10px 2em 1cm 2%;color: red !important;background-color: green;'
+            . 'background-color: rgba(0,128,0,.7);frequency: 30Hz;}
+body {color: green;}',
+            $oDoc->render()
+        );
         foreach ($oDoc->getAllRuleSets() as $oRuleSet) {
             $oRuleSet->removeRule('background-');
         }
-        $this->assertSame('#header {margin: 10px 2em 1cm 2%;color: red !important;frequency: 30Hz;}
-body {color: green;}', $oDoc->render());
+        $this->assertSame(
+            '#header {margin: 10px 2em 1cm 2%;color: red !important;frequency: 30Hz;}
+body {color: green;}',
+            $oDoc->render()
+        );
     }
 
     public function testRuleGetters()
@@ -337,11 +393,19 @@ body {color: green;}', $oDoc->render());
     public function testFunctionSyntax()
     {
         $oDoc = $this->parsedStructureForFile('functions');
-        $sExpected = 'div.main {background-image: linear-gradient(#000,#fff);}
-.collapser::before, .collapser::-moz-before, .collapser::-webkit-before {content: "»";font-size: 1.2em;margin-right: .2em;-moz-transition-property: -moz-transform;-moz-transition-duration: .2s;-moz-transform-origin: center 60%;}
-.collapser.expanded::before, .collapser.expanded::-moz-before, .collapser.expanded::-webkit-before {-moz-transform: rotate(90deg);}
-.collapser + * {height: 0;overflow: hidden;-moz-transition-property: height;-moz-transition-duration: .3s;}
-.collapser.expanded + * {height: auto;}';
+        $sExpected = 'div.main {background-image: linear-gradient(#000,#fff);}'
+            . "\n"
+            . '.collapser::before, .collapser::-moz-before, .collapser::-webkit-before {content: "»";font-size: 1.2em;'
+            . 'margin-right: .2em;-moz-transition-property: -moz-transform;-moz-transition-duration: .2s;'
+            . '-moz-transform-origin: center 60%;}'
+            . "\n"
+            . '.collapser.expanded::before, .collapser.expanded::-moz-before,'
+            . ' .collapser.expanded::-webkit-before {-moz-transform: rotate(90deg);}'
+            . "\n"
+            . '.collapser + * {height: 0;overflow: hidden;-moz-transition-property: height;'
+            . '-moz-transition-duration: .3s;}'
+            . "\n"
+            . '.collapser.expanded + * {height: auto;}';
         $this->assertSame($sExpected, $oDoc->render());
 
         foreach ($oDoc->getAllValues(null, true) as $mValue) {
@@ -364,24 +428,35 @@ body {color: green;}', $oDoc->render());
     public function testExpandShorthands()
     {
         $oDoc = $this->parsedStructureForFile('expand-shorthands');
-        $sExpected =
-            'body {font: italic 500 14px/1.618 "Trebuchet MS",Georgia,serif;border: 2px solid #f0f;background: #ccc url("/images/foo.png") no-repeat left top;margin: 1em !important;padding: 2px 6px 3px;}';
+        $sExpected = 'body {font: italic 500 14px/1.618 "Trebuchet MS",Georgia,serif;border: 2px solid #f0f;'
+            . 'background: #ccc url("/images/foo.png") no-repeat left top;margin: 1em !important;'
+            . 'padding: 2px 6px 3px;}';
         $this->assertSame($sExpected, $oDoc->render());
         $oDoc->expandShorthands();
-        $sExpected =
-            'body {margin-top: 1em !important;margin-right: 1em !important;margin-bottom: 1em !important;margin-left: 1em !important;padding-top: 2px;padding-right: 6px;padding-bottom: 3px;padding-left: 6px;border-top-color: #f0f;border-right-color: #f0f;border-bottom-color: #f0f;border-left-color: #f0f;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-width: 2px;border-right-width: 2px;border-bottom-width: 2px;border-left-width: 2px;font-style: italic;font-variant: normal;font-weight: 500;font-size: 14px;line-height: 1.618;font-family: "Trebuchet MS",Georgia,serif;background-color: #ccc;background-image: url("/images/foo.png");background-repeat: no-repeat;background-attachment: scroll;background-position: left top;}';
+        $sExpected = 'body {margin-top: 1em !important;margin-right: 1em !important;margin-bottom: 1em !important;'
+            . 'margin-left: 1em !important;padding-top: 2px;padding-right: 6px;padding-bottom: 3px;'
+            . 'padding-left: 6px;border-top-color: #f0f;border-right-color: #f0f;border-bottom-color: #f0f;'
+            . 'border-left-color: #f0f;border-top-style: solid;border-right-style: solid;'
+            . 'border-bottom-style: solid;border-left-style: solid;border-top-width: 2px;'
+            . 'border-right-width: 2px;border-bottom-width: 2px;border-left-width: 2px;font-style: italic;'
+            . 'font-variant: normal;font-weight: 500;font-size: 14px;line-height: 1.618;'
+            . 'font-family: "Trebuchet MS",Georgia,serif;background-color: #ccc;'
+            . 'background-image: url("/images/foo.png");background-repeat: no-repeat;background-attachment: scroll;'
+            . 'background-position: left top;}';
         $this->assertSame($sExpected, $oDoc->render());
     }
 
     public function testCreateShorthands()
     {
         $oDoc = $this->parsedStructureForFile('create-shorthands');
-        $sExpected =
-            'body {font-size: 2em;font-family: Helvetica,Arial,sans-serif;font-weight: bold;border-width: 2px;border-color: #999;border-style: dotted;background-color: #fff;background-image: url("foobar.png");background-repeat: repeat-y;margin-top: 2px;margin-right: 3px;margin-bottom: 4px;margin-left: 5px;}';
+        $sExpected = 'body {font-size: 2em;font-family: Helvetica,Arial,sans-serif;font-weight: bold;'
+            . 'border-width: 2px;border-color: #999;border-style: dotted;background-color: #fff;'
+            . 'background-image: url("foobar.png");background-repeat: repeat-y;margin-top: 2px;margin-right: 3px;'
+            . 'margin-bottom: 4px;margin-left: 5px;}';
         $this->assertSame($sExpected, $oDoc->render());
         $oDoc->createShorthands();
-        $sExpected =
-            'body {background: #fff url("foobar.png") repeat-y;margin: 2px 5px 4px 3px;border: 2px dotted #999;font: bold 2em Helvetica,Arial,sans-serif;}';
+        $sExpected = 'body {background: #fff url("foobar.png") repeat-y;margin: 2px 5px 4px 3px;'
+            . 'border: 2px dotted #999;font: bold 2em Helvetica,Arial,sans-serif;}';
         $this->assertSame($sExpected, $oDoc->render());
     }
 
@@ -427,17 +502,23 @@ foo|test {gaga: 1;}
             $oDoc->removeDeclarationBlockBySelector($oBlock, false);
             break;
         }
-        $this->assertSame('html {some-other: -test(val1);}
+        $this->assertSame(
+            'html {some-other: -test(val1);}
 @media screen {html {some: -test(val2);}}
-#unrelated {other: yes;}', $oDoc->render());
+#unrelated {other: yes;}',
+            $oDoc->render()
+        );
 
         $oDoc = $this->parsedStructureForFile('nested');
         foreach ($oDoc->getAllDeclarationBlocks() as $oBlock) {
             $oDoc->removeDeclarationBlockBySelector($oBlock, true);
             break;
         }
-        $this->assertSame('@media screen {html {some: -test(val2);}}
-#unrelated {other: yes;}', $oDoc->render());
+        $this->assertSame(
+            '@media screen {html {some: -test(val2);}}
+#unrelated {other: yes;}',
+            $oDoc->render()
+        );
     }
 
     /**
@@ -504,8 +585,8 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
     public function testGridLineNameInFile()
     {
         $oDoc = $this->parsedStructureForFile('grid-linename', Settings::create()->withMultibyteSupport(true));
-        $sExpected =
-            "div {grid-template-columns: [linename] 100px;}\nspan {grid-template-columns: [linename1 linename2] 100px;}";
+        $sExpected = "div {grid-template-columns: [linename] 100px;}\n"
+            . "span {grid-template-columns: [linename1 linename2] 100px;}";
         $this->assertSame($sExpected, $oDoc->render());
     }
 
@@ -568,30 +649,33 @@ body {background-color: red;}';
     public function testIdentifierEscapesInFile()
     {
         $oDoc = $this->parsedStructureForFile('identifier-escapes', Settings::create()->withMultibyteSupport(true));
-        $sExpected =
-            'div {font: 14px Font Awesome\ 5 Pro;font: 14px Font Awesome\} 5 Pro;font: 14px Font Awesome\; 5 Pro;f\;ont: 14px Font Awesome\; 5 Pro;}';
+        $sExpected = 'div {font: 14px Font Awesome\ 5 Pro;font: 14px Font Awesome\} 5 Pro;'
+            . 'font: 14px Font Awesome\; 5 Pro;f\;ont: 14px Font Awesome\; 5 Pro;}';
         $this->assertSame($sExpected, $oDoc->render());
     }
 
     public function testSelectorIgnoresInFile()
     {
         $oDoc = $this->parsedStructureForFile('selector-ignores', Settings::create()->withMultibyteSupport(true));
-        $sExpected = '.some[selectors-may=\'contain-a-{\'] {}
-.this-selector  .valid {width: 100px;}
-@media only screen and (min-width: 200px) {.test {prop: val;}}';
+        $sExpected = '.some[selectors-may=\'contain-a-{\'] {}'
+            . "\n"
+            . '.this-selector  .valid {width: 100px;}'
+            . "\n"
+            . '@media only screen and (min-width: 200px) {.test {prop: val;}}';
         $this->assertSame($sExpected, $oDoc->render());
     }
 
     public function testKeyframeSelectors()
     {
-        $oDoc =
-            $this->parsedStructureForFile(
-                'keyframe-selector-validation',
-                Settings::create()->withMultibyteSupport(true)
-            );
-        $sExpected = '@-webkit-keyframes zoom {0% {-webkit-transform: scale(1,1);}
-	50% {-webkit-transform: scale(1.2,1.2);}
-	100% {-webkit-transform: scale(1,1);}}';
+        $oDoc = $this->parsedStructureForFile(
+            'keyframe-selector-validation',
+            Settings::create()->withMultibyteSupport(true)
+        );
+        $sExpected = '@-webkit-keyframes zoom {0% {-webkit-transform: scale(1,1);}'
+            . "\n\t"
+            . '50% {-webkit-transform: scale(1.2,1.2);}'
+            . "\n\t"
+            . '100% {-webkit-transform: scale(1,1);}}';
         $this->assertSame($sExpected, $oDoc->render());
     }
 
@@ -614,8 +698,9 @@ body {background-color: red;}';
     public function testUrlInFileMbOff()
     {
         $oDoc = $this->parsedStructureForFile('url', Settings::create()->withMultibyteSupport(false));
-        $sExpected = 'body {background: #fff url("https://somesite.com/images/someimage.gif") repeat top center;}
-body {background-url: url("https://somesite.com/images/someimage.gif");}';
+        $sExpected = 'body {background: #fff url("https://somesite.com/images/someimage.gif") repeat top center;}'
+            . "\n"
+            . 'body {background-url: url("https://somesite.com/images/someimage.gif");}';
         $this->assertSame($sExpected, $oDoc->render());
     }
 
@@ -807,8 +892,8 @@ body {background-url: url("https://somesite.com/images/someimage.gif");}';
     public function testIeHacksParsing()
     {
         $oDoc = $this->parsedStructureForFile('ie-hacks', Settings::create()->withLenientParsing(true));
-        $sExpected =
-            'p {padding-right: .75rem \9;background-image: none \9;color: red \9\0;background-color: red \9\0;background-color: red \9\0 !important;content: "red 	\0";content: "red઼";}';
+        $sExpected = 'p {padding-right: .75rem \9;background-image: none \9;color: red \9\0;'
+            . 'background-color: red \9\0;background-color: red \9\0 !important;content: "red 	\0";content: "red઼";}';
         $this->assertEquals($sExpected, $oDoc->render());
     }
 
@@ -889,8 +974,8 @@ body {background-url: url("https://somesite.com/images/someimage.gif");}';
     public function testMicrosoftFilterParsing()
     {
         $oDoc = $this->parsedStructureForFile('ms-filter');
-        $sExpected =
-            ".test {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=\"#80000000\",endColorstr=\"#00000000\",GradientType=1);}";
+        $sExpected = '.test {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#80000000",'
+            . 'endColorstr="#00000000",GradientType=1);}';
         $this->assertSame($sExpected, $oDoc->render());
     }
 
