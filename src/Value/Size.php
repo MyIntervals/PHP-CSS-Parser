@@ -7,11 +7,26 @@ use Sabberworm\CSS\Parsing\ParserState;
 class Size extends PrimitiveValue
 {
 
-    // vh/vw/vm(ax)/vmin/rem are absolute insofar as they don’t scale to the immediate parent (only the viewport)
-    const ABSOLUTE_SIZE_UNITS = 'px/cm/mm/mozmm/in/pt/pc/vh/vw/vmin/vmax/rem';
-    const RELATIVE_SIZE_UNITS = '%/em/ex/ch/fr';
-    const NON_SIZE_UNITS = 'deg/grad/rad/s/ms/turns/Hz/kHz';
+    /**
+     * vh/vw/vm(ax)/vmin/rem are absolute insofar as they don’t scale to the immediate parent (only the viewport)
+     *
+     * @var array<int, string>
+     */
+    const ABSOLUTE_SIZE_UNITS = ['px', 'cm', 'mm', 'mozmm', 'in', 'pt', 'pc', 'vh', 'vw', 'vmin', 'vmax', 'rem'];
 
+    /**
+     * @var array<int, string>
+     */
+    const RELATIVE_SIZE_UNITS = ['%', 'em', 'ex', 'ch', 'fr'];
+
+    /**
+     * @var array<int, string>
+     */
+    const NON_SIZE_UNITS = ['deg', 'grad', 'rad', 's', 'ms', 'turns', 'Hz', 'kHz'];
+
+    /**
+     * @var array<int, array<string, string>>|null
+     */
     private static $SIZE_UNITS = null;
 
     private $fSize;
@@ -56,14 +71,14 @@ class Size extends PrimitiveValue
         return new Size((float)$sSize, $sUnit, $bIsColorComponent, $oParserState->currentLine());
     }
 
+    /**
+     * @return array<int, array<string, string>>
+     */
     private static function getSizeUnits()
     {
-        if (self::$SIZE_UNITS === null) {
+        if (!is_array(self::$SIZE_UNITS)) {
             self::$SIZE_UNITS = [];
-            foreach (
-                explode('/', Size::ABSOLUTE_SIZE_UNITS . '/' . Size::RELATIVE_SIZE_UNITS . '/' . Size::NON_SIZE_UNITS)
-                as $val
-            ) {
+            foreach (array_merge(self::ABSOLUTE_SIZE_UNITS, self::RELATIVE_SIZE_UNITS, self::NON_SIZE_UNITS) as $val) {
                 $iSize = strlen($val);
                 if (!isset(self::$SIZE_UNITS[$iSize])) {
                     self::$SIZE_UNITS[$iSize] = [];
@@ -109,7 +124,7 @@ class Size extends PrimitiveValue
      */
     public function isSize()
     {
-        if (in_array($this->sUnit, explode('/', self::NON_SIZE_UNITS))) {
+        if (in_array($this->sUnit, self::NON_SIZE_UNITS, true)) {
             return false;
         }
         return !$this->isColorComponent();
@@ -117,7 +132,7 @@ class Size extends PrimitiveValue
 
     public function isRelative()
     {
-        if (in_array($this->sUnit, explode('/', self::RELATIVE_SIZE_UNITS))) {
+        if (in_array($this->sUnit, self::RELATIVE_SIZE_UNITS, true)) {
             return true;
         }
         if ($this->sUnit === null && $this->fSize != 0) {
