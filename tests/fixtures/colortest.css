@@ -26,3 +26,8 @@
 	background-color: rgba(var(--some-rg), 255, 0.1);
 	background-color: hsla(var(--some-hsl), 0.1);
 }
+
+#calc {
+	background-color: rgba(var(--some-rgb), calc(var(--some-alpha) * 0.1));
+	background-color: hsla(var(--some-hsl), calc(var(--some-alpha) * 0.1));
+}

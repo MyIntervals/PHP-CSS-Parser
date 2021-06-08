@@ -120,7 +120,10 @@ class ParserTest extends \PHPUnit\Framework\TestCase
             . 'background-color: rgb(255,var(--rg));background-color: hsl(var(--some-hsl));}'
             . "\n"
             . '#variables-alpha {background-color: rgba(var(--some-rgb),.1);'
-            . 'background-color: rgba(var(--some-rg),255,.1);background-color: hsla(var(--some-hsl),.1);}',
+            . 'background-color: rgba(var(--some-rg),255,.1);background-color: hsla(var(--some-hsl),.1);}'
+            . "\n"
+            . '#calc {background-color: rgba(var(--some-rgb),calc(var(--some-alpha) * .1));'
+            . 'background-color: hsla(var(--some-hsl),calc(var(--some-alpha) * .1));}',
             $oDoc->render()
         );
     }
