@@ -46,7 +46,8 @@ EOT;
     public function testCompact()
     {
         $this->assertSame(
-            '.main,.test{font:italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background:white;}@media screen{.main{background-size:100% 100%;font-size:1.3em;background-color:#fff;}}',
+            '.main,.test{font:italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background:white;}'
+            . '@media screen{.main{background-size:100% 100%;font-size:1.3em;background-color:#fff;}}',
             $this->oDocument->render(OutputFormat::createCompact())
         );
     }
@@ -59,8 +60,9 @@ EOT;
     public function testSpaceAfterListArgumentSeparator()
     {
         $this->assertSame(
-            '.main, .test {font: italic   normal   bold   16px/  1.2   "Helvetica",  Verdana,  sans-serif;background: white;}
-@media screen {.main {background-size: 100%   100%;font-size: 1.3em;background-color: #fff;}}',
+            '.main, .test {font: italic   normal   bold   16px/  1.2   '
+            . '"Helvetica",  Verdana,  sans-serif;background: white;}'
+            . "\n@media screen {.main {background-size: 100%   100%;font-size: 1.3em;background-color: #fff;}}",
             $this->oDocument->render(OutputFormat::create()->setSpaceAfterListArgumentSeparator("  "))
         );
     }
@@ -68,8 +70,8 @@ EOT;
     public function testSpaceAfterListArgumentSeparatorComplex()
     {
         $this->assertSame(
-            '.main, .test {font: italic normal bold 16px/1.2 "Helvetica",	Verdana,	sans-serif;background: white;}
-@media screen {.main {background-size: 100% 100%;font-size: 1.3em;background-color: #fff;}}',
+            '.main, .test {font: italic normal bold 16px/1.2 "Helvetica",	Verdana,	sans-serif;background: white;}'
+            . "\n@media screen {.main {background-size: 100% 100%;font-size: 1.3em;background-color: #fff;}}",
             $this->oDocument->render(OutputFormat::create()->setSpaceAfterListArgumentSeparator([
                 'default' => ' ',
                 ',' => "\t",
@@ -168,7 +170,8 @@ EOT;
     public function testSpaceBetweenBlocks()
     {
         $this->assertSame(
-            '.main, .test {font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white;}@media screen {.main {background-size: 100% 100%;font-size: 1.3em;background-color: #fff;}}',
+            '.main, .test {font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white;}'
+            . '@media screen {.main {background-size: 100% 100%;font-size: 1.3em;background-color: #fff;}}',
             $this->oDocument->render(OutputFormat::create()->setSpaceBetweenBlocks(''))
         );
     }
