@@ -87,11 +87,13 @@ class LenientParsingTest extends \PHPUnit\Framework\TestCase
         $sFile = __DIR__ . '/../fixtures' . DIRECTORY_SEPARATOR . "case-insensitivity.css";
         $oParser = new Parser(file_get_contents($sFile));
         $oResult = $oParser->parse();
+
         $this->assertSame(
-            '@charset "utf-8";
-@import url("test.css");
-@media screen {}
-#myid {case: insensitive !important;frequency: 30Hz;font-size: 1em;color: #ff0;color: hsl(40,40%,30%);font-family: Arial;}',
+            '@charset "utf-8";' . "\n"
+            . '@import url("test.css");'
+            . "\n@media screen {}"
+            . "\n#myid {case: insensitive !important;frequency: 30Hz;font-size: 1em;color: #ff0;"
+            . 'color: hsl(40,40%,30%);font-family: Arial;}',
             $oResult->render()
         );
     }
