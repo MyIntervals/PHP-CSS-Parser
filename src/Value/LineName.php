@@ -7,7 +7,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 class LineName extends ValueList
 {
-    public function __construct($aComponents = [], $iLineNo = 0)
+    public function __construct(array $aComponents = [], $iLineNo = 0)
     {
         parent::__construct($aComponents, ' ', $iLineNo);
     }

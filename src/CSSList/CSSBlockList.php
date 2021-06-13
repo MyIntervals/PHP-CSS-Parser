@@ -19,7 +19,7 @@ abstract class CSSBlockList extends CSSList
         parent::__construct($iLineNo);
     }
 
-    protected function allDeclarationBlocks(&$aResult)
+    protected function allDeclarationBlocks(array &$aResult)
     {
         foreach ($this->aContents as $mContent) {
             if ($mContent instanceof DeclarationBlock) {
@@ -30,7 +30,7 @@ abstract class CSSBlockList extends CSSList
         }
     }
 
-    protected function allRuleSets(&$aResult)
+    protected function allRuleSets(array &$aResult)
     {
         foreach ($this->aContents as $mContent) {
             if ($mContent instanceof RuleSet) {
@@ -41,7 +41,7 @@ abstract class CSSBlockList extends CSSList
         }
     }
 
-    protected function allValues($oElement, &$aResult, $sSearchString = null, $bSearchInFunctionArguments = false)
+    protected function allValues($oElement, array &$aResult, $sSearchString = null, $bSearchInFunctionArguments = false)
     {
         if ($oElement instanceof CSSBlockList) {
             foreach ($oElement->getContents() as $oContent) {
@@ -65,7 +65,7 @@ abstract class CSSBlockList extends CSSList
         }
     }
 
-    protected function allSelectors(&$aResult, $sSpecificitySearch = null)
+    protected function allSelectors(array &$aResult, $sSpecificitySearch = null)
     {
         $aDeclarationBlocks = [];
         $this->allDeclarationBlocks($aDeclarationBlocks);
