@@ -56,23 +56,28 @@ class DeclarationBlockTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 'body {font: 12px serif;}',
-                'body {font-style: normal;font-variant: normal;font-weight: normal;font-size: 12px;line-height: normal;font-family: serif;}',
+                'body {font-style: normal;font-variant: normal;font-weight: normal;font-size: 12px;'
+                . 'line-height: normal;font-family: serif;}',
             ],
             [
                 'body {font: italic 12px serif;}',
-                'body {font-style: italic;font-variant: normal;font-weight: normal;font-size: 12px;line-height: normal;font-family: serif;}',
+                'body {font-style: italic;font-variant: normal;font-weight: normal;font-size: 12px;'
+                . 'line-height: normal;font-family: serif;}',
             ],
             [
                 'body {font: italic bold 12px serif;}',
-                'body {font-style: italic;font-variant: normal;font-weight: bold;font-size: 12px;line-height: normal;font-family: serif;}',
+                'body {font-style: italic;font-variant: normal;font-weight: bold;font-size: 12px;'
+                . 'line-height: normal;font-family: serif;}',
             ],
             [
                 'body {font: italic bold 12px/1.6 serif;}',
-                'body {font-style: italic;font-variant: normal;font-weight: bold;font-size: 12px;line-height: 1.6;font-family: serif;}',
+                'body {font-style: italic;font-variant: normal;font-weight: bold;font-size: 12px;'
+                . 'line-height: 1.6;font-family: serif;}',
             ],
             [
                 'body {font: italic small-caps bold 12px/1.6 serif;}',
-                'body {font-style: italic;font-variant: small-caps;font-weight: bold;font-size: 12px;line-height: 1.6;font-family: serif;}',
+                'body {font-style: italic;font-variant: small-caps;font-weight: bold;font-size: 12px;'
+                . 'line-height: 1.6;font-family: serif;}',
             ],
         ];
     }
@@ -96,23 +101,28 @@ class DeclarationBlockTest extends \PHPUnit\Framework\TestCase
             ['body {border: 1px;}', 'body {border: 1px;}'],
             [
                 'body {background: #f00;}',
-                'body {background-color: #f00;background-image: none;background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;}',
+                'body {background-color: #f00;background-image: none;background-repeat: repeat;'
+                . 'background-attachment: scroll;background-position: 0% 0%;}',
             ],
             [
                 'body {background: #f00 url("foobar.png");}',
-                'body {background-color: #f00;background-image: url("foobar.png");background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;}',
+                'body {background-color: #f00;background-image: url("foobar.png");background-repeat: repeat;'
+                . 'background-attachment: scroll;background-position: 0% 0%;}',
             ],
             [
                 'body {background: #f00 url("foobar.png") no-repeat;}',
-                'body {background-color: #f00;background-image: url("foobar.png");background-repeat: no-repeat;background-attachment: scroll;background-position: 0% 0%;}',
+                'body {background-color: #f00;background-image: url("foobar.png");background-repeat: no-repeat;'
+                . 'background-attachment: scroll;background-position: 0% 0%;}',
             ],
             [
                 'body {background: #f00 url("foobar.png") no-repeat center;}',
-                'body {background-color: #f00;background-image: url("foobar.png");background-repeat: no-repeat;background-attachment: scroll;background-position: center center;}',
+                'body {background-color: #f00;background-image: url("foobar.png");background-repeat: no-repeat;'
+                . 'background-attachment: scroll;background-position: center center;}',
             ],
             [
                 'body {background: #f00 url("foobar.png") no-repeat top left;}',
-                'body {background-color: #f00;background-image: url("foobar.png");background-repeat: no-repeat;background-attachment: scroll;background-position: top left;}',
+                'body {background-color: #f00;background-image: url("foobar.png");background-repeat: no-repeat;'
+                . 'background-attachment: scroll;background-position: top left;}',
             ],
         ];
     }
@@ -197,7 +207,8 @@ class DeclarationBlockTest extends \PHPUnit\Framework\TestCase
                 'body {font: italic bold 12px/1.6 serif;}',
             ],
             [
-                'body {font-size: 12px; font-family: serif; font-style: italic; font-weight: bold; line-height: 1.6; font-variant: small-caps;}',
+                'body {font-size: 12px; font-family: serif; font-style: italic; font-weight: bold; '
+                . 'line-height: 1.6; font-variant: small-caps;}',
                 'body {font: italic small-caps bold 12px/1.6 serif;}',
             ],
             ['body {margin: 1em;}', 'body {margin: 1em;}'],
@@ -265,11 +276,13 @@ class DeclarationBlockTest extends \PHPUnit\Framework\TestCase
                 'body {background: #f00 url("foobar.png") no-repeat;}',
             ],
             [
-                'body {background-color: #f00;background-image: url(foobar.png);background-repeat: no-repeat;background-position: center;}',
+                'body {background-color: #f00;background-image: url(foobar.png);background-repeat: no-repeat;'
+                . 'background-position: center;}',
                 'body {background: #f00 url("foobar.png") no-repeat center;}',
             ],
             [
-                'body {background-color: #f00;background-image: url(foobar.png);background-repeat: no-repeat;background-position: top left;}',
+                'body {background-color: #f00;background-image: url(foobar.png);background-repeat: no-repeat;'
+                . 'background-position: top left;}',
                 'body {background: #f00 url("foobar.png") no-repeat top left;}',
             ],
         ];
