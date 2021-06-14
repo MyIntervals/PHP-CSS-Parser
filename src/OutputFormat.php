@@ -102,6 +102,9 @@ class OutputFormat
         return null;
     }
 
+    /**
+     * @param array<array-key, string>|string $aNames
+     */
     public function set($aNames, $mValue)
     {
         $aVarPrefixes = ['a', 's', 'm', 'b', 'f', 'o', 'c', 'i'];
@@ -132,7 +135,7 @@ class OutputFormat
         return false;
     }
 
-    public function __call($sMethodName, $aArguments)
+    public function __call($sMethodName, array $aArguments)
     {
         if (strpos($sMethodName, 'set') === 0) {
             return $this->set(substr($sMethodName, 3), $aArguments[0]);

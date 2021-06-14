@@ -130,7 +130,7 @@ class Rule implements Renderable, Commentable
      * @deprecated Old-Style 2-dimensional array given. Retained for (some) backwards-compatibility.
      *              Use setValue() instead and wrap the value inside a RuleValueList if necessary.
      */
-    public function setValues($aSpaceSeparatedValues)
+    public function setValues(array $aSpaceSeparatedValues)
     {
         $oSpaceSeparatedList = null;
         if (count($aSpaceSeparatedValues) > 1) {

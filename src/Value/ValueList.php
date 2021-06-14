@@ -9,6 +9,9 @@ abstract class ValueList extends Value
 
     protected $sSeparator;
 
+    /**
+     * @param array|mixed $aComponents
+     */
     public function __construct($aComponents = [], $sSeparator = ',', $iLineNo = 0)
     {
         parent::__construct($iLineNo);
@@ -29,7 +32,7 @@ abstract class ValueList extends Value
         return $this->aComponents;
     }
 
-    public function setListComponents($aComponents)
+    public function setListComponents(array $aComponents)
     {
         $this->aComponents = $aComponents;
     }

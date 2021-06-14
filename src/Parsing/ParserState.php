@@ -242,6 +242,9 @@ class ParserState
         return $this->iCurrentPosition >= $this->iLength;
     }
 
+    /**
+     * @param array<array-key, string>|string $aEnd
+     */
     public function consumeUntil($aEnd, $bIncludeEnd = false, $consumeEnd = false, array &$comments = [])
     {
         $aEnd = is_array($aEnd) ? $aEnd : [$aEnd];

@@ -109,7 +109,7 @@ class OutputFormatter
     /**
      * Clone of the implode function but calls ->render with the current output format instead of ` __toString()
      */
-    public function implode($sSeparator, $aValues, $bIncreaseLevel = false)
+    public function implode($sSeparator, array $aValues, $bIncreaseLevel = false)
     {
         $sResult = '';
         $oFormat = $this->oFormat;

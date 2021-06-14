@@ -15,7 +15,7 @@ abstract class Value implements Renderable
         $this->iLineNo = $iLineNo;
     }
 
-    public static function parseValue(ParserState $oParserState, $aListDelimiters = [])
+    public static function parseValue(ParserState $oParserState, array $aListDelimiters = [])
     {
         $aStack = [];
         $oParserState->consumeWhiteSpace();

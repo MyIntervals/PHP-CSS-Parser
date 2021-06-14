@@ -7,6 +7,9 @@ class CSSFunction extends ValueList
 
     protected $sName;
 
+    /**
+     * @param RuleValueList|array $aArguments
+     */
     public function __construct($sName, $aArguments, $sSeparator = ',', $iLineNo = 0)
     {
         if ($aArguments instanceof RuleValueList) {
