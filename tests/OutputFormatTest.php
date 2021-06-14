@@ -1,6 +1,9 @@
 <?php
 
-namespace Sabberworm\CSS;
+namespace Sabberworm\CSS\Tests;
+
+use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Parser;
 
 class OutputFormatTest extends \PHPUnit\Framework\TestCase
 {
@@ -206,7 +209,7 @@ background-color: #fff;
     }
 
     /**
-     * @expectedException Sabberworm\CSS\Parsing\OutputException
+     * @expectedException \Sabberworm\CSS\Parsing\OutputException
      */
     public function testIgnoreExceptionsOff()
     {

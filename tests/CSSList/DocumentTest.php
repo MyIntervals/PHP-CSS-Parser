@@ -1,6 +1,6 @@
 <?php
 
-namespace Sabberworm\CSS\CSSList;
+namespace Sabberworm\CSS\Tests\CSSList;
 
 use Sabberworm\CSS\Parser;
 
