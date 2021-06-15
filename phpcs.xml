@@ -12,4 +12,6 @@
         <!-- Exclude a rule that requires PHP >= 7.1. -->
         <exclude name="PSR12.Properties.ConstantVisibility"/>
     </rule>
+
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
 </ruleset>
