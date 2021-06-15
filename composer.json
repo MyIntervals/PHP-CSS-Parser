@@ -2,11 +2,17 @@
     "name": "sabberworm/php-css-parser",
     "type": "library",
     "description": "Parser for CSS Files written in PHP",
-    "keywords": ["parser", "css", "stylesheet"],
+    "keywords": [
+        "parser",
+        "css",
+        "stylesheet"
+    ],
     "homepage": "https://www.sabberworm.com/blog/2010/6/10/php-css-parser",
     "license": "MIT",
     "authors": [
-        {"name": "Raphael Schweikert"}
+        {
+            "name": "Raphael Schweikert"
+        }
     ],
     "require": {
         "php": ">=5.6.20"
@@ -16,10 +22,14 @@
         "codacy/coverage": "^1.4"
     },
     "autoload": {
-        "psr-4": { "Sabberworm\\CSS\\": "src/" }
+        "psr-4": {
+            "Sabberworm\\CSS\\": "src/"
+        }
     },
     "autoload-dev": {
-        "psr-4": { "Sabberworm\\CSS\\Tests\\": "tests/" }
+        "psr-4": {
+            "Sabberworm\\CSS\\Tests\\": "tests/"
+        }
     },
     "scripts": {
         "ci": [
@@ -36,5 +46,14 @@
         ],
         "fix:php:sniff": "@php ./.phive/phpcbf.phar bin src tests",
         "phpstan:baseline": "@php ./.phive/phpstan.phar --generate-baseline"
+    },
+    "scripts-descriptions": {
+        "ci": "Runs all dynamic and static code checks (i.e. currently, only the static checks).",
+        "ci:php:sniff": "Checks the code style with PHP_CodeSniffer.",
+        "ci:php:stan": "Checks the types with PHPStan.",
+        "ci:static": "Runs all static code analysis checks for the code.",
+        "fix:php": "Autofixes all autofixable issues in the PHP code.",
+        "fix:php:sniff": "Fixes autofixable issues found by PHP_CodeSniffer.",
+        "phpstand:baseline": "Updates the PHPStan baseline file to match the code."
     }
 }
