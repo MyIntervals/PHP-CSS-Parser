@@ -11,18 +11,26 @@ namespace Sabberworm\CSS;
 class OutputFormat
 {
     /**
-     * Value format
+     * Value format: `"` means double-quote, `'` means single-quote
+     *
+     * @var string
      */
-    // " means double-quote, ' means single-quote
     public $sStringQuotingType = '"';
 
-    // Output RGB colors in hash notation if possible
+    /**
+     * Output RGB colors in hash notation if possible
+     *
+     * @var string
+     */
     public $bRGBHashNotation = true;
 
     /**
      * Declaration format
+     *
+     * Semicolon after the last rule of a declaration block can be omitted. To do that, set this false.
+     *
+     * @var bool
      */
-    // Semicolon after the last rule of a declaration block can be omitted. To do that, set this false.
     public $bSemicolonAfterLastRule = true;
 
     /**
@@ -45,24 +53,40 @@ class OutputFormat
 
     public $sSpaceBetweenBlocks = "\n";
 
-    // Content injected in and around @-rule blocks.
+    /**
+     * Content injected in and around @-rule blocks.
+     *
+     * @var string
+     */
     public $sBeforeAtRuleBlock = '';
 
     public $sAfterAtRuleBlock = '';
 
-    // This is what’s printed before and after the comma if a declaration block contains multiple selectors.
+    /**
+     * This is what’s printed before and after the comma if a declaration block contains multiple selectors.
+     *
+     * @var string
+     */
     public $sSpaceBeforeSelectorSeparator = '';
 
     public $sSpaceAfterSelectorSeparator = ' ';
 
-    // This is what’s printed after the comma of value lists
+    /**
+     * This is what’s printed after the comma of value lists
+     *
+     * @var string
+     */
     public $sSpaceBeforeListArgumentSeparator = '';
 
     public $sSpaceAfterListArgumentSeparator = '';
 
     public $sSpaceBeforeOpeningBrace = ' ';
 
-    // Content injected in and around declaration blocks.
+    /**
+     * Content injected in and around declaration blocks.
+     *
+     * @var string
+     */
     public $sBeforeDeclarationBlock = '';
 
     public $sAfterDeclarationBlockSelectors = '';
@@ -70,13 +94,16 @@ class OutputFormat
     public $sAfterDeclarationBlock = '';
 
     /**
-     * Indentation
+     * Indentation character(s) per level. Only applicable if newlines are used in any of the spacing settings.
+     *
+     * @var string
      */
-    // Indentation character(s) per level. Only applicable if newlines are used in any of the spacing settings.
     public $sIndentation = "\t";
 
     /**
      * Output exceptions.
+     *
+     * @var bool
      */
     public $bIgnoreExceptions = false;
 

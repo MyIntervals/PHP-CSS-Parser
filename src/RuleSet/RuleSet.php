@@ -11,7 +11,7 @@ use Sabberworm\CSS\Rule\Rule;
 
 /**
  * RuleSet is a generic superclass denoting rules. The typical example for rule sets are declaration block.
- * However, unknown At-Rules (like @font-face) are also rule sets.
+ * However, unknown At-Rules (like `@font-face`) are also rule sets.
  */
 abstract class RuleSet implements Renderable, Commentable
 {
@@ -162,8 +162,8 @@ abstract class RuleSet implements Renderable, Commentable
      * Returns all rules matching the given pattern and returns them in an associative array with the rule’s name
      * as keys. This method exists mainly for backwards-compatibility and is really only partially useful.
      *
-     * Note: This method loses some information: Calling this (with an argument of 'background-') on a declaration block
-     * like { background-color: green; background-color; rgba(0, 127, 0, 0.7); } will only yield an associative array
+     * Note: This method loses some information: Calling this (with an argument of `background-`) on a declaration block
+     * like `{ background-color: green; background-color; rgba(0, 127, 0, 0.7); }` will only yield an associative array
      * containing the rgba-valued rule while `getRules()` would yield an indexed array containing both.
      *
      * @param string $mRule
@@ -183,7 +183,7 @@ abstract class RuleSet implements Renderable, Commentable
     }
 
     /**
-     * Remove a rule from this RuleSet. This accepts all the possible values that `getRules()` accepts.
+     * Removes a rule from this RuleSet. This accepts all the possible values that `getRules()` accepts.
      *
      * If given a Rule, it will only remove this particular rule (by identity).
      * If given a name, it will remove all rules by that name.

@@ -102,7 +102,9 @@ class DeclarationBlock extends RuleSet
         }
     }
 
-    // remove one of the selector of the block
+    /**
+     * Remove one of the selectors of the block.
+     */
     public function removeSelector($mSelector)
     {
         if ($mSelector instanceof Selector) {
@@ -118,7 +120,7 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * @deprecated use getSelectors()
+     * @deprecated use `getSelectors()`
      */
     public function getSelector()
     {
@@ -126,7 +128,7 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * @deprecated use setSelectors()
+     * @deprecated use `setSelectors()`
      */
     public function setSelector($mSelector, $oList = null)
     {
@@ -214,7 +216,7 @@ class DeclarationBlock extends RuleSet
                 } else {
                     if (in_array($mValue, $aBorderSizes)) {
                         $sNewRuleName = $sBorderRule . "-width";
-                    } else /* if(in_array($mValue, $aBorderStyles)) */ {
+                    } else {
                         $sNewRuleName = $sBorderRule . "-style";
                     }
                 }
@@ -287,7 +289,7 @@ class DeclarationBlock extends RuleSet
 
     /**
      * Convert shorthand font declarations
-     * (e.g. <tt>font: 300 italic 11px/14px verdana, helvetica, sans-serif;</tt>)
+     * (e.g. `font: 300 italic 11px/14px verdana, helvetica, sans-serif;`)
      * into their constituent parts.
      * */
     public function expandFontShorthand()
@@ -351,13 +353,13 @@ class DeclarationBlock extends RuleSet
         $this->removeRule('font');
     }
 
-    /*
-     * Convert shorthand background declarations
-     * (e.g. <tt>background: url("chess.png") gray 50% repeat fixed;</tt>)
+    /**
+     * Converts shorthand background declarations
+     * (e.g. `background: url("chess.png") gray 50% repeat fixed;`)
      * into their constituent parts.
+     *
      * @see http://www.w3.org/TR/21/colors.html#propdef-background
-     * */
-
+     */
     public function expandBackgroundShorthand()
     {
         $aRules = $this->getRulesAssoc();
@@ -572,12 +574,11 @@ class DeclarationBlock extends RuleSet
         $this->createShorthandProperties($aProperties, 'border');
     }
 
-    /*
+    /**
      * Looks for long format CSS dimensional properties
      * (margin, padding, border-color, border-style and border-width)
      * and converts them into shorthand CSS properties.
-     * */
-
+     */
     public function createDimensionsShorthand()
     {
         $aPositions = ['top', 'right', 'bottom', 'left'];
@@ -645,10 +646,11 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * Looks for long format CSS font properties (e.g. <tt>font-weight</tt>) and
-     * tries to convert them into a shorthand CSS <tt>font</tt> property.
+     * Looks for long format CSS font properties (e.g. `font-weight`) and
+     * tries to convert them into a shorthand CSS `font` property.
+     *
      * At least font-size AND font-family must be present in order to create a shorthand declaration.
-     * */
+     */
     public function createFontShorthand()
     {
         $aFontProperties = [

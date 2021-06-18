@@ -34,7 +34,7 @@ class Comment implements Renderable
     }
 
     /**
-     * @return string
+     * @param string $sComment
      */
     public function setComment($sComment)
     {

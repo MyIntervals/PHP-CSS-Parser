@@ -100,7 +100,7 @@ class ParserState
             }
             $sUnicode = $this->consumeExpression('/^[0-9a-fA-F]{1,6}/u', 6);
             if ($this->strlen($sUnicode) < 6) {
-                //Consume whitespace after incomplete unicode escape
+                // Consume whitespace after incomplete unicode escape
                 if (preg_match('/\\s/isSu', $this->peek())) {
                     if ($this->comes('\r\n')) {
                         $this->consume(2);
