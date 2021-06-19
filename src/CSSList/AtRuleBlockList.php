@@ -6,7 +6,7 @@ use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Property\AtRule;
 
 /**
- * A BlockList constructed by an unknown @-rule. @media rules are rendered into AtRuleBlockList objects.
+ * A BlockList constructed by an unknown at-rule. @media rules are rendered into AtRuleBlockList objects.
  */
 class AtRuleBlockList extends CSSBlockList implements AtRule
 {

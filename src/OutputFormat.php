@@ -54,7 +54,7 @@ class OutputFormat
     public $sSpaceBetweenBlocks = "\n";
 
     /**
-     * Content injected in and around @-rule blocks.
+     * Content injected in and around at-rule blocks.
      *
      * @var string
      */

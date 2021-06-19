@@ -8,7 +8,7 @@ use Sabberworm\CSS\Parsing\SourceException;
 
 /**
  * The root CSSList of a parsed file. Contains all top-level css contents, mostly declaration blocks,
- * but also any @-rules encountered.
+ * but also any at-rules encountered.
  */
 class Document extends CSSBlockList
 {

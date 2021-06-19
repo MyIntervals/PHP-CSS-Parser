@@ -23,7 +23,7 @@ use Sabberworm\CSS\Value\Value;
 
 /**
  * A CSSList is the most generic container available. Its contents include RuleSet as well as other CSSList objects.
- * Also, it may contain Import and Charset objects stemming from @-rules.
+ * Also, it may contain Import and Charset objects stemming from at-rules.
  */
 abstract class CSSList implements Renderable, Commentable
 {
