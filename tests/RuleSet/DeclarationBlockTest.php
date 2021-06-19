@@ -8,7 +8,6 @@ use Sabberworm\CSS\Value\Size;
 
 class DeclarationBlockTest extends \PHPUnit\Framework\TestCase
 {
-
     /**
      * @dataProvider expandBorderShorthandProvider
      * */

@@ -8,7 +8,6 @@ namespace Sabberworm\CSS\Property;
  */
 class Selector
 {
-
     //Regexes for specificity calculations
     const NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX = '/
 	(\.[\w]+)                   # classes

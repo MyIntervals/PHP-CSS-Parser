@@ -6,7 +6,6 @@ use Sabberworm\CSS\Parser;
 
 class AtRuleBlockListTest extends \PHPUnit\Framework\TestCase
 {
-
     public function testMediaQueries()
     {
         $sCss = '@media(min-width: 768px){.class{color:red}}';

@@ -14,7 +14,6 @@ use Sabberworm\CSS\Value\Value;
  */
 class Rule implements Renderable, Commentable
 {
-
     private $sRule;
 
     private $mValue;

@@ -7,7 +7,6 @@ use Sabberworm\CSS\Parsing\SourceException;
 
 class CSSString extends PrimitiveValue
 {
-
     private $sString;
 
     public function __construct($sString, $iLineNo = 0)

@@ -4,7 +4,6 @@ namespace Sabberworm\CSS\Value;
 
 abstract class ValueList extends Value
 {
-
     protected $aComponents;
 
     protected $sSeparator;

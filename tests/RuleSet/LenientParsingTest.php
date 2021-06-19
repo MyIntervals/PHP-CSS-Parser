@@ -7,7 +7,6 @@ use Sabberworm\CSS\Settings;
 
 class LenientParsingTest extends \PHPUnit\Framework\TestCase
 {
-
     /**
      * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
      */

@@ -19,7 +19,6 @@ use Sabberworm\CSS\Value\URL;
 
 class ParserTest extends \PHPUnit\Framework\TestCase
 {
-
     public function testFiles()
     {
         $sDirectory = __DIR__ . '/fixtures';
