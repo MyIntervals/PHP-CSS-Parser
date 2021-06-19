@@ -7,6 +7,9 @@ use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Value\Size;
 
+/**
+ * @covers \Sabberworm\CSS\RuleSet\DeclarationBlock
+ */
 class DeclarationBlockTest extends TestCase
 {
     /**

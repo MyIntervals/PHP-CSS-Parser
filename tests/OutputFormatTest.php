@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parser;
 
+/**
+ * @covers \Sabberworm\CSS\OutputFormat
+ */
 class OutputFormatTest extends TestCase
 {
     /**
