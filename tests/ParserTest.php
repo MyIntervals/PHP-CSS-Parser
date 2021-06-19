@@ -858,6 +858,7 @@ body {background-color: red;}';
         $oColor = $aRules[1]->getValue();
         $this->assertEquals(27, $aRules[1]->getLineNo());
 
+        $aActualColorLines = [];
         foreach ($oColor->getColor() as $oSize) {
             $aActualColorLines[] = $oSize->getLineNo();
         }
