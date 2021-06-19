@@ -2,6 +2,8 @@
 
 namespace Sabberworm\CSS\Value;
 
+use Sabberworm\CSS\OutputFormat;
+
 class CalcRuleValueList extends RuleValueList
 {
     public function __construct($iLineNo = 0)
@@ -10,11 +12,11 @@ class CalcRuleValueList extends RuleValueList
     }
 
     /**
-     * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+     * @param OutputFormat $oOutputFormat
      *
      * @return string
      */
-    public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat)
     {
         return $oOutputFormat->implode(' ', $this->aComponents);
     }

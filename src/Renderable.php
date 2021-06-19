@@ -11,7 +11,7 @@ interface Renderable
      *
      * @return string
      */
-    public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat);
+    public function render(OutputFormat $oOutputFormat);
 
     public function getLineNo();
 }

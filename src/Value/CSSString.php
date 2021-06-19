@@ -2,6 +2,7 @@
 
 namespace Sabberworm\CSS\Value;
 
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 
@@ -63,15 +64,15 @@ class CSSString extends PrimitiveValue
 
     public function __toString()
     {
-        return $this->render(new \Sabberworm\CSS\OutputFormat());
+        return $this->render(new OutputFormat());
     }
 
     /**
-     * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+     * @param OutputFormat $oOutputFormat
      *
      * @return string
      */
-    public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat)
     {
         $sString = addslashes($this->sString);
         $sString = str_replace("\n", '\A', $sString);

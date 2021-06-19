@@ -2,10 +2,11 @@
 
 namespace Sabberworm\CSS\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parser;
 
-class OutputFormatTest extends \PHPUnit\Framework\TestCase
+class OutputFormatTest extends TestCase
 {
     /**
      * @var string

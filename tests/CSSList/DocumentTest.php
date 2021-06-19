@@ -2,9 +2,10 @@
 
 namespace Sabberworm\CSS\Tests\CSSList;
 
+use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parser;
 
-class DocumentTest extends \PHPUnit\Framework\TestCase
+class DocumentTest extends TestCase
 {
 
     public function testOverrideContents()

@@ -2,6 +2,7 @@
 
 namespace Sabberworm\CSS\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\CSSList\KeyFrame;
 use Sabberworm\CSS\Parser;
@@ -14,10 +15,11 @@ use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\RuleSet\AtRuleSet;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Settings;
+use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\URL;
 
-class ParserTest extends \PHPUnit\Framework\TestCase
+class ParserTest extends TestCase
 {
 
     public function testFiles()
@@ -347,7 +349,7 @@ body {color: green;}',
         $this->assertSame('background-color', $aHeaderRules[1]->getRule());
         $aHeaderRules = $oHeaderBlock->getRulesAssoc('background-');
         $this->assertCount(1, $aHeaderRules);
-        $this->assertTrue($aHeaderRules['background-color']->getValue() instanceof \Sabberworm\CSS\Value\Color);
+        $this->assertTrue($aHeaderRules['background-color']->getValue() instanceof Color);
         $this->assertSame('rgba', $aHeaderRules['background-color']->getValue()->getColorDescription());
         $oHeaderBlock->removeRule($aHeaderRules['background-color']);
         $aHeaderRules = $oHeaderBlock->getRules('background-');

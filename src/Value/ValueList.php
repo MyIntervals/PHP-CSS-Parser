@@ -2,6 +2,8 @@
 
 namespace Sabberworm\CSS\Value;
 
+use Sabberworm\CSS\OutputFormat;
+
 abstract class ValueList extends Value
 {
 
@@ -49,15 +51,15 @@ abstract class ValueList extends Value
 
     public function __toString()
     {
-        return $this->render(new \Sabberworm\CSS\OutputFormat());
+        return $this->render(new OutputFormat());
     }
 
     /**
-     * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+     * @param OutputFormat $oOutputFormat
      *
      * @return string
      */
-    public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat)
     {
         return $oOutputFormat->implode(
             $oOutputFormat->spaceBeforeListArgumentSeparator($this->sSeparator) . $this->sSeparator

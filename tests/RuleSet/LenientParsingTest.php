@@ -2,10 +2,11 @@
 
 namespace Sabberworm\CSS\Tests\RuleSet;
 
+use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Settings;
 
-class LenientParsingTest extends \PHPUnit\Framework\TestCase
+class LenientParsingTest extends TestCase
 {
 
     /**

@@ -2,9 +2,10 @@
 
 namespace Sabberworm\CSS\Tests\CSSList;
 
+use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parser;
 
-class AtRuleBlockListTest extends \PHPUnit\Framework\TestCase
+class AtRuleBlockListTest extends TestCase
 {
 
     public function testMediaQueries()

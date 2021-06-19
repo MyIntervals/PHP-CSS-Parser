@@ -2,6 +2,7 @@
 
 namespace Sabberworm\CSS\Value;
 
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
@@ -37,16 +38,16 @@ class LineName extends ValueList
 
     public function __toString()
     {
-        return $this->render(new \Sabberworm\CSS\OutputFormat());
+        return $this->render(new OutputFormat());
     }
 
     /**
-     * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+     * @param OutputFormat $oOutputFormat
      *
      * @return string
      */
-    public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat)
     {
-        return '[' . parent::render(\Sabberworm\CSS\OutputFormat::createCompact()) . ']';
+        return '[' . parent::render(OutputFormat::createCompact()) . ']';
     }
 }

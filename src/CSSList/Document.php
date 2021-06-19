@@ -2,7 +2,9 @@
 
 namespace Sabberworm\CSS\CSSList;
 
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\SourceException;
 
 /**
  * The root CSSList of a parsed file. Contains all top-level css contents, mostly declaration blocks,
@@ -25,7 +27,7 @@ class Document extends CSSBlockList
      *
      * @return Document
      *
-     * @throws \Sabberworm\CSS\Parsing\SourceException
+     * @throws SourceException
      */
     public static function parse(ParserState $oParserState)
     {
@@ -127,14 +129,14 @@ class Document extends CSSBlockList
     /**
      * Override render() to make format argument optional
      *
-     * @param \Sabberworm\CSS\OutputFormat|null $oOutputFormat
+     * @param OutputFormat|null $oOutputFormat
      *
      * @return string
      */
-    public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat = null)
+    public function render(OutputFormat $oOutputFormat = null)
     {
         if ($oOutputFormat === null) {
-            $oOutputFormat = new \Sabberworm\CSS\OutputFormat();
+            $oOutputFormat = new OutputFormat();
         }
         return parent::render($oOutputFormat);
     }

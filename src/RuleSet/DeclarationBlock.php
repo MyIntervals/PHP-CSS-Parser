@@ -3,6 +3,7 @@
 namespace Sabberworm\CSS\RuleSet;
 
 use Sabberworm\CSS\CSSList\KeyFrame;
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\OutputException;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
@@ -728,17 +729,17 @@ class DeclarationBlock extends RuleSet
 
     public function __toString()
     {
-        return $this->render(new \Sabberworm\CSS\OutputFormat());
+        return $this->render(new OutputFormat());
     }
 
     /**
-     * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+     * @param OutputFormat $oOutputFormat
      *
      * @return string
      *
      * @throws OutputException
      */
-    public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat)
     {
         if (count($this->aSelectors) === 0) {
             // If all the selectors have been removed, this declaration block becomes invalid

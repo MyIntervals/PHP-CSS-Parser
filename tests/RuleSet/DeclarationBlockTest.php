@@ -2,11 +2,12 @@
 
 namespace Sabberworm\CSS\Tests\RuleSet;
 
+use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Value\Size;
 
-class DeclarationBlockTest extends \PHPUnit\Framework\TestCase
+class DeclarationBlockTest extends TestCase
 {
 
     /**
