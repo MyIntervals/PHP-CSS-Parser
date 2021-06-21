@@ -25,8 +25,3 @@ parameters:
 			count: 1
 			path: src/Value/CalcRuleValueList.php
 
-		-
-			message: "#^Variable \\$aActualColorLines might not be defined\\.$#"
-			count: 1
-			path: tests/ParserTest.php
-
