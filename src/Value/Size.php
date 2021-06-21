@@ -7,7 +7,6 @@ use Sabberworm\CSS\Parsing\ParserState;
 
 class Size extends PrimitiveValue
 {
-
     /**
      * vh/vw/vm(ax)/vmin/rem are absolute insofar as they don’t scale to the immediate parent (only the viewport)
      *

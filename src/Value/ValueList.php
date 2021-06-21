@@ -6,7 +6,6 @@ use Sabberworm\CSS\OutputFormat;
 
 abstract class ValueList extends Value
 {
-
     protected $aComponents;
 
     protected $sSeparator;

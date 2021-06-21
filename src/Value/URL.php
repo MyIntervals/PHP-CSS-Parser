@@ -7,7 +7,6 @@ use Sabberworm\CSS\Parsing\ParserState;
 
 class URL extends PrimitiveValue
 {
-
     private $oURL;
 
     public function __construct(CSSString $oURL, $iLineNo = 0)

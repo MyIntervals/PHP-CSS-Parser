@@ -9,7 +9,6 @@ use Sabberworm\CSS\Value\Size;
 
 class DeclarationBlockTest extends TestCase
 {
-
     /**
      * @dataProvider expandBorderShorthandProvider
      * */

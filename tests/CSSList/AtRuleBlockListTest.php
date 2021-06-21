@@ -7,7 +7,6 @@ use Sabberworm\CSS\Parser;
 
 class AtRuleBlockListTest extends TestCase
 {
-
     public function testMediaQueries()
     {
         $sCss = '@media(min-width: 768px){.class{color:red}}';

@@ -8,20 +8,19 @@ use Sabberworm\CSS\Settings;
 
 class LenientParsingTest extends TestCase
 {
-
     /**
      * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
      */
     public function testFaultToleranceOff()
     {
-        $sFile = __DIR__ . '/../fixtures' . DIRECTORY_SEPARATOR . "-fault-tolerance.css";
+        $sFile = __DIR__ . '/../fixtures/-fault-tolerance.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->beStrict());
         $oParser->parse();
     }
 
     public function testFaultToleranceOn()
     {
-        $sFile = __DIR__ . '/../fixtures' . DIRECTORY_SEPARATOR . "-fault-tolerance.css";
+        $sFile = __DIR__ . '/../fixtures/-fault-tolerance.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
         $this->assertSame(
@@ -36,7 +35,7 @@ class LenientParsingTest extends TestCase
      */
     public function testEndToken()
     {
-        $sFile = __DIR__ . '/../fixtures' . DIRECTORY_SEPARATOR . "-end-token.css";
+        $sFile = __DIR__ . '/../fixtures/-end-token.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->beStrict());
         $oParser->parse();
     }
@@ -46,14 +45,14 @@ class LenientParsingTest extends TestCase
      */
     public function testEndToken2()
     {
-        $sFile = __DIR__ . '/../fixtures' . DIRECTORY_SEPARATOR . "-end-token-2.css";
+        $sFile = __DIR__ . '/../fixtures/-end-token-2.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->beStrict());
         $oParser->parse();
     }
 
     public function testEndTokenPositive()
     {
-        $sFile = __DIR__ . '/../fixtures' . DIRECTORY_SEPARATOR . "-end-token.css";
+        $sFile = __DIR__ . '/../fixtures/-end-token.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
         $this->assertSame("", $oResult->render());
@@ -61,7 +60,7 @@ class LenientParsingTest extends TestCase
 
     public function testEndToken2Positive()
     {
-        $sFile = __DIR__ . '/../fixtures' . DIRECTORY_SEPARATOR . "-end-token-2.css";
+        $sFile = __DIR__ . '/../fixtures/-end-token-2.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
         $this->assertSame(
@@ -73,7 +72,7 @@ class LenientParsingTest extends TestCase
     public function testLocaleTrap()
     {
         setlocale(LC_ALL, "pt_PT", "no");
-        $sFile = __DIR__ . '/../fixtures' . DIRECTORY_SEPARATOR . "-fault-tolerance.css";
+        $sFile = __DIR__ . '/../fixtures/-fault-tolerance.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
         $this->assertSame(
@@ -85,7 +84,7 @@ class LenientParsingTest extends TestCase
 
     public function testCaseInsensitivity()
     {
-        $sFile = __DIR__ . '/../fixtures' . DIRECTORY_SEPARATOR . "case-insensitivity.css";
+        $sFile = __DIR__ . '/../fixtures/case-insensitivity.css';
         $oParser = new Parser(file_get_contents($sFile));
         $oResult = $oParser->parse();
 

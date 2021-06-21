@@ -7,7 +7,6 @@ use Sabberworm\CSS\Parser;
 
 class DocumentTest extends TestCase
 {
-
     public function testOverrideContents()
     {
         $sCss = '.thing { left: 10px; }';

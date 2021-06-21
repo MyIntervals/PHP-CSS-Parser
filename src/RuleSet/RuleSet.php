@@ -15,7 +15,6 @@ use Sabberworm\CSS\Rule\Rule;
  */
 abstract class RuleSet implements Renderable, Commentable
 {
-
     private $aRules;
 
     protected $iLineNo;
@@ -129,7 +128,8 @@ abstract class RuleSet implements Renderable, Commentable
             // or the search rule ends in “-” and the found rule starts with the search rule.
             if (
                 !$mRule || $sName === $mRule
-                || (strrpos($mRule, '-') === strlen($mRule) - strlen('-')
+                || (
+                    strrpos($mRule, '-') === strlen($mRule) - strlen('-')
                     && (strpos($sName, $mRule) === 0 || $sName === substr($mRule, 0, -1))
                 )
             ) {

@@ -7,7 +7,6 @@ use Sabberworm\CSS\Parsing\ParserState;
 
 class Color extends CSSFunction
 {
-
     public function __construct(array $aColor, $iLineNo = 0)
     {
         parent::__construct(implode('', array_keys($aColor)), $aColor, ',', $iLineNo);

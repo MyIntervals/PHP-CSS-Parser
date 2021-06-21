@@ -4,6 +4,9 @@ namespace Sabberworm\CSS;
 
 interface Renderable
 {
+    /**
+     * @return string
+     */
     public function __toString();
 
     /**

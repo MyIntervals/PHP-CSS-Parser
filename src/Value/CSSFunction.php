@@ -6,7 +6,6 @@ use Sabberworm\CSS\OutputFormat;
 
 class CSSFunction extends ValueList
 {
-
     protected $sName;
 
     /**
