@@ -2,6 +2,7 @@
 
 namespace Sabberworm\CSS\Property;
 
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Value\URL;
 
 /**
@@ -62,15 +63,15 @@ class Import implements AtRule
 
     public function __toString()
     {
-        return $this->render(new \Sabberworm\CSS\OutputFormat());
+        return $this->render(new OutputFormat());
     }
 
     /**
-     * @param \Sabberworm\CSS\OutputFormat $oOutputFormat
+     * @param OutputFormat $oOutputFormat
      *
      * @return string
      */
-    public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat)
     {
         return "@import " . $this->oLocation->render($oOutputFormat)
             . ($this->sMediaQuery === null ? '' : ' ' . $this->sMediaQuery) . ';';

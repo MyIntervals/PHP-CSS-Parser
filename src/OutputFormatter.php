@@ -123,7 +123,7 @@ class OutputFormatter
             } else {
                 $sResult .= $sSeparator;
             }
-            if ($mValue instanceof \Sabberworm\CSS\Renderable) {
+            if ($mValue instanceof Renderable) {
                 $sResult .= $mValue->render($oFormat);
             } else {
                 $sResult .= $mValue;

@@ -2,6 +2,7 @@
 
 namespace Sabberworm\CSS\Comment;
 
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Renderable;
 
 class Comment implements Renderable
@@ -45,13 +46,13 @@ class Comment implements Renderable
      */
     public function __toString()
     {
-        return $this->render(new \Sabberworm\CSS\OutputFormat());
+        return $this->render(new OutputFormat());
     }
 
     /**
      * @return string
      */
-    public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat)
     {
         return '/*' . $this->sComment . '*/';
     }

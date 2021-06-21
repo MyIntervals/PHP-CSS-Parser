@@ -3,6 +3,7 @@
 namespace Sabberworm\CSS\CSSList;
 
 use Sabberworm\CSS\Comment\Commentable;
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
@@ -353,13 +354,13 @@ abstract class CSSList implements Renderable, Commentable
 
     public function __toString()
     {
-        return $this->render(new \Sabberworm\CSS\OutputFormat());
+        return $this->render(new OutputFormat());
     }
 
     /**
      * @return string
      */
-    public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat)
     {
         $sResult = '';
         $bIsFirst = true;
