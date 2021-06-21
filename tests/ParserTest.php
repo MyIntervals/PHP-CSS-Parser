@@ -37,7 +37,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
                     // or a future test of a as-of-now missing feature
                     continue;
                 }
-                $oParser = new Parser(file_get_contents($sDirectory . DIRECTORY_SEPARATOR . $sFileName));
+                $oParser = new Parser(file_get_contents($sDirectory . '/' . $sFileName));
                 try {
                     $this->assertNotEquals('', $oParser->parse()->render());
                 } catch (\Exception $e) {
@@ -807,7 +807,7 @@ body {background-color: red;}';
      */
     private function parsedStructureForFile($sFileName, $oSettings = null)
     {
-        $sFile = __DIR__ . '/fixtures' . DIRECTORY_SEPARATOR . "$sFileName.css";
+        $sFile = __DIR__ . "/fixtures/$sFileName.css";
         $oParser = new Parser(file_get_contents($sFile), $oSettings);
         return $oParser->parse();
     }
