@@ -50,7 +50,7 @@ class DeclarationBlock extends RuleSet
                     }
                 }
             } while (!in_array($oParserState->peek(), ['{', '}']) || $sStringWrapperChar !== false);
-            $oResult->setSelector(implode('', $aSelectorParts), $oList);
+            $oResult->setSelectors(implode('', $aSelectorParts), $oList);
             if ($oParserState->comes('{')) {
                 $oParserState->consume(1);
             }
