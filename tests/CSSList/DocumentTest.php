@@ -6,7 +6,6 @@ use Sabberworm\CSS\Parser;
 
 class DocumentTest extends \PHPUnit\Framework\TestCase
 {
-
     public function testOverrideContents()
     {
         $sCss = '.thing { left: 10px; }';
