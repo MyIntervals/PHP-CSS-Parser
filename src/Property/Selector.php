@@ -8,7 +8,11 @@ namespace Sabberworm\CSS\Property;
  */
 class Selector
 {
-    //Regexes for specificity calculations
+    /**
+     * regexp for specificity calculations
+     *
+     * @var string
+     */
     const NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX = '/
 	(\.[\w]+)                   # classes
 	|
@@ -28,6 +32,11 @@ class Selector
 	))
 	/ix';
 
+    /**
+     * regexp for specificity calculations
+     *
+     * @var string
+     */
     const ELEMENTS_AND_PSEUDO_ELEMENTS_RX = '/
 	((^|[\s\+\>\~]+)[\w]+   # elements
 	|
@@ -36,6 +45,11 @@ class Selector
 	))
 	/ix';
 
+    /**
+     * regexp for specificity calculations
+     *
+     * @var string
+     */
     const SELECTOR_VALIDATION_RX = '/
 	^(
 		(?:

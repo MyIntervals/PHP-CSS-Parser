@@ -6,7 +6,7 @@ use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Value\URL;
 
 /**
- * Class representing an @import rule.
+ * Class representing an `@import` rule.
  */
 class Import implements AtRule
 {

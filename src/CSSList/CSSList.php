@@ -23,7 +23,7 @@ use Sabberworm\CSS\Value\Value;
 
 /**
  * A CSSList is the most generic container available. Its contents include RuleSet as well as other CSSList objects.
- * Also, it may contain Import and Charset objects stemming from @-rules.
+ * Also, it may contain Import and Charset objects stemming from at-rules.
  */
 abstract class CSSList implements Renderable, Commentable
 {
@@ -180,7 +180,7 @@ abstract class CSSList implements Renderable, Commentable
             }
             return new CSSNamespace($mUrl, $sPrefix, $iIdentifierLineNum);
         } else {
-            //Unknown other at rule (font-face or such)
+            // Unknown other at rule (font-face or such)
             $sArgs = trim($oParserState->consumeUntil('{', false, true));
             if (substr_count($sArgs, "(") != substr_count($sArgs, ")")) {
                 if ($oParserState->getSettings()->bLenientParsing) {
@@ -282,7 +282,7 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Replaces an item from the CSS list.
      *
-     * @param RuleSet|Import|Charset|CSSList $oItemToRemove
+     * @param RuleSet|Import|Charset|CSSList $oOldItem
      *        May be a RuleSet (most likely a DeclarationBlock), a Import, a Charset
      *        or another CSSList (most likely a MediaQuery)
      */

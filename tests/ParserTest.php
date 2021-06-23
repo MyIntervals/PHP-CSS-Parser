@@ -802,7 +802,7 @@ body {background-color: red;}';
      * Parse structure for file.
      *
      * @param string $sFileName Filename.
-     * @param null|obJeCt $oSettings Settings.
+     * @param Settings|null $oSettings Settings.
      *
      * @return Document Parsed document.
      */

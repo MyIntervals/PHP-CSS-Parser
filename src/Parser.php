@@ -16,8 +16,7 @@ class Parser
     private $oParserState;
 
     /**
-     * Parser constructor.
-     * Note that that iLineNo starts from 1 and not 0
+     * Note that that iLineNo starts from 1 and not 0.
      *
      * @param $sText
      * @param Settings|null $oParserSettings

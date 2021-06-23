@@ -99,7 +99,7 @@ class OutputFormatter
                 return $cCode();
             } catch (OutputException $e) {
                 return null;
-            } //Do nothing
+            } // Do nothing
         } else {
             // Run the code as-is
             return $cCode();
@@ -107,7 +107,7 @@ class OutputFormatter
     }
 
     /**
-     * Clone of the implode function but calls ->render with the current output format instead of ` __toString()
+     * Clone of the implode function but calls -> render with the current output format instead of `__toString()`
      */
     public function implode($sSeparator, array $aValues, $bIncreaseLevel = false)
     {

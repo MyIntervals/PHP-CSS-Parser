@@ -128,7 +128,7 @@ class Rule implements Renderable, Commentable
 
     /**
      * @deprecated Old-Style 2-dimensional array given. Retained for (some) backwards-compatibility.
-     *              Use setValue() instead and wrap the value inside a RuleValueList if necessary.
+     *             Use `setValue()` instead and wrap the value inside a RuleValueList if necessary.
      */
     public function setValues(array $aSpaceSeparatedValues)
     {
@@ -165,7 +165,7 @@ class Rule implements Renderable, Commentable
 
     /**
      * @deprecated Old-Style 2-dimensional array returned. Retained for (some) backwards-compatibility.
-     *              Use getValue() instead and check for the existance of a (nested set of) ValueList object(s).
+     *             Use `getValue()` instead and check for the existence of a (nested set of) ValueList object(s).
      */
     public function getValues()
     {
