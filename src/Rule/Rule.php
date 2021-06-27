@@ -2,9 +2,12 @@
 
 namespace Sabberworm\CSS\Rule;
 
+use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedEOFException;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Value;
@@ -15,20 +18,46 @@ use Sabberworm\CSS\Value\Value;
  */
 class Rule implements Renderable, Commentable
 {
+    /**
+     * @var string
+     */
     private $sRule;
 
+    /**
+     * @var RuleValueList|null
+     */
     private $mValue;
 
+    /**
+     * @var bool
+     */
     private $bIsImportant;
 
+    /**
+     * @var array<int, int>
+     */
     private $aIeHack;
 
+    /**
+     * @var int
+     */
     protected $iLineNo;
 
+    /**
+     * @var int
+     */
     protected $iColNo;
 
+    /**
+     * @var array<array-key, Comment>
+     */
     protected $aComments;
 
+    /**
+     * @param string $sRule
+     * @param int $iLineNo
+     * @param int $iColNo
+     */
     public function __construct($sRule, $iLineNo = 0, $iColNo = 0)
     {
         $this->sRule = $sRule;
@@ -40,6 +69,12 @@ class Rule implements Renderable, Commentable
         $this->aComments = [];
     }
 
+    /**
+     * @return Rule
+     *
+     * @throws UnexpectedEOFException
+     * @throws UnexpectedTokenException
+     */
     public static function parse(ParserState $oParserState)
     {
         $aComments = $oParserState->consumeWhiteSpace();
@@ -76,6 +111,11 @@ class Rule implements Renderable, Commentable
         return $oRule;
     }
 
+    /**
+     * @param string $sRule
+     *
+     * @return array<int, string>
+     */
     private static function listDelimiterForRule($sRule)
     {
         if (preg_match('/^font($|-)/', $sRule)) {
@@ -100,33 +140,59 @@ class Rule implements Renderable, Commentable
         return $this->iColNo;
     }
 
+    /**
+     * @param int $iLine
+     * @param int $iColumn
+     *
+     * @return void
+     */
     public function setPosition($iLine, $iColumn)
     {
         $this->iColNo = $iColumn;
         $this->iLineNo = $iLine;
     }
 
+    /**
+     * @param string $sRule
+     *
+     * @return void
+     */
     public function setRule($sRule)
     {
         $this->sRule = $sRule;
     }
 
+    /**
+     * @return string
+     */
     public function getRule()
     {
         return $this->sRule;
     }
 
+    /**
+     * @return RuleValueList|null
+     */
     public function getValue()
     {
         return $this->mValue;
     }
 
+    /**
+     * @param RuleValueList|null $mValue
+     *
+     * @return void
+     */
     public function setValue($mValue)
     {
         $this->mValue = $mValue;
     }
 
     /**
+     * @param array<array-key, array<array-key, RuleValueList>>
+     *
+     * @return RuleValueList
+     *
      * @deprecated Old-Style 2-dimensional array given. Retained for (some) backwards-compatibility.
      *             Use `setValue()` instead and wrap the value inside a RuleValueList if necessary.
      */
@@ -164,6 +230,8 @@ class Rule implements Renderable, Commentable
     }
 
     /**
+     * @return array<int, array<int, RuleValueList>>
+     *
      * @deprecated Old-Style 2-dimensional array returned. Retained for (some) backwards-compatibility.
      *             Use `getValue()` instead and check for the existence of a (nested set of) ValueList object(s).
      */
@@ -192,8 +260,13 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * Adds a value to the existing value. Value will be appended if a RuleValueList exists of the given type.
+     * Adds a value to the existing value. Value will be appended if a `RuleValueList` exists of the given type.
      * Otherwise, the existing value will be wrapped by one.
+     *
+     * @param RuleValueList|array<int, RuleValueList> $mValue
+     * @param string $sType
+     *
+     * @return void
      */
     public function addValue($mValue, $sType = ' ')
     {
@@ -212,39 +285,61 @@ class Rule implements Renderable, Commentable
         }
     }
 
+    /**
+     * @param int $iModifier
+     *
+     * @return void
+     */
     public function addIeHack($iModifier)
     {
         $this->aIeHack[] = $iModifier;
     }
 
+    /**
+     * @param array<int, int> $aModifiers
+     *
+     * @return void
+     */
     public function setIeHack(array $aModifiers)
     {
         $this->aIeHack = $aModifiers;
     }
 
+    /**
+     * @return array<int, int>
+     */
     public function getIeHack()
     {
         return $this->aIeHack;
     }
 
+    /**
+     * @param bool $bIsImportant
+     *
+     * @return void
+     */
     public function setIsImportant($bIsImportant)
     {
         $this->bIsImportant = $bIsImportant;
     }
 
+    /**
+     * @return bool
+     */
     public function getIsImportant()
     {
         return $this->bIsImportant;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->render(new OutputFormat());
     }
 
     /**
-     * @param OutputFormat $oOutputFormat
-     *
      * @return string
      */
     public function render(OutputFormat $oOutputFormat)
@@ -266,7 +361,9 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param array $aComments Array of comments.
+     * @param array<array-key, Comment> $aComments
+     *
+     * @return void
      */
     public function addComments(array $aComments)
     {
@@ -274,7 +371,7 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @return array
+     * @return array<array-key, Comment>
      */
     public function getComments()
     {
@@ -282,7 +379,9 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param array $aComments Array containing Comment objects.
+     * @param array<array-key, Comment> $aComments
+     *
+     * @return void
      */
     public function setComments(array $aComments)
     {
