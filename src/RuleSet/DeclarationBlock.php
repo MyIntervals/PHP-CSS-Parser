@@ -146,7 +146,7 @@ class DeclarationBlock extends RuleSet
     /**
      * @return array<int, Selector|string>
      *
-     * @deprecated use `getSelectors()`
+     * @deprecated will be removed in version 9.0; use `getSelectors()` instead
      */
     public function getSelector()
     {
@@ -159,7 +159,7 @@ class DeclarationBlock extends RuleSet
      *
      * @return void
      *
-     * @deprecated use `setSelectors()`
+     * @deprecated will be removed in version 9.0; use `setSelectors()` instead
      */
     public function setSelector($mSelector, $oList = null)
     {
