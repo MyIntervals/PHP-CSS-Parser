@@ -41,16 +41,34 @@ class OutputFormat
      */
     public $sSpaceAfterRuleName = ' ';
 
+    /**
+     * @var string
+     */
     public $sSpaceBeforeRules = '';
 
+    /**
+     * @var string
+     */
     public $sSpaceAfterRules = '';
 
+    /**
+     * @var string
+     */
     public $sSpaceBetweenRules = '';
 
+    /**
+     * @var string
+     */
     public $sSpaceBeforeBlocks = '';
 
+    /**
+     * @var string
+     */
     public $sSpaceAfterBlocks = '';
 
+    /**
+     * @var string
+     */
     public $sSpaceBetweenBlocks = "\n";
 
     /**
@@ -60,6 +78,9 @@ class OutputFormat
      */
     public $sBeforeAtRuleBlock = '';
 
+    /**
+     * @var string
+     */
     public $sAfterAtRuleBlock = '';
 
     /**
@@ -69,6 +90,9 @@ class OutputFormat
      */
     public $sSpaceBeforeSelectorSeparator = '';
 
+    /**
+     * @var string
+     */
     public $sSpaceAfterSelectorSeparator = ' ';
 
     /**
@@ -78,8 +102,14 @@ class OutputFormat
      */
     public $sSpaceBeforeListArgumentSeparator = '';
 
+    /**
+     * @var string
+     */
     public $sSpaceAfterListArgumentSeparator = '';
 
+    /**
+     * @var string
+     */
     public $sSpaceBeforeOpeningBrace = ' ';
 
     /**
@@ -89,8 +119,14 @@ class OutputFormat
      */
     public $sBeforeDeclarationBlock = '';
 
+    /**
+     * @var string
+     */
     public $sAfterDeclarationBlockSelectors = '';
 
+    /**
+     * @var string
+     */
     public $sAfterDeclarationBlock = '';
 
     /**
@@ -107,16 +143,30 @@ class OutputFormat
      */
     public $bIgnoreExceptions = false;
 
+    /**
+     * @var OutputFormatter|null
+     */
     private $oFormatter = null;
 
+    /**
+     * @var OutputFormat|null
+     */
     private $oNextLevelFormat = null;
 
+    /**
+     * @var int
+     */
     private $iIndentationLevel = 0;
 
     public function __construct()
     {
     }
 
+    /**
+     * @param string $sName
+     *
+     * @return string|null
+     */
     public function get($sName)
     {
         $aVarPrefixes = ['a', 's', 'm', 'b', 'f', 'o', 'c', 'i'];
@@ -131,6 +181,9 @@ class OutputFormat
 
     /**
      * @param array<array-key, string>|string $aNames
+     * @param mixed $mValue
+     *
+     * @return self|false
      */
     public function set($aNames, $mValue)
     {
@@ -162,6 +215,14 @@ class OutputFormat
         return false;
     }
 
+    /**
+     * @param string $sMethodName
+     * @param array<array-key, mixed> $aArguments
+     *
+     * @return mixed
+     *
+     * @throws \Exception
+     */
     public function __call($sMethodName, array $aArguments)
     {
         if (strpos($sMethodName, 'set') === 0) {
@@ -175,16 +236,29 @@ class OutputFormat
         }
     }
 
+    /**
+     * @param int $iNumber
+     *
+     * @return self
+     */
     public function indentWithTabs($iNumber = 1)
     {
         return $this->setIndentation(str_repeat("\t", $iNumber));
     }
 
+    /**
+     * @param int $iNumber
+     *
+     * @return self
+     */
     public function indentWithSpaces($iNumber = 2)
     {
         return $this->setIndentation(str_repeat(" ", $iNumber));
     }
 
+    /**
+     * @return OutputFormat
+     */
     public function nextLevel()
     {
         if ($this->oNextLevelFormat === null) {
@@ -195,11 +269,17 @@ class OutputFormat
         return $this->oNextLevelFormat;
     }
 
+    /**
+     * @return void
+     */
     public function beLenient()
     {
         $this->bIgnoreExceptions = true;
     }
 
+    /**
+     * @return OutputFormatter
+     */
     public function getFormatter()
     {
         if ($this->oFormatter === null) {
@@ -208,15 +288,18 @@ class OutputFormat
         return $this->oFormatter;
     }
 
+    /**
+     * @return int
+     */
     public function level()
     {
         return $this->iIndentationLevel;
     }
 
     /**
-     * Create format.
+     * Creates an instance of this class without any particular formatting settings.
      *
-     * @return OutputFormat Format.
+     * @return self
      */
     public static function create()
     {
@@ -224,9 +307,9 @@ class OutputFormat
     }
 
     /**
-     * Create compact format.
+     * Creates an instance of this class with a preset for compact formatting.
      *
-     * @return OutputFormat Format.
+     * @return self
      */
     public static function createCompact()
     {
@@ -237,9 +320,9 @@ class OutputFormat
     }
 
     /**
-     * Create pretty format.
+     * Creates an instance of this class with a preset for pretty formatting.
      *
-     * @return OutputFormat Format.
+     * @return self
      */
     public static function createPretty()
     {
