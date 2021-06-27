@@ -17,6 +17,9 @@ class KeyFrame extends CSSList implements AtRule
      */
     private $animationName;
 
+    /**
+     * @param int $iLineNo
+     */
     public function __construct($iLineNo = 0)
     {
         parent::__construct($iLineNo);
@@ -24,26 +27,41 @@ class KeyFrame extends CSSList implements AtRule
         $this->animationName = null;
     }
 
+    /**
+     * @param string $vendorKeyFrame
+     */
     public function setVendorKeyFrame($vendorKeyFrame)
     {
         $this->vendorKeyFrame = $vendorKeyFrame;
     }
 
+    /**
+     * @return string|null
+     */
     public function getVendorKeyFrame()
     {
         return $this->vendorKeyFrame;
     }
 
+    /**
+     * @param string $animationName
+     */
     public function setAnimationName($animationName)
     {
         $this->animationName = $animationName;
     }
 
+    /**
+     * @return string|null
+     */
     public function getAnimationName()
     {
         return $this->animationName;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->render(new OutputFormat());
@@ -62,6 +80,9 @@ class KeyFrame extends CSSList implements AtRule
         return $sResult;
     }
 
+    /**
+     * @return bool
+     */
     public function isRootList()
     {
         return false;
