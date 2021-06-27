@@ -2,10 +2,12 @@
 
 namespace Sabberworm\CSS\RuleSet;
 
+use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\CSSList\KeyFrame;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\OutputException;
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\KeyframeSelector;
 use Sabberworm\CSS\Property\Selector;
@@ -17,22 +19,34 @@ use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\Value;
 
 /**
- * Declaration blocks are the parts of a css file which denote the rules belonging to a selector.
- * Declaration blocks usually appear directly inside a Document or another CSSList (mostly a MediaQuery).
+ * Declaration blocks are the parts of a CSS file which denote the rules belonging to a selector.
+ *
+ * Declaration blocks usually appear directly inside a `Document` or another `CSSList` (mostly a `MediaQuery`).
  */
 class DeclarationBlock extends RuleSet
 {
     /**
-     * @var array<int, Selector>
+     * @var array<int, Selector|string>
      */
     private $aSelectors;
 
+    /**
+     * @param int $iLineNo
+     */
     public function __construct($iLineNo = 0)
     {
         parent::__construct($iLineNo);
         $this->aSelectors = [];
     }
 
+    /**
+     * @param CSSList|null $oList
+     *
+     * @return DeclarationBlock|false
+     *
+     * @throws UnexpectedTokenException
+     * @throws UnexpectedEOFException
+     */
     public static function parse(ParserState $oParserState, $oList = null)
     {
         $aComments = [];
@@ -70,6 +84,12 @@ class DeclarationBlock extends RuleSet
         return $oResult;
     }
 
+    /**
+     * @param array<int, Selector|string>|string $mSelector
+     * @param CSSList|null $oList
+     *
+     * @throws UnexpectedTokenException
+     */
     public function setSelectors($mSelector, $oList = null)
     {
         if (is_array($mSelector)) {
@@ -104,6 +124,10 @@ class DeclarationBlock extends RuleSet
 
     /**
      * Remove one of the selectors of the block.
+     *
+     * @param Selector|string $mSelector
+     *
+     * @return bool
      */
     public function removeSelector($mSelector)
     {
@@ -120,6 +144,8 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
+     * @return array<int, Selector|string>
+     *
      * @deprecated use `getSelectors()`
      */
     public function getSelector()
@@ -128,6 +154,11 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
+     * @param Selector|string $mSelector
+     * @param CSSList|null $oList
+     *
+     * @return void
+     *
      * @deprecated use `setSelectors()`
      */
     public function setSelector($mSelector, $oList = null)
@@ -136,9 +167,7 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * Get selectors.
-     *
-     * @return array<int, Selector> Selectors.
+     * @return array<int, Selector|string>
      */
     public function getSelectors()
     {
@@ -146,8 +175,10 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * Split shorthand declarations (e.g. +margin+ or +font+) into their constituent parts.
-     * */
+     * Splits shorthand declarations (e.g. `margin` or `font`) into their constituent parts.
+     *
+     * @return void
+     */
     public function expandShorthands()
     {
         // border must be expanded before dimensions
@@ -159,8 +190,10 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * Create shorthand declarations (e.g. +margin+ or +font+) whenever possible.
-     * */
+     * Creates shorthand declarations (e.g. `margin` or `font`) whenever possible.
+     *
+     * @return void
+     */
     public function createShorthands()
     {
         $this->createBackgroundShorthand();
@@ -172,10 +205,14 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * Split shorthand border declarations (e.g. <tt>border: 1px red;</tt>)
-     * Additional splitting happens in expandDimensionsShorthand
-     * Multiple borders are not yet supported as of 3
-     * */
+     * Splits shorthand border declarations (e.g. `border: 1px red;`).
+     *
+     * Additional splitting happens in expandDimensionsShorthand.
+     *
+     * Multiple borders are not yet supported as of 3.
+     *
+     * @return void
+     */
     public function expandBorderShorthand()
     {
         $aBorderRules = [
@@ -230,10 +267,13 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * Split shorthand dimensional declarations (e.g. <tt>margin: 0px auto;</tt>)
+     * Splits shorthand dimensional declarations (e.g. `margin: 0px auto;`)
      * into their constituent parts.
-     * Handles margin, padding, border-color, border-style and border-width.
-     * */
+     *
+     * Handles `margin`, `padding`, `border-color`, `border-style` and `border-width`.
+     *
+     * @return void
+     */
     public function expandDimensionsShorthand()
     {
         $aExpansions = [
@@ -288,10 +328,12 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * Convert shorthand font declarations
+     * Converts shorthand font declarations
      * (e.g. `font: 300 italic 11px/14px verdana, helvetica, sans-serif;`)
      * into their constituent parts.
-     * */
+     *
+     * @return void
+     */
     public function expandFontShorthand()
     {
         $aRules = $this->getRulesAssoc();
@@ -359,6 +401,8 @@ class DeclarationBlock extends RuleSet
      * into their constituent parts.
      *
      * @see http://www.w3.org/TR/21/colors.html#propdef-background
+     *
+     * @return void
      */
     public function expandBackgroundShorthand()
     {
@@ -429,6 +473,9 @@ class DeclarationBlock extends RuleSet
         $this->removeRule('background');
     }
 
+    /**
+     * @return void
+     */
     public function expandListStyleShorthand()
     {
         $aListProperties = [
@@ -506,6 +553,12 @@ class DeclarationBlock extends RuleSet
         $this->removeRule('list-style');
     }
 
+    /**
+     * @param array<array-key, string> $aProperties
+     * @param string $sShorthand
+     *
+     * @return void
+     */
     public function createShorthandProperties(array $aProperties, $sShorthand)
     {
         $aRules = $this->getRulesAssoc();
@@ -538,6 +591,9 @@ class DeclarationBlock extends RuleSet
         }
     }
 
+    /**
+     * @return void
+     */
     public function createBackgroundShorthand()
     {
         $aProperties = [
@@ -550,6 +606,9 @@ class DeclarationBlock extends RuleSet
         $this->createShorthandProperties($aProperties, 'background');
     }
 
+    /**
+     * @return void
+     */
     public function createListStyleShorthand()
     {
         $aProperties = [
@@ -561,9 +620,12 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * Combine border-color, border-style and border-width into border
-     * Should be run after create_dimensions_shorthand!
-     * */
+     * Combines `border-color`, `border-style` and `border-width` into `border`.
+     *
+     * Should be run after `create_dimensions_shorthand`!
+     *
+     * @return void
+     */
     public function createBorderShorthand()
     {
         $aProperties = [
@@ -578,6 +640,8 @@ class DeclarationBlock extends RuleSet
      * Looks for long format CSS dimensional properties
      * (margin, padding, border-color, border-style and border-width)
      * and converts them into shorthand CSS properties.
+     *
+     * @return void
      */
     public function createDimensionsShorthand()
     {
@@ -649,7 +713,9 @@ class DeclarationBlock extends RuleSet
      * Looks for long format CSS font properties (e.g. `font-weight`) and
      * tries to convert them into a shorthand CSS `font` property.
      *
-     * At least font-size AND font-family must be present in order to create a shorthand declaration.
+     * At least `font-size` AND `font-family` must be present in order to create a shorthand declaration.
+     *
+     * @return void
      */
     public function createFontShorthand()
     {
@@ -729,14 +795,17 @@ class DeclarationBlock extends RuleSet
         }
     }
 
+    /**
+     * @return string
+     *
+     * @throws OutputException
+     */
     public function __toString()
     {
         return $this->render(new OutputFormat());
     }
 
     /**
-     * @param OutputFormat $oOutputFormat
-     *
      * @return string
      *
      * @throws OutputException
