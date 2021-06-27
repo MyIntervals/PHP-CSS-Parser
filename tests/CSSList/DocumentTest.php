@@ -7,13 +7,16 @@ use Sabberworm\CSS\Parser;
 
 class DocumentTest extends TestCase
 {
-    public function testOverrideContents()
+    /**
+     * @test
+     */
+    public function overrideContents()
     {
         $sCss = '.thing { left: 10px; }';
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
         $aContents = $oDoc->getContents();
-        $this->assertCount(1, $aContents);
+        self::assertCount(1, $aContents);
 
         $sCss2 = '.otherthing { right: 10px; }';
         $oParser2 = new Parser($sCss);
@@ -22,6 +25,6 @@ class DocumentTest extends TestCase
 
         $oDoc->setContents([$aContents[0], $aContents2[0]]);
         $aFinalContents = $oDoc->getContents();
-        $this->assertCount(2, $aFinalContents);
+        self::assertCount(2, $aFinalContents);
     }
 }
