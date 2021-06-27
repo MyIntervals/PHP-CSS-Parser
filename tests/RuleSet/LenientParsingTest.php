@@ -6,6 +6,18 @@ use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Settings;
 
+/**
+ * @covers \Sabberworm\CSS\Parser
+ * @covers \Sabberworm\CSS\CSSList\Document::parse
+ * @covers \Sabberworm\CSS\Rule\Rule::parse
+ * @covers \Sabberworm\CSS\RuleSet\DeclarationBlock::parse
+ * @covers \Sabberworm\CSS\Value\CalcFunction::parse
+ * @covers \Sabberworm\CSS\Value\Color::parse
+ * @covers \Sabberworm\CSS\Value\CSSString::parse
+ * @covers \Sabberworm\CSS\Value\LineName::parse
+ * @covers \Sabberworm\CSS\Value\Size::parse
+ * @covers \Sabberworm\CSS\Value\URL::parse
+ */
 class LenientParsingTest extends TestCase
 {
     /**
