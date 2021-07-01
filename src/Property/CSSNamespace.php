@@ -2,6 +2,7 @@
 
 namespace Sabberworm\CSS\Property;
 
+use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\OutputFormat;
 
 /**
@@ -15,6 +16,9 @@ class CSSNamespace implements AtRule
 
     private $iLineNo;
 
+    /**
+     * @var array<array-key, Comment>
+     */
     protected $aComments;
 
     public function __construct($mUrl, $sPrefix = null, $iLineNo = 0)
@@ -89,16 +93,29 @@ class CSSNamespace implements AtRule
         return $aResult;
     }
 
+    /**
+     * @param array<array-key, Comment> $aComments
+     *
+     * @return void
+     */
     public function addComments(array $aComments)
     {
         $this->aComments = array_merge($this->aComments, $aComments);
     }
 
+    /**
+     * @return array<array-key, Comment>
+     */
     public function getComments()
     {
         return $this->aComments;
     }
 
+    /**
+     * @param array<array-key, Comment> $aComments
+     *
+     * @return void
+     */
     public function setComments(array $aComments)
     {
         $this->aComments = $aComments;
