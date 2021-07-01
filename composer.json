@@ -35,8 +35,8 @@
         "ci": [
             "@ci:static"
         ],
-        "ci:php:sniff": "@php ./.phive/phpcs.phar bin src tests",
-        "ci:php:stan": "@php ./.phive/phpstan.phar",
+        "ci:php:sniff": "@php ./.phive/phpcs.phar --standard=config/phpcs.xml bin src tests",
+        "ci:php:stan": "@php ./.phive/phpstan.phar --configuration=config/phpstan.neon",
         "ci:static": [
             "@ci:php:sniff",
             "@ci:php:stan"
@@ -44,8 +44,8 @@
         "fix:php": [
             "@fix:php:sniff"
         ],
-        "fix:php:sniff": "@php ./.phive/phpcbf.phar bin src tests",
-        "phpstan:baseline": "@php ./.phive/phpstan.phar --generate-baseline"
+        "fix:php:sniff": "@php ./.phive/phpcbf.phar --standard=config/phpcs.xml bin src tests",
+        "phpstan:baseline": "@php ./.phive/phpstan.phar --configuration=config/phpstan.neon --generate-baseline=config/phpstan-baseline.neon"
     },
     "scripts-descriptions": {
         "ci": "Runs all dynamic and static code checks (i.e. currently, only the static checks).",
