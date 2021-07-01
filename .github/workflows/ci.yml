@@ -90,8 +90,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - command: sniff
+          - command: sniffer
             tool: phpcs
+            php-version: 7.4
+          - command: fixer
+            tool: php-cs-fixer
             php-version: 7.4
           - command: stan
             tool: phpstan
