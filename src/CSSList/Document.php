@@ -47,7 +47,7 @@ class Document extends CSSBlockList
     }
 
     /**
-     * @deprecated use getAllDeclarationBlocks()
+     * @deprecated will be removed in version 9.0; use `getAllDeclarationBlocks()` instead
      */
     public function getAllSelectors()
     {

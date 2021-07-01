@@ -193,7 +193,8 @@ class Rule implements Renderable, Commentable
      *
      * @return RuleValueList
      *
-     * @deprecated Old-Style 2-dimensional array given. Retained for (some) backwards-compatibility.
+     * @deprecated will be removed in version 9.0
+     *             Old-Style 2-dimensional array given. Retained for (some) backwards-compatibility.
      *             Use `setValue()` instead and wrap the value inside a RuleValueList if necessary.
      */
     public function setValues(array $aSpaceSeparatedValues)
@@ -232,7 +233,8 @@ class Rule implements Renderable, Commentable
     /**
      * @return array<int, array<int, RuleValueList>>
      *
-     * @deprecated Old-Style 2-dimensional array returned. Retained for (some) backwards-compatibility.
+     * @deprecated will be removed in version 9.0
+     *             Old-Style 2-dimensional array returned. Retained for (some) backwards-compatibility.
      *             Use `getValue()` instead and check for the existence of a (nested set of) ValueList object(s).
      */
     public function getValues()
