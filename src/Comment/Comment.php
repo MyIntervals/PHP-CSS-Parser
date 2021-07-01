@@ -7,10 +7,20 @@ use Sabberworm\CSS\Renderable;
 
 class Comment implements Renderable
 {
+    /**
+     * @var int
+     */
     protected $iLineNo;
 
+    /**
+     * @var string
+     */
     protected $sComment;
 
+    /**
+     * @param string $sComment
+     * @param int $iLineNo
+     */
     public function __construct($sComment = '', $iLineNo = 0)
     {
         $this->sComment = $sComment;
@@ -35,6 +45,8 @@ class Comment implements Renderable
 
     /**
      * @param string $sComment
+     *
+     * @return void
      */
     public function setComment($sComment)
     {
