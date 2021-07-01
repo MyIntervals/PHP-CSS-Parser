@@ -3,8 +3,7 @@
 /.github/ export-ignore
 /.gitignore export-ignore
 /.phive/ export-ignore
-/Doxyfile export-ignore
 /bin/ export-ignore
 /config/ export-ignore
 /phpunit.xml export-ignore
-/tests export-ignore
+/tests/ export-ignore
