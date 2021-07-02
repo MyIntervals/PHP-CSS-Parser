@@ -22,20 +22,25 @@ class LenientParsingTest extends TestCase
 {
     /**
      * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
+     *
+     * @test
      */
-    public function testFaultToleranceOff()
+    public function faultToleranceOff()
     {
         $sFile = __DIR__ . '/../fixtures/-fault-tolerance.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->beStrict());
         $oParser->parse();
     }
 
-    public function testFaultToleranceOn()
+    /**
+     * @test
+     */
+    public function faultToleranceOn()
     {
         $sFile = __DIR__ . '/../fixtures/-fault-tolerance.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
-        $this->assertSame(
+        self::assertSame(
             '.test1 {}' . "\n" . '.test2 {hello: 2.2;hello: 2000000000000.2;}' . "\n" . '#test {}' . "\n"
             . '#test2 {help: none;}',
             $oResult->render()
@@ -44,8 +49,10 @@ class LenientParsingTest extends TestCase
 
     /**
      * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
+     *
+     * @test
      */
-    public function testEndToken()
+    public function endToken()
     {
         $sFile = __DIR__ . '/../fixtures/-end-token.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->beStrict());
@@ -54,53 +61,67 @@ class LenientParsingTest extends TestCase
 
     /**
      * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
+     *
+     * @test
      */
-    public function testEndToken2()
+    public function endToken2()
     {
         $sFile = __DIR__ . '/../fixtures/-end-token-2.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->beStrict());
         $oParser->parse();
     }
 
-    public function testEndTokenPositive()
+    /**
+     * @test
+     */
+    public function endTokenPositive()
     {
         $sFile = __DIR__ . '/../fixtures/-end-token.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
-        $this->assertSame("", $oResult->render());
+        self::assertSame("", $oResult->render());
     }
 
-    public function testEndToken2Positive()
+    /**
+     * @test
+     */
+    public function endToken2Positive()
     {
         $sFile = __DIR__ . '/../fixtures/-end-token-2.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
-        $this->assertSame(
+        self::assertSame(
             '#home .bg-layout {background-image: url("/bundles/main/img/bg1.png?5");}',
             $oResult->render()
         );
     }
 
-    public function testLocaleTrap()
+    /**
+     * @test
+     */
+    public function localeTrap()
     {
         setlocale(LC_ALL, "pt_PT", "no");
         $sFile = __DIR__ . '/../fixtures/-fault-tolerance.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
-        $this->assertSame(
+        self::assertSame(
             '.test1 {}' . "\n" . '.test2 {hello: 2.2;hello: 2000000000000.2;}' . "\n" . '#test {}' . "\n"
             . '#test2 {help: none;}',
             $oResult->render()
         );
     }
 
-    public function testCaseInsensitivity()
+    /**
+     * @test
+     */
+    public function caseInsensitivity()
     {
         $sFile = __DIR__ . '/../fixtures/case-insensitivity.css';
         $oParser = new Parser(file_get_contents($sFile));
         $oResult = $oParser->parse();
 
-        $this->assertSame(
+        self::assertSame(
             '@charset "utf-8";' . "\n"
             . '@import url("test.css");'
             . "\n@media screen {}"
