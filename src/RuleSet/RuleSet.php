@@ -2,6 +2,7 @@
 
 namespace Sabberworm\CSS\RuleSet;
 
+use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
@@ -19,6 +20,9 @@ abstract class RuleSet implements Renderable, Commentable
 
     protected $iLineNo;
 
+    /**
+     * @var array<array-key, Comment>
+     */
     protected $aComments;
 
     public function __construct($iLineNo = 0)
@@ -265,7 +269,9 @@ abstract class RuleSet implements Renderable, Commentable
     }
 
     /**
-     * @param array $aComments Array of comments.
+     * @param array<array-key, Comment> $aComments
+     *
+     * @return void
      */
     public function addComments(array $aComments)
     {
@@ -273,7 +279,7 @@ abstract class RuleSet implements Renderable, Commentable
     }
 
     /**
-     * @return array
+     * @return array<array-key, Comment>
      */
     public function getComments()
     {
@@ -281,7 +287,9 @@ abstract class RuleSet implements Renderable, Commentable
     }
 
     /**
-     * @param array $aComments Array containing Comment objects.
+     * @param array<array-key, Comment> $aComments
+     *
+     * @return void
      */
     public function setComments(array $aComments)
     {

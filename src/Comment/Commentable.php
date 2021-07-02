@@ -5,17 +5,21 @@ namespace Sabberworm\CSS\Comment;
 interface Commentable
 {
     /**
-     * @param array $aComments Array of comments.
+     * @param array<array-key, Comment> $aComments
+     *
+     * @return void
      */
     public function addComments(array $aComments);
 
     /**
-     * @return array
+     * @return array<array-key, Comment>
      */
     public function getComments();
 
     /**
-     * @param array $aComments Array containing Comment objects.
+     * @param array<array-key, Comment> $aComments
+     *
+     * @return void
      */
     public function setComments(array $aComments);
 }

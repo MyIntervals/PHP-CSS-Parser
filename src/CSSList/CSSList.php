@@ -32,7 +32,7 @@ use Sabberworm\CSS\Value\Value;
 abstract class CSSList implements Renderable, Commentable
 {
     /**
-     * @var array<array-key, Comment> $aComments
+     * @var array<array-key, Comment>
      */
     protected $aComments;
 
@@ -57,10 +57,10 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * @throws SourceException
-     * @throws UnexpectedTokenException
-     *
      * @return void
+     *
+     * @throws UnexpectedTokenException
+     * @throws SourceException
      */
     public static function parseList(ParserState $oParserState, CSSList $oList)
     {
@@ -451,6 +451,8 @@ abstract class CSSList implements Renderable, Commentable
 
     /**
      * @param array<array-key, Comment> $aComments
+     *
+     * @return void
      */
     public function addComments(array $aComments)
     {
@@ -467,6 +469,8 @@ abstract class CSSList implements Renderable, Commentable
 
     /**
      * @param array<array-key, Comment> $aComments
+     *
+     * @return void
      */
     public function setComments(array $aComments)
     {
