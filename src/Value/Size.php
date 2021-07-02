@@ -141,14 +141,15 @@ class Size extends PrimitiveValue
         return false;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->render(new OutputFormat());
     }
 
     /**
-     * @param OutputFormat $oOutputFormat
-     *
      * @return string
      */
     public function render(OutputFormat $oOutputFormat)

@@ -76,8 +76,6 @@ class Charset implements AtRule
     }
 
     /**
-     * @param OutputFormat $oOutputFormat
-     *
      * @return string
      */
     public function render(OutputFormat $oOutputFormat)

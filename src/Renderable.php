@@ -10,11 +10,12 @@ interface Renderable
     public function __toString();
 
     /**
-     * @param OutputFormat $oOutputFormat
-     *
      * @return string
      */
     public function render(OutputFormat $oOutputFormat);
 
+    /**
+     * @return int
+     */
     public function getLineNo();
 }

@@ -130,7 +130,7 @@ class Document extends CSSBlockList
     }
 
     /**
-     * Override render() to make format argument optional
+     * Override `render()` to make format argument optional
      *
      * @param OutputFormat|null $oOutputFormat
      *
