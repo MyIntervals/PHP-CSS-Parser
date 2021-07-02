@@ -15,8 +15,6 @@ class CalcRuleValueList extends RuleValueList
     }
 
     /**
-     * @param OutputFormat $oOutputFormat
-     *
      * @return string
      */
     public function render(OutputFormat $oOutputFormat)
