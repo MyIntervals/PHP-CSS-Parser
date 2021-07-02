@@ -5,6 +5,8 @@ namespace Sabberworm\CSS\CSSList;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
+use Sabberworm\CSS\Value\CSSString;
+use Sabberworm\CSS\Value\Value;
 
 /**
  * The root CSSList of a parsed file. Contains all top-level css contents, mostly declaration blocks,
@@ -83,6 +85,7 @@ class Document extends CSSBlockList
             $sSearchString = $mElement;
             $mElement = $this;
         }
+        /** @var array<int, Value|CSSString> $aResult */
         $aResult = [];
         $this->allValues($mElement, $aResult, $sSearchString, $bSearchInFunctionArguments);
         return $aResult;
