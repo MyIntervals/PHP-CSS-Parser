@@ -6,14 +6,23 @@ use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\OutputFormat;
 
 /**
- * CSSNamespace represents an @namespace rule.
+ * `CSSNamespace` represents an `@namespace` rule.
  */
 class CSSNamespace implements AtRule
 {
+    /**
+     * @var string
+     */
     private $mUrl;
 
+    /**
+     * @var string
+     */
     private $sPrefix;
 
+    /**
+     * @var int
+     */
     private $iLineNo;
 
     /**
@@ -21,6 +30,11 @@ class CSSNamespace implements AtRule
      */
     protected $aComments;
 
+    /**
+     * @param string $mUrl
+     * @param string|null $sPrefix
+     * @param int $iLineNo
+     */
     public function __construct($mUrl, $sPrefix = null, $iLineNo = 0)
     {
         $this->mUrl = $mUrl;
@@ -54,21 +68,37 @@ class CSSNamespace implements AtRule
             . $this->mUrl->render($oOutputFormat) . ';';
     }
 
+    /**
+     * @return string
+     */
     public function getUrl()
     {
         return $this->mUrl;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPrefix()
     {
         return $this->sPrefix;
     }
 
+    /**
+     * @param string $mUrl
+     *
+     * @return void
+     */
     public function setUrl($mUrl)
     {
         $this->mUrl = $mUrl;
     }
 
+    /**
+     * @param string $sPrefix
+     *
+     * @return void
+     */
     public function setPrefix($sPrefix)
     {
         $this->sPrefix = $sPrefix;
