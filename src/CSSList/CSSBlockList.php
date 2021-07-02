@@ -7,7 +7,6 @@ use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\RuleSet\RuleSet;
 use Sabberworm\CSS\Value\CSSFunction;
-use Sabberworm\CSS\Value\CSSString;
 use Sabberworm\CSS\Value\Value;
 use Sabberworm\CSS\Value\ValueList;
 
@@ -61,7 +60,7 @@ abstract class CSSBlockList extends CSSList
 
     /**
      * @param CSSList|Rule|RuleSet|Value $oElement
-     * @param array<int, Value|CSSString> $aResult
+     * @param array<int, Value> $aResult
      * @param string|null $sSearchString
      * @param bool $bSearchInFunctionArguments
      *
@@ -86,13 +85,13 @@ abstract class CSSBlockList extends CSSList
                 }
             }
         } else {
-            // Non-List Value or CSSString (CSS identifier)
+            // Non-List `Value` or `CSSString` (CSS identifier)
             $aResult[] = $oElement;
         }
     }
 
     /**
-     * @param array<int, Selector|string> $aResult
+     * @param array<int, Selector> $aResult
      * @param string|null $sSpecificitySearch
      *
      * @return void
