@@ -407,21 +407,21 @@ body {color: green;}',
             $oRule = $oBlock->getRules('font');
             $oRule = $oRule[0];
             $oSpaceList = $oRule->getValue();
-            self::assertEquals(' ', $oSpaceList->getListSeparator());
+            self::assertSame(' ', $oSpaceList->getListSeparator());
             $oSlashList = $oSpaceList->getListComponents();
             $oCommaList = $oSlashList[1];
             $oSlashList = $oSlashList[0];
-            self::assertEquals(',', $oCommaList->getListSeparator());
-            self::assertEquals('/', $oSlashList->getListSeparator());
+            self::assertSame(',', $oCommaList->getListSeparator());
+            self::assertSame('/', $oSlashList->getListSeparator());
             $oRule = $oBlock->getRules('border-radius');
             $oRule = $oRule[0];
             $oSlashList = $oRule->getValue();
-            self::assertEquals('/', $oSlashList->getListSeparator());
+            self::assertSame('/', $oSlashList->getListSeparator());
             $oSpaceList1 = $oSlashList->getListComponents();
             $oSpaceList2 = $oSpaceList1[1];
             $oSpaceList1 = $oSpaceList1[0];
-            self::assertEquals(' ', $oSpaceList1->getListSeparator());
-            self::assertEquals(' ', $oSpaceList2->getListSeparator());
+            self::assertSame(' ', $oSpaceList1->getListSeparator());
+            self::assertSame(' ', $oSpaceList2->getListSeparator());
         }
         self::assertSame(
             '.test {font: 36px/1.5 Verdana,Arial,sans-serif;border-radius: 15px 30px 15px 30px/30px 15px 30px 15px;}',
@@ -922,12 +922,12 @@ body {background-color: red;}';
         self::assertCount(1, $rulesets);
         $block = $rulesets[0];
         self::assertTrue($block instanceof DeclarationBlock);
-        self::assertEquals(['div'], $block->getSelectors());
+        self::assertEquals([new Selector('div')], $block->getSelectors());
         $rules = $block->getRules();
         self::assertCount(1, $rules);
         $rule = $rules[0];
-        self::assertEquals('display', $rule->getRule());
-        self::assertEquals('inline-block', $rule->getValue());
+        self::assertSame('display', $rule->getRule());
+        self::assertSame('inline-block', $rule->getValue());
     }
 
     /**
@@ -991,16 +991,16 @@ body {background-color: red;}';
         $aRules = $oDeclBlock->getRules();
         // Choose the 2nd one
         $oColor = $aRules[1]->getValue();
-        self::assertEquals(27, $aRules[1]->getLineNo());
+        self::assertSame(27, $aRules[1]->getLineNo());
 
         $aActualColorLines = [];
         foreach ($oColor->getColor() as $oSize) {
             $aActualColorLines[] = $oSize->getLineNo();
         }
 
-        self::assertEquals($aExpectedColorLines, $aActualColorLines);
-        self::assertEquals($aUrlExpected, $aUrlActual);
-        self::assertEquals($aExpected, $aActual);
+        self::assertSame($aExpectedColorLines, $aActualColorLines);
+        self::assertSame($aUrlExpected, $aUrlActual);
+        self::assertSame($aExpected, $aActual);
     }
 
     /**
@@ -1040,7 +1040,7 @@ body {background-color: red;}';
         $oDoc = $this->parsedStructureForFile('ie-hacks', Settings::create()->withLenientParsing(true));
         $sExpected = 'p {padding-right: .75rem \9;background-image: none \9;color: red \9\0;'
             . 'background-color: red \9\0;background-color: red \9\0 !important;content: "red 	\0";content: "red઼";}';
-        self::assertEquals($sExpected, $oDoc->render());
+        self::assertSame($sExpected, $oDoc->render());
     }
 
     /**
@@ -1056,22 +1056,22 @@ body {background-color: red;}';
         // Import property.
         $importComments = $aNodes[0]->getComments();
         self::assertCount(1, $importComments);
-        self::assertEquals("*\n * Comments Hell.\n ", $importComments[0]->getComment());
+        self::assertSame("*\n * Comments Hell.\n ", $importComments[0]->getComment());
 
         // Declaration block.
         $fooBarBlock = $aNodes[1];
         $fooBarBlockComments = $fooBarBlock->getComments();
         // TODO Support comments in selectors.
         // $this->assertCount(2, $fooBarBlockComments);
-        // $this->assertEquals("* Number 4 *", $fooBarBlockComments[0]->getComment());
-        // $this->assertEquals("* Number 5 *", $fooBarBlockComments[1]->getComment());
+        // $this->assertSame("* Number 4 *", $fooBarBlockComments[0]->getComment());
+        // $this->assertSame("* Number 5 *", $fooBarBlockComments[1]->getComment());
 
         // Declaration rules.
         $fooBarRules = $fooBarBlock->getRules();
         $fooBarRule = $fooBarRules[0];
         $fooBarRuleComments = $fooBarRule->getComments();
         self::assertCount(1, $fooBarRuleComments);
-        self::assertEquals(" Number 6 ", $fooBarRuleComments[0]->getComment());
+        self::assertSame(" Number 6 ", $fooBarRuleComments[0]->getComment());
 
         // Media property.
         $mediaComments = $aNodes[2]->getComments();
@@ -1081,13 +1081,13 @@ body {background-color: red;}';
         $mediaRules = $aNodes[2]->getContents();
         $fooBarComments = $mediaRules[0]->getComments();
         self::assertCount(1, $fooBarComments);
-        self::assertEquals("* Number 10 *", $fooBarComments[0]->getComment());
+        self::assertSame("* Number 10 *", $fooBarComments[0]->getComment());
 
         // Media -> declaration -> rule.
         $fooBarRules = $mediaRules[0]->getRules();
         $fooBarChildComments = $fooBarRules[0]->getComments();
         self::assertCount(1, $fooBarChildComments);
-        self::assertEquals("* Number 10b *", $fooBarChildComments[0]->getComment());
+        self::assertSame("* Number 10b *", $fooBarChildComments[0]->getComment());
     }
 
     /**
@@ -1101,7 +1101,7 @@ body {background-color: red;}';
         $divRules = $contents[0]->getRules();
         $comments = $divRules[0]->getComments();
         self::assertCount(1, $comments);
-        self::assertEquals("Find Me!", $comments[0]->getComment());
+        self::assertSame("Find Me!", $comments[0]->getComment());
     }
 
     /**
@@ -1114,7 +1114,7 @@ body {background-color: red;}';
         $contents = $doc->getContents();
         $comments = $contents[0]->getComments();
         self::assertCount(1, $comments);
-        self::assertEquals("Find Me!", $comments[0]->getComment());
+        self::assertSame("Find Me!", $comments[0]->getComment());
     }
 
     /**
