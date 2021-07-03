@@ -19,7 +19,10 @@ use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\Value;
 
 /**
- * Declaration blocks are the parts of a CSS file which denote the rules belonging to a selector.
+ * This class represents a `RuleSet` constrained by a `Selector`.
+ *
+ * It contains an array of selector objects (comma-separated in the CSS) as well as the rules to be applied to the
+ * matching elements.
  *
  * Declaration blocks usually appear directly inside a `Document` or another `CSSList` (mostly a `MediaQuery`).
  */

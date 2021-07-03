@@ -8,6 +8,9 @@ use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
+/**
+ * This class represents URLs in CSS. `URL`s always output in `URL("")` notation.
+ */
 class URL extends PrimitiveValue
 {
     /**

@@ -7,6 +7,9 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
+/**
+ * A `Size` consists of a numeric `size` value and a unit.
+ */
 class Size extends PrimitiveValue
 {
     /**

@@ -8,6 +8,10 @@ use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Renderable;
 
+/**
+ * Abstract base class for specific classes of CSS values: `Size`, `Color`, `CSSString` and `URL`, and another
+ * abstract subclass `ValueList`.
+ */
 abstract class Value implements Renderable
 {
     /**
