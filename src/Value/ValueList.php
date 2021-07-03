@@ -6,12 +6,19 @@ use Sabberworm\CSS\OutputFormat;
 
 abstract class ValueList extends Value
 {
+    /**
+     * @var array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>
+     */
     protected $aComponents;
 
+    /**
+     * @var string
+     */
     protected $sSeparator;
 
     /**
-     * @param array|mixed $aComponents
+     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>
+     *        |RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string $aComponents
      */
     public function __construct($aComponents = [], $sSeparator = ',', $iLineNo = 0)
     {
@@ -23,26 +30,47 @@ abstract class ValueList extends Value
         $this->sSeparator = $sSeparator;
     }
 
+    /**
+     * @param RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string $mComponent
+     *
+     * @return void
+     */
     public function addListComponent($mComponent)
     {
         $this->aComponents[] = $mComponent;
     }
 
+    /**
+     * @return array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>
+     */
     public function getListComponents()
     {
         return $this->aComponents;
     }
 
+    /**
+     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string> $aComponents
+     *
+     * @return void
+     */
     public function setListComponents(array $aComponents)
     {
         $this->aComponents = $aComponents;
     }
 
+    /**
+     * @return string
+     */
     public function getListSeparator()
     {
         return $this->sSeparator;
     }
 
+    /**
+     * @param string $sSeparator
+     *
+     * @return void
+     */
     public function setListSeparator($sSeparator)
     {
         $this->sSeparator = $sSeparator;
