@@ -17,8 +17,8 @@ abstract class ValueList extends Value
     protected $sSeparator;
 
     /**
-     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>
-     *        |RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string $aComponents
+     * phpcs:ignore Generic.Files.LineLength
+     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>|RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string $aComponents
      */
     public function __construct($aComponents = [], $sSeparator = ',', $iLineNo = 0)
     {
