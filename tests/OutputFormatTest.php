@@ -3,6 +3,7 @@
 namespace Sabberworm\CSS\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parser;
 
@@ -31,8 +32,14 @@ class OutputFormatTest extends TestCase
 
 EOT;
 
+    /**
+     * @var Parser
+     */
     private $oParser;
 
+    /**
+     * @var Document
+     */
     private $oDocument;
 
     protected function setUp()
