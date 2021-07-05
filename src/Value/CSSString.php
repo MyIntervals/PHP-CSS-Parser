@@ -5,17 +5,33 @@ namespace Sabberworm\CSS\Value;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
+use Sabberworm\CSS\Parsing\UnexpectedEOFException;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 class CSSString extends PrimitiveValue
 {
+    /**
+     * @var string
+     */
     private $sString;
 
+    /**
+     * @param string $sString
+     * @param int $iLineNo
+     */
     public function __construct($sString, $iLineNo = 0)
     {
         $this->sString = $sString;
         parent::__construct($iLineNo);
     }
 
+    /**
+     * @return CSSString
+     *
+     * @throws SourceException
+     * @throws UnexpectedEOFException
+     * @throws UnexpectedTokenException
+     */
     public static function parse(ParserState $oParserState)
     {
         $sBegin = $oParserState->peek();
@@ -51,11 +67,19 @@ class CSSString extends PrimitiveValue
         return new CSSString($sResult, $oParserState->currentLine());
     }
 
+    /**
+     * @param string $sString
+     *
+     * @return void
+     */
     public function setString($sString)
     {
         $this->sString = $sString;
     }
 
+    /**
+     * @return string
+     */
     public function getString()
     {
         return $this->sString;
