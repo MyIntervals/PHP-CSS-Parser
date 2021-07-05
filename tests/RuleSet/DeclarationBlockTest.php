@@ -325,8 +325,8 @@ class DeclarationBlockTest extends TestCase
 
         $aRules = $oWrapper->getRules();
         self::assertCount(1, $aRules);
-        self::assertEquals('right', $aRules[0]->getRule());
-        self::assertEquals('-10px', $aRules[0]->getValue());
+        self::assertSame('right', $aRules[0]->getRule());
+        self::assertSame('-10px', $aRules[0]->getValue());
     }
 
     /**
@@ -377,6 +377,8 @@ class DeclarationBlockTest extends TestCase
 
     /**
      * @test
+     *
+     * TODO: The order is different on PHP 5.6 than on PHP >= 7.0.
      */
     public function orderOfElementsMatchingOriginalOrderAfterExpandingShorthands()
     {
