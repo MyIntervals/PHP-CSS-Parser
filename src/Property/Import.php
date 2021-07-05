@@ -52,11 +52,19 @@ class Import implements AtRule
         return $this->iLineNo;
     }
 
+    /**
+     * @param URL $oLocation
+     *
+     * @return void
+     */
     public function setLocation($oLocation)
     {
         $this->oLocation = $oLocation;
     }
 
+    /**
+     * @return URL
+     */
     public function getLocation()
     {
         return $this->oLocation;
