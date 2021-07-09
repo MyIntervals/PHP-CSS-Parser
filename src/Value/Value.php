@@ -176,15 +176,15 @@ abstract class Value implements Renderable
      */
     private static function parseUnicodeRangeValue(ParserState $oParserState)
     {
-        $iCodepointMaxLenth = 6; // Code points outside BMP can use up to six digits
+        $iCodepointMaxLength = 6; // Code points outside BMP can use up to six digits
         $sRange = "";
         $oParserState->consume("U+");
         do {
             if ($oParserState->comes('-')) {
-                $iCodepointMaxLenth = 13; // Max length is 2 six digit code points + the dash(-) between them
+                $iCodepointMaxLength = 13; // Max length is 2 six digit code points + the dash(-) between them
             }
             $sRange .= $oParserState->consume(1);
-        } while (strlen($sRange) < $iCodepointMaxLenth && preg_match("/[A-Fa-f0-9\?-]/", $oParserState->peek()));
+        } while (strlen($sRange) < $iCodepointMaxLength && preg_match("/[A-Fa-f0-9\?-]/", $oParserState->peek()));
         return "U+{$sRange}";
     }
 
