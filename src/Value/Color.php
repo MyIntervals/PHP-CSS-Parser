@@ -4,14 +4,26 @@ namespace Sabberworm\CSS\Value;
 
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedEOFException;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 class Color extends CSSFunction
 {
+    /**
+     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string> $aColor
+     * @param int $iLineNo
+     */
     public function __construct(array $aColor, $iLineNo = 0)
     {
         parent::__construct(implode('', array_keys($aColor)), $aColor, ',', $iLineNo);
     }
 
+    /**
+     * @return Color|CSSFunction
+     *
+     * @throws UnexpectedEOFException
+     * @throws UnexpectedTokenException
+     */
     public static function parse(ParserState $oParserState)
     {
         $aColor = [];
@@ -79,6 +91,15 @@ class Color extends CSSFunction
         return new Color($aColor, $oParserState->currentLine());
     }
 
+    /**
+     * @param float $fVal
+     * @param float $fFromMin
+     * @param float $fFromMax
+     * @param float $fToMin
+     * @param float $fToMax
+     *
+     * @return float
+     */
     private static function mapRange($fVal, $fFromMin, $fFromMax, $fToMin, $fToMax)
     {
         $fFromRange = $fFromMax - $fFromMin;
@@ -89,17 +110,28 @@ class Color extends CSSFunction
         return $fNewVal + $fToMin;
     }
 
+    /**
+     * @return array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>
+     */
     public function getColor()
     {
         return $this->aComponents;
     }
 
+    /**
+     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string> $aColor
+     *
+     * @return void
+     */
     public function setColor(array $aColor)
     {
         $this->setName(implode('', array_keys($aColor)));
         $this->aComponents = $aColor;
     }
 
+    /**
+     * @return string
+     */
     public function getColorDescription()
     {
         return $this->getName();
