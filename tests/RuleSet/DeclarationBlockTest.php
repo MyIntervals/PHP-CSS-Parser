@@ -13,10 +13,13 @@ use Sabberworm\CSS\Value\Size;
 class DeclarationBlockTest extends TestCase
 {
     /**
+     * @param string $sCss
+     * @param string $sExpected
+     *
      * @dataProvider expandBorderShorthandProvider
      *
      * @test
-     * */
+     */
     public function expandBorderShorthand($sCss, $sExpected)
     {
         $oParser = new Parser($sCss);
@@ -27,6 +30,9 @@ class DeclarationBlockTest extends TestCase
         self::assertSame(trim((string)$oDoc), $sExpected);
     }
 
+    /**
+     * @return array<int, array<int, string>>
+     */
     public function expandBorderShorthandProvider()
     {
         return [
@@ -40,10 +46,13 @@ class DeclarationBlockTest extends TestCase
     }
 
     /**
+     * @param string $sCss
+     * @param string $sExpected
+     *
      * @dataProvider expandFontShorthandProvider
      *
      * @test
-     * */
+     */
     public function expandFontShorthand($sCss, $sExpected)
     {
         $oParser = new Parser($sCss);
@@ -54,6 +63,9 @@ class DeclarationBlockTest extends TestCase
         self::assertSame(trim((string)$oDoc), $sExpected);
     }
 
+    /**
+     * @return array<int, array<int, string>>
+     */
     public function expandFontShorthandProvider()
     {
         return [
@@ -90,10 +102,13 @@ class DeclarationBlockTest extends TestCase
     }
 
     /**
+     * @param string $sCss
+     * @param string $sExpected
+     *
      * @dataProvider expandBackgroundShorthandProvider
      *
      * @test
-     * */
+     */
     public function expandBackgroundShorthand($sCss, $sExpected)
     {
         $oParser = new Parser($sCss);
@@ -104,6 +119,9 @@ class DeclarationBlockTest extends TestCase
         self::assertSame(trim((string)$oDoc), $sExpected);
     }
 
+    /**
+     * @return array<int, array<int, string>>
+     */
     public function expandBackgroundShorthandProvider()
     {
         return [
@@ -137,10 +155,13 @@ class DeclarationBlockTest extends TestCase
     }
 
     /**
+     * @param string $sCss
+     * @param string $sExpected
+     *
      * @dataProvider expandDimensionsShorthandProvider
      *
      * @test
-     * */
+     */
     public function expandDimensionsShorthand($sCss, $sExpected)
     {
         $oParser = new Parser($sCss);
@@ -151,6 +172,9 @@ class DeclarationBlockTest extends TestCase
         self::assertSame(trim((string)$oDoc), $sExpected);
     }
 
+    /**
+     * @return array<int, array<int, string>>
+     */
     public function expandDimensionsShorthandProvider()
     {
         return [
@@ -169,10 +193,13 @@ class DeclarationBlockTest extends TestCase
     }
 
     /**
+     * @param string $sCss
+     * @param string $sExpected
+     *
      * @dataProvider createBorderShorthandProvider
      *
      * @test
-     * */
+     */
     public function createBorderShorthand($sCss, $sExpected)
     {
         $oParser = new Parser($sCss);
@@ -183,6 +210,9 @@ class DeclarationBlockTest extends TestCase
         self::assertSame(trim((string)$oDoc), $sExpected);
     }
 
+    /**
+     * @return array<int, array<int, string>>
+     */
     public function createBorderShorthandProvider()
     {
         return [
@@ -194,10 +224,13 @@ class DeclarationBlockTest extends TestCase
     }
 
     /**
+     * @param string $sCss
+     * @param string $sExpected
+     *
      * @dataProvider createFontShorthandProvider
      *
      * @test
-     * */
+     */
     public function createFontShorthand($sCss, $sExpected)
     {
         $oParser = new Parser($sCss);
@@ -208,6 +241,9 @@ class DeclarationBlockTest extends TestCase
         self::assertSame(trim((string)$oDoc), $sExpected);
     }
 
+    /**
+     * @return array<int, array<int, string>>
+     */
     public function createFontShorthandProvider()
     {
         return [
@@ -231,10 +267,13 @@ class DeclarationBlockTest extends TestCase
     }
 
     /**
+     * @param string $sCss
+     * @param string $sExpected
+     *
      * @dataProvider createDimensionsShorthandProvider
      *
      * @test
-     * */
+     */
     public function createDimensionsShorthand($sCss, $sExpected)
     {
         $oParser = new Parser($sCss);
@@ -245,6 +284,9 @@ class DeclarationBlockTest extends TestCase
         self::assertSame(trim((string)$oDoc), $sExpected);
     }
 
+    /**
+     * @return array<int, array<int, string>>
+     */
     public function createDimensionsShorthandProvider()
     {
         return [
@@ -263,10 +305,13 @@ class DeclarationBlockTest extends TestCase
     }
 
     /**
+     * @param string $sCss
+     * @param string $sExpected
+     *
      * @dataProvider createBackgroundShorthandProvider
      *
      * @test
-     * */
+     */
     public function createBackgroundShorthand($sCss, $sExpected)
     {
         $oParser = new Parser($sCss);
@@ -277,6 +322,9 @@ class DeclarationBlockTest extends TestCase
         self::assertSame(trim((string)$oDoc), $sExpected);
     }
 
+    /**
+     * @return array<int, array<int, string>>
+     */
     public function createBackgroundShorthandProvider()
     {
         return [
