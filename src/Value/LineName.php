@@ -4,15 +4,27 @@ namespace Sabberworm\CSS\Value;
 
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 class LineName extends ValueList
 {
+    /**
+     * phpcs:ignore Generic.Files.LineLength
+     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>|RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string $aComponents
+     * @param int $iLineNo
+     */
     public function __construct(array $aComponents = [], $iLineNo = 0)
     {
         parent::__construct($aComponents, ' ', $iLineNo);
     }
 
+    /**
+     * @return LineName
+     *
+     * @throws UnexpectedTokenException
+     * @throws UnexpectedEOFException
+     */
     public static function parse(ParserState $oParserState)
     {
         $oParserState->consume('[');
