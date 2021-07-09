@@ -4,6 +4,8 @@ namespace Sabberworm\CSS\Value;
 
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedEOFException;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 class Size extends PrimitiveValue
 {
@@ -29,12 +31,27 @@ class Size extends PrimitiveValue
      */
     private static $SIZE_UNITS = null;
 
+    /**
+     * @var float
+     */
     private $fSize;
 
+    /**
+     * @var string|null
+     */
     private $sUnit;
 
+    /**
+     * @var bool
+     */
     private $bIsColorComponent;
 
+    /**
+     * @param float|int|string $fSize
+     * @param string|null $sUnit
+     * @param bool $bIsColorComponent
+     * @param int $iLineNo
+     */
     public function __construct($fSize, $sUnit = null, $bIsColorComponent = false, $iLineNo = 0)
     {
         parent::__construct($iLineNo);
@@ -43,6 +60,14 @@ class Size extends PrimitiveValue
         $this->bIsColorComponent = $bIsColorComponent;
     }
 
+    /**
+     * @param bool $bIsColorComponent
+     *
+     * @return Size
+     *
+     * @throws UnexpectedEOFException
+     * @throws UnexpectedTokenException
+     */
     public static function parse(ParserState $oParserState, $bIsColorComponent = false)
     {
         $sSize = '';
@@ -92,26 +117,43 @@ class Size extends PrimitiveValue
         return self::$SIZE_UNITS;
     }
 
+    /**
+     * @param string $sUnit
+     *
+     * @return void
+     */
     public function setUnit($sUnit)
     {
         $this->sUnit = $sUnit;
     }
 
+    /**
+     * @return string|null
+     */
     public function getUnit()
     {
         return $this->sUnit;
     }
 
+    /**
+     * @param float|int|string $fSize
+     */
     public function setSize($fSize)
     {
         $this->fSize = (float)$fSize;
     }
 
+    /**
+     * @return float
+     */
     public function getSize()
     {
         return $this->fSize;
     }
 
+    /**
+     * @return bool
+     */
     public function isColorComponent()
     {
         return $this->bIsColorComponent;
@@ -130,6 +172,9 @@ class Size extends PrimitiveValue
         return !$this->isColorComponent();
     }
 
+    /**
+     * @return bool
+     */
     public function isRelative()
     {
         if (in_array($this->sUnit, self::RELATIVE_SIZE_UNITS, true)) {
