@@ -38,29 +38,50 @@ class Settings
         $this->bMultibyteSupport = extension_loaded('mbstring');
     }
 
+    /**
+     * @return self new instance
+     */
     public static function create()
     {
         return new Settings();
     }
 
+    /**
+     * @param bool $bMultibyteSupport
+     *
+     * @return self fluent interface
+     */
     public function withMultibyteSupport($bMultibyteSupport = true)
     {
         $this->bMultibyteSupport = $bMultibyteSupport;
         return $this;
     }
 
+    /**
+     * @param string $sDefaultCharset
+     *
+     * @return self fluent interface
+     */
     public function withDefaultCharset($sDefaultCharset)
     {
         $this->sDefaultCharset = $sDefaultCharset;
         return $this;
     }
 
+    /**
+     * @param bool $bLenientParsing
+     *
+     * @return self fluent interface
+     */
     public function withLenientParsing($bLenientParsing = true)
     {
         $this->bLenientParsing = $bLenientParsing;
         return $this;
     }
 
+    /**
+     * @return self fluent interface
+     */
     public function beStrict()
     {
         return $this->withLenientParsing(false);
