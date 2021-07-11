@@ -14,6 +14,7 @@ use Sabberworm\CSS\Property\Import;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\RuleSet\AtRuleSet;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
+use Sabberworm\CSS\RuleSet\RuleSet;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\Size;
@@ -33,6 +34,23 @@ use Sabberworm\CSS\Value\URL;
  */
 class ParserTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function parseForOneRuleSetReturnsDocumentWithOneRuleSet()
+    {
+        $css = '.thing { left: 10px; }';
+        $parser = new Parser($css);
+
+        $document = $parser->parse();
+
+        self::assertInstanceOf(Document::class, $document);
+
+        $cssList = $document->getContents();
+        self::assertCount(1, $cssList);
+        self::assertInstanceOf(RuleSet::class, $cssList[0]);
+    }
+
     /**
      * @test
      */
