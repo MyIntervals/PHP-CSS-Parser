@@ -3,28 +3,68 @@
 namespace Sabberworm\CSS\Tests\CSSList;
 
 use PHPUnit\Framework\TestCase;
-use Sabberworm\CSS\Parser;
+use Sabberworm\CSS\CSSList\Document;
+use Sabberworm\CSS\RuleSet\DeclarationBlock;
 
+/**
+ * @covers \Sabberworm\CSS\CSSList\Document
+ */
 class DocumentTest extends TestCase
 {
     /**
+     * @var Document
+     */
+    private $subject;
+
+    protected function setUp()
+    {
+        $this->subject = new Document();
+    }
+
+    /**
      * @test
      */
-    public function overrideContents()
+    public function getContentsInitiallyReturnsEmptyArray()
     {
-        $sCss = '.thing { left: 10px; }';
-        $oParser = new Parser($sCss);
-        $oDoc = $oParser->parse();
-        $aContents = $oDoc->getContents();
-        self::assertCount(1, $aContents);
+        self::assertSame([], $this->subject->getContents());
+    }
 
-        $sCss2 = '.otherthing { right: 10px; }';
-        $oParser2 = new Parser($sCss);
-        $oDoc2 = $oParser2->parse();
-        $aContents2 = $oDoc2->getContents();
+    /**
+     * @param array<string, array<int, array<int, DeclarationBlock>>>
+     */
+    public function contentsDataProvider()
+    {
+        return [
+            'empty array' => [[]],
+            '1 item' => [[new DeclarationBlock()]],
+            '2 items' => [[new DeclarationBlock(), new DeclarationBlock()]],
+        ];
+    }
 
-        $oDoc->setContents([$aContents[0], $aContents2[0]]);
-        $aFinalContents = $oDoc->getContents();
-        self::assertCount(2, $aFinalContents);
+    /**
+     * @test
+     *
+     * @param array<int, DeclarationBlock>
+     *
+     * @dataProvider contentsDataProvider
+     */
+    public function setContentsSetsContents(array $contents)
+    {
+        $this->subject->setContents($contents);
+
+        self::assertSame($contents, $this->subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function setContentsReplacesContentsSetInPreviousCall()
+    {
+        $contents2 = [new DeclarationBlock()];
+
+        $this->subject->setContents([new DeclarationBlock()]);
+        $this->subject->setContents($contents2);
+
+        self::assertSame($contents2, $this->subject->getContents());
     }
 }
