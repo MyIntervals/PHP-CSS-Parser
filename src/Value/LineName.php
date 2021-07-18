@@ -10,8 +10,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 class LineName extends ValueList
 {
     /**
-     * phpcs:ignore Generic.Files.LineLength
-     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>|RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string $aComponents
+     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string> $aComponents
      * @param int $iLineNo
      */
     public function __construct(array $aComponents = [], $iLineNo = 0)
