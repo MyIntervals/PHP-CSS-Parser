@@ -30,7 +30,7 @@ class DocumentTest extends TestCase
     }
 
     /**
-     * @param array<string, array<int, array<int, DeclarationBlock>>>
+     * @return array<string, array<int, array<int, DeclarationBlock>>>
      */
     public function contentsDataProvider()
     {
@@ -44,7 +44,7 @@ class DocumentTest extends TestCase
     /**
      * @test
      *
-     * @param array<int, DeclarationBlock>
+     * @param array<int, DeclarationBlock> $contents
      *
      * @dataProvider contentsDataProvider
      */

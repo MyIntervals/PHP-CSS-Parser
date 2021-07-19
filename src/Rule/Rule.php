@@ -189,7 +189,7 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param array<array-key, array<array-key, RuleValueList>>
+     * @param array<array-key, array<array-key, RuleValueList>> $aSpaceSeparatedValues
      *
      * @return RuleValueList
      *
