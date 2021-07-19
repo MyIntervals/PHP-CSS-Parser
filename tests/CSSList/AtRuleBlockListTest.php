@@ -5,27 +5,49 @@ namespace Sabberworm\CSS\Tests\CSSList;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parser;
 
+/**
+ * @covers \Sabberworm\CSS\CSSList\AtRuleBlockList
+ */
 class AtRuleBlockListTest extends TestCase
 {
     /**
-     * @test
+     * @return array<string, array<int, string>>
      */
-    public function mediaQueries()
+    public function mediaRuleDataProvider()
     {
-        $sCss = '@media(min-width: 768px){.class{color:red}}';
-        $oParser = new Parser($sCss);
-        $oDoc = $oParser->parse();
-        $aContents = $oDoc->getContents();
-        $oMediaQuery = $aContents[0];
-        self::assertSame('media', $oMediaQuery->atRuleName(), 'Does not interpret the type as a function');
-        self::assertSame('(min-width: 768px)', $oMediaQuery->atRuleArgs(), 'The media query is the value');
+        return [
+            'without spaces around arguments' => ['@media(min-width: 768px){.class{color:red}}'],
+            'with spaces around arguments' => ['@media (min-width: 768px) {.class{color:red}}'],
+        ];
+    }
 
-        $sCss = '@media (min-width: 768px) {.class{color:red}}';
-        $oParser = new Parser($sCss);
-        $oDoc = $oParser->parse();
-        $aContents = $oDoc->getContents();
-        $oMediaQuery = $aContents[0];
-        self::assertSame('media', $oMediaQuery->atRuleName(), 'Does not interpret the type as a function');
-        self::assertSame('(min-width: 768px)', $oMediaQuery->atRuleArgs(), 'The media query is the value');
+    /**
+     * @test
+     *
+     * @param string $css
+     *
+     * @dataProvider mediaRuleDataProvider
+     */
+    public function parsesRuleNameOfMediaQueries($css)
+    {
+        $contents = (new Parser($css))->parse()->getContents();
+        $atRuleBlockList = $contents[0];
+
+        self::assertSame('media', $atRuleBlockList->atRuleName());
+    }
+
+    /**
+     * @test
+     *
+     * @param string $css
+     *
+     * @dataProvider mediaRuleDataProvider
+     */
+    public function parsesArgumentsOfMediaQueries($css)
+    {
+        $contents = (new Parser($css))->parse()->getContents();
+        $atRuleBlockList = $contents[0];
+
+        self::assertSame('(min-width: 768px)', $atRuleBlockList->atRuleArgs());
     }
 }
