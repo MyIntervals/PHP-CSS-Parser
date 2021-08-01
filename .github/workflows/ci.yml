@@ -91,13 +91,10 @@ jobs:
       matrix:
         include:
           - command: sniffer
-            tool: phpcs
             php-version: 7.4
           - command: fixer
-            tool: php-cs-fixer
             php-version: 7.4
           - command: stan
-            tool: phpstan
             php-version: 7.4
 
     steps:
@@ -126,8 +123,7 @@ jobs:
 
       - name: Install development tools
         run: |
-          # These workarounds are needed until PHIVE can do installs in a non-interactive way
-          echo y | phive --no-progress update ${{ matrix.tool }};
+          phive --no-progress install --trust-gpg-keys BBAB5DF0A0D6672989CF1869E82B2FB314E9906E,A972B9ABB95D0B760B51442231C7E470E2138192,D32680D5957DC7116BE29C14CF1A108D0E7AE720
 
       - name: Run Command
         run: composer ci:php:${{ matrix.command }}
