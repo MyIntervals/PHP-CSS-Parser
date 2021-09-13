@@ -106,7 +106,7 @@ class Rule implements Renderable, Commentable
         while ($oParserState->comes(';')) {
             $oParserState->consume(';');
         }
-        $oParserState->consumeWhiteSpace();
+        $oParserState->consumeWhiteSpace(false);
 
         return $oRule;
     }

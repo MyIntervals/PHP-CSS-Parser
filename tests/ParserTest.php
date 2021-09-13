@@ -1123,6 +1123,20 @@ body {background-color: red;}';
     /**
      * @test
      */
+    public function innerCommentExtracting()
+    {
+        $parser = new Parser('div {left:10px;/*Find Me!*/text-align:left;}');
+        $doc = $parser->parse();
+        $contents = $doc->getContents();
+        $divRules = $contents[0]->getRules();
+        $comments = $divRules[1]->getComments();
+        self::assertCount(1, $comments);
+        self::assertEquals("Find Me!", $comments[0]->getComment());
+    }
+
+    /**
+     * @test
+     */
     public function topLevelCommentExtracting()
     {
         $parser = new Parser('/*Find Me!*/div {left:10px; text-align:left;}');
