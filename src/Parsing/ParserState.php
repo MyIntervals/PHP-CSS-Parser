@@ -175,7 +175,7 @@ class ParserState
                 $sUtf32 .= chr($iUnicode & 0xff);
                 $iUnicode = $iUnicode >> 8;
             }
-            return iconv('utf-32le', $this->sCharset, $sUtf32);
+            mb_convert_encoding($sUtf32 , $this->sCharset , 'UTF-32LE');
         }
         if ($bIsForIdentifier) {
             $peek = ord($this->peek());
