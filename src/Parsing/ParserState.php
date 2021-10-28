@@ -480,7 +480,7 @@ class ParserState
     {
         if ($this->oParserSettings->bMultibyteSupport) {
             if ($this->streql($this->sCharset, 'utf-8')) {
-                return preg_split('//u', $sString, null, PREG_SPLIT_NO_EMPTY);
+                return preg_split('//u', $sString, -1, PREG_SPLIT_NO_EMPTY);
             } else {
                 $iLength = mb_strlen($sString, $this->sCharset);
                 $aResult = [];
