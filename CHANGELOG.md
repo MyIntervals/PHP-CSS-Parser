@@ -1,8 +1,35 @@
 # Revision History
 
-## x.y.z
+## 8.4.0
 
-* Require PHP ≥ 5.6
+### Features
+
+* Support for PHP 8.x
+* PHPDoc annotations
+* Allow usage of CSS variables inside color functions (by parsing them as regular functions)
+* Use PSR-12 code style
+* *No deprecations*
+
+### Bugfixes
+
+* Improved handling of whitespace in `calc()`
+* Fix parsing units whose prefix is also a valid unit, like `vmin`
+* Allow passing an object to `CSSList#replace`
+* Fix PHP 7.3 warnings
+* Correctly parse keyframes with `%`
+* Don’t convert large numbers to scientific notation
+* Allow a file to end after an `@import`
+* Preserve case of CSS variables as specced
+* Allow identifiers to use escapes the same way as strings
+* No longer use `eval` for the comparison in `getSelectorsBySpecificity`, in case it gets passed untrusted input (CVE-2020-13756). Also fixed in 8.3.1, 8.2.1, 8.1.1, 8.0.1, 7.0.4, 6.0.2, 5.2.1, 5.1.3, 5.0.9, 4.0.1, 3.0.1, 2.0.1, 1.0.1.
+* Prevent an infinite loop when parsing invalid grid line names
+* Remove invalid unit `vm`
+* Retain rule order after expanding shorthands
+
+### Backwards-incompatible changes
+
+* PHP ≥ 5.6 is now required
+* HHVM compatibility target dropped
 
 ## 8.3.0 (2019-02-22)
 
