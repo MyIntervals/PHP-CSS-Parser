@@ -43,7 +43,7 @@ $parser = new \Sabberworm\CSS\Parser($css, $settings);
 
 #### Strict parsing
 
-To have the parser choke on invalid rules, supply a thusly configured `\Sabberworm\CSS\Settings` object:
+To have the parser throw an exception when encountering invalid/unknown constructs (as opposed to trying to ignore them and carry on parsing), supply a thusly configured `\Sabberworm\CSS\Settings` object:
 
 ```php
 $parser = new \Sabberworm\CSS\Parser(
@@ -51,6 +51,8 @@ $parser = new \Sabberworm\CSS\Parser(
     \Sabberworm\CSS\Settings::create()->beStrict()
 );
 ```
+
+Note that this will also disable a workaround for parsing the unquoted variant of the legacy IE-specific `filter` rule.
 
 #### Disable multibyte functions
 
