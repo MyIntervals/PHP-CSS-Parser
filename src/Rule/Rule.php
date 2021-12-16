@@ -24,7 +24,7 @@ class Rule implements Renderable, Commentable
     private $sRule;
 
     /**
-     * @var RuleValueList|null
+     * @var RuleValueList|string|null
      */
     private $mValue;
 
@@ -171,7 +171,7 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @return RuleValueList|null
+     * @return RuleValueList|string|null
      */
     public function getValue()
     {
@@ -179,7 +179,7 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param RuleValueList|null $mValue
+     * @param RuleValueList|string|null $mValue
      *
      * @return void
      */
