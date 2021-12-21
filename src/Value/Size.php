@@ -24,7 +24,7 @@ class Size extends PrimitiveValue
     /**
      * @var array<int, string>
      */
-    const NON_SIZE_UNITS = ['deg', 'grad', 'rad', 's', 'ms', 'turns', 'Hz', 'kHz'];
+    const NON_SIZE_UNITS = ['deg', 'grad', 'rad', 's', 'ms', 'turn', 'Hz', 'kHz'];
 
     /**
      * @var array<int, array<string, string>>|null

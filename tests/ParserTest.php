@@ -360,7 +360,7 @@ class ParserTest extends TestCase
         self::assertSame(
             '#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;'
             . 'font-size: 10px;color: red !important;background-color: green;'
-            . 'background-color: rgba(0,128,0,.7);frequency: 30Hz;}
+            . 'background-color: rgba(0,128,0,.7);frequency: 30Hz;transform: rotate(1turn);}
 body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}',
             $oDoc->render()
         );
@@ -369,7 +369,7 @@ body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}
         }
         self::assertSame(
             '#header {margin: 10px 2em 1cm 2%;color: red !important;background-color: green;'
-            . 'background-color: rgba(0,128,0,.7);frequency: 30Hz;}
+            . 'background-color: rgba(0,128,0,.7);frequency: 30Hz;transform: rotate(1turn);}
 body {color: green;}',
             $oDoc->render()
         );
@@ -377,7 +377,7 @@ body {color: green;}',
             $oRuleSet->removeRule('background-');
         }
         self::assertSame(
-            '#header {margin: 10px 2em 1cm 2%;color: red !important;frequency: 30Hz;}
+            '#header {margin: 10px 2em 1cm 2%;color: red !important;frequency: 30Hz;transform: rotate(1turn);}
 body {color: green;}',
             $oDoc->render()
         );
