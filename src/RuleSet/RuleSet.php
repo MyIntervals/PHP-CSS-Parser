@@ -273,7 +273,15 @@ abstract class RuleSet implements Renderable, Commentable
         foreach ($this->aRules as $aRules) {
             foreach ($aRules as $oRule) {
                 $sRendered = $oOutputFormat->safely(function () use ($oRule, $oOutputFormat) {
-                    return $oRule->render($oOutputFormat->nextLevel());
+                    $sResult = '';
+                    $aComments = $oRule->getComments();
+
+                    foreach ($aComments as $oComment)
+                    {
+                        $sResult .= $oComment->render($oOutputFormat);
+                        $sResult .= $oOutputFormat->nextLevel()->spaceBeforeRules();
+                    }
+                    return $sResult . $oRule->render($oOutputFormat->nextLevel());
                 });
                 if ($sRendered === null) {
                     continue;
