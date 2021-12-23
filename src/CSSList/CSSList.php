@@ -420,7 +420,6 @@ abstract class CSSList implements Renderable, Commentable
                     $sResult .= $oNextLevel->spaceAfterBlocks();
                 }
                 return $sResult . $oContent->render($oNextLevel);
-                return $oContent->render($oNextLevel);
             });
             if ($sRendered === null) {
                 continue;
