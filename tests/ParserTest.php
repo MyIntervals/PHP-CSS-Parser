@@ -309,7 +309,17 @@ class ParserTest extends TestCase
             . "\n"
             . '               domain(mozilla.org),'
             . "\n"
-            . '               regexp("https:.*") {body {color: purple;background: yellow;}}'
+            . '               regexp("https:.*") {/* CSS rules here apply to:'
+            . "\n"
+            . '     + The page "https://www.w3.org/".'
+            . "\n"
+            . '     + Any page whose URL begins with "https://www.w3.org/Style/"'
+            . "\n"
+            . '     + Any page whose URL\'s host is "mozilla.org" or ends with'
+            . "\n"
+            . '       ".mozilla.org"'
+            . "\n"
+            . '     + Any page whose URL starts with "https:" *//* make the above-mentioned pages really ugly */body {color: purple;background: yellow;}}'
             . "\n"
             . '@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}'
             . "\n"
@@ -348,7 +358,17 @@ class ParserTest extends TestCase
             . "\n"
             . '               domain(mozilla.org),'
             . "\n"
-            . '               regexp("https:.*") {#my_id body {color: purple;background: yellow;}}'
+            . '               regexp("https:.*") {/* CSS rules here apply to:'
+            . "\n"
+            . '     + The page "https://www.w3.org/".'
+            . "\n"
+            . '     + Any page whose URL begins with "https://www.w3.org/Style/"'
+            . "\n"
+            . '     + Any page whose URL\'s host is "mozilla.org" or ends with'
+            . "\n"
+            . '       ".mozilla.org"'
+            . "\n"
+            . '     + Any page whose URL starts with "https:" *//* make the above-mentioned pages really ugly */#my_id body {color: purple;background: yellow;}}'
             . "\n"
             . '@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}'
             . "\n"
@@ -532,9 +552,9 @@ body {color: green;}',
     public function namespaces()
     {
         $oDoc = $this->parsedStructureForFile('namespaces');
-        $sExpected = '@namespace toto "http://toto.example.org";
+        $sExpected = '/* From the spec at https://www.w3.org/TR/css3-namespace/ */@namespace toto "http://toto.example.org";
 @namespace "http://example.com/foo";
-@namespace foo url("http://www.example.com/");
+/* From an introduction at https://www.blooberry.com/indexdot/css/syntax/atrules/namespace.htm */@namespace foo url("http://www.example.com/");
 @namespace foo url("http://www.example.com/");
 foo|test {gaga: 1;}
 |test {gaga: 2;}';
@@ -626,9 +646,13 @@ body {font-size: 1.6em;}';
     public function comments()
     {
         $oDoc = $this->parsedStructureForFile('comments');
-        $sExpected = '@import url("some/url.css") screen;
-.foo, #bar {background-color: #000;}
-@media screen {#foo.bar {position: absolute;}}';
+        $sExpected = <<<EXPECTED
+/**
+ * Comments Hell.
+ */@import url("some/url.css") screen;
+.foo, #bar {/* Number 6 */background-color: #000;}
+@media screen {/** Number 10 **/#foo.bar {/** Number 10b **/position: absolute;}}
+EXPECTED;
         self::assertSame($sExpected, $oDoc->render());
     }
 

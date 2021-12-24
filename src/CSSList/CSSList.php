@@ -69,8 +69,11 @@ abstract class CSSList implements Renderable, Commentable
             $oParserState = new ParserState($oParserState, Settings::create());
         }
         $bLenientParsing = $oParserState->getSettings()->bLenientParsing;
+        $comments=[];
         while (!$oParserState->isEnd()) {
-            $comments = $oParserState->consumeWhiteSpace();
+            if (empty($comments)) {
+                $comments = $oParserState->consumeWhiteSpace();
+            }
             $oListItem = null;
             if ($bLenientParsing) {
                 try {
@@ -89,6 +92,7 @@ abstract class CSSList implements Renderable, Commentable
                 $oListItem->setComments($comments);
                 $oList->append($oListItem);
             }
+            $comments = $oParserState->consumeWhiteSpace();
         }
         if (!$bIsRoot && !$bLenientParsing) {
             throw new SourceException("Unexpected end of document", $oParserState->currentLine());
@@ -413,11 +417,15 @@ abstract class CSSList implements Renderable, Commentable
             $sRendered = $oOutputFormat->safely(function () use ($oNextLevel, $oContent) {
                 $sResult = '';
                 $aComments = $oContent->getComments();
+                $c = count($aComments);
 
-                foreach ($aComments as $oComment)
+                foreach ($aComments as $i => $oComment)
                 {
                     $sResult .= $oComment->render($oNextLevel);
                     $sResult .= $oNextLevel->spaceAfterBlocks();
+                    if ($c-1 !== $i) {
+                        $sResult .= $oNextLevel->spaceAfterBlocks();
+                    }
                 }
                 return $sResult . $oContent->render($oNextLevel);
             });
