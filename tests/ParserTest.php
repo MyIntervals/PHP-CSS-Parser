@@ -5,6 +5,7 @@ namespace Sabberworm\CSS\Tests;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\CSSList\KeyFrame;
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\AtRule;
@@ -309,17 +310,7 @@ class ParserTest extends TestCase
             . "\n"
             . '               domain(mozilla.org),'
             . "\n"
-            . '               regexp("https:.*") {/* CSS rules here apply to:'
-            . "\n"
-            . '     + The page "https://www.w3.org/".'
-            . "\n"
-            . '     + Any page whose URL begins with "https://www.w3.org/Style/"'
-            . "\n"
-            . '     + Any page whose URL\'s host is "mozilla.org" or ends with'
-            . "\n"
-            . '       ".mozilla.org"'
-            . "\n"
-            . '     + Any page whose URL starts with "https:" *//* make the above-mentioned pages really ugly */body {color: purple;background: yellow;}}'
+            . '               regexp("https:.*") {body {color: purple;background: yellow;}}'
             . "\n"
             . '@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}'
             . "\n"
@@ -358,22 +349,12 @@ class ParserTest extends TestCase
             . "\n"
             . '               domain(mozilla.org),'
             . "\n"
-            . '               regexp("https:.*") {/* CSS rules here apply to:'
-            . "\n"
-            . '     + The page "https://www.w3.org/".'
-            . "\n"
-            . '     + Any page whose URL begins with "https://www.w3.org/Style/"'
-            . "\n"
-            . '     + Any page whose URL\'s host is "mozilla.org" or ends with'
-            . "\n"
-            . '       ".mozilla.org"'
-            . "\n"
-            . '     + Any page whose URL starts with "https:" *//* make the above-mentioned pages really ugly */#my_id body {color: purple;background: yellow;}}'
+            . '               regexp("https:.*") {#my_id body {color: purple;background: yellow;}}'
             . "\n"
             . '@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}'
             . "\n"
             . '@region-style #intro {#my_id p {color: blue;}}',
-            $oDoc->render()
+            $oDoc->render(OutputFormat::create()->setRenderComments(false))
         );
 
         $oDoc = self::parsedStructureForFile('values');
@@ -552,9 +533,9 @@ body {color: green;}',
     public function namespaces()
     {
         $oDoc = self::parsedStructureForFile('namespaces');
-        $sExpected = '/* From the spec at https://www.w3.org/TR/css3-namespace/ */@namespace toto "http://toto.example.org";
+        $sExpected = '@namespace toto "http://toto.example.org";
 @namespace "http://example.com/foo";
-/* From an introduction at https://www.blooberry.com/indexdot/css/syntax/atrules/namespace.htm */@namespace foo url("http://www.example.com/");
+@namespace foo url("http://www.example.com/");
 @namespace foo url("http://www.example.com/");
 foo|test {gaga: 1;}
 |test {gaga: 2;}';
@@ -647,11 +628,9 @@ body {font-size: 1.6em;}';
     {
         $oDoc = self::parsedStructureForFile('comments');
         $sExpected = <<<EXPECTED
-/**
- * Comments Hell.
- */@import url("some/url.css") screen;
-.foo, #bar {/* Number 6 */background-color: #000;}
-@media screen {/** Number 10 **/#foo.bar {/** Number 10b **/position: absolute;}}
+@import url("some/url.css") screen;
+.foo, #bar {background-color: #000;}
+@media screen {#foo.bar {position: absolute;}}
 EXPECTED;
         self::assertSame($sExpected, $oDoc->render());
     }
@@ -1095,8 +1074,9 @@ body {background-color: red;}';
 
         // Import property.
         $importComments = $aNodes[0]->getComments();
-        self::assertCount(1, $importComments);
-        self::assertSame("*\n * Comments Hell.\n ", $importComments[0]->getComment());
+        self::assertCount(2, $importComments);
+        self::assertSame("*\n * Comments\n ", $importComments[0]->getComment());
+        self::assertSame(" Hell ", $importComments[1]->getComment());
 
         // Declaration block.
         $fooBarBlock = $aNodes[1];

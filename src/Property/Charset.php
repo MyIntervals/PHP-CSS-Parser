@@ -82,7 +82,7 @@ class Charset implements AtRule
      */
     public function render(OutputFormat $oOutputFormat)
     {
-        return "@charset {$this->sCharset->render($oOutputFormat)};";
+        return "{$oOutputFormat->comments($this)}@charset {$this->oCharset->render($oOutputFormat)};";
     }
 
     /**
