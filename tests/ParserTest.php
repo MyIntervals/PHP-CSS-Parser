@@ -89,7 +89,7 @@ class ParserTest extends TestCase
      */
     public function colorParsing()
     {
-        $oDoc = $this->parsedStructureForFile('colortest');
+        $oDoc = self::parsedStructureForFile('colortest');
         foreach ($oDoc->getAllRuleSets() as $oRuleSet) {
             if (!$oRuleSet instanceof DeclarationBlock) {
                 continue;
@@ -169,7 +169,7 @@ class ParserTest extends TestCase
      */
     public function unicodeParsing()
     {
-        $oDoc = $this->parsedStructureForFile('unicode');
+        $oDoc = self::parsedStructureForFile('unicode');
         foreach ($oDoc->getAllDeclarationBlocks() as $oRuleSet) {
             $sSelector = $oRuleSet->getSelectors();
             $sSelector = $sSelector[0]->getSelector();
@@ -220,7 +220,7 @@ class ParserTest extends TestCase
      */
     public function unicodeRangeParsing()
     {
-        $oDoc = $this->parsedStructureForFile('unicode-range');
+        $oDoc = self::parsedStructureForFile('unicode-range');
         $sExpected = "@font-face {unicode-range: U+0100-024F,U+0259,U+1E??-2EFF,U+202F;}";
         self::assertSame($sExpected, $oDoc->render());
     }
@@ -230,7 +230,7 @@ class ParserTest extends TestCase
      */
     public function specificity()
     {
-        $oDoc = $this->parsedStructureForFile('specificity');
+        $oDoc = self::parsedStructureForFile('specificity');
         $oDeclarationBlock = $oDoc->getAllDeclarationBlocks();
         $oDeclarationBlock = $oDeclarationBlock[0];
         $aSelectors = $oDeclarationBlock->getSelectors();
@@ -282,7 +282,7 @@ class ParserTest extends TestCase
      */
     public function manipulation()
     {
-        $oDoc = $this->parsedStructureForFile('atrules');
+        $oDoc = self::parsedStructureForFile('atrules');
         self::assertSame(
             '@charset "utf-8";'
             . "\n"
@@ -376,7 +376,7 @@ class ParserTest extends TestCase
             $oDoc->render()
         );
 
-        $oDoc = $this->parsedStructureForFile('values');
+        $oDoc = self::parsedStructureForFile('values');
         self::assertSame(
             '#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;'
             . 'font-size: 10px;color: red !important;background-color: green;'
@@ -408,7 +408,7 @@ body {color: green;}',
      */
     public function ruleGetters()
     {
-        $oDoc = $this->parsedStructureForFile('values');
+        $oDoc = self::parsedStructureForFile('values');
         $aBlocks = $oDoc->getAllDeclarationBlocks();
         $oHeaderBlock = $aBlocks[0];
         $oBodyBlock = $aBlocks[1];
@@ -431,7 +431,7 @@ body {color: green;}',
      */
     public function slashedValues()
     {
-        $oDoc = $this->parsedStructureForFile('slashed');
+        $oDoc = self::parsedStructureForFile('slashed');
         self::assertSame(
             '.test {font: 12px/1.5 Verdana,Arial,sans-serif;border-radius: 5px 10px 5px 10px/10px 5px 10px 5px;}',
             $oDoc->render()
@@ -472,7 +472,7 @@ body {color: green;}',
      */
     public function functionSyntax()
     {
-        $oDoc = $this->parsedStructureForFile('functions');
+        $oDoc = self::parsedStructureForFile('functions');
         $sExpected = 'div.main {background-image: linear-gradient(#000,#fff);}'
             . "\n"
             . '.collapser::before, .collapser::-moz-before, .collapser::-webkit-before {content: "»";font-size: 1.2em;'
@@ -510,7 +510,7 @@ body {color: green;}',
      */
     public function expandShorthands()
     {
-        $oDoc = $this->parsedStructureForFile('expand-shorthands');
+        $oDoc = self::parsedStructureForFile('expand-shorthands');
         $sExpected = 'body {font: italic 500 14px/1.618 "Trebuchet MS",Georgia,serif;border: 2px solid #f0f;'
             . 'background: #ccc url("/images/foo.png") no-repeat left top;margin: 1em !important;'
             . 'padding: 2px 6px 3px;}';
@@ -534,7 +534,7 @@ body {color: green;}',
      */
     public function createShorthands()
     {
-        $oDoc = $this->parsedStructureForFile('create-shorthands');
+        $oDoc = self::parsedStructureForFile('create-shorthands');
         $sExpected = 'body {font-size: 2em;font-family: Helvetica,Arial,sans-serif;font-weight: bold;'
             . 'border-width: 2px;border-color: #999;border-style: dotted;background-color: #fff;'
             . 'background-image: url("foobar.png");background-repeat: repeat-y;margin-top: 2px;margin-right: 3px;'
@@ -551,7 +551,7 @@ body {color: green;}',
      */
     public function namespaces()
     {
-        $oDoc = $this->parsedStructureForFile('namespaces');
+        $oDoc = self::parsedStructureForFile('namespaces');
         $sExpected = '/* From the spec at https://www.w3.org/TR/css3-namespace/ */@namespace toto "http://toto.example.org";
 @namespace "http://example.com/foo";
 /* From an introduction at https://www.blooberry.com/indexdot/css/syntax/atrules/namespace.htm */@namespace foo url("http://www.example.com/");
@@ -566,7 +566,7 @@ foo|test {gaga: 1;}
      */
     public function innerColors()
     {
-        $oDoc = $this->parsedStructureForFile('inner-color');
+        $oDoc = self::parsedStructureForFile('inner-color');
         $sExpected = 'test {background: -webkit-gradient(linear,0 0,0 bottom,from(#006cad),to(hsl(202,100%,49%)));}';
         self::assertSame($sExpected, $oDoc->render());
     }
@@ -576,7 +576,7 @@ foo|test {gaga: 1;}
      */
     public function prefixedGradient()
     {
-        $oDoc = $this->parsedStructureForFile('webkit');
+        $oDoc = self::parsedStructureForFile('webkit');
         $sExpected = '.test {background: -webkit-linear-gradient(top right,white,black);}';
         self::assertSame($sExpected, $oDoc->render());
     }
@@ -586,7 +586,7 @@ foo|test {gaga: 1;}
      */
     public function listValueRemoval()
     {
-        $oDoc = $this->parsedStructureForFile('atrules');
+        $oDoc = self::parsedStructureForFile('atrules');
         foreach ($oDoc->getContents() as $oItem) {
             if ($oItem instanceof AtRule) {
                 $oDoc->remove($oItem);
@@ -595,7 +595,7 @@ foo|test {gaga: 1;}
         }
         self::assertSame('html, body {font-size: -.6em;}', $oDoc->render());
 
-        $oDoc = $this->parsedStructureForFile('nested');
+        $oDoc = self::parsedStructureForFile('nested');
         foreach ($oDoc->getAllDeclarationBlocks() as $oBlock) {
             $oDoc->removeDeclarationBlockBySelector($oBlock, false);
             break;
@@ -607,7 +607,7 @@ foo|test {gaga: 1;}
             $oDoc->render()
         );
 
-        $oDoc = $this->parsedStructureForFile('nested');
+        $oDoc = self::parsedStructureForFile('nested');
         foreach ($oDoc->getAllDeclarationBlocks() as $oBlock) {
             $oDoc->removeDeclarationBlockBySelector($oBlock, true);
             break;
@@ -626,7 +626,7 @@ foo|test {gaga: 1;}
      */
     public function selectorRemoval()
     {
-        $oDoc = $this->parsedStructureForFile('1readme');
+        $oDoc = self::parsedStructureForFile('1readme');
         $aBlocks = $oDoc->getAllDeclarationBlocks();
         $oBlock1 = $aBlocks[0];
         self::assertTrue($oBlock1->removeSelector('html'));
@@ -645,7 +645,7 @@ body {font-size: 1.6em;}';
      */
     public function comments()
     {
-        $oDoc = $this->parsedStructureForFile('comments');
+        $oDoc = self::parsedStructureForFile('comments');
         $sExpected = <<<EXPECTED
 /**
  * Comments Hell.
@@ -661,7 +661,7 @@ EXPECTED;
      */
     public function urlInFile()
     {
-        $oDoc = $this->parsedStructureForFile('url', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('url', Settings::create()->withMultibyteSupport(true));
         $sExpected = 'body {background: #fff url("https://somesite.com/images/someimage.gif") repeat top center;}
 body {background-url: url("https://somesite.com/images/someimage.gif");}';
         self::assertSame($sExpected, $oDoc->render());
@@ -672,7 +672,7 @@ body {background-url: url("https://somesite.com/images/someimage.gif");}';
      */
     public function hexAlphaInFile()
     {
-        $oDoc = $this->parsedStructureForFile('hex-alpha', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('hex-alpha', Settings::create()->withMultibyteSupport(true));
         $sExpected = 'div {background: rgba(17,34,51,.27);}
 div {background: rgba(17,34,51,.27);}';
         self::assertSame($sExpected, $oDoc->render());
@@ -683,7 +683,7 @@ div {background: rgba(17,34,51,.27);}';
      */
     public function calcInFile()
     {
-        $oDoc = $this->parsedStructureForFile('calc', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('calc', Settings::create()->withMultibyteSupport(true));
         $sExpected = 'div {width: calc(100% / 4);}
 div {margin-top: calc(-120% - 4px);}
 div {height: -webkit-calc(9 / 16 * 100%) !important;width: -moz-calc(( 50px - 50% ) * 2);}
@@ -696,7 +696,7 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
      */
     public function calcNestedInFile()
     {
-        $oDoc = $this->parsedStructureForFile('calc-nested', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('calc-nested', Settings::create()->withMultibyteSupport(true));
         $sExpected = '.test {font-size: calc(( 3 * 4px ) + -2px);top: calc(200px - calc(20 * 3px));}';
         self::assertSame($sExpected, $oDoc->render());
     }
@@ -706,7 +706,7 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
      */
     public function gridLineNameInFile()
     {
-        $oDoc = $this->parsedStructureForFile('grid-linename', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('grid-linename', Settings::create()->withMultibyteSupport(true));
         $sExpected = "div {grid-template-columns: [linename] 100px;}\n"
             . "span {grid-template-columns: [linename1 linename2] 100px;}";
         self::assertSame($sExpected, $oDoc->render());
@@ -717,7 +717,7 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
      */
     public function emptyGridLineNameLenientInFile()
     {
-        $oDoc = $this->parsedStructureForFile('empty-grid-linename');
+        $oDoc = self::parsedStructureForFile('empty-grid-linename');
         $sExpected = '.test {grid-template-columns: [] 100px;}';
         self::assertSame($sExpected, $oDoc->render());
     }
@@ -727,7 +727,7 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
      */
     public function invalidGridLineNameInFile()
     {
-        $oDoc = $this->parsedStructureForFile('invalid-grid-linename', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('invalid-grid-linename', Settings::create()->withMultibyteSupport(true));
         $sExpected = "div {}";
         self::assertSame($sExpected, $oDoc->render());
     }
@@ -737,7 +737,7 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
      */
     public function unmatchedBracesInFile()
     {
-        $oDoc = $this->parsedStructureForFile('unmatched_braces', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('unmatched_braces', Settings::create()->withMultibyteSupport(true));
         $sExpected = 'button, input, checkbox, textarea {outline: 0;margin: 0;}';
         self::assertSame($sExpected, $oDoc->render());
     }
@@ -747,13 +747,13 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
      */
     public function invalidSelectorsInFile()
     {
-        $oDoc = $this->parsedStructureForFile('invalid-selectors', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('invalid-selectors', Settings::create()->withMultibyteSupport(true));
         $sExpected = '@keyframes mymove {from {top: 0px;}}
 #test {color: white;background: green;}
 #test {display: block;background: white;color: black;}';
         self::assertSame($sExpected, $oDoc->render());
 
-        $oDoc = $this->parsedStructureForFile('invalid-selectors-2', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('invalid-selectors-2', Settings::create()->withMultibyteSupport(true));
         $sExpected = '@media only screen and (max-width: 1215px) {.breadcrumb {padding-left: 10px;}
 	.super-menu > li:first-of-type {border-left-width: 0;}
 	.super-menu > li:last-of-type {border-right-width: 0;}
@@ -768,12 +768,12 @@ body {background-color: red;}';
      */
     public function selectorEscapesInFile()
     {
-        $oDoc = $this->parsedStructureForFile('selector-escapes', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('selector-escapes', Settings::create()->withMultibyteSupport(true));
         $sExpected = '#\# {color: red;}
 .col-sm-1\/5 {width: 20%;}';
         self::assertSame($sExpected, $oDoc->render());
 
-        $oDoc = $this->parsedStructureForFile('invalid-selectors-2', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('invalid-selectors-2', Settings::create()->withMultibyteSupport(true));
         $sExpected = '@media only screen and (max-width: 1215px) {.breadcrumb {padding-left: 10px;}
 	.super-menu > li:first-of-type {border-left-width: 0;}
 	.super-menu > li:last-of-type {border-right-width: 0;}
@@ -788,7 +788,7 @@ body {background-color: red;}';
      */
     public function identifierEscapesInFile()
     {
-        $oDoc = $this->parsedStructureForFile('identifier-escapes', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('identifier-escapes', Settings::create()->withMultibyteSupport(true));
         $sExpected = 'div {font: 14px Font Awesome\ 5 Pro;font: 14px Font Awesome\} 5 Pro;'
             . 'font: 14px Font Awesome\; 5 Pro;f\;ont: 14px Font Awesome\; 5 Pro;}';
         self::assertSame($sExpected, $oDoc->render());
@@ -799,7 +799,7 @@ body {background-color: red;}';
      */
     public function selectorIgnoresInFile()
     {
-        $oDoc = $this->parsedStructureForFile('selector-ignores', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('selector-ignores', Settings::create()->withMultibyteSupport(true));
         $sExpected = '.some[selectors-may=\'contain-a-{\'] {}'
             . "\n"
             . '.this-selector  .valid {width: 100px;}'
@@ -813,7 +813,7 @@ body {background-color: red;}';
      */
     public function keyframeSelectors()
     {
-        $oDoc = $this->parsedStructureForFile(
+        $oDoc = self::parsedStructureForFile(
             'keyframe-selector-validation',
             Settings::create()->withMultibyteSupport(true)
         );
@@ -832,7 +832,7 @@ body {background-color: red;}';
      */
     public function lineNameFailure()
     {
-        $this->parsedStructureForFile('-empty-grid-linename', Settings::create()->withLenientParsing(false));
+        self::parsedStructureForFile('-empty-grid-linename', Settings::create()->withLenientParsing(false));
     }
 
     /**
@@ -842,7 +842,7 @@ body {background-color: red;}';
      */
     public function calcFailure()
     {
-        $this->parsedStructureForFile('-calc-no-space-around-minus', Settings::create()->withLenientParsing(false));
+        self::parsedStructureForFile('-calc-no-space-around-minus', Settings::create()->withLenientParsing(false));
     }
 
     /**
@@ -850,7 +850,7 @@ body {background-color: red;}';
      */
     public function urlInFileMbOff()
     {
-        $oDoc = $this->parsedStructureForFile('url', Settings::create()->withMultibyteSupport(false));
+        $oDoc = self::parsedStructureForFile('url', Settings::create()->withMultibyteSupport(false));
         $sExpected = 'body {background: #fff url("https://somesite.com/images/someimage.gif") repeat top center;}'
             . "\n"
             . 'body {background-url: url("https://somesite.com/images/someimage.gif");}';
@@ -862,7 +862,7 @@ body {background-color: red;}';
      */
     public function emptyFile()
     {
-        $oDoc = $this->parsedStructureForFile('-empty', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('-empty', Settings::create()->withMultibyteSupport(true));
         $sExpected = '';
         self::assertSame($sExpected, $oDoc->render());
     }
@@ -872,7 +872,7 @@ body {background-color: red;}';
      */
     public function emptyFileMbOff()
     {
-        $oDoc = $this->parsedStructureForFile('-empty', Settings::create()->withMultibyteSupport(false));
+        $oDoc = self::parsedStructureForFile('-empty', Settings::create()->withMultibyteSupport(false));
         $sExpected = '';
         self::assertSame($sExpected, $oDoc->render());
     }
@@ -882,7 +882,7 @@ body {background-color: red;}';
      */
     public function charsetLenient1()
     {
-        $oDoc = $this->parsedStructureForFile('-charset-after-rule', Settings::create()->withLenientParsing(true));
+        $oDoc = self::parsedStructureForFile('-charset-after-rule', Settings::create()->withLenientParsing(true));
         $sExpected = '#id {prop: var(--val);}';
         self::assertSame($sExpected, $oDoc->render());
     }
@@ -892,7 +892,7 @@ body {background-color: red;}';
      */
     public function charsetLenient2()
     {
-        $oDoc = $this->parsedStructureForFile('-charset-in-block', Settings::create()->withLenientParsing(true));
+        $oDoc = self::parsedStructureForFile('-charset-in-block', Settings::create()->withLenientParsing(true));
         $sExpected = '@media print {}';
         self::assertSame($sExpected, $oDoc->render());
     }
@@ -902,7 +902,7 @@ body {background-color: red;}';
      */
     public function trailingWhitespace()
     {
-        $oDoc = $this->parsedStructureForFile('trailing-whitespace', Settings::create()->withLenientParsing(false));
+        $oDoc = self::parsedStructureForFile('trailing-whitespace', Settings::create()->withLenientParsing(false));
         $sExpected = 'div {width: 200px;}';
         self::assertSame($sExpected, $oDoc->render());
     }
@@ -914,7 +914,7 @@ body {background-color: red;}';
      */
     public function charsetFailure1()
     {
-        $this->parsedStructureForFile('-charset-after-rule', Settings::create()->withLenientParsing(false));
+        self::parsedStructureForFile('-charset-after-rule', Settings::create()->withLenientParsing(false));
     }
 
     /**
@@ -924,7 +924,7 @@ body {background-color: red;}';
      */
     public function charsetFailure2()
     {
-        $this->parsedStructureForFile('-charset-in-block', Settings::create()->withLenientParsing(false));
+        self::parsedStructureForFile('-charset-in-block', Settings::create()->withLenientParsing(false));
     }
 
     /**
@@ -934,7 +934,7 @@ body {background-color: red;}';
      */
     public function unopenedClosingBracketFailure()
     {
-        $this->parsedStructureForFile('-unopened-close-brackets', Settings::create()->withLenientParsing(false));
+        self::parsedStructureForFile('-unopened-close-brackets', Settings::create()->withLenientParsing(false));
     }
 
     /**
@@ -947,7 +947,7 @@ body {background-color: red;}';
      */
     public function missingPropertyValueStrict()
     {
-        $this->parsedStructureForFile('missing-property-value', Settings::create()->withLenientParsing(false));
+        self::parsedStructureForFile('missing-property-value', Settings::create()->withLenientParsing(false));
     }
 
     /**
@@ -959,7 +959,7 @@ body {background-color: red;}';
      */
     public function missingPropertyValueLenient()
     {
-        $parsed = $this->parsedStructureForFile('missing-property-value', Settings::create()->withLenientParsing(true));
+        $parsed = self::parsedStructureForFile('missing-property-value', Settings::create()->withLenientParsing(true));
         $rulesets = $parsed->getAllRuleSets();
         self::assertCount(1, $rulesets);
         $block = $rulesets[0];
@@ -980,7 +980,7 @@ body {background-color: red;}';
      *
      * @return Document parsed document
      */
-    private function parsedStructureForFile($sFileName, $oSettings = null)
+    public static function parsedStructureForFile($sFileName, $oSettings = null)
     {
         $sFile = __DIR__ . "/fixtures/$sFileName.css";
         $oParser = new Parser(file_get_contents($sFile), $oSettings);
@@ -994,7 +994,7 @@ body {background-color: red;}';
      */
     public function lineNumbersParsing()
     {
-        $oDoc = $this->parsedStructureForFile('line-numbers');
+        $oDoc = self::parsedStructureForFile('line-numbers');
         // array key is the expected line number
         $aExpected = [
             1 => [Charset::class],
@@ -1069,7 +1069,7 @@ body {background-color: red;}';
     public function ieHacksStrictParsing()
     {
         // We can't strictly parse IE hacks.
-        $this->parsedStructureForFile('ie-hacks', Settings::create()->beStrict());
+        self::parsedStructureForFile('ie-hacks', Settings::create()->beStrict());
     }
 
     /**
@@ -1077,7 +1077,7 @@ body {background-color: red;}';
      */
     public function ieHacksParsing()
     {
-        $oDoc = $this->parsedStructureForFile('ie-hacks', Settings::create()->withLenientParsing(true));
+        $oDoc = self::parsedStructureForFile('ie-hacks', Settings::create()->withLenientParsing(true));
         $sExpected = 'p {padding-right: .75rem \9;background-image: none \9;color: red \9\0;'
             . 'background-color: red \9\0;background-color: red \9\0 !important;content: "red 	\0";content: "red઼";}';
         self::assertSame($sExpected, $oDoc->render());
@@ -1090,7 +1090,7 @@ body {background-color: red;}';
      */
     public function commentExtracting()
     {
-        $oDoc = $this->parsedStructureForFile('comments');
+        $oDoc = self::parsedStructureForFile('comments');
         $aNodes = $oDoc->getContents();
 
         // Import property.
@@ -1164,7 +1164,7 @@ body {background-color: red;}';
      */
     public function microsoftFilterStrictParsing()
     {
-        $oDoc = $this->parsedStructureForFile('ms-filter', Settings::create()->beStrict());
+        $oDoc = self::parsedStructureForFile('ms-filter', Settings::create()->beStrict());
     }
 
     /**
@@ -1172,7 +1172,7 @@ body {background-color: red;}';
      */
     public function microsoftFilterParsing()
     {
-        $oDoc = $this->parsedStructureForFile('ms-filter');
+        $oDoc = self::parsedStructureForFile('ms-filter');
         $sExpected = '.test {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#80000000",'
             . 'endColorstr="#00000000",GradientType=1);}';
         self::assertSame($sExpected, $oDoc->render());
@@ -1183,7 +1183,7 @@ body {background-color: red;}';
      */
     public function largeSizeValuesInFile()
     {
-        $oDoc = $this->parsedStructureForFile('large-z-index', Settings::create()->withMultibyteSupport(false));
+        $oDoc = self::parsedStructureForFile('large-z-index', Settings::create()->withMultibyteSupport(false));
         $sExpected = '.overlay {z-index: 10000000000000000000000;}';
         self::assertSame($sExpected, $oDoc->render());
     }
@@ -1193,7 +1193,7 @@ body {background-color: red;}';
      */
     public function lonelyImport()
     {
-        $oDoc = $this->parsedStructureForFile('lonely-import');
+        $oDoc = self::parsedStructureForFile('lonely-import');
         $sExpected = "@import url(\"example.css\") only screen and (max-width: 600px);";
         self::assertSame($sExpected, $oDoc->render());
     }
