@@ -69,7 +69,7 @@ abstract class CSSList implements Renderable, Commentable
             $oParserState = new ParserState($oParserState, Settings::create());
         }
         $bLenientParsing = $oParserState->getSettings()->bLenientParsing;
-        $comments=[];
+        $comments = [];
         while (!$oParserState->isEnd()) {
             if (empty($comments)) {
                 $comments = $oParserState->consumeWhiteSpace();
@@ -419,11 +419,10 @@ abstract class CSSList implements Renderable, Commentable
                 $aComments = $oContent->getComments();
                 $c = count($aComments);
 
-                foreach ($aComments as $i => $oComment)
-                {
+                foreach ($aComments as $i => $oComment) {
                     $sResult .= $oComment->render($oNextLevel);
                     $sResult .= $oNextLevel->spaceAfterBlocks();
-                    if ($c-1 !== $i) {
+                    if ($c - 1 !== $i) {
                         $sResult .= $oNextLevel->spaceAfterBlocks();
                     }
                 }

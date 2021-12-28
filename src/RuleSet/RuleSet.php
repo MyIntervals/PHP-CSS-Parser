@@ -277,11 +277,10 @@ abstract class RuleSet implements Renderable, Commentable
                     $aComments = $oRule->getComments();
                     $c = count($aComments);
 
-                    foreach ($aComments as $i => $oComment)
-                    {
+                    foreach ($aComments as $i => $oComment) {
                         $sResult .= $oComment->render($oOutputFormat);
                         $sResult .= $oOutputFormat->nextLevel()->spaceBeforeRules();
-                        if ($c-1 !== $i) {
+                        if ($c - 1 !== $i) {
                             $sResult .= $oOutputFormat->nextLevel()->spaceBeforeRules();
                         }
                     }
