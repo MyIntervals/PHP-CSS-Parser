@@ -128,7 +128,7 @@ abstract class CSSList implements Renderable, Commentable
                         $oParserState->currentLine()
                     );
                 }
-                $oParserState->setCharset($oAtRule->getCharset()->getString());
+                $oParserState->setCharset($oAtRule->getCharset());
             }
             return $oAtRule;
         } elseif ($oParserState->comes('}')) {
