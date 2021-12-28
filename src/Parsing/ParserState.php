@@ -204,7 +204,7 @@ class ParserState
      */
     public function consumeWhiteSpace()
     {
-        $comments = [];
+        $aComments = [];
         do {
             while (preg_match('/\\s/isSu', $this->peek()) === 1) {
                 $this->consume(1);
@@ -214,16 +214,16 @@ class ParserState
                     $oComment = $this->consumeComment();
                 } catch (UnexpectedEOFException $e) {
                     $this->iCurrentPosition = $this->iLength;
-                    return;
+                    return $aComments;
                 }
             } else {
                 $oComment = $this->consumeComment();
             }
             if ($oComment !== false) {
-                $comments[] = $oComment;
+                $aComments[] = $oComment;
             }
         } while ($oComment !== false);
-        return $comments;
+        return $aComments;
     }
 
     /**
