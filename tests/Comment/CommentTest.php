@@ -12,7 +12,7 @@ use Sabberworm\CSS\Tests\ParserTest as TestsParserTest;
  * @covers \Sabberworm\CSS\OutputFormat
  * @covers \Sabberworm\CSS\OutputFormatter
  */
-class ParserTest extends TestCase
+class CommentTest extends TestCase
 {
     /**
      * @test
