@@ -1,0 +1,11 @@
+#test {
+  color: #a;
+  background: #ab;
+}
+
+body
+  color: #abcd;
+  background: #abcde;
+}
+
+a { color: #fffff;}
