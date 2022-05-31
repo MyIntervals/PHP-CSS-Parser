@@ -3,5 +3,5 @@
   <phar name="php-cs-fixer" version="^3.4.0" installed="3.4.0" location="./.phive/php-cs-fixer.phar" copy="false"/>
   <phar name="phpcbf" version="^3.6.2" location="./.phive/phpcbf.phar" copy="false" installed="3.6.2"/>
   <phar name="phpcs" version="^3.6.2" location="./.phive/phpcs.phar" copy="false" installed="3.6.2"/>
-  <phar name="phpstan" version="^1.3.3" installed="1.3.3" location="./.phive/phpstan.phar" copy="false"/>
+  <phar name="phpstan" version="^1.7.6" installed="1.7.6" location="./.phive/phpstan.phar" copy="false"/>
 </phive>
