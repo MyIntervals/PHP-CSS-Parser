@@ -11,7 +11,7 @@ name: CI
 jobs:
   php-lint:
     name: PHP Lint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         php-version: [ '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2' ]
@@ -32,7 +32,7 @@ jobs:
   unit-tests:
     name: Unit tests
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     needs: [ php-lint ]
 
@@ -82,7 +82,7 @@ jobs:
   static-analysis:
     name: Static Analysis
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     needs: [ php-lint ]
 
