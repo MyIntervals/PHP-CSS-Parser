@@ -57,7 +57,7 @@ jobs:
           coverage: "${{ matrix.coverage }}"
 
       - name: Cache dependencies installed with composer
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.cache/composer
           key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
@@ -109,7 +109,7 @@ jobs:
           coverage: none
 
       - name: Cache dependencies installed with composer
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.cache/composer
           key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
