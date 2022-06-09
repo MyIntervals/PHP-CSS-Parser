@@ -218,6 +218,8 @@ html, body {
 ```
 
 #### Structure (`var_dump()`)
+<details>
+  <summary>Click to expand</summary>
 
 ```php
 class Sabberworm\CSS\CSSList\Document#4 (2) {
@@ -439,6 +441,9 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 
 ```
 
+</details>
+
+
 #### Output (`render()`)
 
 ```css
@@ -462,6 +467,8 @@ html, body {font-size: 1.6em;}
 ```
 
 #### Structure (`var_dump()`)
+<details>
+  <summary>Click to expand</summary>
 
 ```php
 class Sabberworm\CSS\CSSList\Document#4 (2) {
@@ -606,6 +613,8 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 }
 
 ```
+</details>
+
 
 #### Output (`render()`)
 
