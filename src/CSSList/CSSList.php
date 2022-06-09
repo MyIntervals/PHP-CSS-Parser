@@ -274,7 +274,7 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * Appends an item to tje list of contents.
+     * Appends an item to the list of contents.
      *
      * @param RuleSet|CSSList|Import|Charset $oItem
      *

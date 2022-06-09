@@ -114,6 +114,7 @@ There are a few convenience methods on Document to ease finding, manipulating an
 * `getAllDeclarationBlocks()` – does what it says; no matter how deeply nested your selectors are. Aliased as `getAllSelectors()`.
 * `getAllRuleSets()` – does what it says; no matter how deeply nested your rule sets are.
 * `getAllValues()` – finds all `Value` objects inside `Rule`s.
+* `getSelectorsBySpecificity(int: $specificity)` - finds all selectors with the requested specificity. `$specificity` is an integer with `1` being the highest specificity value. The method behaves just like  `getAllDeclarationBlocks()` if no parameter is passed.
 
 ## To-Do
 
