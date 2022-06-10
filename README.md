@@ -440,9 +440,7 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 }
 
 ```
-
 </details>
-
 
 #### Output (`render()`)
 
@@ -614,7 +612,6 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 
 ```
 </details>
-
 
 #### Output (`render()`)
 
