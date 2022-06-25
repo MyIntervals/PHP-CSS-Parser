@@ -942,7 +942,7 @@ body {background-color: red;}';
         $rulesets = $parsed->getAllRuleSets();
         self::assertCount(1, $rulesets);
         $block = $rulesets[0];
-        self::assertTrue($block instanceof DeclarationBlock);
+        self::assertInstanceOf(DeclarationBlock::class, $block);
         self::assertEquals([new Selector('div')], $block->getSelectors());
         $rules = $block->getRules();
         self::assertCount(1, $rules);
