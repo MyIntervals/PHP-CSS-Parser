@@ -33,7 +33,7 @@ The resulting CSS document structure can be manipulated prior to being output.
 
 #### Charset
 
-The charset option is used only if no `@charset` declaration is found in the CSS file. UTF-8 is the default, so you won’t have to create a settings object at all if you don’t intend to change that.
+The charset option will only be used if the CSS file does not contain an `@charset` declaration. UTF-8 is the default, so you won’t have to create a settings object at all if you don’t intend to change that.
 
 ```php
 $settings = \Sabberworm\CSS\Settings::create()
@@ -69,12 +69,9 @@ The resulting data structure consists mainly of five basic types: `CSSList`, `Ru
 
 #### CSSList
 
-`CSSList` represents a generic CSS container, most likely containing declaration blocks (rule sets with a selector), but it may also contain at-rules, charset declarations, etc. `CSSList` has the following concrete subtypes:
+`CSSList` represents a generic CSS container, most likely containing declaration blocks (rule sets with a selector), but it may also contain at-rules, charset declarations, etc.
 
-* `Document` – representing the root of a CSS file.
-* `MediaQuery` – represents a subsection of a `CSSList` that only applies to an output device matching the contained media query.
-
-To access the items stored in a `CSSList` – like the document you got back when calling `$parser->parse()` –, use `getContents()`, then iterate over that collection and use instanceof to check whether you’re dealing with another `CSSList`, a `RuleSet`, a `Import` or a `Charset`.
+To access the items stored in a `CSSList` – like the document you got back when calling `$parser->parse()` –, use `getContents()`, then iterate over that collection and use `instanceof` to check whether you’re dealing with another `CSSList`, a `RuleSet`, a `Import` or a `Charset`.
 
 To append a new item (selector, media query, etc.) to an existing `CSSList`, construct it using the constructor for this class and use the `append($oItem)` method.
 
@@ -82,16 +79,16 @@ To append a new item (selector, media query, etc.) to an existing `CSSList`, con
 
 `RuleSet` is a container for individual rules. The most common form of a rule set is one constrained by a selector. The following concrete subtypes exist:
 
-* `AtRuleSet` – for generic at-rules which do not match the ones specifically mentioned like `@import`, `@charset` or `@media`. A common example for this is `@font-face`.
+* `AtRuleSet` – for generic at-rules for generic at-rules which are not covered by specific classes, i.e., not `@import`, `@charset` or `@media`. A common example for this is `@font-face`.
 * `DeclarationBlock` – a `RuleSet` constrained by a `Selector`; contains an array of selector objects (comma-separated in the CSS) as well as the rules to be applied to the matching elements.
 
 Note: A `CSSList` can contain other `CSSList`s (and `Import`s as well as a `Charset`), while a `RuleSet` can only contain `Rule`s.
 
-If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $rule)`, `getRules()` and `removeRule($rule)` (which accepts either a `Rule` instance or a rule name; optionally suffixed by a dash to remove all related rules).
+If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $rule)`, `getRules()` and `removeRule($rule)` (which accepts either a `Rule` or a rule name; optionally suffixed by a dash to remove all related rules).
 
 #### Rule
 
-`Rule`s just have a key (the rule) and a value. These values are all instances of a `Value`.
+`Rule`s just have a string key (the rule) and a `Value`.
 
 #### Value
 
@@ -100,21 +97,22 @@ If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $rule)`, `g
 * `Size` – consists of a numeric `size` value and a unit.
 * `Color` – colors can be input in the form #rrggbb, #rgb or schema(val1, val2, …) but are always stored as an array of ('s' => val1, 'c' => val2, 'h' => val3, …) and output in the second form.
 * `CSSString` – this is just a wrapper for quoted strings to distinguish them from keywords; always output with double quotes.
-* `URL` – URLs in CSS; always output in URL("") notation.
+* `URL` – URLs in CSS; always output in `URL("")` notation.
 
-There is another abstract subclass of `Value`, `ValueList`. A `ValueList` represents a lists of `Value`s, separated by some separation character (mostly `,`, whitespace, or `/`). There are two types of `ValueList`s:
+There is another abstract subclass of `Value`, `ValueList`: A `ValueList` represents a lists of `Value`s, separated by some separation character (mostly `,`, whitespace, or `/`).
 
-* `RuleValueList` – The default type, used to represent all multi-valued rules like `font: bold 12px/3 Helvetica, Verdana, sans-serif;` (where the value would be a whitespace-separated list of the primitive value `bold`, a slash-separated list and a comma-separated list).
+There are two types of `ValueList`s:
+
+* `RuleValueList` – The default type, used to represent all multivalued rules like `font: bold 12px/3 Helvetica, Verdana, sans-serif;` (where the value would be a whitespace-separated list of the primitive value `bold`, a slash-separated list and a comma-separated list).
 * `CSSFunction` – A special kind of value that also contains a function name and where the values are the function’s arguments. Also handles equals-sign-separated argument lists like `filter: alpha(opacity=90);`.
 
 #### Convenience methods
 
-There are a few convenience methods on Document to ease finding, manipulating and deleting rules:
+There are a few convenience methods on `Document` to ease finding, manipulating and deleting rules:
 
-* `getAllDeclarationBlocks()` – does what it says; no matter how deeply nested your selectors are. Aliased as `getAllSelectors()`.
-* `getAllRuleSets()` – does what it says; no matter how deeply nested your rule sets are.
+* `getAllDeclarationBlocks()` – does what it says; no matter how deeply nested the selectors are. Aliased as `getAllSelectors()`.
+* `getAllRuleSets()` – does what it says; no matter how deeply nested the rule sets are.
 * `getAllValues()` – finds all `Value` objects inside `Rule`s.
-* `getSelectorsBySpecificity(int: $specificity)` - finds all selectors with the requested specificity. `$specificity` is an integer with `1` being the highest specificity value. The method behaves just like  `getAllDeclarationBlocks()` if no parameter is passed.
 
 ## To-Do
 

@@ -24,10 +24,10 @@ use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\Value;
 
 /**
- * A `CSSList` is the most generic container available. Its contents include `RuleSet` as well as other `CSSList`
- * objects.
+ * This is the most generic container available. It can contain `DeclarationBlock`s (rule sets with a selector),
+ * `RuleSet`s as well as other `CSSList` objects.
  *
- * Also, it may contain `Import` and `Charset` objects stemming from at-rules.
+ * It can also contain `Import` and `Charset` objects stemming from at-rules.
  */
 abstract class CSSList implements Renderable, Commentable
 {
@@ -444,6 +444,8 @@ abstract class CSSList implements Renderable, Commentable
     abstract public function isRootList();
 
     /**
+     * Returns the stored items.
+     *
      * @return array<int, RuleSet|Import|Charset|CSSList>
      */
     public function getContents()

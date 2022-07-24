@@ -33,6 +33,8 @@ class ParserState
     private $iCurrentPosition;
 
     /**
+     * will only be used if the CSS does not contain an `@charset` declaration
+     *
      * @var string
      */
     private $sCharset;
@@ -48,7 +50,7 @@ class ParserState
     private $iLineNo;
 
     /**
-     * @param string $sText
+     * @param string $sText the complete CSS as text (i.e., usually the contents of a CSS file)
      * @param int $iLineNo
      */
     public function __construct($sText, Settings $oParserSettings, $iLineNo = 1)
@@ -61,6 +63,8 @@ class ParserState
     }
 
     /**
+     * Sets the charset to be used if the CSS does not contain an `@charset` declaration.
+     *
      * @param string $sCharset
      *
      * @return void
@@ -75,6 +79,8 @@ class ParserState
     }
 
     /**
+     * Returns the charset that is used if the CSS does not contain an `@charset` declaration.
+     *
      * @return string
      */
     public function getCharset()
