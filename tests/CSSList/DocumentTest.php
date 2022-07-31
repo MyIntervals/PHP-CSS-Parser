@@ -3,7 +3,9 @@
 namespace Sabberworm\CSS\Tests\CSSList;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSList\Document;
+use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 
 /**
@@ -19,6 +21,22 @@ class DocumentTest extends TestCase
     protected function setUp()
     {
         $this->subject = new Document();
+    }
+
+    /**
+     * @test
+     */
+    public function implementsRenderable()
+    {
+        self::assertInstanceOf(Renderable::class, $this->subject);
+    }
+
+    /**
+     * @test
+     */
+    public function implementsCommentable()
+    {
+        self::assertInstanceOf(Commentable::class, $this->subject);
     }
 
     /**
