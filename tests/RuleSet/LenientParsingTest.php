@@ -4,6 +4,7 @@ namespace Sabberworm\CSS\Tests\RuleSet;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parser;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Settings;
 
 /**
@@ -21,12 +22,12 @@ use Sabberworm\CSS\Settings;
 class LenientParsingTest extends TestCase
 {
     /**
-     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
-     *
      * @test
      */
     public function faultToleranceOff()
     {
+        $this->expectException(UnexpectedTokenException::class);
+
         $sFile = __DIR__ . '/../fixtures/-fault-tolerance.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->beStrict());
         $oParser->parse();
@@ -48,24 +49,24 @@ class LenientParsingTest extends TestCase
     }
 
     /**
-     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
-     *
      * @test
      */
     public function endToken()
     {
+        $this->expectException(UnexpectedTokenException::class);
+
         $sFile = __DIR__ . '/../fixtures/-end-token.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->beStrict());
         $oParser->parse();
     }
 
     /**
-     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
-     *
      * @test
      */
     public function endToken2()
     {
+        $this->expectException(UnexpectedTokenException::class);
+
         $sFile = __DIR__ . '/../fixtures/-end-token-2.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->beStrict());
         $oParser->parse();

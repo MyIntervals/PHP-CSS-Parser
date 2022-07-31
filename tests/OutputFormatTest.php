@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parser;
+use Sabberworm\CSS\Parsing\OutputException;
 
 /**
  * @covers \Sabberworm\CSS\OutputFormat
@@ -268,12 +269,12 @@ background-color: #fff;
     }
 
     /**
-     * @expectedException \Sabberworm\CSS\Parsing\OutputException
-     *
      * @test
      */
     public function ignoreExceptionsOff()
     {
+        $this->expectException(OutputException::class);
+
         $aBlocks = $this->oDocument->getAllDeclarationBlocks();
         $oFirstBlock = $aBlocks[0];
         $oFirstBlock->removeSelector('.main');
