@@ -12,8 +12,15 @@ return (new \PhpCsFixer\Config())
             // Disable constant visibility from the PSR12 rule set as this would break compatibility with PHP < 7.1.
             'visibility_required' => ['elements' => ['property', 'method']],
 
+            '@PHPUnit50Migration:risky' => true,
+            '@PHPUnit52Migration:risky' => true,
+            '@PHPUnit54Migration:risky' => true,
+            '@PHPUnit55Migration:risky' => true,
+            '@PHPUnit56Migration:risky' => true,
+            '@PHPUnit57Migration:risky' => true,
+
             'php_unit_construct' => true,
-            'php_unit_dedicate_assert' => ['target' => '5.0'],
+            'php_unit_dedicate_assert' => ['target' => '5.6'],
             'php_unit_expectation' => ['target' => '5.6'],
             'php_unit_fqcn_annotation' => true,
             'php_unit_method_casing' => true,

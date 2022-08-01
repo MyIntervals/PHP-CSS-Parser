@@ -7,6 +7,8 @@ use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\CSSList\KeyFrame;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parser;
+use Sabberworm\CSS\Parsing\OutputException;
+use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Property\Charset;
@@ -601,12 +603,12 @@ foo|test {gaga: 1;}
     }
 
     /**
-     * @expectedException \Sabberworm\CSS\Parsing\OutputException
-     *
      * @test
      */
     public function selectorRemoval()
     {
+        $this->expectException(OutputException::class);
+
         $oDoc = self::parsedStructureForFile('1readme');
         $aBlocks = $oDoc->getAllDeclarationBlocks();
         $oBlock1 = $aBlocks[0];
@@ -805,22 +807,22 @@ body {background-color: red;}';
     }
 
     /**
-     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
-     *
      * @test
      */
     public function lineNameFailure()
     {
+        $this->expectException(UnexpectedTokenException::class);
+
         self::parsedStructureForFile('-empty-grid-linename', Settings::create()->withLenientParsing(false));
     }
 
     /**
-     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
-     *
      * @test
      */
     public function calcFailure()
     {
+        $this->expectException(UnexpectedTokenException::class);
+
         self::parsedStructureForFile('-calc-no-space-around-minus', Settings::create()->withLenientParsing(false));
     }
 
@@ -887,45 +889,46 @@ body {background-color: red;}';
     }
 
     /**
-     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
-     *
      * @test
      */
     public function charsetFailure1()
     {
+        $this->expectException(UnexpectedTokenException::class);
+
         self::parsedStructureForFile('-charset-after-rule', Settings::create()->withLenientParsing(false));
     }
 
     /**
-     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
-     *
      * @test
      */
     public function charsetFailure2()
     {
+        $this->expectException(UnexpectedTokenException::class);
+
         self::parsedStructureForFile('-charset-in-block', Settings::create()->withLenientParsing(false));
     }
 
     /**
-     * @expectedException \Sabberworm\CSS\Parsing\SourceException
-     *
      * @test
      */
     public function unopenedClosingBracketFailure()
     {
+        $this->expectException(SourceException::class);
+
         self::parsedStructureForFile('-unopened-close-brackets', Settings::create()->withLenientParsing(false));
     }
 
     /**
      * Ensure that a missing property value raises an exception.
      *
-     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
      * @covers \Sabberworm\CSS\Value\Value::parseValue()
      *
      * @test
      */
     public function missingPropertyValueStrict()
     {
+        $this->expectException(UnexpectedTokenException::class);
+
         self::parsedStructureForFile('missing-property-value', Settings::create()->withLenientParsing(false));
     }
 
@@ -1025,12 +1028,12 @@ body {background-color: red;}';
     }
 
     /**
-     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
-     *
      * @test
      */
     public function unexpectedTokenExceptionLineNo()
     {
+        $this->expectException(UnexpectedTokenException::class);
+
         $oParser = new Parser("\ntest: 1;", Settings::create()->beStrict());
         try {
             $oParser->parse();
@@ -1041,12 +1044,12 @@ body {background-color: red;}';
     }
 
     /**
-     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
-     *
      * @test
      */
     public function ieHacksStrictParsing()
     {
+        $this->expectException(UnexpectedTokenException::class);
+
         // We can't strictly parse IE hacks.
         self::parsedStructureForFile('ie-hacks', Settings::create()->beStrict());
     }
@@ -1138,12 +1141,12 @@ body {background-color: red;}';
     }
 
     /**
-     * @expectedException \Sabberworm\CSS\Parsing\UnexpectedTokenException
-     *
      * @test
      */
     public function microsoftFilterStrictParsing()
     {
+        $this->expectException(UnexpectedTokenException::class);
+
         $oDoc = self::parsedStructureForFile('ms-filter', Settings::create()->beStrict());
     }
 
