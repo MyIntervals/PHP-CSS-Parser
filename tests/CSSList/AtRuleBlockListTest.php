@@ -3,13 +3,46 @@
 namespace Sabberworm\CSS\Tests\CSSList;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\Comment\Commentable;
+use Sabberworm\CSS\CSSList\AtRuleBlockList;
 use Sabberworm\CSS\Parser;
+use Sabberworm\CSS\Renderable;
 
 /**
  * @covers \Sabberworm\CSS\CSSList\AtRuleBlockList
  */
 class AtRuleBlockListTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function implementsAtRule()
+    {
+        $subject = new AtRuleBlockList('');
+
+        self::assertInstanceOf(AtRuleBlockList::class, $subject);
+    }
+
+    /**
+     * @test
+     */
+    public function implementsRenderable()
+    {
+        $subject = new AtRuleBlockList('');
+
+        self::assertInstanceOf(Renderable::class, $subject);
+    }
+
+    /**
+     * @test
+     */
+    public function implementsCommentable()
+    {
+        $subject = new AtRuleBlockList('');
+
+        self::assertInstanceOf(Commentable::class, $subject);
+    }
+
     /**
      * @return array<string, array<int, string>>
      */
