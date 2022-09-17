@@ -36,7 +36,7 @@ class URL extends PrimitiveValue
      */
     public static function parse(ParserState $oParserState)
     {
-        $oParserState->setAnchor();
+        $oAnchor = $oParserState->anchor();
         $sIdentifier = '';
         for ($i = 0; $i < 3; $i++) {
             $sChar = $oParserState->parseCharacter(true);
@@ -50,7 +50,7 @@ class URL extends PrimitiveValue
             $oParserState->consumeWhiteSpace();
             $oParserState->consume('(');
         } else {
-            $oParserState->backtrackToAnchor();
+            $oAnchor->backtrack();
         }
         $oParserState->consumeWhiteSpace();
         $oResult = new URL(CSSString::parse($oParserState), $oParserState->currentLine());

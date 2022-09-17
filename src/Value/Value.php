@@ -106,15 +106,15 @@ abstract class Value implements Renderable
      */
     public static function parseIdentifierOrFunction(ParserState $oParserState, $bIgnoreCase = false)
     {
-        $oParserState->setAnchor();
+        $oAnchor = $oParserState->anchor();
         $mResult = $oParserState->parseIdentifier($bIgnoreCase);
 
         if ($oParserState->comes('(')) {
             if ($oParserState->streql('url', $mResult)) {
-                $oParserState->backtrackToAnchor();
+                $oAnchor->backtrack();
                 $mResult = URL::parse($oParserState);
             } else if ($oParserState->streql('calc', $mResult) || $oParserState->streql('-webkit-calc', $mResult) || $oParserState->streql('-moz-calc', $mResult)) {
-                $oParserState->backtrackToAnchor();
+                $oAnchor->backtrack();
                 $mResult = CalcFunction::parse($oParserState);
             } else {
                 $oParserState->consume('(');

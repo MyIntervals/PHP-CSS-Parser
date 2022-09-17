@@ -50,11 +50,6 @@ class ParserState
     private $iLineNo;
 
     /**
-     * @var int
-     */
-    private $iAnchor;
-
-    /**
      * @param string $sText the complete CSS as text (i.e., usually the contents of a CSS file)
      * @param int $iLineNo
      */
@@ -64,7 +59,6 @@ class ParserState
         $this->sText = $sText;
         $this->iCurrentPosition = 0;
         $this->iLineNo = $iLineNo;
-        $this->iAnchor = null;
         $this->setCharset($this->oParserSettings->sDefaultCharset);
     }
 
@@ -118,16 +112,22 @@ class ParserState
         return $this->oParserSettings;
     }
 
-    public function setAnchor()
+    /**
+     * @return \Sabberworm\CSS\Parsing\Anchor
+     */
+    public function anchor()
     {
-        $this->iAnchor = $this->iCurrentPosition;
+        return new Anchor($this->iCurrentPosition, $this);
     }
 
-    public function backtrackToAnchor()
+    /**
+     * @param int $iPosition
+     *
+     * @return void
+     */
+    public function setPosition($iPosition)
     {
-        if ($this->iAnchor !== null) {
-            $this->iCurrentPosition = $this->iAnchor;
-        }
+        $this->iCurrentPosition = $iPosition;
     }
 
     /**
