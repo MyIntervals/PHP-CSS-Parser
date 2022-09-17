@@ -50,6 +50,13 @@ class Color extends CSSFunction
             $oParserState->consume('(');
 
             $bContainsVar = false;
+			if (strpos($sColorMode, 'rgb') !== false) {
+				$sColorTarget = 'rgba';
+			} elseif (strpos($sColorMode, 'hsl') !== false) {
+				$sColorTarget = 'hsla';
+			} else {
+				$sColorTarget = $sColorMode;
+			}
             $iLength = $oParserState->strlen($sColorMode);
             for ($i = 0; $i < $iLength; ++$i) {
                 $oParserState->consumeWhiteSpace();
@@ -67,7 +74,14 @@ class Color extends CSSFunction
 
                 $oParserState->consumeWhiteSpace();
                 if ($i < ($iLength - 1)) {
-                    $oParserState->consume(',');
+                    if ($oParserState->comes(',')) {
+						$oParserState->consume(',');
+					} elseif ($oParserState->comes('/')) {
+						$oParserState->consume('/');
+					} else if ($oParserState->comes(')')) {
+						// No alpha channel information
+						break;
+					}
                 }
             }
             $oParserState->consume(')');

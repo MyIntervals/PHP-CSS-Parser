@@ -26,3 +26,8 @@
 	background-color: rgba(var(--some-rg), 255, 0.1);
 	background-color: hsla(var(--some-hsl), 0.1);
 }
+
+#css4-rgba {
+	background-color: rgb(242 245 249 / 45%);
+	background-color: rgba(242 245 249);
+}
