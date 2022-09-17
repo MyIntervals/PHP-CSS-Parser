@@ -60,8 +60,8 @@ class Color extends CSSFunction
                     'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true, $oParserState->currentLine()),
                 ];
             } else {
-				throw new UnexpectedTokenException("RGB(A) HEX value", $sValue, 'literal', $oParserState->currentLine());
-			}
+                throw new UnexpectedTokenException("RGB(A) HEX val", $sValue, 'literal', $oParserState->currentLine());
+            }
         } else {
             $sColorMode = $oParserState->parseIdentifier(true);
             $oParserState->consumeWhiteSpace();
@@ -165,7 +165,7 @@ class Color extends CSSFunction
                 $this->aComponents['b']->getSize()
             );
             return '#' . (($sResult[0] == $sResult[1]) && ($sResult[2] == $sResult[3]) && ($sResult[4] == $sResult[5])
-                    ? "$sResult[0]$sResult[2]$sResult[4]" : $sResult);
+                ? "$sResult[0]$sResult[2]$sResult[4]" : $sResult);
         }
         return parent::render($oOutputFormat);
     }
