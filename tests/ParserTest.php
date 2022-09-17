@@ -813,6 +813,19 @@ body {background-color: red;}';
     /**
      * @test
      */
+    public function invalidRulesInFile()
+    {
+        $oDoc = $this->parsedStructureForFile('invalid-rule', Settings::create()->withMultibyteSupport(true));
+        $sExpected = 'fusion-max-sh-shbp {}
+@media only screen and (max-width: 800px) {.has-sidebar #content {order: 1;}
+	.has-sidebar #sidebar {order: 2;margin-top: 50px;}
+	.has-sidebar #sidebar-2 {order: 3;margin-top: 50px;}}';
+        self::assertSame($sExpected, $oDoc->render());
+    }
+
+    /**
+     * @test
+     */
     public function identifierEscapesInFile()
     {
         $oDoc = self::parsedStructureForFile('identifier-escapes', Settings::create()->withMultibyteSupport(true));
