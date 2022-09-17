@@ -487,16 +487,16 @@ class ParserState
         if ($this->oParserSettings->bMultibyteSupport) {
             if ($this->streql($this->sCharset, 'utf-8')) {
                 $iLimit = 1024 * 1024;
-				$iLength = mb_strlen($sString, $this->sCharset);
-				$iOffset = 0;
-				$aResult = array();
-				for ($iOffset = 0; $iOffset < $iLength; $iOffset += $iLimit) {
-					$sChunk = mb_substr($sString, $iOffset, $iLimit, 'utf-8');
-					foreach (preg_split('//u', $sChunk, null, PREG_SPLIT_NO_EMPTY) as $sChar) {
-						$aResult[] = $sChar;
-					}
-				}
-				return $aResult;
+                $iLength = mb_strlen($sString, $this->sCharset);
+                $iOffset = 0;
+                $aResult = [];
+                for ($iOffset = 0; $iOffset < $iLength; $iOffset += $iLimit) {
+                    $sChunk = mb_substr($sString, $iOffset, $iLimit, 'utf-8');
+                    foreach (preg_split('//u', $sChunk, null, PREG_SPLIT_NO_EMPTY) as $sChar) {
+                        $aResult[] = $sChar;
+                    }
+                }
+                return $aResult;
             } else {
                 $iLength = mb_strlen($sString, $this->sCharset);
                 $aResult = [];
