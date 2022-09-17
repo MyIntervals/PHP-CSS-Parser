@@ -1174,9 +1174,15 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function scientificNotationSizeValuesInFile() {
-        $oDoc = $this->parsedStructureForFile('scientific-notation-numbers', Settings::create()->withMultibyteSupport(false));
-        $sExpected = 'body {background-color: rgba(62,174,151,3041820656523200167936);z-index: .030418206565232;font-size: 1em;top: 192.3478px;}';
+    public function scientificNotationSizeValuesInFile()
+    {
+        $oDoc = $this->parsedStructureForFile(
+            'scientific-notation-numbers',
+            Settings::create()->withMultibyteSupport(false)
+        );
+        $sExpected = ''
+            . 'body {background-color: rgba(62,174,151,3041820656523200167936);'
+            . 'z-index: .030418206565232;font-size: 1em;top: 192.3478px;}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
