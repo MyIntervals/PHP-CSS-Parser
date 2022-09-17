@@ -48,7 +48,11 @@ class ParserState
      * @var int
      */
     private $iLineNo;
-	private $iAnchor;
+
+    /**
+     * @var int
+     */
+    private $iAnchor;
 
     /**
      * @param string $sText the complete CSS as text (i.e., usually the contents of a CSS file)
@@ -60,7 +64,7 @@ class ParserState
         $this->sText = $sText;
         $this->iCurrentPosition = 0;
         $this->iLineNo = $iLineNo;
-		$this->iAnchor = null;
+        $this->iAnchor = null;
         $this->setCharset($this->oParserSettings->sDefaultCharset);
     }
 
@@ -135,9 +139,9 @@ class ParserState
      */
     public function parseIdentifier($bIgnoreCase = true)
     {
-		if ($this->isEnd()) {
-			throw new UnexpectedEOFException('', '', 'identifier', $this->iLineNo);
-		}
+        if ($this->isEnd()) {
+            throw new UnexpectedEOFException('', '', 'identifier', $this->iLineNo);
+        }
         $sResult = $this->parseCharacter(true);
         if ($sResult === null) {
             throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier', $this->iLineNo);
