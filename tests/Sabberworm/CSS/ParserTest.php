@@ -456,6 +456,44 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
         $this->assertSame($sExpected, $oDoc->render());
     }
 
+    public function testInvalidCalcInFile()
+    {
+        $oDoc = $this->parsedStructureForFile('calc-invalid', Settings::create()->withMultibyteSupport(true));
+        $sExpected = 'div {}
+div {}
+div {}
+div {height: -moz-calc;}
+div {height: calc;}';
+        $this->assertSame($sExpected, $oDoc->render());
+    }
+
+    public function testInvalidCalc()
+    {
+        $parser = new Parser('div { height: calc(100px');
+        $oDoc = $parser->parse();
+        $this->assertSame('div {height: calc(100px);}', $oDoc->render());
+
+        $parser = new Parser('div { height: calc(100px)');
+        $oDoc = $parser->parse();
+        $this->assertSame('div {height: calc(100px);}', $oDoc->render());
+
+        $parser = new Parser('div { height: calc(100px);');
+        $oDoc = $parser->parse();
+        $this->assertSame('div {height: calc(100px);}', $oDoc->render());
+
+        $parser = new Parser('div { height: calc(100px}');
+        $oDoc = $parser->parse();
+        $this->assertSame('div {}', $oDoc->render());
+
+        $parser = new Parser('div { height: calc(100px;');
+        $oDoc = $parser->parse();
+        $this->assertSame('div {}', $oDoc->render());
+
+        $parser = new Parser('div { height: calc(100px;}');
+        $oDoc = $parser->parse();
+        $this->assertSame('div {}', $oDoc->render());
+    }
+
     public function testGridLineNameInFile()
     {
         $oDoc = $this->parsedStructureForFile('grid-linename', Settings::create()->withMultibyteSupport(true));
@@ -852,5 +890,16 @@ body {background-url: url("https://somesite.com/images/someimage.gif");}';
         $oDoc = $this->parsedStructureForFile('lonely-import');
         $sExpected = "@import url(\"example.css\") only screen and (max-width: 600px);";
         $this->assertSame($sExpected, $oDoc->render());
+    }
+
+    public function testEscapedSpecialCaseTokens()
+    {
+        $oDoc = $this->parsedStructureForFile('escaped-tokens');
+        $contents = $oDoc->getContents();
+        $rules = $contents[0]->getRules();
+        $urlRule = $rules[0];
+        $calcRule = $rules[1];
+        $this->assertEquals(true, is_a($urlRule->getValue(), '\Sabberworm\CSS\Value\URL'));
+        $this->assertEquals(true, is_a($calcRule->getValue(), '\Sabberworm\CSS\Value\CalcFunction'));
     }
 }

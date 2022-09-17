@@ -75,16 +75,25 @@ abstract class Value implements Renderable
 
     public static function parseIdentifierOrFunction(ParserState $oParserState, $bIgnoreCase = false)
     {
-        $sResult = $oParserState->parseIdentifier($bIgnoreCase);
+        $oParserState->setAnchor();
+        $mResult = $oParserState->parseIdentifier($bIgnoreCase);
 
         if ($oParserState->comes('(')) {
-            $oParserState->consume('(');
-            $aArguments = Value::parseValue($oParserState, ['=', ' ', ',']);
-            $sResult = new CSSFunction($sResult, $aArguments, ',', $oParserState->currentLine());
-            $oParserState->consume(')');
+            if ($oParserState->streql('url', $mResult)) {
+                $oParserState->backtrackToAnchor();
+                $mResult = URL::parse($oParserState);
+            } else if ($oParserState->streql('calc', $mResult) || $oParserState->streql('-webkit-calc', $mResult) || $oParserState->streql('-moz-calc', $mResult)) {
+                $oParserState->backtrackToAnchor();
+                $mResult = CalcFunction::parse($oParserState);
+            } else {
+                $oParserState->consume('(');
+                $aArguments = Value::parseValue($oParserState, array('=', ' ', ','));
+                $mResult = new CSSFunction($mResult, $aArguments, ',', $oParserState->currentLine());
+                $oParserState->consume(')');
+            }
         }
 
-        return $sResult;
+        return $mResult;
     }
 
     public static function parsePrimitiveValue(ParserState $oParserState)
@@ -98,13 +107,6 @@ abstract class Value implements Renderable
             $oValue = Size::parse($oParserState);
         } elseif ($oParserState->comes('#') || $oParserState->comes('rgb', true) || $oParserState->comes('hsl', true)) {
             $oValue = Color::parse($oParserState);
-        } elseif ($oParserState->comes('url', true)) {
-            $oValue = URL::parse($oParserState);
-        } elseif (
-            $oParserState->comes('calc', true) || $oParserState->comes('-webkit-calc', true)
-            || $oParserState->comes('-moz-calc', true)
-        ) {
-            $oValue = CalcFunction::parse($oParserState);
         } elseif ($oParserState->comes("'") || $oParserState->comes('"')) {
             $oValue = CSSString::parse($oParserState);
         } elseif ($oParserState->comes("progid:") && $oParserState->getSettings()->bLenientParsing) {

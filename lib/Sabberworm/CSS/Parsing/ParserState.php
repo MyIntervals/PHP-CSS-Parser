@@ -18,6 +18,7 @@ class ParserState
     private $sCharset;
     private $iLength;
     private $iLineNo;
+	private $iAnchor;
 
     public function __construct($sText, Settings $oParserSettings, $iLineNo = 1)
     {
@@ -25,6 +26,7 @@ class ParserState
         $this->sText = $sText;
         $this->iCurrentPosition = 0;
         $this->iLineNo = $iLineNo;
+		$this->iAnchor = null;
         $this->setCharset($this->oParserSettings->sDefaultCharset);
     }
 
@@ -58,14 +60,29 @@ class ParserState
         return $this->oParserSettings;
     }
 
+	public function setAnchor()
+	{
+		$this->iAnchor = $this->iCurrentPosition;
+	}
+
+	public function backtrackToAnchor()
+	{
+		if ($this->iAnchor !== null) {
+			$this->iCurrentPosition = $this->iAnchor;
+		}
+	}
+
     public function parseIdentifier($bIgnoreCase = true)
     {
+		if ($this->isEnd()) {
+			throw new UnexpectedEOFException('', '', 'identifier', $this->iLineNo);
+		}
         $sResult = $this->parseCharacter(true);
         if ($sResult === null) {
             throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier', $this->iLineNo);
         }
         $sCharacter = null;
-        while (($sCharacter = $this->parseCharacter(true)) !== null) {
+        while (!$this->isEnd() && ($sCharacter = $this->parseCharacter(true)) !== null) {
             if (preg_match('/[a-zA-Z0-9\x{00A0}-\x{FFFF}_-]/Sux', $sCharacter)) {
                 $sResult .= $sCharacter;
             } else {
