@@ -67,7 +67,7 @@ abstract class RuleSet implements Renderable, Commentable
                     try {
                         $sConsume = $oParserState->consumeUntil(["\n", ";", '{', '}'], true);
                         // We need to “unfind” the matches to the end of the ruleSet as this will be matched later
-                        if($oParserState->streql(substr($sConsume, -1), '{')) { // We need to skip the entire block
+                        if ($oParserState->streql(substr($sConsume, -1), '{')) { // We need to skip the entire block
                             $oParserState->consumeUntil('}', true);
                         } elseif ($oParserState->streql(substr($sConsume, -1), '}')) {
                             $oParserState->backtrack(1);
@@ -254,7 +254,7 @@ abstract class RuleSet implements Renderable, Commentable
                 if (
                     !$mRule || $sName === $mRule
                     || (strrpos($mRule, '-') === strlen($mRule) - strlen('-')
-                        && (strpos($sName, $mRule) === 0 || $sName === substr($mRule, 0, -1)))
+                    && (strpos($sName, $mRule) === 0 || $sName === substr($mRule, 0, -1)))
                 ) {
                     unset($this->aRules[$sName]);
                 }
