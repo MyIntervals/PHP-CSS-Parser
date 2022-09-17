@@ -559,6 +559,17 @@ foo|test {gaga: 1;}
     /**
      * @test
      */
+    public function incorrectRGBColors()
+    {
+        $oParser = new Parser(".info-img {border:1px solid #8C0000;background-color:#fffff;}");
+        $sExpected = ".info-img {border: 1px solid #8c0000;}";
+        $oDoc = $oParser->parse();
+        self::assertSame($sExpected, $oDoc->render());
+    }
+
+    /**
+     * @test
+     */
     public function prefixedGradient()
     {
         $oDoc = self::parsedStructureForFile('webkit');
