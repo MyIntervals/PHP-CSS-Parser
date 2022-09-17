@@ -47,7 +47,7 @@ class CSSFunction extends ValueList
     {
         $mResult = $oParserState->parseIdentifier($bIgnoreCase);
         $oParserState->consume('(');
-        $aArguments = Value::parseValue($oParserState, array('=', ' ', ','));
+        $aArguments = Value::parseValue($oParserState, ['=', ' ', ',']);
         $mResult = new CSSFunction($mResult, $aArguments, ',', $oParserState->currentLine());
         $oParserState->consume(')');
         return $mResult;

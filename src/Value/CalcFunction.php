@@ -34,7 +34,7 @@ class CalcFunction extends CSSFunction
         if ($oParserState->peek() != '(') {
             // Found ; or end of line before an opening bracket
             throw new UnexpectedTokenException('(', $oParserState->peek(), 'literal', $oParserState->currentLine());
-        } else if (!in_array($sFunction, array('calc', '-moz-calc', '-webkit-calc'))) {
+        } elseif (!in_array($sFunction, ['calc', '-moz-calc', '-webkit-calc'])) {
             // Found invalid calc definition. Example calc (...
             throw new UnexpectedTokenException('calc', $sFunction, 'literal', $oParserState->currentLine());
         }
@@ -44,7 +44,10 @@ class CalcFunction extends CSSFunction
         $iNestingLevel = 0;
         $iLastComponentType = null;
         while (!$oParserState->comes(')') || $iNestingLevel > 0) {
-            if ($oParserState->isEnd() && $iNestingLevel === 0) break;
+            if ($oParserState->isEnd() && $iNestingLevel === 0) {
+                break;
+            }
+
             $oParserState->consumeWhiteSpace();
             if ($oParserState->comes('(')) {
                 $iNestingLevel++;
