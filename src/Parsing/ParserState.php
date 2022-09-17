@@ -113,6 +113,24 @@ class ParserState
     }
 
     /**
+     * @return \Sabberworm\CSS\Parsing\Anchor
+     */
+    public function anchor()
+    {
+        return new Anchor($this->iCurrentPosition, $this);
+    }
+
+    /**
+     * @param int $iPosition
+     *
+     * @return void
+     */
+    public function setPosition($iPosition)
+    {
+        $this->iCurrentPosition = $iPosition;
+    }
+
+    /**
      * @param bool $bIgnoreCase
      *
      * @return string
@@ -121,12 +139,15 @@ class ParserState
      */
     public function parseIdentifier($bIgnoreCase = true)
     {
+        if ($this->isEnd()) {
+            throw new UnexpectedEOFException('', '', 'identifier', $this->iLineNo);
+        }
         $sResult = $this->parseCharacter(true);
         if ($sResult === null) {
             throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier', $this->iLineNo);
         }
         $sCharacter = null;
-        while (($sCharacter = $this->parseCharacter(true)) !== null) {
+        while (!$this->isEnd() && ($sCharacter = $this->parseCharacter(true)) !== null) {
             if (preg_match('/[a-zA-Z0-9\x{00A0}-\x{FFFF}_-]/Sux', $sCharacter)) {
                 $sResult .= $sCharacter;
             } else {
