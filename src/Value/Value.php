@@ -110,17 +110,13 @@ abstract class Value implements Renderable
         $mResult = $oParserState->parseIdentifier($bIgnoreCase);
 
         if ($oParserState->comes('(')) {
+            $oAnchor->backtrack();
             if ($oParserState->streql('url', $mResult)) {
-                $oAnchor->backtrack();
                 $mResult = URL::parse($oParserState);
             } else if ($oParserState->streql('calc', $mResult) || $oParserState->streql('-webkit-calc', $mResult) || $oParserState->streql('-moz-calc', $mResult)) {
-                $oAnchor->backtrack();
                 $mResult = CalcFunction::parse($oParserState);
             } else {
-                $oParserState->consume('(');
-                $aArguments = Value::parseValue($oParserState, array('=', ' ', ','));
-                $mResult = new CSSFunction($mResult, $aArguments, ',', $oParserState->currentLine());
-                $oParserState->consume(')');
+                $mResult = CSSFunction::parse($oParserState, $bIgnoreCase);
             }
         }
 
