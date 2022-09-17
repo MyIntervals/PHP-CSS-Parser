@@ -135,8 +135,11 @@ class Import implements AtRule
         $this->aComments = $aComments;
     }
 
-	public function getMediaQuery()
-	{
-		return $this->sMediaQuery;
-	}
+    /**
+     * @return string
+     */
+    public function getMediaQuery()
+    {
+        return $this->sMediaQuery;
+    }
 }
