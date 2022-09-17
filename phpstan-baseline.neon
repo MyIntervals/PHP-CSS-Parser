@@ -1,7 +1,0 @@
-parameters:
-	ignoreErrors:
-		-
-			message: "#^Access to an undefined property Sabberworm\\\\CSS\\\\Parsing\\\\ParserState\\:\\:\\$oParserHelper\\.$#"
-			count: 1
-			path: lib/Sabberworm/CSS/Parsing/ParserState.php
-
