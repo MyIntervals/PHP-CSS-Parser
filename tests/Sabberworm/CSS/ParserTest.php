@@ -359,6 +359,14 @@ foo|test {gaga: 1;}
         $this->assertSame($sExpected, $oDoc->render());
     }
 
+    public function incorrectRGBColors()
+    {
+        $oParser = new Parser(".info-img {border:1px solid #8C0000;background-color:#fffff;}");
+        $sExpected = ".info-img {border: 1px solid #8c0000;}";
+        $oDoc = $oParser->parse();
+        $this->assertSame($sExpected, $oDoc->render());
+    }
+
     public function testPrefixedGradient()
     {
         $oDoc = $this->parsedStructureForFile('webkit');
