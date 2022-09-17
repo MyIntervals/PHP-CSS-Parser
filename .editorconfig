@@ -1,7 +1,7 @@
 # top-most EditorConfig file
 root = true
 
-# Unix-style newlines with a newline ending every file, and with same defaults
+# Unix-style newlines with a newline ending every file, and with sane defaults
 [*]
 charset = utf-8
 end_of_line = lf
