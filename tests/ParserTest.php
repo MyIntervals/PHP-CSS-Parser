@@ -1232,7 +1232,7 @@ body {background-color: red;}';
         $rules = $contents[0]->getRules();
         $urlRule = $rules[0];
         $calcRule = $rules[1];
-        $this->assertEquals(true, is_a($urlRule->getValue(), '\Sabberworm\CSS\Value\URL'));
-        $this->assertEquals(true, is_a($calcRule->getValue(), '\Sabberworm\CSS\Value\CalcFunction'));
+        self::assertTrue(is_a($urlRule->getValue(), '\Sabberworm\CSS\Value\URL'));
+        self::assertTrue(is_a($calcRule->getValue(), '\Sabberworm\CSS\Value\CalcFunction'));
     }
 }
