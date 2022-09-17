@@ -1,0 +1,22 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Call to an undefined method Sabberworm\\\\CSS\\\\OutputFormat\\:\\:setIndentation\\(\\)\\.$#"
+			count: 2
+			path: ../src/OutputFormat.php
+
+		-
+			message: "#^Class Sabberworm\\\\CSS\\\\Value\\\\Size constructor invoked with 5 parameters, 1\\-4 required\\.$#"
+			count: 2
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: "#^Variable \\$oRule might not be defined\\.$#"
+			count: 2
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: "#^Variable \\$oVal might not be defined\\.$#"
+			count: 1
+			path: ../src/Value/CalcFunction.php
+
