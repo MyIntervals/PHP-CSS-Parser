@@ -59,7 +59,7 @@ class CSSFunction extends ValueList
      */
     public static function parseArgs(ParserState $oParserState)
     {
-        return Value::parseValue($oParserState, ['=', ' ', ',', '/', '*', '+', '-']);
+        return Value::parseValue($oParserState, ['=', ' ', ',']);
     }
 
     /**

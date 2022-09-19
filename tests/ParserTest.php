@@ -1245,10 +1245,10 @@ body {background-color: red;}';
     public function functionArithmeticInFile()
     {
         $oDoc = self::parsedStructureForFile('function-arithmetic', Settings::create()->withMultibyteSupport(true));
-        $sExpected = 'div {height: max(300,vh+10);}
-div {height: max(300,vh-10);}
-div {height: max(300,vh*10);}
-div {height: max(300,vh/10);}';
+        $sExpected = 'div {height: max(300,vh + 10);}
+div {height: max(300,vh - 10);}
+div {height: max(300,vh * 10);}
+div {height: max(300,vh / 10);}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
