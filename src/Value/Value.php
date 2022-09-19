@@ -152,6 +152,8 @@ abstract class Value implements Renderable
             $oValue = LineName::parse($oParserState);
         } elseif ($oParserState->comes("U+")) {
             $oValue = self::parseUnicodeRangeValue($oParserState);
+        } elseif ($oParserState->comes("(")) {
+            $oValue = Expression::parse($oParserState);
         } else {
             $oValue = self::parseIdentifierOrFunction($oParserState);
         }

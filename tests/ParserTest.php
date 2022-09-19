@@ -515,6 +515,20 @@ body {color: green;}',
     /**
      * @test
      */
+    public function parseExpressions()
+    {
+        $oDoc = self::parsedStructureForFile('expressions');
+        $sExpected = 'div {height: (vh - 10);}'
+            . "\n"
+            . 'div {height: (vh - 10)/2;}'
+            . "\n"
+            . 'div {height: max(5,(vh - 10));}';
+        self::assertSame($sExpected, $oDoc->render());
+    }
+
+    /**
+     * @test
+     */
     public function createShorthands()
     {
         $oDoc = self::parsedStructureForFile('create-shorthands');
