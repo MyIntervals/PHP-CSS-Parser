@@ -702,8 +702,8 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
     public function invalidCalcInFile()
     {
         $oDoc = self::parsedStructureForFile('calc-invalid', Settings::create()->withMultibyteSupport(true));
-        $sExpected = 'div {}
-div {}
+        $sExpected = 'div {height: calc (25% - 1em);}
+div {height: calc (25% - 1em);}
 div {}
 div {height: -moz-calc;}
 div {height: calc;}';
