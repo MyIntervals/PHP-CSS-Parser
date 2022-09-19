@@ -3,6 +3,7 @@
 namespace Sabberworm\CSS\Value;
 
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Parsing\ParserState;
 
 /**
  * A `CSSFunction` represents a special kind of value that also contains a function name and where the values are the
@@ -30,6 +31,55 @@ class CSSFunction extends ValueList
         $this->sName = $sName;
         $this->iLineNo = $iLineNo;
         parent::__construct($aArguments, $sSeparator, $iLineNo);
+    }
+
+    /**
+     * @param ParserState $oParserState
+     * @param bool $bIgnoreCase
+     *
+     * @return string
+     *
+     * @throws SourceException
+     * @throws UnexpectedEOFException
+     * @throws UnexpectedTokenException
+     */
+    public static function parseName(ParserState $oParserState, $bIgnoreCase = false)
+    {
+        return $oParserState->parseIdentifier($bIgnoreCase);
+    }
+
+    /**
+     * @param ParserState $oParserState
+     *
+     * @return array
+     *
+     * @throws SourceException
+     * @throws UnexpectedEOFException
+     * @throws UnexpectedTokenException
+     */
+    public static function parseArgs(ParserState $oParserState)
+    {
+        return Value::parseValue($oParserState, ['=', ' ', ',', '/', '*', '+', '-']);
+    }
+
+    /**
+     * @param ParserState $oParserState
+     * @param bool $bIgnoreCase
+     *
+     * @return CSSFunction
+     *
+     * @throws SourceException
+     * @throws UnexpectedEOFException
+     * @throws UnexpectedTokenException
+     */
+    public static function parse(ParserState $oParserState, $bIgnoreCase = false)
+    {
+        $mResult = self::parseName($oParserState, $bIgnoreCase);
+        $oParserState->consume('(');
+        $aArguments = self::parseArgs($oParserState);
+        $mResult = new CSSFunction($mResult, $aArguments, ',', $oParserState->currentLine());
+        $oParserState->consume(')');
+        return $mResult;
     }
 
     /**
