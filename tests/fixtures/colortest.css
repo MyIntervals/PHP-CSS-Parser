@@ -31,3 +31,8 @@
 	background-color: rgb(242 245 249 / 45%);
 	background-color: rgba(242 245 249);
 }
+
+#calc {
+	background-color: rgba(var(--some-rgb), calc(var(--some-alpha) * 0.1));
+	background-color: hsla(var(--some-hsl), calc(var(--some-alpha) * 0.1));
+}

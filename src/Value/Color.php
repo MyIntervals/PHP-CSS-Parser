@@ -70,7 +70,7 @@ class Color extends CSSFunction
             $oParserState->consumeWhiteSpace();
             $oParserState->consume('(');
 
-            $bContainsVar = false;
+            $bContainsVarOrCalc = false;
             if (strpos($sColorMode, 'rgb') !== false) {
                 $sColorTarget = 'rgba';
             } elseif (strpos($sColorMode, 'hsl') !== false) {
@@ -83,12 +83,15 @@ class Color extends CSSFunction
                 $oParserState->consumeWhiteSpace();
                 if ($oParserState->comes('var')) {
                     $aColor[$sColorTarget[$i]] = CSSFunction::parseIdentifierOrFunction($oParserState);
-                    $bContainsVar = true;
+                    $bContainsVarOrCalc = true;
+                } elseif ($oParserState->comes('calc')) {
+                    $aColor[$sColorMode[$i]] = CalcFunction::parse($oParserState);
+                    $bContainsVarOrCalc = true;
                 } else {
                     $aColor[$sColorTarget[$i]] = Size::parse($oParserState, true);
                 }
 
-                if ($bContainsVar && $oParserState->comes(')')) {
+                if ($bContainsVarOrCalc && $oParserState->comes(')')) {
                     // With a var argument the function can have fewer arguments
                     break;
                 }
@@ -107,7 +110,7 @@ class Color extends CSSFunction
             }
             $oParserState->consume(')');
 
-            if ($bContainsVar) {
+            if ($bContainsVarOrCalc) {
                 return new CSSFunction($sColorMode, array_values($aColor), ',', $oParserState->currentLine());
             }
         }
