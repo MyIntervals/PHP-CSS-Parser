@@ -56,6 +56,9 @@ jobs:
           tools: composer:v2
           coverage: "${{ matrix.coverage }}"
 
+      - name: Show the Composer configuration
+        run: composer config --global --list
+
       - name: Cache dependencies installed with composer
         uses: actions/cache@v3
         with:
@@ -107,6 +110,9 @@ jobs:
           php-version: ${{ matrix.php-version }}
           tools: "composer:v2, phive"
           coverage: none
+
+      - name: Show the Composer configuration
+        run: composer config --global --list
 
       - name: Cache dependencies installed with composer
         uses: actions/cache@v3
