@@ -1,0 +1,7 @@
+/**
+ * Special case function-like tokens, with an escape backslash followed by a non-newline and non-hex digit character, should be parsed as the appropriate \Sabberworm\CSS\Value\ type
+ */
+body {
+	background: u\rl("//example.org/picture.jpg");
+	height: ca\lc(100% - 1px);
+} 
