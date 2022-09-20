@@ -160,7 +160,7 @@ abstract class Value implements Renderable
             try {
                 $oValue = self::parseIdentifierOrFunction($oParserState);
             } catch (UnexpectedTokenException $e) {
-                if (in_array($sNextChar, ['+', '-', '*', '/'])) {
+                if (in_array($sNextChar, ['+', '-', '*', '/'], true)) {
                     $oValue = $oParserState->consume(1);
                 } else {
                     throw $e;
