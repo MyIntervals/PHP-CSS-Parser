@@ -72,6 +72,9 @@ abstract class Value implements Renderable
             }
             $iStartPosition = null;
             while (($iStartPosition = array_search($sDelimiter, $aStack, true)) !== false) {
+                if ($iStartPosition === 0) {
+                    break;
+                }
                 $iLength = 2; //Number of elements to be joined
                 for ($i = $iStartPosition + 2; $i < count($aStack); $i += 2, ++$iLength) {
                     if ($sDelimiter !== $aStack[$i]) {

@@ -1238,6 +1238,16 @@ div {height: max(300,vh / 10);}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
+    /**
+     * @test
+     */
+    public function infiniteLoopInFile()
+    {
+        $oDoc = self::parsedStructureForFile('infinite-loop', Settings::create()->withMultibyteSupport(true));
+        $sExpected = 'div {}';
+        self::assertSame($sExpected, $oDoc->render());
+    }
+
     public function escapedSpecialCaseTokens()
     {
         $oDoc = $this->parsedStructureForFile('escaped-tokens');
