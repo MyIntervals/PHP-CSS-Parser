@@ -743,7 +743,7 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
 body {background-color: red;}';
         self::assertSame($sExpected, $oDoc->render());
 
-        $oDoc = self::parsedStructureForFile('invalid-selectors-3', Settings::create()->withMultibyteSupport(true));
+        $oDoc = self::parsedStructureForFile('invalid-selectors-4', Settings::create()->withMultibyteSupport(true));
         $sExpected = 'body, div :hover {color: green;}
 div {color: blue;}';
         self::assertSame($sExpected, $oDoc->render());
