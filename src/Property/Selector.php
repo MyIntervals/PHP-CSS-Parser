@@ -46,7 +46,7 @@ class Selector
         /ix';
 
     /**
-     * regexp for specificity calculations
+     * regexp for validity verifications
      *
      * @var string
      *
@@ -79,7 +79,7 @@ class Selector
      */
     public static function isValid($sSelector)
     {
-        return \preg_match(static::SELECTOR_VALIDATION_RX, $sSelector);
+        return \preg_match(static::SELECTOR_VALIDATION_RX, $sSelector) && \strpos($sSelector, ': ') === false;
     }
 
     /**
