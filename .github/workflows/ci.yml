@@ -53,8 +53,12 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
+          ini-values: error_reporting=E_ALL
           tools: composer:v2
           coverage: "${{ matrix.coverage }}"
+
+      - name: Show the Composer configuration
+        run: composer config --global --list
 
       - name: Cache dependencies installed with composer
         uses: actions/cache@v3
@@ -107,6 +111,9 @@ jobs:
           php-version: ${{ matrix.php-version }}
           tools: "composer:v2, phive"
           coverage: none
+
+      - name: Show the Composer configuration
+        run: composer config --global --list
 
       - name: Cache dependencies installed with composer
         uses: actions/cache@v3
