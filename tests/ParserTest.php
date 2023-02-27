@@ -821,6 +821,11 @@ body {background-color: red;}';
         $sExpected = '#test {color: #fff;}
 @media only screen and (max-width:30000px) {#test2 {color: #fff;}}';
         self::assertSame($sExpected, $oDoc->render());
+
+        $oDoc = self::parsedStructureForFile('invalid-selectors-4', Settings::create()->withMultibyteSupport(true));
+        $sExpected = 'body, div :hover {color: green;}
+div {color: blue;}';
+        self::assertSame($sExpected, $oDoc->render());
     }
 
     /**
