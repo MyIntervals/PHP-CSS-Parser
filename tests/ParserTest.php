@@ -742,6 +742,11 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
 	html[dir="rtl"] .super-menu > li:last-of-type {border-left-width: 0;}}
 body {background-color: red;}';
         self::assertSame($sExpected, $oDoc->render());
+
+        $oDoc = self::parsedStructureForFile('invalid-selectors-3', Settings::create()->withMultibyteSupport(true));
+        $sExpected = 'body, div :hover {color: green;}
+div {color: blue;}';
+        self::assertSame($sExpected, $oDoc->render());
     }
 
     /**
