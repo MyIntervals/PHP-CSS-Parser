@@ -685,6 +685,50 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
     /**
      * @test
      */
+    public function invalidCalcInFile()
+    {
+        $oDoc = self::parsedStructureForFile('calc-invalid', Settings::create()->withMultibyteSupport(true));
+        $sExpected = 'div {}
+div {}
+div {}
+div {height: -moz-calc;}
+div {height: calc;}';
+        self::assertSame($sExpected, $oDoc->render());
+    }
+
+    /**
+     * @test
+     */
+    public function invalidCalc()
+    {
+        $parser = new Parser('div { height: calc(100px');
+        $oDoc = $parser->parse();
+        self::assertSame('div {height: calc(100px);}', $oDoc->render());
+
+        $parser = new Parser('div { height: calc(100px)');
+        $oDoc = $parser->parse();
+        self::assertSame('div {height: calc(100px);}', $oDoc->render());
+
+        $parser = new Parser('div { height: calc(100px);');
+        $oDoc = $parser->parse();
+        self::assertSame('div {height: calc(100px);}', $oDoc->render());
+
+        $parser = new Parser('div { height: calc(100px}');
+        $oDoc = $parser->parse();
+        self::assertSame('div {}', $oDoc->render());
+
+        $parser = new Parser('div { height: calc(100px;');
+        $oDoc = $parser->parse();
+        self::assertSame('div {}', $oDoc->render());
+
+        $parser = new Parser('div { height: calc(100px;}');
+        $oDoc = $parser->parse();
+        self::assertSame('div {}', $oDoc->render());
+    }
+
+    /**
+     * @test
+     */
     public function gridLineNameInFile()
     {
         $oDoc = self::parsedStructureForFile('grid-linename', Settings::create()->withMultibyteSupport(true));
@@ -1187,10 +1231,36 @@ body {background-color: red;}';
     /**
      * @test
      */
+    public function scientificNotationSizeValuesInFile()
+    {
+        $oDoc = $this->parsedStructureForFile(
+            'scientific-notation-numbers',
+            Settings::create()->withMultibyteSupport(false)
+        );
+        $sExpected = ''
+            . 'body {background-color: rgba(62,174,151,3041820656523200167936);'
+            . 'z-index: .030418206565232;font-size: 1em;top: 192.3478px;}';
+        self::assertSame($sExpected, $oDoc->render());
+    }
+
+    /**
+     * @test
+     */
     public function lonelyImport()
     {
         $oDoc = self::parsedStructureForFile('lonely-import');
         $sExpected = "@import url(\"example.css\") only screen and (max-width: 600px);";
         self::assertSame($sExpected, $oDoc->render());
+    }
+
+    public function escapedSpecialCaseTokens()
+    {
+        $oDoc = $this->parsedStructureForFile('escaped-tokens');
+        $contents = $oDoc->getContents();
+        $rules = $contents[0]->getRules();
+        $urlRule = $rules[0];
+        $calcRule = $rules[1];
+        self::assertTrue(is_a($urlRule->getValue(), '\Sabberworm\CSS\Value\URL'));
+        self::assertTrue(is_a($calcRule->getValue(), '\Sabberworm\CSS\Value\CalcFunction'));
     }
 }
