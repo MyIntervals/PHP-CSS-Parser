@@ -535,7 +535,7 @@ class ParserState
                 $aResult = [];
                 for ($iOffset = 0; $iOffset < $iLength; $iOffset += $iLimit) {
                     $sChunk = mb_substr($sString, $iOffset, $iLimit, 'utf-8');
-                    foreach (preg_split('//u', $sChunk, null, PREG_SPLIT_NO_EMPTY) as $sChar) {
+                    foreach (preg_split('//u', $sChunk, -1, PREG_SPLIT_NO_EMPTY) as $sChar) {
                         $aResult[] = $sChar;
                     }
                 }
