@@ -18,7 +18,7 @@ class KeyFrameTest extends TestCase
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subject = new KeyFrame();
     }

@@ -18,7 +18,7 @@ class DocumentTest extends TestCase
      */
     private $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subject = new Document();
     }
@@ -50,7 +50,7 @@ class DocumentTest extends TestCase
     /**
      * @return array<string, array<int, array<int, DeclarationBlock>>>
      */
-    public function contentsDataProvider()
+    public static function contentsDataProvider()
     {
         return [
             'empty array' => [[]],

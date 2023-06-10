@@ -19,7 +19,7 @@
         "ext-iconv": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.7.27",
+        "phpunit/phpunit": "^10.2",
         "codacy/coverage": "^1.4.3"
     },
     "suggest": {
