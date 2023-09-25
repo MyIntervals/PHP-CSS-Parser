@@ -66,7 +66,7 @@ class Charset implements AtRule
      */
     public function getCharset()
     {
-        return $this->oCharset->getString();
+        return preg_replace('/;$/', '', $this->oCharset->getString());
     }
 
     /**
