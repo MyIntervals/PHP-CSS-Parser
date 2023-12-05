@@ -1,5 +1,11 @@
 # Revision History
 
+## 9.0.0
+
+### Backwards-incompatible changes
+
+* drop support for PHP < 7.2
+
 ## 8.4.0
 
 ### Features
