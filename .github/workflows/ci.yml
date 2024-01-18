@@ -61,7 +61,7 @@ jobs:
         run: composer config --global --list
 
       - name: Cache dependencies installed with composer
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/composer
           key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
@@ -116,7 +116,7 @@ jobs:
         run: composer config --global --list
 
       - name: Cache dependencies installed with composer
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/composer
           key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
