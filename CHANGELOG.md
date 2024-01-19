@@ -1,4 +1,31 @@
-# Revision History
+# Changelog
+
+All notable changes to this project will be documented in this file.
+This project adheres to [Semantic Versioning](https://semver.org/).
+
+## x.y.z
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## 8.4.1
+
+### Added
+
+- Add more unit tests
+
+### Fixed
+
+- Retain CSSList and Rule comments when rendering CSS (#351)
+- Replace invalid `turns` unit with `turn` (#350)
+- Also allow string values for rules
 
 ## 8.4.0
 

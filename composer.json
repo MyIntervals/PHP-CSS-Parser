@@ -35,6 +35,11 @@
             "Sabberworm\\CSS\\Tests\\": "tests/"
         }
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "9.0.x-dev"
+        }
+    },
     "scripts": {
         "ci": [
             "@ci:static"
