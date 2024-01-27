@@ -15,17 +15,21 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
-## 8.4.1
+## 8.5.0
 
 ### Added
 
-- Add more unit tests
+- Add a method to get an import's media queries (#384)
+- Add more unit tests (#381, #382)
 
 ### Fixed
 
 - Retain CSSList and Rule comments when rendering CSS (#351)
 - Replace invalid `turns` unit with `turn` (#350)
-- Also allow string values for rules
+- Also allow string values for rules (#348)
+- Fix invalid calc parsing (#169)
+- Handle scientific notation when parsing sizes (#179)
+- Fix PHP 8.1 compatibility in `ParserState::strsplit()` (#344)
 
 ## 8.4.0
 
