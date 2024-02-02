@@ -43,7 +43,7 @@ EOT;
      */
     private $oDocument;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->oParser = new Parser(self::TEST_CSS);
         $this->oDocument = $this->oParser->parse();
