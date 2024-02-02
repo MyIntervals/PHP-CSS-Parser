@@ -12,6 +12,14 @@
     "authors": [
         {
             "name": "Raphael Schweikert"
+        },
+        {
+            "name": "Oliver Klee",
+            "email": "github@oliverklee.de"
+        },
+        {
+            "name": "Jake Hotson",
+            "email": "jake@qzdesign.co.uk"
         }
     ],
     "require": {
