@@ -27,9 +27,9 @@
         "ext-iconv": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5.36",
         "codacy/coverage": "^1.4.3",
-        "phpstan/phpstan": "^1.10.57"
+        "phpstan/phpstan": "^1.10.57",
+        "phpunit/phpunit": "^8.5.36"
     },
     "suggest": {
         "ext-mbstring": "for parsing UTF-8 CSS"
@@ -39,15 +39,19 @@
             "Sabberworm\\CSS\\": "src/"
         }
     },
-    "config": {
-        "allow-plugins": {
-            "phpstan/extension-installer": true
-        }
-    },
     "autoload-dev": {
         "psr-4": {
             "Sabberworm\\CSS\\Tests\\": "tests/"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        },
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
     },
     "extra": {
         "branch-alias": {
