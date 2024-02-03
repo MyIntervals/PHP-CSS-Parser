@@ -28,7 +28,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5.36",
-        "codacy/coverage": "^1.4.3"
+        "codacy/coverage": "^1.4.3",
+        "phpstan/phpstan": "^1.10.57"
     },
     "suggest": {
         "ext-mbstring": "for parsing UTF-8 CSS"
@@ -36,6 +37,11 @@
     "autoload": {
         "psr-4": {
             "Sabberworm\\CSS\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
         }
     },
     "autoload-dev": {
@@ -54,7 +60,7 @@
         ],
         "ci:php:fixer": "@php ./.phive/php-cs-fixer.phar --config=config/php-cs-fixer.php fix --dry-run -v --show-progress=dots bin src tests",
         "ci:php:sniffer": "@php ./.phive/phpcs.phar --standard=config/phpcs.xml bin src tests",
-        "ci:php:stan": "@php ./.phive/phpstan.phar --configuration=config/phpstan.neon",
+        "ci:php:stan": "phpstan --no-progress --configuration=config/phpstan.neon",
         "ci:static": [
             "@ci:php:fixer",
             "@ci:php:sniffer",
