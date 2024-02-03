@@ -1,8 +1,10 @@
 # https://help.github.com/en/categories/automating-your-workflow-with-github-actions
 
 on:
-  pull_request:
   push:
+    branches:
+      - main
+  pull_request:
   schedule:
     - cron: '3 3 * * 1'
 
