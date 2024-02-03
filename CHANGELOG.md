@@ -7,6 +7,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- Add more tests (#449)
+
 ### Changed
 
 ### Deprecated
