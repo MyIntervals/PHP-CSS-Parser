@@ -11,7 +11,7 @@ use Sabberworm\CSS\RuleSet\DeclarationBlock;
 /**
  * @covers \Sabberworm\CSS\CSSList\Document
  */
-class DocumentTest extends TestCase
+final class DocumentTest extends TestCase
 {
     /**
      * @var Document

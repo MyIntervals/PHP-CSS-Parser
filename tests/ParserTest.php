@@ -35,7 +35,7 @@ use Sabberworm\CSS\Value\URL;
  * @covers \Sabberworm\CSS\Value\Size::parse
  * @covers \Sabberworm\CSS\Value\URL::parse
  */
-class ParserTest extends TestCase
+final class ParserTest extends TestCase
 {
     /**
      * @test

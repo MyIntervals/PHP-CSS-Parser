@@ -19,7 +19,7 @@ use Sabberworm\CSS\Settings;
  * @covers \Sabberworm\CSS\Value\Size::parse
  * @covers \Sabberworm\CSS\Value\URL::parse
  */
-class LenientParsingTest extends TestCase
+final class LenientParsingTest extends TestCase
 {
     /**
      * @test

@@ -10,7 +10,7 @@ use Sabberworm\CSS\Value\Size;
 /**
  * @covers \Sabberworm\CSS\RuleSet\DeclarationBlock
  */
-class DeclarationBlockTest extends TestCase
+final class DeclarationBlockTest extends TestCase
 {
     /**
      * @param string $sCss
