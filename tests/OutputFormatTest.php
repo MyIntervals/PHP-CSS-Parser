@@ -11,7 +11,7 @@ use Sabberworm\CSS\Parsing\OutputException;
 /**
  * @covers \Sabberworm\CSS\OutputFormat
  */
-class OutputFormatTest extends TestCase
+final class OutputFormatTest extends TestCase
 {
     /**
      * @var string

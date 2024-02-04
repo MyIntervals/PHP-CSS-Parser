@@ -11,7 +11,7 @@ use Sabberworm\CSS\Renderable;
 /**
  * @covers \Sabberworm\CSS\CSSList\AtRuleBlockList
  */
-class AtRuleBlockListTest extends TestCase
+final class AtRuleBlockListTest extends TestCase
 {
     /**
      * @test
