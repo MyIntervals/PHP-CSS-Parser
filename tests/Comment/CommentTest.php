@@ -140,11 +140,11 @@ final class CommentTest extends TestCase
 ', $oCss->render(OutputFormat::createPretty()));
         self::assertSame(
             '/** Number 11 **//**' . "\n"
-                . ' * Comments' . "\n"
-                . ' *//* Hell */@import url("some/url.css") screen;'
-                . '/* Number 4 *//* Number 5 */.foo,#bar{'
-                . '/* Number 6 */background-color:#000;}@media screen{'
-                . '/** Number 10 **/#foo.bar{/** Number 10b **/position:absolute;}}',
+            . ' * Comments' . "\n"
+            . ' *//* Hell */@import url("some/url.css") screen;'
+            . '/* Number 4 *//* Number 5 */.foo,#bar{'
+            . '/* Number 6 */background-color:#000;}@media screen{'
+            . '/** Number 10 **/#foo.bar{/** Number 10b **/position:absolute;}}',
             $oCss->render(OutputFormat::createCompact()->setRenderComments(true))
         );
     }
@@ -170,8 +170,8 @@ final class CommentTest extends TestCase
 ', $oCss->render(OutputFormat::createPretty()->setRenderComments(false)));
         self::assertSame(
             '@import url("some/url.css") screen;'
-                . '.foo,#bar{background-color:#000;}'
-                . '@media screen{#foo.bar{position:absolute;}}',
+            . '.foo,#bar{background-color:#000;}'
+            . '@media screen{#foo.bar{position:absolute;}}',
             $oCss->render(OutputFormat::createCompact())
         );
     }
