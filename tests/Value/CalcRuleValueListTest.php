@@ -9,7 +9,7 @@ use Sabberworm\CSS\Value\RuleValueList;
 /**
  * @covers \Sabberworm\CSS\Value\CalcRuleValueList
  */
-class CalcRuleValueListTest extends TestCase
+final class CalcRuleValueListTest extends TestCase
 {
     /**
      * @test

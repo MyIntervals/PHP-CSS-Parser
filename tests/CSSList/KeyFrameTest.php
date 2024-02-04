@@ -11,7 +11,7 @@ use Sabberworm\CSS\Renderable;
 /**
  * @covers \Sabberworm\CSS\CSSList\KeyFrame
  */
-class KeyFrameTest extends TestCase
+final class KeyFrameTest extends TestCase
 {
     /**
      * @var KeyFrame
