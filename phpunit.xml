@@ -1,6 +1,12 @@
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.5/phpunit.xsd">
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.5/phpunit.xsd"
+    beStrictAboutChangesToGlobalState="true"
+    beStrictAboutCoversAnnotation="true"
+    cacheResult="false"
+    colors="true"
+    forceCoversAnnotation="true"
+>
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
