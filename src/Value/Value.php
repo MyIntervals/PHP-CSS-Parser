@@ -43,9 +43,9 @@ abstract class Value implements Renderable
         //Build a list of delimiters and parsed values
         while (
             !($oParserState->comes('}') || $oParserState->comes(';') || $oParserState->comes('!')
-            || $oParserState->comes(')')
-            || $oParserState->comes('\\')
-            || $oParserState->isEnd())
+                || $oParserState->comes(')')
+                || $oParserState->comes('\\')
+                || $oParserState->isEnd())
         ) {
             if (count($aStack) > 0) {
                 $bFoundDelimiter = false;

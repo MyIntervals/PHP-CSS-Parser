@@ -215,6 +215,7 @@ class OutputFormatter
     /**
      *
      * @param array<Commentable> $aComments
+     *
      * @return string
      */
     public function comments(Commentable $oCommentable)
