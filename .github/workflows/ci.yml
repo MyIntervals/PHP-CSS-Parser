@@ -42,10 +42,6 @@ jobs:
       fail-fast: false
       matrix:
         php-version: [ '7.2', '7.3' ]
-        coverage: [ 'none' ]
-        include:
-          - php-version: '7.4'
-            coverage: none
 
     steps:
       - name: Checkout
@@ -57,7 +53,7 @@ jobs:
           php-version: ${{ matrix.php-version }}
           ini-values: error_reporting=E_ALL
           tools: composer:v2
-          coverage: "${{ matrix.coverage }}"
+          coverage: none
 
       - name: Show the Composer configuration
         run: composer config --global --list
