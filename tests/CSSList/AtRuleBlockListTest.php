@@ -46,7 +46,7 @@ class AtRuleBlockListTest extends TestCase
     /**
      * @return array<string, array<int, string>>
      */
-    public function mediaRuleDataProvider()
+    public static function mediaRuleDataProvider()
     {
         return [
             'without spaces around arguments' => ['@media(min-width: 768px){.class{color:red}}'],
