@@ -565,6 +565,7 @@ class DeclarationBlock extends RuleSet
     public function createShorthandProperties(array $aProperties, $sShorthand)
     {
         $aRules = $this->getRulesAssoc();
+        $oRule = null;
         $aNewValues = [];
         foreach ($aProperties as $sProperty) {
             if (!isset($aRules[$sProperty])) {
@@ -585,7 +586,7 @@ class DeclarationBlock extends RuleSet
                 $this->removeRule($sProperty);
             }
         }
-        if (count($aNewValues)) {
+        if ($aNewValues !== [] && $oRule instanceof Rule) {
             $oNewRule = new Rule($sShorthand, $oRule->getLineNo(), $oRule->getColNo());
             foreach ($aNewValues as $mValue) {
                 $oNewRule->addValue($mValue);
