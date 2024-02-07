@@ -13,11 +13,11 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 class Size extends PrimitiveValue
 {
     /**
-     * vh/vw/vm(ax)/vmin/rem are absolute insofar as they don’t scale to the immediate parent (only the viewport)
+     * vh/vw/vm(ax)/vmin/rem/svh/lvh/dvh/svw/lvw/dvw are absolute insofar as they don’t scale to the immediate parent (only the viewport)
      *
      * @var array<int, string>
      */
-    const ABSOLUTE_SIZE_UNITS = ['px', 'cm', 'mm', 'mozmm', 'in', 'pt', 'pc', 'vh', 'vw', 'vmin', 'vmax', 'rem'];
+    const ABSOLUTE_SIZE_UNITS = ['px', 'cm', 'mm', 'mozmm', 'in', 'pt', 'pc', 'vh', 'vw', 'vmin', 'vmax', 'svh', 'lvh', 'dvh', 'svw', 'lvw', 'dvw', 'rem'];
 
     /**
      * @var array<int, string>
