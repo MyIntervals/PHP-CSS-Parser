@@ -1,0 +1,13 @@
+#test {
+  color: #fff;
+}
+}
+
+@media only screen and (max-width:30000px) {
+  #test {
+    color: #fff;
+  }
+  #test2 {
+    color: #fff;
+  }
+}
