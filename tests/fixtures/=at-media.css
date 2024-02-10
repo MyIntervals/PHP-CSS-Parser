@@ -1,0 +1,8 @@
+@media print
+{
+	html
+	{
+		background: white;
+		color: black;
+	}
+}

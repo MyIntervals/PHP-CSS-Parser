@@ -19,6 +19,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+Fix (regression) failure to parse at-rules with strict parsing (#456)
+
 ## 8.5.0
 
 ### Added
