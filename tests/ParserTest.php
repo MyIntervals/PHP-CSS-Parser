@@ -74,10 +74,7 @@ final class ParserTest extends TestCase
                     // or a future test of a as-of-now missing feature
                     continue;
                 }
-                $oParser = new Parser(
-                    \file_get_contents($sDirectory . '/' . $sFileName),
-                    Settings::create()->withLenientParsing($sFileName[0] !== '=')
-                );
+                $oParser = new Parser(file_get_contents($sDirectory . '/' . $sFileName));
                 try {
                     self::assertNotEquals('', $oParser->parse()->render());
                 } catch (\Exception $e) {
