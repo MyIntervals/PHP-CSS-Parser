@@ -682,9 +682,9 @@ class DeclarationBlock extends RuleSet
                     $aValues[$sPosition] = $aRuleValues;
                 }
                 $oNewRule = new Rule($sProperty, $oRule->getLineNo(), $oRule->getColNo());
-                if ((string)$aValues['left'][0] == (string)$aValues['right'][0]) {
-                    if ((string)$aValues['top'][0] == (string)$aValues['bottom'][0]) {
-                        if ((string)$aValues['top'][0] == (string)$aValues['left'][0]) {
+                if ((string) $aValues['left'][0] == (string) $aValues['right'][0]) {
+                    if ((string) $aValues['top'][0] == (string) $aValues['bottom'][0]) {
+                        if ((string) $aValues['top'][0] == (string) $aValues['left'][0]) {
                             // All 4 sides are equal
                             $oNewRule->addValue($aValues['top']);
                         } else {

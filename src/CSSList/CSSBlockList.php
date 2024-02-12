@@ -113,7 +113,7 @@ abstract class CSSBlockList extends CSSList
                         $sComparator = $aSpecificitySearch[0];
                         $iTargetSpecificity = $aSpecificitySearch[1];
                     }
-                    $iTargetSpecificity = (int)$iTargetSpecificity;
+                    $iTargetSpecificity = (int) $iTargetSpecificity;
                     $iSelectorSpecificity = $oSelector->getSpecificity();
                     $bMatches = false;
                     switch ($sComparator) {
