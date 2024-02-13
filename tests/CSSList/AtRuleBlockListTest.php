@@ -17,7 +17,7 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @return array<string, array<int, string>>
      */
-    public static function provideMinWidthMediaRule()
+    public static function provideMinWidthMediaRule(): array
     {
         return [
             'without spaces around arguments' => ['@media(min-width: 768px){.class{color:red}}'],
