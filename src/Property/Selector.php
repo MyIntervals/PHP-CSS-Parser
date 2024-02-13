@@ -49,6 +49,8 @@ class Selector
      * regexp for specificity calculations
      *
      * @var string
+     *
+     * @internal
      */
     public const SELECTOR_VALIDATION_RX = '/
         ^(
