@@ -50,6 +50,7 @@
         "allow-plugins": {
             "phpstan/extension-installer": true
         },
+        "lock": false,
         "preferred-install": {
             "*": "dist"
         },
