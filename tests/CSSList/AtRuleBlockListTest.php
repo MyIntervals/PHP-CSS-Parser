@@ -115,7 +115,7 @@ final class AtRuleBlockListTest extends TestCase
      * @dataProvider provideMinWidthMediaRule
      * @dataProvider provideSyntacticlyCorrectAtRule
      */
-    public function parsesSyntacticlyCorrectAtRuleInStrictMode($css)
+    public function parsesSyntacticlyCorrectAtRuleInStrictMode(string $css): void
     {
         $contents = (new Parser($css, Settings::create()->beStrict()))->parse()->getContents();
 
