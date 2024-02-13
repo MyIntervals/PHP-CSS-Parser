@@ -28,7 +28,7 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @return array<string, array<int, string>>
      */
-    public static function provideSyntacticlyCorrectAtRule()
+    public static function provideSyntacticlyCorrectAtRule(): array
     {
         return [
             'media print' => ['@media print { html { background: white; color: black; } }'],
