@@ -27,7 +27,7 @@ final class DeclarationBlockTest extends TestCase
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->expandBorderShorthand();
         }
-        self::assertSame(trim((string)$oDoc), $sExpected);
+        self::assertSame(trim((string) $oDoc), $sExpected);
     }
 
     /**
@@ -60,7 +60,7 @@ final class DeclarationBlockTest extends TestCase
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->expandFontShorthand();
         }
-        self::assertSame(trim((string)$oDoc), $sExpected);
+        self::assertSame(trim((string) $oDoc), $sExpected);
     }
 
     /**
@@ -116,7 +116,7 @@ final class DeclarationBlockTest extends TestCase
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->expandBackgroundShorthand();
         }
-        self::assertSame(trim((string)$oDoc), $sExpected);
+        self::assertSame(trim((string) $oDoc), $sExpected);
     }
 
     /**
@@ -169,7 +169,7 @@ final class DeclarationBlockTest extends TestCase
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->expandDimensionsShorthand();
         }
-        self::assertSame(trim((string)$oDoc), $sExpected);
+        self::assertSame(trim((string) $oDoc), $sExpected);
     }
 
     /**
@@ -207,7 +207,7 @@ final class DeclarationBlockTest extends TestCase
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->createBorderShorthand();
         }
-        self::assertSame(trim((string)$oDoc), $sExpected);
+        self::assertSame(trim((string) $oDoc), $sExpected);
     }
 
     /**
@@ -238,7 +238,7 @@ final class DeclarationBlockTest extends TestCase
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->createFontShorthand();
         }
-        self::assertSame(trim((string)$oDoc), $sExpected);
+        self::assertSame(trim((string) $oDoc), $sExpected);
     }
 
     /**
@@ -281,7 +281,7 @@ final class DeclarationBlockTest extends TestCase
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->createDimensionsShorthand();
         }
-        self::assertSame(trim((string)$oDoc), $sExpected);
+        self::assertSame(trim((string) $oDoc), $sExpected);
     }
 
     /**
@@ -319,7 +319,7 @@ final class DeclarationBlockTest extends TestCase
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->createBackgroundShorthand();
         }
-        self::assertSame(trim((string)$oDoc), $sExpected);
+        self::assertSame(trim((string) $oDoc), $sExpected);
     }
 
     /**

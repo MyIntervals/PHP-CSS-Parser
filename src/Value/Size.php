@@ -58,7 +58,7 @@ class Size extends PrimitiveValue
     public function __construct($fSize, $sUnit = null, $bIsColorComponent = false, $iLineNo = 0)
     {
         parent::__construct($iLineNo);
-        $this->fSize = (float)$fSize;
+        $this->fSize = (float) $fSize;
         $this->sUnit = $sUnit;
         $this->bIsColorComponent = $bIsColorComponent;
     }
@@ -103,7 +103,7 @@ class Size extends PrimitiveValue
                 }
             }
         }
-        return new Size((float)$sSize, $sUnit, $bIsColorComponent, $oParserState->currentLine());
+        return new Size((float) $sSize, $sUnit, $bIsColorComponent, $oParserState->currentLine());
     }
 
     /**
@@ -150,7 +150,7 @@ class Size extends PrimitiveValue
      */
     public function setSize($fSize)
     {
-        $this->fSize = (float)$fSize;
+        $this->fSize = (float) $fSize;
     }
 
     /**
@@ -211,7 +211,7 @@ class Size extends PrimitiveValue
     {
         $l = localeconv();
         $sPoint = preg_quote($l['decimal_point'], '/');
-        $sSize = preg_match("/[\d\.]+e[+-]?\d+/i", (string)$this->fSize)
+        $sSize = preg_match("/[\d\.]+e[+-]?\d+/i", (string) $this->fSize)
             ? preg_replace("/$sPoint?0+$/", "", sprintf("%f", $this->fSize)) : $this->fSize;
         return preg_replace(["/$sPoint/", "/^(-?)0\./"], ['.', '$1.'], $sSize)
             . ($this->sUnit === null ? '' : $this->sUnit);

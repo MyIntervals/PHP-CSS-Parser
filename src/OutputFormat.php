@@ -165,9 +165,7 @@ class OutputFormat
      */
     private $iIndentationLevel = 0;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * @param string $sName
