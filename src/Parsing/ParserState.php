@@ -10,7 +10,7 @@ class ParserState
     /**
      * @var null
      */
-    const EOF = null;
+    public const EOF = null;
 
     /**
      * @var Settings

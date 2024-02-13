@@ -17,17 +17,17 @@ class Size extends PrimitiveValue
      *
      * @var array<int, string>
      */
-    const ABSOLUTE_SIZE_UNITS = ['px', 'cm', 'mm', 'mozmm', 'in', 'pt', 'pc', 'vh', 'vw', 'vmin', 'vmax', 'rem'];
+    private const ABSOLUTE_SIZE_UNITS = ['px', 'cm', 'mm', 'mozmm', 'in', 'pt', 'pc', 'vh', 'vw', 'vmin', 'vmax', 'rem'];
 
     /**
      * @var array<int, string>
      */
-    const RELATIVE_SIZE_UNITS = ['%', 'em', 'ex', 'ch', 'fr'];
+    private const RELATIVE_SIZE_UNITS = ['%', 'em', 'ex', 'ch', 'fr'];
 
     /**
      * @var array<int, string>
      */
-    const NON_SIZE_UNITS = ['deg', 'grad', 'rad', 's', 'ms', 'turn', 'Hz', 'kHz'];
+    private const NON_SIZE_UNITS = ['deg', 'grad', 'rad', 's', 'ms', 'turn', 'Hz', 'kHz'];
 
     /**
      * @var array<int, array<string, string>>|null
