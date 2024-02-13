@@ -110,8 +110,6 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      *
-     * @param string $css
-     *
      * @dataProvider provideMinWidthMediaRule
      * @dataProvider provideSyntacticlyCorrectAtRule
      */
