@@ -16,7 +16,7 @@ final class OutputFormatTest extends TestCase
     /**
      * @var string
      */
-    const TEST_CSS = <<<EOT
+    private const TEST_CSS = <<<EOT
 
 .main, .test {
 	font: italic normal bold 16px/1.2 "Helvetica", Verdana, sans-serif;
