@@ -131,18 +131,15 @@ abstract class CSSList implements Renderable, Commentable
             }
             return $oAtRule;
         } elseif ($oParserState->comes('}')) {
-            if (!$oParserState->getSettings()->bLenientParsing) {
-                throw new UnexpectedTokenException('CSS selector', '}', 'identifier', $oParserState->currentLine());
-            } else {
-                if ($bIsRoot) {
-                    if ($oParserState->getSettings()->bLenientParsing) {
-                        return DeclarationBlock::parse($oParserState);
-                    } else {
-                        throw new SourceException("Unopened {", $oParserState->currentLine());
-                    }
+            if ($bIsRoot) {
+                if ($oParserState->getSettings()->bLenientParsing) {
+                    return DeclarationBlock::parse($oParserState);
                 } else {
-                    return null;
+                    throw new SourceException("Unopened {", $oParserState->currentLine());
                 }
+            } else {
+                // End of list
+                return null;
             }
         } else {
             return DeclarationBlock::parse($oParserState, $oList);
