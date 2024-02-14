@@ -17,7 +17,7 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @return array<string, array{0: string}>
      */
-    public static function provideMinWidthMediaRule(): array
+    public static function provideMinWidthMediaRule()
     {
         return [
             'without spaces around arguments' => ['@media(min-width: 768px){.class{color:red}}'],
@@ -28,7 +28,7 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @return array<string, array{0: string}>
      */
-    public static function provideSyntacticlyCorrectAtRule(): array
+    public static function provideSyntacticlyCorrectAtRule()
     {
         return [
             'media print' => ['@media print { html { background: white; color: black; } }'],
@@ -110,10 +110,12 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      *
+     * @param string $css
+     *
      * @dataProvider provideMinWidthMediaRule
      * @dataProvider provideSyntacticlyCorrectAtRule
      */
-    public function parsesSyntacticlyCorrectAtRuleInStrictMode(string $css): void
+    public function parsesSyntacticlyCorrectAtRuleInStrictMode($css)
     {
         $contents = (new Parser($css, Settings::create()->beStrict()))->parse()->getContents();
 
