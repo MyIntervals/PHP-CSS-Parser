@@ -11,12 +11,12 @@ class CalcFunction extends CSSFunction
     /**
      * @var int
      */
-    const T_OPERAND = 1;
+    private const T_OPERAND = 1;
 
     /**
      * @var int
      */
-    const T_OPERATOR = 2;
+    private const T_OPERATOR = 2;
 
     /**
      * @param ParserState $oParserState

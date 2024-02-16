@@ -13,7 +13,7 @@ class Selector
      *
      * @var string
      */
-    const NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX = '/
+    private const NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX = '/
         (\.[\w]+)                   # classes
         |
         \[(\w+)                     # attributes
@@ -37,7 +37,7 @@ class Selector
      *
      * @var string
      */
-    const ELEMENTS_AND_PSEUDO_ELEMENTS_RX = '/
+    private const ELEMENTS_AND_PSEUDO_ELEMENTS_RX = '/
         ((^|[\s\+\>\~]+)[\w]+   # elements
         |
         \:{1,2}(                # pseudo-elements
@@ -49,8 +49,10 @@ class Selector
      * regexp for specificity calculations
      *
      * @var string
+     *
+     * @internal
      */
-    const SELECTOR_VALIDATION_RX = '/
+    public const SELECTOR_VALIDATION_RX = '/
         ^(
             (?:
                 [a-zA-Z0-9\x{00A0}-\x{FFFF}_^$|*="\'~\[\]()\-\s\.:#+>]* # any sequence of valid unescaped characters

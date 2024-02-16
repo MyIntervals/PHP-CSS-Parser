@@ -11,14 +11,14 @@ use Sabberworm\CSS\RuleSet\DeclarationBlock;
 /**
  * @covers \Sabberworm\CSS\CSSList\Document
  */
-class DocumentTest extends TestCase
+final class DocumentTest extends TestCase
 {
     /**
      * @var Document
      */
     private $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subject = new Document();
     }
@@ -50,7 +50,7 @@ class DocumentTest extends TestCase
     /**
      * @return array<string, array<int, array<int, DeclarationBlock>>>
      */
-    public function contentsDataProvider()
+    public static function contentsDataProvider()
     {
         return [
             'empty array' => [[]],

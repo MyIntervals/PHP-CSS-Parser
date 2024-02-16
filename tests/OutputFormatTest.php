@@ -11,12 +11,12 @@ use Sabberworm\CSS\Parsing\OutputException;
 /**
  * @covers \Sabberworm\CSS\OutputFormat
  */
-class OutputFormatTest extends TestCase
+final class OutputFormatTest extends TestCase
 {
     /**
      * @var string
      */
-    const TEST_CSS = <<<EOT
+    private const TEST_CSS = <<<EOT
 
 .main, .test {
 	font: italic normal bold 16px/1.2 "Helvetica", Verdana, sans-serif;
@@ -43,7 +43,7 @@ EOT;
      */
     private $oDocument;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->oParser = new Parser(self::TEST_CSS);
         $this->oDocument = $this->oParser->parse();

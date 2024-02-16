@@ -11,14 +11,14 @@ use Sabberworm\CSS\Renderable;
 /**
  * @covers \Sabberworm\CSS\CSSList\KeyFrame
  */
-class KeyFrameTest extends TestCase
+final class KeyFrameTest extends TestCase
 {
     /**
      * @var KeyFrame
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subject = new KeyFrame();
     }

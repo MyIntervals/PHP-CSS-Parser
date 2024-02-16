@@ -1,6 +1,6 @@
 # PHP CSS Parser
 
-[![Build Status](https://github.com/sabberworm/PHP-CSS-Parser/workflows/CI/badge.svg?branch=master)](https://github.com/sabberworm/PHP-CSS-Parser/actions/)
+[![Build Status](https://github.com/MyIntervals/PHP-CSS-Parser/workflows/CI/badge.svg?branch=main)](https://github.com/MyIntervals/PHP-CSS-Parser/actions/)
 
 A Parser for CSS Files written in PHP. Allows extraction of CSS files into a data structure, manipulation of said structure and output as (optimized) CSS.
 
