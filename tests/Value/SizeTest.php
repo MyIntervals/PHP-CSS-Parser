@@ -42,7 +42,7 @@ final class SizeTest extends TestCase
      *
      * @dataProvider provideUnit
      */
-    public function parsesUnit(string $unit)
+    public function parsesUnit(string $unit): void
     {
         $subject = Size::parse(new ParserState('1' . $unit, Settings::create()));
 
