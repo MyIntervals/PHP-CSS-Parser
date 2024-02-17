@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- Add a class diagram to the README (#482)
 - Add support for the `dvh`, `lvh` and `svh` length units (#415)
 - Add more tests (#449)
 
