@@ -64,7 +64,7 @@
         "ci": [
             "@ci:static"
         ],
-        "ci:php:fixer": "@php ./.phive/php-cs-fixer.phar --config=config/php-cs-fixer.php fix --dry-run -v --show-progress=dots bin src tests",
+        "ci:php:fixer": "@php ./.phive/php-cs-fixer.phar --config=config/php-cs-fixer.php fix --dry-run -v --show-progress=dots --diff bin src tests",
         "ci:php:stan": "phpstan --no-progress --configuration=config/phpstan.neon",
         "ci:static": [
             "@ci:php:fixer",
