@@ -83,6 +83,6 @@
         "ci:static": "Runs all static code analysis checks for the code.",
         "fix:php": "Autofixes all autofixable issues in the PHP code.",
         "fix:php:fixer": "Fixes autofixable issues found by PHP CS Fixer.",
-        "phpstand:baseline": "Updates the PHPStan baseline file to match the code."
+        "phpstan:baseline": "Updates the PHPStan baseline file to match the code."
     }
 }
