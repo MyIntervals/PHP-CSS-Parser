@@ -56,7 +56,7 @@ class Color extends CSSFunction
                         $oParserState->currentLine()
                     ),
                 ];
-            } else if ($oParserState->strlen($sValue) === 6) {
+            } elseif ($oParserState->strlen($sValue) === 6) {
                 $aColor = [
                     'r' => new Size(intval($sValue[0] . $sValue[1], 16), null, true, $oParserState->currentLine()),
                     'g' => new Size(intval($sValue[2] . $sValue[3], 16), null, true, $oParserState->currentLine()),
