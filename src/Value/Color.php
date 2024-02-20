@@ -64,9 +64,9 @@ class Color extends CSSFunction
                 ];
             } else {
                 throw new UnexpectedTokenException(
-                    'Invalid hex color value', 
-                    $sValue, 
-                    'custom', 
+                    'Invalid hex color value',
+                    $sValue,
+                    'custom',
                     $oParserState->currentLine()
                 );
             }

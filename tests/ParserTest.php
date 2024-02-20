@@ -147,7 +147,7 @@ final class ParserTest extends TestCase
                     'a' => new Size(0000.3, null, true, $oColor->getLineNo()),
                 ], $oColor->getColor());
                 $aColorRule = $oRuleSet->getRules('outline-color');
-                self::assertEmpty($aColorRule);                
+                self::assertEmpty($aColorRule);
             }
         }
         foreach ($oDoc->getAllValues('color') as $sColor) {
