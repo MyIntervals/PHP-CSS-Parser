@@ -63,12 +63,12 @@ class Color extends CSSFunction
                     'b' => new Size(intval($sValue[4] . $sValue[5], 16), null, true, $oParserState->currentLine()),
                 ];
             } else {
-                // the size of input color string is incorrect, use black color as fallback
-                $aColor = [
-                    'r' => new Size(0, null, true, $oParserState->currentLine()),
-                    'g' => new Size(0, null, true, $oParserState->currentLine()),
-                    'b' => new Size(0, null, true, $oParserState->currentLine()),
-                ];
+                throw new UnexpectedTokenException(
+                    'Invalid hex color value', 
+                    $sValue, 
+                    'custom', 
+                    $oParserState->currentLine()
+                );
             }
         } else {
             $sColorMode = $oParserState->parseIdentifier(true);

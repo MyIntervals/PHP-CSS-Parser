@@ -147,12 +147,7 @@ final class ParserTest extends TestCase
                     'a' => new Size(0000.3, null, true, $oColor->getLineNo()),
                 ], $oColor->getColor());
                 $aColorRule = $oRuleSet->getRules('outline-color');
-                $oColor = $aColorRule[0]->getValue();
-                self::assertEquals([
-                    'r' => new Size(0, null, true, $oColor->getLineNo()),
-                    'g' => new Size(0, null, true, $oColor->getLineNo()),
-                    'b' => new Size(0, null, true, $oColor->getLineNo()),
-                ], $oColor->getColor());
+                self::assertEmpty($aColorRule);                
             }
         }
         foreach ($oDoc->getAllValues('color') as $sColor) {
@@ -162,7 +157,7 @@ final class ParserTest extends TestCase
             '#mine {color: red;border-color: #0a64e6;border-color: rgba(10,100,231,.3);outline-color: #222;'
             . 'background-color: #232323;}'
             . "\n"
-            . '#yours {background-color: hsl(220,10%,220%);background-color: hsla(220,10%,220%,.3);outline-color: #000;}'
+            . '#yours {background-color: hsl(220,10%,220%);background-color: hsla(220,10%,220%,.3);}'
             . "\n"
             . '#variables {background-color: rgb(var(--some-rgb));background-color: rgb(var(--r),var(--g),var(--b));'
             . 'background-color: rgb(255,var(--g),var(--b));background-color: rgb(255,255,var(--b));'
