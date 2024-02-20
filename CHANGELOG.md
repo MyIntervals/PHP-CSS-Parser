@@ -19,6 +19,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- Fix PHP notice caused by parsing invalid color values having less than 6 characters (#485)
 - Fix (regression) failure to parse at-rules with strict parsing (#456)
 
 ## 8.5.0
