@@ -66,19 +66,19 @@ abstract class Value implements Renderable
             $oParserState->consumeWhiteSpace();
         }
         // Convert the list to list objects
+        $iStackLength = count($aStack);
         foreach ($aListDelimiters as $sDelimiter) {
-            if (count($aStack) === 1) {
+            if ($iStackLength === 1) {
                 return $aStack[0];
             }
             $aNewStack = [];
-            $aStackLength = count($aStack);
             for ($iStartPosition = 0; $iStartPosition < $aStackLength; ++$iStartPosition) {
-                if ($iStartPosition === ($aStackLength - 1) || $sDelimiter !== $aStack[$iStartPosition + 1]) {
+                if ($iStartPosition === ($iStackLength - 1) || $sDelimiter !== $aStack[$iStartPosition + 1]) {
                     $aNewStack[] = $aStack[$iStartPosition];
                     continue;
                 }
                 $iLength = 2; //Number of elements to be joined
-                for ($i = $iStartPosition + 3; $i < $aStackLength; $i += 2, ++$iLength) {
+                for ($i = $iStartPosition + 3; $i < $iStackLength; $i += 2, ++$iLength) {
                     if ($sDelimiter !== $aStack[$i]) {
                         break;
                     }
