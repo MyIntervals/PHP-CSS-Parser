@@ -72,7 +72,7 @@ abstract class Value implements Renderable
                 return $aStack[0];
             }
             $aNewStack = [];
-            for ($iStartPosition = 0; $iStartPosition < $aStackLength; ++$iStartPosition) {
+            for ($iStartPosition = 0; $iStartPosition < $iStackLength; ++$iStartPosition) {
                 if ($iStartPosition === ($iStackLength - 1) || $sDelimiter !== $aStack[$iStartPosition + 1]) {
                     $aNewStack[] = $aStack[$iStartPosition];
                     continue;
