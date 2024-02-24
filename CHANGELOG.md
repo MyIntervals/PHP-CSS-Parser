@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
-- Mark all class constants as `@internal` (#494)
+- Mark all class constants as `@internal` (#500)
 
 ### Deprecated
 
