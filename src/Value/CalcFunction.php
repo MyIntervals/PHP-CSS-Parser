@@ -10,11 +10,15 @@ class CalcFunction extends CSSFunction
 {
     /**
      * @var int
+     *
+     * @internal
      */
     const T_OPERAND = 1;
 
     /**
      * @var int
+     *
+     * @internal
      */
     const T_OPERATOR = 2;
 
