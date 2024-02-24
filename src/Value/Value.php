@@ -66,8 +66,8 @@ abstract class Value implements Renderable
             $oParserState->consumeWhiteSpace();
         }
         // Convert the list to list objects
-        $iStackLength = count($aStack);
         foreach ($aListDelimiters as $sDelimiter) {
+            $iStackLength = count($aStack);
             if ($iStackLength === 1) {
                 return $aStack[0];
             }
