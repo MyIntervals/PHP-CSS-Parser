@@ -642,8 +642,8 @@ classDiagram
     Parser --> "1" ParserState : oParserState
 
     class Renderable {
+        <<interface>>
     }
-    <<interface>> Renderable
     
     class Settings {
     }
@@ -654,9 +654,9 @@ classDiagram
     class Comment {
     }
     class Commentable {
+        <<interface>>
     }
 
-    <<interface>> Commentable
     Comment ..|> Renderable
 
 
@@ -665,8 +665,10 @@ classDiagram
     class AtRuleBlockList {
     }
     class CSSBlockList {
+        <<abstruct>>
     }
     class CSSList {
+        <<abstruct>>
     }
     class Document {
     }
@@ -713,6 +715,7 @@ classDiagram
     %% namespace Property
 
     class AtRule {
+        <<interface>>
     }
     class Charset {
     }
@@ -725,7 +728,6 @@ classDiagram
     class Selector {
     }
 
-    <<interface>> AtRule
     AtRule --|> Renderable
     AtRule --|> Commentable
     Charset ..|> AtRule
@@ -758,6 +760,7 @@ classDiagram
     class DeclarationBlock {
     }
     class RuleSet {
+        <<abstruct>>
     }
 
     AtRuleSet --|> RuleSet
@@ -786,6 +789,7 @@ classDiagram
     class LineName {
     }
     class PrimitiveValue {
+        <<abstruct>>
     }
     class RuleValueList {
     }
@@ -794,8 +798,10 @@ classDiagram
     class URL {
     }
     class Value {
+        <<abstruct>>
     }
     class ValueList {
+        <<abstruct>>
     }
 
     CalcFunction --|> CSSFunction
