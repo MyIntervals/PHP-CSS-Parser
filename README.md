@@ -615,6 +615,217 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 #header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;color: red !important;}
 ```
 
+## Class diagram
+
+```mermaid
+classDiagram
+    direction LR
+
+    %% top namespace
+
+    class OutputFormat {
+    }
+    
+    class OutputFormatter {
+    }
+    
+    OutputFormatter --> "1" OutputFormat : oFormat
+    OutputFormat --> "1" OutputFormatter : oFormatter 
+    OutputFormat --> "1" OutputFormat : oNextLevelFormat
+
+    class Parser {
+    }
+    
+    class ParserState {
+    }
+
+    Parser --> "1" ParserState : oParserState
+
+    class Renderable {
+        <<interface>>
+    }
+    
+    class Settings {
+    }
+
+
+    %% namespace Comment
+
+    class Comment {
+    }
+    class Commentable {
+        <<interface>>
+    }
+
+    Comment ..|> Renderable
+
+
+    %% namespace CSSList
+
+    class AtRuleBlockList {
+    }
+    class CSSBlockList {
+        <<abstruct>>
+    }
+    class CSSList {
+        <<abstruct>>
+    }
+    class Document {
+    }
+    class KeyFrame {
+    }
+
+    AtRuleBlockList --|> CSSBlockList
+    AtRuleBlockList ..|> AtRule
+    CSSBlockList --|> CSSList
+    CSSList ..|> Renderable
+    CSSList ..|> Commentable
+    Document --|> CSSBlockList
+    KeyFrame --|> CSSList
+    KeyFrame ..|> AtRule
+
+    CSSList --> "*" Comment : aComments
+    CSSList --> "*" RuleSet : aContents
+    CSSList --> "*" CSSList : aContents
+    CSSList --> "*" Import : aContents
+    CSSList --> "*" Charset : aContents
+
+    %% namespace Parsing
+
+    class Anchor {
+    }
+    class OutputException {
+    }
+    class ParserState {
+    }
+    class SourceException {
+    }
+    class UnexpectedEOFException {
+    }
+    class UnexpectedTokenException {
+    }
+
+    OutputException --|> SourceException
+    UnexpectedEOFException --|> UnexpectedTokenException
+    UnexpectedTokenException --|> SourceException
+
+    Anchor --> "1" ParserState : oParserState
+    ParserState --> "1" Settings : oParserSettings
+
+    %% namespace Property
+
+    class AtRule {
+        <<interface>>
+    }
+    class Charset {
+    }
+    class CSSNamespace {
+    }
+    class Import {
+    }
+    class KeyframeSelector {
+    }
+    class Selector {
+    }
+
+    AtRule --|> Renderable
+    AtRule --|> Commentable
+    Charset ..|> AtRule
+    CSSNamespace ..|> AtRule
+    Import ..|> AtRule
+    KeyframeSelector --|> Selector
+
+    Charset --> "1" CSSString : oCharset
+    Charset --> "*" Comment : aComments
+    CSSNamespace --> "*" Comment : aComments
+    Import --> "*" Comment : aComments
+
+
+    %% namespace Rule
+
+    class Rule {
+    }
+
+    Rule ..|> Renderable
+    Rule ..|> Commentable
+
+    Rule --> "1" RuleValueList : mValue
+    Rule --> "*" Comment : aComments
+
+
+    %% namespace RuleSet
+
+    class AtRuleSet {
+    }
+    class DeclarationBlock {
+    }
+    class RuleSet {
+        <<abstruct>>
+    }
+
+    AtRuleSet --|> RuleSet
+    AtRuleSet ..|> AtRule
+    DeclarationBlock --|> RuleSet
+    RuleSet ..|> Renderable
+    RuleSet ..|> Commentable
+
+    DeclarationBlock --> "*" Selector : aSelectors
+    RuleSet --> "*" Rule : aRules
+    RuleSet --> "*" Comment : aComments
+
+
+    %% namespace Value
+
+    class CalcFunction {
+    }
+    class CalcRuleValueList {
+    }
+    class Color {
+    }
+    class CSSFunction {
+    }
+    class CSSString {
+    }
+    class LineName {
+    }
+    class PrimitiveValue {
+        <<abstruct>>
+    }
+    class RuleValueList {
+    }
+    class Size {
+    }
+    class URL {
+    }
+    class Value {
+        <<abstruct>>
+    }
+    class ValueList {
+        <<abstruct>>
+    }
+
+    CalcFunction --|> CSSFunction
+    CalcRuleValueList --|> RuleValueList
+    Color --|> CSSFunction
+    CSSFunction --|> ValueList
+    CSSString --|> PrimitiveValue
+    LineName --|> ValueList
+    PrimitiveValue --|> Value
+    RuleValueList --|> ValueList
+    Size --|> PrimitiveValue
+    URL --|> PrimitiveValue
+    Value ..|> Renderable
+    ValueList --|> Value
+
+    URL --> "1" CSSString : oURL
+    ValueList --> "*" RuleValueList : aComponents
+    ValueList --> "*" CSSFunction : aComponents
+    ValueList --> "*" CSSString : aComponents
+    ValueList --> "*" LineName : aComponents
+    ValueList --> "*" Size : aComponents
+    ValueList --> "*" URL : aComponents
+```
+
 ## Contributors/Thanks to
 
 * [oliverklee](https://github.com/oliverklee) for lots of refactorings, code modernizations and CI integrations
