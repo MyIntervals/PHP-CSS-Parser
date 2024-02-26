@@ -1,0 +1,12 @@
+div {
+    height: max(300, vh + 10);
+}
+div {
+    height: max(300, vh - 10);
+}
+div {
+    height: max(300, vh * 10);
+}
+div {
+    height: max(300, vh / 10);
+}
