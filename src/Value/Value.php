@@ -67,23 +67,30 @@ abstract class Value implements Renderable
         }
         // Convert the list to list objects
         foreach ($aListDelimiters as $sDelimiter) {
-            if (count($aStack) === 1) {
+            $iStackLength = count($aStack);
+            if ($iStackLength === 1) {
                 return $aStack[0];
             }
-            $iStartPosition = null;
-            while (($iStartPosition = array_search($sDelimiter, $aStack, true)) !== false) {
+            $aNewStack = [];
+            for ($iStartPosition = 0; $iStartPosition < $iStackLength; ++$iStartPosition) {
+                if ($iStartPosition === ($iStackLength - 1) || $sDelimiter !== $aStack[$iStartPosition + 1]) {
+                    $aNewStack[] = $aStack[$iStartPosition];
+                    continue;
+                }
                 $iLength = 2; //Number of elements to be joined
-                for ($i = $iStartPosition + 2; $i < count($aStack); $i += 2, ++$iLength) {
+                for ($i = $iStartPosition + 3; $i < $iStackLength; $i += 2, ++$iLength) {
                     if ($sDelimiter !== $aStack[$i]) {
                         break;
                     }
                 }
                 $oList = new RuleValueList($sDelimiter, $oParserState->currentLine());
-                for ($i = $iStartPosition - 1; $i - $iStartPosition + 1 < $iLength * 2; $i += 2) {
+                for ($i = $iStartPosition; $i - $iStartPosition < $iLength * 2; $i += 2) {
                     $oList->addListComponent($aStack[$i]);
                 }
-                array_splice($aStack, $iStartPosition - 1, $iLength * 2 - 1, [$oList]);
+                $aNewStack[] = $oList;
+                $iStartPosition += $iLength * 2 - 2;
             }
+            $aStack = $aNewStack;
         }
         if (!isset($aStack[0])) {
             throw new UnexpectedTokenException(
