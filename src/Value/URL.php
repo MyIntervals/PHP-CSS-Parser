@@ -11,7 +11,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 /**
  * This class represents URLs in CSS. `URL`s always output in `URL("")` notation.
  */
-class URL extends PrimitiveValue
+class URL extends PrimitiveValue implements Component
 {
     /**
      * @var CSSString

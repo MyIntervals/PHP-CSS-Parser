@@ -9,7 +9,7 @@ use Sabberworm\CSS\Parsing\ParserState;
  * A `CSSFunction` represents a special kind of value that also contains a function name and where the values are the
  * function’s arguments. It also handles equals-sign-separated argument lists like `filter: alpha(opacity=90);`.
  */
-class CSSFunction extends ValueList
+class CSSFunction extends ValueList implements Component
 {
     /**
      * @var string
@@ -18,7 +18,7 @@ class CSSFunction extends ValueList
 
     /**
      * @param string $sName
-     * @param RuleValueList|array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string> $aArguments
+     * @param RuleValueList|array<int, Component|string> $aArguments
      * @param string $sSeparator
      * @param int $iLineNo
      */
@@ -72,7 +72,7 @@ class CSSFunction extends ValueList
     }
 
     /**
-     * @return array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>
+     * @return array<int, Component|string>
      */
     public function getArguments()
     {

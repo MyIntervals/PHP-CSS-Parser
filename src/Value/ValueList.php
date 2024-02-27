@@ -13,7 +13,7 @@ use Sabberworm\CSS\OutputFormat;
 abstract class ValueList extends Value
 {
     /**
-     * @var array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>
+     * @var array<int, Component|string>
      */
     protected $aComponents;
 
@@ -24,7 +24,7 @@ abstract class ValueList extends Value
 
     /**
      * phpcs:ignore Generic.Files.LineLength
-     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>|RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string $aComponents
+     * @param array<int, Component|string>|Component|string $aComponents
      * @param string $sSeparator
      * @param int $iLineNo
      */
@@ -49,7 +49,7 @@ abstract class ValueList extends Value
     }
 
     /**
-     * @return array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>
+     * @return array<int, Component|string>
      */
     public function getListComponents()
     {
@@ -57,7 +57,7 @@ abstract class ValueList extends Value
     }
 
     /**
-     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string> $aComponents
+     * @param array<int, Component|string> $aComponents
      *
      * @return void
      */

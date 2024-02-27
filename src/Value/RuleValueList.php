@@ -7,7 +7,7 @@ namespace Sabberworm\CSS\Value;
  * (where the value would be a whitespace-separated list of the primitive value `bold`, a slash-separated list
  * and a comma-separated list).
  */
-class RuleValueList extends ValueList
+class RuleValueList extends ValueList implements Component
 {
     /**
      * @param string $sSeparator

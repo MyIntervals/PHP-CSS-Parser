@@ -7,10 +7,10 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
-class LineName extends ValueList
+class LineName extends ValueList implements Component
 {
     /**
-     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string> $aComponents
+     * @param array<int, Component|string> $aComponents
      * @param int $iLineNo
      */
     public function __construct(array $aComponents = [], $iLineNo = 0)

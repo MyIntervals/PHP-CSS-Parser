@@ -13,7 +13,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
  *
  * `CSSString`s always output with double quotes.
  */
-class CSSString extends PrimitiveValue
+class CSSString extends PrimitiveValue implements Component
 {
     /**
      * @var string

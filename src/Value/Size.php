@@ -10,7 +10,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 /**
  * A `Size` consists of a numeric `size` value and a unit.
  */
-class Size extends PrimitiveValue
+class Size extends PrimitiveValue implements Component
 {
     /**
      * vh/vw/vm(ax)/vmin/rem are absolute insofar as they don’t scale to the immediate parent (only the viewport)
