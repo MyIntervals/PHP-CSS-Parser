@@ -629,17 +629,11 @@ classDiagram
     class OutputFormatter {
     }
     
-    OutputFormatter --> "1" OutputFormat : oFormat
-    OutputFormat --> "1" OutputFormatter : oFormatter 
-    OutputFormat --> "1" OutputFormat : oNextLevelFormat
-
     class Parser {
     }
     
     class ParserState {
     }
-
-    Parser --> "1" ParserState : oParserState
 
     class Renderable {
         <<interface>>
@@ -684,11 +678,6 @@ classDiagram
     KeyFrame --|> CSSList
     KeyFrame ..|> AtRule
 
-    CSSList --> "*" Comment : aComments
-    CSSList --> "*" RuleSet : aContents
-    CSSList --> "*" CSSList : aContents
-    CSSList --> "*" Import : aContents
-    CSSList --> "*" Charset : aContents
 
     %% namespace Parsing
 
@@ -709,8 +698,6 @@ classDiagram
     UnexpectedEOFException --|> UnexpectedTokenException
     UnexpectedTokenException --|> SourceException
 
-    Anchor --> "1" ParserState : oParserState
-    ParserState --> "1" Settings : oParserSettings
 
     %% namespace Property
 
@@ -735,11 +722,6 @@ classDiagram
     Import ..|> AtRule
     KeyframeSelector --|> Selector
 
-    Charset --> "1" CSSString : oCharset
-    Charset --> "*" Comment : aComments
-    CSSNamespace --> "*" Comment : aComments
-    Import --> "*" Comment : aComments
-
 
     %% namespace Rule
 
@@ -748,9 +730,6 @@ classDiagram
 
     Rule ..|> Renderable
     Rule ..|> Commentable
-
-    Rule --> "1" RuleValueList : mValue
-    Rule --> "*" Comment : aComments
 
 
     %% namespace RuleSet
@@ -768,10 +747,6 @@ classDiagram
     DeclarationBlock --|> RuleSet
     RuleSet ..|> Renderable
     RuleSet ..|> Commentable
-
-    DeclarationBlock --> "*" Selector : aSelectors
-    RuleSet --> "*" Rule : aRules
-    RuleSet --> "*" Comment : aComments
 
 
     %% namespace Value
@@ -817,11 +792,31 @@ classDiagram
     Value ..|> Renderable
     ValueList --|> Value
 
+    Anchor --> "1" ParserState : oParserState
+    CSSList --> "*" CSSList : aContents
+    CSSList --> "*" Charset : aContents
+    CSSList --> "*" Comment : aComments
+    CSSList --> "*" Import : aContents
+    CSSList --> "*" RuleSet : aContents
+    CSSNamespace --> "*" Comment : aComments
+    Charset --> "*" Comment : aComments
+    Charset --> "1" CSSString : oCharset
+    DeclarationBlock --> "*" Selector : aSelectors
+    Import --> "*" Comment : aComments
+    OutputFormat --> "1" OutputFormat : oNextLevelFormat
+    OutputFormat --> "1" OutputFormatter : oFormatter
+    OutputFormatter --> "1" OutputFormat : oFormat
+    Parser --> "1" ParserState : oParserState
+    ParserState --> "1" Settings : oParserSettings
+    Rule --> "*" Comment : aComments
+    Rule --> "1" RuleValueList : mValue
+    RuleSet --> "*" Comment : aComments
+    RuleSet --> "*" Rule : aRules
     URL --> "1" CSSString : oURL
-    ValueList --> "*" RuleValueList : aComponents
     ValueList --> "*" CSSFunction : aComponents
     ValueList --> "*" CSSString : aComponents
     ValueList --> "*" LineName : aComponents
+    ValueList --> "*" RuleValueList : aComponents
     ValueList --> "*" Size : aComponents
     ValueList --> "*" URL : aComponents
 ```
