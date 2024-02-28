@@ -18,7 +18,7 @@ class CSSFunction extends ValueList
 
     /**
      * @param string $sName
-     * @param RuleValueList|array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string> $aArguments
+     * @param RuleValueList|array<int, Value|string> $aArguments
      * @param string $sSeparator
      * @param int $iLineNo
      */
@@ -72,7 +72,7 @@ class CSSFunction extends ValueList
     }
 
     /**
-     * @return array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>
+     * @return array<int, Value|string>
      */
     public function getArguments()
     {
