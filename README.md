@@ -659,10 +659,10 @@ classDiagram
     class AtRuleBlockList {
     }
     class CSSBlockList {
-        <<abstruct>>
+        <<abstract>>
     }
     class CSSList {
-        <<abstruct>>
+        <<abstract>>
     }
     class Document {
     }
@@ -739,7 +739,7 @@ classDiagram
     class DeclarationBlock {
     }
     class RuleSet {
-        <<abstruct>>
+        <<abstract>>
     }
 
     AtRuleSet --|> RuleSet
@@ -764,7 +764,7 @@ classDiagram
     class LineName {
     }
     class PrimitiveValue {
-        <<abstruct>>
+        <<abstract>>
     }
     class RuleValueList {
     }
@@ -773,10 +773,10 @@ classDiagram
     class URL {
     }
     class Value {
-        <<abstruct>>
+        <<abstract>>
     }
     class ValueList {
-        <<abstruct>>
+        <<abstract>>
     }
 
     CalcFunction --|> CSSFunction
