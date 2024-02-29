@@ -158,7 +158,7 @@ foreach($cssDocument->getAllRuleSets() as $oRuleSet) {
     // Note that the added dash will make this remove all rules starting with
     // `font-` (like `font-size`, `font-weight`, etc.) as well as a potential
     // `font` rule.
-    $oRuleSet->removeRule('font-'); 
+    $oRuleSet->removeRule('font-');
     $oRuleSet->removeRule('cursor');
 }
 ```
@@ -625,20 +625,20 @@ classDiagram
 
     class OutputFormat {
     }
-    
+
     class OutputFormatter {
     }
-    
+
     class Parser {
     }
-    
+
     class ParserState {
     }
 
     class Renderable {
         <<interface>>
     }
-    
+
     class Settings {
     }
 
