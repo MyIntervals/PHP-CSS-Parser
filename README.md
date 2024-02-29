@@ -813,6 +813,7 @@ classDiagram
     RuleSet --> "*" Comment : aComments
     RuleSet --> "*" Rule : aRules
     URL --> "1" CSSString : oURL
+    ValueList --> "*" Value : aComponents
 ```
 
 ## Contributors/Thanks to
