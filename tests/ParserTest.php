@@ -164,7 +164,9 @@ final class ParserTest extends TestCase
             . 'background-color: rgb(255,var(--rg));background-color: hsl(var(--some-hsl));}'
             . "\n"
             . '#variables-alpha {background-color: rgba(var(--some-rgb),.1);'
-            . 'background-color: rgba(var(--some-rg),255,.1);background-color: hsla(var(--some-hsl),.1);}',
+            . 'background-color: rgba(var(--some-rg),255,.1);background-color: hsla(var(--some-hsl),.1);}'
+            . "\n"
+            . '#css4-rgba {background-color: rgba(242,245,249,45%);background-color: #f2f5f9;}',
             $oDoc->render()
         );
     }
