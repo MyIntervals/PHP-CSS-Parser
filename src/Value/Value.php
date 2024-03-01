@@ -30,14 +30,14 @@ abstract class Value implements Renderable
     /**
      * @param array<array-key, string> $aListDelimiters
      *
-     * @return RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string
+     * @return Value|string
      *
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
     public static function parseValue(ParserState $oParserState, array $aListDelimiters = [])
     {
-        /** @var array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string> $aStack */
+        /** @var array<int, Value|string> $aStack */
         $aStack = [];
         $oParserState->consumeWhiteSpace();
         //Build a list of delimiters and parsed values
