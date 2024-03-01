@@ -651,8 +651,6 @@ classDiagram
         <<interface>>
     }
 
-    Comment ..|> Renderable
-
 
     %% namespace CSSList
 
@@ -669,15 +667,6 @@ classDiagram
     class KeyFrame {
     }
 
-    AtRuleBlockList --|> CSSBlockList
-    AtRuleBlockList ..|> AtRule
-    CSSBlockList --|> CSSList
-    CSSList ..|> Renderable
-    CSSList ..|> Commentable
-    Document --|> CSSBlockList
-    KeyFrame --|> CSSList
-    KeyFrame ..|> AtRule
-
 
     %% namespace Parsing
 
@@ -693,10 +682,6 @@ classDiagram
     }
     class UnexpectedTokenException {
     }
-
-    OutputException --|> SourceException
-    UnexpectedEOFException --|> UnexpectedTokenException
-    UnexpectedTokenException --|> SourceException
 
 
     %% namespace Property
@@ -715,21 +700,11 @@ classDiagram
     class Selector {
     }
 
-    AtRule --|> Renderable
-    AtRule --|> Commentable
-    Charset ..|> AtRule
-    CSSNamespace ..|> AtRule
-    Import ..|> AtRule
-    KeyframeSelector --|> Selector
-
 
     %% namespace Rule
 
     class Rule {
     }
-
-    Rule ..|> Renderable
-    Rule ..|> Commentable
 
 
     %% namespace RuleSet
@@ -741,12 +716,6 @@ classDiagram
     class RuleSet {
         <<abstract>>
     }
-
-    AtRuleSet --|> RuleSet
-    AtRuleSet ..|> AtRule
-    DeclarationBlock --|> RuleSet
-    RuleSet ..|> Renderable
-    RuleSet ..|> Commentable
 
 
     %% namespace Value
@@ -779,16 +748,41 @@ classDiagram
         <<abstract>>
     }
 
+    AtRule --|> Commentable
+    AtRule --|> Renderable
+    AtRuleBlockList --|> CSSBlockList
+    AtRuleBlockList ..|> AtRule
+    AtRuleSet --|> RuleSet
+    AtRuleSet ..|> AtRule
+    CSSBlockList --|> CSSList
+    CSSFunction --|> ValueList
+    CSSList ..|> Commentable
+    CSSList ..|> Renderable
+    CSSNamespace ..|> AtRule
+    CSSString --|> PrimitiveValue
     CalcFunction --|> CSSFunction
     CalcRuleValueList --|> RuleValueList
+    Charset ..|> AtRule
     Color --|> CSSFunction
-    CSSFunction --|> ValueList
-    CSSString --|> PrimitiveValue
+    Comment ..|> Renderable
+    DeclarationBlock --|> RuleSet
+    Document --|> CSSBlockList
+    Import ..|> AtRule
+    KeyFrame --|> CSSList
+    KeyFrame ..|> AtRule
+    KeyframeSelector --|> Selector
     LineName --|> ValueList
+    OutputException --|> SourceException
     PrimitiveValue --|> Value
+    Rule ..|> Commentable
+    Rule ..|> Renderable
+    RuleSet ..|> Commentable
+    RuleSet ..|> Renderable
     RuleValueList --|> ValueList
     Size --|> PrimitiveValue
     URL --|> PrimitiveValue
+    UnexpectedEOFException --|> UnexpectedTokenException
+    UnexpectedTokenException --|> SourceException
     Value ..|> Renderable
     ValueList --|> Value
 
