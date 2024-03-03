@@ -621,132 +621,100 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 classDiagram
     direction LR
 
-    %% top namespace
-
-    class OutputFormat {
-    }
-
-    class OutputFormatter {
-    }
-
-    class Parser {
-    }
-
-    class ParserState {
-    }
+    %% Start of the part generated from the PHP code using tasuku43/mermaid-class-diagram
 
     class Renderable {
         <<interface>>
     }
-
-    class Settings {
+    class DeclarationBlock {
     }
-
-
-    %% namespace Comment
-
-    class Comment {
+    class RuleSet {
+        <<abstruct>>
     }
-    class Commentable {
-        <<interface>>
+    class AtRuleSet {
     }
-
-
-    %% namespace CSSList
-
-    class AtRuleBlockList {
+    class KeyframeSelector {
     }
-    class CSSBlockList {
-        <<abstract>>
-    }
-    class CSSList {
-        <<abstract>>
-    }
-    class Document {
-    }
-    class KeyFrame {
-    }
-
-
-    %% namespace Parsing
-
-    class Anchor {
-    }
-    class OutputException {
-    }
-    class ParserState {
-    }
-    class SourceException {
-    }
-    class UnexpectedEOFException {
-    }
-    class UnexpectedTokenException {
-    }
-
-
-    %% namespace Property
-
     class AtRule {
         <<interface>>
     }
     class Charset {
     }
-    class CSSNamespace {
-    }
     class Import {
-    }
-    class KeyframeSelector {
     }
     class Selector {
     }
-
-
-    %% namespace Rule
-
+    class CSSNamespace {
+    }
+    class Settings {
+    }
     class Rule {
     }
-
-
-    %% namespace RuleSet
-
-    class AtRuleSet {
+    class Parser {
     }
-    class DeclarationBlock {
+    class OutputFormatter {
     }
-    class RuleSet {
-        <<abstract>>
+    class OutputFormat {
     }
-
-
-    %% namespace Value
-
-    class CalcFunction {
+    class OutputException {
     }
-    class CalcRuleValueList {
+    class UnexpectedEOFException {
+    }
+    class SourceException {
+    }
+    class UnexpectedTokenException {
+    }
+    class ParserState {
+    }
+    class Anchor {
+    }
+    class CSSBlockList {
+        <<abstruct>>
+    }
+    class Document {
+    }
+    class CSSList {
+        <<abstruct>>
+    }
+    class KeyFrame {
+    }
+    class AtRuleBlockList {
     }
     class Color {
     }
-    class CSSFunction {
+    class URL {
     }
-    class CSSString {
+    class CalcRuleValueList {
+    }
+    class ValueList {
+        <<abstruct>>
+    }
+    class CalcFunction {
     }
     class LineName {
     }
-    class PrimitiveValue {
-        <<abstract>>
-    }
-    class RuleValueList {
+    class Value {
+        <<abstruct>>
     }
     class Size {
     }
-    class URL {
+    class CSSString {
     }
-    class Value {
-        <<abstract>>
+    class PrimitiveValue {
+        <<abstruct>>
     }
-    class ValueList {
-        <<abstract>>
+    class CSSFunction {
     }
+    class RuleValueList {
+    }
+    class Commentable {
+        <<interface>>
+    }
+    class Comment {
+    }
+
+    %% end of the generated part
+
 
     AtRule --|> Commentable
     AtRule --|> Renderable
