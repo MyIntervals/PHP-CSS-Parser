@@ -629,7 +629,7 @@ classDiagram
     class DeclarationBlock {
     }
     class RuleSet {
-        <<abstruct>>
+        <<abstract>>
     }
     class AtRuleSet {
     }
@@ -669,12 +669,12 @@ classDiagram
     class Anchor {
     }
     class CSSBlockList {
-        <<abstruct>>
+        <<abstract>>
     }
     class Document {
     }
     class CSSList {
-        <<abstruct>>
+        <<abstract>>
     }
     class KeyFrame {
     }
@@ -687,21 +687,21 @@ classDiagram
     class CalcRuleValueList {
     }
     class ValueList {
-        <<abstruct>>
+        <<abstract>>
     }
     class CalcFunction {
     }
     class LineName {
     }
     class Value {
-        <<abstruct>>
+        <<abstract>>
     }
     class Size {
     }
     class CSSString {
     }
     class PrimitiveValue {
-        <<abstruct>>
+        <<abstract>>
     }
     class CSSFunction {
     }
