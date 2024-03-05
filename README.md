@@ -713,46 +713,47 @@ classDiagram
     class Comment {
     }
 
+    RuleSet <|-- DeclarationBlock: inheritance
+    Renderable <|.. RuleSet: realization
+    Commentable <|.. RuleSet: realization
+    RuleSet <|-- AtRuleSet: inheritance
+    AtRule <|.. AtRuleSet: realization
+    Selector <|-- KeyframeSelector: inheritance
+    Renderable <|-- AtRule: inheritance
+    Commentable <|-- AtRule: inheritance
+    AtRule <|.. Charset: realization
+    AtRule <|.. Import: realization
+    AtRule <|.. CSSNamespace: realization
+    Renderable <|.. Rule: realization
+    Commentable <|.. Rule: realization
+    SourceException <|-- OutputException: inheritance
+    UnexpectedTokenException <|-- UnexpectedEOFException: inheritance
+    Exception <|-- SourceException: inheritance
+    SourceException <|-- UnexpectedTokenException: inheritance
+    CSSList <|-- CSSBlockList: inheritance
+    CSSBlockList <|-- Document: inheritance
+    Renderable <|.. CSSList: realization
+    Commentable <|.. CSSList: realization
+    CSSList <|-- KeyFrame: inheritance
+    AtRule <|.. KeyFrame: realization
+    CSSBlockList <|-- AtRuleBlockList: inheritance
+    AtRule <|.. AtRuleBlockList: realization
+    CSSFunction <|-- Color: inheritance
+    PrimitiveValue <|-- URL: inheritance
+    RuleValueList <|-- CalcRuleValueList: inheritance
+    Value <|-- ValueList: inheritance
+    CSSFunction <|-- CalcFunction: inheritance
+    ValueList <|-- LineName: inheritance
+    Renderable <|.. Value: realization
+    PrimitiveValue <|-- Size: inheritance
+    PrimitiveValue <|-- CSSString: inheritance
+    Value <|-- PrimitiveValue: inheritance
+    ValueList <|-- CSSFunction: inheritance
+    ValueList <|-- RuleValueList: inheritance
+    Renderable <|.. Comment: realization
+
     %% end of the generated part
 
-
-    AtRule --|> Commentable
-    AtRule --|> Renderable
-    AtRuleBlockList --|> CSSBlockList
-    AtRuleBlockList ..|> AtRule
-    AtRuleSet --|> RuleSet
-    AtRuleSet ..|> AtRule
-    CSSBlockList --|> CSSList
-    CSSFunction --|> ValueList
-    CSSList ..|> Commentable
-    CSSList ..|> Renderable
-    CSSNamespace ..|> AtRule
-    CSSString --|> PrimitiveValue
-    CalcFunction --|> CSSFunction
-    CalcRuleValueList --|> RuleValueList
-    Charset ..|> AtRule
-    Color --|> CSSFunction
-    Comment ..|> Renderable
-    DeclarationBlock --|> RuleSet
-    Document --|> CSSBlockList
-    Import ..|> AtRule
-    KeyFrame --|> CSSList
-    KeyFrame ..|> AtRule
-    KeyframeSelector --|> Selector
-    LineName --|> ValueList
-    OutputException --|> SourceException
-    PrimitiveValue --|> Value
-    Rule ..|> Commentable
-    Rule ..|> Renderable
-    RuleSet ..|> Commentable
-    RuleSet ..|> Renderable
-    RuleValueList --|> ValueList
-    Size --|> PrimitiveValue
-    URL --|> PrimitiveValue
-    UnexpectedEOFException --|> UnexpectedTokenException
-    UnexpectedTokenException --|> SourceException
-    Value ..|> Renderable
-    ValueList --|> Value
 
     Anchor --> "1" ParserState : oParserState
     CSSList --> "*" CSSList : aContents
