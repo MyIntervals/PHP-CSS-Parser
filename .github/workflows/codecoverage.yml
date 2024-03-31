@@ -26,7 +26,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          ini-values: error_reporting=E_ALL
+          ini-file: development
           tools: composer:v2
           coverage: xdebug
 
