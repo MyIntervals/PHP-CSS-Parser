@@ -29,7 +29,7 @@
     "require-dev": {
         "codacy/coverage": "^1.4.3",
         "phpstan/extension-installer": "^1.3.1",
-        "phpstan/phpstan": "^1.11.3",
+        "phpstan/phpstan": "^1.11.4",
         "phpstan/phpstan-phpunit": "^1.4.0",
         "phpunit/phpunit": "^8.5.38"
     },
