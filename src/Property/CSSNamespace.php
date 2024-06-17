@@ -115,7 +115,7 @@ class CSSNamespace implements AtRule
     /**
      * @return array<int, string>
      */
-    public function atRuleArgs()
+    public function atRuleArgs(): array
     {
         $aResult = [$this->mUrl];
         if ($this->sPrefix) {

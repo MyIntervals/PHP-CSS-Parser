@@ -98,7 +98,7 @@ class Import implements AtRule
     /**
      * @return array<int, URL|string>
      */
-    public function atRuleArgs()
+    public function atRuleArgs(): array
     {
         $aResult = [$this->oLocation];
         if ($this->sMediaQuery) {
