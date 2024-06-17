@@ -380,7 +380,7 @@ class DeclarationBlock extends RuleSet
             ) {
                 $aFontProperties['font-weight'] = $mValue;
             } elseif ($mValue instanceof RuleValueList && $mValue->getListSeparator() == '/') {
-                list($oSize, $oHeight) = $mValue->getListComponents();
+                [$oSize, $oHeight] = $mValue->getListComponents();
                 $aFontProperties['font-size'] = $oSize;
                 $aFontProperties['line-height'] = $oHeight;
             } elseif ($mValue instanceof Size && $mValue->getUnit() !== null) {
