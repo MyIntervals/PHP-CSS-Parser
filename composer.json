@@ -87,7 +87,7 @@
             "@fix:php:rector"
         ],
         "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix bin src tests",
-        "fix:php:rector": "vendor/bin/rector --config=config/rector.php",
+        "fix:php:rector": "rector --config=config/rector.php",
         "phpstan:baseline": "phpstan --configuration=config/phpstan.neon --generate-baseline=config/phpstan-baseline.neon"
     },
     "scripts-descriptions": {
