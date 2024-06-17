@@ -87,9 +87,9 @@ final class DocumentTest extends TestCase
     }
 
     /**
-     * @return Generator
+     * @return \Generator<array<array<DeclarationBlock>, DeclarationBlock, DeclarationBlock, array<DeclarationBlock>>>
      */
-    public static function insertDataProvider(): \Generator
+    public static function insertBeforeDataProvider(): \Generator
     {
 
         $bogusOne = new DeclarationBlock();
@@ -110,21 +110,12 @@ final class DocumentTest extends TestCase
             'initialContent' => [$bogusOne, $oSibling, $bogusTwo],
             'oItem' => $oItem,
             'oSibling' => $oSibling,
-            'position' => 'before',
             'expectedContent' => [$bogusOne, $oItem, $oSibling, $bogusTwo],
-            ];
-        yield 'insert after' => [
-            'initialContent' => [$bogusOne, $oSibling, $bogusTwo],
-            'oItem' => $oItem,
-            'oSibling' => $oSibling,
-            'position' => 'after',
-            'expectedContent' => [$bogusOne, $oSibling, $oItem, $bogusTwo],
             ];
         yield 'append if not found' => [
             'initialContent' => [$bogusOne, $oSibling, $bogusTwo],
             'oItem' => $oItem,
             'oSibling' => $oOrphan,
-            'position' => 'before',
             'expectedContent' => [$bogusOne, $oSibling, $bogusTwo, $oItem],
             ];
     }
@@ -138,13 +129,12 @@ final class DocumentTest extends TestCase
      * @param $sPosition
      * @param $expectedContent
      *
-     * @dataProvider insertDataProvider
+     * @dataProvider insertBeforeDataProvider
      */
-    public function insertContent(
+    public function insertContentBefore(
         array $initialContent,
         DeclarationBlock $oItem,
         DeclarationBlock $oSibling,
-        string $sPosition,
         array $expectedContent
     ) {
 
@@ -152,7 +142,7 @@ final class DocumentTest extends TestCase
 
         self::assertCount(3, $this->subject->getContents());
 
-        $this->subject->insert($oItem, $oSibling, $sPosition);
+        $this->subject->insertBefore($oItem, $oSibling);
 
         self::assertCount(4, $this->subject->getContents());
         self::assertSame($expectedContent, $this->subject->getContents());
