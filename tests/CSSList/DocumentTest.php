@@ -2,7 +2,6 @@
 
 namespace Sabberworm\CSS\Tests\CSSList;
 
-use Generator;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSList\Document;
@@ -90,7 +89,7 @@ final class DocumentTest extends TestCase
     /**
      * @return Generator
      */
-    public static function insertDataProvider(): Generator
+    public static function insertDataProvider(): \Generator
     {
 
         $bogusOne = new DeclarationBlock();
@@ -133,7 +132,11 @@ final class DocumentTest extends TestCase
     /**
      * @test
      *
-     * @param array $contents
+     * @param $initialContent
+     * @param $oItem
+     * @param $oSibling
+     * @param $sPosition
+     * @param $expectedContent
      *
      * @dataProvider insertDataProvider
      */

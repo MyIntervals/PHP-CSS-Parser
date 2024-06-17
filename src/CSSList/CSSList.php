@@ -299,9 +299,7 @@ abstract class CSSList implements Renderable, Commentable
      *
      * @param RuleSet|CSSList|Import|Charset $oItem The item.
      * @param RuleSet|CSSList|Import|Charset $oSibling The sibling.
-     * @param string $sPosition The position.
-     *
-     * @return void
+     * @param $sPosition The position.
      */
     public function insert($oItem, $oSibling, string $sPosition = 'before'): void
     {
