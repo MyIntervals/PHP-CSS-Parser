@@ -231,7 +231,7 @@ class ParserState
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public function consumeWhiteSpace()
+    public function consumeWhiteSpace(): array
     {
         $aComments = [];
         do {

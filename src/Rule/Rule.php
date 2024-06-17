@@ -238,7 +238,7 @@ class Rule implements Renderable, Commentable
      *             Old-Style 2-dimensional array returned. Retained for (some) backwards-compatibility.
      *             Use `getValue()` instead and check for the existence of a (nested set of) ValueList object(s).
      */
-    public function getValues()
+    public function getValues(): array
     {
         if (!$this->mValue instanceof RuleValueList) {
             return [[$this->mValue]];
