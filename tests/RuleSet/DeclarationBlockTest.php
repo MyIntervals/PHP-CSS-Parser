@@ -20,7 +20,7 @@ final class DeclarationBlockTest extends TestCase
      *
      * @test
      */
-    public function expandBorderShorthand($sCss, $sExpected)
+    public function expandBorderShorthand($sCss, $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -53,7 +53,7 @@ final class DeclarationBlockTest extends TestCase
      *
      * @test
      */
-    public function expandFontShorthand($sCss, $sExpected)
+    public function expandFontShorthand($sCss, $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -109,7 +109,7 @@ final class DeclarationBlockTest extends TestCase
      *
      * @test
      */
-    public function expandBackgroundShorthand($sCss, $sExpected)
+    public function expandBackgroundShorthand($sCss, $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -162,7 +162,7 @@ final class DeclarationBlockTest extends TestCase
      *
      * @test
      */
-    public function expandDimensionsShorthand($sCss, $sExpected)
+    public function expandDimensionsShorthand($sCss, $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -200,7 +200,7 @@ final class DeclarationBlockTest extends TestCase
      *
      * @test
      */
-    public function createBorderShorthand($sCss, $sExpected)
+    public function createBorderShorthand($sCss, $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -231,7 +231,7 @@ final class DeclarationBlockTest extends TestCase
      *
      * @test
      */
-    public function createFontShorthand($sCss, $sExpected)
+    public function createFontShorthand($sCss, $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -274,7 +274,7 @@ final class DeclarationBlockTest extends TestCase
      *
      * @test
      */
-    public function createDimensionsShorthand($sCss, $sExpected)
+    public function createDimensionsShorthand($sCss, $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -312,7 +312,7 @@ final class DeclarationBlockTest extends TestCase
      *
      * @test
      */
-    public function createBackgroundShorthand($sCss, $sExpected)
+    public function createBackgroundShorthand($sCss, $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -358,7 +358,7 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @test
      */
-    public function overrideRules()
+    public function overrideRules(): void
     {
         $sCss = '.wrapper { left: 10px; text-align: left; }';
         $oParser = new Parser($sCss);
@@ -380,7 +380,7 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @test
      */
-    public function ruleInsertion()
+    public function ruleInsertion(): void
     {
         $sCss = '.wrapper { left: 10px; text-align: left; }';
         $oParser = new Parser($sCss);
@@ -428,7 +428,7 @@ final class DeclarationBlockTest extends TestCase
      *
      * TODO: The order is different on PHP 5.6 than on PHP >= 7.0.
      */
-    public function orderOfElementsMatchingOriginalOrderAfterExpandingShorthands()
+    public function orderOfElementsMatchingOriginalOrderAfterExpandingShorthands(): void
     {
         $sCss = '.rule{padding:5px;padding-top: 20px}';
         $oParser = new Parser($sCss);

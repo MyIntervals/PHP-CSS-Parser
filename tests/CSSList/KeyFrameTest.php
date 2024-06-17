@@ -26,7 +26,7 @@ final class KeyFrameTest extends TestCase
     /**
      * @test
      */
-    public function implementsAtRule()
+    public function implementsAtRule(): void
     {
         self::assertInstanceOf(AtRule::class, $this->subject);
     }
@@ -34,7 +34,7 @@ final class KeyFrameTest extends TestCase
     /**
      * @test
      */
-    public function implementsRenderable()
+    public function implementsRenderable(): void
     {
         self::assertInstanceOf(Renderable::class, $this->subject);
     }
@@ -42,7 +42,7 @@ final class KeyFrameTest extends TestCase
     /**
      * @test
      */
-    public function implementsCommentable()
+    public function implementsCommentable(): void
     {
         self::assertInstanceOf(Commentable::class, $this->subject);
     }
