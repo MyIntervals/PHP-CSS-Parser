@@ -148,29 +148,6 @@ class DeclarationBlock extends RuleSet
 
     /**
      * @return array<int, Selector|string>
-     *
-     * @deprecated will be removed in version 9.0; use `getSelectors()` instead
-     */
-    public function getSelector()
-    {
-        return $this->getSelectors();
-    }
-
-    /**
-     * @param Selector|string $mSelector
-     * @param CSSList|null $oList
-     *
-     * @return void
-     *
-     * @deprecated will be removed in version 9.0; use `setSelectors()` instead
-     */
-    public function setSelector($mSelector, $oList = null)
-    {
-        $this->setSelectors($mSelector, $oList);
-    }
-
-    /**
-     * @return array<int, Selector|string>
      */
     public function getSelectors()
     {

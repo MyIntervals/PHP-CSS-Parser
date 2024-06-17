@@ -21,6 +21,11 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ### Removed
 
 - Drop support for PHP < 7.2 (#420)
+- Final removal of Document::getAllSelectors (#557)
+- Final removal of Rule::setValues (#557)
+- Final removal of Rule::getValues (#557)
+- Final removal of DeclarationBlock::setSelector (#557)
+- Final removal of DeclarationBlock::getSelector (#557)
 
 ### Fixed
 
