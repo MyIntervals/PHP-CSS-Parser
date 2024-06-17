@@ -26,7 +26,7 @@ final class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function implementsRenderable()
+    public function implementsRenderable(): void
     {
         self::assertInstanceOf(Renderable::class, $this->subject);
     }
@@ -34,7 +34,7 @@ final class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function implementsCommentable()
+    public function implementsCommentable(): void
     {
         self::assertInstanceOf(Commentable::class, $this->subject);
     }
@@ -42,7 +42,7 @@ final class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function getContentsInitiallyReturnsEmptyArray()
+    public function getContentsInitiallyReturnsEmptyArray(): void
     {
         self::assertSame([], $this->subject->getContents());
     }
@@ -66,7 +66,7 @@ final class DocumentTest extends TestCase
      *
      * @dataProvider contentsDataProvider
      */
-    public function setContentsSetsContents(array $contents)
+    public function setContentsSetsContents(array $contents): void
     {
         $this->subject->setContents($contents);
 
@@ -76,7 +76,7 @@ final class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function setContentsReplacesContentsSetInPreviousCall()
+    public function setContentsReplacesContentsSetInPreviousCall(): void
     {
         $contents2 = [new DeclarationBlock()];
 

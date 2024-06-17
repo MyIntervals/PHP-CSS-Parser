@@ -14,7 +14,7 @@ final class CalcRuleValueListTest extends TestCase
     /**
      * @test
      */
-    public function isRuleValueList()
+    public function isRuleValueList(): void
     {
         $subject = new CalcRuleValueList();
 
@@ -24,7 +24,7 @@ final class CalcRuleValueListTest extends TestCase
     /**
      * @test
      */
-    public function getLineNumberByDefaultReturnsZero()
+    public function getLineNumberByDefaultReturnsZero(): void
     {
         $subject = new CalcRuleValueList();
 
@@ -34,7 +34,7 @@ final class CalcRuleValueListTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoReturnsLineNumberProvidedToConstructor()
+    public function getLineNoReturnsLineNumberProvidedToConstructor(): void
     {
         $lineNumber = 42;
 
@@ -46,7 +46,7 @@ final class CalcRuleValueListTest extends TestCase
     /**
      * @test
      */
-    public function separatorAlwaysIsComma()
+    public function separatorAlwaysIsComma(): void
     {
         $subject = new CalcRuleValueList();
 
