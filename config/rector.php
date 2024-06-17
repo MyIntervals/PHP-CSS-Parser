@@ -13,7 +13,7 @@ return RectorConfig::configure()
             __DIR__ . '/../tests',
         ]
     )
-    ->withSets([SetList::PHP_70])
+    ->withSets([SetList::PHP_71])
     ->withRules(
         [
             // AddVoidReturnTypeWhereNoReturnRector::class,
