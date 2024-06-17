@@ -2,6 +2,7 @@
 
 namespace Sabberworm\CSS\Tests\CSSList;
 
+use Generator;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSList\Document;
@@ -84,5 +85,73 @@ final class DocumentTest extends TestCase
         $this->subject->setContents($contents2);
 
         self::assertSame($contents2, $this->subject->getContents());
+    }
+
+    /**
+     * @return Generator
+     */
+    public static function insertDataProvider(): Generator
+    {
+
+        $bogusOne = new DeclarationBlock();
+        $bogusOne->setSelectors('.bogus-one');
+        $bogusTwo = new DeclarationBlock();
+        $bogusTwo->setSelectors('.bogus-two');
+
+        $oItem = new DeclarationBlock();
+        $oItem->setSelectors('.item');
+
+        $oSibling = new DeclarationBlock();
+        $oSibling->setSelectors('.sibling');
+
+        $oOrphan = new DeclarationBlock();
+        $oOrphan->setSelectors('.forever-alone');
+
+        yield 'insert before' => [
+            'initialContent' => [$bogusOne, $oSibling, $bogusTwo],
+            'oItem' => $oItem,
+            'oSibling' => $oSibling,
+            'position' => 'before',
+            'expectedContent' => [$bogusOne, $oItem, $oSibling, $bogusTwo],
+            ];
+        yield 'insert after' => [
+            'initialContent' => [$bogusOne, $oSibling, $bogusTwo],
+            'oItem' => $oItem,
+            'oSibling' => $oSibling,
+            'position' => 'after',
+            'expectedContent' => [$bogusOne, $oSibling, $oItem, $bogusTwo],
+            ];
+        yield 'append if not found' => [
+            'initialContent' => [$bogusOne, $oSibling, $bogusTwo],
+            'oItem' => $oItem,
+            'oSibling' => $oOrphan,
+            'position' => 'before',
+            'expectedContent' => [$bogusOne, $oSibling, $bogusTwo, $oItem],
+            ];
+    }
+
+    /**
+     * @test
+     *
+     * @param array $contents
+     *
+     * @dataProvider insertDataProvider
+     */
+    public function insertContent(
+        array $initialContent,
+        DeclarationBlock $oItem,
+        DeclarationBlock $oSibling,
+        string $sPosition,
+        array $expectedContent
+    ) {
+
+        $this->subject->setContents($initialContent);
+
+        self::assertCount(3, $this->subject->getContents());
+
+        $this->subject->insert($oItem, $oSibling, $sPosition);
+
+        self::assertCount(4, $this->subject->getContents());
+        self::assertSame($expectedContent, $this->subject->getContents());
     }
 }
