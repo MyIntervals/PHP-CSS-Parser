@@ -71,7 +71,7 @@
         ],
         "ci:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix --dry-run -v --show-progress=dots --diff bin src tests",
         "ci:php:stan": "phpstan --no-progress --configuration=config/phpstan.neon",
-        "ci:php:rector": "\"./vendor/bin/rector\" --no-progress-bar --dry-run --config=config/rector.php",
+        "ci:php:rector": "rector --no-progress-bar --dry-run --config=config/rector.php",
         "ci:static": [
             "@ci:php:fixer",
             "@ci:php:rector",
@@ -87,7 +87,7 @@
             "@fix:php:rector"
         ],
         "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix bin src tests",
-        "fix:php:rector": "\"./vendor/bin/rector\" --config=config/rector.php",
+        "fix:php:rector": "vendor/bin/rector --config=config/rector.php",
         "phpstan:baseline": "phpstan --configuration=config/phpstan.neon --generate-baseline=config/phpstan-baseline.neon"
     },
     "scripts-descriptions": {
