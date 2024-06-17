@@ -735,7 +735,7 @@ class DeclarationBlock extends RuleSet
         if (!isset($aRules['font-size']) || !isset($aRules['font-family'])) {
             return;
         }
-        $oOldRule = isset($aRules['font-size']) ? $aRules['font-size'] : $aRules['font-family'];
+        $oOldRule = $aRules['font-size'] ?? $aRules['font-family'];
         $oNewRule = new Rule('font', $oOldRule->getLineNo(), $oOldRule->getColNo());
         unset($oOldRule);
         foreach (['font-style', 'font-variant', 'font-weight'] as $sProperty) {
