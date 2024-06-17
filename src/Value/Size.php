@@ -219,6 +219,6 @@ class Size extends PrimitiveValue
         $sSize = preg_match("/[\d\.]+e[+-]?\d+/i", (string) $this->fSize)
             ? preg_replace("/$sPoint?0+$/", "", sprintf("%f", $this->fSize)) : $this->fSize;
         return preg_replace(["/$sPoint/", "/^(-?)0\./"], ['.', '$1.'], $sSize)
-            . ($this->sUnit === null ? '' : $this->sUnit);
+            . ($this->sUnit ?? '');
     }
 }
