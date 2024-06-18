@@ -422,4 +422,32 @@ final class DeclarationBlockTest extends TestCase
             $oDoc->render()
         );
     }
+
+    /**
+     * @test
+     *
+     * TODO: The order is different on PHP 5.6 than on PHP >= 7.0.
+     */
+    public function orderOfElementsMatchingOriginalOrderAfterExpandingShorthands(): void
+    {
+        $sCss = '.rule{padding:5px;padding-top: 20px}';
+        $oParser = new Parser($sCss);
+        $oDoc = $oParser->parse();
+        $aDocs = $oDoc->getAllDeclarationBlocks();
+
+        self::assertCount(1, $aDocs);
+
+        $oDeclaration = array_pop($aDocs);
+        $oDeclaration->expandShorthands();
+
+        self::assertEquals(
+            [
+                'padding-top' => 'padding-top: 20px;',
+                'padding-right' => 'padding-right: 5px;',
+                'padding-bottom' => 'padding-bottom: 5px;',
+                'padding-left' => 'padding-left: 5px;',
+            ],
+            array_map('strval', $oDeclaration->getRulesAssoc())
+        );
+    }
 }
