@@ -87,9 +87,9 @@ final class DocumentTest extends TestCase
     }
 
     /**
-     * @return \Generator<array<array<DeclarationBlock>, DeclarationBlock, DeclarationBlock, array<DeclarationBlock>>>
+     * @return array<string, array<string, DeclarationBlock|array<int, DeclarationBlock>>>
      */
-    public static function insertBeforeDataProvider(): \Generator
+    public static function insertContentBeforeInsertsContentBeforeSibblingOrAppendsIfSibblingNotFoundDataProvider(): array
     {
 
         $bogusOne = new DeclarationBlock();
@@ -106,32 +106,28 @@ final class DocumentTest extends TestCase
         $oOrphan = new DeclarationBlock();
         $oOrphan->setSelectors('.forever-alone');
 
-        yield 'insert before' => [
-            'initialContent' => [$bogusOne, $oSibling, $bogusTwo],
-            'oItem' => $oItem,
-            'oSibling' => $oSibling,
-            'expectedContent' => [$bogusOne, $oItem, $oSibling, $bogusTwo],
-            ];
-        yield 'append if not found' => [
-            'initialContent' => [$bogusOne, $oSibling, $bogusTwo],
-            'oItem' => $oItem,
-            'oSibling' => $oOrphan,
-            'expectedContent' => [$bogusOne, $oSibling, $bogusTwo, $oItem],
-            ];
+        return [
+            'insert before' => [
+                'initialContent' => [$bogusOne, $oSibling, $bogusTwo],
+                'oItem' => $oItem,
+                'oSibling' => $oSibling,
+                'expectedContent' => [$bogusOne, $oItem, $oSibling, $bogusTwo],
+            ],
+            'append if not found' => [
+                'initialContent' => [$bogusOne, $oSibling, $bogusTwo],
+                'oItem' => $oItem,
+                'oSibling' => $oOrphan,
+                'expectedContent' => [$bogusOne, $oSibling, $bogusTwo, $oItem],
+            ]
+        ];
     }
 
     /**
      * @test
      *
-     * @param $initialContent
-     * @param $oItem
-     * @param $oSibling
-     * @param $sPosition
-     * @param $expectedContent
-     *
      * @dataProvider insertBeforeDataProvider
      */
-    public function insertContentBefore(
+    public function insertContentBeforeInsertsContentBeforeSibblingOrAppendsIfSibblingNotFound(
         array $initialContent,
         DeclarationBlock $oItem,
         DeclarationBlock $oSibling,

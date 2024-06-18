@@ -295,18 +295,17 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * Insert an item before its sibling.
+     * Inserts an item before its sibling.
      *
-     * @param RuleSet|CSSList|Import|Charset $oItem The item.
-     * @param RuleSet|CSSList|Import|Charset $oSibling The sibling.
+     * @param RuleSet|CSSList|Import|Charset $oItem
+     * @param RuleSet|CSSList|Import|Charset $oSibling
      */
     public function insertBefore($oItem, $oSibling): void
     {
-        $iIndex = in_array($oSibling, $this->aContents);
-        if ($iIndex === false) {
+        if (in_array($oSibling, $this->aContents, true) === false) {
             $this->append($oItem);
         } else {
-            $this->replace($oSibling, array($oItem, $oSibling));
+            $this->replace($oSibling, [$oItem, $oSibling]);
         }
     }
 
