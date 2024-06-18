@@ -190,7 +190,7 @@ class Size extends PrimitiveValue
     /**
      * @return bool
      */
-    public function isRelative()
+    public function isRelative(): bool
     {
         if (in_array($this->sUnit, self::RELATIVE_SIZE_UNITS, true)) {
             return true;

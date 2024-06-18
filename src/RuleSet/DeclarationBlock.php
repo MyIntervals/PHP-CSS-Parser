@@ -132,7 +132,7 @@ class DeclarationBlock extends RuleSet
      *
      * @return bool
      */
-    public function removeSelector($mSelector)
+    public function removeSelector($mSelector): bool
     {
         if ($mSelector instanceof Selector) {
             $mSelector = $mSelector->getSelector();

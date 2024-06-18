@@ -82,7 +82,7 @@ class KeyFrame extends CSSList implements AtRule
     /**
      * @return bool
      */
-    public function isRootList()
+    public function isRootList(): bool
     {
         return false;
     }

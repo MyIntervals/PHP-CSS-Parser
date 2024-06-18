@@ -158,7 +158,7 @@ class Document extends CSSBlockList
     /**
      * @return bool
      */
-    public function isRootList()
+    public function isRootList(): bool
     {
         return true;
     }
