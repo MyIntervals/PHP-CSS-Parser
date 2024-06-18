@@ -51,18 +51,6 @@ class Document extends CSSBlockList
     }
 
     /**
-     * Gets all `DeclarationBlock` objects recursively.
-     *
-     * @return array<int, DeclarationBlock>
-     *
-     * @deprecated will be removed in version 9.0; use `getAllDeclarationBlocks()` instead
-     */
-    public function getAllSelectors()
-    {
-        return $this->getAllDeclarationBlocks();
-    }
-
-    /**
      * Returns all `RuleSet` objects recursively found in the tree, no matter how deeply nested the rule sets are.
      *
      * @return array<int, RuleSet>
