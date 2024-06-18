@@ -319,6 +319,8 @@ class DeclarationBlock extends RuleSet
      * into their constituent parts.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function expandFontShorthand()
     {
