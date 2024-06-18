@@ -641,6 +641,8 @@ class DeclarationBlock extends RuleSet
      * and converts them into shorthand CSS properties.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function createDimensionsShorthand()
     {
