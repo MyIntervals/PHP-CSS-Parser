@@ -27,10 +27,11 @@ jobs:
               with:
                   php-version: ${{ matrix.php-version }}
                   ini-file: development
+                  tools: composer:v2
                   coverage: none
 
             - name: PHP Lint
-              run: find src tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
+              run: composer ci:php:lint
 
     unit-tests:
         name: Unit tests
