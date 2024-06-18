@@ -186,8 +186,12 @@ class DeclarationBlock extends RuleSet
      */
     public function expandShorthands()
     {
-        trigger_error("Expanding Shorthands will be removed without substitution in version 10.0.");
-        return;
+        // border must be expanded before dimensions
+        $this->expandBorderShorthand();
+        $this->expandDimensionsShorthand();
+        $this->expandFontShorthand();
+        $this->expandBackgroundShorthand();
+        $this->expandListStyleShorthand();
     }
 
     /**

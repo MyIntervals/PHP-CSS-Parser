@@ -801,10 +801,6 @@ classDiagram
 
 The latest pre-PSR-0 version of this project can be checked with the `0.9.0` tag.
 
-The `expandShorthands`/`createShorthands` Functions are deprecated and will be removed without substitution in version 10.0.
-Expanding and creating the shorthand notation is out of the scope of this library. If you want to include this functionality
-in your project or build it into a separate package, get the code from the v8.5.1 version of this library.
-
 ### Running Tests
 
 To run all continuous integration (CI) checks for this project (including unit tests),
