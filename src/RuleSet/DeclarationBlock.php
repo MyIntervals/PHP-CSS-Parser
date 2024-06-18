@@ -169,6 +169,8 @@ class DeclarationBlock extends RuleSet
      * Splits shorthand declarations (e.g. `margin` or `font`) into their constituent parts.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function expandShorthands()
     {

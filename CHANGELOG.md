@@ -18,6 +18,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Deprecated
 
+- Deprecate `DeclarationBlock::expandShorthands()` (#558)
+
 ### Removed
 
 - Remove `DeclarationBlock::setSelector()` (#560)
