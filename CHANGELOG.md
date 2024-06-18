@@ -23,6 +23,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ### Removed
 
 - Remove `Document::getAllSelectors()` (#561)
+- Remove `DeclarationBlock::getSelector()` (#559)
 - Remove `DeclarationBlock::setSelector()` (#560)
 - Drop support for PHP < 7.2 (#420)
 
