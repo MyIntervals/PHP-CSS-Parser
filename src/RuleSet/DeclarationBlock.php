@@ -624,6 +624,8 @@ class DeclarationBlock extends RuleSet
      * Should be run after `create_dimensions_shorthand`!
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function createBorderShorthand()
     {
