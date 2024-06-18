@@ -18,6 +18,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Deprecated
 
+- Deprecate `Document::createShorthands()` (#567)
 - Deprecate `DeclarationBlock::expandShorthands()` (#558)
 
 ### Removed
