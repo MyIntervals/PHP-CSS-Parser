@@ -18,6 +18,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Deprecated
 
+- Deprecate `DeclarationBlock::expandListStyleShorthand()` (#574)
 - Deprecate `DeclarationBlock::expandBackgroundShorthand()` (#573)
 - Deprecate `DeclarationBlock::expandFontShorthand()` (#572)
 - Deprecate `DeclarationBlock::expandDimensionsShorthand()` (#571)
