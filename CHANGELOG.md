@@ -18,7 +18,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Deprecated
 
-- `DeclarationBlock::expandShorthands()` is deprecated and will be removed without substitution in version 10.0.
+- Deprecate `DeclarationBlock::expandShorthands()` (#558)
 
 ### Removed
 
