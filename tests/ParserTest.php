@@ -182,8 +182,7 @@ final class ParserTest extends TestCase
                 continue;
             }
             $aContentRules = $oRuleSet->getRules('content');
-            $aContents = $aContentRules[0]->getValues();
-            $sString = $aContents[0][0]->__toString();
+            $sString = $aContentRules[0]->getValue()->__toString();
             if ($sSelector == '.test-1') {
                 self::assertSame('" "', $sString);
             }
