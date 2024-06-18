@@ -96,6 +96,7 @@
         "ci": "Runs all dynamic and static code checks.",
         "ci:dynamic": "Runs all dynamic code checks (i.e., currently, the unit tests).",
         "ci:php:fixer": "Checks the code style with PHP CS Fixer.",
+        "ci:php:lint": "Checks the syntax of the PHP code.",
         "ci:php:stan": "Checks the types with PHPStan.",
         "ci:php:rector": "Checks the code for possible code updates and refactoring.",
         "ci:static": "Runs all static code analysis checks for the code.",
