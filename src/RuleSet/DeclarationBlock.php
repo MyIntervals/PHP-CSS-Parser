@@ -710,6 +710,8 @@ class DeclarationBlock extends RuleSet
      * At least `font-size` AND `font-family` must be present in order to create a shorthand declaration.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function createFontShorthand()
     {
