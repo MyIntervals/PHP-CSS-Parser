@@ -175,6 +175,8 @@ class DeclarationBlock extends RuleSet
      * Creates shorthand declarations (e.g. `margin` or `font`) whenever possible.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function createShorthands()
     {
