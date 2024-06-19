@@ -50,7 +50,7 @@ final class DocumentTest extends TestCase
     /**
      * @return array<string, array<int, array<int, DeclarationBlock>>>
      */
-    public static function contentsDataProvider()
+    public static function contentsDataProvider(): array
     {
         return [
             'empty array' => [[]],

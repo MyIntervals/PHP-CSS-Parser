@@ -270,10 +270,8 @@ class ParserState
     /**
      * @param int $iLength
      * @param int $iOffset
-     *
-     * @return string
      */
-    public function peek($iLength = 1, $iOffset = 0)
+    public function peek($iLength = 1, $iOffset = 0): string
     {
         $iOffset += $this->iCurrentPosition;
         if ($iOffset >= $this->iLength) {
@@ -285,12 +283,10 @@ class ParserState
     /**
      * @param int $mValue
      *
-     * @return string
-     *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public function consume($mValue = 1)
+    public function consume($mValue = 1): string
     {
         if (is_string($mValue)) {
             $iLineCount = substr_count($mValue, "\n");
@@ -410,10 +406,7 @@ class ParserState
         );
     }
 
-    /**
-     * @return string
-     */
-    private function inputLeft()
+    private function inputLeft(): string
     {
         return $this->substr($this->iCurrentPosition, -1);
     }
