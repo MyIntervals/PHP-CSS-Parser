@@ -1,8 +1,6 @@
 <?php
 
-if (PHP_SAPI !== 'cli') {
-    die('This script supports command line usage only. Please check your command.');
-}
+declare(strict_types=1);
 
 return (new \PhpCsFixer\Config())
     ->setRiskyAllowed(true)
@@ -20,6 +18,9 @@ return (new \PhpCsFixer\Config())
             '@PHPUnit60Migration:risky' => true,
             '@PHPUnit75Migration:risky' => true,
             '@PHPUnit84Migration:risky' => true,
+
+            // needed for PHP 7.x
+            'trailing_comma_in_multiline' => ['after_heredoc' => true, 'elements' => ['arrays', 'match']],
 
             'php_unit_construct' => true,
             'php_unit_dedicate_assert' => ['target' => 'newest'],
