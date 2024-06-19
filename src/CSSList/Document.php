@@ -155,10 +155,7 @@ class Document extends CSSBlockList
         return $oOutputFormat->comments($this) . $this->renderListContents($oOutputFormat);
     }
 
-    /**
-     * @return bool
-     */
-    public function isRootList()
+    public function isRootList(): bool
     {
         return true;
     }

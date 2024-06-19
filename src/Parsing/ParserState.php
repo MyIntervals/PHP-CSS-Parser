@@ -427,10 +427,8 @@ class ParserState
      * @param string $sString1
      * @param string $sString2
      * @param bool $bCaseInsensitive
-     *
-     * @return bool
      */
-    public function streql($sString1, $sString2, $bCaseInsensitive = true)
+    public function streql($sString1, $sString2, $bCaseInsensitive = true): bool
     {
         if ($bCaseInsensitive) {
             return $this->strtolower($sString1) === $this->strtolower($sString2);
