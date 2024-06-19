@@ -60,14 +60,14 @@ class DeclarationBlock extends RuleSet
             do {
                 $aSelectorParts[] = $oParserState->consume(1)
                     . $oParserState->consumeUntil(['{', '}', '\'', '"'], false, false, $aComments);
-                if (in_array($oParserState->peek(), ['\'', '"']) && substr(end($aSelectorParts), -1) != "\\") {
+                if (in_array($oParserState->peek(), ['\'', '"'], true) && substr(end($aSelectorParts), -1) != "\\") {
                     if ($sStringWrapperChar === false) {
                         $sStringWrapperChar = $oParserState->peek();
                     } elseif ($sStringWrapperChar == $oParserState->peek()) {
                         $sStringWrapperChar = false;
                     }
                 }
-            } while (!in_array($oParserState->peek(), ['{', '}']) || $sStringWrapperChar !== false);
+            } while (!in_array($oParserState->peek(), ['{', '}'], true) || $sStringWrapperChar !== false);
             $oResult->setSelectors(implode('', $aSelectorParts), $oList);
             if ($oParserState->comes('{')) {
                 $oParserState->consume(1);
@@ -229,7 +229,7 @@ class DeclarationBlock extends RuleSet
                 } elseif ($mValue instanceof Color) {
                     $sNewRuleName = $sBorderRule . "-color";
                 } else {
-                    if (in_array($mValue, $aBorderSizes)) {
+                    if (in_array($mValue, $aBorderSizes, true)) {
                         $sNewRuleName = $sBorderRule . "-width";
                     } else {
                         $sNewRuleName = $sBorderRule . "-style";
@@ -338,20 +338,21 @@ class DeclarationBlock extends RuleSet
             if (!$mValue instanceof Value) {
                 $mValue = mb_strtolower($mValue);
             }
-            if (in_array($mValue, ['normal', 'inherit'])) {
+            if (in_array($mValue, ['normal', 'inherit'], true)) {
                 foreach (['font-style', 'font-weight', 'font-variant'] as $sProperty) {
                     if (!isset($aFontProperties[$sProperty])) {
                         $aFontProperties[$sProperty] = $mValue;
                     }
                 }
-            } elseif (in_array($mValue, ['italic', 'oblique'])) {
+            } elseif (in_array($mValue, ['italic', 'oblique'], true)) {
                 $aFontProperties['font-style'] = $mValue;
             } elseif ($mValue == 'small-caps') {
                 $aFontProperties['font-variant'] = $mValue;
             } elseif (
-                in_array($mValue, ['bold', 'bolder', 'lighter'])
-                || ($mValue instanceof Size
-                    && in_array($mValue->getSize(), range(100, 900, 100)))
+                in_array($mValue, ['bold', 'bolder', 'lighter'], true)
+                // Note: font weights should be integers, not floats. For now, we'll keep using floats. We will
+                // drill down on this and fix it in  https://github.com/MyIntervals/PHP-CSS-Parser/issues/612.
+                || ($mValue instanceof Size && in_array($mValue->getSize(), range(100.0, 900.0, 100.0), true))
             ) {
                 $aFontProperties['font-weight'] = $mValue;
             } elseif ($mValue instanceof RuleValueList && $mValue->getListSeparator() == '/') {
@@ -425,12 +426,12 @@ class DeclarationBlock extends RuleSet
                 $aBgProperties['background-image'] = $mValue;
             } elseif ($mValue instanceof Color) {
                 $aBgProperties['background-color'] = $mValue;
-            } elseif (in_array($mValue, ['scroll', 'fixed'])) {
+            } elseif (in_array($mValue, ['scroll', 'fixed'], true)) {
                 $aBgProperties['background-attachment'] = $mValue;
-            } elseif (in_array($mValue, ['repeat', 'no-repeat', 'repeat-x', 'repeat-y'])) {
+            } elseif (in_array($mValue, ['repeat', 'no-repeat', 'repeat-x', 'repeat-y'], true)) {
                 $aBgProperties['background-repeat'] = $mValue;
             } elseif (
-                in_array($mValue, ['left', 'center', 'right', 'top', 'bottom'])
+                in_array($mValue, ['left', 'center', 'right', 'top', 'bottom'], true)
                 || $mValue instanceof Size
             ) {
                 if ($iNumBgPos == 0) {
@@ -516,9 +517,9 @@ class DeclarationBlock extends RuleSet
             }
             if ($mValue instanceof Url) {
                 $aListProperties['list-style-image'] = $mValue;
-            } elseif (in_array($mValue, $aListStyleTypes)) {
+            } elseif (in_array($mValue, $aListStyleTypes, true)) {
                 $aListProperties['list-style-types'] = $mValue;
-            } elseif (in_array($mValue, $aListStylePositions)) {
+            } elseif (in_array($mValue, $aListStylePositions, true)) {
                 $aListProperties['list-style-position'] = $mValue;
             }
         }

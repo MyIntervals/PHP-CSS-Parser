@@ -22,6 +22,9 @@ return (new \PhpCsFixer\Config())
             // overwrite the PER2 defaults to restore compatibility with PHP 7.x
             'trailing_comma_in_multiline' => ['elements' => ['arrays', 'match']],
 
+            // for `in_array` & friends
+            'strict_param' => true,
+
             'php_unit_construct' => true,
             'php_unit_dedicate_assert' => ['target' => 'newest'],
             'php_unit_expectation' => ['target' => 'newest'],
