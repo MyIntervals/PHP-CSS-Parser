@@ -87,60 +87,55 @@ final class DocumentTest extends TestCase
     }
 
     /**
-     * @return array<string, array<string, DeclarationBlock|array<int, DeclarationBlock>>>
+     * @test
      */
-    public static function insertContentBeforeInsertsContentBeforeSibblingOrAppendsIfSibblingNotFoundDataProvider(): array
-    {
-
+    public function insertContentBeforeInsertsContentBeforeSibbling() {
         $bogusOne = new DeclarationBlock();
         $bogusOne->setSelectors('.bogus-one');
         $bogusTwo = new DeclarationBlock();
         $bogusTwo->setSelectors('.bogus-two');
 
-        $oItem = new DeclarationBlock();
-        $oItem->setSelectors('.item');
+        $item = new DeclarationBlock();
+        $item->setSelectors('.item');
 
-        $oSibling = new DeclarationBlock();
-        $oSibling->setSelectors('.sibling');
+        $sibling = new DeclarationBlock();
+        $sibling->setSelectors('.sibling');
 
-        $oOrphan = new DeclarationBlock();
-        $oOrphan->setSelectors('.forever-alone');
+        $this->subject->setContents([$bogusOne, $sibling, $bogusTwo]);
 
-        return [
-            'insert before' => [
-                'initialContent' => [$bogusOne, $oSibling, $bogusTwo],
-                'oItem' => $oItem,
-                'oSibling' => $oSibling,
-                'expectedContent' => [$bogusOne, $oItem, $oSibling, $bogusTwo],
-            ],
-            'append if not found' => [
-                'initialContent' => [$bogusOne, $oSibling, $bogusTwo],
-                'oItem' => $oItem,
-                'oSibling' => $oOrphan,
-                'expectedContent' => [$bogusOne, $oSibling, $bogusTwo, $oItem],
-            ]
-        ];
+        self::assertCount(3, $this->subject->getContents());
+
+        $this->subject->insertBefore($item, $sibling);
+
+        self::assertCount(4, $this->subject->getContents());
+        self::assertSame([$bogusOne, $item, $sibling, $bogusTwo], $this->subject->getContents());
     }
 
     /**
      * @test
-     *
-     * @dataProvider insertBeforeDataProvider
      */
-    public function insertContentBeforeInsertsContentBeforeSibblingOrAppendsIfSibblingNotFound(
-        array $initialContent,
-        DeclarationBlock $oItem,
-        DeclarationBlock $oSibling,
-        array $expectedContent
-    ) {
+    public function insertContentBeforeAppendsIfSibblingNotFound() {
+        $bogusOne = new DeclarationBlock();
+        $bogusOne->setSelectors('.bogus-one');
+        $bogusTwo = new DeclarationBlock();
+        $bogusTwo->setSelectors('.bogus-two');
 
-        $this->subject->setContents($initialContent);
+        $item = new DeclarationBlock();
+        $item->setSelectors('.item');
+
+        $sibling = new DeclarationBlock();
+        $sibling->setSelectors('.sibling');
+
+        $orphan = new DeclarationBlock();
+        $orphan->setSelectors('.forever-alone');
+
+        $this->subject->setContents([$bogusOne, $sibling, $bogusTwo]);
 
         self::assertCount(3, $this->subject->getContents());
 
-        $this->subject->insertBefore($oItem, $oSibling);
+        $this->subject->insertBefore($item, $orphan);
 
         self::assertCount(4, $this->subject->getContents());
-        self::assertSame($expectedContent, $this->subject->getContents());
+        self::assertSame([$bogusOne, $sibling, $bogusTwo, $item], $this->subject->getContents());
     }
 }
