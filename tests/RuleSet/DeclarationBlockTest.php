@@ -33,7 +33,7 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @return array<int, array<int, string>>
      */
-    public static function expandBorderShorthandProvider()
+    public static function expandBorderShorthandProvider(): array
     {
         return [
             ['body{ border: 2px solid #000 }', 'body {border-width: 2px;border-style: solid;border-color: #000;}'],
@@ -66,7 +66,7 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @return array<int, array<int, string>>
      */
-    public static function expandFontShorthandProvider()
+    public static function expandFontShorthandProvider(): array
     {
         return [
             [
@@ -122,7 +122,7 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @return array<int, array<int, string>>
      */
-    public static function expandBackgroundShorthandProvider()
+    public static function expandBackgroundShorthandProvider(): array
     {
         return [
             ['body {border: 1px;}', 'body {border: 1px;}'],
@@ -175,7 +175,7 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @return array<int, array<int, string>>
      */
-    public static function expandDimensionsShorthandProvider()
+    public static function expandDimensionsShorthandProvider(): array
     {
         return [
             ['body {border: 1px;}', 'body {border: 1px;}'],
@@ -213,7 +213,7 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @return array<int, array<int, string>>
      */
-    public static function createBorderShorthandProvider()
+    public static function createBorderShorthandProvider(): array
     {
         return [
             ['body {border-width: 2px;border-style: solid;border-color: #000;}', 'body {border: 2px solid #000;}'],
@@ -244,7 +244,7 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @return array<int, array<int, string>>
      */
-    public static function createFontShorthandProvider()
+    public static function createFontShorthandProvider(): array
     {
         return [
             ['body {font-size: 12px; font-family: serif}', 'body {font: 12px serif;}'],
@@ -287,7 +287,7 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @return array<int, array<int, string>>
      */
-    public static function createDimensionsShorthandProvider()
+    public static function createDimensionsShorthandProvider(): array
     {
         return [
             ['body {border: 1px;}', 'body {border: 1px;}'],
@@ -325,7 +325,7 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @return array<int, array<int, string>>
      */
-    public static function createBackgroundShorthandProvider()
+    public static function createBackgroundShorthandProvider(): array
     {
         return [
             ['body {border: 1px;}', 'body {border: 1px;}'],

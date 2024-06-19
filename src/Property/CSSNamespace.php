@@ -59,10 +59,7 @@ class CSSNamespace implements AtRule
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         return '@namespace ' . ($this->sPrefix === null ? '' : $this->sPrefix . ' ')
             . $this->mUrl->render($oOutputFormat) . ';';
@@ -107,7 +104,7 @@ class CSSNamespace implements AtRule
     /**
      * @return string
      */
-    public function atRuleName()
+    public function atRuleName(): string
     {
         return 'namespace';
     }

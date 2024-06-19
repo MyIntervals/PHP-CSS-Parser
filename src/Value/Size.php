@@ -179,7 +179,7 @@ class Size extends PrimitiveValue
      *
      * @return false if the unit an angle, a duration, a frequency or the number is a component in a Color object.
      */
-    public function isSize()
+    public function isSize(): bool
     {
         if (in_array($this->sUnit, self::NON_SIZE_UNITS, true)) {
             return false;
@@ -187,10 +187,7 @@ class Size extends PrimitiveValue
         return !$this->isColorComponent();
     }
 
-    /**
-     * @return bool
-     */
-    public function isRelative()
+    public function isRelative(): bool
     {
         if (in_array($this->sUnit, self::RELATIVE_SIZE_UNITS, true)) {
             return true;
@@ -209,10 +206,7 @@ class Size extends PrimitiveValue
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         $l = localeconv();
         $sPoint = preg_quote($l['decimal_point'], '/');

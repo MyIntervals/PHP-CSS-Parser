@@ -129,10 +129,8 @@ class DeclarationBlock extends RuleSet
      * Remove one of the selectors of the block.
      *
      * @param Selector|string $mSelector
-     *
-     * @return bool
      */
-    public function removeSelector($mSelector)
+    public function removeSelector($mSelector): bool
     {
         if ($mSelector instanceof Selector) {
             $mSelector = $mSelector->getSelector();
@@ -145,17 +143,6 @@ class DeclarationBlock extends RuleSet
         }
         return false;
     }
-
-    /**
-     * @return array<int, Selector|string>
-     *
-     * @deprecated will be removed in version 9.0; use `getSelectors()` instead
-     */
-    public function getSelector()
-    {
-        return $this->getSelectors();
-    }
-
 
     /**
      * @return array<int, Selector|string>
@@ -186,6 +173,8 @@ class DeclarationBlock extends RuleSet
      * Creates shorthand declarations (e.g. `margin` or `font`) whenever possible.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function createShorthands()
     {
@@ -205,6 +194,8 @@ class DeclarationBlock extends RuleSet
      * Multiple borders are not yet supported as of 3.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function expandBorderShorthand()
     {
@@ -266,6 +257,8 @@ class DeclarationBlock extends RuleSet
      * Handles `margin`, `padding`, `border-color`, `border-style` and `border-width`.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function expandDimensionsShorthand()
     {
@@ -326,6 +319,8 @@ class DeclarationBlock extends RuleSet
      * into their constituent parts.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function expandFontShorthand()
     {
@@ -396,6 +391,8 @@ class DeclarationBlock extends RuleSet
      * @see http://www.w3.org/TR/21/colors.html#propdef-background
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function expandBackgroundShorthand()
     {
@@ -468,6 +465,8 @@ class DeclarationBlock extends RuleSet
 
     /**
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function expandListStyleShorthand()
     {
@@ -551,6 +550,8 @@ class DeclarationBlock extends RuleSet
      * @param string $sShorthand
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function createShorthandProperties(array $aProperties, $sShorthand)
     {
@@ -587,6 +588,8 @@ class DeclarationBlock extends RuleSet
 
     /**
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function createBackgroundShorthand()
     {
@@ -602,6 +605,8 @@ class DeclarationBlock extends RuleSet
 
     /**
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function createListStyleShorthand()
     {
@@ -636,6 +641,8 @@ class DeclarationBlock extends RuleSet
      * and converts them into shorthand CSS properties.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function createDimensionsShorthand()
     {
@@ -802,11 +809,9 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * @return string
-     *
      * @throws OutputException
      */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         $sResult = $oOutputFormat->comments($this);
         if (count($this->aSelectors) === 0) {

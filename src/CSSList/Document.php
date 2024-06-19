@@ -51,18 +51,6 @@ class Document extends CSSBlockList
     }
 
     /**
-     * Gets all `DeclarationBlock` objects recursively.
-     *
-     * @return array<int, DeclarationBlock>
-     *
-     * @deprecated will be removed in version 9.0; use `getAllDeclarationBlocks()` instead
-     */
-    public function getAllSelectors()
-    {
-        return $this->getAllDeclarationBlocks();
-    }
-
-    /**
      * Returns all `RuleSet` objects recursively found in the tree, no matter how deeply nested the rule sets are.
      *
      * @return array<int, RuleSet>
@@ -128,6 +116,8 @@ class Document extends CSSBlockList
      * Expands all shorthand properties to their long value.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function expandShorthands()
     {
@@ -140,6 +130,8 @@ class Document extends CSSBlockList
      * Create shorthands properties whenever possible.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function createShorthands()
     {
@@ -152,10 +144,8 @@ class Document extends CSSBlockList
      * Overrides `render()` to make format argument optional.
      *
      * @param OutputFormat|null $oOutputFormat
-     *
-     * @return string
      */
-    public function render(OutputFormat $oOutputFormat = null)
+    public function render(OutputFormat $oOutputFormat = null): string
     {
         if ($oOutputFormat === null) {
             $oOutputFormat = new OutputFormat();
@@ -163,10 +153,7 @@ class Document extends CSSBlockList
         return $oOutputFormat->comments($this) . $this->renderListContents($oOutputFormat);
     }
 
-    /**
-     * @return bool
-     */
-    public function isRootList()
+    public function isRootList(): bool
     {
         return true;
     }

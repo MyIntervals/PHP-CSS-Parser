@@ -19,10 +19,26 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ### Deprecated
 
 - Deprecate `DeclarationBlock::createFontShorthand()` (#580)
+- Deprecate `DeclarationBlock::createDimensionsShorthand()` (#579)
+- Deprecate `DeclarationBlock::createListStyleShorthand()` (#577)
+- Deprecate the `DeclarationBlock::createBackgroundShorthand()` (#576)
+- Deprecate `DeclarationBlock::createShorthandProperties()` (#575)
+- Deprecate `DeclarationBlock::expandListStyleShorthand()` (#574)
+- Deprecate `DeclarationBlock::expandBackgroundShorthand()` (#573)
+- Deprecate `DeclarationBlock::expandFontShorthand()` (#572)
+- Deprecate `DeclarationBlock::expandDimensionsShorthand()` (#571)
+- Deprecate `DeclarationBlock::expandBorderShorthand()` (#570)
+- Deprecate `DeclarationBlock::createShorthands()` (#569)
+- Deprecate `Document::expandShorthands()` (#566)
+- Deprecate `Document::createShorthands()` (#567)
 - Deprecate `DeclarationBlock::expandShorthands()` (#558)
 
 ### Removed
 
+- Remove `Rule::getValues()` (#582)
+- Remove `Rule::setValues()` (#562)
+- Remove `Document::getAllSelectors()` (#561)
+- Remove `DeclarationBlock::getSelector()` (#559)
 - Remove `DeclarationBlock::setSelector()` (#560)
 - Drop support for PHP < 7.2 (#420)
 
@@ -30,6 +46,9 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 - Fix PHP notice caused by parsing invalid color values having less than 6 characters (#485)
 - Fix (regression) failure to parse at-rules with strict parsing (#456)
+
+@ziegenberg is a new contributor to this release and did a lot of the heavy
+lifting. Thanks! :heart:
 
 ## 8.5.0
 

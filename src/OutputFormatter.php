@@ -166,10 +166,8 @@ class OutputFormatter
      * @param string $sSeparator
      * @param array<array-key, Renderable|string> $aValues
      * @param bool $bIncreaseLevel
-     *
-     * @return string
      */
-    public function implode($sSeparator, array $aValues, $bIncreaseLevel = false)
+    public function implode($sSeparator, array $aValues, $bIncreaseLevel = false): string
     {
         $sResult = '';
         $oFormat = $this->oFormat;
@@ -218,7 +216,7 @@ class OutputFormatter
      *
      * @return string
      */
-    public function comments(Commentable $oCommentable)
+    public function comments(Commentable $oCommentable): string
     {
         if (!$this->oFormat->bRenderComments) {
             return '';
@@ -248,7 +246,7 @@ class OutputFormatter
     /**
      * @return string
      */
-    private function indent()
+    private function indent(): string
     {
         return str_repeat($this->oFormat->sIndentation, $this->oFormat->level());
     }

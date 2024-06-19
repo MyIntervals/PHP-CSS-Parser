@@ -117,7 +117,7 @@ class Rule implements Renderable, Commentable
      *
      * @return array<int, string>
      */
-    private static function listDelimiterForRule($sRule)
+    private static function listDelimiterForRule($sRule): array
     {
         if (preg_match('/^font($|-)/', $sRule)) {
             return [',', '/', ' '];
@@ -187,79 +187,6 @@ class Rule implements Renderable, Commentable
     public function setValue($mValue)
     {
         $this->mValue = $mValue;
-    }
-
-    /**
-     * @param array<array-key, array<array-key, RuleValueList>> $aSpaceSeparatedValues
-     *
-     * @return RuleValueList
-     *
-     * @deprecated will be removed in version 9.0
-     *             Old-Style 2-dimensional array given. Retained for (some) backwards-compatibility.
-     *             Use `setValue()` instead and wrap the value inside a RuleValueList if necessary.
-     */
-    public function setValues(array $aSpaceSeparatedValues)
-    {
-        $oSpaceSeparatedList = null;
-        if (count($aSpaceSeparatedValues) > 1) {
-            $oSpaceSeparatedList = new RuleValueList(' ', $this->iLineNo);
-        }
-        foreach ($aSpaceSeparatedValues as $aCommaSeparatedValues) {
-            $oCommaSeparatedList = null;
-            if (count($aCommaSeparatedValues) > 1) {
-                $oCommaSeparatedList = new RuleValueList(',', $this->iLineNo);
-            }
-            foreach ($aCommaSeparatedValues as $mValue) {
-                if (!$oSpaceSeparatedList && !$oCommaSeparatedList) {
-                    $this->mValue = $mValue;
-                    return $mValue;
-                }
-                if ($oCommaSeparatedList) {
-                    $oCommaSeparatedList->addListComponent($mValue);
-                } else {
-                    $oSpaceSeparatedList->addListComponent($mValue);
-                }
-            }
-            if (!$oSpaceSeparatedList) {
-                $this->mValue = $oCommaSeparatedList;
-                return $oCommaSeparatedList;
-            } else {
-                $oSpaceSeparatedList->addListComponent($oCommaSeparatedList);
-            }
-        }
-        $this->mValue = $oSpaceSeparatedList;
-        return $oSpaceSeparatedList;
-    }
-
-    /**
-     * @return array<int, array<int, RuleValueList>>
-     *
-     * @deprecated will be removed in version 9.0
-     *             Old-Style 2-dimensional array returned. Retained for (some) backwards-compatibility.
-     *             Use `getValue()` instead and check for the existence of a (nested set of) ValueList object(s).
-     */
-    public function getValues(): array
-    {
-        if (!$this->mValue instanceof RuleValueList) {
-            return [[$this->mValue]];
-        }
-        if ($this->mValue->getListSeparator() === ',') {
-            return [$this->mValue->getListComponents()];
-        }
-        $aResult = [];
-        foreach ($this->mValue->getListComponents() as $mValue) {
-            if (!$mValue instanceof RuleValueList || $mValue->getListSeparator() !== ',') {
-                $aResult[] = [$mValue];
-                continue;
-            }
-            if ($this->mValue->getListSeparator() === ' ' || count($aResult) === 0) {
-                $aResult[] = [];
-            }
-            foreach ($mValue->getListComponents() as $mValue) {
-                $aResult[count($aResult) - 1][] = $mValue;
-            }
-        }
-        return $aResult;
     }
 
     /**
@@ -342,10 +269,7 @@ class Rule implements Renderable, Commentable
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         $sResult = "{$oOutputFormat->comments($this)}{$this->sRule}:{$oOutputFormat->spaceAfterRuleName()}";
         if ($this->mValue instanceof Value) { // Can also be a ValueList

@@ -258,10 +258,8 @@ class ParserState
     /**
      * @param string $sString
      * @param bool $bCaseInsensitive
-     *
-     * @return bool
      */
-    public function comes($sString, $bCaseInsensitive = false)
+    public function comes($sString, $bCaseInsensitive = false): bool
     {
         $sPeek = $this->peek(strlen($sString));
         return ($sPeek == '')
@@ -272,10 +270,8 @@ class ParserState
     /**
      * @param int $iLength
      * @param int $iOffset
-     *
-     * @return string
      */
-    public function peek($iLength = 1, $iOffset = 0)
+    public function peek($iLength = 1, $iOffset = 0): string
     {
         $iOffset += $this->iCurrentPosition;
         if ($iOffset >= $this->iLength) {
@@ -287,12 +283,10 @@ class ParserState
     /**
      * @param int $mValue
      *
-     * @return string
-     *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public function consume($mValue = 1)
+    public function consume($mValue = 1): string
     {
         if (is_string($mValue)) {
             $iLineCount = substr_count($mValue, "\n");
@@ -361,10 +355,7 @@ class ParserState
         return $mComment;
     }
 
-    /**
-     * @return bool
-     */
-    public function isEnd()
+    public function isEnd(): bool
     {
         return $this->iCurrentPosition >= $this->iLength;
     }
@@ -415,10 +406,7 @@ class ParserState
         );
     }
 
-    /**
-     * @return string
-     */
-    private function inputLeft()
+    private function inputLeft(): string
     {
         return $this->substr($this->iCurrentPosition, -1);
     }
@@ -427,10 +415,8 @@ class ParserState
      * @param string $sString1
      * @param string $sString2
      * @param bool $bCaseInsensitive
-     *
-     * @return bool
      */
-    public function streql($sString1, $sString2, $bCaseInsensitive = true)
+    public function streql($sString1, $sString2, $bCaseInsensitive = true): bool
     {
         if ($bCaseInsensitive) {
             return $this->strtolower($sString1) === $this->strtolower($sString2);
@@ -451,10 +437,8 @@ class ParserState
 
     /**
      * @param string $sString
-     *
-     * @return int
      */
-    public function strlen($sString)
+    public function strlen($sString): int
     {
         if ($this->oParserSettings->bMultibyteSupport) {
             return mb_strlen($sString, $this->sCharset);
@@ -466,10 +450,8 @@ class ParserState
     /**
      * @param int $iStart
      * @param int $iLength
-     *
-     * @return string
      */
-    private function substr($iStart, $iLength)
+    private function substr($iStart, $iLength): string
     {
         if ($iLength < 0) {
             $iLength = $this->iLength - $iStart + $iLength;
@@ -488,10 +470,8 @@ class ParserState
 
     /**
      * @param string $sString
-     *
-     * @return string
      */
-    private function strtolower($sString)
+    private function strtolower($sString): string
     {
         if ($this->oParserSettings->bMultibyteSupport) {
             return mb_strtolower($sString, $this->sCharset);
