@@ -241,10 +241,8 @@ abstract class CSSList implements Renderable, Commentable
      *
      * @param string $sIdentifier
      * @param string $sMatch
-     *
-     * @return bool
      */
-    private static function identifierIs($sIdentifier, $sMatch)
+    private static function identifierIs($sIdentifier, $sMatch): bool
     {
         return (strcasecmp($sIdentifier, $sMatch) === 0)
             ?: preg_match("/^(-\\w+-)?$sMatch$/i", $sIdentifier) === 1;

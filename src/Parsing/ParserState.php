@@ -258,10 +258,8 @@ class ParserState
     /**
      * @param string $sString
      * @param bool $bCaseInsensitive
-     *
-     * @return bool
      */
-    public function comes($sString, $bCaseInsensitive = false)
+    public function comes($sString, $bCaseInsensitive = false): bool
     {
         $sPeek = $this->peek(strlen($sString));
         return ($sPeek == '')
