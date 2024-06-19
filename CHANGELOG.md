@@ -17,6 +17,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- Fix undefined local variable in `CalcFunction::parse()` (#593)
+
 ## 8.5.1
 
 ### Fixed
