@@ -87,7 +87,7 @@ class CalcFunction extends CSSFunction
                         sprintf(
                             'Next token was expected to be an operand of type %s. Instead "%s" was found.',
                             implode(', ', $aOperators),
-                            $oVal
+                            $oParserState->peek()
                         ),
                         '',
                         'custom',
