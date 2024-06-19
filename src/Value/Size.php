@@ -187,9 +187,6 @@ class Size extends PrimitiveValue
         return !$this->isColorComponent();
     }
 
-    /**
-     * @return bool
-     */
     public function isRelative(): bool
     {
         if (in_array($this->sUnit, self::RELATIVE_SIZE_UNITS, true)) {

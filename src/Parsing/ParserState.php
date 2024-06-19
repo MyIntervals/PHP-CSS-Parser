@@ -427,8 +427,6 @@ class ParserState
      * @param string $sString1
      * @param string $sString2
      * @param bool $bCaseInsensitive
-     *
-     * @return bool
      */
     public function streql($sString1, $sString2, $bCaseInsensitive = true): bool
     {

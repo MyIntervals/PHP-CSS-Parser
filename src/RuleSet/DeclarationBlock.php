@@ -129,8 +129,6 @@ class DeclarationBlock extends RuleSet
      * Remove one of the selectors of the block.
      *
      * @param Selector|string $mSelector
-     *
-     * @return bool
      */
     public function removeSelector($mSelector): bool
     {

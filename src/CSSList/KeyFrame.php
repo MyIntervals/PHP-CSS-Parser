@@ -79,9 +79,6 @@ class KeyFrame extends CSSList implements AtRule
         return $sResult;
     }
 
-    /**
-     * @return bool
-     */
     public function isRootList(): bool
     {
         return false;

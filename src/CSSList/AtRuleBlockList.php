@@ -74,9 +74,6 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
         return $sResult;
     }
 
-    /**
-     * @return bool
-     */
     public function isRootList(): bool
     {
         return false;
