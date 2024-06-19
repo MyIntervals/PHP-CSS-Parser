@@ -295,7 +295,7 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * Inserts an item before its sibling. If the desired sibling cannot be found,
+     * Inserts an item in the CSS list before its sibling. If the desired sibling cannot be found,
      * the item is appended at the end.
      *
      * @param RuleSet|CSSList|Import|Charset $item
