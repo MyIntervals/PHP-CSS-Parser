@@ -190,48 +190,6 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param array<array-key, array<array-key, RuleValueList>> $aSpaceSeparatedValues
-     *
-     * @return RuleValueList
-     *
-     * @deprecated will be removed in version 9.0
-     *             Old-Style 2-dimensional array given. Retained for (some) backwards-compatibility.
-     *             Use `setValue()` instead and wrap the value inside a RuleValueList if necessary.
-     */
-    public function setValues(array $aSpaceSeparatedValues)
-    {
-        $oSpaceSeparatedList = null;
-        if (count($aSpaceSeparatedValues) > 1) {
-            $oSpaceSeparatedList = new RuleValueList(' ', $this->iLineNo);
-        }
-        foreach ($aSpaceSeparatedValues as $aCommaSeparatedValues) {
-            $oCommaSeparatedList = null;
-            if (count($aCommaSeparatedValues) > 1) {
-                $oCommaSeparatedList = new RuleValueList(',', $this->iLineNo);
-            }
-            foreach ($aCommaSeparatedValues as $mValue) {
-                if (!$oSpaceSeparatedList && !$oCommaSeparatedList) {
-                    $this->mValue = $mValue;
-                    return $mValue;
-                }
-                if ($oCommaSeparatedList) {
-                    $oCommaSeparatedList->addListComponent($mValue);
-                } else {
-                    $oSpaceSeparatedList->addListComponent($mValue);
-                }
-            }
-            if (!$oSpaceSeparatedList) {
-                $this->mValue = $oCommaSeparatedList;
-                return $oCommaSeparatedList;
-            } else {
-                $oSpaceSeparatedList->addListComponent($oCommaSeparatedList);
-            }
-        }
-        $this->mValue = $oSpaceSeparatedList;
-        return $oSpaceSeparatedList;
-    }
-
-    /**
      * @return array<int, array<int, RuleValueList>>
      *
      * @deprecated will be removed in version 9.0

@@ -22,6 +22,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Removed
 
+- Remove `Rule::setValues()` (#562)
 - Remove `Document::getAllSelectors()` (#561)
 - Remove `DeclarationBlock::getSelector()` (#559)
 - Remove `DeclarationBlock::setSelector()` (#560)
