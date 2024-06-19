@@ -391,6 +391,8 @@ class DeclarationBlock extends RuleSet
      * @see http://www.w3.org/TR/21/colors.html#propdef-background
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function expandBackgroundShorthand()
     {
