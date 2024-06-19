@@ -25,8 +25,6 @@ class Document extends CSSBlockList
     }
 
     /**
-     * @return Document
-     *
      * @throws SourceException
      */
     public static function parse(ParserState $oParserState): Document
