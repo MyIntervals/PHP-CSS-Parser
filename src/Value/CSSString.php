@@ -98,10 +98,7 @@ class CSSString extends PrimitiveValue
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         $sString = addslashes($this->sString);
         $sString = str_replace("\n", '\A', $sString);

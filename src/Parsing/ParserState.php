@@ -457,10 +457,8 @@ class ParserState
     /**
      * @param int $iStart
      * @param int $iLength
-     *
-     * @return string
      */
-    private function substr($iStart, $iLength)
+    private function substr($iStart, $iLength): string
     {
         if ($iLength < 0) {
             $iLength = $this->iLength - $iStart + $iLength;
@@ -479,10 +477,8 @@ class ParserState
 
     /**
      * @param string $sString
-     *
-     * @return string
      */
-    private function strtolower($sString)
+    private function strtolower($sString): string
     {
         if ($this->oParserSettings->bMultibyteSupport) {
             return mb_strtolower($sString, $this->sCharset);
