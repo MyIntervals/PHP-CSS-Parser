@@ -257,6 +257,8 @@ class DeclarationBlock extends RuleSet
      * Handles `margin`, `padding`, `border-color`, `border-style` and `border-width`.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function expandDimensionsShorthand()
     {
