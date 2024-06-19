@@ -190,37 +190,6 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @return array<int, array<int, RuleValueList>>
-     *
-     * @deprecated will be removed in version 9.0
-     *             Old-Style 2-dimensional array returned. Retained for (some) backwards-compatibility.
-     *             Use `getValue()` instead and check for the existence of a (nested set of) ValueList object(s).
-     */
-    public function getValues(): array
-    {
-        if (!$this->mValue instanceof RuleValueList) {
-            return [[$this->mValue]];
-        }
-        if ($this->mValue->getListSeparator() === ',') {
-            return [$this->mValue->getListComponents()];
-        }
-        $aResult = [];
-        foreach ($this->mValue->getListComponents() as $mValue) {
-            if (!$mValue instanceof RuleValueList || $mValue->getListSeparator() !== ',') {
-                $aResult[] = [$mValue];
-                continue;
-            }
-            if ($this->mValue->getListSeparator() === ' ' || count($aResult) === 0) {
-                $aResult[] = [];
-            }
-            foreach ($mValue->getListComponents() as $mValue) {
-                $aResult[count($aResult) - 1][] = $mValue;
-            }
-        }
-        return $aResult;
-    }
-
-    /**
      * Adds a value to the existing value. Value will be appended if a `RuleValueList` exists of the given type.
      * Otherwise, the existing value will be wrapped by one.
      *
