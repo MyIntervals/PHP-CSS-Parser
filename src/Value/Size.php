@@ -71,12 +71,10 @@ class Size extends PrimitiveValue
     /**
      * @param bool $bIsColorComponent
      *
-     * @return Size
-     *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState, $bIsColorComponent = false)
+    public static function parse(ParserState $oParserState, $bIsColorComponent = false): Size
     {
         $sSize = '';
         if ($oParserState->comes('-')) {

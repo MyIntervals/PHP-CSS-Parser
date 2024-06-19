@@ -19,12 +19,10 @@ class LineName extends ValueList
     }
 
     /**
-     * @return LineName
-     *
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
-    public static function parse(ParserState $oParserState)
+    public static function parse(ParserState $oParserState): LineName
     {
         $oParserState->consume('[');
         $oParserState->consumeWhiteSpace();

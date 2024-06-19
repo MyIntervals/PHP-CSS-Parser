@@ -28,13 +28,11 @@ class URL extends PrimitiveValue
     }
 
     /**
-     * @return URL
-     *
      * @throws SourceException
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState)
+    public static function parse(ParserState $oParserState): URL
     {
         $oAnchor = $oParserState->anchor();
         $sIdentifier = '';
