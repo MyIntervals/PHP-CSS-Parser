@@ -781,19 +781,19 @@ classDiagram
 
 ## Contributors/Thanks to
 
-* [oliverklee](https://github.com/oliverklee) for lots of refactorings, code modernizations and CI integrations
-* [raxbg](https://github.com/raxbg) for contributions to parse `calc`, grid lines, and various bugfixes.
-* [westonruter](https://github.com/westonruter) for bugfixes and improvements.
-* [FMCorz](https://github.com/FMCorz) for many patches and suggestions, for being able to parse comments and IE hacks (in lenient mode).
-* [Lullabot](https://github.com/Lullabot) for a patch that allows to know the line number for each parsed token.
-* [ju1ius](https://github.com/ju1ius) for the specificity parsing code and the ability to expand/compact shorthand properties.
-* [ossinkine](https://github.com/ossinkine) for a 150 time performance boost.
-* [GaryJones](https://github.com/GaryJones) for lots of input and [https://css-specificity.info/](https://css-specificity.info/).
-* [docteurklein](https://github.com/docteurklein) for output formatting and `CSSList->remove()` inspiration.
-* [nicolopignatelli](https://github.com/nicolopignatelli) for PSR-0 compatibility.
-* [diegoembarcadero](https://github.com/diegoembarcadero) for keyframe at-rule parsing.
-* [goetas](https://github.com/goetas) for @namespace at-rule support.
-* [ziegenberg](https://github.com/ziegenberg) for general housekeeping and cleanup.
+* @oliverklee for lots of refactorings, code modernizations and CI integrations
+* @raxbg for contributions to parse `calc`, grid lines, and various bugfixes.
+* @westonruter for bugfixes and improvements.
+* @FMCorz for many patches and suggestions, for being able to parse comments and IE hacks (in lenient mode).
+* @Lullabot for a patch that allows to know the line number for each parsed token.
+* @ju1ius for the specificity parsing code and the ability to expand/compact shorthand properties.
+* @ossinkine for a 150 time performance boost.
+* @GaryJones for lots of input and [https://css-specificity.info/](https://css-specificity.info/).
+* @docteurklein for output formatting and `CSSList->remove()` inspiration.
+* @nicolopignatelli for PSR-0 compatibility.
+* @diegoembarcadero for keyframe at-rule parsing.
+* @goetas for `@namespace` at-rule support.
+* @ziegenberg for general housekeeping and cleanup.
 * [View full list](https://github.com/sabberworm/PHP-CSS-Parser/contributors)
 
 ## Misc
