@@ -550,6 +550,8 @@ class DeclarationBlock extends RuleSet
      * @param string $sShorthand
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 10.0.
      */
     public function createShorthandProperties(array $aProperties, $sShorthand)
     {
