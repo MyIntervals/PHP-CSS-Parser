@@ -797,11 +797,9 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * @return string
-     *
      * @throws OutputException
      */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         $sResult = $oOutputFormat->comments($this);
         if (count($this->aSelectors) === 0) {

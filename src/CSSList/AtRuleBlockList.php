@@ -56,10 +56,7 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         $sResult = $oOutputFormat->comments($this);
         $sResult .= $oOutputFormat->sBeforeAtRuleBlock;

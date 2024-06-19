@@ -183,12 +183,10 @@ abstract class Value implements Renderable
     }
 
     /**
-     * @return string
-     *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    private static function parseUnicodeRangeValue(ParserState $oParserState)
+    private static function parseUnicodeRangeValue(ParserState $oParserState): string
     {
         $iCodepointMaxLength = 6; // Code points outside BMP can use up to six digits
         $sRange = "";
