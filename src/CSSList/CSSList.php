@@ -304,7 +304,7 @@ abstract class CSSList implements Renderable, Commentable
     public function insertBefore($item, $sibling): void
     {
         if (in_array($sibling, $this->aContents, true)) {
-            $this->replace($oSibling, [$item, $sibling]);
+            $this->replace($sibling, [$item, $sibling]);
         } else {
             $this->append($item);
         }
