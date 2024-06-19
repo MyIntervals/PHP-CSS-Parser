@@ -45,6 +45,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- Fix undefined local variable in `CalcFunction::parse()` (#593)
 - Fix PHP notice caused by parsing invalid color values having less than 6 characters (#485)
 - Fix (regression) failure to parse at-rules with strict parsing (#456)
 
