@@ -303,10 +303,8 @@ class OutputFormat
 
     /**
      * Creates an instance of this class without any particular formatting settings.
-     *
-     * @return self
      */
-    public static function create()
+    public static function create(): OutputFormat
     {
         return new OutputFormat();
     }

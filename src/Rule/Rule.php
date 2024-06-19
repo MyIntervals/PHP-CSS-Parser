@@ -71,12 +71,10 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @return Rule
-     *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState)
+    public static function parse(ParserState $oParserState): Rule
     {
         $aComments = $oParserState->consumeWhiteSpace();
         $oRule = new Rule(

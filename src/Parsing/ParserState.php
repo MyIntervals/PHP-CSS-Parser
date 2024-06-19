@@ -3,6 +3,7 @@
 namespace Sabberworm\CSS\Parsing;
 
 use Sabberworm\CSS\Comment\Comment;
+use Sabberworm\CSS\Parsing\Anchor;
 use Sabberworm\CSS\Settings;
 
 class ParserState
@@ -114,10 +115,8 @@ class ParserState
         return $this->oParserSettings;
     }
 
-    /**
-     * @return \Sabberworm\CSS\Parsing\Anchor
-     */
-    public function anchor()
+
+    public function anchor(): Anchor
     {
         return new Anchor($this->iCurrentPosition, $this);
     }

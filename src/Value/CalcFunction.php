@@ -22,12 +22,10 @@ class CalcFunction extends CSSFunction
      * @param ParserState $oParserState
      * @param bool $bIgnoreCase
      *
-     * @return CalcFunction
-     *
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
-    public static function parse(ParserState $oParserState, $bIgnoreCase = false)
+    public static function parse(ParserState $oParserState, $bIgnoreCase = false): CalcFunction
     {
         $aOperators = ['+', '-', '*', '/'];
         $sFunction = $oParserState->parseIdentifier();

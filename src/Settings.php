@@ -41,7 +41,7 @@ class Settings
     /**
      * @return self new instance
      */
-    public static function create()
+    public static function create(): Settings
     {
         return new Settings();
     }

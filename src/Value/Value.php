@@ -6,6 +6,7 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\Value\CSSFunction;
 use Sabberworm\CSS\Renderable;
 
 /**
@@ -170,12 +171,10 @@ abstract class Value implements Renderable
     }
 
     /**
-     * @return CSSFunction
-     *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    private static function parseMicrosoftFilter(ParserState $oParserState)
+    private static function parseMicrosoftFilter(ParserState $oParserState): CSSFunction
     {
         $sFunction = $oParserState->consumeUntil('(', false, true);
         $aArguments = Value::parseValue($oParserState, [',', '=']);

@@ -31,13 +31,11 @@ class CSSString extends PrimitiveValue
     }
 
     /**
-     * @return CSSString
-     *
      * @throws SourceException
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState)
+    public static function parse(ParserState $oParserState): CSSString
     {
         $sBegin = $oParserState->peek();
         $sQuote = null;
