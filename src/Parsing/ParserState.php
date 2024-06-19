@@ -361,10 +361,7 @@ class ParserState
         return $mComment;
     }
 
-    /**
-     * @return bool
-     */
-    public function isEnd()
+    public function isEnd(): bool
     {
         return $this->iCurrentPosition >= $this->iLength;
     }
