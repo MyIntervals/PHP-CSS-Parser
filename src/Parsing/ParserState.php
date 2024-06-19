@@ -449,10 +449,8 @@ class ParserState
 
     /**
      * @param string $sString
-     *
-     * @return int
      */
-    public function strlen($sString)
+    public function strlen($sString): int
     {
         if ($this->oParserSettings->bMultibyteSupport) {
             return mb_strlen($sString, $this->sCharset);
