@@ -20,7 +20,7 @@ return (new \PhpCsFixer\Config())
             '@PHPUnit84Migration:risky' => true,
 
             // needed for PHP 7.x
-            'trailing_comma_in_multiline' => ['after_heredoc' => true, 'elements' => ['arrays', 'match']],
+            'trailing_comma_in_multiline' => ['after_heredoc' => false, 'elements' => ['arrays', 'match']],
 
             'php_unit_construct' => true,
             'php_unit_dedicate_assert' => ['target' => 'newest'],
