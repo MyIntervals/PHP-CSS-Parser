@@ -104,6 +104,10 @@ class DeclarationBlock extends RuleSet
             if (!($mSelector instanceof Selector)) {
                 if ($oList === null || !($oList instanceof KeyFrame)) {
                     if (!Selector::isValid($mSelector)) {
+                        $this->logger->error(
+                            "Selector did not match '{regexp}'. Found: '{selector}'",
+                            ['regexp' => Selector::SELECTOR_VALIDATION_RX, 'selector' => $mSelector]
+                        );
                         throw new UnexpectedTokenException(
                             "Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.",
                             $mSelector,
@@ -113,6 +117,10 @@ class DeclarationBlock extends RuleSet
                     $this->aSelectors[$iKey] = new Selector($mSelector);
                 } else {
                     if (!KeyframeSelector::isValid($mSelector)) {
+                        $this->logger->error(
+                            "Selector did not match '{regexp}'. Found: '{selector}'",
+                            ['regexp' => KeyframeSelector::SELECTOR_VALIDATION_RX, 'selector' => $mSelector]
+                        );
                         throw new UnexpectedTokenException(
                             "Selector did not match '" . KeyframeSelector::SELECTOR_VALIDATION_RX . "'.",
                             $mSelector,
@@ -790,6 +798,7 @@ class DeclarationBlock extends RuleSet
         $sResult = $oOutputFormat->comments($this);
         if (count($this->aSelectors) === 0) {
             // If all the selectors have been removed, this declaration block becomes invalid
+            $this->logger->error("Attempt to print declaration block with missing selector at line {line}", ["line" => $this->iLineNo]);
             throw new OutputException("Attempt to print declaration block with missing selector", $this->iLineNo);
         }
         $sResult .= $oOutputFormat->sBeforeDeclarationBlock;

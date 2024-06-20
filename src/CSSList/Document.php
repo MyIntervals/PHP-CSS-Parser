@@ -10,6 +10,9 @@ use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\RuleSet\RuleSet;
 use Sabberworm\CSS\Value\Value;
 
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+
 /**
  * This class represents the root of a parsed CSS file. It contains all top-level CSS contents: mostly declaration
  * blocks, but also any at-rules encountered (`Import` and `Charset`).
@@ -27,10 +30,10 @@ class Document extends CSSBlockList
     /**
      * @throws SourceException
      */
-    public static function parse(ParserState $oParserState): Document
+    public static function parse(ParserState $oParserState, ?LoggerInterface $logger = null): Document
     {
         $oDocument = new Document($oParserState->currentLine());
-        CSSList::parseList($oParserState, $oDocument);
+        CSSList::parseList($oParserState, $oDocument, $logger ?? new NullLogger());
         return $oDocument;
     }
 

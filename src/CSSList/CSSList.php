@@ -23,14 +23,21 @@ use Sabberworm\CSS\Value\CSSString;
 use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\Value;
 
+use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
+
 /**
  * This is the most generic container available. It can contain `DeclarationBlock`s (rule sets with a selector),
  * `RuleSet`s as well as other `CSSList` objects.
  *
  * It can also contain `Import` and `Charset` objects stemming from at-rules.
  */
-abstract class CSSList implements Renderable, Commentable
+abstract class CSSList implements Renderable, Commentable, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var array<array-key, Comment>
      */
@@ -51,6 +58,8 @@ abstract class CSSList implements Renderable, Commentable
      */
     public function __construct($iLineNo = 0)
     {
+        $this->logger = new NullLogger();
+
         $this->aComments = [];
         $this->aContents = [];
         $this->iLineNo = $iLineNo;
@@ -60,7 +69,7 @@ abstract class CSSList implements Renderable, Commentable
      * @throws UnexpectedTokenException
      * @throws SourceException
      */
-    public static function parseList(ParserState $oParserState, CSSList $oList): void
+    public static function parseList(ParserState $oParserState, CSSList $oList, ?LoggerInterface $logger = null): void
     {
         $bIsRoot = $oList instanceof Document;
         if (is_string($oParserState)) {
@@ -372,6 +381,10 @@ abstract class CSSList implements Renderable, Commentable
         foreach ($mSelector as $iKey => &$mSel) {
             if (!($mSel instanceof Selector)) {
                 if (!Selector::isValid($mSel)) {
+                    $this->logger->error(
+                        'Selector did not match {rx}.',
+                        ['rx' => Selector::SELECTOR_VALIDATION_RX]
+                    );
                     throw new UnexpectedTokenException(
                         "Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.",
                         $mSel,
