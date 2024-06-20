@@ -85,4 +85,59 @@ final class DocumentTest extends TestCase
 
         self::assertSame($contents2, $this->subject->getContents());
     }
+
+    /**
+     * @test
+     */
+    public function insertContentBeforeInsertsContentBeforeSibbling()
+    {
+        $bogusOne = new DeclarationBlock();
+        $bogusOne->setSelectors('.bogus-one');
+        $bogusTwo = new DeclarationBlock();
+        $bogusTwo->setSelectors('.bogus-two');
+
+        $item = new DeclarationBlock();
+        $item->setSelectors('.item');
+
+        $sibling = new DeclarationBlock();
+        $sibling->setSelectors('.sibling');
+
+        $this->subject->setContents([$bogusOne, $sibling, $bogusTwo]);
+
+        self::assertCount(3, $this->subject->getContents());
+
+        $this->subject->insertBefore($item, $sibling);
+
+        self::assertCount(4, $this->subject->getContents());
+        self::assertSame([$bogusOne, $item, $sibling, $bogusTwo], $this->subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function insertContentBeforeAppendsIfSibblingNotFound()
+    {
+        $bogusOne = new DeclarationBlock();
+        $bogusOne->setSelectors('.bogus-one');
+        $bogusTwo = new DeclarationBlock();
+        $bogusTwo->setSelectors('.bogus-two');
+
+        $item = new DeclarationBlock();
+        $item->setSelectors('.item');
+
+        $sibling = new DeclarationBlock();
+        $sibling->setSelectors('.sibling');
+
+        $orphan = new DeclarationBlock();
+        $orphan->setSelectors('.forever-alone');
+
+        $this->subject->setContents([$bogusOne, $sibling, $bogusTwo]);
+
+        self::assertCount(3, $this->subject->getContents());
+
+        $this->subject->insertBefore($item, $orphan);
+
+        self::assertCount(4, $this->subject->getContents());
+        self::assertSame([$bogusOne, $sibling, $bogusTwo, $item], $this->subject->getContents());
+    }
 }
