@@ -13,14 +13,11 @@ use Sabberworm\CSS\Value\Size;
 final class DeclarationBlockTest extends TestCase
 {
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider expandBorderShorthandProvider
      *
      * @test
      */
-    public function expandBorderShorthand($sCss, $sExpected): void
+    public function expandBorderShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -46,14 +43,11 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider expandFontShorthandProvider
      *
      * @test
      */
-    public function expandFontShorthand($sCss, $sExpected): void
+    public function expandFontShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -102,14 +96,11 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider expandBackgroundShorthandProvider
      *
      * @test
      */
-    public function expandBackgroundShorthand($sCss, $sExpected): void
+    public function expandBackgroundShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -155,14 +146,11 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider expandDimensionsShorthandProvider
      *
      * @test
      */
-    public function expandDimensionsShorthand($sCss, $sExpected): void
+    public function expandDimensionsShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -193,14 +181,11 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider createBorderShorthandProvider
      *
      * @test
      */
-    public function createBorderShorthand($sCss, $sExpected): void
+    public function createBorderShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -224,14 +209,11 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider createFontShorthandProvider
      *
      * @test
      */
-    public function createFontShorthand($sCss, $sExpected): void
+    public function createFontShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -267,14 +249,11 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider createDimensionsShorthandProvider
      *
      * @test
      */
-    public function createDimensionsShorthand($sCss, $sExpected): void
+    public function createDimensionsShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
@@ -305,14 +284,11 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider createBackgroundShorthandProvider
      *
      * @test
      */
-    public function createBackgroundShorthand($sCss, $sExpected): void
+    public function createBackgroundShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
