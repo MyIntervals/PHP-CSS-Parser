@@ -19,13 +19,10 @@ class CalcFunction extends CSSFunction
     private const T_OPERATOR = 2;
 
     /**
-     * @param ParserState $oParserState
-     * @param bool $bIgnoreCase
-     *
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
-    public static function parse(ParserState $oParserState, $bIgnoreCase = false): CSSFunction
+    public static function parse(ParserState $oParserState, bool $bIgnoreCase = false): CSSFunction
     {
         $aOperators = ['+', '-', '*', '/'];
         $sFunction = $oParserState->parseIdentifier();

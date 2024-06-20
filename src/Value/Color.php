@@ -23,13 +23,10 @@ class Color extends CSSFunction
     }
 
     /**
-     * @param ParserState $oParserState
-     * @param bool $bIgnoreCase
-     *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState, $bIgnoreCase = false): CSSFunction
+    public static function parse(ParserState $oParserState, bool $bIgnoreCase = false): CSSFunction
     {
         $aColor = [];
         if ($oParserState->comes('#')) {
