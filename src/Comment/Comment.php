@@ -45,10 +45,8 @@ class Comment implements Renderable
 
     /**
      * @param string $sComment
-     *
-     * @return void
      */
-    public function setComment($sComment)
+    public function setComment($sComment): void
     {
         $this->sComment = $sComment;
     }

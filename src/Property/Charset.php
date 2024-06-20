@@ -55,7 +55,7 @@ class Charset implements AtRule
      *
      * @return void
      */
-    public function setCharset($sCharset)
+    public function setCharset($sCharset): void
     {
         $sCharset = $sCharset instanceof CSSString ? $sCharset : new CSSString($sCharset);
         $this->oCharset = $sCharset;
@@ -100,7 +100,7 @@ class Charset implements AtRule
      *
      * @return void
      */
-    public function addComments(array $aComments)
+    public function addComments(array $aComments): void
     {
         $this->aComments = array_merge($this->aComments, $aComments);
     }
@@ -118,7 +118,7 @@ class Charset implements AtRule
      *
      * @return void
      */
-    public function setComments(array $aComments)
+    public function setComments(array $aComments): void
     {
         $this->aComments = $aComments;
     }

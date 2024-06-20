@@ -69,10 +69,8 @@ class ParserState
      * Sets the charset to be used if the CSS does not contain an `@charset` declaration.
      *
      * @param string $sCharset
-     *
-     * @return void
      */
-    public function setCharset($sCharset)
+    public function setCharset($sCharset): void
     {
         $this->sCharset = $sCharset;
         $this->aText = $this->strsplit($this->sText);
@@ -123,10 +121,8 @@ class ParserState
 
     /**
      * @param int $iPosition
-     *
-     * @return void
      */
-    public function setPosition($iPosition)
+    public function setPosition($iPosition): void
     {
         $this->iCurrentPosition = $iPosition;
     }
@@ -426,10 +422,8 @@ class ParserState
 
     /**
      * @param int $iAmount
-     *
-     * @return void
      */
-    public function backtrack($iAmount)
+    public function backtrack($iAmount): void
     {
         $this->iCurrentPosition -= $iAmount;
     }

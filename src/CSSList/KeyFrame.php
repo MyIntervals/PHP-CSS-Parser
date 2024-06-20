@@ -30,7 +30,7 @@ class KeyFrame extends CSSList implements AtRule
     /**
      * @param string $vendorKeyFrame
      */
-    public function setVendorKeyFrame($vendorKeyFrame)
+    public function setVendorKeyFrame($vendorKeyFrame): void
     {
         $this->vendorKeyFrame = $vendorKeyFrame;
     }
@@ -46,7 +46,7 @@ class KeyFrame extends CSSList implements AtRule
     /**
      * @param string $animationName
      */
-    public function setAnimationName($animationName)
+    public function setAnimationName($animationName): void
     {
         $this->animationName = $animationName;
     }

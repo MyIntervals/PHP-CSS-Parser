@@ -134,10 +134,8 @@ class Color extends CSSFunction
 
     /**
      * @param array<int, Value|string> $aColor
-     *
-     * @return void
      */
-    public function setColor(array $aColor)
+    public function setColor(array $aColor): void
     {
         $this->setName(implode('', array_keys($aColor)));
         $this->aComponents = $aColor;

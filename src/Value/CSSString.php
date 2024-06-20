@@ -72,10 +72,8 @@ class CSSString extends PrimitiveValue
 
     /**
      * @param string $sString
-     *
-     * @return void
      */
-    public function setString($sString)
+    public function setString($sString): void
     {
         $this->sString = $sString;
     }

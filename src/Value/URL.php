@@ -59,10 +59,7 @@ class URL extends PrimitiveValue
         return $oResult;
     }
 
-    /**
-     * @return void
-     */
-    public function setURL(CSSString $oURL)
+    public function setURL(CSSString $oURL): void
     {
         $this->oURL = $oURL;
     }

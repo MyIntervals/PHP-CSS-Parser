@@ -54,10 +54,8 @@ class Import implements AtRule
 
     /**
      * @param URL $oLocation
-     *
-     * @return void
      */
-    public function setLocation($oLocation)
+    public function setLocation($oLocation): void
     {
         $this->oLocation = $oLocation;
     }
@@ -103,10 +101,8 @@ class Import implements AtRule
 
     /**
      * @param array<array-key, Comment> $aComments
-     *
-     * @return void
      */
-    public function addComments(array $aComments)
+    public function addComments(array $aComments): void
     {
         $this->aComments = array_merge($this->aComments, $aComments);
     }
@@ -121,10 +117,8 @@ class Import implements AtRule
 
     /**
      * @param array<array-key, Comment> $aComments
-     *
-     * @return void
      */
-    public function setComments(array $aComments)
+    public function setComments(array $aComments): void
     {
         $this->aComments = $aComments;
     }

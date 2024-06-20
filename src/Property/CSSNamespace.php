@@ -83,20 +83,16 @@ class CSSNamespace implements AtRule
 
     /**
      * @param string $mUrl
-     *
-     * @return void
      */
-    public function setUrl($mUrl)
+    public function setUrl($mUrl): void
     {
         $this->mUrl = $mUrl;
     }
 
     /**
      * @param string $sPrefix
-     *
-     * @return void
      */
-    public function setPrefix($sPrefix)
+    public function setPrefix($sPrefix): void
     {
         $this->sPrefix = $sPrefix;
     }
@@ -123,10 +119,8 @@ class CSSNamespace implements AtRule
 
     /**
      * @param array<array-key, Comment> $aComments
-     *
-     * @return void
      */
-    public function addComments(array $aComments)
+    public function addComments(array $aComments): void
     {
         $this->aComments = array_merge($this->aComments, $aComments);
     }
@@ -141,10 +135,8 @@ class CSSNamespace implements AtRule
 
     /**
      * @param array<array-key, Comment> $aComments
-     *
-     * @return void
      */
-    public function setComments(array $aComments)
+    public function setComments(array $aComments): void
     {
         $this->aComments = $aComments;
     }

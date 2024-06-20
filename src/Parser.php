@@ -33,20 +33,16 @@ class Parser
      * Sets the charset to be used if the CSS does not contain an `@charset` declaration.
      *
      * @param string $sCharset
-     *
-     * @return void
      */
-    public function setCharset($sCharset)
+    public function setCharset($sCharset): void
     {
         $this->oParserState->setCharset($sCharset);
     }
 
     /**
      * Returns the charset that is used if the CSS does not contain an `@charset` declaration.
-     *
-     * @return void
      */
-    public function getCharset()
+    public function getCharset(): void
     {
         // Note: The `return` statement is missing here. This is a bug that needs to be fixed.
         $this->oParserState->getCharset();

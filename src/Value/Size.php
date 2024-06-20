@@ -132,10 +132,8 @@ class Size extends PrimitiveValue
 
     /**
      * @param string $sUnit
-     *
-     * @return void
      */
-    public function setUnit($sUnit)
+    public function setUnit($sUnit): void
     {
         $this->sUnit = $sUnit;
     }
@@ -151,7 +149,7 @@ class Size extends PrimitiveValue
     /**
      * @param float|int|string $fSize
      */
-    public function setSize($fSize)
+    public function setSize($fSize): void
     {
         $this->fSize = (float) $fSize;
     }
