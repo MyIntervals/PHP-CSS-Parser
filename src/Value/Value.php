@@ -164,7 +164,16 @@ abstract class Value implements Renderable
         } elseif ($oParserState->comes("U+")) {
             $oValue = self::parseUnicodeRangeValue($oParserState);
         } else {
-            $oValue = self::parseIdentifierOrFunction($oParserState);
+            $sNextChar = $oParserState->peek(1);
+            try {
+                $oValue = self::parseIdentifierOrFunction($oParserState);
+            } catch (UnexpectedTokenException $e) {
+                if (\in_array($sNextChar, ['+', '-', '*', '/'], true)) {
+                    $oValue = $oParserState->consume(1);
+                } else {
+                    throw $e;
+                }
+            }
         }
         $oParserState->consumeWhiteSpace();
         return $oValue;
