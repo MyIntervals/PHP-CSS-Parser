@@ -80,11 +80,9 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      *
-     * @param string $css
-     *
      * @dataProvider provideMinWidthMediaRule
      */
-    public function parsesRuleNameOfMediaQueries($css): void
+    public function parsesRuleNameOfMediaQueries(string $css): void
     {
         $contents = (new Parser($css))->parse()->getContents();
         $atRuleBlockList = $contents[0];
@@ -95,11 +93,9 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      *
-     * @param string $css
-     *
      * @dataProvider provideMinWidthMediaRule
      */
-    public function parsesArgumentsOfMediaQueries($css): void
+    public function parsesArgumentsOfMediaQueries(string $css): void
     {
         $contents = (new Parser($css))->parse()->getContents();
         $atRuleBlockList = $contents[0];
