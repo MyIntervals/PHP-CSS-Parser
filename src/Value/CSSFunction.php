@@ -37,13 +37,11 @@ class CSSFunction extends ValueList
      * @param ParserState $oParserState
      * @param bool $bIgnoreCase
      *
-     * @return CSSFunction
-     *
      * @throws SourceException
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState, $bIgnoreCase = false)
+    public static function parse(ParserState $oParserState, $bIgnoreCase = false): CSSFunction
     {
         $mResult = $oParserState->parseIdentifier($bIgnoreCase);
         $oParserState->consume('(');
