@@ -20,10 +20,8 @@ class OutputFormatter
     /**
      * @param string $sName
      * @param string|null $sType
-     *
-     * @return string
      */
-    public function space($sName, $sType = null)
+    public function space($sName, $sType = null): string
     {
         $sSpaceString = $this->oFormat->get("Space$sName");
         // If $sSpaceString is an array, we have multiple values configured
@@ -235,10 +233,8 @@ class OutputFormatter
 
     /**
      * @param string $sSpaceString
-     *
-     * @return string
      */
-    private function prepareSpace($sSpaceString)
+    private function prepareSpace($sSpaceString): string
     {
         return str_replace("\n", "\n" . $this->indent(), $sSpaceString);
     }
