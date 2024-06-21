@@ -60,8 +60,8 @@ final class ValueTest extends TestCase
     public static function provideMalformedLengthOperands(): array
     {
         return [
-            'LHS missing value' => ['vh', '10px'],
-            'RHS missing value' => ['50vh', 'px'],
+            'LHS missing number' => ['vh', '10px'],
+            'RHS missing number' => ['50vh', 'px'],
             'LHS missing unit' => ['50', '10px'],
             'RHS missing unit' => ['50vh', '10'],
         ];
