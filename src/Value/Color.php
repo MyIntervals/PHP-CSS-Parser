@@ -144,10 +144,7 @@ class Color extends CSSFunction
         return $this->getName();
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }

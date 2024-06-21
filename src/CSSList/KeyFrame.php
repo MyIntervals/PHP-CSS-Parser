@@ -59,10 +59,7 @@ class KeyFrame extends CSSList implements AtRule
         return $this->animationName;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }

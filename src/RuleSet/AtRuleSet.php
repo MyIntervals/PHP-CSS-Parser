@@ -51,10 +51,7 @@ class AtRuleSet extends RuleSet implements AtRule
         return $this->sArgs;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }

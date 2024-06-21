@@ -69,10 +69,7 @@ class Charset implements AtRule
         return $this->oCharset->getString();
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }

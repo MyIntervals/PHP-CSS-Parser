@@ -247,10 +247,7 @@ class Rule implements Renderable, Commentable
         return $this->bIsImportant;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
