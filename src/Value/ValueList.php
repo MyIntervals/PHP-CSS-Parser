@@ -39,10 +39,8 @@ abstract class ValueList extends Value
 
     /**
      * @param Value|string $mComponent
-     *
-     * @return void
      */
-    public function addListComponent($mComponent)
+    public function addListComponent($mComponent): void
     {
         $this->aComponents[] = $mComponent;
     }
@@ -57,10 +55,8 @@ abstract class ValueList extends Value
 
     /**
      * @param array<int, Value|string> $aComponents
-     *
-     * @return void
      */
-    public function setListComponents(array $aComponents)
+    public function setListComponents(array $aComponents): void
     {
         $this->aComponents = $aComponents;
     }
@@ -75,10 +71,8 @@ abstract class ValueList extends Value
 
     /**
      * @param string $sSeparator
-     *
-     * @return void
      */
-    public function setListSeparator($sSeparator)
+    public function setListSeparator($sSeparator): void
     {
         $this->sSeparator = $sSeparator;
     }

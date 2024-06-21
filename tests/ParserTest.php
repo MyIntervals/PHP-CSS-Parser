@@ -1241,7 +1241,7 @@ body {background-color: red;}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
-    public function escapedSpecialCaseTokens()
+    public function escapedSpecialCaseTokens(): void
     {
         $oDoc = $this->parsedStructureForFile('escaped-tokens');
         $contents = $oDoc->getContents();

@@ -142,10 +142,8 @@ class Rule implements Renderable, Commentable
     /**
      * @param int $iLine
      * @param int $iColumn
-     *
-     * @return void
      */
-    public function setPosition($iLine, $iColumn)
+    public function setPosition($iLine, $iColumn): void
     {
         $this->iColNo = $iColumn;
         $this->iLineNo = $iLine;
@@ -153,10 +151,8 @@ class Rule implements Renderable, Commentable
 
     /**
      * @param string $sRule
-     *
-     * @return void
      */
-    public function setRule($sRule)
+    public function setRule($sRule): void
     {
         $this->sRule = $sRule;
     }
@@ -179,10 +175,8 @@ class Rule implements Renderable, Commentable
 
     /**
      * @param RuleValueList|string|null $mValue
-     *
-     * @return void
      */
-    public function setValue($mValue)
+    public function setValue($mValue): void
     {
         $this->mValue = $mValue;
     }
@@ -193,10 +187,8 @@ class Rule implements Renderable, Commentable
      *
      * @param RuleValueList|array<int, RuleValueList> $mValue
      * @param string $sType
-     *
-     * @return void
      */
-    public function addValue($mValue, $sType = ' ')
+    public function addValue($mValue, $sType = ' '): void
     {
         if (!is_array($mValue)) {
             $mValue = [$mValue];
@@ -215,10 +207,8 @@ class Rule implements Renderable, Commentable
 
     /**
      * @param int $iModifier
-     *
-     * @return void
      */
-    public function addIeHack($iModifier)
+    public function addIeHack($iModifier): void
     {
         $this->aIeHack[] = $iModifier;
     }
@@ -228,7 +218,7 @@ class Rule implements Renderable, Commentable
      *
      * @return void
      */
-    public function setIeHack(array $aModifiers)
+    public function setIeHack(array $aModifiers): void
     {
         $this->aIeHack = $aModifiers;
     }
@@ -243,10 +233,8 @@ class Rule implements Renderable, Commentable
 
     /**
      * @param bool $bIsImportant
-     *
-     * @return void
      */
-    public function setIsImportant($bIsImportant)
+    public function setIsImportant($bIsImportant): void
     {
         $this->bIsImportant = $bIsImportant;
     }
@@ -287,10 +275,8 @@ class Rule implements Renderable, Commentable
 
     /**
      * @param array<array-key, Comment> $aComments
-     *
-     * @return void
      */
-    public function addComments(array $aComments)
+    public function addComments(array $aComments): void
     {
         $this->aComments = array_merge($this->aComments, $aComments);
     }
@@ -305,10 +291,8 @@ class Rule implements Renderable, Commentable
 
     /**
      * @param array<array-key, Comment> $aComments
-     *
-     * @return void
      */
-    public function setComments(array $aComments)
+    public function setComments(array $aComments): void
     {
         $this->aComments = $aComments;
     }

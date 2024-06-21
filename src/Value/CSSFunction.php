@@ -63,10 +63,8 @@ class CSSFunction extends ValueList
 
     /**
      * @param string $sName
-     *
-     * @return void
      */
-    public function setName($sName)
+    public function setName($sName): void
     {
         $this->sName = $sName;
     }

@@ -107,7 +107,7 @@ class Selector
      *
      * @return void
      */
-    public function setSelector($sSelector)
+    public function setSelector($sSelector): void
     {
         $this->sSelector = trim($sSelector);
         $this->iSpecificity = null;

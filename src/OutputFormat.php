@@ -274,10 +274,7 @@ class OutputFormat
         return $this->oNextLevelFormat;
     }
 
-    /**
-     * @return void
-     */
-    public function beLenient()
+    public function beLenient(): void
     {
         $this->bIgnoreExceptions = true;
     }

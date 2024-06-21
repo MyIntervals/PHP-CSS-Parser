@@ -48,12 +48,10 @@ abstract class RuleSet implements Renderable, Commentable
     }
 
     /**
-     * @return void
-     *
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
-    public static function parseRuleSet(ParserState $oParserState, RuleSet $oRuleSet)
+    public static function parseRuleSet(ParserState $oParserState, RuleSet $oRuleSet): void
     {
         while ($oParserState->comes(';')) {
             $oParserState->consume(';');
@@ -99,10 +97,8 @@ abstract class RuleSet implements Renderable, Commentable
 
     /**
      * @param Rule|null $oSibling
-     *
-     * @return void
      */
-    public function addRule(Rule $oRule, Rule $oSibling = null)
+    public function addRule(Rule $oRule, Rule $oSibling = null): void
     {
         $sRule = $oRule->getRule();
         if (!isset($this->aRules[$sRule])) {
@@ -180,10 +176,8 @@ abstract class RuleSet implements Renderable, Commentable
      * Overrides all the rules of this set.
      *
      * @param array<array-key, Rule> $aRules The rules to override with.
-     *
-     * @return void
      */
-    public function setRules(array $aRules)
+    public function setRules(array $aRules): void
     {
         $this->aRules = [];
         foreach ($aRules as $rule) {
@@ -229,10 +223,8 @@ abstract class RuleSet implements Renderable, Commentable
      *        pattern to remove. If $mRule is null, all rules are removed. If the pattern ends in a dash,
      *        all rules starting with the pattern are removed as well as one matching the pattern with the dash
      *        excluded. Passing a Rule behaves matches by identity.
-     *
-     * @return void
      */
-    public function removeRule($mRule)
+    public function removeRule($mRule): void
     {
         if ($mRule instanceof Rule) {
             $sRule = $mRule->getRule();
@@ -304,10 +296,8 @@ abstract class RuleSet implements Renderable, Commentable
 
     /**
      * @param array<string, Comment> $aComments
-     *
-     * @return void
      */
-    public function addComments(array $aComments)
+    public function addComments(array $aComments): void
     {
         $this->aComments = array_merge($this->aComments, $aComments);
     }
@@ -322,10 +312,8 @@ abstract class RuleSet implements Renderable, Commentable
 
     /**
      * @param array<string, Comment> $aComments
-     *
-     * @return void
      */
-    public function setComments(array $aComments)
+    public function setComments(array $aComments): void
     {
         $this->aComments = $aComments;
     }

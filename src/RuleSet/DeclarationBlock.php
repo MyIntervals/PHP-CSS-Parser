@@ -93,7 +93,7 @@ class DeclarationBlock extends RuleSet
      *
      * @throws UnexpectedTokenException
      */
-    public function setSelectors($mSelector, $oList = null)
+    public function setSelectors($mSelector, $oList = null): void
     {
         if (is_array($mSelector)) {
             $this->aSelectors = $mSelector;
@@ -155,11 +155,9 @@ class DeclarationBlock extends RuleSet
     /**
      * Splits shorthand declarations (e.g. `margin` or `font`) into their constituent parts.
      *
-     * @return void
-     *
      * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function expandShorthands()
+    public function expandShorthands(): void
     {
         // border must be expanded before dimensions
         $this->expandBorderShorthand();
@@ -172,11 +170,9 @@ class DeclarationBlock extends RuleSet
     /**
      * Creates shorthand declarations (e.g. `margin` or `font`) whenever possible.
      *
-     * @return void
-     *
      * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function createShorthands()
+    public function createShorthands(): void
     {
         $this->createBackgroundShorthand();
         $this->createDimensionsShorthand();
@@ -193,11 +189,9 @@ class DeclarationBlock extends RuleSet
      *
      * Multiple borders are not yet supported as of 3.
      *
-     * @return void
-     *
      * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function expandBorderShorthand()
+    public function expandBorderShorthand(): void
     {
         $aBorderRules = [
             'border',
@@ -256,11 +250,9 @@ class DeclarationBlock extends RuleSet
      *
      * Handles `margin`, `padding`, `border-color`, `border-style` and `border-width`.
      *
-     * @return void
-     *
      * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function expandDimensionsShorthand()
+    public function expandDimensionsShorthand(): void
     {
         $aExpansions = [
             'margin' => 'margin-%s',
@@ -318,11 +310,9 @@ class DeclarationBlock extends RuleSet
      * (e.g. `font: 300 italic 11px/14px verdana, helvetica, sans-serif;`)
      * into their constituent parts.
      *
-     * @return void
-     *
      * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function expandFontShorthand()
+    public function expandFontShorthand(): void
     {
         $aRules = $this->getRulesAssoc();
         if (!isset($aRules['font'])) {
@@ -390,11 +380,9 @@ class DeclarationBlock extends RuleSet
      *
      * @see http://www.w3.org/TR/21/colors.html#propdef-background
      *
-     * @return void
-     *
      * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function expandBackgroundShorthand()
+    public function expandBackgroundShorthand(): void
     {
         $aRules = $this->getRulesAssoc();
         if (!isset($aRules['background'])) {
@@ -464,11 +452,9 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * @return void
-     *
      * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function expandListStyleShorthand()
+    public function expandListStyleShorthand(): void
     {
         $aListProperties = [
             'list-style-type' => 'disc',
@@ -549,11 +535,9 @@ class DeclarationBlock extends RuleSet
      * @param array<array-key, string> $aProperties
      * @param string $sShorthand
      *
-     * @return void
-     *
      * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function createShorthandProperties(array $aProperties, $sShorthand)
+    public function createShorthandProperties(array $aProperties, $sShorthand): void
     {
         $aRules = $this->getRulesAssoc();
         $oRule = null;
@@ -587,11 +571,9 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * @return void
-     *
      * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function createBackgroundShorthand()
+    public function createBackgroundShorthand(): void
     {
         $aProperties = [
             'background-color',
@@ -604,11 +586,9 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * @return void
-     *
      * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function createListStyleShorthand()
+    public function createListStyleShorthand(): void
     {
         $aProperties = [
             'list-style-type',
@@ -623,11 +603,9 @@ class DeclarationBlock extends RuleSet
      *
      * Should be run after `create_dimensions_shorthand`!
      *
-     * @return void
-     *
      * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function createBorderShorthand()
+    public function createBorderShorthand(): void
     {
         $aProperties = [
             'border-width',
@@ -642,11 +620,9 @@ class DeclarationBlock extends RuleSet
      * (margin, padding, border-color, border-style and border-width)
      * and converts them into shorthand CSS properties.
      *
-     * @return void
-     *
      * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function createDimensionsShorthand()
+    public function createDimensionsShorthand(): void
     {
         $aPositions = ['top', 'right', 'bottom', 'left'];
         $aExpansions = [
@@ -718,11 +694,9 @@ class DeclarationBlock extends RuleSet
      *
      * At least `font-size` AND `font-family` must be present in order to create a shorthand declaration.
      *
-     * @return void
-     *
      * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function createFontShorthand()
+    public function createFontShorthand(): void
     {
         $aFontProperties = [
             'font-style',

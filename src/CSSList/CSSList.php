@@ -57,12 +57,10 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * @return void
-     *
      * @throws UnexpectedTokenException
      * @throws SourceException
      */
-    public static function parseList(ParserState $oParserState, CSSList $oList)
+    public static function parseList(ParserState $oParserState, CSSList $oList): void
     {
         $bIsRoot = $oList instanceof Document;
         if (is_string($oParserState)) {
@@ -260,10 +258,8 @@ abstract class CSSList implements Renderable, Commentable
      * Prepends an item to the list of contents.
      *
      * @param RuleSet|CSSList|Import|Charset $oItem
-     *
-     * @return void
      */
-    public function prepend($oItem)
+    public function prepend($oItem): void
     {
         array_unshift($this->aContents, $oItem);
     }
@@ -272,10 +268,8 @@ abstract class CSSList implements Renderable, Commentable
      * Appends an item to the list of contents.
      *
      * @param RuleSet|CSSList|Import|Charset $oItem
-     *
-     * @return void
      */
-    public function append($oItem)
+    public function append($oItem): void
     {
         $this->aContents[] = $oItem;
     }
@@ -286,10 +280,8 @@ abstract class CSSList implements Renderable, Commentable
      * @param int $iOffset
      * @param int $iLength
      * @param array<int, RuleSet|CSSList|Import|Charset> $mReplacement
-     *
-     * @return void
      */
-    public function splice($iOffset, $iLength = null, $mReplacement = null)
+    public function splice($iOffset, $iLength = null, $mReplacement = null): void
     {
         array_splice($this->aContents, $iOffset, $iLength, $mReplacement);
     }
@@ -355,7 +347,7 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * @param array<int, RuleSet|Import|Charset|CSSList> $aContents
      */
-    public function setContents(array $aContents)
+    public function setContents(array $aContents): void
     {
         $this->aContents = [];
         foreach ($aContents as $content) {
@@ -368,10 +360,8 @@ abstract class CSSList implements Renderable, Commentable
      *
      * @param DeclarationBlock|array<array-key, Selector>|string $mSelector the selectors to match
      * @param bool $bRemoveAll whether to stop at the first declaration block found or remove all blocks
-     *
-     * @return void
      */
-    public function removeDeclarationBlockBySelector($mSelector, $bRemoveAll = false)
+    public function removeDeclarationBlockBySelector($mSelector, $bRemoveAll = false): void
     {
         if ($mSelector instanceof DeclarationBlock) {
             $mSelector = $mSelector->getSelectors();
@@ -466,10 +456,8 @@ abstract class CSSList implements Renderable, Commentable
 
     /**
      * @param array<array-key, Comment> $aComments
-     *
-     * @return void
      */
-    public function addComments(array $aComments)
+    public function addComments(array $aComments): void
     {
         $this->aComments = array_merge($this->aComments, $aComments);
     }
@@ -484,10 +472,8 @@ abstract class CSSList implements Renderable, Commentable
 
     /**
      * @param array<array-key, Comment> $aComments
-     *
-     * @return void
      */
-    public function setComments(array $aComments)
+    public function setComments(array $aComments): void
     {
         $this->aComments = $aComments;
     }
