@@ -1004,10 +1004,8 @@ body {background-color: red;}';
      *
      * @param string $sFileName
      * @param Settings|null $oSettings
-     *
-     * @return Document parsed document
      */
-    public static function parsedStructureForFile($sFileName, $oSettings = null)
+    public static function parsedStructureForFile($sFileName, $oSettings = null): Document
     {
         $sFile = __DIR__ . "/fixtures/$sFileName.css";
         $oParser = new Parser(file_get_contents($sFile), $oSettings);

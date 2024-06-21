@@ -51,11 +51,9 @@ class Parser
     /**
      * Parses the CSS provided to the constructor and creates a `Document` from it.
      *
-     * @return Document
-     *
      * @throws SourceException
      */
-    public function parse()
+    public function parse(): Document
     {
         return Document::parse($this->oParserState);
     }

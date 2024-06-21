@@ -308,12 +308,10 @@ class ParserState
      * @param string $mExpression
      * @param int|null $iMaxLength
      *
-     * @return string
-     *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public function consumeExpression($mExpression, $iMaxLength = null)
+    public function consumeExpression($mExpression, $iMaxLength = null): string
     {
         $aMatches = null;
         $sInput = $iMaxLength !== null ? $this->peek($iMaxLength) : $this->inputLeft();
