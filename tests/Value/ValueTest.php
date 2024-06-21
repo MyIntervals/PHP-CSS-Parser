@@ -45,13 +45,38 @@ final class ValueTest extends TestCase
     }
 
     /**
-     * @test
+     * @return array<string, array{0: string, 1: string}>
+     * The first datum is a template for the parser (using `sprintf` insertion marker `%s` for some expression).
+     * The second is for the expected result, which may have whitespace and trailing semicolon removed.
      */
-    public function parsesArithmeticWithMultipleOperatorsInFunctions(): void
+    public static function provideCssFunctionTemplates(): array
     {
-        $subject = Value::parseValue(new ParserState('calc(300px + 10% + 10vw);', Settings::create()));
+        return [
+            'calc' => [
+                'to be parsed' => 'calc(%s);',
+                'expected' => 'calc(%s)',
+            ],
+            'max' => [
+                'to be parsed' => 'max(300px, %s);',
+                'expected' => 'max(300px,%s)',
+            ],
+        ];
+    }
 
-        self::assertSame('calc(300px + 10% + 10vw)', (string) $subject);
+    /**
+     * @test
+     *
+     * @dataProvider provideCssFunctionTemplates
+     */
+    public function parsesArithmeticWithMultipleOperatorsInFunctions(
+        string $parserTemplate,
+        string $expectedResultTemplate
+    ): void {
+        static $expression = '300px + 10% + 10vw';
+
+        $subject = Value::parseValue(new ParserState(\sprintf($parserTemplate, $expression), Settings::create()));
+
+        self::assertSame(\sprintf($expectedResultTemplate, $expression), (string) $subject);
     }
 
     /**
