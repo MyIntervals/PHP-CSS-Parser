@@ -3,6 +3,7 @@
 namespace Sabberworm\CSS\Tests\RuleSet;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Settings;
@@ -135,11 +136,13 @@ final class LenientParsingTest extends TestCase
     /**
      * @test
      */
-    public function invalidColor(): void
+    public function cssWithInvalidColorStillGetsParsedAsDocument(): void
     {
         $sFile = __DIR__ . '/../fixtures/invalid-color.css';
         $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
-        $oParser->parse();
+        $result = $oParser->parse();
+
+        self::assertInstanceOf(Document::class, $result);
     }
 
     /**
