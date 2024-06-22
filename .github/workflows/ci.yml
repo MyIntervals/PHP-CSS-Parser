@@ -30,6 +30,22 @@ jobs:
                   tools: composer:v2
                   coverage: none
 
+            - name: Show the Composer configuration
+              run: composer config --global --list
+
+            - name: Cache dependencies installed with composer
+              uses: actions/cache@v4
+              with:
+                  path: ~/.cache/composer
+                  key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
+                  restore-keys: |
+                      php${{ matrix.php-version }}-composer-
+
+            - name: Install Composer dependencies
+              run: |
+                  composer update --with-dependencies --no-progress;
+                  composer show;
+
             - name: PHP Lint
               run: composer ci:php:lint
 
