@@ -1,0 +1,15 @@
+body, div: hover {
+    color: green;
+}
+
+body, div : hover {
+    color: green;
+}
+
+body, div :hover {
+    color: green;
+}
+
+div {
+    color: blue;
+}
