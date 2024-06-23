@@ -83,8 +83,8 @@
         "ci:tests": [
             "@ci:tests:unit"
         ],
-        "ci:tests:sof": "\"./vendor/bin/phpunit\" --stop-on-failure --do-not-cache-result",
-        "ci:tests:unit": "\"./vendor/bin/phpunit\" --do-not-cache-result",
+        "ci:tests:sof": "phpunit --stop-on-failure --do-not-cache-result",
+        "ci:tests:unit": "phpunit --do-not-cache-result",
         "fix:php": [
             "@fix:php:fixer",
             "@fix:php:rector"
