@@ -71,7 +71,7 @@
             "@ci:tests"
         ],
         "ci:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix --dry-run -v --show-progress=dots --diff bin src tests config",
-        "ci:php:lint": "\"./vendor/bin/parallel-lint\" src tests config bin",
+        "ci:php:lint": "parallel-lint src tests config bin",
         "ci:php:rector": "rector --no-progress-bar --dry-run --config=config/rector.php",
         "ci:php:stan": "phpstan --no-progress --configuration=config/phpstan.neon",
         "ci:static": [
