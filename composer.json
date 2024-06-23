@@ -28,6 +28,7 @@
     },
     "require-dev": {
         "codacy/coverage": "^1.4.3",
+        "php-parallel-lint/php-parallel-lint": "^1.4.0",
         "phpstan/extension-installer": "^1.4.1",
         "phpstan/phpstan": "^1.11.5",
         "phpstan/phpstan-phpunit": "^1.4.0",
@@ -70,7 +71,7 @@
             "@ci:tests"
         ],
         "ci:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix --dry-run -v --show-progress=dots --diff bin src tests config",
-        "ci:php:lint": "find src tests config bin -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
+        "ci:php:lint": "parallel-lint src tests config bin",
         "ci:php:rector": "rector --no-progress-bar --dry-run --config=config/rector.php",
         "ci:php:stan": "phpstan --no-progress --configuration=config/phpstan.neon",
         "ci:static": [
