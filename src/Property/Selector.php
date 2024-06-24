@@ -113,10 +113,7 @@ class Selector
         $this->iSpecificity = null;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getSelector();
     }

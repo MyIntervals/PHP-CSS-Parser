@@ -194,10 +194,7 @@ class Size extends PrimitiveValue
         return false;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }

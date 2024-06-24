@@ -45,10 +45,7 @@ class LineName extends ValueList
         return new LineName($aNames, $oParserState->currentLine());
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }

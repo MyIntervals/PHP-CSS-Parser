@@ -51,10 +51,7 @@ class Comment implements Renderable
         $this->sComment = $sComment;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }

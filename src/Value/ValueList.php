@@ -77,10 +77,7 @@ abstract class ValueList extends Value
         $this->sSeparator = $sSeparator;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }

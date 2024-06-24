@@ -51,10 +51,7 @@ class CSSNamespace implements AtRule
         return $this->iLineNo;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }

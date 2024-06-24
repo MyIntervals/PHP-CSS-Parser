@@ -68,10 +68,7 @@ class Import implements AtRule
         return $this->oLocation;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
