@@ -72,6 +72,10 @@ final class ValueTest extends TestCase
                 'to be parsed' => 'max(300px, %s);',
                 'expected' => 'max(300px,%s)',
             ],
+            'clamp' => [
+                'to be parsed' => 'clamp(2.19rem, %s, 2.5rem);',
+                'expected' => 'clamp(2.19rem,%s,2.5rem)',
+            ],
         ];
     }
 
