@@ -15,6 +15,15 @@ use Sabberworm\CSS\Value\Value;
 final class ValueTest extends TestCase
 {
     /**
+     * the default set of delimiters for parsing most values
+     *
+     * @see \Rule\Rule::listDelimiterForRule
+     *
+     * @var array<int, string>
+     */
+    private const DEFAULT_DELIMITERS = [',', ' ', '/'];
+
+    /**
      * @return array<string, array{0: string}>
      */
     public static function provideArithmeticOperator(): array
@@ -39,7 +48,10 @@ final class ValueTest extends TestCase
      */
     public function parsesArithmeticInFunctions(string $operator): void
     {
-        $subject = Value::parseValue(new ParserState('max(300px, 50vh ' . $operator . ' 10px);', Settings::create()));
+        $subject = Value::parseValue(
+            new ParserState('max(300px, 50vh ' . $operator . ' 10px);', Settings::create()),
+            self::DEFAULT_DELIMITERS
+        );
 
         self::assertSame('max(300px,50vh ' . $operator . ' 10px)', (string) $subject);
     }
@@ -74,7 +86,10 @@ final class ValueTest extends TestCase
     ): void {
         static $expression = '300px + 10% + 10vw';
 
-        $subject = Value::parseValue(new ParserState(\sprintf($parserTemplate, $expression), Settings::create()));
+        $subject = Value::parseValue(
+            new ParserState(\sprintf($parserTemplate, $expression), Settings::create()),
+            self::DEFAULT_DELIMITERS
+        );
 
         self::assertSame(\sprintf($expectedResultTemplate, $expression), (string) $subject);
     }
@@ -99,10 +114,10 @@ final class ValueTest extends TestCase
      */
     public function parsesArithmeticWithMalformedOperandsInFunctions(string $leftOperand, string $rightOperand): void
     {
-        $subject = Value::parseValue(new ParserState(
-            'max(300px, ' . $leftOperand . ' + ' . $rightOperand . ');',
-            Settings::create()
-        ));
+        $subject = Value::parseValue(
+            new ParserState('max(300px, ' . $leftOperand . ' + ' . $rightOperand . ');', Settings::create()),
+            self::DEFAULT_DELIMITERS
+        );
 
         self::assertSame('max(300px,' . $leftOperand . ' + ' . $rightOperand . ')', (string) $subject);
     }
