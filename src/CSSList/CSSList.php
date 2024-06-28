@@ -303,7 +303,7 @@ abstract class CSSList implements Renderable, Commentable
      * @param RuleSet|CSSList|Import|Charset $item
      * @param RuleSet|CSSList|Import|Charset $sibling
      */
-    public function insertBefore($item, $sibling): void
+    public function insertBefore($item, $sibling)
     {
         if (in_array($sibling, $this->aContents, true)) {
             $this->replace($sibling, [$item, $sibling]);
