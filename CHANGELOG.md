@@ -9,11 +9,17 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
-- Mark all class constants as `@internal` (#500)
-
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## 8.5.2
+
+### Changed
+
+- Mark all class constants as `@internal` (#500)
 
 ### Fixed
 
