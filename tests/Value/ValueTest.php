@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Sabberworm\CSS\Tests\Value;
 
 use PHPUnit\Framework\TestCase;
