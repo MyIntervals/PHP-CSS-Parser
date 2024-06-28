@@ -15,7 +15,7 @@ final class SizeTest extends TestCase
     /**
      * @return array<string, array{0: string}>
      */
-    public static function provideUnit(): array
+    public static function provideUnit()
     {
         $units = [
             'px', 'pt', 'pc',
@@ -29,7 +29,7 @@ final class SizeTest extends TestCase
         return \array_combine(
             $units,
             \array_map(
-                function (string $unit): array {
+                function ($unit) {
                     return [$unit];
                 },
                 $units
@@ -42,7 +42,7 @@ final class SizeTest extends TestCase
      *
      * @dataProvider provideUnit
      */
-    public function parsesUnit(string $unit): void
+    public function parsesUnit($unit)
     {
         $subject = Size::parse(new ParserState('1' . $unit, Settings::create()));
 
