@@ -15,14 +15,14 @@ final class ValueTest extends TestCase
     /**
      * @return array<string, array{0: string}>
      */
-    public static function provideArithmeticOperator(): array
+    public static function provideArithmeticOperator()
     {
         $units = ['+', '-', '*', '/'];
 
         return \array_combine(
             $units,
             \array_map(
-                function (string $unit): array {
+                function (string $unit) {
                     return [$unit];
                 },
                 $units
@@ -35,7 +35,7 @@ final class ValueTest extends TestCase
      *
      * @dataProvider provideArithmeticOperator
      */
-    public function parsesArithmeticInFunctions(string $operator): void
+    public function parsesArithmeticInFunctions(string $operator)
     {
         $subject = Value::parseValue(new ParserState('max(300px, 50vh ' . $operator . ' 10px);', Settings::create()));
 
@@ -47,7 +47,7 @@ final class ValueTest extends TestCase
      * The first datum is a template for the parser (using `sprintf` insertion marker `%s` for some expression).
      * The second is for the expected result, which may have whitespace and trailing semicolon removed.
      */
-    public static function provideCssFunctionTemplates(): array
+    public static function provideCssFunctionTemplates()
     {
         return [
             'calc' => [
@@ -69,7 +69,7 @@ final class ValueTest extends TestCase
     public function parsesArithmeticWithMultipleOperatorsInFunctions(
         string $parserTemplate,
         string $expectedResultTemplate
-    ): void {
+    ) {
         static $expression = '300px + 10% + 10vw';
 
         $subject = Value::parseValue(new ParserState(\sprintf($parserTemplate, $expression), Settings::create()));
@@ -80,7 +80,7 @@ final class ValueTest extends TestCase
     /**
      * @return array<string, array{0: string, 1: string}>
      */
-    public static function provideMalformedLengthOperands(): array
+    public static function provideMalformedLengthOperands()
     {
         return [
             'LHS missing number' => ['vh', '10px'],
@@ -95,7 +95,7 @@ final class ValueTest extends TestCase
      *
      * @dataProvider provideMalformedLengthOperands
      */
-    public function parsesArithmeticWithMalformedOperandsInFunctions(string $leftOperand, string $rightOperand): void
+    public function parsesArithmeticWithMalformedOperandsInFunctions(string $leftOperand, string $rightOperand)
     {
         $subject = Value::parseValue(new ParserState(
             'max(300px, ' . $leftOperand . ' + ' . $rightOperand . ');',
