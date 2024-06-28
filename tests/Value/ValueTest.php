@@ -22,7 +22,7 @@ final class ValueTest extends TestCase
         return \array_combine(
             $units,
             \array_map(
-                function (string $unit) {
+                function ($unit) {
                     return [$unit];
                 },
                 $units
@@ -35,7 +35,7 @@ final class ValueTest extends TestCase
      *
      * @dataProvider provideArithmeticOperator
      */
-    public function parsesArithmeticInFunctions(string $operator)
+    public function parsesArithmeticInFunctions($operator)
     {
         $subject = Value::parseValue(new ParserState('max(300px, 50vh ' . $operator . ' 10px);', Settings::create()));
 
@@ -67,8 +67,8 @@ final class ValueTest extends TestCase
      * @dataProvider provideCssFunctionTemplates
      */
     public function parsesArithmeticWithMultipleOperatorsInFunctions(
-        string $parserTemplate,
-        string $expectedResultTemplate
+        $parserTemplate,
+        $expectedResultTemplate
     ) {
         static $expression = '300px + 10% + 10vw';
 
@@ -95,7 +95,7 @@ final class ValueTest extends TestCase
      *
      * @dataProvider provideMalformedLengthOperands
      */
-    public function parsesArithmeticWithMalformedOperandsInFunctions(string $leftOperand, string $rightOperand)
+    public function parsesArithmeticWithMalformedOperandsInFunctions($leftOperand, $rightOperand)
     {
         $subject = Value::parseValue(new ParserState(
             'max(300px, ' . $leftOperand . ' + ' . $rightOperand . ');',
