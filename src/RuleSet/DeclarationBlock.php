@@ -350,8 +350,6 @@ class DeclarationBlock extends RuleSet
                 $aFontProperties['font-variant'] = $mValue;
             } elseif (
                 in_array($mValue, ['bold', 'bolder', 'lighter'], true)
-                // Note: font weights should be integers, not floats. For now, we'll keep using floats. We will
-                // drill down on this and fix it in  https://github.com/MyIntervals/PHP-CSS-Parser/issues/612.
                 || ($mValue instanceof Size && in_array($mValue->getSize(), range(100.0, 900.0, 100.0), true))
             ) {
                 $aFontProperties['font-weight'] = $mValue;
