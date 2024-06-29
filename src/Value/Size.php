@@ -19,7 +19,12 @@ class Size extends PrimitiveValue
      *
      * @internal
      */
-    const ABSOLUTE_SIZE_UNITS = ['px', 'cm', 'mm', 'mozmm', 'in', 'pt', 'pc', 'vh', 'vw', 'vmin', 'vmax', 'rem'];
+    const ABSOLUTE_SIZE_UNITS = [
+        'px', 'pt', 'pc',
+        'cm', 'mm', 'mozmm', 'in',
+        'vh', 'dvh', 'svh', 'lvh',
+        'vw', 'vmin', 'vmax', 'rem',
+    ];
 
     /**
      * @var array<int, string>

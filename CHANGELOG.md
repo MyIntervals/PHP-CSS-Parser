@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ### Added
 - Add support for inserting an item in a CSS list (#545)
 
+- Add support for the `dvh`, `lvh` and `svh` length units (#415)
+
 ### Changed
 
 ### Deprecated
