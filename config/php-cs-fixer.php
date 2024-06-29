@@ -20,7 +20,7 @@ return (new \PhpCsFixer\Config())
             '@PHPUnit84Migration:risky' => true,
 
             // overwrite the PER2 defaults to restore compatibility with PHP 7.x
-            'trailing_comma_in_multiline' => ['elements' => ['arrays', 'match']],
+            'trailing_comma_in_multiline' => ['elements' => ['arrays']],
 
             'php_unit_construct' => true,
             'php_unit_dedicate_assert' => ['target' => 'newest'],
