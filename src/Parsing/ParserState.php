@@ -372,7 +372,7 @@ class ParserState
 
         while (!$this->isEnd()) {
             $char = $this->consume(1);
-            if (in_array($char, $aEnd)) {
+            if (in_array($char, $aEnd, true)) {
                 if ($bIncludeEnd) {
                     $out .= $char;
                 } elseif (!$consumeEnd) {
@@ -386,7 +386,7 @@ class ParserState
             }
         }
 
-        if (in_array(self::EOF, $aEnd)) {
+        if (in_array(self::EOF, $aEnd, true)) {
             return $out;
         }
 
