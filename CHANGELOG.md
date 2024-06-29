@@ -12,6 +12,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Improve performance of Value::parseValue with many delimiters by refactoring to remove array_search() (#413)
+
 ### Deprecated
 
 ### Removed
