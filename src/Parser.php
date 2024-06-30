@@ -6,11 +6,17 @@ use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
+
 /**
  * This class parses CSS from text into a data structure.
  */
-class Parser
+class Parser implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var ParserState
      */
@@ -23,6 +29,8 @@ class Parser
      */
     public function __construct($sText, Settings $oParserSettings = null, $iLineNo = 1)
     {
+        $this->logger = new NullLogger();
+
         if ($oParserSettings === null) {
             $oParserSettings = Settings::create();
         }
@@ -55,6 +63,6 @@ class Parser
      */
     public function parse(): Document
     {
-        return Document::parse($this->oParserState);
+        return Document::parse($this->oParserState, $this->logger);
     }
 }

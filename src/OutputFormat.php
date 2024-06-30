@@ -2,14 +2,20 @@
 
 namespace Sabberworm\CSS;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
+
 /**
  * Class OutputFormat
  *
  * @method OutputFormat setSemicolonAfterLastRule(bool $bSemicolonAfterLastRule) Set whether semicolons are added after
  *     last rule.
  */
-class OutputFormat
+class OutputFormat implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * Value format: `"` means double-quote, `'` means single-quote
      *
@@ -165,7 +171,10 @@ class OutputFormat
      */
     private $iIndentationLevel = 0;
 
-    public function __construct() {}
+    public function __construct()
+    {
+        $this->logger = new NullLogger();
+    }
 
     /**
      * @param string $sName
@@ -237,6 +246,7 @@ class OutputFormat
         } elseif (method_exists(OutputFormatter::class, $sMethodName)) {
             return call_user_func_array([$this->getFormatter(), $sMethodName], $aArguments);
         } else {
+            $this->logger->error('Unknown OutputFormat method called: {method}', ['method' => $sMethodName]);
             throw new \Exception('Unknown OutputFormat method called: ' . $sMethodName);
         }
     }

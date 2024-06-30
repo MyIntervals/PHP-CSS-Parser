@@ -9,12 +9,18 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Value\CSSFunction;
 use Sabberworm\CSS\Renderable;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
+
 /**
  * Abstract base class for specific classes of CSS values: `Size`, `Color`, `CSSString` and `URL`, and another
  * abstract subclass `ValueList`.
  */
-abstract class Value implements Renderable
+abstract class Value implements Renderable, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var int
      */
@@ -25,6 +31,7 @@ abstract class Value implements Renderable
      */
     public function __construct($iLineNo = 0)
     {
+        $this->logger = new NullLogger();
         $this->iLineNo = $iLineNo;
     }
 

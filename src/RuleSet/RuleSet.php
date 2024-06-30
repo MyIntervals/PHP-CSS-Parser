@@ -11,6 +11,10 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Rule\Rule;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
+
 /**
  * This class is a container for individual 'Rule's.
  *
@@ -20,8 +24,10 @@ use Sabberworm\CSS\Rule\Rule;
  * If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $rule)`, `getRules()` and `removeRule($rule)`
  * (which accepts either a `Rule` or a rule name; optionally suffixed by a dash to remove all related rules).
  */
-abstract class RuleSet implements Renderable, Commentable
+abstract class RuleSet implements Renderable, Commentable, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var array<string, Rule>
      */
@@ -42,6 +48,8 @@ abstract class RuleSet implements Renderable, Commentable
      */
     public function __construct($iLineNo = 0)
     {
+        $this->logger = new NullLogger();
+
         $this->aRules = [];
         $this->iLineNo = $iLineNo;
         $this->aComments = [];

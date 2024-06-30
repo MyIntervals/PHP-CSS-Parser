@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ## x.y.z
 
 ### Added
+
+- Add support for PSR/Log with a new `SimpleLogger` and use `NullLogger` per default (#596)
 - Support arithmetic operators in CSS function arguments (#607)
 - Add support for inserting an item in a CSS list (#545)
 - Add a class diagram to the README (#482)

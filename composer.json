@@ -24,7 +24,8 @@
     ],
     "require": {
         "php": ">=7.2.0",
-        "ext-iconv": "*"
+        "ext-iconv": "*",
+        "psr/log": "*"
     },
     "require-dev": {
         "codacy/coverage": "^1.4.3",
