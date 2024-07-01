@@ -99,7 +99,7 @@ class Charset implements AtRule
      */
     public function addComments(array $aComments): void
     {
-        $this->aComments = array_merge($this->aComments, $aComments);
+        $this->aComments = \array_merge($this->aComments, $aComments);
     }
 
     /**

@@ -79,7 +79,7 @@ class Selector
      */
     public static function isValid($sSelector)
     {
-        return preg_match(static::SELECTOR_VALIDATION_RX, $sSelector);
+        return \preg_match(static::SELECTOR_VALIDATION_RX, $sSelector);
     }
 
     /**
@@ -109,7 +109,7 @@ class Selector
      */
     public function setSelector($sSelector): void
     {
-        $this->sSelector = trim($sSelector);
+        $this->sSelector = \trim($sSelector);
         $this->iSpecificity = null;
     }
 
@@ -127,9 +127,9 @@ class Selector
             $a = 0;
             /// @todo should exclude \# as well as "#"
             $aMatches = null;
-            $b = substr_count($this->sSelector, '#');
-            $c = preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $this->sSelector, $aMatches);
-            $d = preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $this->sSelector, $aMatches);
+            $b = \substr_count($this->sSelector, '#');
+            $c = \preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $this->sSelector, $aMatches);
+            $d = \preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $this->sSelector, $aMatches);
             $this->iSpecificity = ($a * 1000) + ($b * 100) + ($c * 10) + $d;
         }
         return $this->iSpecificity;

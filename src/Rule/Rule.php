@@ -117,7 +117,7 @@ class Rule implements Renderable, Commentable
      */
     private static function listDelimiterForRule($sRule): array
     {
-        if (preg_match('/^font($|-)/', $sRule)) {
+        if (\preg_match('/^font($|-)/', $sRule)) {
             return [',', '/', ' '];
         }
         return [',', ' ', '/'];
@@ -190,7 +190,7 @@ class Rule implements Renderable, Commentable
      */
     public function addValue($mValue, $sType = ' '): void
     {
-        if (!is_array($mValue)) {
+        if (!\is_array($mValue)) {
             $mValue = [$mValue];
         }
         if (!$this->mValue instanceof RuleValueList || $this->mValue->getListSeparator() !== $sType) {
@@ -261,7 +261,7 @@ class Rule implements Renderable, Commentable
             $sResult .= $this->mValue;
         }
         if (!empty($this->aIeHack)) {
-            $sResult .= ' \\' . implode('\\', $this->aIeHack);
+            $sResult .= ' \\' . \implode('\\', $this->aIeHack);
         }
         if ($this->bIsImportant) {
             $sResult .= ' !important';
@@ -275,7 +275,7 @@ class Rule implements Renderable, Commentable
      */
     public function addComments(array $aComments): void
     {
-        $this->aComments = array_merge($this->aComments, $aComments);
+        $this->aComments = \array_merge($this->aComments, $aComments);
     }
 
     /**

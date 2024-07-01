@@ -35,7 +35,7 @@ class Settings
 
     private function __construct()
     {
-        $this->bMultibyteSupport = extension_loaded('mbstring');
+        $this->bMultibyteSupport = \extension_loaded('mbstring');
     }
 
     /**

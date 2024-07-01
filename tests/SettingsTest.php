@@ -48,7 +48,7 @@ final class SettingsTest extends TestCase
      */
     public function multibyteSupportByDefaultStateOfMbStringExtension(): void
     {
-        self::assertSame(extension_loaded('mbstring'), $this->subject->bMultibyteSupport);
+        self::assertSame(\extension_loaded('mbstring'), $this->subject->bMultibyteSupport);
     }
 
     /**

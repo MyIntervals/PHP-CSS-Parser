@@ -78,7 +78,7 @@ class Document extends CSSBlockList
         $sSearchString = null;
         if ($mElement === null) {
             $mElement = $this;
-        } elseif (is_string($mElement)) {
+        } elseif (\is_string($mElement)) {
             $sSearchString = $mElement;
             $mElement = $this;
         }
