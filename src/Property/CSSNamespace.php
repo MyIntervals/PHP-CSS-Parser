@@ -109,7 +109,7 @@ class CSSNamespace implements AtRule
     {
         $aResult = [$this->mUrl];
         if ($this->sPrefix) {
-            array_unshift($aResult, $this->sPrefix);
+            \array_unshift($aResult, $this->sPrefix);
         }
         return $aResult;
     }
@@ -119,7 +119,7 @@ class CSSNamespace implements AtRule
      */
     public function addComments(array $aComments): void
     {
-        $this->aComments = array_merge($this->aComments, $aComments);
+        $this->aComments = \array_merge($this->aComments, $aComments);
     }
 
     /**

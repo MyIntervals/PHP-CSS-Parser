@@ -29,7 +29,7 @@ class CalcFunction extends CSSFunction
         if ($oParserState->peek() != '(') {
             // Found ; or end of line before an opening bracket
             throw new UnexpectedTokenException('(', $oParserState->peek(), 'literal', $oParserState->currentLine());
-        } elseif (!in_array($sFunction, ['calc', '-moz-calc', '-webkit-calc'], true)) {
+        } elseif (!\in_array($sFunction, ['calc', '-moz-calc', '-webkit-calc'], true)) {
             // Found invalid calc definition. Example calc (...
             throw new UnexpectedTokenException('calc', $sFunction, 'literal', $oParserState->currentLine());
         }
@@ -60,7 +60,7 @@ class CalcFunction extends CSSFunction
                 $oCalcList->addListComponent($oVal);
                 $iLastComponentType = CalcFunction::T_OPERAND;
             } else {
-                if (in_array($oParserState->peek(), $aOperators, true)) {
+                if (\in_array($oParserState->peek(), $aOperators, true)) {
                     if (($oParserState->comes('-') || $oParserState->comes('+'))) {
                         if (
                             $oParserState->peek(1, -1) != ' '
@@ -79,9 +79,9 @@ class CalcFunction extends CSSFunction
                     $iLastComponentType = CalcFunction::T_OPERATOR;
                 } else {
                     throw new UnexpectedTokenException(
-                        sprintf(
+                        \sprintf(
                             'Next token was expected to be an operand of type %s. Instead "%s" was found.',
-                            implode(', ', $aOperators),
+                            \implode(', ', $aOperators),
                             $oParserState->peek()
                         ),
                         '',

@@ -80,12 +80,12 @@ class Size extends PrimitiveValue
         if ($oParserState->comes('-')) {
             $sSize .= $oParserState->consume('-');
         }
-        while (is_numeric($oParserState->peek()) || $oParserState->comes('.') || $oParserState->comes('e', true)) {
+        while (\is_numeric($oParserState->peek()) || $oParserState->comes('.') || $oParserState->comes('e', true)) {
             if ($oParserState->comes('.')) {
                 $sSize .= $oParserState->consume('.');
             } elseif ($oParserState->comes('e', true)) {
                 $sLookahead = $oParserState->peek(1, 1);
-                if (is_numeric($sLookahead) || $sLookahead === '+' || $sLookahead === '-') {
+                if (\is_numeric($sLookahead) || $sLookahead === '+' || $sLookahead === '-') {
                     $sSize .= $oParserState->consume(2);
                 } else {
                     break; // Reached the unit part of the number like "em" or "ex"
@@ -98,8 +98,8 @@ class Size extends PrimitiveValue
         $sUnit = null;
         $aSizeUnits = self::getSizeUnits();
         foreach ($aSizeUnits as $iLength => &$aValues) {
-            $sKey = strtolower($oParserState->peek($iLength));
-            if (array_key_exists($sKey, $aValues)) {
+            $sKey = \strtolower($oParserState->peek($iLength));
+            if (\array_key_exists($sKey, $aValues)) {
                 if (($sUnit = $aValues[$sKey]) !== null) {
                     $oParserState->consume($iLength);
                     break;
@@ -114,17 +114,17 @@ class Size extends PrimitiveValue
      */
     private static function getSizeUnits()
     {
-        if (!is_array(self::$SIZE_UNITS)) {
+        if (!\is_array(self::$SIZE_UNITS)) {
             self::$SIZE_UNITS = [];
-            foreach (array_merge(self::ABSOLUTE_SIZE_UNITS, self::RELATIVE_SIZE_UNITS, self::NON_SIZE_UNITS) as $val) {
-                $iSize = strlen($val);
+            foreach (\array_merge(self::ABSOLUTE_SIZE_UNITS, self::RELATIVE_SIZE_UNITS, self::NON_SIZE_UNITS) as $val) {
+                $iSize = \strlen($val);
                 if (!isset(self::$SIZE_UNITS[$iSize])) {
                     self::$SIZE_UNITS[$iSize] = [];
                 }
-                self::$SIZE_UNITS[$iSize][strtolower($val)] = $val;
+                self::$SIZE_UNITS[$iSize][\strtolower($val)] = $val;
             }
 
-            krsort(self::$SIZE_UNITS, SORT_NUMERIC);
+            \krsort(self::$SIZE_UNITS, SORT_NUMERIC);
         }
 
         return self::$SIZE_UNITS;
@@ -177,7 +177,7 @@ class Size extends PrimitiveValue
      */
     public function isSize(): bool
     {
-        if (in_array($this->sUnit, self::NON_SIZE_UNITS, true)) {
+        if (\in_array($this->sUnit, self::NON_SIZE_UNITS, true)) {
             return false;
         }
         return !$this->isColorComponent();
@@ -185,7 +185,7 @@ class Size extends PrimitiveValue
 
     public function isRelative(): bool
     {
-        if (in_array($this->sUnit, self::RELATIVE_SIZE_UNITS, true)) {
+        if (\in_array($this->sUnit, self::RELATIVE_SIZE_UNITS, true)) {
             return true;
         }
         if ($this->sUnit === null && $this->fSize != 0) {
@@ -201,11 +201,11 @@ class Size extends PrimitiveValue
 
     public function render(OutputFormat $oOutputFormat): string
     {
-        $l = localeconv();
-        $sPoint = preg_quote($l['decimal_point'], '/');
-        $sSize = preg_match("/[\d\.]+e[+-]?\d+/i", (string) $this->fSize)
-            ? preg_replace("/$sPoint?0+$/", "", sprintf("%f", $this->fSize)) : $this->fSize;
-        return preg_replace(["/$sPoint/", "/^(-?)0\./"], ['.', '$1.'], $sSize)
+        $l = \localeconv();
+        $sPoint = \preg_quote($l['decimal_point'], '/');
+        $sSize = \preg_match("/[\d\.]+e[+-]?\d+/i", (string) $this->fSize)
+            ? \preg_replace("/$sPoint?0+$/", "", \sprintf("%f", $this->fSize)) : $this->fSize;
+        return \preg_replace(["/$sPoint/", "/^(-?)0\./"], ['.', '$1.'], $sSize)
             . ($this->sUnit ?? '');
     }
 }

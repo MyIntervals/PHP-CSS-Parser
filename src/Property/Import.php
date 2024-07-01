@@ -91,7 +91,7 @@ class Import implements AtRule
     {
         $aResult = [$this->oLocation];
         if ($this->sMediaQuery) {
-            array_push($aResult, $this->sMediaQuery);
+            \array_push($aResult, $this->sMediaQuery);
         }
         return $aResult;
     }
@@ -101,7 +101,7 @@ class Import implements AtRule
      */
     public function addComments(array $aComments): void
     {
-        $this->aComments = array_merge($this->aComments, $aComments);
+        $this->aComments = \array_merge($this->aComments, $aComments);
     }
 
     /**

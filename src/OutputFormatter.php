@@ -26,11 +26,11 @@ class OutputFormatter
         $sSpaceString = $this->oFormat->get("Space$sName");
         // If $sSpaceString is an array, we have multiple values configured
         // depending on the type of object the space applies to
-        if (is_array($sSpaceString)) {
+        if (\is_array($sSpaceString)) {
             if ($sType !== null && isset($sSpaceString[$sType])) {
                 $sSpaceString = $sSpaceString[$sType];
             } else {
-                $sSpaceString = reset($sSpaceString);
+                $sSpaceString = \reset($sSpaceString);
             }
         }
         return $this->prepareSpace($sSpaceString);
@@ -169,14 +169,14 @@ class OutputFormatter
         if ($this->oFormat->get('SemicolonAfterLastRule')) {
             return $sString;
         }
-        $sString = explode(';', $sString);
-        if (count($sString) < 2) {
+        $sString = \explode(';', $sString);
+        if (\count($sString) < 2) {
             return $sString[0];
         }
-        $sLast = array_pop($sString);
-        $sNextToLast = array_pop($sString);
-        array_push($sString, $sNextToLast . $sLast);
-        return implode(';', $sString);
+        $sLast = \array_pop($sString);
+        $sNextToLast = \array_pop($sString);
+        \array_push($sString, $sNextToLast . $sLast);
+        return \implode(';', $sString);
     }
 
     /**
@@ -193,7 +193,7 @@ class OutputFormatter
 
         $sResult = '';
         $aComments = $oCommentable->getComments();
-        $iLastCommentIndex = count($aComments) - 1;
+        $iLastCommentIndex = \count($aComments) - 1;
 
         foreach ($aComments as $i => $oComment) {
             $sResult .= $oComment->render($this->oFormat);
@@ -207,7 +207,7 @@ class OutputFormatter
      */
     private function prepareSpace($sSpaceString): string
     {
-        return str_replace("\n", "\n" . $this->indent(), $sSpaceString);
+        return \str_replace("\n", "\n" . $this->indent(), $sSpaceString);
     }
 
     /**
@@ -215,6 +215,6 @@ class OutputFormatter
      */
     private function indent(): string
     {
-        return str_repeat($this->oFormat->sIndentation, $this->oFormat->level());
+        return \str_repeat($this->oFormat->sIndentation, $this->oFormat->level());
     }
 }

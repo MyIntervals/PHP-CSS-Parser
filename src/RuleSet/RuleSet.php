@@ -65,7 +65,7 @@ abstract class RuleSet implements Renderable, Commentable
                     try {
                         $sConsume = $oParserState->consumeUntil(["\n", ";", '}'], true);
                         // We need to “unfind” the matches to the end of the ruleSet as this will be matched later
-                        if ($oParserState->streql(substr($sConsume, -1), '}')) {
+                        if ($oParserState->streql(\substr($sConsume, -1), '}')) {
                             $oParserState->backtrack(1);
                         } else {
                             while ($oParserState->comes(';')) {
@@ -105,10 +105,10 @@ abstract class RuleSet implements Renderable, Commentable
             $this->aRules[$sRule] = [];
         }
 
-        $iPosition = count($this->aRules[$sRule]);
+        $iPosition = \count($this->aRules[$sRule]);
 
         if ($oSibling !== null) {
-            $iSiblingPos = array_search($oSibling, $this->aRules[$sRule], true);
+            $iSiblingPos = \array_search($oSibling, $this->aRules[$sRule], true);
             if ($iSiblingPos !== false) {
                 $iPosition = $iSiblingPos;
                 $oRule->setPosition($oSibling->getLineNo(), $oSibling->getColNo() - 1);
@@ -117,14 +117,14 @@ abstract class RuleSet implements Renderable, Commentable
         if ($oRule->getLineNo() === 0 && $oRule->getColNo() === 0) {
             //this node is added manually, give it the next best line
             $rules = $this->getRules();
-            $pos = count($rules);
+            $pos = \count($rules);
             if ($pos > 0) {
                 $last = $rules[$pos - 1];
                 $oRule->setPosition($last->getLineNo() + 1, 0);
             }
         }
 
-        array_splice($this->aRules[$sRule], $iPosition, 0, [$oRule]);
+        \array_splice($this->aRules[$sRule], $iPosition, 0, [$oRule]);
     }
 
     /**
@@ -156,14 +156,14 @@ abstract class RuleSet implements Renderable, Commentable
             if (
                 !$mRule || $sName === $mRule
                 || (
-                    strrpos($mRule, '-') === strlen($mRule) - strlen('-')
-                    && (strpos($sName, $mRule) === 0 || $sName === substr($mRule, 0, -1))
+                    \strrpos($mRule, '-') === \strlen($mRule) - \strlen('-')
+                    && (\strpos($sName, $mRule) === 0 || $sName === \substr($mRule, 0, -1))
                 )
             ) {
-                $aResult = array_merge($aResult, $aRules);
+                $aResult = \array_merge($aResult, $aRules);
             }
         }
-        usort($aResult, function (Rule $first, Rule $second) {
+        \usort($aResult, function (Rule $first, Rule $second) {
             if ($first->getLineNo() === $second->getLineNo()) {
                 return $first->getColNo() - $second->getColNo();
             }
@@ -243,8 +243,8 @@ abstract class RuleSet implements Renderable, Commentable
                 // (without the trailing dash).
                 if (
                     !$mRule || $sName === $mRule
-                    || (strrpos($mRule, '-') === strlen($mRule) - strlen('-')
-                        && (strpos($sName, $mRule) === 0 || $sName === substr($mRule, 0, -1)))
+                    || (\strrpos($mRule, '-') === \strlen($mRule) - \strlen('-')
+                        && (\strpos($sName, $mRule) === 0 || $sName === \substr($mRule, 0, -1)))
                 ) {
                     unset($this->aRules[$sName]);
                 }
@@ -296,7 +296,7 @@ abstract class RuleSet implements Renderable, Commentable
      */
     public function addComments(array $aComments): void
     {
-        $this->aComments = array_merge($this->aComments, $aComments);
+        $this->aComments = \array_merge($this->aComments, $aComments);
     }
 
     /**
