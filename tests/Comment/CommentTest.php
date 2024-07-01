@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\Tests\Comment;
 
 use PHPUnit\Framework\TestCase;
