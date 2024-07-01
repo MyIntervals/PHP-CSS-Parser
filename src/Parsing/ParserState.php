@@ -3,7 +3,6 @@
 namespace Sabberworm\CSS\Parsing;
 
 use Sabberworm\CSS\Comment\Comment;
-use Sabberworm\CSS\Parsing\Anchor;
 use Sabberworm\CSS\Settings;
 
 class ParserState
