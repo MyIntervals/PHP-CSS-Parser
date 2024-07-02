@@ -86,7 +86,6 @@ class OutputFormatter
 
     /**
      * @param string $sSeparator
-     *
      */
     public function spaceBeforeListArgumentSeparator($sSeparator): string
     {
@@ -95,7 +94,6 @@ class OutputFormatter
 
     /**
      * @param string $sSeparator
-     *
      */
     public function spaceAfterListArgumentSeparator($sSeparator): string
     {
@@ -180,7 +178,6 @@ class OutputFormatter
     }
 
     /**
-     *
      * @param array<Commentable> $aComments
      *
      * @return string
