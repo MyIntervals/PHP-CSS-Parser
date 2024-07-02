@@ -22,7 +22,7 @@ class Size extends PrimitiveValue
     /**
      * @var array<int, string>
      */
-    const RELATIVE_SIZE_UNITS = ['%', 'em', 'ex', 'ch', 'fr'];
+    const RELATIVE_SIZE_UNITS = ['%', 'em', 'ex', 'ch', 'fr', 'cqw', 'cqh', 'cqi', 'cqb', 'cqmin', 'cqmax'];
 
     /**
      * @var array<int, string>
