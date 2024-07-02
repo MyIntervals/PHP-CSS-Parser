@@ -97,7 +97,7 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * @return AtRuleBlockList|KeyFrame|Charset|CSSNamespace|Import|AtRuleSet|DeclarationBlock|null|false
+     * @return AtRuleBlockList|KeyFrame|Charset|CSSNamespace|Import|AtRuleSet|DeclarationBlock|false|null
      *
      * @throws SourceException
      * @throws UnexpectedEOFException
