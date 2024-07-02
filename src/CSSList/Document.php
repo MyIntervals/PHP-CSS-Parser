@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\CSSList;
 
 use Sabberworm\CSS\OutputFormat;
@@ -100,7 +102,6 @@ class Document extends CSSBlockList
      *
      * @return array<int, Selector>
      * @example `getSelectorsBySpecificity('>= 100')`
-     *
      */
     public function getSelectorsBySpecificity($sSpecificitySearch = null)
     {

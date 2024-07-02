@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS;
 
 use Sabberworm\CSS\Comment\Commentable;
@@ -86,7 +88,6 @@ class OutputFormatter
 
     /**
      * @param string $sSeparator
-     *
      */
     public function spaceBeforeListArgumentSeparator($sSeparator): string
     {
@@ -95,7 +96,6 @@ class OutputFormatter
 
     /**
      * @param string $sSeparator
-     *
      */
     public function spaceAfterListArgumentSeparator($sSeparator): string
     {
@@ -180,7 +180,6 @@ class OutputFormatter
     }
 
     /**
-     *
      * @param array<Commentable> $aComments
      *
      * @return string
