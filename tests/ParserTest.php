@@ -202,13 +202,13 @@ final class ParserTest extends TestCase
                 self::assertSame('"¥"', $sString);
             }
             if ($sSelector == '.test-7') {
-                self::assertSame('"\A"', $sString);
+                self::assertSame('"\\A"', $sString);
             }
             if ($sSelector == '.test-8') {
-                self::assertSame('"\"\""', $sString);
+                self::assertSame('"\\"\\""', $sString);
             }
             if ($sSelector == '.test-9') {
-                self::assertSame('"\"\\\'"', $sString);
+                self::assertSame('"\\"\\\'"', $sString);
             }
             if ($sSelector == '.test-10') {
                 self::assertSame('"\\\'\\\\"', $sString);
@@ -795,8 +795,8 @@ body {background-color: red;}';
     public function selectorEscapesInFile(): void
     {
         $oDoc = self::parsedStructureForFile('selector-escapes', Settings::create()->withMultibyteSupport(true));
-        $sExpected = '#\# {color: red;}
-.col-sm-1\/5 {width: 20%;}';
+        $sExpected = '#\\# {color: red;}
+.col-sm-1\\/5 {width: 20%;}';
         self::assertSame($sExpected, $oDoc->render());
 
         $oDoc = self::parsedStructureForFile('invalid-selectors-2', Settings::create()->withMultibyteSupport(true));
@@ -815,8 +815,8 @@ body {background-color: red;}';
     public function identifierEscapesInFile(): void
     {
         $oDoc = self::parsedStructureForFile('identifier-escapes', Settings::create()->withMultibyteSupport(true));
-        $sExpected = 'div {font: 14px Font Awesome\ 5 Pro;font: 14px Font Awesome\} 5 Pro;'
-            . 'font: 14px Font Awesome\; 5 Pro;f\;ont: 14px Font Awesome\; 5 Pro;}';
+        $sExpected = 'div {font: 14px Font Awesome\\ 5 Pro;font: 14px Font Awesome\\} 5 Pro;'
+            . 'font: 14px Font Awesome\\; 5 Pro;f\\;ont: 14px Font Awesome\\; 5 Pro;}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
@@ -1103,8 +1103,8 @@ body {background-color: red;}';
     public function ieHacksParsing(): void
     {
         $oDoc = self::parsedStructureForFile('ie-hacks', Settings::create()->withLenientParsing(true));
-        $sExpected = 'p {padding-right: .75rem \9;background-image: none \9;color: red \9\0;'
-            . 'background-color: red \9\0;background-color: red \9\0 !important;content: "red 	\0";content: "red઼";}';
+        $sExpected = 'p {padding-right: .75rem \\9;background-image: none \\9;color: red \\9\\0;'
+            . 'background-color: red \\9\\0;background-color: red \\9\\0 !important;content: "red 	\\0";content: "red઼";}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
@@ -1246,7 +1246,7 @@ body {background-color: red;}';
         $rules = $contents[0]->getRules();
         $urlRule = $rules[0];
         $calcRule = $rules[1];
-        self::assertTrue(\is_a($urlRule->getValue(), '\Sabberworm\CSS\Value\URL'));
-        self::assertTrue(\is_a($calcRule->getValue(), '\Sabberworm\CSS\Value\CalcFunction'));
+        self::assertTrue(\is_a($urlRule->getValue(), '\\Sabberworm\\CSS\\Value\\URL'));
+        self::assertTrue(\is_a($calcRule->getValue(), '\\Sabberworm\\CSS\\Value\\CalcFunction'));
     }
 }

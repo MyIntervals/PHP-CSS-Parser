@@ -144,7 +144,7 @@ class ParserState
         }
         $sCharacter = null;
         while (!$this->isEnd() && ($sCharacter = $this->parseCharacter(true)) !== null) {
-            if (\preg_match('/[a-zA-Z0-9\x{00A0}-\x{FFFF}_-]/Sux', $sCharacter)) {
+            if (\preg_match('/[a-zA-Z0-9\\x{00A0}-\\x{FFFF}_-]/Sux', $sCharacter)) {
                 $sResult .= $sCharacter;
             } else {
                 $sResult .= '\\' . $sCharacter;
@@ -169,13 +169,13 @@ class ParserState
         if ($this->peek() === '\\') {
             if (
                 $bIsForIdentifier && $this->oParserSettings->bLenientParsing
-                && ($this->comes('\0') || $this->comes('\9'))
+                && ($this->comes('\\0') || $this->comes('\\9'))
             ) {
                 // Non-strings can contain \0 or \9 which is an IE hack supported in lenient parsing.
                 return null;
             }
             $this->consume('\\');
-            if ($this->comes('\n') || $this->comes('\r')) {
+            if ($this->comes('\\n') || $this->comes('\\r')) {
                 return '';
             }
             if (\preg_match('/[0-9a-fA-F]/Su', $this->peek()) === 0) {
@@ -185,7 +185,7 @@ class ParserState
             if ($this->strlen($sUnicode) < 6) {
                 // Consume whitespace after incomplete unicode escape
                 if (\preg_match('/\\s/isSu', $this->peek())) {
-                    if ($this->comes('\r\n')) {
+                    if ($this->comes('\\r\\n')) {
                         $this->consume(2);
                     } else {
                         $this->consume(1);
