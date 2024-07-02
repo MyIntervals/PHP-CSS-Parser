@@ -33,7 +33,7 @@
         "phpstan/phpstan": "^1.11.6",
         "phpstan/phpstan-phpunit": "^1.4.0",
         "phpunit/phpunit": "^8.5.38",
-        "rector/rector": "^1.1.1"
+        "rector/rector": "^1.2.0"
     },
     "suggest": {
         "ext-mbstring": "for parsing UTF-8 CSS"
