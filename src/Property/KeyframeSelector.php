@@ -19,7 +19,7 @@ class KeyframeSelector extends Selector
             (?:([\'"]).*?(?<!\\\\)\\2)?                                    # a quoted text like [id="example"]
         )*
     )|
-    (\\d+%)                                                          # keyframe animation progress percentage (e.g. 50%)
+    (\\d+%)                                                                # keyframe animation progress percentage (e.g. 50%)
     $
     /ux';
 }

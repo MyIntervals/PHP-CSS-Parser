@@ -18,7 +18,7 @@ class Selector
         |
         \\[(\\w+)                     # attributes
         |
-        (\\:(                        # pseudo classes
+        (\\:(                         # pseudo classes
             link|visited|active
             |hover|focus
             |lang
@@ -40,7 +40,7 @@ class Selector
     private const ELEMENTS_AND_PSEUDO_ELEMENTS_RX = '/
         ((^|[\\s\\+\\>\\~]+)[\\w]+   # elements
         |
-        \\:{1,2}(                # pseudo-elements
+        \\:{1,2}(                    # pseudo-elements
             after|before|first-letter|first-line|selection
         ))
         /ix';
