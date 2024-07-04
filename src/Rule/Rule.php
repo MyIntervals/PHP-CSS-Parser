@@ -78,7 +78,7 @@ class Rule implements Renderable, Commentable
     {
         $aComments = $oParserState->consumeWhiteSpace();
         $oRule = new Rule(
-            $oParserState->parseIdentifier(!$oParserState->comes("--")),
+            $oParserState->parseIdentifier(!$oParserState->comes('--')),
             $oParserState->currentLine(),
             $oParserState->currentColumn()
         );

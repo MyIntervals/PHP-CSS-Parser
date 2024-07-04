@@ -193,7 +193,7 @@ class ParserState
                 }
             }
             $iUnicode = \intval($sUnicode, 16);
-            $sUtf32 = "";
+            $sUtf32 = '';
             for ($i = 0; $i < 4; ++$i) {
                 $sUtf32 .= \chr($iUnicode & 0xff);
                 $iUnicode = $iUnicode >> 8;
