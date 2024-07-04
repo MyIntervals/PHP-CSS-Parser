@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\RuleSet;
 
 use Sabberworm\CSS\Comment\Comment;
