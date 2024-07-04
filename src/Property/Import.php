@@ -75,7 +75,7 @@ class Import implements AtRule
 
     public function render(OutputFormat $oOutputFormat): string
     {
-        return $oOutputFormat->comments($this) . "@import " . $this->oLocation->render($oOutputFormat)
+        return $oOutputFormat->comments($this) . '@import ' . $this->oLocation->render($oOutputFormat)
             . ($this->sMediaQuery === null ? '' : ' ' . $this->sMediaQuery) . ';';
     }
 

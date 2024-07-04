@@ -92,7 +92,7 @@ abstract class CSSList implements Renderable, Commentable
         }
         $oList->addComments($aComments);
         if (!$bIsRoot && !$bLenientParsing) {
-            throw new SourceException("Unexpected end of document", $oParserState->currentLine());
+            throw new SourceException('Unexpected end of document', $oParserState->currentLine());
         }
     }
 
@@ -133,7 +133,7 @@ abstract class CSSList implements Renderable, Commentable
                 if ($oParserState->getSettings()->bLenientParsing) {
                     return DeclarationBlock::parse($oParserState);
                 } else {
-                    throw new SourceException("Unopened {", $oParserState->currentLine());
+                    throw new SourceException('Unopened {', $oParserState->currentLine());
                 }
             } else {
                 // End of list
@@ -205,11 +205,11 @@ abstract class CSSList implements Renderable, Commentable
         } else {
             // Unknown other at rule (font-face or such)
             $sArgs = \trim($oParserState->consumeUntil('{', false, true));
-            if (\substr_count($sArgs, "(") != \substr_count($sArgs, ")")) {
+            if (\substr_count($sArgs, '(') != \substr_count($sArgs, ')')) {
                 if ($oParserState->getSettings()->bLenientParsing) {
                     return null;
                 } else {
-                    throw new SourceException("Unmatched brace count in media query", $oParserState->currentLine());
+                    throw new SourceException('Unmatched brace count in media query', $oParserState->currentLine());
                 }
             }
             $bUseRuleSet = true;
@@ -375,7 +375,7 @@ abstract class CSSList implements Renderable, Commentable
                     throw new UnexpectedTokenException(
                         "Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.",
                         $mSel,
-                        "custom"
+                        'custom'
                     );
                 }
                 $mSel = new Selector($mSel);

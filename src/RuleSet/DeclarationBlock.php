@@ -60,7 +60,7 @@ class DeclarationBlock extends RuleSet
             do {
                 $aSelectorParts[] = $oParserState->consume(1)
                     . $oParserState->consumeUntil(['{', '}', '\'', '"'], false, false, $aComments);
-                if (\in_array($oParserState->peek(), ['\'', '"'], true) && \substr(\end($aSelectorParts), -1) != "\\") {
+                if (\in_array($oParserState->peek(), ['\'', '"'], true) && \substr(\end($aSelectorParts), -1) != '\\') {
                     if ($sStringWrapperChar === false) {
                         $sStringWrapperChar = $oParserState->peek();
                     } elseif ($sStringWrapperChar == $oParserState->peek()) {
@@ -107,7 +107,7 @@ class DeclarationBlock extends RuleSet
                         throw new UnexpectedTokenException(
                             "Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.",
                             $mSelector,
-                            "custom"
+                            'custom'
                         );
                     }
                     $this->aSelectors[$iKey] = new Selector($mSelector);
@@ -116,7 +116,7 @@ class DeclarationBlock extends RuleSet
                         throw new UnexpectedTokenException(
                             "Selector did not match '" . KeyframeSelector::SELECTOR_VALIDATION_RX . "'.",
                             $mSelector,
-                            "custom"
+                            'custom'
                         );
                     }
                     $this->aSelectors[$iKey] = new KeyframeSelector($mSelector);
@@ -225,14 +225,14 @@ class DeclarationBlock extends RuleSet
                     $mNewValue = $mValue;
                 }
                 if ($mValue instanceof Size) {
-                    $sNewRuleName = $sBorderRule . "-width";
+                    $sNewRuleName = $sBorderRule . '-width';
                 } elseif ($mValue instanceof Color) {
-                    $sNewRuleName = $sBorderRule . "-color";
+                    $sNewRuleName = $sBorderRule . '-color';
                 } else {
                     if (\in_array($mValue, $aBorderSizes, true)) {
-                        $sNewRuleName = $sBorderRule . "-width";
+                        $sNewRuleName = $sBorderRule . '-width';
                     } else {
-                        $sNewRuleName = $sBorderRule . "-style";
+                        $sNewRuleName = $sBorderRule . '-style';
                     }
                 }
                 $oNewRule = new Rule($sNewRuleName, $oRule->getLineNo(), $oRule->getColNo());
@@ -789,7 +789,7 @@ class DeclarationBlock extends RuleSet
         $sResult = $oOutputFormat->comments($this);
         if (\count($this->aSelectors) === 0) {
             // If all the selectors have been removed, this declaration block becomes invalid
-            throw new OutputException("Attempt to print declaration block with missing selector", $this->iLineNo);
+            throw new OutputException('Attempt to print declaration block with missing selector', $this->iLineNo);
         }
         $sResult .= $oOutputFormat->sBeforeDeclarationBlock;
         $sResult .= $oOutputFormat->implode(

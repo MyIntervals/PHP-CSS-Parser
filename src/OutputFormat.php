@@ -258,7 +258,7 @@ class OutputFormat
      */
     public function indentWithSpaces($iNumber = 2)
     {
-        return $this->setIndentation(\str_repeat(" ", $iNumber));
+        return $this->setIndentation(\str_repeat(' ', $iNumber));
     }
 
     /**
@@ -314,8 +314,8 @@ class OutputFormat
     public static function createCompact()
     {
         $format = self::create();
-        $format->set('Space*Rules', "")
-            ->set('Space*Blocks', "")
+        $format->set('Space*Rules', '')
+            ->set('Space*Blocks', '')
             ->setSpaceAfterRuleName('')
             ->setSpaceBeforeOpeningBrace('')
             ->setSpaceAfterSelectorSeparator('')

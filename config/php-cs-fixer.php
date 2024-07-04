@@ -92,6 +92,7 @@ return (new \PhpCsFixer\Config())
             'strict_param' => true,
 
             // string notation
+            'single_quote' => true,
             'string_implicit_backslashes' => ['single_quoted' => 'escape'],
         ]
     );

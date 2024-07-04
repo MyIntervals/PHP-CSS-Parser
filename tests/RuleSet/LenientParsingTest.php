@@ -81,7 +81,7 @@ final class LenientParsingTest extends TestCase
         $sFile = __DIR__ . '/../fixtures/-end-token.css';
         $oParser = new Parser(\file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
-        self::assertSame("", $oResult->render());
+        self::assertSame('', $oResult->render());
     }
 
     /**
@@ -103,7 +103,7 @@ final class LenientParsingTest extends TestCase
      */
     public function localeTrap(): void
     {
-        \setlocale(LC_ALL, "pt_PT", "no");
+        \setlocale(LC_ALL, 'pt_PT', 'no');
         $sFile = __DIR__ . '/../fixtures/-fault-tolerance.css';
         $oParser = new Parser(\file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();

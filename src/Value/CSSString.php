@@ -47,7 +47,7 @@ class CSSString extends PrimitiveValue
         if ($sQuote !== null) {
             $oParserState->consume($sQuote);
         }
-        $sResult = "";
+        $sResult = '';
         $sContent = null;
         if ($sQuote === null) {
             // Unquoted strings end in whitespace or with braces, brackets, parentheses

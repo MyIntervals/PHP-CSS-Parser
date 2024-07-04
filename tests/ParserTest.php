@@ -122,7 +122,7 @@ final class ParserTest extends TestCase
                     'r' => new Size(10.0, null, true, $oColor->getLineNo()),
                     'g' => new Size(100.0, null, true, $oColor->getLineNo()),
                     'b' => new Size(231.0, null, true, $oColor->getLineNo()),
-                    'a' => new Size("0000.3", null, true, $oColor->getLineNo()),
+                    'a' => new Size('0000.3', null, true, $oColor->getLineNo()),
                 ], $oColor->getColor());
                 $aColorRule = $oRuleSet->getRules('outline-color');
                 $oColor = $aColorRule[0]->getValue();
@@ -225,7 +225,7 @@ final class ParserTest extends TestCase
     public function unicodeRangeParsing(): void
     {
         $oDoc = self::parsedStructureForFile('unicode-range');
-        $sExpected = "@font-face {unicode-range: U+0100-024F,U+0259,U+1E??-2EFF,U+202F;}";
+        $sExpected = '@font-face {unicode-range: U+0100-024F,U+0259,U+1E??-2EFF,U+202F;}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
@@ -240,23 +240,23 @@ final class ParserTest extends TestCase
         $aSelectors = $oDeclarationBlock->getSelectors();
         foreach ($aSelectors as $oSelector) {
             switch ($oSelector->getSelector()) {
-                case "#test .help":
+                case '#test .help':
                     self::assertSame(110, $oSelector->getSpecificity());
                     break;
-                case "#file":
+                case '#file':
                     self::assertSame(100, $oSelector->getSpecificity());
                     break;
-                case ".help:hover":
+                case '.help:hover':
                     self::assertSame(20, $oSelector->getSpecificity());
                     break;
-                case "ol li::before":
+                case 'ol li::before':
                     self::assertSame(3, $oSelector->getSpecificity());
                     break;
-                case "li.green":
+                case 'li.green':
                     self::assertSame(11, $oSelector->getSpecificity());
                     break;
                 default:
-                    self::fail("specificity: untested selector " . $oSelector->getSelector());
+                    self::fail('specificity: untested selector ' . $oSelector->getSelector());
             }
         }
         self::assertEquals([new Selector('#test .help', true)], $oDoc->getSelectorsBySpecificity('> 100'));
@@ -734,7 +734,7 @@ div {height: calc;}';
     {
         $oDoc = self::parsedStructureForFile('grid-linename', Settings::create()->withMultibyteSupport(true));
         $sExpected = "div {grid-template-columns: [linename] 100px;}\n"
-            . "span {grid-template-columns: [linename1 linename2] 100px;}";
+            . 'span {grid-template-columns: [linename1 linename2] 100px;}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
@@ -754,7 +754,7 @@ div {height: calc;}';
     public function invalidGridLineNameInFile(): void
     {
         $oDoc = self::parsedStructureForFile('invalid-grid-linename', Settings::create()->withMultibyteSupport(true));
-        $sExpected = "div {}";
+        $sExpected = 'div {}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
@@ -1122,7 +1122,7 @@ body {background-color: red;}';
         $importComments = $aNodes[0]->getComments();
         self::assertCount(2, $importComments);
         self::assertSame("*\n * Comments\n ", $importComments[0]->getComment());
-        self::assertSame(" Hell ", $importComments[1]->getComment());
+        self::assertSame(' Hell ', $importComments[1]->getComment());
 
         // Declaration block.
         $fooBarBlock = $aNodes[1];
@@ -1137,7 +1137,7 @@ body {background-color: red;}';
         $fooBarRule = $fooBarRules[0];
         $fooBarRuleComments = $fooBarRule->getComments();
         self::assertCount(1, $fooBarRuleComments);
-        self::assertSame(" Number 6 ", $fooBarRuleComments[0]->getComment());
+        self::assertSame(' Number 6 ', $fooBarRuleComments[0]->getComment());
 
         // Media property.
         $mediaComments = $aNodes[2]->getComments();
@@ -1147,13 +1147,13 @@ body {background-color: red;}';
         $mediaRules = $aNodes[2]->getContents();
         $fooBarComments = $mediaRules[0]->getComments();
         self::assertCount(1, $fooBarComments);
-        self::assertSame("* Number 10 *", $fooBarComments[0]->getComment());
+        self::assertSame('* Number 10 *', $fooBarComments[0]->getComment());
 
         // Media -> declaration -> rule.
         $fooBarRules = $mediaRules[0]->getRules();
         $fooBarChildComments = $fooBarRules[0]->getComments();
         self::assertCount(1, $fooBarChildComments);
-        self::assertSame("* Number 10b *", $fooBarChildComments[0]->getComment());
+        self::assertSame('* Number 10b *', $fooBarChildComments[0]->getComment());
     }
 
     /**
@@ -1167,7 +1167,7 @@ body {background-color: red;}';
         $divRules = $contents[0]->getRules();
         $comments = $divRules[0]->getComments();
         self::assertCount(1, $comments);
-        self::assertSame("Find Me!", $comments[0]->getComment());
+        self::assertSame('Find Me!', $comments[0]->getComment());
     }
 
     /**
@@ -1180,7 +1180,7 @@ body {background-color: red;}';
         $contents = $doc->getContents();
         $comments = $contents[0]->getComments();
         self::assertCount(1, $comments);
-        self::assertSame("Find Me!", $comments[0]->getComment());
+        self::assertSame('Find Me!', $comments[0]->getComment());
     }
 
     /**
@@ -1235,7 +1235,7 @@ body {background-color: red;}';
     public function lonelyImport(): void
     {
         $oDoc = self::parsedStructureForFile('lonely-import');
-        $sExpected = "@import url(\"example.css\") only screen and (max-width: 600px);";
+        $sExpected = '@import url("example.css") only screen and (max-width: 600px);';
         self::assertSame($sExpected, $oDoc->render());
     }
 
