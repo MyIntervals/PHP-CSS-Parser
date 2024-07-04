@@ -90,7 +90,7 @@ return (new \PhpCsFixer\Config())
             'semicolon_after_instruction' => true,
 
             // strict
-            // 'declare_strict_types' => true, // Note: We'll need to add some casts first.
+            'declare_strict_types' => true,
             'strict_param' => true,
 
             // string notation
