@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS;
 
 use Sabberworm\CSS\CSSList\Document;
