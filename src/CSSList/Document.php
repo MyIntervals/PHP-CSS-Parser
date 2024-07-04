@@ -78,7 +78,7 @@ class Document extends CSSBlockList
     /**
      * Returns all `Value` objects found recursively in `Rule`s in the tree.
      *
-     * @param CSSList|RuleSet|string $mElement
+     * @param CSSList|RuleSet|string|null $mElement
      *        the `CSSList` or `RuleSet` to start the search from (defaults to the whole document).
      *        If a string is given, it is used as rule name filter.
      * @param bool $bSearchInFunctionArguments whether to also return Value objects used as Function arguments.
@@ -155,7 +155,7 @@ class Document extends CSSBlockList
      *
      * @return string
      */
-    public function render(OutputFormat $oOutputFormat = null)
+    public function render($oOutputFormat = null)
     {
         if ($oOutputFormat === null) {
             $oOutputFormat = new OutputFormat();

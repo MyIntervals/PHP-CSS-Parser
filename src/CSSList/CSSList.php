@@ -286,8 +286,8 @@ abstract class CSSList implements Renderable, Commentable
      * Splices the list of contents.
      *
      * @param int $iOffset
-     * @param int $iLength
-     * @param array<int, RuleSet|CSSList|Import|Charset> $mReplacement
+     * @param int|null $iLength
+     * @param array<int, RuleSet|CSSList|Import|Charset>|null $mReplacement
      *
      * @return void
      */

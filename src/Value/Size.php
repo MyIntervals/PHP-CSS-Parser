@@ -216,9 +216,11 @@ class Size extends PrimitiveValue
     }
 
     /**
+     * @param OutputFormat $oOutputFormat
+     *
      * @return string
      */
-    public function render(OutputFormat $oOutputFormat)
+    public function render($oOutputFormat)
     {
         $l = localeconv();
         $sPoint = preg_quote($l['decimal_point'], '/');

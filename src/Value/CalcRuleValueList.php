@@ -15,9 +15,11 @@ class CalcRuleValueList extends RuleValueList
     }
 
     /**
+     * @param OutputFormat $oOutputFormat
+     *
      * @return string
      */
-    public function render(OutputFormat $oOutputFormat)
+    public function render($oOutputFormat)
     {
         return $oOutputFormat->implode(' ', $this->aComponents);
     }
