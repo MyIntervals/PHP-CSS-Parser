@@ -41,6 +41,10 @@ return (new \PhpCsFixer\Config())
 
             // function notation
             'native_function_invocation' => ['include' => ['@all']],
+            'nullable_type_declaration' => [
+                'syntax' => 'question_mark',
+            ],
+            'nullable_type_declaration_for_default_null_value' => true,
 
             // import
             'no_unused_imports' => true,

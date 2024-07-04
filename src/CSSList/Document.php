@@ -138,7 +138,7 @@ class Document extends CSSBlockList
      *
      * @param OutputFormat|null $oOutputFormat
      */
-    public function render(OutputFormat $oOutputFormat = null): string
+    public function render(?OutputFormat $oOutputFormat = null): string
     {
         if ($oOutputFormat === null) {
             $oOutputFormat = new OutputFormat();
