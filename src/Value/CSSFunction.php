@@ -67,7 +67,7 @@ class CSSFunction extends ValueList
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    private static function parseArguments(ParserState $oParserState)
+    protected static function parseArguments(ParserState $oParserState)
     {
         return Value::parseValue($oParserState, ['=', ' ', ',']);
     }

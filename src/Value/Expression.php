@@ -19,7 +19,7 @@ class Expression extends CSSFunction
     public static function parse(ParserState $oParserState, bool $bIgnoreCase = false): Expression
     {
         $oParserState->consume('(');
-        $aArguments = self::parseArgs($oParserState);
+        $aArguments = parent::parseArguments($oParserState);
         $mResult = new Expression("", $aArguments, ',', $oParserState->currentLine());
         $oParserState->consume(')');
         return $mResult;
