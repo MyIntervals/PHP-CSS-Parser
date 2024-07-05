@@ -48,12 +48,10 @@ abstract class RuleSet implements Renderable, Commentable
     }
 
     /**
-     * @return void
-     *
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
-    public static function parseRuleSet(ParserState $oParserState, RuleSet $oRuleSet)
+    public static function parseRuleSet(ParserState $oParserState, RuleSet $oRuleSet): void
     {
         while ($oParserState->comes(';')) {
             $oParserState->consume(';');
@@ -101,20 +99,18 @@ abstract class RuleSet implements Renderable, Commentable
 
     /**
      * @param Rule|null $oSibling
-     *
-     * @return void
      */
-    public function addRule(Rule $oRule, Rule $oSibling = null)
+    public function addRule(Rule $oRule, ?Rule $oSibling = null): void
     {
         $sRule = $oRule->getRule();
         if (!isset($this->aRules[$sRule])) {
             $this->aRules[$sRule] = [];
         }
 
-        $iPosition = count($this->aRules[$sRule]);
+        $iPosition = \count($this->aRules[$sRule]);
 
         if ($oSibling !== null) {
-            $iSiblingPos = array_search($oSibling, $this->aRules[$sRule], true);
+            $iSiblingPos = \array_search($oSibling, $this->aRules[$sRule], true);
             if ($iSiblingPos !== false) {
                 $iPosition = $iSiblingPos;
                 $oRule->setPosition($oSibling->getLineNo(), $oSibling->getColNo() - 1);
@@ -123,14 +119,14 @@ abstract class RuleSet implements Renderable, Commentable
         if ($oRule->getLineNo() === 0 && $oRule->getColNo() === 0) {
             //this node is added manually, give it the next best line
             $rules = $this->getRules();
-            $pos = count($rules);
+            $pos = \count($rules);
             if ($pos > 0) {
                 $last = $rules[$pos - 1];
                 $oRule->setPosition($last->getLineNo() + 1, 0);
             }
         }
 
-        array_splice($this->aRules[$sRule], $iPosition, 0, [$oRule]);
+        \array_splice($this->aRules[$sRule], $iPosition, 0, [$oRule]);
     }
 
     /**
@@ -162,14 +158,14 @@ abstract class RuleSet implements Renderable, Commentable
             if (
                 !$mRule || $sName === $mRule
                 || (
-                    strrpos($mRule, '-') === strlen($mRule) - strlen('-')
-                    && (strpos($sName, $mRule) === 0 || $sName === substr($mRule, 0, -1))
+                    \strrpos($mRule, '-') === \strlen($mRule) - \strlen('-')
+                    && (\strpos($sName, $mRule) === 0 || $sName === \substr($mRule, 0, -1))
                 )
             ) {
-                $aResult = array_merge($aResult, $aRules);
+                $aResult = \array_merge($aResult, $aRules);
             }
         }
-        usort($aResult, function (Rule $first, Rule $second) {
+        \usort($aResult, function (Rule $first, Rule $second) {
             if ($first->getLineNo() === $second->getLineNo()) {
                 return $first->getColNo() - $second->getColNo();
             }
@@ -182,10 +178,8 @@ abstract class RuleSet implements Renderable, Commentable
      * Overrides all the rules of this set.
      *
      * @param array<array-key, Rule> $aRules The rules to override with.
-     *
-     * @return void
      */
-    public function setRules(array $aRules)
+    public function setRules(array $aRules): void
     {
         $this->aRules = [];
         foreach ($aRules as $rule) {
@@ -231,10 +225,8 @@ abstract class RuleSet implements Renderable, Commentable
      *        pattern to remove. If $mRule is null, all rules are removed. If the pattern ends in a dash,
      *        all rules starting with the pattern are removed as well as one matching the pattern with the dash
      *        excluded. Passing a Rule behaves matches by identity.
-     *
-     * @return void
      */
-    public function removeRule($mRule)
+    public function removeRule($mRule): void
     {
         if ($mRule instanceof Rule) {
             $sRule = $mRule->getRule();
@@ -253,8 +245,8 @@ abstract class RuleSet implements Renderable, Commentable
                 // (without the trailing dash).
                 if (
                     !$mRule || $sName === $mRule
-                    || (strrpos($mRule, '-') === strlen($mRule) - strlen('-')
-                    && (strpos($sName, $mRule) === 0 || $sName === substr($mRule, 0, -1)))
+                    || (\strrpos($mRule, '-') === \strlen($mRule) - \strlen('-')
+                        && (\strpos($sName, $mRule) === 0 || $sName === \substr($mRule, 0, -1)))
                 ) {
                     unset($this->aRules[$sName]);
                 }
@@ -262,10 +254,7 @@ abstract class RuleSet implements Renderable, Commentable
         }
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
@@ -306,12 +295,10 @@ abstract class RuleSet implements Renderable, Commentable
 
     /**
      * @param array<string, Comment> $aComments
-     *
-     * @return void
      */
-    public function addComments(array $aComments)
+    public function addComments(array $aComments): void
     {
-        $this->aComments = array_merge($this->aComments, $aComments);
+        $this->aComments = \array_merge($this->aComments, $aComments);
     }
 
     /**
@@ -324,10 +311,8 @@ abstract class RuleSet implements Renderable, Commentable
 
     /**
      * @param array<string, Comment> $aComments
-     *
-     * @return void
      */
-    public function setComments(array $aComments)
+    public function setComments(array $aComments): void
     {
         $this->aComments = $aComments;
     }

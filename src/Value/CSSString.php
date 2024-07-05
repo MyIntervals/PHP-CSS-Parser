@@ -31,13 +31,11 @@ class CSSString extends PrimitiveValue
     }
 
     /**
-     * @return CSSString
-     *
      * @throws SourceException
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState)
+    public static function parse(ParserState $oParserState): CSSString
     {
         $sBegin = $oParserState->peek();
         $sQuote = null;
@@ -49,11 +47,11 @@ class CSSString extends PrimitiveValue
         if ($sQuote !== null) {
             $oParserState->consume($sQuote);
         }
-        $sResult = "";
+        $sResult = '';
         $sContent = null;
         if ($sQuote === null) {
             // Unquoted strings end in whitespace or with braces, brackets, parentheses
-            while (!preg_match('/[\\s{}()<>\\[\\]]/isu', $oParserState->peek())) {
+            while (!\preg_match('/[\\s{}()<>\\[\\]]/isu', $oParserState->peek())) {
                 $sResult .= $oParserState->parseCharacter(false);
             }
         } else {
@@ -74,10 +72,8 @@ class CSSString extends PrimitiveValue
 
     /**
      * @param string $sString
-     *
-     * @return void
      */
-    public function setString($sString)
+    public function setString($sString): void
     {
         $this->sString = $sString;
     }
@@ -90,21 +86,15 @@ class CSSString extends PrimitiveValue
         return $this->sString;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
-        $sString = addslashes($this->sString);
-        $sString = str_replace("\n", '\A', $sString);
+        $sString = \addslashes($this->sString);
+        $sString = \str_replace("\n", '\\A', $sString);
         return $oOutputFormat->getStringQuotingType() . $sString . $oOutputFormat->getStringQuotingType();
     }
 }

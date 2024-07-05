@@ -55,7 +55,7 @@ class Charset implements AtRule
      *
      * @return void
      */
-    public function setCharset($sCharset)
+    public function setCharset($sCharset): void
     {
         $sCharset = $sCharset instanceof CSSString ? $sCharset : new CSSString($sCharset);
         $this->oCharset = $sCharset;
@@ -69,26 +69,17 @@ class Charset implements AtRule
         return preg_replace('/;$/', '', $this->oCharset->getString());
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         return "{$oOutputFormat->comments($this)}@charset {$this->oCharset->render($oOutputFormat)};";
     }
 
-    /**
-     * @return string
-     */
-    public function atRuleName()
+    public function atRuleName(): string
     {
         return 'charset';
     }
@@ -106,9 +97,9 @@ class Charset implements AtRule
      *
      * @return void
      */
-    public function addComments(array $aComments)
+    public function addComments(array $aComments): void
     {
-        $this->aComments = array_merge($this->aComments, $aComments);
+        $this->aComments = \array_merge($this->aComments, $aComments);
     }
 
     /**
@@ -124,7 +115,7 @@ class Charset implements AtRule
      *
      * @return void
      */
-    public function setComments(array $aComments)
+    public function setComments(array $aComments): void
     {
         $this->aComments = $aComments;
     }

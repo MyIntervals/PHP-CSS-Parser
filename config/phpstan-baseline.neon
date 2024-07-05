@@ -10,13 +10,3 @@ parameters:
 			count: 2
 			path: ../src/RuleSet/DeclarationBlock.php
 
-		-
-			message: "#^Variable \\$oRule might not be defined\\.$#"
-			count: 2
-			path: ../src/RuleSet/DeclarationBlock.php
-
-		-
-			message: "#^Variable \\$oVal might not be defined\\.$#"
-			count: 1
-			path: ../src/Value/CalcFunction.php
-

@@ -21,7 +21,7 @@ class Parser
      * @param Settings|null $oParserSettings
      * @param int $iLineNo the line number (starting from 1, not from 0)
      */
-    public function __construct($sText, Settings $oParserSettings = null, $iLineNo = 1)
+    public function __construct($sText, ?Settings $oParserSettings = null, $iLineNo = 1)
     {
         if ($oParserSettings === null) {
             $oParserSettings = Settings::create();
@@ -33,20 +33,16 @@ class Parser
      * Sets the charset to be used if the CSS does not contain an `@charset` declaration.
      *
      * @param string $sCharset
-     *
-     * @return void
      */
-    public function setCharset($sCharset)
+    public function setCharset($sCharset): void
     {
         $this->oParserState->setCharset($sCharset);
     }
 
     /**
      * Returns the charset that is used if the CSS does not contain an `@charset` declaration.
-     *
-     * @return void
      */
-    public function getCharset()
+    public function getCharset(): void
     {
         // Note: The `return` statement is missing here. This is a bug that needs to be fixed.
         $this->oParserState->getCharset();
@@ -55,11 +51,9 @@ class Parser
     /**
      * Parses the CSS provided to the constructor and creates a `Document` from it.
      *
-     * @return Document
-     *
      * @throws SourceException
      */
-    public function parse()
+    public function parse(): Document
     {
         return Document::parse($this->oParserState);
     }

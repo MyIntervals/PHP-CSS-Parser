@@ -45,26 +45,18 @@ class Comment implements Renderable
 
     /**
      * @param string $sComment
-     *
-     * @return void
      */
-    public function setComment($sComment)
+    public function setComment($sComment): void
     {
         $this->sComment = $sComment;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         return '/*' . $this->sComment . '*/';
     }
