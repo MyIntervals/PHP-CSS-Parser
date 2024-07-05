@@ -110,7 +110,7 @@ class Color extends CSSFunction
             }
             $oParserState->consume(')');
 
-            if ($bContainsVar) {
+            if ($bContainsVarOrCalc) {
                 return new CSSFunction($sColorMode, \array_values($aColor), ',', $oParserState->currentLine());
             }
         }
