@@ -30,7 +30,7 @@ abstract class ValueList extends Value
     public function __construct($aComponents = [], $sSeparator = ',', $iLineNo = 0)
     {
         parent::__construct($iLineNo);
-        if (!is_array($aComponents)) {
+        if (!\is_array($aComponents)) {
             $aComponents = [$aComponents];
         }
         $this->aComponents = $aComponents;
@@ -39,10 +39,8 @@ abstract class ValueList extends Value
 
     /**
      * @param Value|string $mComponent
-     *
-     * @return void
      */
-    public function addListComponent($mComponent)
+    public function addListComponent($mComponent): void
     {
         $this->aComponents[] = $mComponent;
     }
@@ -57,10 +55,8 @@ abstract class ValueList extends Value
 
     /**
      * @param array<int, Value|string> $aComponents
-     *
-     * @return void
      */
-    public function setListComponents(array $aComponents)
+    public function setListComponents(array $aComponents): void
     {
         $this->aComponents = $aComponents;
     }
@@ -75,18 +71,13 @@ abstract class ValueList extends Value
 
     /**
      * @param string $sSeparator
-     *
-     * @return void
      */
-    public function setListSeparator($sSeparator)
+    public function setListSeparator($sSeparator): void
     {
         $this->sSeparator = $sSeparator;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }

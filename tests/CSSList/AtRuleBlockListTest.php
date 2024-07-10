@@ -50,7 +50,7 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      */
-    public function implementsAtRule()
+    public function implementsAtRule(): void
     {
         $subject = new AtRuleBlockList('');
 
@@ -60,7 +60,7 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      */
-    public function implementsRenderable()
+    public function implementsRenderable(): void
     {
         $subject = new AtRuleBlockList('');
 
@@ -70,7 +70,7 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      */
-    public function implementsCommentable()
+    public function implementsCommentable(): void
     {
         $subject = new AtRuleBlockList('');
 
@@ -80,11 +80,9 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      *
-     * @param string $css
-     *
      * @dataProvider provideMinWidthMediaRule
      */
-    public function parsesRuleNameOfMediaQueries($css)
+    public function parsesRuleNameOfMediaQueries(string $css): void
     {
         $contents = (new Parser($css))->parse()->getContents();
         $atRuleBlockList = $contents[0];
@@ -95,11 +93,9 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      *
-     * @param string $css
-     *
      * @dataProvider provideMinWidthMediaRule
      */
-    public function parsesArgumentsOfMediaQueries($css)
+    public function parsesArgumentsOfMediaQueries(string $css): void
     {
         $contents = (new Parser($css))->parse()->getContents();
         $atRuleBlockList = $contents[0];

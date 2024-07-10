@@ -792,7 +792,8 @@ classDiagram
 * [docteurklein](https://github.com/docteurklein) for output formatting and `CSSList->remove()` inspiration.
 * [nicolopignatelli](https://github.com/nicolopignatelli) for PSR-0 compatibility.
 * [diegoembarcadero](https://github.com/diegoembarcadero) for keyframe at-rule parsing.
-* [goetas](https://github.com/goetas) for @namespace at-rule support.
+* [goetas](https://github.com/goetas) for `@namespace` at-rule support.
+* [ziegenberg](https://github.com/ziegenberg) for general housekeeping and cleanup.
 * [View full list](https://github.com/sabberworm/PHP-CSS-Parser/contributors)
 
 ## Misc

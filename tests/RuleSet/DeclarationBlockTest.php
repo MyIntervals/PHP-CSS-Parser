@@ -13,27 +13,24 @@ use Sabberworm\CSS\Value\Size;
 final class DeclarationBlockTest extends TestCase
 {
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider expandBorderShorthandProvider
      *
      * @test
      */
-    public function expandBorderShorthand($sCss, $sExpected)
+    public function expandBorderShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->expandBorderShorthand();
         }
-        self::assertSame(trim((string) $oDoc), $sExpected);
+        self::assertSame(\trim((string) $oDoc), $sExpected);
     }
 
     /**
      * @return array<int, array<int, string>>
      */
-    public static function expandBorderShorthandProvider()
+    public static function expandBorderShorthandProvider(): array
     {
         return [
             ['body{ border: 2px solid #000 }', 'body {border-width: 2px;border-style: solid;border-color: #000;}'],
@@ -46,27 +43,24 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider expandFontShorthandProvider
      *
      * @test
      */
-    public function expandFontShorthand($sCss, $sExpected)
+    public function expandFontShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->expandFontShorthand();
         }
-        self::assertSame(trim((string) $oDoc), $sExpected);
+        self::assertSame(\trim((string) $oDoc), $sExpected);
     }
 
     /**
      * @return array<int, array<int, string>>
      */
-    public static function expandFontShorthandProvider()
+    public static function expandFontShorthandProvider(): array
     {
         return [
             [
@@ -102,27 +96,24 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider expandBackgroundShorthandProvider
      *
      * @test
      */
-    public function expandBackgroundShorthand($sCss, $sExpected)
+    public function expandBackgroundShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->expandBackgroundShorthand();
         }
-        self::assertSame(trim((string) $oDoc), $sExpected);
+        self::assertSame(\trim((string) $oDoc), $sExpected);
     }
 
     /**
      * @return array<int, array<int, string>>
      */
-    public static function expandBackgroundShorthandProvider()
+    public static function expandBackgroundShorthandProvider(): array
     {
         return [
             ['body {border: 1px;}', 'body {border: 1px;}'],
@@ -155,27 +146,24 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider expandDimensionsShorthandProvider
      *
      * @test
      */
-    public function expandDimensionsShorthand($sCss, $sExpected)
+    public function expandDimensionsShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->expandDimensionsShorthand();
         }
-        self::assertSame(trim((string) $oDoc), $sExpected);
+        self::assertSame(\trim((string) $oDoc), $sExpected);
     }
 
     /**
      * @return array<int, array<int, string>>
      */
-    public static function expandDimensionsShorthandProvider()
+    public static function expandDimensionsShorthandProvider(): array
     {
         return [
             ['body {border: 1px;}', 'body {border: 1px;}'],
@@ -193,27 +181,24 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider createBorderShorthandProvider
      *
      * @test
      */
-    public function createBorderShorthand($sCss, $sExpected)
+    public function createBorderShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->createBorderShorthand();
         }
-        self::assertSame(trim((string) $oDoc), $sExpected);
+        self::assertSame(\trim((string) $oDoc), $sExpected);
     }
 
     /**
      * @return array<int, array<int, string>>
      */
-    public static function createBorderShorthandProvider()
+    public static function createBorderShorthandProvider(): array
     {
         return [
             ['body {border-width: 2px;border-style: solid;border-color: #000;}', 'body {border: 2px solid #000;}'],
@@ -224,27 +209,24 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider createFontShorthandProvider
      *
      * @test
      */
-    public function createFontShorthand($sCss, $sExpected)
+    public function createFontShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->createFontShorthand();
         }
-        self::assertSame(trim((string) $oDoc), $sExpected);
+        self::assertSame(\trim((string) $oDoc), $sExpected);
     }
 
     /**
      * @return array<int, array<int, string>>
      */
-    public static function createFontShorthandProvider()
+    public static function createFontShorthandProvider(): array
     {
         return [
             ['body {font-size: 12px; font-family: serif}', 'body {font: 12px serif;}'],
@@ -267,27 +249,24 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider createDimensionsShorthandProvider
      *
      * @test
      */
-    public function createDimensionsShorthand($sCss, $sExpected)
+    public function createDimensionsShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->createDimensionsShorthand();
         }
-        self::assertSame(trim((string) $oDoc), $sExpected);
+        self::assertSame(\trim((string) $oDoc), $sExpected);
     }
 
     /**
      * @return array<int, array<int, string>>
      */
-    public static function createDimensionsShorthandProvider()
+    public static function createDimensionsShorthandProvider(): array
     {
         return [
             ['body {border: 1px;}', 'body {border: 1px;}'],
@@ -305,27 +284,24 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @param string $sCss
-     * @param string $sExpected
-     *
      * @dataProvider createBackgroundShorthandProvider
      *
      * @test
      */
-    public function createBackgroundShorthand($sCss, $sExpected)
+    public function createBackgroundShorthand(string $sCss, string $sExpected): void
     {
         $oParser = new Parser($sCss);
         $oDoc = $oParser->parse();
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->createBackgroundShorthand();
         }
-        self::assertSame(trim((string) $oDoc), $sExpected);
+        self::assertSame(\trim((string) $oDoc), $sExpected);
     }
 
     /**
      * @return array<int, array<int, string>>
      */
-    public static function createBackgroundShorthandProvider()
+    public static function createBackgroundShorthandProvider(): array
     {
         return [
             ['body {border: 1px;}', 'body {border: 1px;}'],
@@ -358,7 +334,7 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @test
      */
-    public function overrideRules()
+    public function overrideRules(): void
     {
         $sCss = '.wrapper { left: 10px; text-align: left; }';
         $oParser = new Parser($sCss);
@@ -380,7 +356,7 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @test
      */
-    public function ruleInsertion()
+    public function ruleInsertion(): void
     {
         $sCss = '.wrapper { left: 10px; text-align: left; }';
         $oParser = new Parser($sCss);
@@ -428,7 +404,7 @@ final class DeclarationBlockTest extends TestCase
      *
      * TODO: The order is different on PHP 5.6 than on PHP >= 7.0.
      */
-    public function orderOfElementsMatchingOriginalOrderAfterExpandingShorthands()
+    public function orderOfElementsMatchingOriginalOrderAfterExpandingShorthands(): void
     {
         $sCss = '.rule{padding:5px;padding-top: 20px}';
         $oParser = new Parser($sCss);
@@ -437,7 +413,7 @@ final class DeclarationBlockTest extends TestCase
 
         self::assertCount(1, $aDocs);
 
-        $oDeclaration = array_pop($aDocs);
+        $oDeclaration = \array_pop($aDocs);
         $oDeclaration->expandShorthands();
 
         self::assertEquals(
@@ -447,7 +423,7 @@ final class DeclarationBlockTest extends TestCase
                 'padding-bottom' => 'padding-bottom: 5px;',
                 'padding-left' => 'padding-left: 5px;',
             ],
-            array_map('strval', $oDeclaration->getRulesAssoc())
+            \array_map('strval', $oDeclaration->getRulesAssoc())
         );
     }
 }

@@ -19,7 +19,7 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function implementsRenderable()
+    public function implementsRenderable(): void
     {
         $subject = new Comment();
 
@@ -29,7 +29,7 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function getCommentOnEmptyInstanceReturnsReturnsEmptyString()
+    public function getCommentOnEmptyInstanceReturnsReturnsEmptyString(): void
     {
         $subject = new Comment();
 
@@ -39,7 +39,7 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function getCommentInitiallyReturnsCommentPassedToConstructor()
+    public function getCommentInitiallyReturnsCommentPassedToConstructor(): void
     {
         $comment = 'There is no spoon.';
         $subject = new Comment($comment);
@@ -50,7 +50,7 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function setCommentSetsComments()
+    public function setCommentSetsComments(): void
     {
         $comment = 'There is no spoon.';
         $subject = new Comment();
@@ -63,7 +63,7 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoOnEmptyInstanceReturnsReturnsZero()
+    public function getLineNoOnEmptyInstanceReturnsReturnsZero(): void
     {
         $subject = new Comment();
 
@@ -73,7 +73,7 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoInitiallyReturnsLineNumberPassedToConstructor()
+    public function getLineNoInitiallyReturnsLineNumberPassedToConstructor(): void
     {
         $lineNumber = 42;
         $subject = new Comment('', $lineNumber);
@@ -84,7 +84,7 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function toStringRendersCommentEnclosedInCommentDelimiters()
+    public function toStringRendersCommentEnclosedInCommentDelimiters(): void
     {
         $comment = 'There is no spoon.';
         $subject = new Comment();
@@ -97,7 +97,7 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function renderRendersCommentEnclosedInCommentDelimiters()
+    public function renderRendersCommentEnclosedInCommentDelimiters(): void
     {
         $comment = 'There is no spoon.';
         $subject = new Comment();
@@ -110,7 +110,7 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function keepCommentsInOutput()
+    public function keepCommentsInOutput(): void
     {
         $oCss = TestsParserTest::parsedStructureForFile('comments');
         self::assertSame('/** Number 11 **/
@@ -152,7 +152,7 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function stripCommentsFromOutput()
+    public function stripCommentsFromOutput(): void
     {
         $oCss = TestsParserTest::parsedStructureForFile('comments');
         self::assertSame('

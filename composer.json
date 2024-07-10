@@ -28,10 +28,12 @@
     },
     "require-dev": {
         "codacy/coverage": "^1.4.3",
-        "phpstan/extension-installer": "^1.3.1",
-        "phpstan/phpstan": "^1.10.65",
-        "phpstan/phpstan-phpunit": "^1.3.16",
-        "phpunit/phpunit": "^8.5.37"
+        "php-parallel-lint/php-parallel-lint": "^1.4.0",
+        "phpstan/extension-installer": "^1.4.1",
+        "phpstan/phpstan": "^1.11.7",
+        "phpstan/phpstan-phpunit": "^1.4.0",
+        "phpunit/phpunit": "^8.5.38",
+        "rector/rector": "^1.2.0"
     },
     "suggest": {
         "ext-mbstring": "for parsing UTF-8 CSS"
@@ -68,34 +70,43 @@
         "ci:dynamic": [
             "@ci:tests"
         ],
-        "ci:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix --dry-run -v --show-progress=dots --diff bin src tests",
+        "ci:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix --dry-run -v --show-progress=dots --diff bin src tests config",
+        "ci:php:lint": "parallel-lint src tests config bin",
+        "ci:php:rector": "rector --no-progress-bar --dry-run --config=config/rector.php",
         "ci:php:stan": "phpstan --no-progress --configuration=config/phpstan.neon",
         "ci:static": [
             "@ci:php:fixer",
+            "@ci:php:lint",
+            "@ci:php:rector",
             "@ci:php:stan"
         ],
         "ci:tests": [
             "@ci:tests:unit"
         ],
-        "ci:tests:sof": "\"./vendor/bin/phpunit\" --stop-on-failure --do-not-cache-result",
-        "ci:tests:unit": "\"./vendor/bin/phpunit\" --do-not-cache-result",
+        "ci:tests:sof": "phpunit --stop-on-failure --do-not-cache-result",
+        "ci:tests:unit": "phpunit --do-not-cache-result",
         "fix:php": [
-            "@fix:php:fixer"
+            "@fix:php:fixer",
+            "@fix:php:rector"
         ],
         "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix bin src tests",
+        "fix:php:rector": "rector --config=config/rector.php",
         "phpstan:baseline": "phpstan --configuration=config/phpstan.neon --generate-baseline=config/phpstan-baseline.neon"
     },
     "scripts-descriptions": {
         "ci": "Runs all dynamic and static code checks.",
         "ci:dynamic": "Runs all dynamic code checks (i.e., currently, the unit tests).",
         "ci:php:fixer": "Checks the code style with PHP CS Fixer.",
+        "ci:php:lint": "Checks the syntax of the PHP code.",
         "ci:php:stan": "Checks the types with PHPStan.",
+        "ci:php:rector": "Checks the code for possible code updates and refactoring.",
         "ci:static": "Runs all static code analysis checks for the code.",
         "ci:tests": "Runs all dynamic tests (i.e., currently, the unit tests).",
         "ci:tests:sof": "Runs the unit tests and stops at the first failure.",
         "ci:tests:unit": "Runs all unit tests.",
         "fix:php": "Autofixes all autofixable issues in the PHP code.",
         "fix:php:fixer": "Fixes autofixable issues found by PHP CS Fixer.",
+        "fix:php:rector": "Fixes autofixable issues found by Rector.",
         "phpstan:baseline": "Updates the PHPStan baseline file to match the code."
     }
 }

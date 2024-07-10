@@ -19,12 +19,10 @@ class LineName extends ValueList
     }
 
     /**
-     * @return LineName
-     *
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
-    public static function parse(ParserState $oParserState)
+    public static function parse(ParserState $oParserState): LineName
     {
         $oParserState->consume('[');
         $oParserState->consumeWhiteSpace();
@@ -47,18 +45,12 @@ class LineName extends ValueList
         return new LineName($aNames, $oParserState->currentLine());
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         return '[' . parent::render(OutputFormat::createCompact()) . ']';
     }

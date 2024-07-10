@@ -34,23 +34,42 @@ class CSSFunction extends ValueList
     }
 
     /**
-     * @param ParserState $oParserState
-     * @param bool $bIgnoreCase
-     *
-     * @return CSSFunction
+     * @throws SourceException
+     * @throws UnexpectedEOFException
+     * @throws UnexpectedTokenException
+     */
+    public static function parse(ParserState $oParserState, bool $bIgnoreCase = false): CSSFunction
+    {
+        $sName = self::parseName($oParserState, $bIgnoreCase);
+        $oParserState->consume('(');
+        $mArguments = self::parseArguments($oParserState);
+
+        $oResult = new CSSFunction($sName, $mArguments, ',', $oParserState->currentLine());
+        $oParserState->consume(')');
+
+        return $oResult;
+    }
+
+    /**
+     * @throws SourceException
+     * @throws UnexpectedEOFException
+     * @throws UnexpectedTokenException
+     */
+    private static function parseName(ParserState $oParserState, bool $bIgnoreCase = false): string
+    {
+        return $oParserState->parseIdentifier($bIgnoreCase);
+    }
+
+    /**
+     * @return Value|string
      *
      * @throws SourceException
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState, $bIgnoreCase = false)
+    private static function parseArguments(ParserState $oParserState)
     {
-        $mResult = $oParserState->parseIdentifier($bIgnoreCase);
-        $oParserState->consume('(');
-        $aArguments = Value::parseValue($oParserState, ['=', ' ', ',']);
-        $mResult = new CSSFunction($mResult, $aArguments, ',', $oParserState->currentLine());
-        $oParserState->consume(')');
-        return $mResult;
+        return Value::parseValue($oParserState, ['=', ' ', ',']);
     }
 
     /**
@@ -63,10 +82,8 @@ class CSSFunction extends ValueList
 
     /**
      * @param string $sName
-     *
-     * @return void
      */
-    public function setName($sName)
+    public function setName($sName): void
     {
         $this->sName = $sName;
     }
@@ -79,10 +96,7 @@ class CSSFunction extends ValueList
         return $this->aComponents;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
