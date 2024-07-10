@@ -12,19 +12,14 @@ use Sabberworm\CSS\Parsing\ParserState;
 class Expression extends CSSFunction
 {
     /**
-     * @param ParserState $oParserState
-     * @param bool $bIgnoreCase
-     *
-     * @return Expression
-     *
      * @throws SourceException
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState, $bIgnoreCase = false)
+    public static function parse(ParserState $oParserState, bool $bIgnoreCase = false): Expression
     {
         $oParserState->consume('(');
-        $aArguments = self::parseArgs($oParserState);
+        $aArguments = parent::parseArguments($oParserState);
         $mResult = new Expression("", $aArguments, ',', $oParserState->currentLine());
         $oParserState->consume(')');
         return $mResult;
