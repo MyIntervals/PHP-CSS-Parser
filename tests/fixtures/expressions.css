@@ -1,0 +1,11 @@
+div {
+    height: (vh - 10);
+}
+
+div {
+    height: (vh - 10) / 2;
+}
+
+div {
+    height: max(5, (vh - 10));
+}
