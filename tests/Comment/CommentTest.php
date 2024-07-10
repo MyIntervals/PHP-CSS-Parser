@@ -14,12 +14,12 @@ use Sabberworm\CSS\Tests\ParserTest as TestsParserTest;
  * @covers \Sabberworm\CSS\OutputFormat
  * @covers \Sabberworm\CSS\OutputFormatter
  */
-class CommentTest extends TestCase
+final class CommentTest extends TestCase
 {
     /**
      * @test
      */
-    public function implementsRenderable()
+    public function implementsRenderable(): void
     {
         $subject = new Comment();
 
@@ -29,7 +29,7 @@ class CommentTest extends TestCase
     /**
      * @test
      */
-    public function getCommentOnEmptyInstanceReturnsReturnsEmptyString()
+    public function getCommentOnEmptyInstanceReturnsReturnsEmptyString(): void
     {
         $subject = new Comment();
 
@@ -39,7 +39,7 @@ class CommentTest extends TestCase
     /**
      * @test
      */
-    public function getCommentInitiallyReturnsCommentPassedToConstructor()
+    public function getCommentInitiallyReturnsCommentPassedToConstructor(): void
     {
         $comment = 'There is no spoon.';
         $subject = new Comment($comment);
@@ -50,7 +50,7 @@ class CommentTest extends TestCase
     /**
      * @test
      */
-    public function setCommentSetsComments()
+    public function setCommentSetsComments(): void
     {
         $comment = 'There is no spoon.';
         $subject = new Comment();
@@ -63,7 +63,7 @@ class CommentTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoOnEmptyInstanceReturnsReturnsZero()
+    public function getLineNoOnEmptyInstanceReturnsReturnsZero(): void
     {
         $subject = new Comment();
 
@@ -73,7 +73,7 @@ class CommentTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoInitiallyReturnsLineNumberPassedToConstructor()
+    public function getLineNoInitiallyReturnsLineNumberPassedToConstructor(): void
     {
         $lineNumber = 42;
         $subject = new Comment('', $lineNumber);
@@ -84,20 +84,20 @@ class CommentTest extends TestCase
     /**
      * @test
      */
-    public function toStringRendersCommentEnclosedInCommentDelimiters()
+    public function toStringRendersCommentEnclosedInCommentDelimiters(): void
     {
         $comment = 'There is no spoon.';
         $subject = new Comment();
 
         $subject->setComment($comment);
 
-        self::assertSame('/*' . $comment . '*/', (string)$subject);
+        self::assertSame('/*' . $comment . '*/', (string) $subject);
     }
 
     /**
      * @test
      */
-    public function renderRendersCommentEnclosedInCommentDelimiters()
+    public function renderRendersCommentEnclosedInCommentDelimiters(): void
     {
         $comment = 'There is no spoon.';
         $subject = new Comment();
@@ -110,7 +110,7 @@ class CommentTest extends TestCase
     /**
      * @test
      */
-    public function keepCommentsInOutput()
+    public function keepCommentsInOutput(): void
     {
         $oCss = TestsParserTest::parsedStructureForFile('comments');
         self::assertSame('/** Number 11 **/
@@ -140,11 +140,11 @@ class CommentTest extends TestCase
 ', $oCss->render(OutputFormat::createPretty()));
         self::assertSame(
             '/** Number 11 **//**' . "\n"
-                . ' * Comments' . "\n"
-                . ' *//* Hell */@import url("some/url.css") screen;'
-                . '/* Number 4 *//* Number 5 */.foo,#bar{'
-                . '/* Number 6 */background-color:#000;}@media screen{'
-                . '/** Number 10 **/#foo.bar{/** Number 10b **/position:absolute;}}',
+            . ' * Comments' . "\n"
+            . ' *//* Hell */@import url("some/url.css") screen;'
+            . '/* Number 4 *//* Number 5 */.foo,#bar{'
+            . '/* Number 6 */background-color:#000;}@media screen{'
+            . '/** Number 10 **/#foo.bar{/** Number 10b **/position:absolute;}}',
             $oCss->render(OutputFormat::createCompact()->setRenderComments(true))
         );
     }
@@ -152,7 +152,7 @@ class CommentTest extends TestCase
     /**
      * @test
      */
-    public function stripCommentsFromOutput()
+    public function stripCommentsFromOutput(): void
     {
         $oCss = TestsParserTest::parsedStructureForFile('comments');
         self::assertSame('
@@ -170,8 +170,8 @@ class CommentTest extends TestCase
 ', $oCss->render(OutputFormat::createPretty()->setRenderComments(false)));
         self::assertSame(
             '@import url("some/url.css") screen;'
-                . '.foo,#bar{background-color:#000;}'
-                . '@media screen{#foo.bar{position:absolute;}}',
+            . '.foo,#bar{background-color:#000;}'
+            . '@media screen{#foo.bar{position:absolute;}}',
             $oCss->render(OutputFormat::createCompact())
         );
     }

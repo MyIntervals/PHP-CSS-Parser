@@ -54,10 +54,8 @@ class Import implements AtRule
 
     /**
      * @param URL $oLocation
-     *
-     * @return void
      */
-    public function setLocation($oLocation)
+    public function setLocation($oLocation): void
     {
         $this->oLocation = $oLocation;
     }
@@ -70,27 +68,18 @@ class Import implements AtRule
         return $this->oLocation;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
-        return $oOutputFormat->comments($this) . "@import " . $this->oLocation->render($oOutputFormat)
+        return $oOutputFormat->comments($this) . '@import ' . $this->oLocation->render($oOutputFormat)
             . ($this->sMediaQuery === null ? '' : ' ' . $this->sMediaQuery) . ';';
     }
 
-    /**
-     * @return string
-     */
-    public function atRuleName()
+    public function atRuleName(): string
     {
         return 'import';
     }
@@ -98,23 +87,21 @@ class Import implements AtRule
     /**
      * @return array<int, URL|string>
      */
-    public function atRuleArgs()
+    public function atRuleArgs(): array
     {
         $aResult = [$this->oLocation];
         if ($this->sMediaQuery) {
-            array_push($aResult, $this->sMediaQuery);
+            \array_push($aResult, $this->sMediaQuery);
         }
         return $aResult;
     }
 
     /**
      * @param array<array-key, Comment> $aComments
-     *
-     * @return void
      */
-    public function addComments(array $aComments)
+    public function addComments(array $aComments): void
     {
-        $this->aComments = array_merge($this->aComments, $aComments);
+        $this->aComments = \array_merge($this->aComments, $aComments);
     }
 
     /**
@@ -127,10 +114,8 @@ class Import implements AtRule
 
     /**
      * @param array<array-key, Comment> $aComments
-     *
-     * @return void
      */
-    public function setComments(array $aComments)
+    public function setComments(array $aComments): void
     {
         $this->aComments = $aComments;
     }

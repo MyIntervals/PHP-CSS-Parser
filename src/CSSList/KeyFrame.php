@@ -30,7 +30,7 @@ class KeyFrame extends CSSList implements AtRule
     /**
      * @param string $vendorKeyFrame
      */
-    public function setVendorKeyFrame($vendorKeyFrame)
+    public function setVendorKeyFrame($vendorKeyFrame): void
     {
         $this->vendorKeyFrame = $vendorKeyFrame;
     }
@@ -46,7 +46,7 @@ class KeyFrame extends CSSList implements AtRule
     /**
      * @param string $animationName
      */
-    public function setAnimationName($animationName)
+    public function setAnimationName($animationName): void
     {
         $this->animationName = $animationName;
     }
@@ -59,18 +59,12 @@ class KeyFrame extends CSSList implements AtRule
         return $this->animationName;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         $sResult = $oOutputFormat->comments($this);
         $sResult .= "@{$this->vendorKeyFrame} {$this->animationName}{$oOutputFormat->spaceBeforeOpeningBrace()}{";
@@ -79,10 +73,7 @@ class KeyFrame extends CSSList implements AtRule
         return $sResult;
     }
 
-    /**
-     * @return bool
-     */
-    public function isRootList()
+    public function isRootList(): bool
     {
         return false;
     }

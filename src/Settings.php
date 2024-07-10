@@ -35,13 +35,13 @@ class Settings
 
     private function __construct()
     {
-        $this->bMultibyteSupport = extension_loaded('mbstring');
+        $this->bMultibyteSupport = \extension_loaded('mbstring');
     }
 
     /**
      * @return self new instance
      */
-    public static function create()
+    public static function create(): Settings
     {
         return new Settings();
     }

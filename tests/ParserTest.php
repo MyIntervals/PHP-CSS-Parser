@@ -35,12 +35,12 @@ use Sabberworm\CSS\Value\URL;
  * @covers \Sabberworm\CSS\Value\Size::parse
  * @covers \Sabberworm\CSS\Value\URL::parse
  */
-class ParserTest extends TestCase
+final class ParserTest extends TestCase
 {
     /**
      * @test
      */
-    public function parseForOneRuleSetReturnsDocumentWithOneRuleSet()
+    public function parseForOneRuleSetReturnsDocumentWithOneRuleSet(): void
     {
         $css = '.thing { left: 10px; }';
         $parser = new Parser($css);
@@ -57,31 +57,31 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function files()
+    public function files(): void
     {
         $sDirectory = __DIR__ . '/fixtures';
-        if ($rHandle = opendir($sDirectory)) {
+        if ($rHandle = \opendir($sDirectory)) {
             /* This is the correct way to loop over the directory. */
-            while (false !== ($sFileName = readdir($rHandle))) {
-                if (strpos($sFileName, '.') === 0) {
+            while (false !== ($sFileName = \readdir($rHandle))) {
+                if (\strpos($sFileName, '.') === 0) {
                     continue;
                 }
-                if (strrpos($sFileName, '.css') !== strlen($sFileName) - strlen('.css')) {
+                if (\strrpos($sFileName, '.css') !== \strlen($sFileName) - \strlen('.css')) {
                     continue;
                 }
-                if (strpos($sFileName, '-') === 0) {
+                if (\strpos($sFileName, '-') === 0) {
                     // Either a file which SHOULD fail (at least in strict mode)
                     // or a future test of a as-of-now missing feature
                     continue;
                 }
-                $oParser = new Parser(file_get_contents($sDirectory . '/' . $sFileName));
+                $oParser = new Parser(\file_get_contents($sDirectory . '/' . $sFileName));
                 try {
                     self::assertNotEquals('', $oParser->parse()->render());
                 } catch (\Exception $e) {
                     self::fail($e);
                 }
             }
-            closedir($rHandle);
+            \closedir($rHandle);
         }
     }
 
@@ -90,7 +90,7 @@ class ParserTest extends TestCase
      *
      * @test
      */
-    public function colorParsing()
+    public function colorParsing(): void
     {
         $oDoc = self::parsedStructureForFile('colortest');
         foreach ($oDoc->getAllRuleSets() as $oRuleSet) {
@@ -122,7 +122,7 @@ class ParserTest extends TestCase
                     'r' => new Size(10.0, null, true, $oColor->getLineNo()),
                     'g' => new Size(100.0, null, true, $oColor->getLineNo()),
                     'b' => new Size(231.0, null, true, $oColor->getLineNo()),
-                    'a' => new Size("0000.3", null, true, $oColor->getLineNo()),
+                    'a' => new Size('0000.3', null, true, $oColor->getLineNo()),
                 ], $oColor->getColor());
                 $aColorRule = $oRuleSet->getRules('outline-color');
                 $oColor = $aColorRule[0]->getValue();
@@ -146,6 +146,8 @@ class ParserTest extends TestCase
                     'l' => new Size(220.0, '%', true, $oColor->getLineNo()),
                     'a' => new Size(0000.3, null, true, $oColor->getLineNo()),
                 ], $oColor->getColor());
+                $aColorRule = $oRuleSet->getRules('outline-color');
+                self::assertEmpty($aColorRule);
             }
         }
         foreach ($oDoc->getAllValues('color') as $sColor) {
@@ -172,18 +174,17 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function unicodeParsing()
+    public function unicodeParsing(): void
     {
         $oDoc = self::parsedStructureForFile('unicode');
         foreach ($oDoc->getAllDeclarationBlocks() as $oRuleSet) {
             $sSelector = $oRuleSet->getSelectors();
             $sSelector = $sSelector[0]->getSelector();
-            if (substr($sSelector, 0, strlen('.test-')) !== '.test-') {
+            if (\substr($sSelector, 0, \strlen('.test-')) !== '.test-') {
                 continue;
             }
             $aContentRules = $oRuleSet->getRules('content');
-            $aContents = $aContentRules[0]->getValues();
-            $sString = $aContents[0][0]->__toString();
+            $sString = $aContentRules[0]->getValue()->__toString();
             if ($sSelector == '.test-1') {
                 self::assertSame('" "', $sString);
             }
@@ -203,13 +204,13 @@ class ParserTest extends TestCase
                 self::assertSame('"¥"', $sString);
             }
             if ($sSelector == '.test-7') {
-                self::assertSame('"\A"', $sString);
+                self::assertSame('"\\A"', $sString);
             }
             if ($sSelector == '.test-8') {
-                self::assertSame('"\"\""', $sString);
+                self::assertSame('"\\"\\""', $sString);
             }
             if ($sSelector == '.test-9') {
-                self::assertSame('"\"\\\'"', $sString);
+                self::assertSame('"\\"\\\'"', $sString);
             }
             if ($sSelector == '.test-10') {
                 self::assertSame('"\\\'\\\\"', $sString);
@@ -223,17 +224,17 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function unicodeRangeParsing()
+    public function unicodeRangeParsing(): void
     {
         $oDoc = self::parsedStructureForFile('unicode-range');
-        $sExpected = "@font-face {unicode-range: U+0100-024F,U+0259,U+1E??-2EFF,U+202F;}";
+        $sExpected = '@font-face {unicode-range: U+0100-024F,U+0259,U+1E??-2EFF,U+202F;}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
     /**
      * @test
      */
-    public function specificity()
+    public function specificity(): void
     {
         $oDoc = self::parsedStructureForFile('specificity');
         $oDeclarationBlock = $oDoc->getAllDeclarationBlocks();
@@ -241,23 +242,23 @@ class ParserTest extends TestCase
         $aSelectors = $oDeclarationBlock->getSelectors();
         foreach ($aSelectors as $oSelector) {
             switch ($oSelector->getSelector()) {
-                case "#test .help":
+                case '#test .help':
                     self::assertSame(110, $oSelector->getSpecificity());
                     break;
-                case "#file":
+                case '#file':
                     self::assertSame(100, $oSelector->getSpecificity());
                     break;
-                case ".help:hover":
+                case '.help:hover':
                     self::assertSame(20, $oSelector->getSpecificity());
                     break;
-                case "ol li::before":
+                case 'ol li::before':
                     self::assertSame(3, $oSelector->getSpecificity());
                     break;
-                case "li.green":
+                case 'li.green':
                     self::assertSame(11, $oSelector->getSpecificity());
                     break;
                 default:
-                    self::fail("specificity: untested selector " . $oSelector->getSelector());
+                    self::fail('specificity: untested selector ' . $oSelector->getSelector());
             }
         }
         self::assertEquals([new Selector('#test .help', true)], $oDoc->getSelectorsBySpecificity('> 100'));
@@ -285,7 +286,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function manipulation()
+    public function manipulation(): void
     {
         $oDoc = self::parsedStructureForFile('atrules');
         self::assertSame(
@@ -391,7 +392,7 @@ body {color: green;}',
     /**
      * @test
      */
-    public function ruleGetters()
+    public function ruleGetters(): void
     {
         $oDoc = self::parsedStructureForFile('values');
         $aBlocks = $oDoc->getAllDeclarationBlocks();
@@ -414,7 +415,7 @@ body {color: green;}',
     /**
      * @test
      */
-    public function slashedValues()
+    public function slashedValues(): void
     {
         $oDoc = self::parsedStructureForFile('slashed');
         self::assertSame(
@@ -455,7 +456,7 @@ body {color: green;}',
     /**
      * @test
      */
-    public function functionSyntax()
+    public function functionSyntax(): void
     {
         $oDoc = self::parsedStructureForFile('functions');
         $sExpected = 'div.main {background-image: linear-gradient(#000,#fff);}'
@@ -478,7 +479,7 @@ body {color: green;}',
                 $mValue->setSize($mValue->getSize() * 3);
             }
         }
-        $sExpected = str_replace(['1.2em', '.2em', '60%'], ['3.6em', '.6em', '180%'], $sExpected);
+        $sExpected = \str_replace(['1.2em', '.2em', '60%'], ['3.6em', '.6em', '180%'], $sExpected);
         self::assertSame($sExpected, $oDoc->render());
 
         foreach ($oDoc->getAllValues(null, true) as $mValue) {
@@ -486,14 +487,14 @@ body {color: green;}',
                 $mValue->setSize($mValue->getSize() * 2);
             }
         }
-        $sExpected = str_replace(['.2s', '.3s', '90deg'], ['.4s', '.6s', '180deg'], $sExpected);
+        $sExpected = \str_replace(['.2s', '.3s', '90deg'], ['.4s', '.6s', '180deg'], $sExpected);
         self::assertSame($sExpected, $oDoc->render());
     }
 
     /**
      * @test
      */
-    public function expandShorthands()
+    public function expandShorthands(): void
     {
         $oDoc = self::parsedStructureForFile('expand-shorthands');
         $sExpected = 'body {font: italic 500 14px/1.618 "Trebuchet MS",Georgia,serif;border: 2px solid #f0f;'
@@ -517,7 +518,7 @@ body {color: green;}',
     /**
      * @test
      */
-    public function createShorthands()
+    public function createShorthands(): void
     {
         $oDoc = self::parsedStructureForFile('create-shorthands');
         $sExpected = 'body {font-size: 2em;font-family: Helvetica,Arial,sans-serif;font-weight: bold;'
@@ -534,7 +535,7 @@ body {color: green;}',
     /**
      * @test
      */
-    public function namespaces()
+    public function namespaces(): void
     {
         $oDoc = self::parsedStructureForFile('namespaces');
         $sExpected = '@namespace toto "http://toto.example.org";
@@ -549,7 +550,7 @@ foo|test {gaga: 1;}
     /**
      * @test
      */
-    public function innerColors()
+    public function innerColors(): void
     {
         $oDoc = self::parsedStructureForFile('inner-color');
         $sExpected = 'test {background: -webkit-gradient(linear,0 0,0 bottom,from(#006cad),to(hsl(202,100%,49%)));}';
@@ -559,7 +560,7 @@ foo|test {gaga: 1;}
     /**
      * @test
      */
-    public function prefixedGradient()
+    public function prefixedGradient(): void
     {
         $oDoc = self::parsedStructureForFile('webkit');
         $sExpected = '.test {background: -webkit-linear-gradient(top right,white,black);}';
@@ -569,7 +570,7 @@ foo|test {gaga: 1;}
     /**
      * @test
      */
-    public function listValueRemoval()
+    public function listValueRemoval(): void
     {
         $oDoc = self::parsedStructureForFile('atrules');
         foreach ($oDoc->getContents() as $oItem) {
@@ -607,7 +608,7 @@ foo|test {gaga: 1;}
     /**
      * @test
      */
-    public function selectorRemoval()
+    public function selectorRemoval(): void
     {
         $this->expectException(OutputException::class);
 
@@ -628,7 +629,7 @@ body {font-size: 1.6em;}';
     /**
      * @test
      */
-    public function comments()
+    public function comments(): void
     {
         $oDoc = self::parsedStructureForFile('comments');
         $sExpected = <<<EXPECTED
@@ -642,7 +643,7 @@ EXPECTED;
     /**
      * @test
      */
-    public function urlInFile()
+    public function urlInFile(): void
     {
         $oDoc = self::parsedStructureForFile('url', Settings::create()->withMultibyteSupport(true));
         $sExpected = 'body {background: #fff url("https://somesite.com/images/someimage.gif") repeat top center;}
@@ -653,7 +654,7 @@ body {background-url: url("https://somesite.com/images/someimage.gif");}';
     /**
      * @test
      */
-    public function hexAlphaInFile()
+    public function hexAlphaInFile(): void
     {
         $oDoc = self::parsedStructureForFile('hex-alpha', Settings::create()->withMultibyteSupport(true));
         $sExpected = 'div {background: rgba(17,34,51,.27);}
@@ -664,7 +665,7 @@ div {background: rgba(17,34,51,.27);}';
     /**
      * @test
      */
-    public function calcInFile()
+    public function calcInFile(): void
     {
         $oDoc = self::parsedStructureForFile('calc', Settings::create()->withMultibyteSupport(true));
         $sExpected = 'div {width: calc(100% / 4);}
@@ -677,7 +678,7 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
     /**
      * @test
      */
-    public function calcNestedInFile()
+    public function calcNestedInFile(): void
     {
         $oDoc = self::parsedStructureForFile('calc-nested', Settings::create()->withMultibyteSupport(true));
         $sExpected = '.test {font-size: calc(( 3 * 4px ) + -2px);top: calc(200px - calc(20 * 3px));}';
@@ -687,7 +688,7 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
     /**
      * @test
      */
-    public function invalidCalcInFile()
+    public function invalidCalcInFile(): void
     {
         $oDoc = self::parsedStructureForFile('calc-invalid', Settings::create()->withMultibyteSupport(true));
         $sExpected = 'div {}
@@ -701,7 +702,7 @@ div {height: calc;}';
     /**
      * @test
      */
-    public function invalidCalc()
+    public function invalidCalc(): void
     {
         $parser = new Parser('div { height: calc(100px');
         $oDoc = $parser->parse();
@@ -731,18 +732,18 @@ div {height: calc;}';
     /**
      * @test
      */
-    public function gridLineNameInFile()
+    public function gridLineNameInFile(): void
     {
         $oDoc = self::parsedStructureForFile('grid-linename', Settings::create()->withMultibyteSupport(true));
         $sExpected = "div {grid-template-columns: [linename] 100px;}\n"
-            . "span {grid-template-columns: [linename1 linename2] 100px;}";
+            . 'span {grid-template-columns: [linename1 linename2] 100px;}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
     /**
      * @test
      */
-    public function emptyGridLineNameLenientInFile()
+    public function emptyGridLineNameLenientInFile(): void
     {
         $oDoc = self::parsedStructureForFile('empty-grid-linename');
         $sExpected = '.test {grid-template-columns: [] 100px;}';
@@ -752,17 +753,17 @@ div {height: calc;}';
     /**
      * @test
      */
-    public function invalidGridLineNameInFile()
+    public function invalidGridLineNameInFile(): void
     {
         $oDoc = self::parsedStructureForFile('invalid-grid-linename', Settings::create()->withMultibyteSupport(true));
-        $sExpected = "div {}";
+        $sExpected = 'div {}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
     /**
      * @test
      */
-    public function unmatchedBracesInFile()
+    public function unmatchedBracesInFile(): void
     {
         $oDoc = self::parsedStructureForFile('unmatched_braces', Settings::create()->withMultibyteSupport(true));
         $sExpected = 'button, input, checkbox, textarea {outline: 0;margin: 0;}';
@@ -772,7 +773,7 @@ div {height: calc;}';
     /**
      * @test
      */
-    public function invalidSelectorsInFile()
+    public function invalidSelectorsInFile(): void
     {
         $oDoc = self::parsedStructureForFile('invalid-selectors', Settings::create()->withMultibyteSupport(true));
         $sExpected = '@keyframes mymove {from {top: 0px;}}
@@ -793,11 +794,11 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function selectorEscapesInFile()
+    public function selectorEscapesInFile(): void
     {
         $oDoc = self::parsedStructureForFile('selector-escapes', Settings::create()->withMultibyteSupport(true));
-        $sExpected = '#\# {color: red;}
-.col-sm-1\/5 {width: 20%;}';
+        $sExpected = '#\\# {color: red;}
+.col-sm-1\\/5 {width: 20%;}';
         self::assertSame($sExpected, $oDoc->render());
 
         $oDoc = self::parsedStructureForFile('invalid-selectors-2', Settings::create()->withMultibyteSupport(true));
@@ -813,18 +814,18 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function identifierEscapesInFile()
+    public function identifierEscapesInFile(): void
     {
         $oDoc = self::parsedStructureForFile('identifier-escapes', Settings::create()->withMultibyteSupport(true));
-        $sExpected = 'div {font: 14px Font Awesome\ 5 Pro;font: 14px Font Awesome\} 5 Pro;'
-            . 'font: 14px Font Awesome\; 5 Pro;f\;ont: 14px Font Awesome\; 5 Pro;}';
+        $sExpected = 'div {font: 14px Font Awesome\\ 5 Pro;font: 14px Font Awesome\\} 5 Pro;'
+            . 'font: 14px Font Awesome\\; 5 Pro;f\\;ont: 14px Font Awesome\\; 5 Pro;}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
     /**
      * @test
      */
-    public function selectorIgnoresInFile()
+    public function selectorIgnoresInFile(): void
     {
         $oDoc = self::parsedStructureForFile('selector-ignores', Settings::create()->withMultibyteSupport(true));
         $sExpected = '.some[selectors-may=\'contain-a-{\'] {}'
@@ -838,7 +839,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function keyframeSelectors()
+    public function keyframeSelectors(): void
     {
         $oDoc = self::parsedStructureForFile(
             'keyframe-selector-validation',
@@ -855,7 +856,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function lineNameFailure()
+    public function lineNameFailure(): void
     {
         $this->expectException(UnexpectedTokenException::class);
 
@@ -865,7 +866,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function calcFailure()
+    public function calcFailure(): void
     {
         $this->expectException(UnexpectedTokenException::class);
 
@@ -875,7 +876,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function urlInFileMbOff()
+    public function urlInFileMbOff(): void
     {
         $oDoc = self::parsedStructureForFile('url', Settings::create()->withMultibyteSupport(false));
         $sExpected = 'body {background: #fff url("https://somesite.com/images/someimage.gif") repeat top center;}'
@@ -887,7 +888,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function emptyFile()
+    public function emptyFile(): void
     {
         $oDoc = self::parsedStructureForFile('-empty', Settings::create()->withMultibyteSupport(true));
         $sExpected = '';
@@ -897,7 +898,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function emptyFileMbOff()
+    public function emptyFileMbOff(): void
     {
         $oDoc = self::parsedStructureForFile('-empty', Settings::create()->withMultibyteSupport(false));
         $sExpected = '';
@@ -907,7 +908,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function charsetLenient1()
+    public function charsetLenient1(): void
     {
         $oDoc = self::parsedStructureForFile('-charset-after-rule', Settings::create()->withLenientParsing(true));
         $sExpected = '#id {prop: var(--val);}';
@@ -917,7 +918,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function charsetLenient2()
+    public function charsetLenient2(): void
     {
         $oDoc = self::parsedStructureForFile('-charset-in-block', Settings::create()->withLenientParsing(true));
         $sExpected = '@media print {}';
@@ -927,7 +928,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function trailingWhitespace()
+    public function trailingWhitespace(): void
     {
         $oDoc = self::parsedStructureForFile('trailing-whitespace', Settings::create()->withLenientParsing(false));
         $sExpected = 'div {width: 200px;}';
@@ -937,7 +938,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function charsetFailure1()
+    public function charsetFailure1(): void
     {
         $this->expectException(UnexpectedTokenException::class);
 
@@ -947,7 +948,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function charsetFailure2()
+    public function charsetFailure2(): void
     {
         $this->expectException(UnexpectedTokenException::class);
 
@@ -957,7 +958,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function unopenedClosingBracketFailure()
+    public function unopenedClosingBracketFailure(): void
     {
         $this->expectException(SourceException::class);
 
@@ -971,7 +972,7 @@ body {background-color: red;}';
      *
      * @test
      */
-    public function missingPropertyValueStrict()
+    public function missingPropertyValueStrict(): void
     {
         $this->expectException(UnexpectedTokenException::class);
 
@@ -985,7 +986,7 @@ body {background-color: red;}';
      *
      * @test
      */
-    public function missingPropertyValueLenient()
+    public function missingPropertyValueLenient(): void
     {
         $parsed = self::parsedStructureForFile('missing-property-value', Settings::create()->withLenientParsing(true));
         $rulesets = $parsed->getAllRuleSets();
@@ -1005,13 +1006,11 @@ body {background-color: red;}';
      *
      * @param string $sFileName
      * @param Settings|null $oSettings
-     *
-     * @return Document parsed document
      */
-    public static function parsedStructureForFile($sFileName, $oSettings = null)
+    public static function parsedStructureForFile($sFileName, $oSettings = null): Document
     {
         $sFile = __DIR__ . "/fixtures/$sFileName.css";
-        $oParser = new Parser(file_get_contents($sFile), $oSettings);
+        $oParser = new Parser(\file_get_contents($sFile), $oSettings);
         return $oParser->parse();
     }
 
@@ -1020,7 +1019,7 @@ body {background-color: red;}';
      *
      * @test
      */
-    public function lineNumbersParsing()
+    public function lineNumbersParsing(): void
     {
         $oDoc = self::parsedStructureForFile('line-numbers');
         // array key is the expected line number
@@ -1037,7 +1036,7 @@ body {background-color: red;}';
 
         $aActual = [];
         foreach ($oDoc->getContents() as $oContent) {
-            $aActual[$oContent->getLineNo()] = [get_class($oContent)];
+            $aActual[$oContent->getLineNo()] = [\get_class($oContent)];
             if ($oContent instanceof KeyFrame) {
                 foreach ($oContent->getContents() as $block) {
                     $aActual[$oContent->getLineNo()][] = $block->getLineNo();
@@ -1076,7 +1075,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function unexpectedTokenExceptionLineNo()
+    public function unexpectedTokenExceptionLineNo(): void
     {
         $this->expectException(UnexpectedTokenException::class);
 
@@ -1092,7 +1091,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function ieHacksStrictParsing()
+    public function ieHacksStrictParsing(): void
     {
         $this->expectException(UnexpectedTokenException::class);
 
@@ -1103,11 +1102,11 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function ieHacksParsing()
+    public function ieHacksParsing(): void
     {
         $oDoc = self::parsedStructureForFile('ie-hacks', Settings::create()->withLenientParsing(true));
-        $sExpected = 'p {padding-right: .75rem \9;background-image: none \9;color: red \9\0;'
-            . 'background-color: red \9\0;background-color: red \9\0 !important;content: "red 	\0";content: "red઼";}';
+        $sExpected = 'p {padding-right: .75rem \\9;background-image: none \\9;color: red \\9\\0;'
+            . 'background-color: red \\9\\0;background-color: red \\9\\0 !important;content: "red 	\\0";content: "red઼";}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
@@ -1116,7 +1115,7 @@ body {background-color: red;}';
      *
      * @test
      */
-    public function commentExtracting()
+    public function commentExtracting(): void
     {
         $oDoc = self::parsedStructureForFile('comments');
         $aNodes = $oDoc->getContents();
@@ -1125,7 +1124,7 @@ body {background-color: red;}';
         $importComments = $aNodes[0]->getComments();
         self::assertCount(2, $importComments);
         self::assertSame("*\n * Comments\n ", $importComments[0]->getComment());
-        self::assertSame(" Hell ", $importComments[1]->getComment());
+        self::assertSame(' Hell ', $importComments[1]->getComment());
 
         // Declaration block.
         $fooBarBlock = $aNodes[1];
@@ -1140,7 +1139,7 @@ body {background-color: red;}';
         $fooBarRule = $fooBarRules[0];
         $fooBarRuleComments = $fooBarRule->getComments();
         self::assertCount(1, $fooBarRuleComments);
-        self::assertSame(" Number 6 ", $fooBarRuleComments[0]->getComment());
+        self::assertSame(' Number 6 ', $fooBarRuleComments[0]->getComment());
 
         // Media property.
         $mediaComments = $aNodes[2]->getComments();
@@ -1150,19 +1149,19 @@ body {background-color: red;}';
         $mediaRules = $aNodes[2]->getContents();
         $fooBarComments = $mediaRules[0]->getComments();
         self::assertCount(1, $fooBarComments);
-        self::assertSame("* Number 10 *", $fooBarComments[0]->getComment());
+        self::assertSame('* Number 10 *', $fooBarComments[0]->getComment());
 
         // Media -> declaration -> rule.
         $fooBarRules = $mediaRules[0]->getRules();
         $fooBarChildComments = $fooBarRules[0]->getComments();
         self::assertCount(1, $fooBarChildComments);
-        self::assertSame("* Number 10b *", $fooBarChildComments[0]->getComment());
+        self::assertSame('* Number 10b *', $fooBarChildComments[0]->getComment());
     }
 
     /**
      * @test
      */
-    public function flatCommentExtracting()
+    public function flatCommentExtracting(): void
     {
         $parser = new Parser('div {/*Find Me!*/left:10px; text-align:left;}');
         $doc = $parser->parse();
@@ -1170,26 +1169,26 @@ body {background-color: red;}';
         $divRules = $contents[0]->getRules();
         $comments = $divRules[0]->getComments();
         self::assertCount(1, $comments);
-        self::assertSame("Find Me!", $comments[0]->getComment());
+        self::assertSame('Find Me!', $comments[0]->getComment());
     }
 
     /**
      * @test
      */
-    public function topLevelCommentExtracting()
+    public function topLevelCommentExtracting(): void
     {
         $parser = new Parser('/*Find Me!*/div {left:10px; text-align:left;}');
         $doc = $parser->parse();
         $contents = $doc->getContents();
         $comments = $contents[0]->getComments();
         self::assertCount(1, $comments);
-        self::assertSame("Find Me!", $comments[0]->getComment());
+        self::assertSame('Find Me!', $comments[0]->getComment());
     }
 
     /**
      * @test
      */
-    public function microsoftFilterStrictParsing()
+    public function microsoftFilterStrictParsing(): void
     {
         $this->expectException(UnexpectedTokenException::class);
 
@@ -1199,7 +1198,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function microsoftFilterParsing()
+    public function microsoftFilterParsing(): void
     {
         $oDoc = self::parsedStructureForFile('ms-filter');
         $sExpected = '.test {filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#80000000",'
@@ -1210,7 +1209,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function largeSizeValuesInFile()
+    public function largeSizeValuesInFile(): void
     {
         $oDoc = self::parsedStructureForFile('large-z-index', Settings::create()->withMultibyteSupport(false));
         $sExpected = '.overlay {z-index: 10000000000000000000000;}';
@@ -1220,7 +1219,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function scientificNotationSizeValuesInFile()
+    public function scientificNotationSizeValuesInFile(): void
     {
         $oDoc = $this->parsedStructureForFile(
             'scientific-notation-numbers',
@@ -1235,21 +1234,21 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function lonelyImport()
+    public function lonelyImport(): void
     {
         $oDoc = self::parsedStructureForFile('lonely-import');
-        $sExpected = "@import url(\"example.css\") only screen and (max-width: 600px);";
+        $sExpected = '@import url("example.css") only screen and (max-width: 600px);';
         self::assertSame($sExpected, $oDoc->render());
     }
 
-    public function escapedSpecialCaseTokens()
+    public function escapedSpecialCaseTokens(): void
     {
         $oDoc = $this->parsedStructureForFile('escaped-tokens');
         $contents = $oDoc->getContents();
         $rules = $contents[0]->getRules();
         $urlRule = $rules[0];
         $calcRule = $rules[1];
-        self::assertTrue(is_a($urlRule->getValue(), '\Sabberworm\CSS\Value\URL'));
-        self::assertTrue(is_a($calcRule->getValue(), '\Sabberworm\CSS\Value\CalcFunction'));
+        self::assertTrue(\is_a($urlRule->getValue(), '\\Sabberworm\\CSS\\Value\\URL'));
+        self::assertTrue(\is_a($calcRule->getValue(), '\\Sabberworm\\CSS\\Value\\CalcFunction'));
     }
 }
