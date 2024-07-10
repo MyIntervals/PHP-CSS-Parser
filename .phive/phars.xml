@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phive xmlns="https://phar.io/phive">
-  <phar name="php-cs-fixer" version="^3.13.2" installed="3.13.2" location="./.phive/php-cs-fixer.phar" copy="false"/>
-  <phar name="phpcbf" version="^3.7.1" installed="3.7.1" location="./.phive/phpcbf.phar" copy="false"/>
-  <phar name="phpcs" version="^3.7.1" installed="3.7.1" location="./.phive/phpcs.phar" copy="false"/>
-  <phar name="phpstan" version="^1.9.14" installed="1.9.14" location="./.phive/phpstan.phar" copy="false"/>
+  <phar name="php-cs-fixer" version="^3.59.3" installed="3.59.3" location="./.phive/php-cs-fixer" copy="false"/>
 </phive>

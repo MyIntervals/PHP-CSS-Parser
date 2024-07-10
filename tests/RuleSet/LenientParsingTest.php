@@ -3,6 +3,7 @@
 namespace Sabberworm\CSS\Tests\RuleSet;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Settings;
@@ -19,27 +20,27 @@ use Sabberworm\CSS\Settings;
  * @covers \Sabberworm\CSS\Value\Size::parse
  * @covers \Sabberworm\CSS\Value\URL::parse
  */
-class LenientParsingTest extends TestCase
+final class LenientParsingTest extends TestCase
 {
     /**
      * @test
      */
-    public function faultToleranceOff()
+    public function faultToleranceOff(): void
     {
         $this->expectException(UnexpectedTokenException::class);
 
         $sFile = __DIR__ . '/../fixtures/-fault-tolerance.css';
-        $oParser = new Parser(file_get_contents($sFile), Settings::create()->beStrict());
+        $oParser = new Parser(\file_get_contents($sFile), Settings::create()->beStrict());
         $oParser->parse();
     }
 
     /**
      * @test
      */
-    public function faultToleranceOn()
+    public function faultToleranceOn(): void
     {
         $sFile = __DIR__ . '/../fixtures/-fault-tolerance.css';
-        $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
+        $oParser = new Parser(\file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
         self::assertSame(
             '.test1 {}' . "\n" . '.test2 {hello: 2.2;hello: 2000000000000.2;}' . "\n" . '#test {}' . "\n"
@@ -51,45 +52,45 @@ class LenientParsingTest extends TestCase
     /**
      * @test
      */
-    public function endToken()
+    public function endToken(): void
     {
         $this->expectException(UnexpectedTokenException::class);
 
         $sFile = __DIR__ . '/../fixtures/-end-token.css';
-        $oParser = new Parser(file_get_contents($sFile), Settings::create()->beStrict());
+        $oParser = new Parser(\file_get_contents($sFile), Settings::create()->beStrict());
         $oParser->parse();
     }
 
     /**
      * @test
      */
-    public function endToken2()
+    public function endToken2(): void
     {
         $this->expectException(UnexpectedTokenException::class);
 
         $sFile = __DIR__ . '/../fixtures/-end-token-2.css';
-        $oParser = new Parser(file_get_contents($sFile), Settings::create()->beStrict());
+        $oParser = new Parser(\file_get_contents($sFile), Settings::create()->beStrict());
         $oParser->parse();
     }
 
     /**
      * @test
      */
-    public function endTokenPositive()
+    public function endTokenPositive(): void
     {
         $sFile = __DIR__ . '/../fixtures/-end-token.css';
-        $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
+        $oParser = new Parser(\file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
-        self::assertSame("", $oResult->render());
+        self::assertSame('', $oResult->render());
     }
 
     /**
      * @test
      */
-    public function endToken2Positive()
+    public function endToken2Positive(): void
     {
         $sFile = __DIR__ . '/../fixtures/-end-token-2.css';
-        $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
+        $oParser = new Parser(\file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
         self::assertSame(
             '#home .bg-layout {background-image: url("/bundles/main/img/bg1.png?5");}',
@@ -100,11 +101,11 @@ class LenientParsingTest extends TestCase
     /**
      * @test
      */
-    public function localeTrap()
+    public function localeTrap(): void
     {
-        setlocale(LC_ALL, "pt_PT", "no");
+        \setlocale(LC_ALL, 'pt_PT', 'no');
         $sFile = __DIR__ . '/../fixtures/-fault-tolerance.css';
-        $oParser = new Parser(file_get_contents($sFile), Settings::create()->withLenientParsing(true));
+        $oParser = new Parser(\file_get_contents($sFile), Settings::create()->withLenientParsing(true));
         $oResult = $oParser->parse();
         self::assertSame(
             '.test1 {}' . "\n" . '.test2 {hello: 2.2;hello: 2000000000000.2;}' . "\n" . '#test {}' . "\n"
@@ -116,10 +117,10 @@ class LenientParsingTest extends TestCase
     /**
      * @test
      */
-    public function caseInsensitivity()
+    public function caseInsensitivity(): void
     {
         $sFile = __DIR__ . '/../fixtures/case-insensitivity.css';
-        $oParser = new Parser(file_get_contents($sFile));
+        $oParser = new Parser(\file_get_contents($sFile));
         $oResult = $oParser->parse();
 
         self::assertSame(
@@ -130,5 +131,29 @@ class LenientParsingTest extends TestCase
             . 'color: hsl(40,40%,30%);font-family: Arial;}',
             $oResult->render()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function cssWithInvalidColorStillGetsParsedAsDocument(): void
+    {
+        $sFile = __DIR__ . '/../fixtures/invalid-color.css';
+        $oParser = new Parser(\file_get_contents($sFile), Settings::create()->withLenientParsing(true));
+        $result = $oParser->parse();
+
+        self::assertInstanceOf(Document::class, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function invalidColorStrict(): void
+    {
+        $this->expectException(UnexpectedTokenException::class);
+
+        $sFile = __DIR__ . '/../fixtures/invalid-color.css';
+        $oParser = new Parser(\file_get_contents($sFile), Settings::create()->beStrict());
+        $oParser->parse();
     }
 }

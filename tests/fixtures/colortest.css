@@ -9,6 +9,7 @@
 #yours {
 	background-color: hsl(220, 10%, 220%);
 	background-color: hsla(220, 10%, 220%, 0.3);
+	outline-color: #22;
 }
 
 #variables {
