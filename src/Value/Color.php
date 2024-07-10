@@ -71,9 +71,9 @@ class Color extends CSSFunction
             $oParserState->consume('(');
 
             $bContainsVar = false;
-            if (strpos($sColorMode, 'rgb') !== false) {
+            if ($sColorMode === 'rgb') {
                 $sColorTarget = 'rgba';
-            } elseif (strpos($sColorMode, 'hsl') !== false) {
+            } elseif ($sColorMode === 'hsl') {
                 $sColorTarget = 'hsla';
             } else {
                 $sColorTarget = $sColorMode;
