@@ -293,7 +293,12 @@ class ParserState
         if ($iOffset >= $this->iLength) {
             return '';
         }
-        return $this->substr($iOffset, $iLength);
+
+        if ($iLength == 1 && $iOffset + 1 <= $this->iLength) {
+            return $this->aText[$iOffset];
+        } else {
+            return $this->substr($iOffset, $iLength);
+        }
     }
 
     /**
@@ -317,7 +322,13 @@ class ParserState
             if ($this->iCurrentPosition + $mValue > $this->iLength) {
                 throw new UnexpectedEOFException($mValue, $this->peek(5), 'count', $this->iLineNo);
             }
-            $sResult = $this->substr($this->iCurrentPosition, $mValue);
+
+            if ($mValue == 1 && $this->iCurrentPosition + 1 <= $this->iLength) {
+                $sResult = $this->aText[$this->iCurrentPosition];
+            } else {
+                $sResult = $this->substr($this->iCurrentPosition, $mValue);
+            }
+
             $iLineCount = \substr_count($sResult, "\n");
             $this->iLineNo += $iLineCount;
             $this->iCurrentPosition += $mValue;
@@ -348,16 +359,16 @@ class ParserState
     public function consumeComment()
     {
         $mComment = false;
-        if ($this->comes('/*')) {
+        if ($this->peek() == '/' && $this->peek(1, 1) == '*') {
             $iLineNo = $this->iLineNo;
             $this->consume(1);
             $mComment = '';
             while (($char = $this->consume(1)) !== '') {
-                $mComment .= $char;
-                if ($this->comes('*/')) {
-                    $this->consume(2);
+                if ($char == '*' && $this->peek() == '/') {
+                    $this->consume(1);
                     break;
                 }
+                $mComment .= $char;
             }
         }
 
