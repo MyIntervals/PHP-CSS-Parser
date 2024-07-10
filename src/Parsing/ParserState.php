@@ -277,7 +277,17 @@ class ParserState
      */
     public function comes($sString, $bCaseInsensitive = false): bool
     {
-        $sPeek = $this->peek(\strlen($sString));
+        if (!$sString) return false;
+
+        $sPeek1 = $this->peek();
+        if ($bCaseInsensitive) {
+            if (\strtolower($sPeek1) !== \strtolower($sString[0])) return false;
+        } else {
+            if ($sPeek1 !== $sString[0]) return false;
+        }
+
+        $sPeek = \strlen($sString) == 1 ? $sPeek1 : $this->peek(\strlen($sString));
+
         return ($sPeek == '')
             ? false
             : $this->streql($sPeek, $sString, $bCaseInsensitive);
