@@ -790,7 +790,10 @@ body {background-color: red;}';
 
         $oDoc = self::parsedStructureForFile('invalid-selectors-4', Settings::create()->withMultibyteSupport(true));
         $sExpected = 'body, div :hover {color: green;}
-div {color: blue;}';
+div {color: blue;}
+a[href*=": \" "] {color: blue;}
+a[href*=\': \" \'] {color: blue;}
+#some_id_that_ends_in_a\: > a {color: blue;}';
         self::assertSame($sExpected, $oDoc->render());
     }
 

@@ -79,7 +79,9 @@ class Selector
      */
     public static function isValid($sSelector)
     {
-        return \preg_match(static::SELECTOR_VALIDATION_RX, $sSelector) && \strpos($sSelector, ': ') === false;
+        return \preg_match(static::SELECTOR_VALIDATION_RX, $sSelector)
+            // trim quoted texts and validate colons on the remainder
+            && !\preg_match('/(?<!\\\\):\s/', \preg_replace('/([\'"]).*?(?<!\\\\)\\1/', '', $sSelector));
     }
 
     /**
