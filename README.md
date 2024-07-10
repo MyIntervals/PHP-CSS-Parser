@@ -1,6 +1,6 @@
 # PHP CSS Parser
 
-[![Build Status](https://github.com/sabberworm/PHP-CSS-Parser/workflows/CI/badge.svg?branch=master)](https://github.com/sabberworm/PHP-CSS-Parser/actions/)
+[![Build Status](https://github.com/MyIntervals/PHP-CSS-Parser/workflows/CI/badge.svg?branch=main)](https://github.com/MyIntervals/PHP-CSS-Parser/actions/)
 
 A Parser for CSS Files written in PHP. Allows extraction of CSS files into a data structure, manipulation of said structure and output as (optimized) CSS.
 
@@ -158,7 +158,7 @@ foreach($cssDocument->getAllRuleSets() as $oRuleSet) {
     // Note that the added dash will make this remove all rules starting with
     // `font-` (like `font-size`, `font-weight`, etc.) as well as a potential
     // `font` rule.
-    $oRuleSet->removeRule('font-'); 
+    $oRuleSet->removeRule('font-');
     $oRuleSet->removeRule('cursor');
 }
 ```
@@ -615,6 +615,170 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 #header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;color: red !important;}
 ```
 
+## Class diagram
+
+```mermaid
+classDiagram
+    direction LR
+
+    %% Start of the part generated from the PHP code using tasuku43/mermaid-class-diagram
+
+    class Renderable {
+        <<interface>>
+    }
+    class DeclarationBlock {
+    }
+    class RuleSet {
+        <<abstract>>
+    }
+    class AtRuleSet {
+    }
+    class KeyframeSelector {
+    }
+    class AtRule {
+        <<interface>>
+    }
+    class Charset {
+    }
+    class Import {
+    }
+    class Selector {
+    }
+    class CSSNamespace {
+    }
+    class Settings {
+    }
+    class Rule {
+    }
+    class Parser {
+    }
+    class OutputFormatter {
+    }
+    class OutputFormat {
+    }
+    class OutputException {
+    }
+    class UnexpectedEOFException {
+    }
+    class SourceException {
+    }
+    class UnexpectedTokenException {
+    }
+    class ParserState {
+    }
+    class Anchor {
+    }
+    class CSSBlockList {
+        <<abstract>>
+    }
+    class Document {
+    }
+    class CSSList {
+        <<abstract>>
+    }
+    class KeyFrame {
+    }
+    class AtRuleBlockList {
+    }
+    class Color {
+    }
+    class URL {
+    }
+    class CalcRuleValueList {
+    }
+    class ValueList {
+        <<abstract>>
+    }
+    class CalcFunction {
+    }
+    class LineName {
+    }
+    class Value {
+        <<abstract>>
+    }
+    class Size {
+    }
+    class CSSString {
+    }
+    class PrimitiveValue {
+        <<abstract>>
+    }
+    class CSSFunction {
+    }
+    class RuleValueList {
+    }
+    class Commentable {
+        <<interface>>
+    }
+    class Comment {
+    }
+
+    RuleSet <|-- DeclarationBlock: inheritance
+    Renderable <|.. RuleSet: realization
+    Commentable <|.. RuleSet: realization
+    RuleSet <|-- AtRuleSet: inheritance
+    AtRule <|.. AtRuleSet: realization
+    Selector <|-- KeyframeSelector: inheritance
+    Renderable <|-- AtRule: inheritance
+    Commentable <|-- AtRule: inheritance
+    AtRule <|.. Charset: realization
+    AtRule <|.. Import: realization
+    AtRule <|.. CSSNamespace: realization
+    Renderable <|.. Rule: realization
+    Commentable <|.. Rule: realization
+    SourceException <|-- OutputException: inheritance
+    UnexpectedTokenException <|-- UnexpectedEOFException: inheritance
+    Exception <|-- SourceException: inheritance
+    SourceException <|-- UnexpectedTokenException: inheritance
+    CSSList <|-- CSSBlockList: inheritance
+    CSSBlockList <|-- Document: inheritance
+    Renderable <|.. CSSList: realization
+    Commentable <|.. CSSList: realization
+    CSSList <|-- KeyFrame: inheritance
+    AtRule <|.. KeyFrame: realization
+    CSSBlockList <|-- AtRuleBlockList: inheritance
+    AtRule <|.. AtRuleBlockList: realization
+    CSSFunction <|-- Color: inheritance
+    PrimitiveValue <|-- URL: inheritance
+    RuleValueList <|-- CalcRuleValueList: inheritance
+    Value <|-- ValueList: inheritance
+    CSSFunction <|-- CalcFunction: inheritance
+    ValueList <|-- LineName: inheritance
+    Renderable <|.. Value: realization
+    PrimitiveValue <|-- Size: inheritance
+    PrimitiveValue <|-- CSSString: inheritance
+    Value <|-- PrimitiveValue: inheritance
+    ValueList <|-- CSSFunction: inheritance
+    ValueList <|-- RuleValueList: inheritance
+    Renderable <|.. Comment: realization
+
+    %% end of the generated part
+
+
+    Anchor --> "1" ParserState : oParserState
+    CSSList --> "*" CSSList : aContents
+    CSSList --> "*" Charset : aContents
+    CSSList --> "*" Comment : aComments
+    CSSList --> "*" Import : aContents
+    CSSList --> "*" RuleSet : aContents
+    CSSNamespace --> "*" Comment : aComments
+    Charset --> "*" Comment : aComments
+    Charset --> "1" CSSString : oCharset
+    DeclarationBlock --> "*" Selector : aSelectors
+    Import --> "*" Comment : aComments
+    OutputFormat --> "1" OutputFormat : oNextLevelFormat
+    OutputFormat --> "1" OutputFormatter : oFormatter
+    OutputFormatter --> "1" OutputFormat : oFormat
+    Parser --> "1" ParserState : oParserState
+    ParserState --> "1" Settings : oParserSettings
+    Rule --> "*" Comment : aComments
+    Rule --> "1" RuleValueList : mValue
+    RuleSet --> "*" Comment : aComments
+    RuleSet --> "*" Rule : aRules
+    URL --> "1" CSSString : oURL
+    ValueList --> "*" Value : aComponents
+```
+
 ## Contributors/Thanks to
 
 * [oliverklee](https://github.com/oliverklee) for lots of refactorings, code modernizations and CI integrations
@@ -628,10 +792,23 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 * [docteurklein](https://github.com/docteurklein) for output formatting and `CSSList->remove()` inspiration.
 * [nicolopignatelli](https://github.com/nicolopignatelli) for PSR-0 compatibility.
 * [diegoembarcadero](https://github.com/diegoembarcadero) for keyframe at-rule parsing.
-* [goetas](https://github.com/goetas) for @namespace at-rule support.
+* [goetas](https://github.com/goetas) for `@namespace` at-rule support.
+* [ziegenberg](https://github.com/ziegenberg) for general housekeeping and cleanup.
 * [View full list](https://github.com/sabberworm/PHP-CSS-Parser/contributors)
 
 ## Misc
 
-* Legacy Support: The latest pre-PSR-0 version of this project can be checked with the `0.9.0` tag.
-* Running Tests: To run all unit tests for this project, run `composer install` to install phpunit and use `./vendor/bin/phpunit`.
+### Legacy Support
+
+The latest pre-PSR-0 version of this project can be checked with the `0.9.0` tag.
+
+### Running Tests
+
+To run all continuous integration (CI) checks for this project (including unit tests),
+* run `composer install` to install the development dependencies managed with Composer;
+* run `phive install` to install the development dependencies managed with PHIVE;
+  * [Installation of PHIVE](https://github.com/phar-io/phive?tab=readme-ov-file#getting-phive)
+* run `composer ci` to run all static and dynamic CI checks.
+
+Details of other Composer scripts available (e.g. to run one specific CI check) are provided with `composer list`.
+
