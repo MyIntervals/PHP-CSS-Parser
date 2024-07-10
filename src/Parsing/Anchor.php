@@ -24,10 +24,7 @@ class Anchor
         $this->oParserState = $oParserState;
     }
 
-    /**
-     * @return void
-     */
-    public function backtrack()
+    public function backtrack(): void
     {
         $this->oParserState->setPosition($this->iPosition);
     }

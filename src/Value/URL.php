@@ -28,13 +28,11 @@ class URL extends PrimitiveValue
     }
 
     /**
-     * @return URL
-     *
      * @throws SourceException
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState)
+    public static function parse(ParserState $oParserState): URL
     {
         $oAnchor = $oParserState->anchor();
         $sIdentifier = '';
@@ -61,10 +59,7 @@ class URL extends PrimitiveValue
         return $oResult;
     }
 
-    /**
-     * @return void
-     */
-    public function setURL(CSSString $oURL)
+    public function setURL(CSSString $oURL): void
     {
         $this->oURL = $oURL;
     }
@@ -77,18 +72,12 @@ class URL extends PrimitiveValue
         return $this->oURL;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         return "url({$this->oURL->render($oOutputFormat)})";
     }

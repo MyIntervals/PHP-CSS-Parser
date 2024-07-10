@@ -11,12 +11,12 @@ use Sabberworm\CSS\Parsing\OutputException;
 /**
  * @covers \Sabberworm\CSS\OutputFormat
  */
-class OutputFormatTest extends TestCase
+final class OutputFormatTest extends TestCase
 {
     /**
      * @var string
      */
-    const TEST_CSS = <<<EOT
+    private const TEST_CSS = <<<EOT
 
 .main, .test {
 	font: italic normal bold 16px/1.2 "Helvetica", Verdana, sans-serif;
@@ -43,7 +43,7 @@ EOT;
      */
     private $oDocument;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->oParser = new Parser(self::TEST_CSS);
         $this->oDocument = $this->oParser->parse();
@@ -52,7 +52,7 @@ EOT;
     /**
      * @test
      */
-    public function plain()
+    public function plain(): void
     {
         self::assertSame(
             '.main, .test {font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white;}
@@ -64,7 +64,7 @@ EOT;
     /**
      * @test
      */
-    public function compact()
+    public function compact(): void
     {
         self::assertSame(
             '.main,.test{font:italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background:white;}'
@@ -76,7 +76,7 @@ EOT;
     /**
      * @test
      */
-    public function pretty()
+    public function pretty(): void
     {
         self::assertSame(self::TEST_CSS, $this->oDocument->render(OutputFormat::createPretty()));
     }
@@ -84,20 +84,20 @@ EOT;
     /**
      * @test
      */
-    public function spaceAfterListArgumentSeparator()
+    public function spaceAfterListArgumentSeparator(): void
     {
         self::assertSame(
             '.main, .test {font: italic   normal   bold   16px/  1.2   '
             . '"Helvetica",  Verdana,  sans-serif;background: white;}'
             . "\n@media screen {.main {background-size: 100%   100%;font-size: 1.3em;background-color: #fff;}}",
-            $this->oDocument->render(OutputFormat::create()->setSpaceAfterListArgumentSeparator("  "))
+            $this->oDocument->render(OutputFormat::create()->setSpaceAfterListArgumentSeparator('  '))
         );
     }
 
     /**
      * @test
      */
-    public function spaceAfterListArgumentSeparatorComplex()
+    public function spaceAfterListArgumentSeparatorComplex(): void
     {
         self::assertSame(
             '.main, .test {font: italic normal bold 16px/1.2 "Helvetica",	Verdana,	sans-serif;background: white;}'
@@ -114,7 +114,7 @@ EOT;
     /**
      * @test
      */
-    public function spaceAfterSelectorSeparator()
+    public function spaceAfterSelectorSeparator(): void
     {
         self::assertSame(
             '.main,
@@ -127,7 +127,7 @@ EOT;
     /**
      * @test
      */
-    public function stringQuotingType()
+    public function stringQuotingType(): void
     {
         self::assertSame(
             '.main, .test {font: italic normal bold 16px/1.2 \'Helvetica\',Verdana,sans-serif;background: white;}
@@ -139,7 +139,7 @@ EOT;
     /**
      * @test
      */
-    public function rGBHashNotation()
+    public function rGBHashNotation(): void
     {
         self::assertSame(
             '.main, .test {font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white;}
@@ -151,7 +151,7 @@ EOT;
     /**
      * @test
      */
-    public function semicolonAfterLastRule()
+    public function semicolonAfterLastRule(): void
     {
         self::assertSame(
             '.main, .test {font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white}
@@ -163,7 +163,7 @@ EOT;
     /**
      * @test
      */
-    public function spaceAfterRuleName()
+    public function spaceAfterRuleName(): void
     {
         self::assertSame(
             '.main, .test {font:	italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background:	white;}
@@ -175,7 +175,7 @@ EOT;
     /**
      * @test
      */
-    public function spaceRules()
+    public function spaceRules(): void
     {
         self::assertSame('.main, .test {
 	font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;
@@ -191,7 +191,7 @@ EOT;
     /**
      * @test
      */
-    public function spaceBlocks()
+    public function spaceBlocks(): void
     {
         self::assertSame('
 .main, .test {font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white;}
@@ -204,7 +204,7 @@ EOT;
     /**
      * @test
      */
-    public function spaceBoth()
+    public function spaceBoth(): void
     {
         self::assertSame('
 .main, .test {
@@ -224,7 +224,7 @@ EOT;
     /**
      * @test
      */
-    public function spaceBetweenBlocks()
+    public function spaceBetweenBlocks(): void
     {
         self::assertSame(
             '.main, .test {font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white;}'
@@ -236,7 +236,7 @@ EOT;
     /**
      * @test
      */
-    public function indentation()
+    public function indentation(): void
     {
         self::assertSame('
 .main, .test {
@@ -259,7 +259,7 @@ background-color: #fff;
     /**
      * @test
      */
-    public function spaceBeforeBraces()
+    public function spaceBeforeBraces(): void
     {
         self::assertSame(
             '.main, .test{font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white;}
@@ -271,7 +271,7 @@ background-color: #fff;
     /**
      * @test
      */
-    public function ignoreExceptionsOff()
+    public function ignoreExceptionsOff(): void
     {
         $this->expectException(OutputException::class);
 
@@ -290,7 +290,7 @@ background-color: #fff;
     /**
      * @test
      */
-    public function ignoreExceptionsOn()
+    public function ignoreExceptionsOn(): void
     {
         $aBlocks = $this->oDocument->getAllDeclarationBlocks();
         $oFirstBlock = $aBlocks[0];

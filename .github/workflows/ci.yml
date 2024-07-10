@@ -1,136 +1,145 @@
 # https://help.github.com/en/categories/automating-your-workflow-with-github-actions
 
 on:
-  pull_request:
-  push:
-  schedule:
-    - cron: '3 3 * * 1'
+    push:
+        branches:
+            - main
+    pull_request:
+    schedule:
+        - cron: '3 3 * * 1'
 
 name: CI
 
 jobs:
-  php-lint:
-    name: PHP Lint
-    runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        php-version: [ '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2' ]
+    php-lint:
+        name: PHP Lint
+        runs-on: ubuntu-22.04
+        strategy:
+            matrix:
+                php-version: [ '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3' ]
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          coverage: none
+            - name: Install PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-version }}
+                  ini-file: development
+                  tools: composer:v2
+                  coverage: none
 
-      - name: PHP Lint
-        run: find src tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
+            - name: Show the Composer configuration
+              run: composer config --global --list
 
-  unit-tests:
-    name: Unit tests
+            - name: Cache dependencies installed with composer
+              uses: actions/cache@v4
+              with:
+                  path: ~/.cache/composer
+                  key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
+                  restore-keys: |
+                      php${{ matrix.php-version }}-composer-
 
-    runs-on: ubuntu-22.04
+            - name: Install Composer dependencies
+              run: |
+                  composer update --with-dependencies --no-progress;
+                  composer show;
 
-    needs: [ php-lint ]
+            - name: PHP Lint
+              run: composer ci:php:lint
 
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: [ '5.6', '7.0', '7.1', '7.2', '7.3' ]
-        coverage: [ 'none' ]
-        include:
-          - php-version: '7.4'
-            coverage: xdebug
+    unit-tests:
+        name: Unit tests
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+        runs-on: ubuntu-22.04
 
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          ini-values: error_reporting=E_ALL
-          tools: composer:v2
-          coverage: "${{ matrix.coverage }}"
+        needs: [ php-lint ]
 
-      - name: Show the Composer configuration
-        run: composer config --global --list
+        strategy:
+            fail-fast: false
+            matrix:
+                php-version: [ '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3' ]
 
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/composer
-          key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-version }}-composer-
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      - name: Install Composer dependencies
-        run: |
-          composer update --with-dependencies --no-progress;
-          composer show;
+            - name: Install PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-version }}
+                  ini-file: development
+                  tools: composer:v2
+                  coverage: none
 
-      - name: Run Tests
-        run: ./vendor/bin/phpunit --coverage-clover build/coverage/xml
+            - name: Show the Composer configuration
+              run: composer config --global --list
 
-      - name: Upload coverage results to Codacy
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        if: "${{ matrix.coverage != 'none' && env.CODACY_PROJECT_TOKEN != '' }}"
-        run: |
-          ./vendor/bin/codacycoverage clover build/coverage/xml
+            - name: Cache dependencies installed with composer
+              uses: actions/cache@v4
+              with:
+                  path: ~/.cache/composer
+                  key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
+                  restore-keys: |
+                      php${{ matrix.php-version }}-composer-
 
-  static-analysis:
-    name: Static Analysis
+            - name: Install Composer dependencies
+              run: |
+                  composer update --with-dependencies --no-progress;
+                  composer show;
 
-    runs-on: ubuntu-22.04
+            - name: Run Tests
+              run: ./vendor/bin/phpunit
 
-    needs: [ php-lint ]
+    static-analysis:
+        name: Static Analysis
 
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - command: sniffer
-            php-version: '7.4'
-          - command: fixer
-            php-version: '7.4'
-          - command: stan
-            php-version: '7.4'
+        runs-on: ubuntu-22.04
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+        needs: [ php-lint ]
 
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          tools: "composer:v2, phive"
-          coverage: none
+        strategy:
+            fail-fast: false
+            matrix:
+                command:
+                    - fixer
+                    - stan
+                    - rector
+                php-version:
+                    - '8.3'
 
-      - name: Show the Composer configuration
-        run: composer config --global --list
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/composer
-          key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-version }}-composer-
+            - name: Install PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-version }}
+                  ini-file: development
+                  tools: "composer:v2, phive"
+                  coverage: none
 
-      - name: Install Composer dependencies
-        run: |
-          composer update --with-dependencies --no-progress;
-          composer show;
+            - name: Show the Composer configuration
+              run: composer config --global --list
 
-      - name: Install development tools
-        run: |
-          phive --no-progress install --trust-gpg-keys BBAB5DF0A0D6672989CF1869E82B2FB314E9906E,A972B9ABB95D0B760B51442231C7E470E2138192,D32680D5957DC7116BE29C14CF1A108D0E7AE720
+            - name: Cache dependencies installed with composer
+              uses: actions/cache@v4
+              with:
+                  path: ~/.cache/composer
+                  key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
+                  restore-keys: |
+                      php${{ matrix.php-version }}-composer-
 
-      - name: Run Command
-        run: composer ci:php:${{ matrix.command }}
+            - name: Install Composer dependencies
+              run: |
+                  composer update --with-dependencies --no-progress;
+                  composer show;
+
+            - name: Install development tools
+              run: |
+                  phive --no-progress install --trust-gpg-keys BBAB5DF0A0D6672989CF1869E82B2FB314E9906E
+
+            - name: Run Command
+              run: composer ci:php:${{ matrix.command }}

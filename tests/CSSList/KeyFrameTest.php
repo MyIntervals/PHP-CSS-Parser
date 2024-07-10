@@ -11,14 +11,14 @@ use Sabberworm\CSS\Renderable;
 /**
  * @covers \Sabberworm\CSS\CSSList\KeyFrame
  */
-class KeyFrameTest extends TestCase
+final class KeyFrameTest extends TestCase
 {
     /**
      * @var KeyFrame
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subject = new KeyFrame();
     }
@@ -26,7 +26,7 @@ class KeyFrameTest extends TestCase
     /**
      * @test
      */
-    public function implementsAtRule()
+    public function implementsAtRule(): void
     {
         self::assertInstanceOf(AtRule::class, $this->subject);
     }
@@ -34,7 +34,7 @@ class KeyFrameTest extends TestCase
     /**
      * @test
      */
-    public function implementsRenderable()
+    public function implementsRenderable(): void
     {
         self::assertInstanceOf(Renderable::class, $this->subject);
     }
@@ -42,7 +42,7 @@ class KeyFrameTest extends TestCase
     /**
      * @test
      */
-    public function implementsCommentable()
+    public function implementsCommentable(): void
     {
         self::assertInstanceOf(Commentable::class, $this->subject);
     }

@@ -25,11 +25,9 @@ class Document extends CSSBlockList
     }
 
     /**
-     * @return Document
-     *
      * @throws SourceException
      */
-    public static function parse(ParserState $oParserState)
+    public static function parse(ParserState $oParserState): Document
     {
         $oDocument = new Document($oParserState->currentLine());
         CSSList::parseList($oParserState, $oDocument);
@@ -48,18 +46,6 @@ class Document extends CSSBlockList
         $aResult = [];
         $this->allDeclarationBlocks($aResult);
         return $aResult;
-    }
-
-    /**
-     * Gets all `DeclarationBlock` objects recursively.
-     *
-     * @return array<int, DeclarationBlock>
-     *
-     * @deprecated will be removed in version 9.0; use `getAllDeclarationBlocks()` instead
-     */
-    public function getAllSelectors()
-    {
-        return $this->getAllDeclarationBlocks();
     }
 
     /**
@@ -92,7 +78,7 @@ class Document extends CSSBlockList
         $sSearchString = null;
         if ($mElement === null) {
             $mElement = $this;
-        } elseif (is_string($mElement)) {
+        } elseif (\is_string($mElement)) {
             $sSearchString = $mElement;
             $mElement = $this;
         }
@@ -114,7 +100,6 @@ class Document extends CSSBlockList
      *
      * @return array<int, Selector>
      * @example `getSelectorsBySpecificity('>= 100')`
-     *
      */
     public function getSelectorsBySpecificity($sSpecificitySearch = null)
     {
@@ -127,9 +112,9 @@ class Document extends CSSBlockList
     /**
      * Expands all shorthand properties to their long value.
      *
-     * @return void
+     * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function expandShorthands()
+    public function expandShorthands(): void
     {
         foreach ($this->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->expandShorthands();
@@ -139,9 +124,9 @@ class Document extends CSSBlockList
     /**
      * Create shorthands properties whenever possible.
      *
-     * @return void
+     * @deprecated This will be removed without substitution in version 10.0.
      */
-    public function createShorthands()
+    public function createShorthands(): void
     {
         foreach ($this->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->createShorthands();
@@ -152,10 +137,8 @@ class Document extends CSSBlockList
      * Overrides `render()` to make format argument optional.
      *
      * @param OutputFormat|null $oOutputFormat
-     *
-     * @return string
      */
-    public function render(OutputFormat $oOutputFormat = null)
+    public function render(?OutputFormat $oOutputFormat = null): string
     {
         if ($oOutputFormat === null) {
             $oOutputFormat = new OutputFormat();
@@ -163,10 +146,7 @@ class Document extends CSSBlockList
         return $oOutputFormat->comments($this) . $this->renderListContents($oOutputFormat);
     }
 
-    /**
-     * @return bool
-     */
-    public function isRootList()
+    public function isRootList(): bool
     {
         return true;
     }
