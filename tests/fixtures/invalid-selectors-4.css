@@ -1,0 +1,27 @@
+body, div: hover {
+    color: green;
+}
+
+body, div : hover {
+    color: green;
+}
+
+body, div :hover {
+    color: green;
+}
+
+div {
+    color: blue;
+}
+
+a[href*=": \" "] {
+    color: blue;
+}
+
+a[href*=': \" '] {
+    color: blue;
+}
+
+#some_id_that_ends_in_a\: > a {
+    color: blue;
+}
