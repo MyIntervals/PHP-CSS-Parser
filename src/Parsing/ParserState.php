@@ -50,6 +50,7 @@ class ParserState
      * @var int
      */
     private $iLineNo;
+    private $sSelectorBuffer;
 
     /**
      * @param string $sText the complete CSS as text (i.e., usually the contents of a CSS file)
@@ -62,6 +63,7 @@ class ParserState
         $this->iCurrentPosition = 0;
         $this->iLineNo = $iLineNo;
         $this->setCharset($this->oParserSettings->sDefaultCharset);
+        $this->sSelectorBuffer = "";
     }
 
     /**
@@ -124,6 +126,26 @@ class ParserState
     public function setPosition($iPosition): void
     {
         $this->iCurrentPosition = $iPosition;
+    }
+
+    /**
+     * @param int $iCount
+     *
+     * @return void
+     */
+    public function bufferForSelector($iCount)
+    {
+        $this->sSelectorBuffer .= $this->consume($iCount);
+    }
+
+    /**
+     * @return string
+     */
+    public function consumeSelectorBuffer()
+    {
+        $sResult = $this->sSelectorBuffer;
+        $this->sSelectorBuffer = "";
+        return $sResult;
     }
 
     /**
