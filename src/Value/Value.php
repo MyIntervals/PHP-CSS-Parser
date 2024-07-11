@@ -14,9 +14,6 @@ use Sabberworm\CSS\Renderable;
  */
 abstract class Value implements Renderable
 {
-    const PARSE_TERMINATE_STRINGS = ['}',';','!',')', '\\'];
-    const PARSE_QUOTE_STRINGS = ['"', "'", '\"', "\'"];
-
     /**
      * @var int
      */
@@ -44,8 +41,13 @@ abstract class Value implements Renderable
         $aStack = [];
         $oParserState->consumeWhiteSpace();
         //Build a list of delimiters and parsed values
-        while (self::continueParsing($oParserState)) {
-            if (count($aStack) > 0) {
+        while (
+            !($oParserState->comes('}') || $oParserState->comes(';') || $oParserState->comes('!')
+                || $oParserState->comes(')')
+                || $oParserState->comes('\\')
+                || $oParserState->isEnd())
+        ) {
+            if (\count($aStack) > 0) {
                 $bFoundDelimiter = false;
                 foreach ($aListDelimiters as $sDelimiter) {
                     if ($oParserState->comes($sDelimiter)) {
@@ -154,10 +156,7 @@ abstract class Value implements Renderable
             $oValue = Size::parse($oParserState);
         } elseif ($oParserState->comes('#') || $oParserState->comes('rgb', true) || $oParserState->comes('hsl', true)) {
             $oValue = Color::parse($oParserState);
-        } elseif (
-            in_array($oParserState->peek(), self::PARSE_QUOTE_STRINGS)
-            || in_array($oParserState->peek(2), self::PARSE_QUOTE_STRINGS)
-        ) {
+        } elseif ($oParserState->comes("'") || $oParserState->comes('"')) {
             $oValue = CSSString::parse($oParserState);
         } elseif ($oParserState->comes('progid:') && $oParserState->getSettings()->bLenientParsing) {
             $oValue = self::parseMicrosoftFilter($oParserState);
@@ -218,23 +217,5 @@ abstract class Value implements Renderable
     public function getLineNo()
     {
         return $this->iLineNo;
-    }
-
-    /**
-     * @return bool
-     *
-     * @throws UnexpectedEOFException
-     * @throws UnexpectedTokenException
-     */
-    private static function continueParsing(ParserState $oParserState)
-    {
-        if ($oParserState->isEnd()) {
-            return false;
-        }
-        $sPeekOne = $oParserState->peek();
-        if ($sPeekOne === '\\') {
-            return in_array($oParserState->peek(2), self::PARSE_QUOTE_STRINGS);
-        }
-        return !in_array($sPeekOne, self::PARSE_TERMINATE_STRINGS);
     }
 }
