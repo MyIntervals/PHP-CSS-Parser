@@ -15,8 +15,6 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
  */
 class CSSString extends PrimitiveValue
 {
-    const PARSE_QUOTE_STRINGS = ['"', "'", '\"', "\'"];
-
     /**
      * @var string
      */
@@ -40,12 +38,11 @@ class CSSString extends PrimitiveValue
     public static function parse(ParserState $oParserState): CSSString
     {
         $sBegin = $oParserState->peek();
-        if ($sBegin === '\\') {
-            $sBegin = $oParserState->peek(2);
-        }
         $sQuote = null;
-        if (in_array($sBegin, self::PARSE_QUOTE_STRINGS)) {
-            $sQuote = $sBegin;
+        if ($sBegin === "'") {
+            $sQuote = "'";
+        } elseif ($sBegin === '"') {
+            $sQuote = '"';
         }
         if ($sQuote !== null) {
             $oParserState->consume($sQuote);

@@ -1315,34 +1315,6 @@ div {height: max(300,vh / 10);}';
         self::assertSame($sExpected, $oDoc->render());
     }
 
-    public function parseForEscapedQuotes(): void
-    {
-        $preParseCss = sprintf(
-            "%s%s%s%s%s%s%s",
-            '.fonts-first {font-family: Roboto, "Fira Mono", \"Liberation Serif\";}',
-            PHP_EOL,
-            ".font-second {font-family: Roboto, 'Fira Mono', \'Liberation Serif\';}",
-            PHP_EOL,
-            '.bgpic-first {background-image: url(\"pic.webp\");}',
-            PHP_EOL,
-            ".bgpic-second {background-image: url(\'pic.webp\');}"
-        );
-        $expectedCss = sprintf(
-            "%s%s%s%s%s%s%s",
-            '.fonts-first {font-family: Roboto,"Fira Mono","Liberation Serif";}',
-            PHP_EOL,
-            '.font-second {font-family: Roboto,"Fira Mono","Liberation Serif";}',
-            PHP_EOL,
-            '.bgpic-first {background-image: url("pic.webp");}',
-            PHP_EOL,
-            '.bgpic-second {background-image: url("pic.webp");}'
-        );
-        $parser = new Parser($preParseCss);
-        $document = $parser->parse();
-        $postParseCss = $document->render();
-        self::assertEquals($expectedCss, $postParseCss);
-    }
-
     public function escapedSpecialCaseTokens(): void
     {
         $oDoc = $this->parsedStructureForFile('escaped-tokens');
