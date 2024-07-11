@@ -188,7 +188,8 @@ class ParserState
      */
     public function parseCharacter($bIsForIdentifier)
     {
-        if ($this->peek() === '\\') {
+        $sPeekChar = $this->peek();
+        if ($sPeekChar === '\\') {
             if (
                 $bIsForIdentifier && $this->oParserSettings->bLenientParsing
                 && ($this->comes('\\0') || $this->comes('\\9'))
@@ -222,22 +223,25 @@ class ParserState
             }
             return \iconv('utf-32le', $this->sCharset, $sUtf32);
         }
-        if ($bIsForIdentifier) {
-            $peek = \ord($this->peek());
-            // Ranges: a-z A-Z 0-9 - _
-            if (
-                ($peek >= 97 && $peek <= 122)
-                || ($peek >= 65 && $peek <= 90)
-                || ($peek >= 48 && $peek <= 57)
-                || ($peek === 45)
-                || ($peek === 95)
-                || ($peek > 0xa1)
-            ) {
-                return $this->consume(1);
-            }
-        } else {
+
+        if (!$bIsForIdentifier) {
             return $this->consume(1);
         }
+
+        $peek = \ord($sPeekChar);
+        // Ranges: a-z A-Z 0-9 - _
+        //if (\preg_match('/[a-zA-Z0-9\-_]/', $sPeekChar) || \ord($sPeekChar) > 0xa1) {
+        if (
+        ($peek >= 97 && $peek <= 122)
+            || ($peek >= 65 && $peek <= 90)
+            || ($peek >= 48 && $peek <= 57)
+            || ($peek === 45)
+            || ($peek === 95)
+            || ($peek > 0xa1)
+        ) {
+            return $this->consume(1);
+        }
+
         return null;
     }
 
@@ -324,12 +328,11 @@ class ParserState
     public function consume($mValue = 1): string
     {
         if (\is_string($mValue)) {
-            $iLineCount = \substr_count($mValue, "\n");
             $iLength = $this->strlen($mValue);
             if (!$this->streql($this->substr($this->iCurrentPosition, $iLength), $mValue)) {
                 throw new UnexpectedTokenException($mValue, $this->peek(\max($iLength, 5)), $this->iLineNo);
             }
-            $this->iLineNo += $iLineCount;
+            $this->iLineNo += \substr_count($mValue, "\n");
             $this->iCurrentPosition += $this->strlen($mValue);
             return $mValue;
         } else {
