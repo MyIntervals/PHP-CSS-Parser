@@ -254,15 +254,19 @@ class ParserState
             while (\preg_match('/\\s/isSu', $this->peek()) === 1) {
                 $this->consume(1);
             }
-            if ($this->oParserSettings->bLenientParsing) {
-                try {
+
+            $oComment = false;
+            if ($this->peek(1) == '/' && $this->peek(1, 1) == '*') {
+                if ($this->oParserSettings->bLenientParsing) {
+                    try {
+                        $oComment = $this->consumeComment();
+                    } catch (UnexpectedEOFException $e) {
+                        $this->iCurrentPosition = $this->iLength;
+                        return $aComments;
+                    }
+                } else {
                     $oComment = $this->consumeComment();
-                } catch (UnexpectedEOFException $e) {
-                    $this->iCurrentPosition = $this->iLength;
-                    return $aComments;
                 }
-            } else {
-                $oComment = $this->consumeComment();
             }
             if ($oComment !== false) {
                 $aComments[] = $oComment;
@@ -423,8 +427,10 @@ class ParserState
                 return $out;
             }
             $out .= $char;
-            if ($comment = $this->consumeComment()) {
-                $comments[] = $comment;
+            if ($this->peek(1) == '/' && $this->peek(1, 1) == '*') {
+                if ($comment = $this->consumeComment()) {
+                    $comments[] = $comment;
+                }
             }
         }
 
