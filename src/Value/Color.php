@@ -71,14 +71,21 @@ class Color extends CSSFunction
             $oParserState->consume('(');
 
             $bContainsVar = false;
-            $iLength = $oParserState->strlen($sColorMode);
+            if ($sColorMode === 'rgb') {
+                $sColorTarget = 'rgba';
+            } elseif ($sColorMode === 'hsl') {
+                $sColorTarget = 'hsla';
+            } else {
+                $sColorTarget = $sColorMode;
+            }
+            $iLength = $oParserState->strlen($sColorTarget);
             for ($i = 0; $i < $iLength; ++$i) {
                 $oParserState->consumeWhiteSpace();
                 if ($oParserState->comes('var')) {
-                    $aColor[$sColorMode[$i]] = CSSFunction::parseIdentifierOrFunction($oParserState);
+                    $aColor[$sColorTarget[$i]] = CSSFunction::parseIdentifierOrFunction($oParserState);
                     $bContainsVar = true;
                 } else {
-                    $aColor[$sColorMode[$i]] = Size::parse($oParserState, true);
+                    $aColor[$sColorTarget[$i]] = Size::parse($oParserState, true);
                 }
 
                 if ($bContainsVar && $oParserState->comes(')')) {
@@ -88,7 +95,14 @@ class Color extends CSSFunction
 
                 $oParserState->consumeWhiteSpace();
                 if ($i < ($iLength - 1)) {
-                    $oParserState->consume(',');
+                    if ($oParserState->comes(',')) {
+                        $oParserState->consume(',');
+                    } elseif ($oParserState->comes('/')) {
+                        $oParserState->consume('/');
+                    } elseif ($oParserState->comes(')')) {
+                        // No alpha channel information
+                        break;
+                    }
                 }
             }
             $oParserState->consume(')');
@@ -163,7 +177,7 @@ class Color extends CSSFunction
                 $this->aComponents['b']->getSize()
             );
             return '#' . (($sResult[0] == $sResult[1]) && ($sResult[2] == $sResult[3]) && ($sResult[4] == $sResult[5])
-                    ? "$sResult[0]$sResult[2]$sResult[4]" : $sResult);
+                ? "$sResult[0]$sResult[2]$sResult[4]" : $sResult);
         }
         return parent::render($oOutputFormat);
     }
