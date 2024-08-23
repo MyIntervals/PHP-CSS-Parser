@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ## x.y.z
 
 ### Added
+- Add official support for PHP 8.4 (#657)
 - Support arithmetic operators in CSS function arguments (#607)
 - Add support for inserting an item in a CSS list (#545)
 - Add a class diagram to the README (#482)
