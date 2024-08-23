@@ -15,8 +15,12 @@ jobs:
         runs-on: ubuntu-22.04
 
         strategy:
+            fail-fast: false
             matrix:
-                php-version: [ '7.4' ]
+                php-version:
+                    - '7.4'
+                dependencies:
+                    - highest
 
         steps:
             - name: Checkout
@@ -30,6 +34,9 @@ jobs:
                   tools: composer:v2
                   coverage: xdebug
 
+            - name: Show the Composer version
+              run: composer --version
+
             - name: Show the Composer configuration
               run: composer config --global --list
 
@@ -37,21 +44,29 @@ jobs:
               uses: actions/cache@v4
               with:
                   path: ~/.cache/composer
-                  key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
+                  key: php${{ matrix.php-version }}-${{ matrix.dependencies }}-composer-${{ hashFiles('**/composer.json') }}
                   restore-keys: |
-                      php${{ matrix.php-version }}-composer-
+                      php${{ matrix.php-version }}-${{ matrix.dependencies }}-composer-
 
             - name: Install Composer dependencies
               run: |
-                  composer update --with-dependencies --no-progress;
+                  if [[ "${{ matrix.dependencies }}" == 'lowest' ]]; then
+                    DEPENDENCIES='--prefer-lowest';
+                  else
+                    DEPENDENCIES='';
+                  fi;
+                  composer install --no-progress;
+                  composer update --with-dependencies --no-progress "${DEPENDENCIES}";
                   composer show;
 
             - name: Run Tests
-              run: ./vendor/bin/phpunit --coverage-clover build/coverage/xml
+              run: composer ci:tests:coverage
 
-            - name: Upload coverage results to Codacy
+            - name: Show generated coverage files
+              run: ls -lah
+
+            - name: Upload coverage results to Coveralls
+              uses: coverallsapp/github-action@v2
               env:
-                  CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-              if: "${{ env.CODACY_PROJECT_TOKEN != '' }}"
-              run: |
-                  ./vendor/bin/codacycoverage clover build/coverage/xml
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  file: coverage.xml

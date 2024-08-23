@@ -1,6 +1,7 @@
 # PHP CSS Parser
 
 [![Build Status](https://github.com/MyIntervals/PHP-CSS-Parser/workflows/CI/badge.svg?branch=main)](https://github.com/MyIntervals/PHP-CSS-Parser/actions/)
+[![Coverage Status](https://coveralls.io/repos/github/MyIntervals/PHP-CSS-Parser/badge.svg?branch=main)](https://coveralls.io/github/MyIntervals/PHP-CSS-Parser?branch=main)
 
 A Parser for CSS Files written in PHP. Allows extraction of CSS files into a data structure, manipulation of said structure and output as (optimized) CSS.
 
