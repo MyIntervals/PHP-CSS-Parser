@@ -220,17 +220,25 @@ class ParserState
     }
 
     /**
-     * @return array<int, Comment>|void
+     * Consumes whitespace and comments and returns the comments.
+     * If $withoutComment is true, only whitespace is consumed.
+     *
+     * @param bool $withoutComment Do not consume comments, only whitespace.
+     *
+     * @return array<int, Comment>|void List of comments.
      *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public function consumeWhiteSpace(): array
+    public function consumeWhiteSpace(bool $withoutComment = false): array
     {
         $aComments = [];
         do {
             while (\preg_match('/\\s/isSu', $this->peek()) === 1) {
                 $this->consume(1);
+            }
+            if ($withoutComment) {
+                break;
             }
             if ($this->oParserSettings->bLenientParsing) {
                 try {

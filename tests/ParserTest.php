@@ -1161,13 +1161,16 @@ body {background-color: red;}';
      */
     public function flatCommentExtracting(): void
     {
-        $parser = new Parser('div {/*Find Me!*/left:10px; text-align:left;}');
+        $parser = new Parser('div {/*Find Me!*/left:10px; /*Find Me Too!*/text-align:left;}');
         $doc = $parser->parse();
         $contents = $doc->getContents();
         $divRules = $contents[0]->getRules();
-        $comments = $divRules[0]->getComments();
-        self::assertCount(1, $comments);
-        self::assertSame('Find Me!', $comments[0]->getComment());
+        $rule1Comments = $divRules[0]->getComments();
+        $rule2Comments = $divRules[1]->getComments();
+        self::assertCount(1, $rule1Comments);
+        self::assertCount(1, $rule2Comments);
+        self::assertEquals('Find Me!', $rule1Comments[0]->getComment());
+        self::assertEquals('Find Me Too!', $rule2Comments[0]->getComment());
     }
 
     /**
