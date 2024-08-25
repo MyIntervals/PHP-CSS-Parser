@@ -28,7 +28,7 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @return array<string, array{0: string}>
      */
-    public static function provideSyntacticlyCorrectAtRule(): array
+    public static function provideSyntacticallyCorrectAtRule(): array
     {
         return [
             'media print' => ['@media print { html { background: white; color: black; } }'],
@@ -107,9 +107,9 @@ final class AtRuleBlockListTest extends TestCase
      * @test
      *
      * @dataProvider provideMinWidthMediaRule
-     * @dataProvider provideSyntacticlyCorrectAtRule
+     * @dataProvider provideSyntacticallyCorrectAtRule
      */
-    public function parsesSyntacticlyCorrectAtRuleInStrictMode(string $css): void
+    public function parsesSyntacticallyCorrectAtRuleInStrictMode(string $css): void
     {
         $contents = (new Parser($css, Settings::create()->beStrict()))->parse()->getContents();
 

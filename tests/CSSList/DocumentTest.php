@@ -89,7 +89,7 @@ final class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function insertContentBeforeInsertsContentBeforeSibbling(): void
+    public function insertContentBeforeInsertsContentBeforeSibling(): void
     {
         $bogusOne = new DeclarationBlock();
         $bogusOne->setSelectors('.bogus-one');
@@ -115,7 +115,7 @@ final class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function insertContentBeforeAppendsIfSibblingNotFound(): void
+    public function insertContentBeforeAppendsIfSiblingNotFound(): void
     {
         $bogusOne = new DeclarationBlock();
         $bogusOne->setSelectors('.bogus-one');

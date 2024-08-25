@@ -71,7 +71,7 @@ final class ParserTest extends TestCase
                 }
                 if (\strpos($sFileName, '-') === 0) {
                     // Either a file which SHOULD fail (at least in strict mode)
-                    // or a future test of a as-of-now missing feature
+                    // or a future test of an as-of-now missing feature
                     continue;
                 }
                 $oParser = new Parser(\file_get_contents($sDirectory . '/' . $sFileName));
