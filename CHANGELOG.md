@@ -15,6 +15,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- Fix comment parsing to support multiple comments (#671)
+
 ## 8.6.0
 
 ### Added

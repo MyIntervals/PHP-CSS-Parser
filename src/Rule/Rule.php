@@ -107,7 +107,12 @@ class Rule implements Renderable, Commentable
         while ($oParserState->comes(';')) {
             $oParserState->consume(';');
         }
-        $oParserState->consumeWhiteSpace();
+
+        // NOTE: This is a backport to fix comment parsing to support multiple
+        // comments. This will be rectified in version 9.0.0.
+        while (preg_match('/\\s/isSu', $oParserState->peek()) === 1) {
+            $oParserState->consume(1);
+        }
 
         return $oRule;
     }
