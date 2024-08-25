@@ -232,6 +232,14 @@ class ParserState
      *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
+     *
+     * @deprecated From version 9.0.0 onwards this method will be undergo a breaking
+     *      change. This method will no longer consume comments, only whitespace.
+     *      Use `ParserState::consumeWhiteSpaceWithComments` as a replacement if you
+     *      need the former behaviour of consuming whitespace and comments.
+     *
+     * @see `ParserState::consumeWhiteSpaceWithComments` for a version that also
+     *      returns comments.
      */
     public function consumeWhiteSpace()
     {

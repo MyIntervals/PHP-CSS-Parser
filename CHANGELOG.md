@@ -15,6 +15,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Deprecated
 
+- Deprecate `ParserState::consumeWhiteSpace()` in favor of `ParserState::consumeWhiteSpaceWithComments()` (#670)
+
 ### Removed
 
 ### Fixed
