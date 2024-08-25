@@ -226,12 +226,35 @@ class ParserState
     }
 
     /**
-     * @return array<int, Comment>|void
+     * Consumes whitespace and comments and returns a list of comments.
+     *
+     * @return list<Comment> List of comments.
+     *
+     * @throws UnexpectedEOFException
+     * @throws UnexpectedTokenException
+     *
+     * @deprecated From version 9.0.0 onwards this method will be undergo a breaking
+     *      change. This method will no longer consume comments, only whitespace.
+     *      Use `ParserState::consumeWhiteSpaceWithComments` as a replacement if you
+     *      need the former behaviour of consuming whitespace and comments.
+     *
+     * @see `ParserState::consumeWhiteSpaceWithComments` for a version that also
+     *      returns comments.
+     */
+    public function consumeWhiteSpace()
+    {
+        return $this->consumeWhiteSpaceWithComments();
+    }
+
+    /**
+     * Consumes whitespace and comments and returns a list of comments.
+     *
+     * @return list<Comment> List of comments.
      *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public function consumeWhiteSpace()
+    public function consumeWhiteSpaceWithComments()
     {
         $aComments = [];
         do {
