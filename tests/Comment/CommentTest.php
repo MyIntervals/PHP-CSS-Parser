@@ -10,7 +10,6 @@ use Sabberworm\CSS\Tests\ParserTest as TestsParserTest;
 
 /**
  * @covers \Sabberworm\CSS\Comment\Comment
- * @covers \Sabberworm\CSS\Comment\Commentable
  * @covers \Sabberworm\CSS\OutputFormat
  * @covers \Sabberworm\CSS\OutputFormatter
  */
