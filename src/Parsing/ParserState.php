@@ -226,12 +226,27 @@ class ParserState
     }
 
     /**
-     * @return array<int, Comment>|void
+     * Consumes whitespace and comments and returns a list of comments.
+     *
+     * @return list<Comment> List of comments.
      *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
     public function consumeWhiteSpace()
+    {
+        return $this->consumeWhiteSpaceWithComments();
+    }
+
+    /**
+     * Consumes whitespace and comments and returns a list of comments.
+     *
+     * @return list<Comment> List of comments.
+     *
+     * @throws UnexpectedEOFException
+     * @throws UnexpectedTokenException
+     */
+    public function consumeWhiteSpaceWithComments()
     {
         $aComments = [];
         do {
