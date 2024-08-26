@@ -6,6 +6,8 @@ namespace Sabberworm\CSS\Parsing;
 
 /**
  * Thrown if the CSS parser encounters a token it did not expect.
+ *
+ * @internal
  */
 class UnexpectedTokenException extends SourceException
 {
