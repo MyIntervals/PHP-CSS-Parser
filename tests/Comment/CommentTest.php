@@ -153,7 +153,7 @@ final class CommentTest extends TestCase
      */
     public function stripCommentsFromOutput(): void
     {
-        $oCss = TestsParserTest::parsedStructureForFile('comments');
+        $css = TestsParserTest::parsedStructureForFile('comments');
         self::assertSame('
 @import url("some/url.css") screen;
 
@@ -166,12 +166,12 @@ final class CommentTest extends TestCase
 		position: absolute;
 	}
 }
-', $oCss->render(OutputFormat::createPretty()->setRenderComments(false)));
+', $css->render(OutputFormat::createPretty()->setRenderComments(false)));
         self::assertSame(
             '@import url("some/url.css") screen;'
             . '.foo,#bar{background-color:#000;}'
             . '@media screen{#foo.bar{position:absolute;}}',
-            $oCss->render(OutputFormat::createCompact())
+            $css->render(OutputFormat::createCompact())
         );
     }
 }
