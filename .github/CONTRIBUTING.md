@@ -30,6 +30,6 @@ This is the workflow for contributing changes to this project::
    for your changes.
 9. Check that the CI build is green. (If it is not, fix the problems listed.)
    Please note that for first-time contributors, you will need to wait for a
-   maintainer to approve your pull request before the CI build will run.
+   maintainer to allow your CI build to run.
 10. Wait for a review by the maintainers.
 11. Polish your changes as needed until they are ready to be merged.
