@@ -22,6 +22,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Deprecated
 
+- Deprecate `Parser::setCharset()` and `Parser::getCharset()` (#688) 
 - Deprecate `DeclarationBlock::createBorderShorthand()` (#578)
 - Deprecate `DeclarationBlock::createFontShorthand()` (#580)
 - Deprecate `DeclarationBlock::createDimensionsShorthand()` (#579)
