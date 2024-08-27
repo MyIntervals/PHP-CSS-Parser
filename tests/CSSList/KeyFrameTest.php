@@ -18,7 +18,7 @@ final class KeyFrameTest extends TestCase
      */
     protected $subject;
 
-    protected function setUp()
+    private function setUpTestcase()
     {
         $this->subject = new KeyFrame();
     }
@@ -28,6 +28,8 @@ final class KeyFrameTest extends TestCase
      */
     public function implementsAtRule()
     {
+        $this->setUpTestcase();
+
         self::assertInstanceOf(AtRule::class, $this->subject);
     }
 
@@ -36,6 +38,8 @@ final class KeyFrameTest extends TestCase
      */
     public function implementsRenderable()
     {
+        $this->setUpTestcase();
+
         self::assertInstanceOf(Renderable::class, $this->subject);
     }
 
@@ -44,6 +48,8 @@ final class KeyFrameTest extends TestCase
      */
     public function implementsCommentable()
     {
+        $this->setUpTestcase();
+
         self::assertInstanceOf(Commentable::class, $this->subject);
     }
 }
