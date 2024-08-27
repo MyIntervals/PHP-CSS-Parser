@@ -279,7 +279,7 @@ final class ParserTest extends TestCase
             new Selector('ol li::before', true),
         ], $oDoc->getSelectorsBySpecificity('< 100'));
         self::assertEquals([new Selector('li.green', true)], $oDoc->getSelectorsBySpecificity('11'));
-        self::assertEquals([new Selector('ol li::before', true)], $oDoc->getSelectorsBySpecificity(3));
+        self::assertEquals([new Selector('ol li::before', true)], $oDoc->getSelectorsBySpecificity('3'));
     }
 
     /**
