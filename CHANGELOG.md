@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Block installations on unsupported higher PHP versions (#691)
+
 ### Deprecated
 
 ### Removed
