@@ -27,7 +27,6 @@
         "ext-iconv": "*"
     },
     "require-dev": {
-        "codacy/coverage": "^1.4.3",
         "php-parallel-lint/php-parallel-lint": "^1.4.0",
         "phpstan/extension-installer": "^1.4.2",
         "phpstan/phpstan": "^1.12.0",
@@ -83,6 +82,7 @@
         "ci:tests": [
             "@ci:tests:unit"
         ],
+        "ci:tests:coverage": "phpunit --do-not-cache-result --coverage-clover=coverage.xml",
         "ci:tests:sof": "phpunit --stop-on-failure --do-not-cache-result",
         "ci:tests:unit": "phpunit --do-not-cache-result",
         "fix:php": [
@@ -102,6 +102,7 @@
         "ci:php:rector": "Checks the code for possible code updates and refactoring.",
         "ci:static": "Runs all static code analysis checks for the code.",
         "ci:tests": "Runs all dynamic tests (i.e., currently, the unit tests).",
+        "ci:tests:coverage": "Runs the unit tests with code coverage.",
         "ci:tests:sof": "Runs the unit tests and stops at the first failure.",
         "ci:tests:unit": "Runs all unit tests.",
         "fix:php": "Autofixes all autofixable issues in the PHP code.",
