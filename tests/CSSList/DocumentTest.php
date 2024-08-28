@@ -18,7 +18,7 @@ final class DocumentTest extends TestCase
      */
     private $subject;
 
-    protected function setUp()
+    private function setUpTestcase()
     {
         $this->subject = new Document();
     }
@@ -28,6 +28,8 @@ final class DocumentTest extends TestCase
      */
     public function implementsRenderable()
     {
+        $this->setUpTestcase();
+
         self::assertInstanceOf(Renderable::class, $this->subject);
     }
 
@@ -36,6 +38,8 @@ final class DocumentTest extends TestCase
      */
     public function implementsCommentable()
     {
+        $this->setUpTestcase();
+
         self::assertInstanceOf(Commentable::class, $this->subject);
     }
 
@@ -44,6 +48,8 @@ final class DocumentTest extends TestCase
      */
     public function getContentsInitiallyReturnsEmptyArray()
     {
+        $this->setUpTestcase();
+
         self::assertSame([], $this->subject->getContents());
     }
 
@@ -68,6 +74,8 @@ final class DocumentTest extends TestCase
      */
     public function setContentsSetsContents(array $contents)
     {
+        $this->setUpTestcase();
+
         $this->subject->setContents($contents);
 
         self::assertSame($contents, $this->subject->getContents());
@@ -78,6 +86,8 @@ final class DocumentTest extends TestCase
      */
     public function setContentsReplacesContentsSetInPreviousCall()
     {
+        $this->setUpTestcase();
+
         $contents2 = [new DeclarationBlock()];
 
         $this->subject->setContents([new DeclarationBlock()]);
@@ -91,6 +101,8 @@ final class DocumentTest extends TestCase
      */
     public function insertContentBeforeInsertsContentBeforeSibbling()
     {
+        $this->setUpTestcase();
+
         $bogusOne = new DeclarationBlock();
         $bogusOne->setSelectors('.bogus-one');
         $bogusTwo = new DeclarationBlock();
@@ -117,6 +129,8 @@ final class DocumentTest extends TestCase
      */
     public function insertContentBeforeAppendsIfSibblingNotFound()
     {
+        $this->setUpTestcase();
+
         $bogusOne = new DeclarationBlock();
         $bogusOne->setSelectors('.bogus-one');
         $bogusTwo = new DeclarationBlock();
