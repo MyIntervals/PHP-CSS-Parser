@@ -17,7 +17,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 - Block installations on unsupported higher PHP versions (#691)
 - Improve performance of `Value::parseValue` with many delimiters by refactoring
-  to `remove array_search()` (#413)
+  to remove `array_search()` (#413)
 - Add visibility to all class/interface constants (#469)
 
 ### Deprecated
