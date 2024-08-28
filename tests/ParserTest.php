@@ -787,6 +787,14 @@ div {height: calc;}';
 	html[dir="rtl"] .super-menu > li:last-of-type {border-left-width: 0;}}
 body {background-color: red;}';
         self::assertSame($sExpected, $oDoc->render());
+
+        $oDoc = self::parsedStructureForFile('invalid-selectors-4', Settings::create()->withMultibyteSupport(true));
+        $sExpected = 'body, div :hover {color: green;}
+div {color: blue;}
+a[href*=": \" "] {color: blue;}
+a[href*=\': \" \'] {color: blue;}
+#some_id_that_ends_in_a\: > a {color: blue;}';
+        self::assertSame($sExpected, $oDoc->render());
     }
 
     /**
