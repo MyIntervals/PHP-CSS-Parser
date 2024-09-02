@@ -19,8 +19,6 @@ jobs:
             matrix:
                 php-version:
                     - '7.4'
-                dependencies:
-                    - highest
 
         steps:
             - name: Checkout
@@ -44,19 +42,13 @@ jobs:
               uses: actions/cache@v4
               with:
                   path: ~/.cache/composer
-                  key: php${{ matrix.php-version }}-${{ matrix.dependencies }}-composer-${{ hashFiles('**/composer.json') }}
+                  key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
                   restore-keys: |
-                      php${{ matrix.php-version }}-${{ matrix.dependencies }}-composer-
+                      php${{ matrix.php-version }}-composer-
 
             - name: Install Composer dependencies
               run: |
-                  if [[ "${{ matrix.dependencies }}" == 'lowest' ]]; then
-                    DEPENDENCIES='--prefer-lowest';
-                  else
-                    DEPENDENCIES='';
-                  fi;
-                  composer install --no-progress;
-                  composer update --with-dependencies --no-progress "${DEPENDENCIES}";
+                  composer update --with-dependencies --no-progress;
                   composer show;
 
             - name: Run Tests
