@@ -35,6 +35,8 @@ class Parser
      * Sets the charset to be used if the CSS does not contain an `@charset` declaration.
      *
      * @param string $sCharset
+     *
+     * @deprecated will be removed in version 9.0.0 with #687
      */
     public function setCharset($sCharset): void
     {
@@ -43,6 +45,8 @@ class Parser
 
     /**
      * Returns the charset that is used if the CSS does not contain an `@charset` declaration.
+     *
+     * @deprecated will be removed in version 9.0.0 with #687
      */
     public function getCharset(): void
     {
