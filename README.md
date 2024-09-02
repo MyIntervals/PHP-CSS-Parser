@@ -784,7 +784,7 @@ classDiagram
 
 Contributions in the form of bug reports, feature requests, or pull requests are
 more than welcome. :pray: Please have a look at our
-[contribution guidelines](.github/CONTRIBUTING.md) to learn more about how to
+[contribution guidelines](CONTRIBUTING.md) to learn more about how to
 contribute to PHP-CSS-Parser.
 
 ## Contributors/Thanks to
