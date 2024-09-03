@@ -1044,16 +1044,16 @@ body {background-color: red;}';
             }
         }
 
-        $expectedLineNumbers = [7, 26]; // expected line numbers
-        $actualUrls = [];
+        $expectedLineNumbers = [7, 26];
+        $actualLineNumbers = [];
         foreach ($document->getAllValues() as $value) {
             if ($value instanceof URL) {
-                $actualUrls[] = $value->getLineNo();
+                $actualLineNumbers[] = $value->getLineNo();
             }
         }
 
         // Checking for the multiline color rule lines 27-31
-        $expectedColorLines = [28, 29, 30];
+        $expectedColorLineNumbers = [28, 29, 30];
         $declarationBlocks = $document->getAllDeclarationBlocks();
         // Choose the 2nd one
         $secondDeclarationBlock = $declarationBlocks[1];
@@ -1062,13 +1062,13 @@ body {background-color: red;}';
         $valueOfSecondRule = $rules[1]->getValue();
         self::assertSame(27, $rules[1]->getLineNo());
 
-        $aActualColorLines = [];
+        $actualColorLineNumbers = [];
         foreach ($valueOfSecondRule->getColor() as $oSize) {
-            $aActualColorLines[] = $oSize->getLineNo();
+            $actualColorLineNumbers[] = $oSize->getLineNo();
         }
 
-        self::assertSame($expectedColorLines, $aActualColorLines);
-        self::assertSame($expectedLineNumbers, $actualUrls);
+        self::assertSame($expectedColorLineNumbers, $actualColorLineNumbers);
+        self::assertSame($expectedLineNumbers, $actualLineNumbers);
         self::assertSame($expected, $actual);
     }
 
