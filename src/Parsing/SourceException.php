@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\Parsing;
 
-/**
- * @internal
- */
 class SourceException extends \Exception
 {
     /**
