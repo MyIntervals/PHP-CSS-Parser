@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Mark parsing-internal classes and methods as `@internal` (#711)
 - Block installations on unsupported higher PHP versions (#691)
 
 ### Deprecated
