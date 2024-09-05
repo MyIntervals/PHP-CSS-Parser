@@ -23,21 +23,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ### Deprecated
 
 - Deprecate `Parser::setCharset()` and `Parser::getCharset()` (#688) 
-- Deprecate `DeclarationBlock::createBorderShorthand()` (#578)
-- Deprecate `DeclarationBlock::createFontShorthand()` (#580)
-- Deprecate `DeclarationBlock::createDimensionsShorthand()` (#579)
-- Deprecate `DeclarationBlock::createListStyleShorthand()` (#577)
-- Deprecate `DeclarationBlock::createBackgroundShorthand()` (#576)
-- Deprecate `DeclarationBlock::createShorthandProperties()` (#575)
-- Deprecate `DeclarationBlock::expandListStyleShorthand()` (#574)
-- Deprecate `DeclarationBlock::expandBackgroundShorthand()` (#573)
-- Deprecate `DeclarationBlock::expandFontShorthand()` (#572)
-- Deprecate `DeclarationBlock::expandDimensionsShorthand()` (#571)
-- Deprecate `DeclarationBlock::expandBorderShorthand()` (#570)
-- Deprecate `DeclarationBlock::createShorthands()` (#569)
-- Deprecate `Document::expandShorthands()` (#566)
-- Deprecate `Document::createShorthands()` (#567)
-- Deprecate `DeclarationBlock::expandShorthands()` (#558)
+- Deprecate the expansion of shorthand properties (#578, #580, #579, #577, #576,
+  #575, #574, #573, #572, #571, #570, #569, #566, #567,  #558)
 
 ### Removed
 
