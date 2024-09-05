@@ -2,6 +2,9 @@
 
 namespace Sabberworm\CSS\Parsing;
 
+/**
+ * @internal
+ */
 class Anchor
 {
     /**

@@ -5,6 +5,9 @@ namespace Sabberworm\CSS\Parsing;
 use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\Settings;
 
+/**
+ * @internal
+ */
 class ParserState
 {
     /**
