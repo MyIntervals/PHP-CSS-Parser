@@ -128,6 +128,8 @@ class Document extends CSSBlockList
      * Expands all shorthand properties to their long value.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 9.0 in #511.
      */
     public function expandShorthands()
     {
@@ -140,6 +142,8 @@ class Document extends CSSBlockList
      * Create shorthands properties whenever possible.
      *
      * @return void
+     *
+     * @deprecated This will be removed without substitution in version 9.0 in #511.
      */
     public function createShorthands()
     {
