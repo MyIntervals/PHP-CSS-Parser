@@ -780,6 +780,11 @@ classDiagram
     ValueList --> "*" Value : aComponents
 ```
 
+## API and deprecation policy
+
+Please have a look at our
+[API and deprecation policy](docs/API-and-deprecation-policy.md).
+
 ## Contributing
 
 Contributions in the form of bug reports, feature requests, or pull requests are
