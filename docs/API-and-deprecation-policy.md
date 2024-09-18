@@ -9,8 +9,8 @@ and your code might break with any new release of this library.
 Any classes, methods and properties that are `public` and not marked as
 `@internal` are considered to be part of the API. Those methods will continue
 working in a compatible way over minor and bug-fix releases according
-to [Semantic Versioning](https://semver.org/). though we might change the native
-type declarations in a way that might could break subclasses, though.
+to [Semantic Versioning](https://semver.org/), though we might change the native
+type declarations in a way that could break subclasses.
 
 Any classes, methods and properties that are `protected` or `private` are _not_
 considered part of the API. Please do not rely on them. If you do, you're on
