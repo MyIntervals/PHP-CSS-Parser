@@ -54,7 +54,7 @@ class Selector
      *
      * @var string
      *
-     * @internal
+     * @internal since 8.5.2
      */
     const SELECTOR_VALIDATION_RX = '/
         ^(

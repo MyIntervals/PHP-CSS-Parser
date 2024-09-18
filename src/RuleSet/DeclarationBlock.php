@@ -182,7 +182,7 @@ class DeclarationBlock extends RuleSet
      *
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function expandShorthands()
     {
@@ -199,7 +199,7 @@ class DeclarationBlock extends RuleSet
      *
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createShorthands()
     {
@@ -220,7 +220,7 @@ class DeclarationBlock extends RuleSet
      *
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function expandBorderShorthand()
     {
@@ -283,7 +283,7 @@ class DeclarationBlock extends RuleSet
      *
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function expandDimensionsShorthand()
     {
@@ -345,7 +345,7 @@ class DeclarationBlock extends RuleSet
      *
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function expandFontShorthand()
     {
@@ -417,7 +417,7 @@ class DeclarationBlock extends RuleSet
      *
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function expandBackgroundShorthand()
     {
@@ -491,7 +491,7 @@ class DeclarationBlock extends RuleSet
     /**
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function expandListStyleShorthand()
     {
@@ -576,7 +576,7 @@ class DeclarationBlock extends RuleSet
      *
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createShorthandProperties(array $aProperties, $sShorthand)
     {
@@ -614,7 +614,7 @@ class DeclarationBlock extends RuleSet
     /**
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createBackgroundShorthand()
     {
@@ -631,7 +631,7 @@ class DeclarationBlock extends RuleSet
     /**
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createListStyleShorthand()
     {
@@ -650,7 +650,7 @@ class DeclarationBlock extends RuleSet
      *
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createBorderShorthand()
     {
@@ -669,7 +669,7 @@ class DeclarationBlock extends RuleSet
      *
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createDimensionsShorthand()
     {
@@ -745,7 +745,7 @@ class DeclarationBlock extends RuleSet
      *
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createFontShorthand()
     {
