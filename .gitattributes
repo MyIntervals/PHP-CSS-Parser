@@ -7,5 +7,6 @@
 /CONTRIBUTING.md export-ignore
 /bin/ export-ignore
 /config/ export-ignore
+/docs/ export-ignore
 /phpunit.xml export-ignore
 /tests/ export-ignore

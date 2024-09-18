@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+Please also have a look at our
+[API and deprecation policy](docs/API-and-deprecation-policy.md). 
+
 ## x.y.z
 
 ### Added
@@ -45,6 +48,10 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Fix PHP notice caused by parsing invalid color values having less than 6
   characters (#485)
 - Fix (regression) failure to parse at-rules with strict parsing (#456)
+
+### Documentation
+
+- Add an API and deprecation policy (#720)
 
 @ziegenberg is a new contributor to this release and did a lot of the heavy
 lifting. Thanks! :heart:
