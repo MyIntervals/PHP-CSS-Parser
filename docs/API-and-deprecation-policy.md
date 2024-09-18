@@ -24,7 +24,8 @@ are by definition considered to be internal as well.
 
 When we change some code from public to `@internal` in a release, the first
 release that might change that code in a breaking way will be the next major
-release after that. This will allow you to change your code accordingly.
+release after that. This will allow you to change your code accordingly. We'll
+also add since which version the code is internal.
 
 For example, we might mark some code as `@internal` in version 8.7.0. The first
 version that possibly changes this code in a breaking way will then be version
@@ -40,7 +41,8 @@ Code that we plan to remove is marked as `@deprecated`. In the corresponding
 annotation, we also note in which release the code will be removed.
 
 When we mark some code as `@deprecated` in a release, we'll usually remove it in
-the next major release.
+the next major release. We'll also add since which version the code is
+deprecated.
 
 For example, when we mark some code as `@deprecated` in version 8.7.0, we'll
 remove it in version 9.0.0 (or sometimes a later major release).
