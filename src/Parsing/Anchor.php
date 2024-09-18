@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Parsing;
 
 /**
- * @internal
+ * @internal since 8.7.0
  */
 class Anchor
 {

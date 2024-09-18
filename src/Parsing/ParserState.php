@@ -8,14 +8,14 @@ use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\Settings;
 
 /**
- * @internal
+ * @internal since 8.7.0
  */
 class ParserState
 {
     /**
      * @var null
      *
-     * @internal
+     * @internal since 8.5.2
      */
     public const EOF = null;
 

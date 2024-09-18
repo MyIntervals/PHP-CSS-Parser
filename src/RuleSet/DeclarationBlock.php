@@ -157,7 +157,7 @@ class DeclarationBlock extends RuleSet
     /**
      * Splits shorthand declarations (e.g. `margin` or `font`) into their constituent parts.
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function expandShorthands(): void
     {
@@ -172,7 +172,7 @@ class DeclarationBlock extends RuleSet
     /**
      * Creates shorthand declarations (e.g. `margin` or `font`) whenever possible.
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createShorthands(): void
     {
@@ -191,7 +191,7 @@ class DeclarationBlock extends RuleSet
      *
      * Multiple borders are not yet supported as of 3.
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function expandBorderShorthand(): void
     {
@@ -252,7 +252,7 @@ class DeclarationBlock extends RuleSet
      *
      * Handles `margin`, `padding`, `border-color`, `border-style` and `border-width`.
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function expandDimensionsShorthand(): void
     {
@@ -312,7 +312,7 @@ class DeclarationBlock extends RuleSet
      * (e.g. `font: 300 italic 11px/14px verdana, helvetica, sans-serif;`)
      * into their constituent parts.
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function expandFontShorthand(): void
     {
@@ -381,7 +381,7 @@ class DeclarationBlock extends RuleSet
      *
      * @see http://www.w3.org/TR/21/colors.html#propdef-background
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function expandBackgroundShorthand(): void
     {
@@ -453,7 +453,7 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function expandListStyleShorthand(): void
     {
@@ -536,7 +536,7 @@ class DeclarationBlock extends RuleSet
      * @param array<array-key, string> $aProperties
      * @param string $sShorthand
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createShorthandProperties(array $aProperties, $sShorthand): void
     {
@@ -572,7 +572,7 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createBackgroundShorthand(): void
     {
@@ -587,7 +587,7 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createListStyleShorthand(): void
     {
@@ -604,7 +604,7 @@ class DeclarationBlock extends RuleSet
      *
      * Should be run after `create_dimensions_shorthand`!
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createBorderShorthand(): void
     {
@@ -621,7 +621,7 @@ class DeclarationBlock extends RuleSet
      * (margin, padding, border-color, border-style and border-width)
      * and converts them into shorthand CSS properties.
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createDimensionsShorthand(): void
     {
@@ -695,7 +695,7 @@ class DeclarationBlock extends RuleSet
      *
      * At least `font-size` AND `font-family` must be present in order to create a shorthand declaration.
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createFontShorthand(): void
     {
