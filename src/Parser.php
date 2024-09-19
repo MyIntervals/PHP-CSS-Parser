@@ -36,7 +36,7 @@ class Parser
      *
      * @return void
      *
-     * @deprecated will be removed in version 9.0.0 with #687
+     * @deprecated since 8.7.0, will be removed in version 9.0.0 with #687
      */
     public function setCharset($sCharset)
     {
@@ -48,7 +48,7 @@ class Parser
      *
      * @return void
      *
-     * @deprecated will be removed in version 9.0.0 with #687
+     * @deprecated since 8.7.0, will be removed in version 9.0.0 with #687
      */
     public function getCharset()
     {

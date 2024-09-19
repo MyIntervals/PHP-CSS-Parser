@@ -129,7 +129,7 @@ class Document extends CSSBlockList
      *
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function expandShorthands()
     {
@@ -143,7 +143,7 @@ class Document extends CSSBlockList
      *
      * @return void
      *
-     * @deprecated This will be removed without substitution in version 9.0 in #511.
+     * @deprecated since 8.7.0, will be removed without substitution in version 9.0 in #511
      */
     public function createShorthands()
     {
