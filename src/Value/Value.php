@@ -73,6 +73,8 @@ abstract class Value implements Renderable
             }
             $aNewStack = [];
             for ($iStartPosition = 0; $iStartPosition < $iStackLength; ++$iStartPosition) {
+                //if ($iStartPosition === 0) {
+                //    break;
                 if ($iStartPosition === ($iStackLength - 1) || $sDelimiter !== $aStack[$iStartPosition + 1]) {
                     $aNewStack[] = $aStack[$iStartPosition];
                     continue;
@@ -162,6 +164,8 @@ abstract class Value implements Renderable
             $oValue = LineName::parse($oParserState);
         } elseif ($oParserState->comes('U+')) {
             $oValue = self::parseUnicodeRangeValue($oParserState);
+        } elseif ($oParserState->comes("(")) {
+            $oValue = Expression::parse($oParserState);
         } else {
             $sNextChar = $oParserState->peek(1);
             try {

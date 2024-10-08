@@ -89,21 +89,21 @@ class Rule implements Renderable, Commentable
         $oRule->setValue($oValue);
         if ($oParserState->getSettings()->bLenientParsing) {
             while ($oParserState->comes('\\')) {
-                $oParserState->consume('\\');
+                $oParserState->consume(1);
                 $oRule->addIeHack($oParserState->consume());
                 $oParserState->consumeWhiteSpace();
             }
         }
         $oParserState->consumeWhiteSpace();
-        if ($oParserState->comes('!')) {
-            $oParserState->consume('!');
+        if ($oParserState->peek() == '!') {
+            $oParserState->consume(1);
             $oParserState->consumeWhiteSpace();
             $oParserState->consume('important');
             $oRule->setIsImportant(true);
         }
         $oParserState->consumeWhiteSpace();
-        while ($oParserState->comes(';')) {
-            $oParserState->consume(';');
+        while ($oParserState->peek() == ';') {
+            $oParserState->consume(1);
         }
         $oParserState->consumeWhiteSpace();
 
