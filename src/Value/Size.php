@@ -22,6 +22,7 @@ class Size extends PrimitiveValue
         'cm', 'mm', 'mozmm', 'in',
         'vh', 'dvh', 'svh', 'lvh',
         'vw', 'vmin', 'vmax', 'rem',
+        'x', 'dppx', 'dpi', 'dpcm'
     ];
 
     /**
