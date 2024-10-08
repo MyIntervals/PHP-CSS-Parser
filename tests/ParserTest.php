@@ -1249,4 +1249,19 @@ body {background-color: red;}';
         self::assertTrue(\is_a($urlRule->getValue(), '\\Sabberworm\\CSS\\Value\\URL'));
         self::assertTrue(\is_a($calcRule->getValue(), '\\Sabberworm\\CSS\\Value\\CalcFunction'));
     }
+
+    /**
+     * @test
+     */
+    public function imagesetInFile(): void
+    {
+        $oDoc = self::parsedStructureForFile('image-set', Settings::create()->withMultibyteSupport(true));
+        $sExpected = sprintf(
+            '%s%s%s',
+            '.home_banner {background-image: image-set(url("https://www.example.us/images/home-banner.webp") 1x,',
+            'url("https://www.example.us/images/home-banner@2x.webp") 2x,',
+            'url("https://www.example.us/images/home-banner@3x.webp") 3x);}'
+        );
+        self::assertSame($sExpected, $oDoc->render());
+    }
 }
