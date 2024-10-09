@@ -140,4 +140,27 @@ abstract class CSSBlockList extends CSSList
             }
         }
     }
+
+    /**
+     * @param CSSList|Rule|RuleSet|Value $oElement
+     * @param array<int, CSSFunction> $aResult
+     *
+     * @return void
+     */
+    protected function allFunctions($oElement, array &$aResult)
+    {
+        if ($oElement instanceof CSSBlockList) {
+            foreach ($oElement->getContents() as $oContent) {
+                $this->allFunctions($oContent, $aResult);
+            }
+        } elseif ($oElement instanceof RuleSet) {
+            foreach ($oElement->getRules() as $oRule) {
+                $this->allFunctions($oRule, $aResult);
+            }
+        } elseif ($oElement instanceof Rule) {
+            $this->allFunctions($oElement->getValue(), $aResult);
+        } elseif ($oElement instanceof CSSFunction) {
+            $aResult[] = $oElement;
+        }
+    }
 }
