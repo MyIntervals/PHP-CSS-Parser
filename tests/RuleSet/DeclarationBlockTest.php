@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\RuleSet;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Rule\Rule;
+use Sabberworm\CSS\Settings as ParserSettings;
 use Sabberworm\CSS\Value\Size;
 
 /**
@@ -427,5 +429,52 @@ final class DeclarationBlockTest extends TestCase
             ],
             \array_map('strval', $lastDeclarationBlock->getRulesAssoc())
         );
+    }
+
+    /**
+     * @return array<string, array{0: non-empty-string, 1: non-empty-string}>
+     */
+    public static function declarationBlocksWithCommentsProvider(): array
+    {
+        return [
+            'CSS comments with one asterisk' => ['p {color: #000;/* black */}', 'p {color: #000;}'],
+            'CSS comments with two asterisks' => ['p {color: #000;/** black */}', 'p {color: #000;}'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider declarationBlocksWithCommentsProvider
+     */
+    public function canRemoveCommentsFromRulesUsingLenientParsing(
+        string $cssWithComments,
+        string $cssWithoutComments
+    ): void {
+        $parserSettings = ParserSettings::create()->withLenientParsing(true);
+        $document = (new Parser($cssWithComments, $parserSettings))->parse();
+
+        $outputFormat = (new OutputFormat())->setRenderComments(false);
+        $renderedDocument = $document->render($outputFormat);
+
+        self::assertSame($cssWithoutComments, $renderedDocument);
+    }
+
+    /**
+     * @test
+     * @dataProvider declarationBlocksWithCommentsProvider
+     */
+    public function canRemoveCommentsFromRulesUsingStrictParsing(
+        string $cssWithComments,
+        string $cssWithoutComments
+    ): void {
+        self::markTestSkipped('This currently crashes, and we need to fix it.');
+
+        $parserSettings = ParserSettings::create()->withLenientParsing(false);
+        $document = (new Parser($cssWithComments, $parserSettings))->parse();
+
+        $outputFormat = (new OutputFormat())->setRenderComments(false);
+        $renderedDocument = $document->render($outputFormat);
+
+        self::assertSame($cssWithoutComments, $renderedDocument);
     }
 }
