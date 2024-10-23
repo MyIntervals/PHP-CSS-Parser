@@ -42,8 +42,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Revert broken support for multiple comments (#740)
 - Fix type errors in PHP strict mode (#664)
-- Fix comment parsing to support multiple comments (#672)
 - Fix undefined local variable in `CalcFunction::parse()` (#593)
 - Fix PHP notice caused by parsing invalid color values having less than 6
   characters (#485)

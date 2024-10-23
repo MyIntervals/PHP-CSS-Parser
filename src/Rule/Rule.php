@@ -108,9 +108,7 @@ class Rule implements Renderable, Commentable
             $oParserState->consume(';');
         }
 
-        while (\preg_match('/\\s/isSu', $oParserState->peek()) === 1) {
-            $oParserState->consume(1);
-        }
+        $oParserState->consumeWhiteSpace();
 
         return $oRule;
     }
