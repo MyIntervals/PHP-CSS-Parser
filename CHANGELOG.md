@@ -24,7 +24,6 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ### Fixed
 
 - Fix type errors in PHP strict mode (#695)
-- Fix comment parsing to support multiple comments (#671)
 
 ## 8.6.0
 
