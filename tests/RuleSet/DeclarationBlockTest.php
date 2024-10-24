@@ -497,8 +497,6 @@ final class DeclarationBlockTest extends TestCase
         $cssWithComments,
         $cssWithoutComments
     ) {
-        self::markTestSkipped('This currently crashes, and we need to fix it.');
-
         $parserSettings = ParserSettings::create()->withLenientParsing(false);
         $document = (new Parser($cssWithComments, $parserSettings))->parse();
 
