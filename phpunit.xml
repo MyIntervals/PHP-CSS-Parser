@@ -4,6 +4,7 @@
     beStrictAboutChangesToGlobalState="true"
     beStrictAboutOutputDuringTests="true"
     beStrictAboutTodoAnnotatedTests="true"
+    cacheResult="false"
     colors="true"
     convertDeprecationsToExceptions="true"
     forceCoversAnnotation="true"
