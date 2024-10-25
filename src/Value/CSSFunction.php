@@ -88,9 +88,11 @@ class CSSFunction extends ValueList
     }
 
     /**
+     * @param OutputFormat|null $oOutputFormat
+     *
      * @return string
      */
-    public function render(OutputFormat $oOutputFormat)
+    public function render($oOutputFormat)
     {
         $aArguments = parent::render($oOutputFormat);
         return "{$this->sName}({$aArguments})";
