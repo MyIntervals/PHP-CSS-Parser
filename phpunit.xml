@@ -1,12 +1,14 @@
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.5/phpunit.xsd"
-         beStrictAboutChangesToGlobalState="true"
-         beStrictAboutOutputDuringTests="true"
-         beStrictAboutTodoAnnotatedTests="true"
-         colors="true"
-         convertDeprecationsToExceptions="true"
-         forceCoversAnnotation="true"
-         verbose="true">
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.5/phpunit.xsd"
+    beStrictAboutChangesToGlobalState="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutTodoAnnotatedTests="true"
+    colors="true"
+    convertDeprecationsToExceptions="true"
+    forceCoversAnnotation="true"
+    verbose="true"
+>
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
