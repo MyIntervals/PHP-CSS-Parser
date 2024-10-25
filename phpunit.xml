@@ -3,7 +3,6 @@
          beStrictAboutChangesToGlobalState="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
-         bootstrap="vendor/autoload.php"
          colors="true"
          convertDeprecationsToExceptions="true"
          forceCoversAnnotation="true"
