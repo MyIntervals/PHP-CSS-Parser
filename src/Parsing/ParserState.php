@@ -117,7 +117,6 @@ class ParserState
         return $this->oParserSettings;
     }
 
-
     public function anchor(): Anchor
     {
         return new Anchor($this->iCurrentPosition, $this);

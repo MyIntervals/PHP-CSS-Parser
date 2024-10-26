@@ -755,7 +755,10 @@ div {height: calc;}';
      */
     public function invalidGridLineNameInFile(): void
     {
-        $document = self::parsedStructureForFile('invalid-grid-linename', Settings::create()->withMultibyteSupport(true));
+        $document = self::parsedStructureForFile(
+            'invalid-grid-linename',
+            Settings::create()->withMultibyteSupport(true)
+        );
         $expected = 'div {}';
         self::assertSame($expected, $document->render());
     }

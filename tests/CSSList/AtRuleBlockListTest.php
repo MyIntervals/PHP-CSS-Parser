@@ -35,17 +35,19 @@ final class AtRuleBlockListTest extends TestCase
         return [
             'media print' => ['@media print { html { background: white; color: black; } }'],
             'keyframes' => ['@keyframes mymove { from { top: 0px; } }'],
-            'supports' => ['
-                @supports (display: flex) {
-                    .flex-container > * {
-                        text-shadow: 0 0 2px blue;
-                        float: none;
+            'supports' => [
+                '
+                    @supports (display: flex) {
+                        .flex-container > * {
+                            text-shadow: 0 0 2px blue;
+                            float: none;
+                        }
+                        .flex-container {
+                            display: flex;
+                        }
                     }
-                    .flex-container {
-                        display: flex;
-                    }
-                }
-            '],
+            ',
+            ],
         ];
     }
 
