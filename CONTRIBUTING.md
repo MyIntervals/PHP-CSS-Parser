@@ -33,3 +33,20 @@ This is the workflow for contributing changes to this project::
    maintainer to allow your CI build to run.
 1. Wait for a review by the maintainers.
 1. Polish your changes as needed until they are ready to be merged.
+
+## About code reviews
+
+After you have submitted a pull request, the maintainers will review your
+changes. This will probably result in quite a few comments on ways to improve
+your pull request. This project receives contributions from developers around
+the world, so we need the code to be the most consistent, readable, and
+maintainable that it can be.
+
+Please do not feel frustrated by this - instead please view this both as our
+contribution to your pull request as well as a way to learn more about
+improving code quality.
+
+If you would like to know whether an idea would fit in the general strategy of
+this project or would like to get feedback on the best architecture for your
+ideas, we propose you open a ticket first and discuss your ideas there
+first before investing a lot of time in writing code.
