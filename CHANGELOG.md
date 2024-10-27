@@ -7,6 +7,18 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## 8.7.0: Add support for PHP 8.4
+
+### Added
+
 - Add support for PHP 8.4 (#675, #701, #746, #751)
 
 ### Changed
@@ -18,8 +30,6 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 - Deprecate the expansion of shorthand properties (#719)
 - Deprecate `Parser::setCharset()` and `Parser::getCharset()` (#703)
-
-### Removed
 
 ### Fixed
 
