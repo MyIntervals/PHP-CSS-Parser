@@ -50,3 +50,24 @@ If you would like to know whether an idea would fit in the general strategy of
 this project or would like to get feedback on the best architecture for your
 ideas, we propose you open a ticket first and discuss your ideas there
 first before investing a lot of time in writing code.
+
+## Install the development dependencies
+
+To install the most important development dependencies, please run the following
+command:
+
+```bash
+composer install
+```
+
+We also have some optional development dependencies that require higher PHP
+versions than the lowest PHP version this project supports. Hence they are not
+installed by default.
+
+To install these, you will need to have [PHIVE](https://phar.io/) installed.
+You can then run the following command:
+
+```bash
+phive install
+```
+
