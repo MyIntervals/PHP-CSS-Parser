@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
-- Add support for PHP 8.4 (#675, #701, #746)
+- Add support for PHP 8.4 (#675, #701, #746, #751)
 
 ### Changed
 
