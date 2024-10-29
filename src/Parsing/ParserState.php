@@ -375,27 +375,26 @@ class ParserState
      */
     public function consumeComment()
     {
-        if ($this->peek() != '/' || $this->peek(1, 1) != '*') {
-            return false;
-        }
-
-        $sComment = '';
-        $iLineNo = $this->iLineNo;
-        $this->consume(1);
-        while (($char = $this->consume(1)) !== '') {
-            if ($char == '*' && $this->peek() == '/') {
-                $this->consume(1);
-                break;
+        $mComment = false;
+        if ($this->comes('/*')) {
+            $iLineNo = $this->iLineNo;
+            $this->consume(1);
+            $mComment = '';
+            while (($char = $this->consume(1)) !== '') {
+                $mComment .= $char;
+                if ($this->comes('*/')) {
+                    $this->consume(2);
+                    break;
+                }
             }
-            $sComment .= $char;
         }
 
-        if ($sComment !== '') {
+        if ($mComment !== false) {
             // We skip the * which was included in the comment.
-            return new Comment(\substr($sComment, 1), $iLineNo);
+            return new Comment(\substr($mComment, 1), $iLineNo);
         }
 
-        return false;
+        return $mComment;
     }
 
     public function isEnd(): bool
