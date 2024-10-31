@@ -46,7 +46,7 @@ final class AtRuleBlockListTest extends TestCase
                             display: flex;
                         }
                     }
-            ',
+                ',
             ],
         ];
     }
