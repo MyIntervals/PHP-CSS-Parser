@@ -85,9 +85,12 @@
         "ci:tests:coverage": "phpunit --do-not-cache-result --coverage-clover=coverage.xml",
         "ci:tests:sof": "phpunit --stop-on-failure --do-not-cache-result",
         "ci:tests:unit": "phpunit --do-not-cache-result",
+        "fix": [
+            "@fix:php"
+        ],
         "fix:php": [
-            "@fix:php:fixer",
-            "@fix:php:rector"
+            "@fix:php:rector",
+            "@fix:php:fixer"
         ],
         "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix bin src tests",
         "fix:php:rector": "rector --config=config/rector.php",
@@ -105,6 +108,7 @@
         "ci:tests:coverage": "Runs the unit tests with code coverage.",
         "ci:tests:sof": "Runs the unit tests and stops at the first failure.",
         "ci:tests:unit": "Runs all unit tests.",
+        "fix": "Runs all fixers",
         "fix:php": "Autofixes all autofixable issues in the PHP code.",
         "fix:php:fixer": "Fixes autofixable issues found by PHP CS Fixer.",
         "fix:php:rector": "Fixes autofixable issues found by Rector.",
