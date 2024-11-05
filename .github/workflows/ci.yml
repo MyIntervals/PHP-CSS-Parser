@@ -103,9 +103,9 @@ jobs:
             fail-fast: false
             matrix:
                 command:
-                    - fixer
-                    - stan
-                    - rector
+                    - php:fixer
+                    - php:stan
+                    - php:rector
                 php-version:
                     - '8.3'
 
@@ -142,4 +142,4 @@ jobs:
                   phive --no-progress install --trust-gpg-keys BBAB5DF0A0D6672989CF1869E82B2FB314E9906E
 
             - name: Run Command
-              run: composer ci:php:${{ matrix.command }}
+              run: composer ci:${{ matrix.command }}
