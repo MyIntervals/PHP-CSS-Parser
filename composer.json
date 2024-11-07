@@ -1,14 +1,13 @@
 {
     "name": "sabberworm/php-css-parser",
-    "type": "library",
     "description": "Parser for CSS Files written in PHP",
+    "license": "MIT",
+    "type": "library",
     "keywords": [
         "parser",
         "css",
         "stylesheet"
     ],
-    "homepage": "https://www.sabberworm.com/blog/2010/6/10/php-css-parser",
-    "license": "MIT",
     "authors": [
         {
             "name": "Raphael Schweikert"
@@ -22,6 +21,7 @@
             "email": "jake.github@qzdesign.co.uk"
         }
     ],
+    "homepage": "https://www.sabberworm.com/blog/2010/6/10/php-css-parser",
     "require": {
         "php": "^7.2.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
         "ext-iconv": "*"
@@ -101,8 +101,8 @@
         "ci:dynamic": "Runs all dynamic code checks (i.e., currently, the unit tests).",
         "ci:php:fixer": "Checks the code style with PHP CS Fixer.",
         "ci:php:lint": "Checks the syntax of the PHP code.",
-        "ci:php:stan": "Checks the types with PHPStan.",
         "ci:php:rector": "Checks the code for possible code updates and refactoring.",
+        "ci:php:stan": "Checks the types with PHPStan.",
         "ci:static": "Runs all static code analysis checks for the code.",
         "ci:tests": "Runs all dynamic tests (i.e., currently, the unit tests).",
         "ci:tests:coverage": "Runs the unit tests with code coverage.",
