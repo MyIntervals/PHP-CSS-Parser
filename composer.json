@@ -66,6 +66,7 @@
             "@ci:static",
             "@ci:dynamic"
         ],
+        "ci:composer:normalize": "\"./.phive/composer-normalize\" --dry-run",
         "ci:dynamic": [
             "@ci:tests"
         ],
@@ -74,6 +75,7 @@
         "ci:php:rector": "rector --no-progress-bar --dry-run --config=config/rector.php",
         "ci:php:stan": "phpstan --no-progress --configuration=config/phpstan.neon",
         "ci:static": [
+            "@ci:composer:normalize",
             "@ci:php:fixer",
             "@ci:php:lint",
             "@ci:php:rector",
@@ -88,7 +90,9 @@
         "fix": [
             "@fix:php"
         ],
+        "fix:composer:normalize": "\"./.phive/composer-normalize\" --no-check-lock",
         "fix:php": [
+            "@fix:composer:normalize",
             "@fix:php:rector",
             "@fix:php:fixer"
         ],
@@ -98,6 +102,7 @@
     },
     "scripts-descriptions": {
         "ci": "Runs all dynamic and static code checks.",
+        "ci:composer:normalize": "Checks the formatting and structure of the composer.json.",
         "ci:dynamic": "Runs all dynamic code checks (i.e., currently, the unit tests).",
         "ci:php:fixer": "Checks the code style with PHP CS Fixer.",
         "ci:php:lint": "Checks the syntax of the PHP code.",
@@ -109,6 +114,7 @@
         "ci:tests:sof": "Runs the unit tests and stops at the first failure.",
         "ci:tests:unit": "Runs all unit tests.",
         "fix": "Runs all fixers",
+        "fix:composer:normalize": "Reformats and sorts the composer.json file.",
         "fix:php": "Autofixes all autofixable issues in the PHP code.",
         "fix:php:fixer": "Fixes autofixable issues found by PHP CS Fixer.",
         "fix:php:rector": "Fixes autofixable issues found by Rector.",
