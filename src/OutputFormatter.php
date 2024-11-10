@@ -132,11 +132,10 @@ class OutputFormatter
     /**
      * Clone of the `implode` function, but calls `render` with the current output format instead of `__toString()`.
      *
-     * @param string $sSeparator
      * @param array<array-key, Renderable|string> $aValues
      * @param bool $bIncreaseLevel
      */
-    public function implode($sSeparator, array $aValues, $bIncreaseLevel = false): string
+    public function implode(string $sSeparator, array $aValues, $bIncreaseLevel = false): string
     {
         $sResult = '';
         $oFormat = $this->oFormat;

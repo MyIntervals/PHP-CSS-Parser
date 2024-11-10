@@ -111,7 +111,7 @@ class Color extends CSSFunction
      *
      * @return float
      */
-    private static function mapRange($fVal, $fFromMin, $fFromMax, $fToMin, $fToMax)
+    private static function mapRange(float $fVal, float $fFromMin, float $fFromMax, float $fToMin, float $fToMax)
     {
         $fFromRange = $fFromMax - $fFromMin;
         $fToRange = $fToMax - $fToMin;
@@ -151,10 +151,7 @@ class Color extends CSSFunction
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         // Shorthand RGB color values
         if ($oOutputFormat->getRGBHashNotation() && \implode('', \array_keys($this->aComponents)) === 'rgb') {

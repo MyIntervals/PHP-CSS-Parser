@@ -169,7 +169,11 @@ abstract class CSSList implements Renderable, Commentable
                 $sMediaQuery = \trim($oParserState->consumeUntil([';', ParserState::EOF]));
             }
             $oParserState->consumeUntil([';', ParserState::EOF], true, true);
-            return new Import($oLocation, $sMediaQuery ?: null, $iIdentifierLineNum);
+            return new Import(
+                $oLocation,
+                $sMediaQuery !== null && $sMediaQuery !== '' && $sMediaQuery !== '0' ? $sMediaQuery : null,
+                $iIdentifierLineNum
+            );
         } elseif ($sIdentifier === 'charset') {
             $oCharsetString = CSSString::parse($oParserState);
             $oParserState->consumeWhiteSpace();
@@ -238,11 +242,8 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Tests an identifier for a given value. Since identifiers are all keywords, they can be vendor-prefixed.
      * We need to check for these versions too.
-     *
-     * @param string $sIdentifier
-     * @param string $sMatch
      */
-    private static function identifierIs($sIdentifier, $sMatch): bool
+    private static function identifierIs($sIdentifier, string $sMatch): bool
     {
         return (\strcasecmp($sIdentifier, $sMatch) === 0)
             ?: \preg_match("/^(-\\w+-)?$sMatch$/i", $sIdentifier) === 1;

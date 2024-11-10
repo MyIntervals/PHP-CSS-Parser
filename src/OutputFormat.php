@@ -230,7 +230,7 @@ class OutputFormat
      *
      * @throws \Exception
      */
-    public function __call($sMethodName, array $aArguments)
+    public function __call(string $sMethodName, array $aArguments)
     {
         if (\strpos($sMethodName, 'set') === 0) {
             return $this->set(\substr($sMethodName, 3), $aArguments[0]);
@@ -310,10 +310,8 @@ class OutputFormat
 
     /**
      * Creates an instance of this class with a preset for compact formatting.
-     *
-     * @return self
      */
-    public static function createCompact()
+    public static function createCompact(): self
     {
         $format = self::create();
         $format->set('Space*Rules', '')
@@ -327,10 +325,8 @@ class OutputFormat
 
     /**
      * Creates an instance of this class with a preset for pretty formatting.
-     *
-     * @return self
      */
-    public static function createPretty()
+    public static function createPretty(): self
     {
         $format = self::create();
         $format->set('Space*Rules', "\n")
