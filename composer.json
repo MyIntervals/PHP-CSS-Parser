@@ -29,7 +29,7 @@
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "1.4.0",
         "phpstan/extension-installer": "1.4.3",
-        "phpstan/phpstan": "1.12.8",
+        "phpstan/phpstan": "1.12.9",
         "phpstan/phpstan-phpunit": "1.4.0",
         "phpunit/phpunit": "8.5.40",
         "rector/rector": "1.2.9"
