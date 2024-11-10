@@ -6,6 +6,8 @@ updates:
       directory: "/"
       schedule:
           interval: "daily"
+      commit-message:
+          prefix: "[Dependabot] "
       milestone: 1
 
     - package-ecosystem: "composer"
@@ -15,4 +17,6 @@ updates:
       allow:
           - dependency-type: "development"
       versioning-strategy: "increase"
+      commit-message:
+          prefix: "[Dependabot] "
       milestone: 1
