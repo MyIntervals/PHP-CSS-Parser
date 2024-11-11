@@ -82,7 +82,7 @@ abstract class RuleSet implements Renderable, Commentable
             } else {
                 $oRule = Rule::parse($oParserState);
             }
-            if ($oRule) {
+            if ($oRule instanceof Rule) {
                 $oRuleSet->addRule($oRule);
             }
         }

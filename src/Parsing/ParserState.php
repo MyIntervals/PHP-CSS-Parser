@@ -362,12 +362,10 @@ class ParserState
      * @param string $consumeEnd
      * @param array<int, Comment> $comments
      *
-     * @return string
-     *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public function consumeUntil($aEnd, $bIncludeEnd = false, $consumeEnd = false, array &$comments = [])
+    public function consumeUntil($aEnd, $bIncludeEnd = false, $consumeEnd = false, array &$comments = []): string
     {
         $aEnd = \is_array($aEnd) ? $aEnd : [$aEnd];
         $out = '';

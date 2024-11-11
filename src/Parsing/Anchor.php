@@ -15,13 +15,12 @@ class Anchor
     private $iPosition;
 
     /**
-     * @var \Sabberworm\CSS\Parsing\ParserState
+     * @var ParserState
      */
     private $oParserState;
 
     /**
      * @param int $iPosition
-     * @param \Sabberworm\CSS\Parsing\ParserState $oParserState
      */
     public function __construct($iPosition, ParserState $oParserState)
     {

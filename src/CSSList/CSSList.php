@@ -167,9 +167,12 @@ abstract class CSSList implements Renderable, Commentable
             $sMediaQuery = null;
             if (!$oParserState->comes(';')) {
                 $sMediaQuery = \trim($oParserState->consumeUntil([';', ParserState::EOF]));
+                if ($sMediaQuery === '') {
+                    $sMediaQuery = null;
+                }
             }
             $oParserState->consumeUntil([';', ParserState::EOF], true, true);
-            return new Import($oLocation, $sMediaQuery ?: null, $iIdentifierLineNum);
+            return new Import($oLocation, $sMediaQuery, $iIdentifierLineNum);
         } elseif ($sIdentifier === 'charset') {
             $oCharsetString = CSSString::parse($oParserState);
             $oParserState->consumeWhiteSpace();
@@ -240,9 +243,8 @@ abstract class CSSList implements Renderable, Commentable
      * We need to check for these versions too.
      *
      * @param string $sIdentifier
-     * @param string $sMatch
      */
-    private static function identifierIs($sIdentifier, $sMatch): bool
+    private static function identifierIs($sIdentifier, string $sMatch): bool
     {
         return (\strcasecmp($sIdentifier, $sMatch) === 0)
             ?: \preg_match("/^(-\\w+-)?$sMatch$/i", $sIdentifier) === 1;

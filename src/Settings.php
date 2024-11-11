@@ -56,9 +56,9 @@ class Settings
      *
      * @param bool $bMultibyteSupport
      *
-     * @return self fluent interface
+     * @return $this fluent interface
      */
-    public function withMultibyteSupport($bMultibyteSupport = true)
+    public function withMultibyteSupport($bMultibyteSupport = true): self
     {
         $this->bMultibyteSupport = $bMultibyteSupport;
         return $this;
@@ -69,9 +69,9 @@ class Settings
      *
      * @param string $sDefaultCharset
      *
-     * @return self fluent interface
+     * @return $this fluent interface
      */
-    public function withDefaultCharset($sDefaultCharset)
+    public function withDefaultCharset($sDefaultCharset): self
     {
         $this->sDefaultCharset = $sDefaultCharset;
         return $this;
@@ -82,9 +82,9 @@ class Settings
      *
      * @param bool $bLenientParsing
      *
-     * @return self fluent interface
+     * @return $this fluent interface
      */
-    public function withLenientParsing($bLenientParsing = true)
+    public function withLenientParsing($bLenientParsing = true): self
     {
         $this->bLenientParsing = $bLenientParsing;
         return $this;
@@ -93,9 +93,9 @@ class Settings
     /**
      * Configures the parser to choke on invalid rules.
      *
-     * @return self fluent interface
+     * @return $this fluent interface
      */
-    public function beStrict()
+    public function beStrict(): self
     {
         return $this->withLenientParsing(false);
     }
