@@ -82,3 +82,29 @@ To run the existing PHPUnit tests, run this command:
 ```bash
 composer ci:tests:unit
 ```
+
+## Coding Style
+
+Please use the same coding style
+([PER 2.0](https://www.php-fig.org/per/coding-style/)) as the rest of the code.
+Indentation is four spaces.
+
+We will only merge pull requests that follow the project's coding style.
+
+Please check your code with the provided static code analysis tools:
+
+```bash
+composer ci:static
+```
+
+Please make your code clean, well-readable and easy to understand.
+
+If you add new methods or fields, please add proper PHPDoc for the new
+methods/fields. Please use grammatically correct, complete sentences in the
+code documentation.
+
+You can autoformat your code using the following command:
+
+```bash
+composer fix
+```
