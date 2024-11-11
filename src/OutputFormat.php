@@ -223,7 +223,6 @@ class OutputFormat
     }
 
     /**
-     * @param string $sMethodName
      * @param array<array-key, mixed> $aArguments
      *
      * @return mixed
@@ -303,7 +302,7 @@ class OutputFormat
     /**
      * Creates an instance of this class without any particular formatting settings.
      */
-    public static function create(): OutputFormat
+    public static function create(): self
     {
         return new OutputFormat();
     }

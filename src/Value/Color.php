@@ -103,12 +103,6 @@ class Color extends CSSFunction
     }
 
     /**
-     * @param float $fVal
-     * @param float $fFromMin
-     * @param float $fFromMax
-     * @param float $fToMin
-     * @param float $fToMax
-     *
      * @return float
      */
     private static function mapRange(float $fVal, float $fFromMin, float $fFromMax, float $fToMin, float $fToMax)
