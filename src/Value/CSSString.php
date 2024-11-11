@@ -53,7 +53,7 @@ class CSSString extends PrimitiveValue
         $sContent = null;
         if ($sQuote === null) {
             // Unquoted strings end in whitespace or with braces, brackets, parentheses
-            while (\in_array(\preg_match('/[\\s{}()<>\\[\\]]/isu', $oParserState->peek()), [0, false], true)) {
+            while (\preg_match('/[\\s{}()<>\\[\\]]/isu', $oParserState->peek()) !== 1) {
                 $sResult .= $oParserState->parseCharacter(false);
             }
         } else {
