@@ -102,10 +102,7 @@ class Color extends CSSFunction
         return new Color($aColor, $oParserState->currentLine());
     }
 
-    /**
-     * @return float
-     */
-    private static function mapRange(float $fVal, float $fFromMin, float $fFromMax, float $fToMin, float $fToMax)
+    private static function mapRange(float $fVal, float $fFromMin, float $fFromMax, float $fToMin, float $fToMax): float
     {
         $fFromRange = $fFromMax - $fFromMin;
         $fToRange = $fToMax - $fToMin;
