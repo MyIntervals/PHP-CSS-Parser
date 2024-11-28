@@ -1,0 +1,21 @@
+            fusion-max-sh-shbp {
+                .fusion-mobile-nav-holder .wpml-ls-item .menu-text,.fusion-mobile-nav-holder .wpml-ls-item > a,.wpml-ls-item .menu-text, .wpml-ls-item .sub-menu a > span {
+                    justify-content: flex-start;
+                }
+            }
+
+            @media only screen and (max-width: 800px) {
+                .has-sidebar #content {
+                    order:1;
+                }
+
+                .has-sidebar #sidebar {
+                    order: 2;
+                    margin-top: 50px;
+                }
+
+                .has-sidebar #sidebar-2 {
+                    order: 3;
+                    margin-top: 50px;
+                }
+            }
