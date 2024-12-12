@@ -42,7 +42,7 @@ class Document extends CSSBlockList
      *
      * @return array<int, DeclarationBlock>
      */
-    public function getAllDeclarationBlocks()
+    public function getAllDeclarationBlocks(): array
     {
         /** @var array<int, DeclarationBlock> $aResult */
         $aResult = [];
@@ -55,7 +55,7 @@ class Document extends CSSBlockList
      *
      * @return array<int, RuleSet>
      */
-    public function getAllRuleSets()
+    public function getAllRuleSets(): array
     {
         /** @var array<int, RuleSet> $aResult */
         $aResult = [];
@@ -75,7 +75,7 @@ class Document extends CSSBlockList
      *
      * @see RuleSet->getRules()
      */
-    public function getAllValues($mElement = null, $bSearchInFunctionArguments = false)
+    public function getAllValues($mElement = null, $bSearchInFunctionArguments = false): array
     {
         $sSearchString = null;
         if ($mElement === null) {
@@ -103,7 +103,7 @@ class Document extends CSSBlockList
      * @return array<int, Selector>
      * @example `getSelectorsBySpecificity('>= 100')`
      */
-    public function getSelectorsBySpecificity($sSpecificitySearch = null)
+    public function getSelectorsBySpecificity($sSpecificitySearch = null): array
     {
         /** @var array<int, Selector> $aResult */
         $aResult = [];
