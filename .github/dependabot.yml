@@ -16,6 +16,11 @@ updates:
           interval: "daily"
       allow:
           - dependency-type: "development"
+      ignore:
+        - dependency-name: "phpstan/*"
+        - dependency-name: "phpunit/phpunit"
+          versions: [ ">= 9.0.0" ]
+        - dependency-name: "rector/rector"
       versioning-strategy: "increase"
       commit-message:
           prefix: "[Dependabot] "

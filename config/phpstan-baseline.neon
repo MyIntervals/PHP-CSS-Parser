@@ -1,12 +1,20 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Call to an undefined method Sabberworm\\\\CSS\\\\OutputFormat\\:\\:setIndentation\\(\\)\\.$#"
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:setIndentation\(\)\.$#'
+			identifier: method.notFound
 			count: 2
 			path: ../src/OutputFormat.php
 
 		-
-			message: "#^Class Sabberworm\\\\CSS\\\\Value\\\\Size constructor invoked with 5 parameters, 1\\-4 required\\.$#"
+			message: '#^Class Sabberworm\\CSS\\Value\\Size constructor invoked with 5 parameters, 1\-4 required\.$#'
+			identifier: arguments.count
 			count: 2
 			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: '#^@covers value \\Sabberworm\\CSS\\Value\\Value\:\:parseValue\(\) references an invalid method\.$#'
+			identifier: phpunit.coversMethod
+			count: 2
+			path: ../tests/ParserTest.php
 
