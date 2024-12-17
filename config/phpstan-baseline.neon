@@ -17,4 +17,3 @@ parameters:
 			identifier: phpunit.coversMethod
 			count: 2
 			path: ../tests/ParserTest.php
-
