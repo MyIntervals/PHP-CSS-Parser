@@ -8,10 +8,6 @@ parameters:
 
   level: 1
 
-  scanDirectories:
-    - %currentWorkingDirectory%/bin/
-    - %currentWorkingDirectory%/src/
-    - %currentWorkingDirectory%/tests/
   paths:
     - %currentWorkingDirectory%/bin/
     - %currentWorkingDirectory%/src/
