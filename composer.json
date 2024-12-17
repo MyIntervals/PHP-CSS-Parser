@@ -98,7 +98,7 @@
         ],
         "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix bin src tests",
         "fix:php:rector": "rector --config=config/rector.php",
-        "phpstan:baseline": "phpstan --configuration=config/phpstan.neon --generate-baseline=config/phpstan-baseline.neon"
+        "phpstan:baseline": "phpstan --configuration=config/phpstan.neon --generate-baseline=config/phpstan-baseline.neon --allow-empty-baseline"
     },
     "scripts-descriptions": {
         "ci": "Runs all dynamic and static code checks.",
