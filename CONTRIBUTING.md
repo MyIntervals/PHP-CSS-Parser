@@ -108,3 +108,14 @@ You can autoformat your code using the following command:
 ```bash
 composer fix
 ```
+
+## Git commits
+
+Commit message should have a <= 50-character summary, optionally followed by a
+blank line and a more in depth description of 79 characters per line.
+
+Please use grammatically correct, complete sentences in the commit messages.
+
+Also, please prefix the subject line of the commit message with either
+`[FEATURE]`, `[TASK]`, `[BUGFIX]` OR `[CLEANUP]`. This makes it faster to see
+what a commit is about.
