@@ -119,3 +119,8 @@ Please use grammatically correct, complete sentences in the commit messages.
 Also, please prefix the subject line of the commit message with either
 `[FEATURE]`, `[TASK]`, `[BUGFIX]` OR `[CLEANUP]`. This makes it faster to see
 what a commit is about.
+
+## Creating pull requests (PRs)
+
+When you create a pull request, please
+[make your PR editable](https://github.com/blog/2247-improving-collaboration-with-forks).
