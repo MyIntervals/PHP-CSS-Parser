@@ -114,11 +114,13 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param string $sRule
-     *
-     * @return array<int, string>
+     * Returns a list of delimiters (or separators).
      * The first item is the innermost separator (or, put another way, the highest-precedence operator).
      * The sequence continues to the outermost separator (or lowest-precedence operator).
+     *
+     * @param string $sRule
+     *
+     * @return list<non-empty-string>
      */
     private static function listDelimiterForRule($sRule): array
     {

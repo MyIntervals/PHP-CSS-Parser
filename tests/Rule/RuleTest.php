@@ -17,7 +17,7 @@ use Sabberworm\CSS\Value\ValueList;
 final class RuleTest extends TestCase
 {
     /**
-     * @return array<string, array{0: string, 1: array<int, string>}>
+     * @return array<string, array{0: string, 1:  list<class-string>}>
      */
     public static function provideRulesAndExpectedParsedValueListTypes(): array
     {
@@ -35,7 +35,7 @@ final class RuleTest extends TestCase
     /**
      * @test
      *
-     * @param array<int, string> $expectedTypeClassnames
+     * @param list<class-string> $expectedTypeClassnames
      *
      * @dataProvider provideRulesAndExpectedParsedValueListTypes
      */
@@ -47,8 +47,11 @@ final class RuleTest extends TestCase
         self::assertInstanceOf(ValueList::class, $value);
 
         $actualClassnames = \array_map(
-            function ($component): string {
-                return \get_class($component);
+            /**
+             * @param Value|string $component
+             */
+            static function ($component): string {
+                return \is_string($component) ? 'string' : \get_class($component);
             },
             $value->getListComponents()
         );
