@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sabberworm\CSS\Tests\Value;
+namespace Sabberworm\CSS\Tests\Unit\Rule;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parsing\ParserState;
@@ -17,7 +17,7 @@ use Sabberworm\CSS\Value\ValueList;
 final class RuleTest extends TestCase
 {
     /**
-     * @return array<string, array{0: string, 1:  list<class-string>}>
+     * @return array<string, array{0: string, 1: list<class-string>}>
      */
     public static function provideRulesAndExpectedParsedValueListTypes(): array
     {
