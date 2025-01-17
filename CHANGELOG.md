@@ -42,6 +42,7 @@ Please also have a look at our
 
 ### Fixed
 
+- Parse `@font-face` `src` property as comma-delimited list (#790)
 - Fix type errors in PHP strict mode (#664)
 - Fix undefined local variable in `CalcFunction::parse()` (#593)
 - Fix PHP notice caused by parsing invalid color values having less than 6
