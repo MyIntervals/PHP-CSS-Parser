@@ -117,13 +117,21 @@ class Rule implements Renderable, Commentable
      * @param string $sRule
      *
      * @return array<int, string>
+     * The first item is the innermost separator (or, put another way, the highest-precedence operator).
+     * The sequence continues to the outermost separator (or lowest-precedence operator).
      */
     private static function listDelimiterForRule($sRule): array
     {
         if (\preg_match('/^font($|-)/', $sRule)) {
             return [',', '/', ' '];
         }
-        return [',', ' ', '/'];
+
+        switch ($sRule) {
+            case 'src':
+                return [' ', ','];
+            default:
+                return [',', ' ', '/'];
+        }
     }
 
     /**
