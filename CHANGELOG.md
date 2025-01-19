@@ -15,6 +15,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- Parse `@font-face` `src` property as comma-delimited list (#794)
+
 ## 8.7.0: Add support for PHP 8.4
 
 ### Added
