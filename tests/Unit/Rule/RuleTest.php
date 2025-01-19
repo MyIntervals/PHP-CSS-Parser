@@ -9,6 +9,7 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Value\RuleValueList;
+use Sabberworm\CSS\Value\Value;
 use Sabberworm\CSS\Value\ValueList;
 
 /**
