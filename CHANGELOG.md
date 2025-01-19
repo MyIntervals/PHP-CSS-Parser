@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
 Please also have a look at our
-[API and deprecation policy](docs/API-and-deprecation-policy.md). 
+[API and deprecation policy](docs/API-and-deprecation-policy.md).
 
 ## x.y.z
 
