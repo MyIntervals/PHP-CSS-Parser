@@ -72,23 +72,48 @@ class Color extends CSSFunction
             $oParserState->consumeWhiteSpace();
             $oParserState->consume('(');
 
+            // CSS Color Module Level 4 says that `rgb` and `rgba` are now aliases; likewise `hsl` and `hsla`.
+            // So, attempt to parse with the `a`, and allow for it not being there.
+            switch ($sColorMode) {
+                case 'rgb':
+                case 'hsl':
+                    $colorModeForParsing = $sColorMode . 'a';
+                    $mayHaveOptionalAlpha = true;
+                    break;
+                case 'rgba':
+                case 'hsla':
+                    $colorModeForParsing = $sColorMode;
+                    $mayHaveOptionalAlpha = true;
+                    break;
+                default:
+                    $colorModeForParsing = $sColorMode;
+                    $mayHaveOptionalAlpha = false;
+                    break;
+            }
+
             $bContainsVar = false;
-            $iLength = $oParserState->strlen($sColorMode);
+            $iLength = $oParserState->strlen($colorModeForParsing);
             for ($i = 0; $i < $iLength; ++$i) {
                 $oParserState->consumeWhiteSpace();
                 if ($oParserState->comes('var')) {
-                    $aColor[$sColorMode[$i]] = CSSFunction::parseIdentifierOrFunction($oParserState);
+                    $aColor[$colorModeForParsing[$i]] = CSSFunction::parseIdentifierOrFunction($oParserState);
                     $bContainsVar = true;
                 } else {
-                    $aColor[$sColorMode[$i]] = Size::parse($oParserState, true);
+                    $aColor[$colorModeForParsing[$i]] = Size::parse($oParserState, true);
                 }
 
-                if ($bContainsVar && $oParserState->comes(')')) {
-                    // With a var argument the function can have fewer arguments
+                // This must be done first, to consume comments as well, so that the `comes` test will work.
+                $oParserState->consumeWhiteSpace();
+
+                // With a var argument, the function can have fewer arguments.
+                // And as of CSS Color Module Level 4, the alpha argument is optional.
+                $canCloseNow =
+                    $bContainsVar ||
+                    $mayHaveOptionalAlpha && $i >= $iLength - 2;
+                if ($canCloseNow && $oParserState->comes(')')) {
                     break;
                 }
 
-                $oParserState->consumeWhiteSpace();
                 if ($i < ($iLength - 1)) {
                     $oParserState->consume(',');
                 }

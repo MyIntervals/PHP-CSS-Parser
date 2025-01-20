@@ -62,15 +62,15 @@ final class ColorTest extends TestCase
                 'rgba(0, 119, 0, 50%)',
                 'rgba(0,119,0,50%)',
             ],
-            /*
             'legacy rgb as rgba' => [
                 'rgba(0, 119, 0)',
-                'rgb(0,119,0)',
+                '#070',
             ],
             'legacy rgba as rgb' => [
                 'rgb(0, 119, 0, 0.5)',
                 'rgba(0,119,0,.5)',
             ],
+            /*
             'modern rgb' => [
                 'rgb(0 119 0)',
                 'rgb(0,119,0)',
@@ -112,16 +112,14 @@ final class ColorTest extends TestCase
                 'hsla(120, 100%, 25%, 50%)',
                 'hsla(120,100%,25%,50%)',
             ],
-            /*
             'legacy hsl as hsla' => [
                 'hsla(120, 100%, 25%)',
                 'hsl(120,100%,25%)',
             ],
             'legacy hsla as hsl' => [
                 'hsl(120, 100%, 25%, 0.5)',
-                'hsla(120,100%,25%,0.5)',
+                'hsla(120,100%,25%,.5)',
             ],
-            //*/
         ];
     }
 
