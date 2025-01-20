@@ -76,10 +76,14 @@ class Color extends CSSFunction
             // So, attempt to parse with the `a`, and allow for it not being there.
             switch ($sColorMode) {
                 case 'rgb':
-                case 'hsl':
-                    $colorModeForParsing = $sColorMode . 'a';
+                    $colorModeForParsing = 'rgba';
                     $mayHaveOptionalAlpha = true;
                     break;
+                case 'hsl':
+                    $colorModeForParsing = 'hsla';
+                    $mayHaveOptionalAlpha = true;
+                    break;
+                // These two cases are handled identically.
                 case 'rgba':
                 case 'hsla':
                     $colorModeForParsing = $sColorMode;
@@ -88,7 +92,6 @@ class Color extends CSSFunction
                 default:
                     $colorModeForParsing = $sColorMode;
                     $mayHaveOptionalAlpha = false;
-                    break;
             }
 
             $bContainsVar = false;
@@ -105,7 +108,7 @@ class Color extends CSSFunction
                 // This must be done first, to consume comments as well, so that the `comes` test will work.
                 $oParserState->consumeWhiteSpace();
 
-                // With a var argument, the function can have fewer arguments.
+                // With a `var` argument, the function can have fewer arguments.
                 // And as of CSS Color Module Level 4, the alpha argument is optional.
                 $canCloseNow =
                     $bContainsVar ||
