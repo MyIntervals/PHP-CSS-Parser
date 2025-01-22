@@ -30,104 +30,125 @@ class Color extends CSSFunction
      */
     public static function parse(ParserState $oParserState, bool $bIgnoreCase = false): CSSFunction
     {
-        $aColor = [];
         if ($oParserState->comes('#')) {
-            $oParserState->consume('#');
-            $sValue = $oParserState->parseIdentifier(false);
-            if ($oParserState->strlen($sValue) === 3) {
-                $sValue = $sValue[0] . $sValue[0] . $sValue[1] . $sValue[1] . $sValue[2] . $sValue[2];
-            } elseif ($oParserState->strlen($sValue) === 4) {
-                $sValue = $sValue[0] . $sValue[0] . $sValue[1] . $sValue[1] . $sValue[2] . $sValue[2] . $sValue[3]
-                    . $sValue[3];
-            }
-
-            if ($oParserState->strlen($sValue) === 8) {
-                $aColor = [
-                    'r' => new Size(\intval($sValue[0] . $sValue[1], 16), null, true, $oParserState->currentLine()),
-                    'g' => new Size(\intval($sValue[2] . $sValue[3], 16), null, true, $oParserState->currentLine()),
-                    'b' => new Size(\intval($sValue[4] . $sValue[5], 16), null, true, $oParserState->currentLine()),
-                    'a' => new Size(
-                        \round(self::mapRange(\intval($sValue[6] . $sValue[7], 16), 0, 255, 0, 1), 2),
-                        null,
-                        true,
-                        $oParserState->currentLine()
-                    ),
-                ];
-            } elseif ($oParserState->strlen($sValue) === 6) {
-                $aColor = [
-                    'r' => new Size(\intval($sValue[0] . $sValue[1], 16), null, true, $oParserState->currentLine()),
-                    'g' => new Size(\intval($sValue[2] . $sValue[3], 16), null, true, $oParserState->currentLine()),
-                    'b' => new Size(\intval($sValue[4] . $sValue[5], 16), null, true, $oParserState->currentLine()),
-                ];
-            } else {
-                throw new UnexpectedTokenException(
-                    'Invalid hex color value',
-                    $sValue,
-                    'custom',
-                    $oParserState->currentLine()
-                );
-            }
+            return self::parseHexColor($oParserState);
         } else {
-            $sColorMode = $oParserState->parseIdentifier(true);
+            return self::parseColorFunction($oParserState);
+        }
+    }
+
+    /**
+     * @throws UnexpectedEOFException
+     * @throws UnexpectedTokenException
+     */
+    private static function parseHexColor(ParserState $oParserState): CSSFunction
+    {
+        $oParserState->consume('#');
+        $sValue = $oParserState->parseIdentifier(false);
+        if ($oParserState->strlen($sValue) === 3) {
+            $sValue = $sValue[0] . $sValue[0] . $sValue[1] . $sValue[1] . $sValue[2] . $sValue[2];
+        } elseif ($oParserState->strlen($sValue) === 4) {
+            $sValue = $sValue[0] . $sValue[0] . $sValue[1] . $sValue[1] . $sValue[2] . $sValue[2] . $sValue[3]
+                . $sValue[3];
+        }
+
+        if ($oParserState->strlen($sValue) === 8) {
+            $aColor = [
+                'r' => new Size(\intval($sValue[0] . $sValue[1], 16), null, true, $oParserState->currentLine()),
+                'g' => new Size(\intval($sValue[2] . $sValue[3], 16), null, true, $oParserState->currentLine()),
+                'b' => new Size(\intval($sValue[4] . $sValue[5], 16), null, true, $oParserState->currentLine()),
+                'a' => new Size(
+                    \round(self::mapRange(\intval($sValue[6] . $sValue[7], 16), 0, 255, 0, 1), 2),
+                    null,
+                    true,
+                    $oParserState->currentLine()
+                ),
+            ];
+        } elseif ($oParserState->strlen($sValue) === 6) {
+            $aColor = [
+                'r' => new Size(\intval($sValue[0] . $sValue[1], 16), null, true, $oParserState->currentLine()),
+                'g' => new Size(\intval($sValue[2] . $sValue[3], 16), null, true, $oParserState->currentLine()),
+                'b' => new Size(\intval($sValue[4] . $sValue[5], 16), null, true, $oParserState->currentLine()),
+            ];
+        } else {
+            throw new UnexpectedTokenException(
+                'Invalid hex color value',
+                $sValue,
+                'custom',
+                $oParserState->currentLine()
+            );
+        }
+
+        return new Color($aColor, $oParserState->currentLine());
+    }
+
+    /**
+     * @throws UnexpectedEOFException
+     * @throws UnexpectedTokenException
+     */
+    private static function parseColorFunction(ParserState $oParserState): CSSFunction
+    {
+        $aColor = [];
+
+        $sColorMode = $oParserState->parseIdentifier(true);
+        $oParserState->consumeWhiteSpace();
+        $oParserState->consume('(');
+
+        // CSS Color Module Level 4 says that `rgb` and `rgba` are now aliases; likewise `hsl` and `hsla`.
+        // So, attempt to parse with the `a`, and allow for it not being there.
+        switch ($sColorMode) {
+            case 'rgb':
+                $colorModeForParsing = 'rgba';
+                $mayHaveOptionalAlpha = true;
+                break;
+            case 'hsl':
+                $colorModeForParsing = 'hsla';
+                $mayHaveOptionalAlpha = true;
+                break;
+            case 'rgba':
+                // This is handled identically to the following case.
+            case 'hsla':
+                $colorModeForParsing = $sColorMode;
+                $mayHaveOptionalAlpha = true;
+                break;
+            default:
+                $colorModeForParsing = $sColorMode;
+                $mayHaveOptionalAlpha = false;
+        }
+
+        $bContainsVar = false;
+        $iLength = $oParserState->strlen($colorModeForParsing);
+        for ($i = 0; $i < $iLength; ++$i) {
             $oParserState->consumeWhiteSpace();
-            $oParserState->consume('(');
-
-            // CSS Color Module Level 4 says that `rgb` and `rgba` are now aliases; likewise `hsl` and `hsla`.
-            // So, attempt to parse with the `a`, and allow for it not being there.
-            switch ($sColorMode) {
-                case 'rgb':
-                    $colorModeForParsing = 'rgba';
-                    $mayHaveOptionalAlpha = true;
-                    break;
-                case 'hsl':
-                    $colorModeForParsing = 'hsla';
-                    $mayHaveOptionalAlpha = true;
-                    break;
-                case 'rgba':
-                    // This is handled identically to the following case.
-                case 'hsla':
-                    $colorModeForParsing = $sColorMode;
-                    $mayHaveOptionalAlpha = true;
-                    break;
-                default:
-                    $colorModeForParsing = $sColorMode;
-                    $mayHaveOptionalAlpha = false;
+            if ($oParserState->comes('var')) {
+                $aColor[$colorModeForParsing[$i]] = CSSFunction::parseIdentifierOrFunction($oParserState);
+                $bContainsVar = true;
+            } else {
+                $aColor[$colorModeForParsing[$i]] = Size::parse($oParserState, true);
             }
 
-            $bContainsVar = false;
-            $iLength = $oParserState->strlen($colorModeForParsing);
-            for ($i = 0; $i < $iLength; ++$i) {
-                $oParserState->consumeWhiteSpace();
-                if ($oParserState->comes('var')) {
-                    $aColor[$colorModeForParsing[$i]] = CSSFunction::parseIdentifierOrFunction($oParserState);
-                    $bContainsVar = true;
-                } else {
-                    $aColor[$colorModeForParsing[$i]] = Size::parse($oParserState, true);
-                }
+            // This must be done first, to consume comments as well, so that the `comes` test will work.
+            $oParserState->consumeWhiteSpace();
 
-                // This must be done first, to consume comments as well, so that the `comes` test will work.
-                $oParserState->consumeWhiteSpace();
-
-                // With a `var` argument, the function can have fewer arguments.
-                // And as of CSS Color Module Level 4, the alpha argument is optional.
-                $canCloseNow =
-                    $bContainsVar ||
-                    ($mayHaveOptionalAlpha && $i >= $iLength - 2);
-                if ($canCloseNow && $oParserState->comes(')')) {
-                    break;
-                }
-
-                if ($i < ($iLength - 1)) {
-                    $oParserState->consume(',');
-                }
+            // With a `var` argument, the function can have fewer arguments.
+            // And as of CSS Color Module Level 4, the alpha argument is optional.
+            $canCloseNow =
+                $bContainsVar ||
+                ($mayHaveOptionalAlpha && $i >= $iLength - 2);
+            if ($canCloseNow && $oParserState->comes(')')) {
+                break;
             }
-            $oParserState->consume(')');
 
-            if ($bContainsVar) {
-                return new CSSFunction($sColorMode, \array_values($aColor), ',', $oParserState->currentLine());
+            if ($i < ($iLength - 1)) {
+                $oParserState->consume(',');
             }
         }
-        return new Color($aColor, $oParserState->currentLine());
+        $oParserState->consume(')');
+
+        return
+            $bContainsVar
+            ? new CSSFunction($sColorMode, \array_values($aColor), ',', $oParserState->currentLine())
+            : new Color($aColor, $oParserState->currentLine());
     }
 
     private static function mapRange(float $fVal, float $fFromMin, float $fFromMax, float $fToMin, float $fToMax): float
