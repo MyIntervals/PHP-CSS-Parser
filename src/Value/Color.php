@@ -83,8 +83,8 @@ class Color extends CSSFunction
                     $colorModeForParsing = 'hsla';
                     $mayHaveOptionalAlpha = true;
                     break;
-                // These two cases are handled identically.
                 case 'rgba':
+                    // This is handled identically to the following case.
                 case 'hsla':
                     $colorModeForParsing = $sColorMode;
                     $mayHaveOptionalAlpha = true;
@@ -112,7 +112,7 @@ class Color extends CSSFunction
                 // And as of CSS Color Module Level 4, the alpha argument is optional.
                 $canCloseNow =
                     $bContainsVar ||
-                    $mayHaveOptionalAlpha && $i >= $iLength - 2;
+                    ($mayHaveOptionalAlpha && $i >= $iLength - 2);
                 if ($canCloseNow && $oParserState->comes(')')) {
                     break;
                 }
