@@ -70,20 +70,142 @@ final class ColorTest extends TestCase
                 'rgb(0, 119, 0, 0.5)',
                 'rgba(0,119,0,.5)',
             ],
-            /*
             'modern rgb' => [
                 'rgb(0 119 0)',
-                'rgb(0,119,0)',
+                '#070',
             ],
+            /*
             'modern rgb with none' => [
                 'rgb(none 119 0)',
                 'rgb(none 119 0)',
             ],
+            //*/
             'modern rgba' => [
                 'rgb(0 119 0 / 0.5)',
                 'rgba(0,119,0,.5)',
             ],
+            /*
+            'modern rgba with none as alpha' => [
+                'rgb(0 119 0 / none)',
+                'rgba(0 119 0 / none)',
+            ],
             //*/
+            'legacy rgb with var for R' => [
+                'rgb(var(--r), 119, 0)',
+                'rgb(var(--r),119,0)',
+            ],
+            'legacy rgb with var for G' => [
+                'rgb(0, var(--g), 0)',
+                'rgb(0,var(--g),0)',
+            ],
+            'legacy rgb with var for B' => [
+                'rgb(0, 119, var(--b))',
+                'rgb(0,119,var(--b))',
+            ],
+            'legacy rgb with var for RG' => [
+                'rgb(var(--rg), 0)',
+                'rgb(var(--rg),0)',
+            ],
+            'legacy rgb with var for GB' => [
+                'rgb(0, var(--gb))',
+                'rgb(0,var(--gb))',
+            ],
+            'legacy rgba with var for R' => [
+                'rgba(var(--r), 119, 0, 0.5)',
+                'rgba(var(--r),119,0,.5)',
+            ],
+            'legacy rgba with var for G' => [
+                'rgba(0, var(--g), 0, 0.5)',
+                'rgba(0,var(--g),0,.5)',
+            ],
+            'legacy rgba with var for B' => [
+                'rgb(0, 119, var(--b), 0.5)',
+                'rgb(0,119,var(--b),.5)',
+            ],
+            'legacy rgba with var for A' => [
+                'rgba(0, 119, 0, var(--a))',
+                'rgba(0,119,0,var(--a))',
+            ],
+            'legacy rgba with var for RG' => [
+                'rgba(var(--rg), 0, 0.5)',
+                'rgba(var(--rg),0,.5)',
+            ],
+            'legacy rgba with var for GB' => [
+                'rgba(0, var(--gb), 0.5)',
+                'rgba(0,var(--gb),.5)',
+            ],
+            'legacy rgba with var for BA' => [
+                'rgba(0, 119, var(--ba))',
+                'rgba(0,119,var(--ba))',
+            ],
+            'legacy rgba with var for RGB' => [
+                'rgba(var(--rgb), 0.5)',
+                'rgba(var(--rgb),.5)',
+            ],
+            'legacy rgba with var for GBA' => [
+                'rgba(0, var(--gba))',
+                'rgba(0,var(--gba))',
+            ],
+            'modern rgb with var for R' => [
+                'rgb(var(--r) 119 0)',
+                'rgb(var(--r),119,0)',
+            ],
+            'modern rgb with var for G' => [
+                'rgb(0 var(--g) 0)',
+                'rgb(0,var(--g),0)',
+            ],
+            'modern rgb with var for B' => [
+                'rgb(0 119 var(--b))',
+                'rgb(0,119,var(--b))',
+            ],
+            'modern rgb with var for RG' => [
+                'rgb(var(--rg) 0)',
+                'rgb(var(--rg),0)',
+            ],
+            'modern rgb with var for GB' => [
+                'rgb(0 var(--gb))',
+                'rgb(0,var(--gb))',
+            ],
+            'modern rgba with var for R' => [
+                'rgba(var(--r) 119 0 / 0.5)',
+                'rgba(var(--r),119,0,.5)',
+            ],
+            'modern rgba with var for G' => [
+                'rgba(0 var(--g) 0 / 0.5)',
+                'rgba(0,var(--g),0,.5)',
+            ],
+            'modern rgba with var for B' => [
+                'rgba(0 119 var(--b) / 0.5)',
+                'rgba(0,119,var(--b),.5)',
+            ],
+            'modern rgba with var for A' => [
+                'rgba(0 119 0 / var(--a))',
+                'rgba(0,119,0,var(--a))',
+            ],
+            'modern rgba with var for RG' => [
+                'rgba(var(--rg) 0 / 0.5)',
+                'rgba(var(--rg),0,.5)',
+            ],
+            'modern rgba with var for GB' => [
+                'rgba(0 var(--gb) / 0.5)',
+                'rgba(0,var(--gb),.5)',
+            ],
+            'modern rgba with var for BA' => [
+                'rgba(0 119 var(--ba))',
+                'rgba(0,119,var(--ba))',
+            ],
+            'modern rgba with var for RGB' => [
+                'rgba(var(--rgb) / 0.5)',
+                'rgba(var(--rgb),.5)',
+            ],
+            'modern rgba with var for GBA' => [
+                'rgba(0 var(--gba))',
+                'rgba(0,var(--gba))',
+            ],
+            'rgba with var for RGBA' => [
+                'rgba(var(--rgba))',
+                'rgba(var(--rgba))',
+            ],
             'legacy hsl' => [
                 'hsl(120, 100%, 25%)',
                 'hsl(120,100%,25%)',
@@ -120,6 +242,26 @@ final class ColorTest extends TestCase
                 'hsl(120, 100%, 25%, 0.5)',
                 'hsla(120,100%,25%,.5)',
             ],
+            'modern hsl' => [
+                'hsl(120 100% 25%)',
+                'hsl(120,100%,25%)',
+            ],
+            /*
+            'modern hsl with none' => [
+                'hsl(none 100% 25%)',
+                'hsl(none 100% 25%)',
+            ],
+            //*/
+            'modern hsla' => [
+                'hsl(120 100% 25% / 0.5)',
+                'hsla(120,100%,25%,.5)',
+            ],
+            /*
+            'modern hsla with none as alpha' => [
+                'hsl(120 100% 25% none)',
+                'hsla(120 100% 25% none)',
+            ],
+            //*/
         ];
     }
 
@@ -180,6 +322,15 @@ final class ColorTest extends TestCase
                 'rgb(255, 0px, 0)',
             ],
             //*/
+            'modern rgb color without slash separator for alpha' => [
+                'rgb(255 0 0 0.5)',
+            ],
+            'rgb color with mixed separators, comma first' => [
+                'rgb(255, 0 0)',
+            ],
+            'rgb color with mixed separators, space first' => [
+                'rgb(255 0, 0)',
+            ],
             'hsl color with 0 arguments' => [
                 'hsl()',
             ],
@@ -200,6 +351,15 @@ final class ColorTest extends TestCase
                 'hsl(0px, 100%, 50%)'
             ],
             //*/
+            'modern hsl color without slash separator for alpha' => [
+                'rgb(0 100% 50% 0.5)',
+            ],
+            'hsl color with mixed separators, comma first' => [
+                'hsl(0, 100% 50%)',
+            ],
+            'hsl color with mixed separators, space first' => [
+                'hsl(0 100%, 50%)',
+            ],
         ];
     }
 

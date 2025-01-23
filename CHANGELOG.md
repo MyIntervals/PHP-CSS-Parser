@@ -10,8 +10,9 @@ Please also have a look at our
 
 ### Added
 
-- Partial support for CSS Color Module Level 4 syntax:
+- Partial support for CSS Color Module Level 4:
   - `rgb` and `rgba`, and `hsl` and `hsla` are now aliases (#797}
+  - Parse color functions that use the "modern" syntax
 - Add official support for PHP 8.4 (#657)
 - Support arithmetic operators in CSS function arguments (#607)
 - Add support for inserting an item in a CSS list (#545)
