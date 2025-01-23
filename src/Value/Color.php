@@ -30,11 +30,10 @@ class Color extends CSSFunction
      */
     public static function parse(ParserState $oParserState, bool $bIgnoreCase = false): CSSFunction
     {
-        if ($oParserState->comes('#')) {
-            return self::parseHexColor($oParserState);
-        } else {
-            return self::parseColorFunction($oParserState);
-        }
+        return
+            $oParserState->comes('#')
+            ? self::parseHexColor($oParserState)
+            : self::parseColorFunction($oParserState);
     }
 
     /**
