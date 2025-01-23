@@ -116,6 +116,7 @@ class Color extends CSSFunction
         }
 
         $bContainsVar = false;
+        $isLegacySyntax = false;
         $iLength = $oParserState->strlen($colorModeForParsing);
         for ($i = 0; $i < $iLength; ++$i) {
             $oParserState->consumeWhiteSpace();
@@ -138,8 +139,39 @@ class Color extends CSSFunction
                 break;
             }
 
-            if ($i < ($iLength - 1)) {
+            // "Legacy" syntax is comma-delimited.
+            // "Modern" syntax is space-delimited, with `/` as alpha delimiter.
+            // They cannot be mixed.
+            if ($i === 0) {
+                // An immediate closing parenthesis is not valid.
+                if ($oParserState->comes(')')) {
+                    throw new UnexpectedTokenException(
+                        'Color function with no arguments',
+                        '',
+                        'custom',
+                        $oParserState->currentLine()
+                    );
+                }
+                $isLegacySyntax = $oParserState->comes(',');
+            }
+
+            if ($isLegacySyntax && $i < ($iLength - 1)) {
                 $oParserState->consume(',');
+            }
+
+            // In the "modern" syntax, the alpha value must be delimited with `/`.
+            if (!$isLegacySyntax) {
+                if ($bContainsVar) {
+                    // If the `var` substitution encompasses more than one argument,
+                    // the alpha deliminator may come at any time.
+                    if ($oParserState->comes('/')) {
+                        $oParserState->consume('/');
+                    }
+                } elseif (($colorModeForParsing[$i + 1] ?? '') === 'a') {
+                    // Alpha value is the next expected argument.
+                    // Since a closing parenthesis was not found, a `/` separator is now required.
+                    $oParserState->consume('/');
+                }
             }
         }
         $oParserState->consume(')');
