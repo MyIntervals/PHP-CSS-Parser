@@ -106,8 +106,6 @@ class Selector
 
     /**
      * @param string $sSelector
-     *
-     * @return void
      */
     public function setSelector($sSelector): void
     {

@@ -22,6 +22,8 @@ Please also have a look at our
 
 ### Changed
 
+- Use more native type declarations and strict mode
+  (#641, #772, #774, #778, #804)
 - Mark parsing-internal classes and methods as `@internal` (#674)
 - Block installations on unsupported higher PHP versions (#691)
 - Improve performance of `Value::parseValue` with many delimiters by refactoring

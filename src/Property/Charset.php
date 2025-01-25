@@ -54,8 +54,6 @@ class Charset implements AtRule
 
     /**
      * @param string|CSSString $oCharset
-     *
-     * @return void
      */
     public function setCharset($sCharset): void
     {
@@ -96,8 +94,6 @@ class Charset implements AtRule
 
     /**
      * @param array<array-key, Comment> $comments
-     *
-     * @return void
      */
     public function addComments(array $comments): void
     {
@@ -114,8 +110,6 @@ class Charset implements AtRule
 
     /**
      * @param array<array-key, Comment> $comments
-     *
-     * @return void
      */
     public function setComments(array $comments): void
     {

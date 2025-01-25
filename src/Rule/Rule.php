@@ -228,8 +228,6 @@ class Rule implements Renderable, Commentable
 
     /**
      * @param array<int, int> $aModifiers
-     *
-     * @return void
      */
     public function setIeHack(array $aModifiers): void
     {
