@@ -45,6 +45,7 @@ Please also have a look at our
 
 ### Fixed
 
+- Don't render `rgb` colors with percentage values using hex notation (#803)
 - Parse `@font-face` `src` property as comma-delimited list (#790)
 - Fix type errors in PHP strict mode (#664)
 - Fix undefined local variable in `CalcFunction::parse()` (#593)
