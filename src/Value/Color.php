@@ -225,7 +225,11 @@ class Color extends CSSFunction
     public function render(OutputFormat $outputFormat): string
     {
         // Shorthand RGB color values
-        if ($outputFormat->getRGBHashNotation() && \implode('', \array_keys($this->aComponents)) === 'rgb') {
+        if (
+            $outputFormat->getRGBHashNotation()
+            && \implode('', \array_keys($this->aComponents)) === 'rgb'
+            && $this->allComponentsAreNumbers()
+        ) {
             $result = \sprintf(
                 '%02x%02x%02x',
                 $this->aComponents['r']->getSize(),
@@ -236,5 +240,20 @@ class Color extends CSSFunction
                     ? "$result[0]$result[2]$result[4]" : $result);
         }
         return parent::render($outputFormat);
+    }
+
+    /**
+     * Test whether all color components are absolute numbers (CSS type `number`), not percentages or anything else.
+     * If any component is not an instance of `Size`, the method will also return `false`.
+     */
+    private function allComponentsAreNumbers(): bool
+    {
+        foreach ($this->aComponents as $component) {
+            if (!$component instanceof Size || $component->getUnit() !== null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

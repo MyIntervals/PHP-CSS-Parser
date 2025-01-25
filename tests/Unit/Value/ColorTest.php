@@ -54,6 +54,10 @@ final class ColorTest extends TestCase
                 'rgb(0, 118, 0)',
                 '#007600',
             ],
+            'legacy rgb with percentage components' => [
+                'rgb(0%, 60%, 0%)',
+                'rgb(0%,60%,0%)',
+            ],
             'legacy rgba with fractional alpha' => [
                 'rgba(0, 119, 0, 0.5)',
                 'rgba(0,119,0,.5)',
@@ -61,6 +65,14 @@ final class ColorTest extends TestCase
             'legacy rgba with percentage alpha' => [
                 'rgba(0, 119, 0, 50%)',
                 'rgba(0,119,0,50%)',
+            ],
+            'legacy rgba with percentage components and fractional alpha' => [
+                'rgba(0%, 60%, 0%, 0.5)',
+                'rgba(0%,60%,0%,.5)',
+            ],
+            'legacy rgba with percentage components and percentage alpha' => [
+                'rgba(0%, 60%, 0%, 50%)',
+                'rgba(0%,60%,0%,50%)',
             ],
             'legacy rgb as rgba' => [
                 'rgba(0, 119, 0)',
@@ -74,15 +86,72 @@ final class ColorTest extends TestCase
                 'rgb(0 119 0)',
                 '#070',
             ],
+            // The "legacy" syntax currently used for rendering does not allow a mixture of percentages and numbers.
+            /*
+            'modern rgb with percentage R' => [
+                'rgb(0% 119 0)',
+                'rgb(0% 119 0)',
+            ],
+            'modern rgb with percentage G' => [
+                'rgb(0 60% 0)',
+                'rgb(0 60% 0)',
+            ],
+            'modern rgb with percentage B' => [
+                'rgb(0 119 0%)',
+                'rgb(0 119 0%)',
+            ],
+            'modern rgb with percentage R&G' => [
+                'rgb(0% 60% 0)',
+                'rgb(0% 60% 0)',
+            ],
+            'modern rgb with percentage R&B' => [
+                'rgb(0% 119 0%)',
+                'rgb(0% 119 0%)',
+            ],
+            'modern rgb with percentage G&B' => [
+                'rgb(0 60% 0%)',
+                'rgb(0 60% 0%)',
+            ],
+            //*/
+            'modern rgb with percentage components' => [
+                'rgb(0% 60% 0%)',
+                'rgb(0%,60%,0%)',
+            ],
             /*
             'modern rgb with none' => [
                 'rgb(none 119 0)',
                 'rgb(none 119 0)',
             ],
             //*/
-            'modern rgba' => [
+            'modern rgba with fractional alpha' => [
                 'rgb(0 119 0 / 0.5)',
                 'rgba(0,119,0,.5)',
+            ],
+            'modern rgba with percentage alpha' => [
+                'rgb(0 119 0 / 50%)',
+                'rgba(0,119,0,50%)',
+            ],
+            /*
+            'modern rgba with percentage R' => [
+                'rgb(0% 119 0 / 0.5)',
+                'rgba(0% 119 0/.5)',
+            ],
+            'modern rgba with percentage G' => [
+                'rgb(0 60% 0 / 0.5)',
+                'rgba(0 60% 0/.5)',
+            ],
+            'modern rgba with percentage B' => [
+                'rgb(0 119 0% / 0.5)',
+                'rgba(0 119 0%/.5)',
+            ],
+            //*/
+            'modern rgba with percentage RGB' => [
+                'rgb(0% 60% 0% / 0.5)',
+                'rgba(0%,60%,0%,.5)',
+            ],
+            'modern rgba with percentage components' => [
+                'rgb(0% 60% 0% / 50%)',
+                'rgba(0%,60%,0%,50%)',
             ],
             /*
             'modern rgba with none as alpha' => [
