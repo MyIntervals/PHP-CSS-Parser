@@ -54,7 +54,7 @@ class Rule implements Renderable, Commentable
     /**
      * @var array<array-key, Comment>
      */
-    protected $aComments;
+    protected $comments;
 
     /**
      * @param string $sRule
@@ -69,7 +69,7 @@ class Rule implements Renderable, Commentable
         $this->aIeHack = [];
         $this->iLineNo = $iLineNo;
         $this->iColNo = $iColNo;
-        $this->aComments = [];
+        $this->comments = [];
     }
 
     /**
@@ -282,11 +282,11 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param array<array-key, Comment> $aComments
+     * @param array<array-key, Comment> $comments
      */
-    public function addComments(array $aComments): void
+    public function addComments(array $comments): void
     {
-        $this->aComments = \array_merge($this->aComments, $aComments);
+        $this->comments = \array_merge($this->comments, $comments);
     }
 
     /**
@@ -294,14 +294,14 @@ class Rule implements Renderable, Commentable
      */
     public function getComments()
     {
-        return $this->aComments;
+        return $this->comments;
     }
 
     /**
-     * @param array<array-key, Comment> $aComments
+     * @param array<array-key, Comment> $comments
      */
-    public function setComments(array $aComments): void
+    public function setComments(array $comments): void
     {
-        $this->aComments = $aComments;
+        $this->comments = $comments;
     }
 }

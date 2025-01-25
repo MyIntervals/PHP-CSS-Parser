@@ -30,7 +30,7 @@ class CSSNamespace implements AtRule
     /**
      * @var array<array-key, Comment>
      */
-    protected $aComments;
+    protected $comments;
 
     /**
      * @param string $mUrl
@@ -42,7 +42,7 @@ class CSSNamespace implements AtRule
         $this->mUrl = $mUrl;
         $this->sPrefix = $sPrefix;
         $this->iLineNo = $iLineNo;
-        $this->aComments = [];
+        $this->comments = [];
     }
 
     /**
@@ -117,11 +117,11 @@ class CSSNamespace implements AtRule
     }
 
     /**
-     * @param array<array-key, Comment> $aComments
+     * @param array<array-key, Comment> $comments
      */
-    public function addComments(array $aComments): void
+    public function addComments(array $comments): void
     {
-        $this->aComments = \array_merge($this->aComments, $aComments);
+        $this->comments = \array_merge($this->comments, $comments);
     }
 
     /**
@@ -129,14 +129,14 @@ class CSSNamespace implements AtRule
      */
     public function getComments()
     {
-        return $this->aComments;
+        return $this->comments;
     }
 
     /**
-     * @param array<array-key, Comment> $aComments
+     * @param array<array-key, Comment> $comments
      */
-    public function setComments(array $aComments): void
+    public function setComments(array $comments): void
     {
-        $this->aComments = $aComments;
+        $this->comments = $comments;
     }
 }

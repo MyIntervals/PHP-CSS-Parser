@@ -29,10 +29,10 @@
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "1.4.0",
         "phpstan/extension-installer": "1.4.3",
-        "phpstan/phpstan": "1.12.13 || 2.0.4",
-        "phpstan/phpstan-phpunit": "1.4.2 || 2.0.2",
+        "phpstan/phpstan": "1.12.16 || 2.1.2",
+        "phpstan/phpstan-phpunit": "1.4.2 || 2.0.4",
         "phpunit/phpunit": "8.5.41",
-        "rector/rector": "1.2.10 || 2.0.3"
+        "rector/rector": "1.2.10 || 2.0.7"
     },
     "suggest": {
         "ext-mbstring": "for parsing UTF-8 CSS"

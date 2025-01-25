@@ -31,7 +31,7 @@ class Charset implements AtRule
     /**
      * @var array<array-key, Comment>
      */
-    protected $aComments;
+    protected $comments;
 
     /**
      * @param CSSString $oCharset
@@ -41,7 +41,7 @@ class Charset implements AtRule
     {
         $this->oCharset = $oCharset;
         $this->iLineNo = $iLineNo;
-        $this->aComments = [];
+        $this->comments = [];
     }
 
     /**
@@ -93,11 +93,11 @@ class Charset implements AtRule
     }
 
     /**
-     * @param array<array-key, Comment> $aComments
+     * @param array<array-key, Comment> $comments
      */
-    public function addComments(array $aComments): void
+    public function addComments(array $comments): void
     {
-        $this->aComments = \array_merge($this->aComments, $aComments);
+        $this->comments = \array_merge($this->comments, $comments);
     }
 
     /**
@@ -105,14 +105,14 @@ class Charset implements AtRule
      */
     public function getComments()
     {
-        return $this->aComments;
+        return $this->comments;
     }
 
     /**
-     * @param array<array-key, Comment> $aComments
+     * @param array<array-key, Comment> $comments
      */
-    public function setComments(array $aComments): void
+    public function setComments(array $comments): void
     {
-        $this->aComments = $aComments;
+        $this->comments = $comments;
     }
 }
