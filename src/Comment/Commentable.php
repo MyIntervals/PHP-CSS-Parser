@@ -8,10 +8,8 @@ interface Commentable
 {
     /**
      * @param array<array-key, Comment> $aComments
-     *
-     * @return void
      */
-    public function addComments(array $aComments);
+    public function addComments(array $aComments): void;
 
     /**
      * @return array<array-key, Comment>
@@ -20,8 +18,6 @@ interface Commentable
 
     /**
      * @param array<array-key, Comment> $aComments
-     *
-     * @return void
      */
-    public function setComments(array $aComments);
+    public function setComments(array $aComments): void;
 }

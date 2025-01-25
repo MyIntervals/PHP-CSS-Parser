@@ -30,10 +30,8 @@ abstract class CSSBlockList extends CSSList
 
     /**
      * @param array<int, DeclarationBlock> $aResult
-     *
-     * @return void
      */
-    protected function allDeclarationBlocks(array &$aResult)
+    protected function allDeclarationBlocks(array &$aResult): void
     {
         foreach ($this->aContents as $mContent) {
             if ($mContent instanceof DeclarationBlock) {
@@ -46,10 +44,8 @@ abstract class CSSBlockList extends CSSList
 
     /**
      * @param array<int, RuleSet> $aResult
-     *
-     * @return void
      */
-    protected function allRuleSets(array &$aResult)
+    protected function allRuleSets(array &$aResult): void
     {
         foreach ($this->aContents as $mContent) {
             if ($mContent instanceof RuleSet) {
@@ -65,11 +61,13 @@ abstract class CSSBlockList extends CSSList
      * @param array<int, Value> $aResult
      * @param string|null $sSearchString
      * @param bool $bSearchInFunctionArguments
-     *
-     * @return void
      */
-    protected function allValues($oElement, array &$aResult, $sSearchString = null, $bSearchInFunctionArguments = false)
-    {
+    protected function allValues(
+        $oElement,
+        array &$aResult,
+        $sSearchString = null,
+        $bSearchInFunctionArguments = false
+    ): void {
         if ($oElement instanceof CSSBlockList) {
             foreach ($oElement->getContents() as $oContent) {
                 $this->allValues($oContent, $aResult, $sSearchString, $bSearchInFunctionArguments);
@@ -95,10 +93,8 @@ abstract class CSSBlockList extends CSSList
     /**
      * @param array<int, Selector> $aResult
      * @param string|null $sSpecificitySearch
-     *
-     * @return void
      */
-    protected function allSelectors(array &$aResult, $sSpecificitySearch = null)
+    protected function allSelectors(array &$aResult, $sSpecificitySearch = null): void
     {
         /** @var array<int, DeclarationBlock> $aDeclarationBlocks */
         $aDeclarationBlocks = [];
