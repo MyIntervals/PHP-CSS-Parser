@@ -396,8 +396,8 @@ class DeclarationBlock extends RuleSet
             'background-repeat' => ['repeat'],
             'background-attachment' => ['scroll'],
             'background-position' => [
-                new Size(0, '%', null, false, $this->iLineNo),
-                new Size(0, '%', null, false, $this->iLineNo),
+                new Size(0, '%', false, $this->iLineNo),
+                new Size(0, '%', false, $this->iLineNo),
             ],
         ];
         $mRuleValue = $oRule->getValue();
