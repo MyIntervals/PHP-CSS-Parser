@@ -814,14 +814,3 @@ contribute to PHP-CSS-Parser.
 ### Legacy Support
 
 The latest pre-PSR-0 version of this project can be checked with the `0.9.0` tag.
-
-### Running Tests
-
-To run all continuous integration (CI) checks for this project (including unit tests),
-* run `composer install` to install the development dependencies managed with Composer;
-* run `phive install` to install the development dependencies managed with PHIVE;
-  * [Installation of PHIVE](https://github.com/phar-io/phive?tab=readme-ov-file#getting-phive)
-* run `composer ci` to run all static and dynamic CI checks.
-
-Details of other Composer scripts available (e.g. to run one specific CI check) are provided with `composer list`.
-
