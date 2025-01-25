@@ -32,29 +32,6 @@ class Parser
     }
 
     /**
-     * Sets the charset to be used if the CSS does not contain an `@charset` declaration.
-     *
-     * @param string $sCharset
-     *
-     * @deprecated since 8.7.0, will be removed in version 9.0.0 with #687
-     */
-    public function setCharset($sCharset): void
-    {
-        $this->oParserState->setCharset($sCharset);
-    }
-
-    /**
-     * Returns the charset that is used if the CSS does not contain an `@charset` declaration.
-     *
-     * @deprecated since 8.7.0, will be removed in version 9.0.0 with #687
-     */
-    public function getCharset(): void
-    {
-        // Note: The `return` statement is missing here. This is a bug that needs to be fixed.
-        $this->oParserState->getCharset();
-    }
-
-    /**
      * Parses the CSS provided to the constructor and creates a `Document` from it.
      *
      * @throws SourceException

@@ -38,6 +38,7 @@ Please also have a look at our
 
 ### Removed
 
+- Remove `Parser::setCharset/getCharset` (#808)
 - Remove `Rule::getValues()` (#582)
 - Remove `Rule::setValues()` (#562)
 - Remove `Document::getAllSelectors()` (#561)
