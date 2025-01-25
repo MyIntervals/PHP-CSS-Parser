@@ -971,8 +971,6 @@ body {background-color: red;}';
     /**
      * Ensure that a missing property value raises an exception.
      *
-     * @covers \Sabberworm\CSS\Value\Value::parseValue()
-     *
      * @test
      */
     public function missingPropertyValueStrict(): void
@@ -984,8 +982,6 @@ body {background-color: red;}';
 
     /**
      * Ensure that a missing property value is ignored when in lenient parsing mode.
-     *
-     * @covers \Sabberworm\CSS\Value\Value::parseValue()
      *
      * @test
      */
