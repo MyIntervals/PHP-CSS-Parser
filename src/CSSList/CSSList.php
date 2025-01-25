@@ -36,7 +36,7 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * @var array<array-key, Comment>
      */
-    protected $aComments;
+    protected $comments;
 
     /**
      * @var array<int, RuleSet|CSSList|Import|Charset>
@@ -53,7 +53,7 @@ abstract class CSSList implements Renderable, Commentable
      */
     public function __construct($iLineNo = 0)
     {
-        $this->aComments = [];
+        $this->comments = [];
         $this->aContents = [];
         $this->iLineNo = $iLineNo;
     }
@@ -456,11 +456,11 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * @param array<array-key, Comment> $aComments
+     * @param array<array-key, Comment> $comments
      */
-    public function addComments(array $aComments): void
+    public function addComments(array $comments): void
     {
-        $this->aComments = \array_merge($this->aComments, $aComments);
+        $this->comments = \array_merge($this->comments, $comments);
     }
 
     /**
@@ -468,14 +468,14 @@ abstract class CSSList implements Renderable, Commentable
      */
     public function getComments()
     {
-        return $this->aComments;
+        return $this->comments;
     }
 
     /**
-     * @param array<array-key, Comment> $aComments
+     * @param array<array-key, Comment> $comments
      */
-    public function setComments(array $aComments): void
+    public function setComments(array $comments): void
     {
-        $this->aComments = $aComments;
+        $this->comments = $comments;
     }
 }

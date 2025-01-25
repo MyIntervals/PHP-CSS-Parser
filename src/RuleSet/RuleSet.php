@@ -37,7 +37,7 @@ abstract class RuleSet implements Renderable, Commentable
     /**
      * @var array<array-key, Comment>
      */
-    protected $aComments;
+    protected $comments;
 
     /**
      * @param int $iLineNo
@@ -46,7 +46,7 @@ abstract class RuleSet implements Renderable, Commentable
     {
         $this->aRules = [];
         $this->iLineNo = $iLineNo;
-        $this->aComments = [];
+        $this->comments = [];
     }
 
     /**
@@ -294,11 +294,11 @@ abstract class RuleSet implements Renderable, Commentable
     }
 
     /**
-     * @param array<string, Comment> $aComments
+     * @param array<string, Comment> $comments
      */
-    public function addComments(array $aComments): void
+    public function addComments(array $comments): void
     {
-        $this->aComments = \array_merge($this->aComments, $aComments);
+        $this->comments = \array_merge($this->comments, $comments);
     }
 
     /**
@@ -306,14 +306,14 @@ abstract class RuleSet implements Renderable, Commentable
      */
     public function getComments()
     {
-        return $this->aComments;
+        return $this->comments;
     }
 
     /**
-     * @param array<string, Comment> $aComments
+     * @param array<string, Comment> $comments
      */
-    public function setComments(array $aComments): void
+    public function setComments(array $comments): void
     {
-        $this->aComments = $aComments;
+        $this->comments = $comments;
     }
 }
