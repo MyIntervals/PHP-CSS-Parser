@@ -50,21 +50,23 @@ lifting. Thanks! :heart:
 
 ### Added
 
-- Add support for PHP 8.4 (#675, #701, #746, #751)
+- Add support for PHP 8.4 (#643, #657)
 
 ### Changed
 
-- Mark parsing-internal classes and methods as `@internal` (#711)
+- Mark parsing-internal classes and methods as `@internal` (##674)
 - Block installations on unsupported higher PHP versions (#691)
 
 ### Deprecated
 
-- Deprecate the expansion of shorthand properties (#719)
-- Deprecate `Parser::setCharset()` and `Parser::getCharset()` (#703)
+- Deprecate the expansion of shorthand properties
+  (#578, #580, #579, #577, #576, #575, #574, #573, #572, #571, #570, #569, #566,
+  #567, #558, #714)
+- Deprecate `Parser::setCharset()` and `Parser::getCharset()` (#688)
 
 ### Fixed
 
-- Fix type errors in PHP strict mode (#695)
+- Fix type errors in PHP strict mode (#664)
 
 ## 8.6.0
 
@@ -83,7 +85,7 @@ lifting. Thanks! :heart:
 
 ### Changed
 
-- Mark all class constants as `@internal` (#500)
+- Mark all class constants as `@internal` (#472)
 
 ### Fixed
 
