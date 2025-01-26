@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sabberworm\CSS\Tests;
+namespace Sabberworm\CSS\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Settings;
