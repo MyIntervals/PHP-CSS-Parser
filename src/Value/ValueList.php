@@ -29,11 +29,10 @@ abstract class ValueList extends Value
     protected $separator;
 
     /**
-     * @param array<array-key, Value|string>|Value|string $components
-     * @param string $separator
+     * @param array<array-key, Value|string>|Value|string $aComponents
      * @param int<0, max> $lineNumber
      */
-    public function __construct($components = [], $separator = ',', int $lineNumber = 0)
+    public function __construct($components = [], string $separator = ',', int $lineNumber = 0)
     {
         parent::__construct($lineNumber);
         if (!\is_array($components)) {

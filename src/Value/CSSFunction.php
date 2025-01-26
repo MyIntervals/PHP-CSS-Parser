@@ -24,12 +24,10 @@ class CSSFunction extends ValueList
     protected $name;
 
     /**
-     * @param string $name
-     * @param RuleValueList|array<array-key, Value|string> $arguments
-     * @param string $separator
+     * @param RuleValueList|array<array-key, Value|string> $aArguments
      * @param int<0, max> $lineNumber
      */
-    public function __construct($name, $arguments, $separator = ',', int $lineNumber = 0)
+    public function __construct(string $name, $arguments, string $separator = ',', int $lineNumber = 0)
     {
         if ($arguments instanceof RuleValueList) {
             $separator = $arguments->getListSeparator();
