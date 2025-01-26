@@ -12,10 +12,9 @@ namespace Sabberworm\CSS\Value;
 class RuleValueList extends ValueList
 {
     /**
-     * @param string $sSeparator
      * @param int<0, max> $lineNumber
      */
-    public function __construct($sSeparator = ',', $lineNumber = 0)
+    public function __construct(string $sSeparator = ',', int $lineNumber = 0)
     {
         parent::__construct([], $sSeparator, $lineNumber);
     }
