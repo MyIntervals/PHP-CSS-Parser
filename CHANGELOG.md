@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- Create `Size` with correct types in `expandBackgroundShorthand` (#814)
 - Parse `@font-face` `src` property as comma-delimited list (#794)
 
 ## 8.7.0: Add support for PHP 8.4
