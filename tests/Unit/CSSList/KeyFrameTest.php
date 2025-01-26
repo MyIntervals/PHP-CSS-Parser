@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sabberworm\CSS\Tests\CSSList;
+namespace Sabberworm\CSS\Tests\Unit\CSSList;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Commentable;
@@ -18,7 +18,7 @@ final class KeyFrameTest extends TestCase
     /**
      * @var KeyFrame
      */
-    protected $subject;
+    private $subject;
 
     protected function setUp(): void
     {

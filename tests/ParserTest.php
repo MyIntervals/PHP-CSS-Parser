@@ -26,16 +26,17 @@ use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\URL;
 
 /**
+ * @covers \Sabberworm\CSS\CSSList\Document
  * @covers \Sabberworm\CSS\Parser
- * @covers \Sabberworm\CSS\CSSList\Document::parse
- * @covers \Sabberworm\CSS\Rule\Rule::parse
- * @covers \Sabberworm\CSS\RuleSet\DeclarationBlock::parse
- * @covers \Sabberworm\CSS\Value\CalcFunction::parse
- * @covers \Sabberworm\CSS\Value\Color::parse
- * @covers \Sabberworm\CSS\Value\CSSString::parse
- * @covers \Sabberworm\CSS\Value\LineName::parse
- * @covers \Sabberworm\CSS\Value\Size::parse
- * @covers \Sabberworm\CSS\Value\URL::parse
+ * @covers \Sabberworm\CSS\RuleSet\DeclarationBlock
+ * @covers \Sabberworm\CSS\Rule\Rule
+ * @covers \Sabberworm\CSS\Value\CSSString
+ * @covers \Sabberworm\CSS\Value\CalcFunction
+ * @covers \Sabberworm\CSS\Value\Color
+ * @covers \Sabberworm\CSS\Value\LineName
+ * @covers \Sabberworm\CSS\Value\Size
+ * @covers \Sabberworm\CSS\Value\URL
+ * @covers \Sabberworm\CSS\Value\Value
  */
 final class ParserTest extends TestCase
 {
@@ -971,8 +972,6 @@ body {background-color: red;}';
     /**
      * Ensure that a missing property value raises an exception.
      *
-     * @covers \Sabberworm\CSS\Value\Value::parseValue()
-     *
      * @test
      */
     public function missingPropertyValueStrict(): void
@@ -984,8 +983,6 @@ body {background-color: red;}';
 
     /**
      * Ensure that a missing property value is ignored when in lenient parsing mode.
-     *
-     * @covers \Sabberworm\CSS\Value\Value::parseValue()
      *
      * @test
      */

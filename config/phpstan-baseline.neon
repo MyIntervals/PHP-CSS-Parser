@@ -6,9 +6,3 @@ parameters:
 			count: 2
 			path: ../src/OutputFormat.php
 
-		-
-			message: '#^@covers value \\Sabberworm\\CSS\\Value\\Value\:\:parseValue\(\) references an invalid method\.$#'
-			identifier: phpunit.coversMethod
-			count: 2
-			path: ../tests/ParserTest.php
-
