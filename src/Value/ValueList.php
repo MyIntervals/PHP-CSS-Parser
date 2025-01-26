@@ -30,10 +30,9 @@ abstract class ValueList extends Value
 
     /**
      * @param array<array-key, Value|string>|Value|string $aComponents
-     * @param string $sSeparator
      * @param int<0, max> $lineNumber
      */
-    public function __construct($aComponents = [], $sSeparator = ',', $lineNumber = 0)
+    public function __construct($aComponents = [], string $sSeparator = ',', int $lineNumber = 0)
     {
         parent::__construct($lineNumber);
         if (!\is_array($aComponents)) {
