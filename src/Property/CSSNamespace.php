@@ -35,11 +35,9 @@ class CSSNamespace implements AtRule
     protected $comments = [];
 
     /**
-     * @param string $mUrl
-     * @param string|null $prefix
      * @param int<0, max> $lineNumber
      */
-    public function __construct($mUrl, $prefix = null, $lineNumber = 0)
+    public function __construct(string $mUrl, ?string $prefix = null, int $lineNumber = 0)
     {
         $this->mUrl = $mUrl;
         $this->prefix = $prefix;

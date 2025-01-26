@@ -23,10 +23,9 @@ class CSSString extends PrimitiveValue
     private $sString;
 
     /**
-     * @param string $sString
      * @param int<0, max> $lineNumber
      */
-    public function __construct($sString, $lineNumber = 0)
+    public function __construct(string $sString, int $lineNumber = 0)
     {
         $this->sString = $sString;
         parent::__construct($lineNumber);
