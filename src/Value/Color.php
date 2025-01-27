@@ -253,10 +253,12 @@ class Color extends CSSFunction
 
     /**
      * Note that this method assumes the following:
-     * - The {@see aComponents} array has keys for `r`, `g` and `b`;
-     * - The values in the array are all instances of {@see Size}.
+     * - The `aComponents` array has keys for `r`, `g` and `b`;
+     * - The values in the array are all instances of `Size`.
      *
      * Errors will be triggered or thrown if this is not the case.
+     *
+     * @return non-empty-string
      */
     private function renderAsHex(): string
     {
@@ -266,7 +268,8 @@ class Color extends CSSFunction
             $this->aComponents['g']->getSize(),
             $this->aComponents['b']->getSize()
         );
-        return '#' . (($result[0] == $result[1]) && ($result[2] == $result[3]) && ($result[4] == $result[5])
-                ? "$result[0]$result[2]$result[4]" : $result);
+        $canUseShortVariant = ($result[0] == $result[1]) && ($result[2] == $result[3]) && ($result[4] == $result[5]);
+
+        return '#' . ($canUseShortVariant ? $result[0] . $result[2] . $result[4] : $result);
     }
 }
