@@ -54,7 +54,7 @@ lifting. Thanks! :heart:
 
 ### Changed
 
-- Mark parsing-internal classes and methods as `@internal` (##674)
+- Mark parsing-internal classes and methods as `@internal` (#674)
 - Block installations on unsupported higher PHP versions (#691)
 
 ### Deprecated
