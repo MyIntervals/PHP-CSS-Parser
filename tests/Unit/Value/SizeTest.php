@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sabberworm\CSS\Tests\Value;
+namespace Sabberworm\CSS\Tests\Unit\Value;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parsing\ParserState;
@@ -53,7 +53,7 @@ final class SizeTest extends TestCase
         return \array_combine(
             $units,
             \array_map(
-                function (string $unit): array {
+                static function (string $unit): array {
                     return [$unit];
                 },
                 $units
