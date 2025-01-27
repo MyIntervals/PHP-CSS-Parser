@@ -13,28 +13,16 @@ Please also have a look at our
 - Partial support for CSS Color Module Level 4:
     - `rgb` and `rgba`, and `hsl` and `hsla` are now aliases (#797}
     - Parse color functions that use the "modern" syntax (#800)
-- Add official support for PHP 8.4 (#657)
-- Support arithmetic operators in CSS function arguments (#607)
-- Add support for inserting an item in a CSS list (#545)
 - Add a class diagram to the README (#482)
-- Add support for the `dvh`, `lvh` and `svh` length units (#415)
 - Add more tests (#449)
 
 ### Changed
 
 - Use more native type declarations and strict mode
   (#641, #772, #774, #778, #804)
-- Mark parsing-internal classes and methods as `@internal` (#674)
-- Block installations on unsupported higher PHP versions (#691)
-- Improve performance of `Value::parseValue` with many delimiters by refactoring
-  to remove `array_search()` (#413)
 - Add visibility to all class/interface constants (#469)
 
 ### Deprecated
-
-- Deprecate `Parser::setCharset()` and `Parser::getCharset()` (#688)
-- Deprecate the expansion of shorthand properties (#578, #580, #579, #577, #576,
-  #575, #574, #573, #572, #571, #570, #569, #566, #567, #558)
 
 ### Removed
 
@@ -50,11 +38,6 @@ Please also have a look at our
 
 - Don't render `rgb` colors with percentage values using hex notation (#803)
 - Parse `@font-face` `src` property as comma-delimited list (#790)
-- Fix type errors in PHP strict mode (#664)
-- Fix undefined local variable in `CalcFunction::parse()` (#593)
-- Fix PHP notice caused by parsing invalid color values having less than 6
-  characters (#485)
-- Fix (regression) failure to parse at-rules with strict parsing (#456)
 
 ### Documentation
 
@@ -62,6 +45,59 @@ Please also have a look at our
 
 @ziegenberg is a new contributor to this release and did a lot of the heavy
 lifting. Thanks! :heart:
+
+## 8.7.0: Add support for PHP 8.4
+
+### Added
+
+- Add support for PHP 8.4 (#643, #657)
+
+### Changed
+
+- Mark parsing-internal classes and methods as `@internal` (#674)
+- Block installations on unsupported higher PHP versions (#691)
+
+### Deprecated
+
+- Deprecate the expansion of shorthand properties
+  (#578, #580, #579, #577, #576, #575, #574, #573, #572, #571, #570, #569, #566,
+  #567, #558, #714)
+- Deprecate `Parser::setCharset()` and `Parser::getCharset()` (#688)
+
+### Fixed
+
+- Fix type errors in PHP strict mode (#664)
+
+## 8.6.0
+
+### Added
+
+- Support arithmetic operators in CSS function arguments (#607)
+- Add support for inserting an item in a CSS list (#545)
+- Add support for the `dvh`, `lvh` and `svh` length units (#415)
+
+### Changed
+
+- Improve performance of `Value::parseValue` with many delimiters by refactoring
+  to remove `array_search()` (#413)
+
+## 8.5.2
+
+### Changed
+
+- Mark all class constants as `@internal` (#472)
+
+### Fixed
+
+- Fix undefined local variable in `CalcFunction::parse()` (#593)
+
+## 8.5.1
+
+### Fixed
+
+- Fix PHP notice caused by parsing invalid color values having less than
+  6 characters (#485)
+- Fix (regression) failure to parse at-rules with strict parsing (#456)
 
 ## 8.5.0
 
