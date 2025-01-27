@@ -85,8 +85,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - command: sniffer
-            php-version: '7.4'
           - command: fixer
             php-version: '7.4'
           - command: stan
@@ -121,7 +119,7 @@ jobs:
 
       - name: Install development tools
         run: |
-          phive --no-progress install --trust-gpg-keys 0FDE18AE1D09E19F60F6B1CBC00543248C87FB13,BBAB5DF0A0D6672989CF1869E82B2FB314E9906E,689DAD778FF08760E046228BA978220305CD5C32,CA7C2C7A30C8E8E1274A847651C67305FFC2E5C0
+          phive --no-progress install --trust-gpg-keys BBAB5DF0A0D6672989CF1869E82B2FB314E9906E,CA7C2C7A30C8E8E1274A847651C67305FFC2E5C0,D32680D5957DC7116BE29C14CF1A108D0E7AE720
 
       - name: Run Command
         run: composer ci:php:${{ matrix.command }}
