@@ -16,7 +16,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 class Color extends CSSFunction
 {
     /**
-     * @param array<int, Value|string> $colorValues
+     * @param array<array-key, Value|string> $colorValues
      * @param int $lineNumber
      */
     public function __construct(array $colorValues, $lineNumber = 0)
@@ -193,7 +193,7 @@ class Color extends CSSFunction
     }
 
     /**
-     * @return array<int, Value|string>
+     * @return array<array-key, Value|string>
      */
     public function getColor()
     {
@@ -201,7 +201,7 @@ class Color extends CSSFunction
     }
 
     /**
-     * @param array<int, Value|string> $colorValues
+     * @param array<array-key, Value|string> $colorValues
      */
     public function setColor(array $colorValues): void
     {
