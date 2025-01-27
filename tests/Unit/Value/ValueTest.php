@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sabberworm\CSS\Tests\Value;
+namespace Sabberworm\CSS\Tests\Unit\Value;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parsing\ParserState;
@@ -17,7 +17,7 @@ final class ValueTest extends TestCase
     /**
      * the default set of delimiters for parsing most values
      *
-     * @see \Rule\Rule::listDelimiterForRule
+     * @see \Sabberworm\CSS\Rule\Rule::listDelimiterForRule
      *
      * @var array<int, string>
      */
@@ -33,7 +33,7 @@ final class ValueTest extends TestCase
         return \array_combine(
             $units,
             \array_map(
-                function (string $unit): array {
+                static function (string $unit): array {
                     return [$unit];
                 },
                 $units
