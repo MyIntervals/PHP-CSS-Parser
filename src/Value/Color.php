@@ -299,7 +299,7 @@ class Color extends CSSFunction
         $hasNumber = false;
         foreach ($this->aComponents as $key => $value) {
             if ($key === 'a') {
-                // ALpha can have units that don't match those of the RGB components in the "legacy" syntax.
+                // Alpha can have units that don't match those of the RGB components in the "legacy" syntax.
                 // So it is not necessary to check it.  It's also always last, hence `break` rather than `continue`.
                 break;
             }
