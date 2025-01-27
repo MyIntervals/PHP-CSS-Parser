@@ -73,8 +73,8 @@ abstract class CSSBlockList extends CSSList
                 $this->allValues($oContent, $result, $searchString, $searchInFunctionArguments);
             }
         } elseif ($element instanceof RuleSet) {
-            foreach ($element->getRules($searchString) as $oRule) {
-                $this->allValues($oRule, $result, $searchString, $searchInFunctionArguments);
+            foreach ($element->getRules($searchString) as $rule) {
+                $this->allValues($rule, $result, $searchString, $searchInFunctionArguments);
             }
         } elseif ($element instanceof Rule) {
             $this->allValues($element->getValue(), $result, $searchString, $searchInFunctionArguments);

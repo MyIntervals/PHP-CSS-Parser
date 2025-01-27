@@ -79,20 +79,20 @@ class Rule implements Renderable, Commentable
     public static function parse(ParserState $parserState): Rule
     {
         $aComments = $parserState->consumeWhiteSpace();
-        $oRule = new Rule(
+        $rule = new Rule(
             $parserState->parseIdentifier(!$parserState->comes('--')),
             $parserState->currentLine(),
             $parserState->currentColumn()
         );
-        $oRule->setComments($aComments);
-        $oRule->addComments($parserState->consumeWhiteSpace());
+        $rule->setComments($aComments);
+        $rule->addComments($parserState->consumeWhiteSpace());
         $parserState->consume(':');
-        $oValue = Value::parseValue($parserState, self::listDelimiterForRule($oRule->getRule()));
-        $oRule->setValue($oValue);
+        $oValue = Value::parseValue($parserState, self::listDelimiterForRule($rule->getRule()));
+        $rule->setValue($oValue);
         if ($parserState->getSettings()->bLenientParsing) {
             while ($parserState->comes('\\')) {
                 $parserState->consume('\\');
-                $oRule->addIeHack($parserState->consume());
+                $rule->addIeHack($parserState->consume());
                 $parserState->consumeWhiteSpace();
             }
         }
@@ -101,7 +101,7 @@ class Rule implements Renderable, Commentable
             $parserState->consume('!');
             $parserState->consumeWhiteSpace();
             $parserState->consume('important');
-            $oRule->setIsImportant(true);
+            $rule->setIsImportant(true);
         }
         $parserState->consumeWhiteSpace();
         while ($parserState->comes(';')) {
@@ -110,7 +110,7 @@ class Rule implements Renderable, Commentable
 
         $parserState->consumeWhiteSpace();
 
-        return $oRule;
+        return $rule;
     }
 
     /**
