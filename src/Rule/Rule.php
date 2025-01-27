@@ -76,39 +76,39 @@ class Rule implements Renderable, Commentable
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState): Rule
+    public static function parse(ParserState $parserState): Rule
     {
-        $aComments = $oParserState->consumeWhiteSpace();
+        $aComments = $parserState->consumeWhiteSpace();
         $oRule = new Rule(
-            $oParserState->parseIdentifier(!$oParserState->comes('--')),
-            $oParserState->currentLine(),
-            $oParserState->currentColumn()
+            $parserState->parseIdentifier(!$parserState->comes('--')),
+            $parserState->currentLine(),
+            $parserState->currentColumn()
         );
         $oRule->setComments($aComments);
-        $oRule->addComments($oParserState->consumeWhiteSpace());
-        $oParserState->consume(':');
-        $oValue = Value::parseValue($oParserState, self::listDelimiterForRule($oRule->getRule()));
+        $oRule->addComments($parserState->consumeWhiteSpace());
+        $parserState->consume(':');
+        $oValue = Value::parseValue($parserState, self::listDelimiterForRule($oRule->getRule()));
         $oRule->setValue($oValue);
-        if ($oParserState->getSettings()->bLenientParsing) {
-            while ($oParserState->comes('\\')) {
-                $oParserState->consume('\\');
-                $oRule->addIeHack($oParserState->consume());
-                $oParserState->consumeWhiteSpace();
+        if ($parserState->getSettings()->bLenientParsing) {
+            while ($parserState->comes('\\')) {
+                $parserState->consume('\\');
+                $oRule->addIeHack($parserState->consume());
+                $parserState->consumeWhiteSpace();
             }
         }
-        $oParserState->consumeWhiteSpace();
-        if ($oParserState->comes('!')) {
-            $oParserState->consume('!');
-            $oParserState->consumeWhiteSpace();
-            $oParserState->consume('important');
+        $parserState->consumeWhiteSpace();
+        if ($parserState->comes('!')) {
+            $parserState->consume('!');
+            $parserState->consumeWhiteSpace();
+            $parserState->consume('important');
             $oRule->setIsImportant(true);
         }
-        $oParserState->consumeWhiteSpace();
-        while ($oParserState->comes(';')) {
-            $oParserState->consume(';');
+        $parserState->consumeWhiteSpace();
+        while ($parserState->comes(';')) {
+            $parserState->consume(';');
         }
 
-        $oParserState->consumeWhiteSpace();
+        $parserState->consumeWhiteSpace();
 
         return $oRule;
     }

@@ -24,27 +24,27 @@ class LineName extends ValueList
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
-    public static function parse(ParserState $oParserState): LineName
+    public static function parse(ParserState $parserState): LineName
     {
-        $oParserState->consume('[');
-        $oParserState->consumeWhiteSpace();
+        $parserState->consume('[');
+        $parserState->consumeWhiteSpace();
         $aNames = [];
         do {
-            if ($oParserState->getSettings()->bLenientParsing) {
+            if ($parserState->getSettings()->bLenientParsing) {
                 try {
-                    $aNames[] = $oParserState->parseIdentifier();
+                    $aNames[] = $parserState->parseIdentifier();
                 } catch (UnexpectedTokenException $e) {
-                    if (!$oParserState->comes(']')) {
+                    if (!$parserState->comes(']')) {
                         throw $e;
                     }
                 }
             } else {
-                $aNames[] = $oParserState->parseIdentifier();
+                $aNames[] = $parserState->parseIdentifier();
             }
-            $oParserState->consumeWhiteSpace();
-        } while (!$oParserState->comes(']'));
-        $oParserState->consume(']');
-        return new LineName($aNames, $oParserState->currentLine());
+            $parserState->consumeWhiteSpace();
+        } while (!$parserState->comes(']'));
+        $parserState->consume(']');
+        return new LineName($aNames, $parserState->currentLine());
     }
 
     public function __toString(): string
