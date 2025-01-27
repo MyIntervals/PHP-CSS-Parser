@@ -53,16 +53,16 @@ abstract class RuleSet implements Renderable, Commentable
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
-    public static function parseRuleSet(ParserState $parserState, RuleSet $oRuleSet): void
+    public static function parseRuleSet(ParserState $parserState, RuleSet $ruleSet): void
     {
         while ($parserState->comes(';')) {
             $parserState->consume(';');
         }
         while (!$parserState->comes('}')) {
-            $oRule = null;
+            $rule = null;
             if ($parserState->getSettings()->bLenientParsing) {
                 try {
-                    $oRule = Rule::parse($parserState);
+                    $rule = Rule::parse($parserState);
                 } catch (UnexpectedTokenException $e) {
                     try {
                         $sConsume = $parserState->consumeUntil(["\n", ';', '}'], true);
@@ -80,10 +80,10 @@ abstract class RuleSet implements Renderable, Commentable
                     }
                 }
             } else {
-                $oRule = Rule::parse($parserState);
+                $rule = Rule::parse($parserState);
             }
-            if ($oRule instanceof Rule) {
-                $oRuleSet->addRule($oRule);
+            if ($rule instanceof Rule) {
+                $ruleSet->addRule($rule);
             }
         }
         $parserState->consume('}');
@@ -100,9 +100,9 @@ abstract class RuleSet implements Renderable, Commentable
     /**
      * @param Rule|null $oSibling
      */
-    public function addRule(Rule $oRule, ?Rule $oSibling = null): void
+    public function addRule(Rule $rule, ?Rule $oSibling = null): void
     {
-        $sRule = $oRule->getRule();
+        $sRule = $rule->getRule();
         if (!isset($this->aRules[$sRule])) {
             $this->aRules[$sRule] = [];
         }
@@ -113,28 +113,28 @@ abstract class RuleSet implements Renderable, Commentable
             $iSiblingPos = \array_search($oSibling, $this->aRules[$sRule], true);
             if ($iSiblingPos !== false) {
                 $iPosition = $iSiblingPos;
-                $oRule->setPosition($oSibling->getLineNo(), $oSibling->getColNo() - 1);
+                $rule->setPosition($oSibling->getLineNo(), $oSibling->getColNo() - 1);
             }
         }
-        if ($oRule->getLineNo() === 0 && $oRule->getColNo() === 0) {
+        if ($rule->getLineNo() === 0 && $rule->getColNo() === 0) {
             //this node is added manually, give it the next best line
             $rules = $this->getRules();
             $pos = \count($rules);
             if ($pos > 0) {
                 $last = $rules[$pos - 1];
-                $oRule->setPosition($last->getLineNo() + 1, 0);
+                $rule->setPosition($last->getLineNo() + 1, 0);
             }
         }
 
-        \array_splice($this->aRules[$sRule], $iPosition, 0, [$oRule]);
+        \array_splice($this->aRules[$sRule], $iPosition, 0, [$rule]);
     }
 
     /**
      * Returns all rules matching the given rule name
      *
-     * @example $oRuleSet->getRules('font') // returns array(0 => $oRule, …) or array().
+     * @example $ruleSet->getRules('font') // returns array(0 => $rule, …) or array().
      *
-     * @example $oRuleSet->getRules('font-')
+     * @example $ruleSet->getRules('font-')
      *          //returns an array of all rules either beginning with font- or matching font.
      *
      * @param Rule|string|null $mRule
@@ -206,8 +206,8 @@ abstract class RuleSet implements Renderable, Commentable
     {
         /** @var array<string, Rule> $aResult */
         $aResult = [];
-        foreach ($this->getRules($mRule) as $oRule) {
-            $aResult[$oRule->getRule()] = $oRule;
+        foreach ($this->getRules($mRule) as $rule) {
+            $aResult[$rule->getRule()] = $rule;
         }
         return $aResult;
     }
@@ -219,7 +219,7 @@ abstract class RuleSet implements Renderable, Commentable
      * If given a name, it will remove all rules by that name.
      *
      * Note: this is different from pre-v.2.0 behaviour of PHP-CSS-Parser, where passing a Rule instance would
-     * remove all rules with the same name. To get the old behaviour, use `removeRule($oRule->getRule())`.
+     * remove all rules with the same name. To get the old behaviour, use `removeRule($rule->getRule())`.
      *
      * @param Rule|string|null $mRule
      *        pattern to remove. If $mRule is null, all rules are removed. If the pattern ends in a dash,
@@ -233,8 +233,8 @@ abstract class RuleSet implements Renderable, Commentable
             if (!isset($this->aRules[$sRule])) {
                 return;
             }
-            foreach ($this->aRules[$sRule] as $iKey => $oRule) {
-                if ($oRule === $mRule) {
+            foreach ($this->aRules[$sRule] as $iKey => $rule) {
+                if ($rule === $mRule) {
                     unset($this->aRules[$sRule][$iKey]);
                 }
             }
@@ -268,9 +268,9 @@ abstract class RuleSet implements Renderable, Commentable
         $bIsFirst = true;
         $oNextLevel = $oOutputFormat->nextLevel();
         foreach ($this->aRules as $aRules) {
-            foreach ($aRules as $oRule) {
-                $sRendered = $oNextLevel->safely(function () use ($oRule, $oNextLevel) {
-                    return $oRule->render($oNextLevel);
+            foreach ($aRules as $rule) {
+                $sRendered = $oNextLevel->safely(function () use ($rule, $oNextLevel) {
+                    return $rule->render($oNextLevel);
                 });
                 if ($sRendered === null) {
                     continue;
