@@ -86,8 +86,6 @@ final class ColorTest extends TestCase
                 'rgb(0 119 0)',
                 '#070',
             ],
-            // The "legacy" syntax currently used for rendering does not allow a mixture of percentages and numbers.
-            /*
             'modern rgb with percentage R' => [
                 'rgb(0% 119 0)',
                 'rgb(0% 119 0)',
@@ -112,7 +110,6 @@ final class ColorTest extends TestCase
                 'rgb(0 60% 0%)',
                 'rgb(0 60% 0%)',
             ],
-            //*/
             'modern rgb with percentage components' => [
                 'rgb(0% 60% 0%)',
                 'rgb(0%,60%,0%)',
@@ -131,7 +128,6 @@ final class ColorTest extends TestCase
                 'rgb(0 119 0 / 50%)',
                 'rgba(0,119,0,50%)',
             ],
-            /*
             'modern rgba with percentage R' => [
                 'rgb(0% 119 0 / 0.5)',
                 'rgba(0% 119 0/.5)',
@@ -144,7 +140,6 @@ final class ColorTest extends TestCase
                 'rgb(0 119 0% / 0.5)',
                 'rgba(0 119 0%/.5)',
             ],
-            //*/
             'modern rgba with percentage RGB' => [
                 'rgb(0% 60% 0% / 0.5)',
                 'rgba(0%,60%,0%,.5)',

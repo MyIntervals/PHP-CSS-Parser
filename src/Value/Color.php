@@ -231,6 +231,8 @@ class Color extends CSSFunction
             && $this->allComponentsAreNumbers()
         ) {
             return $this->renderAsHex();
+        } elseif ($this->shouldRenderInModernSyntax()) {
+            return $this->renderInModernSyntax($outputFormat);
         }
 
         return parent::render($outputFormat);
@@ -281,5 +283,67 @@ class Color extends CSSFunction
         $canUseShortVariant = ($result[0] == $result[1]) && ($result[2] == $result[3]) && ($result[4] == $result[5]);
 
         return '#' . ($canUseShortVariant ? $result[0] . $result[2] . $result[4] : $result);
+    }
+
+    /**
+     * The "legacy" syntax does not allow RGB colors to have a mixture of `percentage`s and `number`s.
+     */
+    private function shouldRenderInModernSyntax(): bool
+    {
+        $function = $this->getRealName();
+        if ($function !== 'rgb' && $function !== 'rgba') {
+            return false;
+        }
+
+        $hasPercentage = false;
+        $hasNumber = false;
+        foreach ($this->aComponents as $key => $value) {
+            if ($key === 'a') {
+                // ALpha can have units that don't match those of the RGB components in the "legacy" syntax.
+                // So it is not necessary to check it.  It's also always last, hence `break` rather than `continue`.
+                break;
+            }
+            if (!$value instanceof Size) {
+                // Unexpected, unknown, or modified via the API
+                return false;
+            }
+            $unit = $value->getUnit();
+            // `switch` only does loose comparison
+            if ($unit === null) {
+                $hasNumber = true;
+            } elseif ($unit === '%') {
+                $hasPercentage = true;
+            } else {
+                // Invalid unit
+                return false;
+            }
+        }
+
+        return $hasPercentage && $hasNumber;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function renderInModernSyntax(OutputFormat $outputFormat): string
+    {
+        \end($this->aComponents);
+        if (\key($this->aComponents) === 'a') {
+            $alpha = $this->aComponents['a'];
+            $componentsWithoutAlpha = \array_diff_key($this->aComponents, ['a' => 0]);
+        } else {
+            $componentsWithoutAlpha = $this->aComponents;
+        }
+
+        $arguments = $outputFormat->implode(' ', $componentsWithoutAlpha);
+        if (isset($alpha)) {
+            $arguments = $outputFormat->implode(
+                $outputFormat->spaceBeforeListArgumentSeparator('/') . '/'
+                    . $outputFormat->spaceAfterListArgumentSeparator('/'),
+                [$arguments, $alpha]
+            );
+        }
+
+        return $this->getName() . '(' . $arguments . ')';
     }
 }
