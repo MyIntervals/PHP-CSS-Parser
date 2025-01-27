@@ -18,7 +18,7 @@ class SourceException extends \Exception
     public function __construct($sMessage, $iLineNo = 0)
     {
         $this->iLineNo = $iLineNo;
-        if (!empty($iLineNo)) {
+        if ($iLineNo !== 0) {
             $sMessage .= " [line no: $iLineNo]";
         }
         parent::__construct($sMessage);
