@@ -62,25 +62,25 @@ abstract class CSSList implements Renderable, Commentable
      * @throws UnexpectedTokenException
      * @throws SourceException
      */
-    public static function parseList(ParserState $oParserState, CSSList $oList): void
+    public static function parseList(ParserState $parserState, CSSList $oList): void
     {
         $bIsRoot = $oList instanceof Document;
-        if (\is_string($oParserState)) {
-            $oParserState = new ParserState($oParserState, Settings::create());
+        if (\is_string($parserState)) {
+            $parserState = new ParserState($parserState, Settings::create());
         }
-        $bLenientParsing = $oParserState->getSettings()->bLenientParsing;
+        $bLenientParsing = $parserState->getSettings()->bLenientParsing;
         $aComments = [];
-        while (!$oParserState->isEnd()) {
-            $aComments = \array_merge($aComments, $oParserState->consumeWhiteSpace());
+        while (!$parserState->isEnd()) {
+            $aComments = \array_merge($aComments, $parserState->consumeWhiteSpace());
             $oListItem = null;
             if ($bLenientParsing) {
                 try {
-                    $oListItem = self::parseListItem($oParserState, $oList);
+                    $oListItem = self::parseListItem($parserState, $oList);
                 } catch (UnexpectedTokenException $e) {
                     $oListItem = false;
                 }
             } else {
-                $oListItem = self::parseListItem($oParserState, $oList);
+                $oListItem = self::parseListItem($parserState, $oList);
             }
             if ($oListItem === null) {
                 // List parsing finished
@@ -90,11 +90,11 @@ abstract class CSSList implements Renderable, Commentable
                 $oListItem->addComments($aComments);
                 $oList->append($oListItem);
             }
-            $aComments = $oParserState->consumeWhiteSpace();
+            $aComments = $parserState->consumeWhiteSpace();
         }
         $oList->addComments($aComments);
         if (!$bIsRoot && !$bLenientParsing) {
-            throw new SourceException('Unexpected end of document', $oParserState->currentLine());
+            throw new SourceException('Unexpected end of document', $parserState->currentLine());
         }
     }
 
@@ -105,18 +105,18 @@ abstract class CSSList implements Renderable, Commentable
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    private static function parseListItem(ParserState $oParserState, CSSList $oList)
+    private static function parseListItem(ParserState $parserState, CSSList $oList)
     {
         $bIsRoot = $oList instanceof Document;
-        if ($oParserState->comes('@')) {
-            $oAtRule = self::parseAtRule($oParserState);
+        if ($parserState->comes('@')) {
+            $oAtRule = self::parseAtRule($parserState);
             if ($oAtRule instanceof Charset) {
                 if (!$bIsRoot) {
                     throw new UnexpectedTokenException(
                         '@charset may only occur in root document',
                         '',
                         'custom',
-                        $oParserState->currentLine()
+                        $parserState->currentLine()
                     );
                 }
                 if (\count($oList->getContents()) > 0) {
@@ -124,30 +124,30 @@ abstract class CSSList implements Renderable, Commentable
                         '@charset must be the first parseable token in a document',
                         '',
                         'custom',
-                        $oParserState->currentLine()
+                        $parserState->currentLine()
                     );
                 }
-                $oParserState->setCharset($oAtRule->getCharset());
+                $parserState->setCharset($oAtRule->getCharset());
             }
             return $oAtRule;
-        } elseif ($oParserState->comes('}')) {
+        } elseif ($parserState->comes('}')) {
             if ($bIsRoot) {
-                if ($oParserState->getSettings()->bLenientParsing) {
-                    return DeclarationBlock::parse($oParserState);
+                if ($parserState->getSettings()->bLenientParsing) {
+                    return DeclarationBlock::parse($parserState);
                 } else {
-                    throw new SourceException('Unopened {', $oParserState->currentLine());
+                    throw new SourceException('Unopened {', $parserState->currentLine());
                 }
             } else {
                 // End of list
                 return null;
             }
         } else {
-            return DeclarationBlock::parse($oParserState, $oList);
+            return DeclarationBlock::parse($parserState, $oList);
         }
     }
 
     /**
-     * @param ParserState $oParserState
+     * @param ParserState $parserState
      *
      * @return AtRuleBlockList|KeyFrame|Charset|CSSNamespace|Import|AtRuleSet|null
      *
@@ -155,46 +155,46 @@ abstract class CSSList implements Renderable, Commentable
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
-    private static function parseAtRule(ParserState $oParserState)
+    private static function parseAtRule(ParserState $parserState)
     {
-        $oParserState->consume('@');
-        $sIdentifier = $oParserState->parseIdentifier();
-        $iIdentifierLineNum = $oParserState->currentLine();
-        $oParserState->consumeWhiteSpace();
+        $parserState->consume('@');
+        $sIdentifier = $parserState->parseIdentifier();
+        $iIdentifierLineNum = $parserState->currentLine();
+        $parserState->consumeWhiteSpace();
         if ($sIdentifier === 'import') {
-            $oLocation = URL::parse($oParserState);
-            $oParserState->consumeWhiteSpace();
+            $oLocation = URL::parse($parserState);
+            $parserState->consumeWhiteSpace();
             $sMediaQuery = null;
-            if (!$oParserState->comes(';')) {
-                $sMediaQuery = \trim($oParserState->consumeUntil([';', ParserState::EOF]));
+            if (!$parserState->comes(';')) {
+                $sMediaQuery = \trim($parserState->consumeUntil([';', ParserState::EOF]));
                 if ($sMediaQuery === '') {
                     $sMediaQuery = null;
                 }
             }
-            $oParserState->consumeUntil([';', ParserState::EOF], true, true);
+            $parserState->consumeUntil([';', ParserState::EOF], true, true);
             return new Import($oLocation, $sMediaQuery, $iIdentifierLineNum);
         } elseif ($sIdentifier === 'charset') {
-            $oCharsetString = CSSString::parse($oParserState);
-            $oParserState->consumeWhiteSpace();
-            $oParserState->consumeUntil([';', ParserState::EOF], true, true);
+            $oCharsetString = CSSString::parse($parserState);
+            $parserState->consumeWhiteSpace();
+            $parserState->consumeUntil([';', ParserState::EOF], true, true);
             return new Charset($oCharsetString, $iIdentifierLineNum);
         } elseif (self::identifierIs($sIdentifier, 'keyframes')) {
             $oResult = new KeyFrame($iIdentifierLineNum);
             $oResult->setVendorKeyFrame($sIdentifier);
-            $oResult->setAnimationName(\trim($oParserState->consumeUntil('{', false, true)));
-            CSSList::parseList($oParserState, $oResult);
-            if ($oParserState->comes('}')) {
-                $oParserState->consume('}');
+            $oResult->setAnimationName(\trim($parserState->consumeUntil('{', false, true)));
+            CSSList::parseList($parserState, $oResult);
+            if ($parserState->comes('}')) {
+                $parserState->consume('}');
             }
             return $oResult;
         } elseif ($sIdentifier === 'namespace') {
             $sPrefix = null;
-            $mUrl = Value::parsePrimitiveValue($oParserState);
-            if (!$oParserState->comes(';')) {
+            $mUrl = Value::parsePrimitiveValue($parserState);
+            if (!$parserState->comes(';')) {
                 $sPrefix = $mUrl;
-                $mUrl = Value::parsePrimitiveValue($oParserState);
+                $mUrl = Value::parsePrimitiveValue($parserState);
             }
-            $oParserState->consumeUntil([';', ParserState::EOF], true, true);
+            $parserState->consumeUntil([';', ParserState::EOF], true, true);
             if ($sPrefix !== null && !\is_string($sPrefix)) {
                 throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom', $iIdentifierLineNum);
             }
@@ -209,12 +209,12 @@ abstract class CSSList implements Renderable, Commentable
             return new CSSNamespace($mUrl, $sPrefix, $iIdentifierLineNum);
         } else {
             // Unknown other at rule (font-face or such)
-            $sArgs = \trim($oParserState->consumeUntil('{', false, true));
+            $sArgs = \trim($parserState->consumeUntil('{', false, true));
             if (\substr_count($sArgs, '(') != \substr_count($sArgs, ')')) {
-                if ($oParserState->getSettings()->bLenientParsing) {
+                if ($parserState->getSettings()->bLenientParsing) {
                     return null;
                 } else {
-                    throw new SourceException('Unmatched brace count in media query', $oParserState->currentLine());
+                    throw new SourceException('Unmatched brace count in media query', $parserState->currentLine());
                 }
             }
             $bUseRuleSet = true;
@@ -226,12 +226,12 @@ abstract class CSSList implements Renderable, Commentable
             }
             if ($bUseRuleSet) {
                 $oAtRule = new AtRuleSet($sIdentifier, $sArgs, $iIdentifierLineNum);
-                RuleSet::parseRuleSet($oParserState, $oAtRule);
+                RuleSet::parseRuleSet($parserState, $oAtRule);
             } else {
                 $oAtRule = new AtRuleBlockList($sIdentifier, $sArgs, $iIdentifierLineNum);
-                CSSList::parseList($oParserState, $oAtRule);
-                if ($oParserState->comes('}')) {
-                    $oParserState->consume('}');
+                CSSList::parseList($parserState, $oAtRule);
+                if ($parserState->comes('}')) {
+                    $parserState->consume('}');
                 }
             }
             return $oAtRule;

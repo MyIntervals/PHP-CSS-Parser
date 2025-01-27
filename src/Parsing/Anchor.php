@@ -17,19 +17,19 @@ class Anchor
     /**
      * @var ParserState
      */
-    private $oParserState;
+    private $parserState;
 
     /**
      * @param int $iPosition
      */
-    public function __construct($iPosition, ParserState $oParserState)
+    public function __construct($iPosition, ParserState $parserState)
     {
         $this->iPosition = $iPosition;
-        $this->oParserState = $oParserState;
+        $this->parserState = $parserState;
     }
 
     public function backtrack(): void
     {
-        $this->oParserState->setPosition($this->iPosition);
+        $this->parserState->setPosition($this->iPosition);
     }
 }

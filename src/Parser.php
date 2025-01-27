@@ -16,7 +16,7 @@ class Parser
     /**
      * @var ParserState
      */
-    private $oParserState;
+    private $parserState;
 
     /**
      * @param string $sText the complete CSS as text (i.e., usually the contents of a CSS file)
@@ -28,7 +28,7 @@ class Parser
         if ($oParserSettings === null) {
             $oParserSettings = Settings::create();
         }
-        $this->oParserState = new ParserState($sText, $oParserSettings, $lineNumber);
+        $this->parserState = new ParserState($sText, $oParserSettings, $lineNumber);
     }
 
     /**
@@ -38,6 +38,6 @@ class Parser
      */
     public function parse(): Document
     {
-        return Document::parse($this->oParserState);
+        return Document::parse($this->parserState);
     }
 }

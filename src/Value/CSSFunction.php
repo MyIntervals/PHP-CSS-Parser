@@ -40,14 +40,14 @@ class CSSFunction extends ValueList
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState, bool $bIgnoreCase = false): CSSFunction
+    public static function parse(ParserState $parserState, bool $bIgnoreCase = false): CSSFunction
     {
-        $sName = self::parseName($oParserState, $bIgnoreCase);
-        $oParserState->consume('(');
-        $mArguments = self::parseArguments($oParserState);
+        $sName = self::parseName($parserState, $bIgnoreCase);
+        $parserState->consume('(');
+        $mArguments = self::parseArguments($parserState);
 
-        $oResult = new CSSFunction($sName, $mArguments, ',', $oParserState->currentLine());
-        $oParserState->consume(')');
+        $oResult = new CSSFunction($sName, $mArguments, ',', $parserState->currentLine());
+        $parserState->consume(')');
 
         return $oResult;
     }
@@ -57,9 +57,9 @@ class CSSFunction extends ValueList
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    private static function parseName(ParserState $oParserState, bool $bIgnoreCase = false): string
+    private static function parseName(ParserState $parserState, bool $bIgnoreCase = false): string
     {
-        return $oParserState->parseIdentifier($bIgnoreCase);
+        return $parserState->parseIdentifier($bIgnoreCase);
     }
 
     /**
@@ -69,9 +69,9 @@ class CSSFunction extends ValueList
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    private static function parseArguments(ParserState $oParserState)
+    private static function parseArguments(ParserState $parserState)
     {
-        return Value::parseValue($oParserState, ['=', ' ', ',']);
+        return Value::parseValue($parserState, ['=', ' ', ',']);
     }
 
     /**

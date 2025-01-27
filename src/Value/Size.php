@@ -87,39 +87,39 @@ class Size extends PrimitiveValue
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState, $bIsColorComponent = false): Size
+    public static function parse(ParserState $parserState, $bIsColorComponent = false): Size
     {
         $sSize = '';
-        if ($oParserState->comes('-')) {
-            $sSize .= $oParserState->consume('-');
+        if ($parserState->comes('-')) {
+            $sSize .= $parserState->consume('-');
         }
-        while (\is_numeric($oParserState->peek()) || $oParserState->comes('.') || $oParserState->comes('e', true)) {
-            if ($oParserState->comes('.')) {
-                $sSize .= $oParserState->consume('.');
-            } elseif ($oParserState->comes('e', true)) {
-                $sLookahead = $oParserState->peek(1, 1);
+        while (\is_numeric($parserState->peek()) || $parserState->comes('.') || $parserState->comes('e', true)) {
+            if ($parserState->comes('.')) {
+                $sSize .= $parserState->consume('.');
+            } elseif ($parserState->comes('e', true)) {
+                $sLookahead = $parserState->peek(1, 1);
                 if (\is_numeric($sLookahead) || $sLookahead === '+' || $sLookahead === '-') {
-                    $sSize .= $oParserState->consume(2);
+                    $sSize .= $parserState->consume(2);
                 } else {
                     break; // Reached the unit part of the number like "em" or "ex"
                 }
             } else {
-                $sSize .= $oParserState->consume(1);
+                $sSize .= $parserState->consume(1);
             }
         }
 
         $sUnit = null;
         $aSizeUnits = self::getSizeUnits();
         foreach ($aSizeUnits as $iLength => &$aValues) {
-            $sKey = \strtolower($oParserState->peek($iLength));
+            $sKey = \strtolower($parserState->peek($iLength));
             if (\array_key_exists($sKey, $aValues)) {
                 if (($sUnit = $aValues[$sKey]) !== null) {
-                    $oParserState->consume($iLength);
+                    $parserState->consume($iLength);
                     break;
                 }
             }
         }
-        return new Size((float) $sSize, $sUnit, $bIsColorComponent, $oParserState->currentLine());
+        return new Size((float) $sSize, $sUnit, $bIsColorComponent, $parserState->currentLine());
     }
 
     /**

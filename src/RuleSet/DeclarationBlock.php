@@ -52,32 +52,32 @@ class DeclarationBlock extends RuleSet
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
-    public static function parse(ParserState $oParserState, $oList = null)
+    public static function parse(ParserState $parserState, $oList = null)
     {
         $aComments = [];
-        $oResult = new DeclarationBlock($oParserState->currentLine());
+        $oResult = new DeclarationBlock($parserState->currentLine());
         try {
             $aSelectorParts = [];
             $sStringWrapperChar = false;
             do {
-                $aSelectorParts[] = $oParserState->consume(1)
-                    . $oParserState->consumeUntil(['{', '}', '\'', '"'], false, false, $aComments);
-                if (\in_array($oParserState->peek(), ['\'', '"'], true) && \substr(\end($aSelectorParts), -1) != '\\') {
+                $aSelectorParts[] = $parserState->consume(1)
+                    . $parserState->consumeUntil(['{', '}', '\'', '"'], false, false, $aComments);
+                if (\in_array($parserState->peek(), ['\'', '"'], true) && \substr(\end($aSelectorParts), -1) != '\\') {
                     if ($sStringWrapperChar === false) {
-                        $sStringWrapperChar = $oParserState->peek();
-                    } elseif ($sStringWrapperChar == $oParserState->peek()) {
+                        $sStringWrapperChar = $parserState->peek();
+                    } elseif ($sStringWrapperChar == $parserState->peek()) {
                         $sStringWrapperChar = false;
                     }
                 }
-            } while (!\in_array($oParserState->peek(), ['{', '}'], true) || $sStringWrapperChar !== false);
+            } while (!\in_array($parserState->peek(), ['{', '}'], true) || $sStringWrapperChar !== false);
             $oResult->setSelectors(\implode('', $aSelectorParts), $oList);
-            if ($oParserState->comes('{')) {
-                $oParserState->consume(1);
+            if ($parserState->comes('{')) {
+                $parserState->consume(1);
             }
         } catch (UnexpectedTokenException $e) {
-            if ($oParserState->getSettings()->bLenientParsing) {
-                if (!$oParserState->comes('}')) {
-                    $oParserState->consumeUntil('}', false, true);
+            if ($parserState->getSettings()->bLenientParsing) {
+                if (!$parserState->comes('}')) {
+                    $parserState->consumeUntil('}', false, true);
                 }
                 return false;
             } else {
@@ -85,7 +85,7 @@ class DeclarationBlock extends RuleSet
             }
         }
         $oResult->setComments($aComments);
-        RuleSet::parseRuleSet($oParserState, $oResult);
+        RuleSet::parseRuleSet($parserState, $oResult);
         return $oResult;
     }
 

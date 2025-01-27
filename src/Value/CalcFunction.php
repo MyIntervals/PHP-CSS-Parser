@@ -24,80 +24,80 @@ class CalcFunction extends CSSFunction
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
-    public static function parse(ParserState $oParserState, bool $bIgnoreCase = false): CSSFunction
+    public static function parse(ParserState $parserState, bool $bIgnoreCase = false): CSSFunction
     {
         $aOperators = ['+', '-', '*', '/'];
-        $sFunction = $oParserState->parseIdentifier();
-        if ($oParserState->peek() != '(') {
+        $sFunction = $parserState->parseIdentifier();
+        if ($parserState->peek() != '(') {
             // Found ; or end of line before an opening bracket
-            throw new UnexpectedTokenException('(', $oParserState->peek(), 'literal', $oParserState->currentLine());
+            throw new UnexpectedTokenException('(', $parserState->peek(), 'literal', $parserState->currentLine());
         } elseif (!\in_array($sFunction, ['calc', '-moz-calc', '-webkit-calc'], true)) {
             // Found invalid calc definition. Example calc (...
-            throw new UnexpectedTokenException('calc', $sFunction, 'literal', $oParserState->currentLine());
+            throw new UnexpectedTokenException('calc', $sFunction, 'literal', $parserState->currentLine());
         }
-        $oParserState->consume('(');
-        $oCalcList = new CalcRuleValueList($oParserState->currentLine());
-        $oList = new RuleValueList(',', $oParserState->currentLine());
+        $parserState->consume('(');
+        $oCalcList = new CalcRuleValueList($parserState->currentLine());
+        $oList = new RuleValueList(',', $parserState->currentLine());
         $iNestingLevel = 0;
         $iLastComponentType = null;
-        while (!$oParserState->comes(')') || $iNestingLevel > 0) {
-            if ($oParserState->isEnd() && $iNestingLevel === 0) {
+        while (!$parserState->comes(')') || $iNestingLevel > 0) {
+            if ($parserState->isEnd() && $iNestingLevel === 0) {
                 break;
             }
 
-            $oParserState->consumeWhiteSpace();
-            if ($oParserState->comes('(')) {
+            $parserState->consumeWhiteSpace();
+            if ($parserState->comes('(')) {
                 $iNestingLevel++;
-                $oCalcList->addListComponent($oParserState->consume(1));
-                $oParserState->consumeWhiteSpace();
+                $oCalcList->addListComponent($parserState->consume(1));
+                $parserState->consumeWhiteSpace();
                 continue;
-            } elseif ($oParserState->comes(')')) {
+            } elseif ($parserState->comes(')')) {
                 $iNestingLevel--;
-                $oCalcList->addListComponent($oParserState->consume(1));
-                $oParserState->consumeWhiteSpace();
+                $oCalcList->addListComponent($parserState->consume(1));
+                $parserState->consumeWhiteSpace();
                 continue;
             }
             if ($iLastComponentType != CalcFunction::T_OPERAND) {
-                $oVal = Value::parsePrimitiveValue($oParserState);
+                $oVal = Value::parsePrimitiveValue($parserState);
                 $oCalcList->addListComponent($oVal);
                 $iLastComponentType = CalcFunction::T_OPERAND;
             } else {
-                if (\in_array($oParserState->peek(), $aOperators, true)) {
-                    if (($oParserState->comes('-') || $oParserState->comes('+'))) {
+                if (\in_array($parserState->peek(), $aOperators, true)) {
+                    if (($parserState->comes('-') || $parserState->comes('+'))) {
                         if (
-                            $oParserState->peek(1, -1) != ' '
-                            || !($oParserState->comes('- ')
-                                || $oParserState->comes('+ '))
+                            $parserState->peek(1, -1) != ' '
+                            || !($parserState->comes('- ')
+                                || $parserState->comes('+ '))
                         ) {
                             throw new UnexpectedTokenException(
-                                " {$oParserState->peek()} ",
-                                $oParserState->peek(1, -1) . $oParserState->peek(2),
+                                " {$parserState->peek()} ",
+                                $parserState->peek(1, -1) . $parserState->peek(2),
                                 'literal',
-                                $oParserState->currentLine()
+                                $parserState->currentLine()
                             );
                         }
                     }
-                    $oCalcList->addListComponent($oParserState->consume(1));
+                    $oCalcList->addListComponent($parserState->consume(1));
                     $iLastComponentType = CalcFunction::T_OPERATOR;
                 } else {
                     throw new UnexpectedTokenException(
                         \sprintf(
                             'Next token was expected to be an operand of type %s. Instead "%s" was found.',
                             \implode(', ', $aOperators),
-                            $oParserState->peek()
+                            $parserState->peek()
                         ),
                         '',
                         'custom',
-                        $oParserState->currentLine()
+                        $parserState->currentLine()
                     );
                 }
             }
-            $oParserState->consumeWhiteSpace();
+            $parserState->consumeWhiteSpace();
         }
         $oList->addListComponent($oCalcList);
-        if (!$oParserState->isEnd()) {
-            $oParserState->consume(')');
+        if (!$parserState->isEnd()) {
+            $parserState->consume(')');
         }
-        return new CalcFunction($sFunction, $oList, ',', $oParserState->currentLine());
+        return new CalcFunction($sFunction, $oList, ',', $parserState->currentLine());
     }
 }

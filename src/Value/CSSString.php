@@ -37,9 +37,9 @@ class CSSString extends PrimitiveValue
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState): CSSString
+    public static function parse(ParserState $parserState): CSSString
     {
-        $sBegin = $oParserState->peek();
+        $sBegin = $parserState->peek();
         $sQuote = null;
         if ($sBegin === "'") {
             $sQuote = "'";
@@ -47,29 +47,29 @@ class CSSString extends PrimitiveValue
             $sQuote = '"';
         }
         if ($sQuote !== null) {
-            $oParserState->consume($sQuote);
+            $parserState->consume($sQuote);
         }
         $sResult = '';
         $sContent = null;
         if ($sQuote === null) {
             // Unquoted strings end in whitespace or with braces, brackets, parentheses
-            while (\preg_match('/[\\s{}()<>\\[\\]]/isu', $oParserState->peek()) !== 1) {
-                $sResult .= $oParserState->parseCharacter(false);
+            while (\preg_match('/[\\s{}()<>\\[\\]]/isu', $parserState->peek()) !== 1) {
+                $sResult .= $parserState->parseCharacter(false);
             }
         } else {
-            while (!$oParserState->comes($sQuote)) {
-                $sContent = $oParserState->parseCharacter(false);
+            while (!$parserState->comes($sQuote)) {
+                $sContent = $parserState->parseCharacter(false);
                 if ($sContent === null) {
                     throw new SourceException(
-                        "Non-well-formed quoted string {$oParserState->peek(3)}",
-                        $oParserState->currentLine()
+                        "Non-well-formed quoted string {$parserState->peek(3)}",
+                        $parserState->currentLine()
                     );
                 }
                 $sResult .= $sContent;
             }
-            $oParserState->consume($sQuote);
+            $parserState->consume($sQuote);
         }
-        return new CSSString($sResult, $oParserState->currentLine());
+        return new CSSString($sResult, $parserState->currentLine());
     }
 
     /**

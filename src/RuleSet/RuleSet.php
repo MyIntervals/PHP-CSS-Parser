@@ -53,25 +53,25 @@ abstract class RuleSet implements Renderable, Commentable
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
-    public static function parseRuleSet(ParserState $oParserState, RuleSet $oRuleSet): void
+    public static function parseRuleSet(ParserState $parserState, RuleSet $oRuleSet): void
     {
-        while ($oParserState->comes(';')) {
-            $oParserState->consume(';');
+        while ($parserState->comes(';')) {
+            $parserState->consume(';');
         }
-        while (!$oParserState->comes('}')) {
+        while (!$parserState->comes('}')) {
             $oRule = null;
-            if ($oParserState->getSettings()->bLenientParsing) {
+            if ($parserState->getSettings()->bLenientParsing) {
                 try {
-                    $oRule = Rule::parse($oParserState);
+                    $oRule = Rule::parse($parserState);
                 } catch (UnexpectedTokenException $e) {
                     try {
-                        $sConsume = $oParserState->consumeUntil(["\n", ';', '}'], true);
+                        $sConsume = $parserState->consumeUntil(["\n", ';', '}'], true);
                         // We need to “unfind” the matches to the end of the ruleSet as this will be matched later
-                        if ($oParserState->streql(\substr($sConsume, -1), '}')) {
-                            $oParserState->backtrack(1);
+                        if ($parserState->streql(\substr($sConsume, -1), '}')) {
+                            $parserState->backtrack(1);
                         } else {
-                            while ($oParserState->comes(';')) {
-                                $oParserState->consume(';');
+                            while ($parserState->comes(';')) {
+                                $parserState->consume(';');
                             }
                         }
                     } catch (UnexpectedTokenException $e) {
@@ -80,13 +80,13 @@ abstract class RuleSet implements Renderable, Commentable
                     }
                 }
             } else {
-                $oRule = Rule::parse($oParserState);
+                $oRule = Rule::parse($parserState);
             }
             if ($oRule instanceof Rule) {
                 $oRuleSet->addRule($oRule);
             }
         }
-        $oParserState->consume('}');
+        $parserState->consume('}');
     }
 
     /**

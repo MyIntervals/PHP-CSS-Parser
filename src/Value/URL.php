@@ -34,29 +34,29 @@ class URL extends PrimitiveValue
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState): URL
+    public static function parse(ParserState $parserState): URL
     {
-        $oAnchor = $oParserState->anchor();
+        $oAnchor = $parserState->anchor();
         $sIdentifier = '';
         for ($i = 0; $i < 3; $i++) {
-            $sChar = $oParserState->parseCharacter(true);
+            $sChar = $parserState->parseCharacter(true);
             if ($sChar === null) {
                 break;
             }
             $sIdentifier .= $sChar;
         }
-        $bUseUrl = $oParserState->streql($sIdentifier, 'url');
+        $bUseUrl = $parserState->streql($sIdentifier, 'url');
         if ($bUseUrl) {
-            $oParserState->consumeWhiteSpace();
-            $oParserState->consume('(');
+            $parserState->consumeWhiteSpace();
+            $parserState->consume('(');
         } else {
             $oAnchor->backtrack();
         }
-        $oParserState->consumeWhiteSpace();
-        $oResult = new URL(CSSString::parse($oParserState), $oParserState->currentLine());
+        $parserState->consumeWhiteSpace();
+        $oResult = new URL(CSSString::parse($parserState), $parserState->currentLine());
         if ($bUseUrl) {
-            $oParserState->consumeWhiteSpace();
-            $oParserState->consume(')');
+            $parserState->consumeWhiteSpace();
+            $parserState->consume(')');
         }
         return $oResult;
     }
