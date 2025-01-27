@@ -25,7 +25,7 @@ class CSSNamespace implements AtRule
     /**
      * @var int
      */
-    private $iLineNo;
+    private $lineNumber;
 
     /**
      * @var array<array-key, Comment>
@@ -35,13 +35,13 @@ class CSSNamespace implements AtRule
     /**
      * @param string $mUrl
      * @param string|null $sPrefix
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($mUrl, $sPrefix = null, $iLineNo = 0)
+    public function __construct($mUrl, $sPrefix = null, $lineNumber = 0)
     {
         $this->mUrl = $mUrl;
         $this->sPrefix = $sPrefix;
-        $this->iLineNo = $iLineNo;
+        $this->lineNumber = $lineNumber;
         $this->comments = [];
     }
 
@@ -50,7 +50,7 @@ class CSSNamespace implements AtRule
      */
     public function getLineNo()
     {
-        return $this->iLineNo;
+        return $this->lineNumber;
     }
 
     public function __toString(): string

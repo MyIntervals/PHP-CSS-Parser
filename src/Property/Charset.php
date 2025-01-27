@@ -26,7 +26,7 @@ class Charset implements AtRule
     /**
      * @var int
      */
-    protected $iLineNo;
+    protected $lineNumber;
 
     /**
      * @var array<array-key, Comment>
@@ -35,12 +35,12 @@ class Charset implements AtRule
 
     /**
      * @param CSSString $oCharset
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct(CSSString $oCharset, $iLineNo = 0)
+    public function __construct(CSSString $oCharset, $lineNumber = 0)
     {
         $this->oCharset = $oCharset;
-        $this->iLineNo = $iLineNo;
+        $this->lineNumber = $lineNumber;
         $this->comments = [];
     }
 
@@ -49,7 +49,7 @@ class Charset implements AtRule
      */
     public function getLineNo()
     {
-        return $this->iLineNo;
+        return $this->lineNumber;
     }
 
     /**

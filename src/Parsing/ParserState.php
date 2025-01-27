@@ -54,18 +54,18 @@ class ParserState
     /**
      * @var int
      */
-    private $iLineNo;
+    private $lineNumber;
 
     /**
      * @param string $sText the complete CSS as text (i.e., usually the contents of a CSS file)
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($sText, Settings $oParserSettings, $iLineNo = 1)
+    public function __construct($sText, Settings $oParserSettings, $lineNumber = 1)
     {
         $this->oParserSettings = $oParserSettings;
         $this->sText = $sText;
         $this->iCurrentPosition = 0;
-        $this->iLineNo = $iLineNo;
+        $this->lineNumber = $lineNumber;
         $this->setCharset($this->oParserSettings->sDefaultCharset);
     }
 
@@ -98,7 +98,7 @@ class ParserState
      */
     public function currentLine()
     {
-        return $this->iLineNo;
+        return $this->lineNumber;
     }
 
     /**
@@ -140,11 +140,11 @@ class ParserState
     public function parseIdentifier($bIgnoreCase = true)
     {
         if ($this->isEnd()) {
-            throw new UnexpectedEOFException('', '', 'identifier', $this->iLineNo);
+            throw new UnexpectedEOFException('', '', 'identifier', $this->lineNumber);
         }
         $sResult = $this->parseCharacter(true);
         if ($sResult === null) {
-            throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier', $this->iLineNo);
+            throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier', $this->lineNumber);
         }
         $sCharacter = null;
         while (!$this->isEnd() && ($sCharacter = $this->parseCharacter(true)) !== null) {
@@ -290,18 +290,18 @@ class ParserState
             $iLineCount = \substr_count($mValue, "\n");
             $iLength = $this->strlen($mValue);
             if (!$this->streql($this->substr($this->iCurrentPosition, $iLength), $mValue)) {
-                throw new UnexpectedTokenException($mValue, $this->peek(\max($iLength, 5)), $this->iLineNo);
+                throw new UnexpectedTokenException($mValue, $this->peek(\max($iLength, 5)), $this->lineNumber);
             }
-            $this->iLineNo += $iLineCount;
+            $this->lineNumber += $iLineCount;
             $this->iCurrentPosition += $this->strlen($mValue);
             return $mValue;
         } else {
             if ($this->iCurrentPosition + $mValue > $this->iLength) {
-                throw new UnexpectedEOFException($mValue, $this->peek(5), 'count', $this->iLineNo);
+                throw new UnexpectedEOFException($mValue, $this->peek(5), 'count', $this->lineNumber);
             }
             $sResult = $this->substr($this->iCurrentPosition, $mValue);
             $iLineCount = \substr_count($sResult, "\n");
-            $this->iLineNo += $iLineCount;
+            $this->lineNumber += $iLineCount;
             $this->iCurrentPosition += $mValue;
             return $sResult;
         }
@@ -321,7 +321,7 @@ class ParserState
         if (\preg_match($mExpression, $sInput, $aMatches, PREG_OFFSET_CAPTURE) === 1) {
             return $this->consume($aMatches[0][0]);
         }
-        throw new UnexpectedTokenException($mExpression, $this->peek(5), 'expression', $this->iLineNo);
+        throw new UnexpectedTokenException($mExpression, $this->peek(5), 'expression', $this->lineNumber);
     }
 
     /**
@@ -331,7 +331,7 @@ class ParserState
     {
         $mComment = false;
         if ($this->comes('/*')) {
-            $iLineNo = $this->iLineNo;
+            $lineNumber = $this->lineNumber;
             $this->consume(1);
             $mComment = '';
             while (($char = $this->consume(1)) !== '') {
@@ -345,7 +345,7 @@ class ParserState
 
         if ($mComment !== false) {
             // We skip the * which was included in the comment.
-            return new Comment(\substr($mComment, 1), $iLineNo);
+            return new Comment(\substr($mComment, 1), $lineNumber);
         }
 
         return $mComment;
@@ -396,7 +396,7 @@ class ParserState
             'One of ("' . \implode('","', $aEnd) . '")',
             $this->peek(5),
             'search',
-            $this->iLineNo
+            $this->lineNumber
         );
     }
 

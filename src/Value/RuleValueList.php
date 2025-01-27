@@ -13,10 +13,10 @@ class RuleValueList extends ValueList
 {
     /**
      * @param string $sSeparator
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($sSeparator = ',', $iLineNo = 0)
+    public function __construct($sSeparator = ',', $lineNumber = 0)
     {
-        parent::__construct([], $sSeparator, $iLineNo);
+        parent::__construct([], $sSeparator, $lineNumber);
     }
 }

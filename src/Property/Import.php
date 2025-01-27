@@ -26,7 +26,7 @@ class Import implements AtRule
     /**
      * @var int
      */
-    protected $iLineNo;
+    protected $lineNumber;
 
     /**
      * @var array<array-key, Comment>
@@ -36,13 +36,13 @@ class Import implements AtRule
     /**
      * @param URL $oLocation
      * @param string $sMediaQuery
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct(URL $oLocation, $sMediaQuery, $iLineNo = 0)
+    public function __construct(URL $oLocation, $sMediaQuery, $lineNumber = 0)
     {
         $this->oLocation = $oLocation;
         $this->sMediaQuery = $sMediaQuery;
-        $this->iLineNo = $iLineNo;
+        $this->lineNumber = $lineNumber;
         $this->comments = [];
     }
 
@@ -51,7 +51,7 @@ class Import implements AtRule
      */
     public function getLineNo()
     {
-        return $this->iLineNo;
+        return $this->lineNumber;
     }
 
     /**

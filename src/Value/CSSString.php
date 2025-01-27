@@ -24,12 +24,12 @@ class CSSString extends PrimitiveValue
 
     /**
      * @param string $sString
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($sString, $iLineNo = 0)
+    public function __construct($sString, $lineNumber = 0)
     {
         $this->sString = $sString;
-        parent::__construct($iLineNo);
+        parent::__construct($lineNumber);
     }
 
     /**

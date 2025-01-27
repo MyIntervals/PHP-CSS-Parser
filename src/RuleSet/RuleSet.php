@@ -32,7 +32,7 @@ abstract class RuleSet implements Renderable, Commentable
     /**
      * @var int
      */
-    protected $iLineNo;
+    protected $lineNumber;
 
     /**
      * @var array<array-key, Comment>
@@ -40,12 +40,12 @@ abstract class RuleSet implements Renderable, Commentable
     protected $comments;
 
     /**
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($iLineNo = 0)
+    public function __construct($lineNumber = 0)
     {
         $this->aRules = [];
-        $this->iLineNo = $iLineNo;
+        $this->lineNumber = $lineNumber;
         $this->comments = [];
     }
 
@@ -94,7 +94,7 @@ abstract class RuleSet implements Renderable, Commentable
      */
     public function getLineNo()
     {
-        return $this->iLineNo;
+        return $this->lineNumber;
     }
 
     /**
