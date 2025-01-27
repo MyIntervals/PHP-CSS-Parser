@@ -230,15 +230,9 @@ class Color extends CSSFunction
             && \implode('', \array_keys($this->aComponents)) === 'rgb'
             && $this->allComponentsAreNumbers()
         ) {
-            $result = \sprintf(
-                '%02x%02x%02x',
-                $this->aComponents['r']->getSize(),
-                $this->aComponents['g']->getSize(),
-                $this->aComponents['b']->getSize()
-            );
-            return '#' . (($result[0] == $result[1]) && ($result[2] == $result[3]) && ($result[4] == $result[5])
-                    ? "$result[0]$result[2]$result[4]" : $result);
+            return $this->renderAsHex();
         }
+
         return parent::render($outputFormat);
     }
 
@@ -255,5 +249,24 @@ class Color extends CSSFunction
         }
 
         return true;
+    }
+
+    /**
+     * Note that this method assumes the following:
+     * - The {@see aComponents} array has keys for `r`, `g` and `b`;
+     * - The values in the array are all instances of {@see Size}.
+     *
+     * Errors will be triggered or thrown if this is not the case.
+     */
+    private function renderAsHex(): string
+    {
+        $result = \sprintf(
+            '%02x%02x%02x',
+            $this->aComponents['r']->getSize(),
+            $this->aComponents['g']->getSize(),
+            $this->aComponents['b']->getSize()
+        );
+        return '#' . (($result[0] == $result[1]) && ($result[2] == $result[3]) && ($result[4] == $result[5])
+                ? "$result[0]$result[2]$result[4]" : $result);
     }
 }
