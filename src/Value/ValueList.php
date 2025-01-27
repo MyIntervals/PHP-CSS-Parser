@@ -15,7 +15,7 @@ use Sabberworm\CSS\OutputFormat;
 abstract class ValueList extends Value
 {
     /**
-     * @var array<int, Value|string>
+     * @var array<array-key, Value|string>
      */
     protected $aComponents;
 
@@ -25,7 +25,7 @@ abstract class ValueList extends Value
     protected $sSeparator;
 
     /**
-     * @param array<int, Value|string>|Value|string $aComponents
+     * @param array<array-key, Value|string>|Value|string $aComponents
      * @param string $sSeparator
      * @param int $iLineNo
      */
@@ -48,7 +48,7 @@ abstract class ValueList extends Value
     }
 
     /**
-     * @return array<int, Value|string>
+     * @return array<array-key, Value|string>
      */
     public function getListComponents()
     {
@@ -56,7 +56,7 @@ abstract class ValueList extends Value
     }
 
     /**
-     * @param array<int, Value|string> $aComponents
+     * @param array<array-key, Value|string> $aComponents
      */
     public function setListComponents(array $aComponents): void
     {
