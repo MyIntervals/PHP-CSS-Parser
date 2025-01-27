@@ -227,7 +227,7 @@ class Color extends CSSFunction
         // Shorthand RGB color values
         if (
             $outputFormat->getRGBHashNotation()
-            && \implode('', \array_keys($this->aComponents)) === 'rgb'
+            && $this->getRealName() === 'rgb'
             && $this->allComponentsAreNumbers()
         ) {
             $result = \sprintf(
@@ -240,6 +240,16 @@ class Color extends CSSFunction
                     ? "$result[0]$result[2]$result[4]" : $result);
         }
         return parent::render($outputFormat);
+    }
+
+    /**
+     * The function name is a concatenation of the array keys of the components, which is passed to the constructor.
+     * However, this can be changed by calling {@see CSSFunction::setName},
+     * so is not reliable in situations where it's necessary to determine the function name based on the components.
+     */
+    private function getRealName(): string
+    {
+        return \implode('', \array_keys($this->aComponents));
     }
 
     /**
