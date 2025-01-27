@@ -147,8 +147,6 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * @param ParserState $parserState
-     *
      * @return AtRuleBlockList|KeyFrame|Charset|CSSNamespace|Import|AtRuleSet|null
      *
      * @throws SourceException

@@ -113,8 +113,6 @@ class Document extends CSSBlockList
 
     /**
      * Overrides `render()` to make format argument optional.
-     *
-     * @param OutputFormat|null $oOutputFormat
      */
     public function render(?OutputFormat $oOutputFormat = null): string
     {
