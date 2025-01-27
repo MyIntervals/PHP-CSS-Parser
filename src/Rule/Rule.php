@@ -44,7 +44,7 @@ class Rule implements Renderable, Commentable
     /**
      * @var int
      */
-    protected $iLineNo;
+    protected $lineNumber;
 
     /**
      * @var int
@@ -58,16 +58,16 @@ class Rule implements Renderable, Commentable
 
     /**
      * @param string $sRule
-     * @param int $iLineNo
+     * @param int $lineNumber
      * @param int $iColNo
      */
-    public function __construct($sRule, $iLineNo = 0, $iColNo = 0)
+    public function __construct($sRule, $lineNumber = 0, $iColNo = 0)
     {
         $this->sRule = $sRule;
         $this->mValue = null;
         $this->bIsImportant = false;
         $this->aIeHack = [];
-        $this->iLineNo = $iLineNo;
+        $this->lineNumber = $lineNumber;
         $this->iColNo = $iColNo;
         $this->comments = [];
     }
@@ -141,7 +141,7 @@ class Rule implements Renderable, Commentable
      */
     public function getLineNo()
     {
-        return $this->iLineNo;
+        return $this->lineNumber;
     }
 
     /**
@@ -159,7 +159,7 @@ class Rule implements Renderable, Commentable
     public function setPosition($iLine, $iColumn): void
     {
         $this->iColNo = $iColumn;
-        $this->iLineNo = $iLine;
+        $this->lineNumber = $iLine;
     }
 
     /**
@@ -208,7 +208,7 @@ class Rule implements Renderable, Commentable
         }
         if (!$this->mValue instanceof RuleValueList || $this->mValue->getListSeparator() !== $sType) {
             $mCurrentValue = $this->mValue;
-            $this->mValue = new RuleValueList($sType, $this->iLineNo);
+            $this->mValue = new RuleValueList($sType, $this->lineNumber);
             if ($mCurrentValue) {
                 $this->mValue->addListComponent($mCurrentValue);
             }

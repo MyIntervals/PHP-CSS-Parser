@@ -11,10 +11,10 @@ final class OutputException extends SourceException
 {
     /**
      * @param string $sMessage
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($sMessage, $iLineNo = 0)
+    public function __construct($sMessage, $lineNumber = 0)
     {
-        parent::__construct($sMessage, $iLineNo);
+        parent::__construct($sMessage, $lineNumber);
     }
 }

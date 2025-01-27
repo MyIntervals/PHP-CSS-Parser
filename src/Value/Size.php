@@ -71,11 +71,11 @@ class Size extends PrimitiveValue
      * @param float|int|string $fSize
      * @param string|null $sUnit
      * @param bool $bIsColorComponent
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($fSize, $sUnit = null, $bIsColorComponent = false, $iLineNo = 0)
+    public function __construct($fSize, $sUnit = null, $bIsColorComponent = false, $lineNumber = 0)
     {
-        parent::__construct($iLineNo);
+        parent::__construct($lineNumber);
         $this->fSize = (float) $fSize;
         $this->sUnit = $sUnit;
         $this->bIsColorComponent = $bIsColorComponent;

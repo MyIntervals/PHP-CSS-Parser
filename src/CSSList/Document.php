@@ -19,11 +19,11 @@ use Sabberworm\CSS\Value\Value;
 class Document extends CSSBlockList
 {
     /**
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($iLineNo = 0)
+    public function __construct($lineNumber = 0)
     {
-        parent::__construct($iLineNo);
+        parent::__construct($lineNumber);
     }
 
     /**

@@ -36,11 +36,11 @@ class DeclarationBlock extends RuleSet
     private $aSelectors;
 
     /**
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($iLineNo = 0)
+    public function __construct($lineNumber = 0)
     {
-        parent::__construct($iLineNo);
+        parent::__construct($lineNumber);
         $this->aSelectors = [];
     }
 
@@ -396,8 +396,8 @@ class DeclarationBlock extends RuleSet
             'background-repeat' => ['repeat'],
             'background-attachment' => ['scroll'],
             'background-position' => [
-                new Size(0, '%', false, $this->iLineNo),
-                new Size(0, '%', false, $this->iLineNo),
+                new Size(0, '%', false, $this->lineNumber),
+                new Size(0, '%', false, $this->lineNumber),
             ],
         ];
         $mRuleValue = $oRule->getValue();
@@ -749,7 +749,7 @@ class DeclarationBlock extends RuleSet
                 $aLHValues = $mRuleValue->getListComponents();
             }
             if ($aLHValues[0] !== 'normal') {
-                $val = new RuleValueList('/', $this->iLineNo);
+                $val = new RuleValueList('/', $this->lineNumber);
                 $val->addListComponent($aFSValues[0]);
                 $val->addListComponent($aLHValues[0]);
                 $oNewRule->addValue($val);
@@ -765,7 +765,7 @@ class DeclarationBlock extends RuleSet
         } else {
             $aFFValues = $mRuleValue->getListComponents();
         }
-        $oFFValue = new RuleValueList(',', $this->iLineNo);
+        $oFFValue = new RuleValueList(',', $this->lineNumber);
         $oFFValue->setListComponents($aFFValues);
         $oNewRule->addValue($oFFValue);
 
@@ -791,7 +791,7 @@ class DeclarationBlock extends RuleSet
         $sResult = $oOutputFormat->comments($this);
         if (\count($this->aSelectors) === 0) {
             // If all the selectors have been removed, this declaration block becomes invalid
-            throw new OutputException('Attempt to print declaration block with missing selector', $this->iLineNo);
+            throw new OutputException('Attempt to print declaration block with missing selector', $this->lineNumber);
         }
         $sResult .= $oOutputFormat->sBeforeDeclarationBlock;
         $sResult .= $oOutputFormat->implode(

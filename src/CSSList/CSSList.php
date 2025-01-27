@@ -46,16 +46,16 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * @var int
      */
-    protected $iLineNo;
+    protected $lineNumber;
 
     /**
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($iLineNo = 0)
+    public function __construct($lineNumber = 0)
     {
         $this->comments = [];
         $this->aContents = [];
-        $this->iLineNo = $iLineNo;
+        $this->lineNumber = $lineNumber;
     }
 
     /**
@@ -255,7 +255,7 @@ abstract class CSSList implements Renderable, Commentable
      */
     public function getLineNo()
     {
-        return $this->iLineNo;
+        return $this->lineNumber;
     }
 
     /**

@@ -20,11 +20,11 @@ class KeyFrame extends CSSList implements AtRule
     private $animationName;
 
     /**
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($iLineNo = 0)
+    public function __construct($lineNumber = 0)
     {
-        parent::__construct($iLineNo);
+        parent::__construct($lineNumber);
         $this->vendorKeyFrame = null;
         $this->animationName = null;
     }

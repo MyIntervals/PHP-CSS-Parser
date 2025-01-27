@@ -22,17 +22,17 @@ class CSSFunction extends ValueList
      * @param string $sName
      * @param RuleValueList|array<array-key, Value|string> $aArguments
      * @param string $sSeparator
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($sName, $aArguments, $sSeparator = ',', $iLineNo = 0)
+    public function __construct($sName, $aArguments, $sSeparator = ',', $lineNumber = 0)
     {
         if ($aArguments instanceof RuleValueList) {
             $sSeparator = $aArguments->getListSeparator();
             $aArguments = $aArguments->getListComponents();
         }
         $this->sName = $sName;
-        $this->iLineNo = $iLineNo;
-        parent::__construct($aArguments, $sSeparator, $iLineNo);
+        $this->lineNumber = $lineNumber;
+        parent::__construct($aArguments, $sSeparator, $lineNumber);
     }
 
     /**

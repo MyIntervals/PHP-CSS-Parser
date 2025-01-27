@@ -28,11 +28,11 @@ class AtRuleSet extends RuleSet implements AtRule
     /**
      * @param string $sType
      * @param string $sArgs
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($sType, $sArgs = '', $iLineNo = 0)
+    public function __construct($sType, $sArgs = '', $lineNumber = 0)
     {
-        parent::__construct($iLineNo);
+        parent::__construct($lineNumber);
         $this->sType = $sType;
         $this->sArgs = $sArgs;
     }

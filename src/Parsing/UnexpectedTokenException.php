@@ -30,9 +30,9 @@ class UnexpectedTokenException extends SourceException
      * @param string $sExpected
      * @param string $sFound
      * @param string $sMatchType
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($sExpected, $sFound, $sMatchType = 'literal', $iLineNo = 0)
+    public function __construct($sExpected, $sFound, $sMatchType = 'literal', $lineNumber = 0)
     {
         $this->sExpected = $sExpected;
         $this->sFound = $sFound;
@@ -48,6 +48,6 @@ class UnexpectedTokenException extends SourceException
             $sMessage = \trim("$sExpected $sFound");
         }
 
-        parent::__construct($sMessage, $iLineNo);
+        parent::__construct($sMessage, $lineNumber);
     }
 }
