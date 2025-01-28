@@ -413,7 +413,7 @@ abstract class CSSList implements Renderable, Commentable
             $oNextLevel = $oOutputFormat->nextLevel();
         }
         foreach ($this->aContents as $oContent) {
-            $sRendered = $oOutputFormat->safely(function () use ($oNextLevel, $oContent) {
+            $sRendered = $oOutputFormat->safely(function () use ($oNextLevel, $oContent): string {
                 return $oContent->render($oNextLevel);
             });
             if ($sRendered === null) {

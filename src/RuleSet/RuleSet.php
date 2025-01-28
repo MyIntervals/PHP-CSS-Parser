@@ -162,7 +162,7 @@ abstract class RuleSet implements Renderable, Commentable
                 $aResult = \array_merge($aResult, $aRules);
             }
         }
-        \usort($aResult, function (Rule $first, Rule $second) {
+        \usort($aResult, static function (Rule $first, Rule $second): int {
             if ($first->getLineNo() === $second->getLineNo()) {
                 return $first->getColNo() - $second->getColNo();
             }
@@ -266,7 +266,7 @@ abstract class RuleSet implements Renderable, Commentable
         $oNextLevel = $oOutputFormat->nextLevel();
         foreach ($this->aRules as $aRules) {
             foreach ($aRules as $rule) {
-                $sRendered = $oNextLevel->safely(function () use ($rule, $oNextLevel) {
+                $sRendered = $oNextLevel->safely(function () use ($rule, $oNextLevel): string {
                     return $rule->render($oNextLevel);
                 });
                 if ($sRendered === null) {
