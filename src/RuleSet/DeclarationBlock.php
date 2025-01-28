@@ -131,8 +131,8 @@ class DeclarationBlock extends RuleSet
         if ($mSelector instanceof Selector) {
             $mSelector = $mSelector->getSelector();
         }
-        foreach ($this->aSelectors as $iKey => $oSelector) {
-            if ($oSelector->getSelector() === $mSelector) {
+        foreach ($this->aSelectors as $iKey => $selector) {
+            if ($selector->getSelector() === $mSelector) {
                 unset($this->aSelectors[$iKey]);
                 return true;
             }
