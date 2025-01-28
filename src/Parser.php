@@ -20,7 +20,6 @@ class Parser
 
     /**
      * @param string $sText the complete CSS as text (i.e., usually the contents of a CSS file)
-     * @param Settings|null $oParserSettings
      * @param int $lineNumber the line number (starting from 1, not from 0)
      */
     public function __construct($sText, ?Settings $oParserSettings = null, $lineNumber = 1)
