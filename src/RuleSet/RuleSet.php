@@ -266,7 +266,7 @@ abstract class RuleSet implements Renderable, Commentable
         $oNextLevel = $oOutputFormat->nextLevel();
         foreach ($this->aRules as $aRules) {
             foreach ($aRules as $rule) {
-                $sRendered = $oNextLevel->safely(function () use ($rule, $oNextLevel): string {
+                $sRendered = $oNextLevel->safely(static function () use ($rule, $oNextLevel): string {
                     return $rule->render($oNextLevel);
                 });
                 if ($sRendered === null) {
