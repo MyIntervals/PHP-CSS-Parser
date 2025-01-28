@@ -97,9 +97,6 @@ abstract class RuleSet implements Renderable, Commentable
         return $this->lineNumber;
     }
 
-    /**
-     * @param Rule|null $oSibling
-     */
     public function addRule(Rule $rule, ?Rule $oSibling = null): void
     {
         $sRule = $rule->getRule();
