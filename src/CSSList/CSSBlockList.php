@@ -100,9 +100,9 @@ abstract class CSSBlockList extends CSSList
         $aDeclarationBlocks = [];
         $this->allDeclarationBlocks($aDeclarationBlocks);
         foreach ($aDeclarationBlocks as $oBlock) {
-            foreach ($oBlock->getSelectors() as $oSelector) {
+            foreach ($oBlock->getSelectors() as $selector) {
                 if ($specificitySearch === null) {
-                    $result[] = $oSelector;
+                    $result[] = $selector;
                 } else {
                     $sComparator = '===';
                     $aSpecificitySearch = \explode(' ', $specificitySearch);
@@ -112,7 +112,7 @@ abstract class CSSBlockList extends CSSList
                         $iTargetSpecificity = $aSpecificitySearch[1];
                     }
                     $iTargetSpecificity = (int) $iTargetSpecificity;
-                    $iSelectorSpecificity = $oSelector->getSpecificity();
+                    $iSelectorSpecificity = $selector->getSpecificity();
                     $bMatches = false;
                     switch ($sComparator) {
                         case '<=':
@@ -132,7 +132,7 @@ abstract class CSSBlockList extends CSSList
                             break;
                     }
                     if ($bMatches) {
-                        $result[] = $oSelector;
+                        $result[] = $selector;
                     }
                 }
             }
