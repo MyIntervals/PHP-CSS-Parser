@@ -19,7 +19,7 @@ Please also have a look at our
 ### Changed
 
 - Use more native type declarations and strict mode
-  (#641, #772, #774, #778, #804)
+  (#641, #772, #774, #778, #804, #841)
 - Add visibility to all class/interface constants (#469)
 
 ### Deprecated
