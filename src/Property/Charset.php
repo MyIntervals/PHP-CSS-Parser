@@ -34,7 +34,6 @@ class Charset implements AtRule
     protected $comments;
 
     /**
-     * @param CSSString $oCharset
      * @param int $lineNumber
      */
     public function __construct(CSSString $oCharset, $lineNumber = 0)
