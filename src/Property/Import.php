@@ -34,7 +34,6 @@ class Import implements AtRule
     protected $comments;
 
     /**
-     * @param URL $oLocation
      * @param string $sMediaQuery
      * @param int $lineNumber
      */
