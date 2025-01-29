@@ -78,13 +78,13 @@ class Rule implements Renderable, Commentable
      */
     public static function parse(ParserState $parserState): Rule
     {
-        $aComments = $parserState->consumeWhiteSpace();
+        $comments = $parserState->consumeWhiteSpace();
         $rule = new Rule(
             $parserState->parseIdentifier(!$parserState->comes('--')),
             $parserState->currentLine(),
             $parserState->currentColumn()
         );
-        $rule->setComments($aComments);
+        $rule->setComments($comments);
         $rule->addComments($parserState->consumeWhiteSpace());
         $parserState->consume(':');
         $oValue = Value::parseValue($parserState, self::listDelimiterForRule($rule->getRule()));

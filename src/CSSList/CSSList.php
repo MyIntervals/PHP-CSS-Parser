@@ -69,9 +69,9 @@ abstract class CSSList implements Renderable, Commentable
             $parserState = new ParserState($parserState, Settings::create());
         }
         $bLenientParsing = $parserState->getSettings()->bLenientParsing;
-        $aComments = [];
+        $comments = [];
         while (!$parserState->isEnd()) {
-            $aComments = \array_merge($aComments, $parserState->consumeWhiteSpace());
+            $comments = \array_merge($comments, $parserState->consumeWhiteSpace());
             $oListItem = null;
             if ($bLenientParsing) {
                 try {
@@ -87,12 +87,12 @@ abstract class CSSList implements Renderable, Commentable
                 return;
             }
             if ($oListItem) {
-                $oListItem->addComments($aComments);
+                $oListItem->addComments($comments);
                 $oList->append($oListItem);
             }
-            $aComments = $parserState->consumeWhiteSpace();
+            $comments = $parserState->consumeWhiteSpace();
         }
-        $oList->addComments($aComments);
+        $oList->addComments($comments);
         if (!$bIsRoot && !$bLenientParsing) {
             throw new SourceException('Unexpected end of document', $parserState->currentLine());
         }
