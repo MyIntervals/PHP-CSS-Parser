@@ -231,7 +231,9 @@ class Color extends CSSFunction
             && $this->allComponentsAreNumbers()
         ) {
             return $this->renderAsHex();
-        } elseif ($this->shouldRenderInModernSyntax()) {
+        }
+
+        if ($this->shouldRenderInModernSyntax()) {
             return $this->renderInModernSyntax($outputFormat);
         }
 
@@ -287,11 +289,23 @@ class Color extends CSSFunction
 
     /**
      * The "legacy" syntax does not allow RGB colors to have a mixture of `percentage`s and `number`s.
+     *
+     * The "legacy" and "modern" monikers are part of the formal W3C syntax.
+     * See the following for more information:
+     * - {@link
+     *     https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/rgb#formal_syntax
+     *     Description of the formal syntax for `rgb()` on MDN
+     *   };
+     * - {@link
+     *     https://www.w3.org/TR/css-color-4/#rgb-functions
+     *     The same in the CSS Color Module Level 4 W3C Candidate Recommendation Draft
+     *   } (as of 13 February 2024, at time of writing).
      */
     private function shouldRenderInModernSyntax(): bool
     {
-        $function = $this->getRealName();
-        if ($function !== 'rgb' && $function !== 'rgba') {
+        static $colorFunctionsThatWithMixedValueTypesCannotBeRenderedInLegacySyntax = ['rgb', 'rgba'];
+        $colorFunction = $this->getRealName();
+        if (!\in_array($colorFunction, $colorFunctionsThatWithMixedValueTypesCannotBeRenderedInLegacySyntax, true)) {
             return false;
         }
 
@@ -327,21 +341,19 @@ class Color extends CSSFunction
      */
     private function renderInModernSyntax(OutputFormat $outputFormat): string
     {
-        \end($this->aComponents);
-        if (\key($this->aComponents) === 'a') {
+        // Maybe not yet without alpha, but will be...
+        $componentsWithoutAlpha = $this->aComponents;
+        \end($componentsWithoutAlpha);
+        if (\key($componentsWithoutAlpha) === 'a') {
             $alpha = $this->aComponents['a'];
-            $componentsWithoutAlpha = \array_diff_key($this->aComponents, ['a' => 0]);
-        } else {
-            $componentsWithoutAlpha = $this->aComponents;
+            unset($componentsWithoutAlpha['a']);
         }
 
         $arguments = $outputFormat->implode(' ', $componentsWithoutAlpha);
         if (isset($alpha)) {
-            $arguments = $outputFormat->implode(
-                $outputFormat->spaceBeforeListArgumentSeparator('/') . '/'
-                    . $outputFormat->spaceAfterListArgumentSeparator('/'),
-                [$arguments, $alpha]
-            );
+            $separator = $outputFormat->spaceBeforeListArgumentSeparator('/')
+                . '/' . $outputFormat->spaceAfterListArgumentSeparator('/');
+            $arguments = $outputFormat->implode($separator, [$arguments, $alpha]);
         }
 
         return $this->getName() . '(' . $arguments . ')';
