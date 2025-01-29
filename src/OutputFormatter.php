@@ -178,11 +178,6 @@ class OutputFormatter
         return \implode(';', $sString);
     }
 
-    /**
-     * @param array<Commentable> $aComments
-     *
-     * @return string
-     */
     public function comments(Commentable $oCommentable): string
     {
         if (!$this->oFormat->bRenderComments) {
@@ -190,10 +185,10 @@ class OutputFormatter
         }
 
         $sResult = '';
-        $aComments = $oCommentable->getComments();
-        $iLastCommentIndex = \count($aComments) - 1;
+        $comments = $oCommentable->getComments();
+        $iLastCommentIndex = \count($comments) - 1;
 
-        foreach ($aComments as $i => $oComment) {
+        foreach ($comments as $i => $oComment) {
             $sResult .= $oComment->render($this->oFormat);
             $sResult .= $i === $iLastCommentIndex ? $this->spaceAfterBlocks() : $this->spaceBetweenBlocks();
         }

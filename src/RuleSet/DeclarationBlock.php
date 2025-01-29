@@ -48,14 +48,14 @@ class DeclarationBlock extends RuleSet
      */
     public static function parse(ParserState $parserState, $oList = null)
     {
-        $aComments = [];
+        $comments = [];
         $oResult = new DeclarationBlock($parserState->currentLine());
         try {
             $aSelectorParts = [];
             $sStringWrapperChar = false;
             do {
                 $aSelectorParts[] = $parserState->consume(1)
-                    . $parserState->consumeUntil(['{', '}', '\'', '"'], false, false, $aComments);
+                    . $parserState->consumeUntil(['{', '}', '\'', '"'], false, false, $comments);
                 if (\in_array($parserState->peek(), ['\'', '"'], true) && \substr(\end($aSelectorParts), -1) != '\\') {
                     if ($sStringWrapperChar === false) {
                         $sStringWrapperChar = $parserState->peek();
@@ -78,7 +78,7 @@ class DeclarationBlock extends RuleSet
                 throw $e;
             }
         }
-        $oResult->setComments($aComments);
+        $oResult->setComments($comments);
         RuleSet::parseRuleSet($parserState, $oResult);
         return $oResult;
     }
