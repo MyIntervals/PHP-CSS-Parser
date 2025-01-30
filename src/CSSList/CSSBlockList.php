@@ -113,25 +113,25 @@ abstract class CSSBlockList extends CSSList
                     }
                     $targetSpecificity = (int) $targetSpecificity;
                     $selectorSpecificity = $selector->getSpecificity();
-                    $hasMatches = false;
+                    $isAMatch = false;
                     switch ($comparator) {
                         case '<=':
-                            $hasMatches = $selectorSpecificity <= $targetSpecificity;
+                            $isAMatch = $selectorSpecificity <= $targetSpecificity;
                             break;
                         case '<':
-                            $hasMatches = $selectorSpecificity < $targetSpecificity;
+                            $isAMatch = $selectorSpecificity < $targetSpecificity;
                             break;
                         case '>=':
-                            $hasMatches = $selectorSpecificity >= $targetSpecificity;
+                            $isAMatch = $selectorSpecificity >= $targetSpecificity;
                             break;
                         case '>':
-                            $hasMatches = $selectorSpecificity > $targetSpecificity;
+                            $isAMatch = $selectorSpecificity > $targetSpecificity;
                             break;
                         default:
-                            $hasMatches = $selectorSpecificity === $targetSpecificity;
+                            $isAMatch = $selectorSpecificity === $targetSpecificity;
                             break;
                     }
-                    if ($hasMatches) {
+                    if ($isAMatch) {
                         $result[] = $selector;
                     }
                 }
