@@ -105,11 +105,11 @@ abstract class CSSBlockList extends CSSList
                     $result[] = $selector;
                 } else {
                     $comparator = '===';
-                    $specificitySearchResults = \explode(' ', $specificitySearch);
-                    $targetSpecificity = $specificitySearchResults[0];
-                    if (\count($specificitySearchResults) > 1) {
-                        $comparator = $specificitySearchResults[0];
-                        $targetSpecificity = $specificitySearchResults[1];
+                    $expressionParts = \explode(' ', $specificitySearch);
+                    $targetSpecificity = $expressionParts[0];
+                    if (\count($expressionParts) > 1) {
+                        $comparator = $expressionParts[0];
+                        $targetSpecificity = $expressionParts[1];
                     }
                     $targetSpecificity = (int) $targetSpecificity;
                     $selectorSpecificity = $selector->getSpecificity();
