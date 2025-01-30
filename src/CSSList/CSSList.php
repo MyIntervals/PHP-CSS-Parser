@@ -41,7 +41,7 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * @var array<int, RuleSet|CSSList|Import|Charset>
      */
-    protected $aContents;
+    protected $contents;
 
     /**
      * @var int
@@ -54,7 +54,7 @@ abstract class CSSList implements Renderable, Commentable
     public function __construct($lineNumber = 0)
     {
         $this->comments = [];
-        $this->aContents = [];
+        $this->contents = [];
         $this->lineNumber = $lineNumber;
     }
 
@@ -259,21 +259,21 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Prepends an item to the list of contents.
      *
-     * @param RuleSet|CSSList|Import|Charset $oItem
+     * @param RuleSet|CSSList|Import|Charset $item
      */
-    public function prepend($oItem): void
+    public function prepend($item): void
     {
-        \array_unshift($this->aContents, $oItem);
+        \array_unshift($this->contents, $item);
     }
 
     /**
      * Appends an item to the list of contents.
      *
-     * @param RuleSet|CSSList|Import|Charset $oItem
+     * @param RuleSet|CSSList|Import|Charset $item
      */
-    public function append($oItem): void
+    public function append($item): void
     {
-        $this->aContents[] = $oItem;
+        $this->contents[] = $item;
     }
 
     /**
@@ -285,7 +285,7 @@ abstract class CSSList implements Renderable, Commentable
      */
     public function splice($iOffset, $iLength = null, $mReplacement = null): void
     {
-        \array_splice($this->aContents, $iOffset, $iLength, $mReplacement);
+        \array_splice($this->contents, $iOffset, $iLength, $mReplacement);
     }
 
     /**
@@ -297,7 +297,7 @@ abstract class CSSList implements Renderable, Commentable
      */
     public function insertBefore($item, $sibling): void
     {
-        if (\in_array($sibling, $this->aContents, true)) {
+        if (\in_array($sibling, $this->contents, true)) {
             $this->replace($sibling, [$item, $sibling]);
         } else {
             $this->append($item);
@@ -307,17 +307,17 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Removes an item from the CSS list.
      *
-     * @param RuleSet|Import|Charset|CSSList $oItemToRemove
+     * @param RuleSet|Import|Charset|CSSList $itemToRemove
      *        May be a `RuleSet` (most likely a `DeclarationBlock`), an `Import`,
      *        a `Charset` or another `CSSList` (most likely a `MediaQuery`)
      *
      * @return bool whether the item was removed
      */
-    public function remove($oItemToRemove)
+    public function remove($itemToRemove)
     {
-        $iKey = \array_search($oItemToRemove, $this->aContents, true);
+        $iKey = \array_search($itemToRemove, $this->contents, true);
         if ($iKey !== false) {
-            unset($this->aContents[$iKey]);
+            unset($this->contents[$iKey]);
             return true;
         }
         return false;
@@ -326,20 +326,20 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Replaces an item from the CSS list.
      *
-     * @param RuleSet|Import|Charset|CSSList $oOldItem
+     * @param RuleSet|Import|Charset|CSSList $oldItem
      *        May be a `RuleSet` (most likely a `DeclarationBlock`), an `Import`, a `Charset`
      *        or another `CSSList` (most likely a `MediaQuery`)
      *
      * @return bool
      */
-    public function replace($oOldItem, $mNewItem)
+    public function replace($oldItem, $newItem)
     {
-        $iKey = \array_search($oOldItem, $this->aContents, true);
+        $iKey = \array_search($oldItem, $this->contents, true);
         if ($iKey !== false) {
-            if (\is_array($mNewItem)) {
-                \array_splice($this->aContents, $iKey, 1, $mNewItem);
+            if (\is_array($newItem)) {
+                \array_splice($this->contents, $iKey, 1, $newItem);
             } else {
-                \array_splice($this->aContents, $iKey, 1, [$mNewItem]);
+                \array_splice($this->contents, $iKey, 1, [$newItem]);
             }
             return true;
         }
@@ -347,12 +347,12 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * @param array<int, RuleSet|Import|Charset|CSSList> $aContents
+     * @param array<int, RuleSet|Import|Charset|CSSList> $contents
      */
-    public function setContents(array $aContents): void
+    public function setContents(array $contents): void
     {
-        $this->aContents = [];
-        foreach ($aContents as $content) {
+        $this->contents = [];
+        foreach ($contents as $content) {
             $this->append($content);
         }
     }
@@ -383,12 +383,12 @@ abstract class CSSList implements Renderable, Commentable
                 $mSel = new Selector($mSel);
             }
         }
-        foreach ($this->aContents as $iKey => $mItem) {
-            if (!($mItem instanceof DeclarationBlock)) {
+        foreach ($this->contents as $iKey => $item) {
+            if (!($item instanceof DeclarationBlock)) {
                 continue;
             }
-            if ($mItem->getSelectors() == $mSelector) {
-                unset($this->aContents[$iKey]);
+            if ($item->getSelectors() == $mSelector) {
+                unset($this->contents[$iKey]);
                 if (!$bRemoveAll) {
                     return;
                 }
@@ -412,9 +412,9 @@ abstract class CSSList implements Renderable, Commentable
         if (!$this->isRootList()) {
             $oNextLevel = $oOutputFormat->nextLevel();
         }
-        foreach ($this->aContents as $oContent) {
-            $sRendered = $oOutputFormat->safely(static function () use ($oNextLevel, $oContent): string {
-                return $oContent->render($oNextLevel);
+        foreach ($this->contents as $listItem) {
+            $sRendered = $oOutputFormat->safely(static function () use ($oNextLevel, $listItem): string {
+                return $listItem->render($oNextLevel);
             });
             if ($sRendered === null) {
                 continue;
@@ -450,7 +450,7 @@ abstract class CSSList implements Renderable, Commentable
      */
     public function getContents()
     {
-        return $this->aContents;
+        return $this->contents;
     }
 
     /**

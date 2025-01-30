@@ -33,11 +33,11 @@ abstract class CSSBlockList extends CSSList
      */
     protected function allDeclarationBlocks(array &$result): void
     {
-        foreach ($this->aContents as $mContent) {
-            if ($mContent instanceof DeclarationBlock) {
-                $result[] = $mContent;
-            } elseif ($mContent instanceof CSSBlockList) {
-                $mContent->allDeclarationBlocks($result);
+        foreach ($this->contents as $item) {
+            if ($item instanceof DeclarationBlock) {
+                $result[] = $item;
+            } elseif ($item instanceof CSSBlockList) {
+                $item->allDeclarationBlocks($result);
             }
         }
     }
@@ -47,11 +47,11 @@ abstract class CSSBlockList extends CSSList
      */
     protected function allRuleSets(array &$result): void
     {
-        foreach ($this->aContents as $mContent) {
-            if ($mContent instanceof RuleSet) {
-                $result[] = $mContent;
-            } elseif ($mContent instanceof CSSBlockList) {
-                $mContent->allRuleSets($result);
+        foreach ($this->contents as $item) {
+            if ($item instanceof RuleSet) {
+                $result[] = $item;
+            } elseif ($item instanceof CSSBlockList) {
+                $item->allRuleSets($result);
             }
         }
     }
