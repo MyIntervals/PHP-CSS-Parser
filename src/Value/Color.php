@@ -233,6 +233,10 @@ class Color extends CSSFunction
             return $this->renderAsHex();
         }
 
+        if ($this->shouldRenderInModernSyntax()) {
+            return $this->renderInModernSyntax($outputFormat);
+        }
+
         return parent::render($outputFormat);
     }
 
@@ -281,5 +285,88 @@ class Color extends CSSFunction
         $canUseShortVariant = ($result[0] == $result[1]) && ($result[2] == $result[3]) && ($result[4] == $result[5]);
 
         return '#' . ($canUseShortVariant ? $result[0] . $result[2] . $result[4] : $result);
+    }
+
+    /**
+     * The "legacy" syntax does not allow RGB colors to have a mixture of `percentage`s and `number`s.
+     *
+     * The "legacy" and "modern" monikers are part of the formal W3C syntax.
+     * See the following for more information:
+     * - {@link
+     *     https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/rgb#formal_syntax
+     *     Description of the formal syntax for `rgb()` on MDN
+     *   };
+     * - {@link
+     *     https://www.w3.org/TR/css-color-4/#rgb-functions
+     *     The same in the CSS Color Module Level 4 W3C Candidate Recommendation Draft
+     *   } (as of 13 February 2024, at time of writing).
+     */
+    private function shouldRenderInModernSyntax(): bool
+    {
+        if (!$this->colorFunctionMayHaveMixedValueTypes($this->getRealName())) {
+            return false;
+        }
+
+        $hasPercentage = false;
+        $hasNumber = false;
+        foreach ($this->aComponents as $key => $value) {
+            if ($key === 'a') {
+                // Alpha can have units that don't match those of the RGB components in the "legacy" syntax.
+                // So it is not necessary to check it.  It's also always last, hence `break` rather than `continue`.
+                break;
+            }
+            if (!($value instanceof Size)) {
+                // Unexpected, unknown, or modified via the API
+                return false;
+            }
+            $unit = $value->getUnit();
+            // `switch` only does loose comparison
+            if ($unit === null) {
+                $hasNumber = true;
+            } elseif ($unit === '%') {
+                $hasPercentage = true;
+            } else {
+                // Invalid unit
+                return false;
+            }
+        }
+
+        return $hasPercentage && $hasNumber;
+    }
+
+    /**
+     * Some color functions, such as `rgb`,
+     * may have a mixture of `percentage`, `number`, or possibly other types in their arguments.
+     *
+     * Note that this excludes the alpha component, which is treated separately.
+     */
+    private function colorFunctionMayHaveMixedValueTypes(string $function): bool
+    {
+        $functionsThatMayHaveMixedValueTypes = ['rgb', 'rgba'];
+
+        return \in_array($function, $functionsThatMayHaveMixedValueTypes, true);
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function renderInModernSyntax(OutputFormat $outputFormat): string
+    {
+        // Maybe not yet without alpha, but will be...
+        $componentsWithoutAlpha = $this->aComponents;
+        \end($componentsWithoutAlpha);
+        if (\key($componentsWithoutAlpha) === 'a') {
+            $alpha = $this->aComponents['a'];
+            unset($componentsWithoutAlpha['a']);
+        }
+
+        $arguments = $outputFormat->implode(' ', $componentsWithoutAlpha);
+        if (isset($alpha)) {
+            $separator = $outputFormat->spaceBeforeListArgumentSeparator('/')
+                . '/' . $outputFormat->spaceAfterListArgumentSeparator('/');
+            $arguments = $outputFormat->implode($separator, [$arguments, $alpha]);
+        }
+
+        return $this->getName() . '(' . $arguments . ')';
     }
 }

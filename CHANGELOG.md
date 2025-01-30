@@ -13,6 +13,7 @@ Please also have a look at our
 - Partial support for CSS Color Module Level 4:
     - `rgb` and `rgba`, and `hsl` and `hsla` are now aliases (#797}
     - Parse color functions that use the "modern" syntax (#800)
+    - Render RGB functions with "modern" syntax when required (#840)
 - Add a class diagram to the README (#482)
 - Add more tests (#449)
 
