@@ -96,42 +96,42 @@ abstract class CSSBlockList extends CSSList
      */
     protected function allSelectors(array &$result, $specificitySearch = null): void
     {
-        /** @var array<int, DeclarationBlock> $aDeclarationBlocks */
-        $aDeclarationBlocks = [];
-        $this->allDeclarationBlocks($aDeclarationBlocks);
-        foreach ($aDeclarationBlocks as $oBlock) {
+        /** @var array<int, DeclarationBlock> $declarationBlocks */
+        $declarationBlocks = [];
+        $this->allDeclarationBlocks($declarationBlocks);
+        foreach ($declarationBlocks as $oBlock) {
             foreach ($oBlock->getSelectors() as $selector) {
                 if ($specificitySearch === null) {
                     $result[] = $selector;
                 } else {
-                    $sComparator = '===';
-                    $aSpecificitySearch = \explode(' ', $specificitySearch);
-                    $iTargetSpecificity = $aSpecificitySearch[0];
-                    if (\count($aSpecificitySearch) > 1) {
-                        $sComparator = $aSpecificitySearch[0];
-                        $iTargetSpecificity = $aSpecificitySearch[1];
+                    $comparator = '===';
+                    $expressionParts = \explode(' ', $specificitySearch);
+                    $targetSpecificity = $expressionParts[0];
+                    if (\count($expressionParts) > 1) {
+                        $comparator = $expressionParts[0];
+                        $targetSpecificity = $expressionParts[1];
                     }
-                    $iTargetSpecificity = (int) $iTargetSpecificity;
-                    $iSelectorSpecificity = $selector->getSpecificity();
-                    $bMatches = false;
-                    switch ($sComparator) {
+                    $targetSpecificity = (int) $targetSpecificity;
+                    $selectorSpecificity = $selector->getSpecificity();
+                    $comparatorMatched = false;
+                    switch ($comparator) {
                         case '<=':
-                            $bMatches = $iSelectorSpecificity <= $iTargetSpecificity;
+                            $comparatorMatched = $selectorSpecificity <= $targetSpecificity;
                             break;
                         case '<':
-                            $bMatches = $iSelectorSpecificity < $iTargetSpecificity;
+                            $comparatorMatched = $selectorSpecificity < $targetSpecificity;
                             break;
                         case '>=':
-                            $bMatches = $iSelectorSpecificity >= $iTargetSpecificity;
+                            $comparatorMatched = $selectorSpecificity >= $targetSpecificity;
                             break;
                         case '>':
-                            $bMatches = $iSelectorSpecificity > $iTargetSpecificity;
+                            $comparatorMatched = $selectorSpecificity > $targetSpecificity;
                             break;
                         default:
-                            $bMatches = $iSelectorSpecificity === $iTargetSpecificity;
+                            $comparatorMatched = $selectorSpecificity === $targetSpecificity;
                             break;
                     }
-                    if ($bMatches) {
+                    if ($comparatorMatched) {
                         $result[] = $selector;
                     }
                 }
