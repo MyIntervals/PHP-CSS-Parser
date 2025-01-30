@@ -303,9 +303,7 @@ class Color extends CSSFunction
      */
     private function shouldRenderInModernSyntax(): bool
     {
-        static $colorFunctionsThatWithMixedValueTypesCannotBeRenderedInLegacySyntax = ['rgb', 'rgba'];
-        $colorFunction = $this->getRealName();
-        if (!\in_array($colorFunction, $colorFunctionsThatWithMixedValueTypesCannotBeRenderedInLegacySyntax, true)) {
+        if (!$this->colorFunctionMayHaveMixedValueTypes($this->getRealName())) {
             return false;
         }
 
@@ -317,7 +315,7 @@ class Color extends CSSFunction
                 // So it is not necessary to check it.  It's also always last, hence `break` rather than `continue`.
                 break;
             }
-            if (!$value instanceof Size) {
+            if (!($value instanceof Size)) {
                 // Unexpected, unknown, or modified via the API
                 return false;
             }
@@ -334,6 +332,19 @@ class Color extends CSSFunction
         }
 
         return $hasPercentage && $hasNumber;
+    }
+
+    /**
+     * Some color functions, such as `rgb`,
+     * may have a mixture of `percentage`, `number`, or possibly other types in their arguments.
+     *
+     * Note that this excludes the alpha component, which is treated separately.
+     */
+    private function colorFunctionMayHaveMixedValueTypes(string $function): bool
+    {
+        $functionsThatMayHaveMixedValueTypes = ['rgb', 'rgba'];
+
+        return \in_array($function, $functionsThatMayHaveMixedValueTypes, true);
     }
 
     /**
