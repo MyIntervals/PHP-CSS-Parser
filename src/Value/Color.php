@@ -224,12 +224,7 @@ class Color extends CSSFunction
 
     public function render(OutputFormat $outputFormat): string
     {
-        // Shorthand RGB color values
-        if (
-            $outputFormat->getRGBHashNotation()
-            && $this->getRealName() === 'rgb'
-            && $this->allComponentsAreNumbers()
-        ) {
+        if ($this->shouldRenderAsHex($outputFormat)) {
             return $this->renderAsHex();
         }
 
@@ -238,6 +233,14 @@ class Color extends CSSFunction
         }
 
         return parent::render($outputFormat);
+    }
+
+    private function shouldRenderAsHex(OutputFormat $outputFormat): bool
+    {
+        return
+            $outputFormat->getRGBHashNotation()
+            && $this->getRealName() === 'rgb'
+            && $this->allComponentsAreNumbers();
     }
 
     /**
