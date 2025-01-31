@@ -85,11 +85,11 @@ abstract class Value implements Renderable
                         break;
                     }
                 }
-                $oList = new RuleValueList($sDelimiter, $parserState->currentLine());
+                $list = new RuleValueList($sDelimiter, $parserState->currentLine());
                 for ($i = $iStartPosition; $i - $iStartPosition < $iLength * 2; $i += 2) {
-                    $oList->addListComponent($aStack[$i]);
+                    $list->addListComponent($aStack[$i]);
                 }
-                $aNewStack[] = $oList;
+                $aNewStack[] = $list;
                 $iStartPosition += $iLength * 2 - 2;
             }
             $aStack = $aNewStack;

@@ -62,9 +62,9 @@ abstract class CSSList implements Renderable, Commentable
      * @throws UnexpectedTokenException
      * @throws SourceException
      */
-    public static function parseList(ParserState $parserState, CSSList $oList): void
+    public static function parseList(ParserState $parserState, CSSList $list): void
     {
-        $bIsRoot = $oList instanceof Document;
+        $bIsRoot = $list instanceof Document;
         if (\is_string($parserState)) {
             $parserState = new ParserState($parserState, Settings::create());
         }
@@ -72,27 +72,27 @@ abstract class CSSList implements Renderable, Commentable
         $comments = [];
         while (!$parserState->isEnd()) {
             $comments = \array_merge($comments, $parserState->consumeWhiteSpace());
-            $oListItem = null;
+            $listItem = null;
             if ($bLenientParsing) {
                 try {
-                    $oListItem = self::parseListItem($parserState, $oList);
+                    $listItem = self::parseListItem($parserState, $list);
                 } catch (UnexpectedTokenException $e) {
-                    $oListItem = false;
+                    $listItem = false;
                 }
             } else {
-                $oListItem = self::parseListItem($parserState, $oList);
+                $listItem = self::parseListItem($parserState, $list);
             }
-            if ($oListItem === null) {
+            if ($listItem === null) {
                 // List parsing finished
                 return;
             }
-            if ($oListItem) {
-                $oListItem->addComments($comments);
-                $oList->append($oListItem);
+            if ($listItem) {
+                $listItem->addComments($comments);
+                $list->append($listItem);
             }
             $comments = $parserState->consumeWhiteSpace();
         }
-        $oList->addComments($comments);
+        $list->addComments($comments);
         if (!$bIsRoot && !$bLenientParsing) {
             throw new SourceException('Unexpected end of document', $parserState->currentLine());
         }
@@ -105,9 +105,9 @@ abstract class CSSList implements Renderable, Commentable
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    private static function parseListItem(ParserState $parserState, CSSList $oList)
+    private static function parseListItem(ParserState $parserState, CSSList $list)
     {
-        $bIsRoot = $oList instanceof Document;
+        $bIsRoot = $list instanceof Document;
         if ($parserState->comes('@')) {
             $oAtRule = self::parseAtRule($parserState);
             if ($oAtRule instanceof Charset) {
@@ -119,7 +119,7 @@ abstract class CSSList implements Renderable, Commentable
                         $parserState->currentLine()
                     );
                 }
-                if (\count($oList->getContents()) > 0) {
+                if (\count($list->getContents()) > 0) {
                     throw new UnexpectedTokenException(
                         '@charset must be the first parseable token in a document',
                         '',
@@ -142,7 +142,7 @@ abstract class CSSList implements Renderable, Commentable
                 return null;
             }
         } else {
-            return DeclarationBlock::parse($parserState, $oList);
+            return DeclarationBlock::parse($parserState, $list);
         }
     }
 

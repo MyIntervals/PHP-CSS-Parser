@@ -39,14 +39,14 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * @param CSSList|null $oList
+     * @param CSSList|null $list
      *
      * @return DeclarationBlock|false
      *
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
-    public static function parse(ParserState $parserState, $oList = null)
+    public static function parse(ParserState $parserState, $list = null)
     {
         $comments = [];
         $oResult = new DeclarationBlock($parserState->currentLine());
@@ -64,7 +64,7 @@ class DeclarationBlock extends RuleSet
                     }
                 }
             } while (!\in_array($parserState->peek(), ['{', '}'], true) || $sStringWrapperChar !== false);
-            $oResult->setSelectors(\implode('', $aSelectorParts), $oList);
+            $oResult->setSelectors(\implode('', $aSelectorParts), $list);
             if ($parserState->comes('{')) {
                 $parserState->consume(1);
             }
@@ -85,11 +85,11 @@ class DeclarationBlock extends RuleSet
 
     /**
      * @param array<int, Selector|string>|string $mSelector
-     * @param CSSList|null $oList
+     * @param CSSList|null $list
      *
      * @throws UnexpectedTokenException
      */
-    public function setSelectors($mSelector, $oList = null): void
+    public function setSelectors($mSelector, $list = null): void
     {
         if (\is_array($mSelector)) {
             $this->aSelectors = $mSelector;
@@ -98,7 +98,7 @@ class DeclarationBlock extends RuleSet
         }
         foreach ($this->aSelectors as $key => $mSelector) {
             if (!($mSelector instanceof Selector)) {
-                if ($oList === null || !($oList instanceof KeyFrame)) {
+                if ($list === null || !($list instanceof KeyFrame)) {
                     if (!Selector::isValid($mSelector)) {
                         throw new UnexpectedTokenException(
                             "Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.",
