@@ -14,6 +14,7 @@ Please also have a look at our
     - `rgb` and `rgba`, and `hsl` and `hsla` are now aliases (#797}
     - Parse color functions that use the "modern" syntax (#800)
     - Render RGB functions with "modern" syntax when required (#840)
+    - Support `none` as color function component value (#859)
 - Add a class diagram to the README (#482)
 - Add more tests (#449)
 

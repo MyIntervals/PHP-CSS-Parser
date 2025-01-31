@@ -114,12 +114,18 @@ final class ColorTest extends TestCase
                 'rgb(0% 60% 0%)',
                 'rgb(0%,60%,0%)',
             ],
-            /*
-            'modern rgb with none' => [
+            'modern rgb with none as red' => [
                 'rgb(none 119 0)',
                 'rgb(none 119 0)',
             ],
-            //*/
+            'modern rgb with none as green' => [
+                'rgb(0 none 0)',
+                'rgb(0 none 0)',
+            ],
+            'modern rgb with none as blue' => [
+                'rgb(0 119 none)',
+                'rgb(0 119 none)',
+            ],
             'modern rgba with fractional alpha' => [
                 'rgb(0 119 0 / 0.5)',
                 'rgba(0,119,0,.5)',
@@ -148,12 +154,10 @@ final class ColorTest extends TestCase
                 'rgb(0% 60% 0% / 50%)',
                 'rgba(0%,60%,0%,50%)',
             ],
-            /*
             'modern rgba with none as alpha' => [
                 'rgb(0 119 0 / none)',
-                'rgba(0 119 0 / none)',
+                'rgba(0 119 0/none)',
             ],
-            //*/
             'legacy rgb with var for R' => [
                 'rgb(var(--r), 119, 0)',
                 'rgb(var(--r),119,0)',
@@ -310,22 +314,26 @@ final class ColorTest extends TestCase
                 'hsl(120 100% 25%)',
                 'hsl(120,100%,25%)',
             ],
-            /*
-            'modern hsl with none' => [
+            'modern hsl with none as hue' => [
                 'hsl(none 100% 25%)',
                 'hsl(none 100% 25%)',
             ],
-            //*/
+            'modern hsl with none as saturation' => [
+                'hsl(120 none 25%)',
+                'hsl(120 none 25%)',
+            ],
+            'modern hsl with none as lightness' => [
+                'hsl(120 100% none)',
+                'hsl(120 100% none)',
+            ],
             'modern hsla' => [
                 'hsl(120 100% 25% / 0.5)',
                 'hsla(120,100%,25%,.5)',
             ],
-            /*
             'modern hsla with none as alpha' => [
-                'hsl(120 100% 25% none)',
-                'hsla(120 100% 25% none)',
+                'hsl(120 100% 25% / none)',
+                'hsla(120 100% 25%/none)',
             ],
-            //*/
         ];
     }
 
@@ -386,6 +394,18 @@ final class ColorTest extends TestCase
                 'rgb(255, 0px, 0)',
             ],
             //*/
+            'legacy rgb color with none as red' => [
+                'rgb(none, 0, 0)',
+            ],
+            'legacy rgb color with none as green' => [
+                'rgb(255, none, 0)',
+            ],
+            'legacy rgb color with none as blue' => [
+                'rgb(255, 0, none)',
+            ],
+            'legacy rgba color with none as alpha' => [
+                'rgba(255, 0, 0, none)',
+            ],
             'modern rgb color without slash separator for alpha' => [
                 'rgb(255 0 0 0.5)',
             ],
@@ -406,6 +426,18 @@ final class ColorTest extends TestCase
             ],
             'legacy hsl color with 5 arguments' => [
                 'hsl(0, 100%, 50%, 0.5, 0)',
+            ],
+            'legacy hsl color with none as hue' => [
+                'hsl(none, 100%, 50%)',
+            ],
+            'legacy hsl color with none as saturation' => [
+                'hsl(0, none, 50%)',
+            ],
+            'legacy hsl color with none as lightness' => [
+                'hsl(0, 100%, none)',
+            ],
+            'legacy hsla color with none as alpha' => [
+                'hsl(0, 100%, 50%, none)',
             ],
             /*
             'legacy hsl color without % for S/L units' => [
