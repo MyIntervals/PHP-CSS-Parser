@@ -315,9 +315,9 @@ abstract class CSSList implements Renderable, Commentable
      */
     public function remove($itemToRemove)
     {
-        $iKey = \array_search($itemToRemove, $this->contents, true);
-        if ($iKey !== false) {
-            unset($this->contents[$iKey]);
+        $key = \array_search($itemToRemove, $this->contents, true);
+        if ($key !== false) {
+            unset($this->contents[$key]);
             return true;
         }
         return false;
@@ -334,12 +334,12 @@ abstract class CSSList implements Renderable, Commentable
      */
     public function replace($oldItem, $newItem)
     {
-        $iKey = \array_search($oldItem, $this->contents, true);
-        if ($iKey !== false) {
+        $key = \array_search($oldItem, $this->contents, true);
+        if ($key !== false) {
             if (\is_array($newItem)) {
-                \array_splice($this->contents, $iKey, 1, $newItem);
+                \array_splice($this->contents, $key, 1, $newItem);
             } else {
-                \array_splice($this->contents, $iKey, 1, [$newItem]);
+                \array_splice($this->contents, $key, 1, [$newItem]);
             }
             return true;
         }
@@ -371,7 +371,7 @@ abstract class CSSList implements Renderable, Commentable
         if (!\is_array($mSelector)) {
             $mSelector = \explode(',', $mSelector);
         }
-        foreach ($mSelector as $iKey => &$mSel) {
+        foreach ($mSelector as $key => &$mSel) {
             if (!($mSel instanceof Selector)) {
                 if (!Selector::isValid($mSel)) {
                     throw new UnexpectedTokenException(
@@ -383,12 +383,12 @@ abstract class CSSList implements Renderable, Commentable
                 $mSel = new Selector($mSel);
             }
         }
-        foreach ($this->contents as $iKey => $item) {
+        foreach ($this->contents as $key => $item) {
             if (!($item instanceof DeclarationBlock)) {
                 continue;
             }
             if ($item->getSelectors() == $mSelector) {
-                unset($this->contents[$iKey]);
+                unset($this->contents[$key]);
                 if (!$bRemoveAll) {
                     return;
                 }

@@ -230,9 +230,9 @@ abstract class RuleSet implements Renderable, Commentable
             if (!isset($this->aRules[$sRule])) {
                 return;
             }
-            foreach ($this->aRules[$sRule] as $iKey => $rule) {
+            foreach ($this->aRules[$sRule] as $key => $rule) {
                 if ($rule === $mRule) {
-                    unset($this->aRules[$sRule][$iKey]);
+                    unset($this->aRules[$sRule][$key]);
                 }
             }
         } else {
