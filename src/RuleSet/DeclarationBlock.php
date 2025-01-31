@@ -96,7 +96,7 @@ class DeclarationBlock extends RuleSet
         } else {
             $this->aSelectors = \explode(',', $mSelector);
         }
-        foreach ($this->aSelectors as $iKey => $mSelector) {
+        foreach ($this->aSelectors as $key => $mSelector) {
             if (!($mSelector instanceof Selector)) {
                 if ($oList === null || !($oList instanceof KeyFrame)) {
                     if (!Selector::isValid($mSelector)) {
@@ -106,7 +106,7 @@ class DeclarationBlock extends RuleSet
                             'custom'
                         );
                     }
-                    $this->aSelectors[$iKey] = new Selector($mSelector);
+                    $this->aSelectors[$key] = new Selector($mSelector);
                 } else {
                     if (!KeyframeSelector::isValid($mSelector)) {
                         throw new UnexpectedTokenException(
@@ -115,7 +115,7 @@ class DeclarationBlock extends RuleSet
                             'custom'
                         );
                     }
-                    $this->aSelectors[$iKey] = new KeyframeSelector($mSelector);
+                    $this->aSelectors[$key] = new KeyframeSelector($mSelector);
                 }
             }
         }
@@ -131,9 +131,9 @@ class DeclarationBlock extends RuleSet
         if ($mSelector instanceof Selector) {
             $mSelector = $mSelector->getSelector();
         }
-        foreach ($this->aSelectors as $iKey => $selector) {
+        foreach ($this->aSelectors as $key => $selector) {
             if ($selector->getSelector() === $mSelector) {
-                unset($this->aSelectors[$iKey]);
+                unset($this->aSelectors[$key]);
                 return true;
             }
         }
