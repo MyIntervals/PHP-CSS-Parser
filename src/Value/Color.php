@@ -260,7 +260,7 @@ class Color extends CSSFunction
     private function allComponentsAreNumbers(): bool
     {
         foreach ($this->aComponents as $component) {
-            if (!$component instanceof Size || $component->getUnit() !== null) {
+            if (!($component instanceof Size) || $component->getUnit() !== null) {
                 return false;
             }
         }

@@ -97,7 +97,7 @@ final class ParserTest extends TestCase
     {
         $document = self::parsedStructureForFile('colortest');
         foreach ($document->getAllRuleSets() as $ruleSet) {
-            if (!$ruleSet instanceof DeclarationBlock) {
+            if (!($ruleSet instanceof DeclarationBlock)) {
                 continue;
             }
             $selectors = $ruleSet->getSelectors();
@@ -405,7 +405,7 @@ body {color: green;}',
         self::assertSame('background-color', $backgroundHeaderRules[1]->getRule());
         $backgroundHeaderRules = $headerBlock->getRulesAssoc('background-');
         self::assertCount(1, $backgroundHeaderRules);
-        self::assertTrue($backgroundHeaderRules['background-color']->getValue() instanceof Color);
+        self::assertInstanceOf(Color::class, $backgroundHeaderRules['background-color']->getValue());
         self::assertSame('rgba', $backgroundHeaderRules['background-color']->getValue()->getColorDescription());
         $headerBlock->removeRule($backgroundHeaderRules['background-color']);
         $backgroundHeaderRules = $headerBlock->getRules('background-');

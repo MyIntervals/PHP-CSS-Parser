@@ -206,7 +206,7 @@ class Rule implements Renderable, Commentable
         if (!\is_array($mValue)) {
             $mValue = [$mValue];
         }
-        if (!$this->mValue instanceof RuleValueList || $this->mValue->getListSeparator() !== $sType) {
+        if (!($this->mValue instanceof RuleValueList) || $this->mValue->getListSeparator() !== $sType) {
             $mCurrentValue = $this->mValue;
             $this->mValue = new RuleValueList($sType, $this->lineNumber);
             if ($mCurrentValue) {
