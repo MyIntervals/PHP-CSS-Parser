@@ -37,7 +37,7 @@ class CalcFunction extends CSSFunction
         }
         $parserState->consume('(');
         $oCalcList = new CalcRuleValueList($parserState->currentLine());
-        $oList = new RuleValueList(',', $parserState->currentLine());
+        $list = new RuleValueList(',', $parserState->currentLine());
         $iNestingLevel = 0;
         $iLastComponentType = null;
         while (!$parserState->comes(')') || $iNestingLevel > 0) {
@@ -94,10 +94,10 @@ class CalcFunction extends CSSFunction
             }
             $parserState->consumeWhiteSpace();
         }
-        $oList->addListComponent($oCalcList);
+        $list->addListComponent($oCalcList);
         if (!$parserState->isEnd()) {
             $parserState->consume(')');
         }
-        return new CalcFunction($sFunction, $oList, ',', $parserState->currentLine());
+        return new CalcFunction($sFunction, $list, ',', $parserState->currentLine());
     }
 }
