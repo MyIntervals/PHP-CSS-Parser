@@ -35,7 +35,7 @@ final class OutputFormatTest extends TestCase
      */
     public function setStringQuotingTypeSetsStringQuotingType(): void
     {
-        $value = '"';
+        $value = "'";
         $this->subject->setStringQuotingType($value);
 
         self::assertSame($value, $this->subject->getStringQuotingType());
