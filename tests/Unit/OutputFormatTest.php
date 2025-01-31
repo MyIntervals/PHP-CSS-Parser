@@ -35,7 +35,7 @@ final class OutputFormatTest extends TestCase
      */
     public function setStringQuotingTypeSetsStringQuotingType(): void
     {
-        $value = 'x';
+        $value = '"';
         $this->subject->setStringQuotingType($value);
 
         self::assertSame($value, $this->subject->getStringQuotingType());
@@ -46,7 +46,7 @@ final class OutputFormatTest extends TestCase
      */
     public function setStringQuotingTypeProvidesFluentInterface(): void
     {
-        self::assertSame($this->subject, $this->subject->setStringQuotingType('x'));
+        self::assertSame($this->subject, $this->subject->setStringQuotingType('"'));
     }
 
     /**
@@ -129,7 +129,7 @@ final class OutputFormatTest extends TestCase
      */
     public function setSpaceAfterRuleNameSetsSpaceAfterRuleName(): void
     {
-        $value = '    ';
+        $value = "\n";
         $this->subject->setSpaceAfterRuleName($value);
 
         self::assertSame($value, $this->subject->getSpaceAfterRuleName());
@@ -140,7 +140,7 @@ final class OutputFormatTest extends TestCase
      */
     public function setSpaceAfterRuleNameProvidesFluentInterface(): void
     {
-        self::assertSame($this->subject, $this->subject->setSpaceAfterRuleName('    '));
+        self::assertSame($this->subject, $this->subject->setSpaceAfterRuleName("\n"));
     }
 
     /**
