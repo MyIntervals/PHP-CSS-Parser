@@ -21,7 +21,7 @@ class Import implements AtRule
     /**
      * @var string
      */
-    private $sMediaQuery;
+    private $mediaQuery;
 
     /**
      * @var int
@@ -34,13 +34,13 @@ class Import implements AtRule
     protected $comments;
 
     /**
-     * @param string $sMediaQuery
+     * @param string $mediaQuery
      * @param int $lineNumber
      */
-    public function __construct(URL $oLocation, $sMediaQuery, $lineNumber = 0)
+    public function __construct(URL $oLocation, $mediaQuery, $lineNumber = 0)
     {
         $this->oLocation = $oLocation;
-        $this->sMediaQuery = $sMediaQuery;
+        $this->mediaQuery = $mediaQuery;
         $this->lineNumber = $lineNumber;
         $this->comments = [];
     }
@@ -77,7 +77,7 @@ class Import implements AtRule
     public function render(OutputFormat $oOutputFormat): string
     {
         return $oOutputFormat->comments($this) . '@import ' . $this->oLocation->render($oOutputFormat)
-            . ($this->sMediaQuery === null ? '' : ' ' . $this->sMediaQuery) . ';';
+            . ($this->mediaQuery === null ? '' : ' ' . $this->mediaQuery) . ';';
     }
 
     public function atRuleName(): string
@@ -91,8 +91,8 @@ class Import implements AtRule
     public function atRuleArgs(): array
     {
         $aResult = [$this->oLocation];
-        if ($this->sMediaQuery) {
-            \array_push($aResult, $this->sMediaQuery);
+        if ($this->mediaQuery) {
+            \array_push($aResult, $this->mediaQuery);
         }
         return $aResult;
     }
@@ -126,6 +126,6 @@ class Import implements AtRule
      */
     public function getMediaQuery()
     {
-        return $this->sMediaQuery;
+        return $this->mediaQuery;
     }
 }
