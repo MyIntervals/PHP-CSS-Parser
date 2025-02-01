@@ -80,13 +80,13 @@ class Settings
     /**
      * Configures whether the parser should silently ignore invalid rules.
      *
-     * @param bool $bLenientParsing
+     * @param bool $usesLenientParsing
      *
      * @return $this fluent interface
      */
-    public function withLenientParsing($bLenientParsing = true): self
+    public function withLenientParsing($usesLenientParsing = true): self
     {
-        $this->bLenientParsing = $bLenientParsing;
+        $this->bLenientParsing = $usesLenientParsing;
         return $this;
     }
 
