@@ -304,4 +304,330 @@ final class OutputFormatTest extends TestCase
     {
         self::assertSame($this->subject, $this->subject->setSpaceBetweenBlocks(' '));
     }
+
+    /**
+     * @test
+     */
+    public function getBeforeAtRuleBlockInitiallyReturnsEmptyString(): void
+    {
+        self::assertSame('', $this->subject->getBeforeAtRuleBlock());
+    }
+
+    /**
+     * @test
+     */
+    public function setBeforeAtRuleBlockSetsBeforeAtRuleBlock(): void
+    {
+        $value = ' ';
+        $this->subject->setBeforeAtRuleBlock($value);
+
+        self::assertSame($value, $this->subject->getBeforeAtRuleBlock());
+    }
+
+    /**
+     * @test
+     */
+    public function setBeforeAtRuleBlockProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setBeforeAtRuleBlock(' '));
+    }
+
+    /**
+     * @test
+     */
+    public function getAfterAtRuleBlockInitiallyReturnsEmptyString(): void
+    {
+        self::assertSame('', $this->subject->getAfterAtRuleBlock());
+    }
+
+    /**
+     * @test
+     */
+    public function setAfterAtRuleBlockSetsAfterAtRuleBlock(): void
+    {
+        $value = ' ';
+        $this->subject->setAfterAtRuleBlock($value);
+
+        self::assertSame($value, $this->subject->getAfterAtRuleBlock());
+    }
+
+    /**
+     * @test
+     */
+    public function setAfterAtRuleBlockProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setAfterAtRuleBlock(' '));
+    }
+
+    /**
+     * @test
+     */
+    public function getSpaceBeforeSelectorSeparatorInitiallyReturnsEmptyString(): void
+    {
+        self::assertSame('', $this->subject->getSpaceBeforeSelectorSeparator());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceBeforeSelectorSeparatorSetsSpaceBeforeSelectorSeparator(): void
+    {
+        $value = ' ';
+        $this->subject->setSpaceBeforeSelectorSeparator($value);
+
+        self::assertSame($value, $this->subject->getSpaceBeforeSelectorSeparator());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceBeforeSelectorSeparatorProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setSpaceBeforeSelectorSeparator(' '));
+    }
+
+    /**
+     * @test
+     */
+    public function getSpaceAfterSelectorSeparatorInitiallyReturnsSpace(): void
+    {
+        self::assertSame(' ', $this->subject->getSpaceAfterSelectorSeparator());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceAfterSelectorSeparatorSetsSpaceAfterSelectorSeparator(): void
+    {
+        $value = '    ';
+        $this->subject->setSpaceAfterSelectorSeparator($value);
+
+        self::assertSame($value, $this->subject->getSpaceAfterSelectorSeparator());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceAfterSelectorSeparatorProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setSpaceAfterSelectorSeparator(' '));
+    }
+
+    /**
+     * @test
+     */
+    public function getSpaceBeforeListArgumentSeparatorInitiallyReturnsEmptyString(): void
+    {
+        self::assertSame('', $this->subject->getSpaceBeforeListArgumentSeparator());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceBeforeListArgumentSeparatorSetsSpaceBeforeListArgumentSeparator(): void
+    {
+        $value = ' ';
+        $this->subject->setSpaceBeforeListArgumentSeparator($value);
+
+        self::assertSame($value, $this->subject->getSpaceBeforeListArgumentSeparator());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceBeforeListArgumentSeparatorProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setSpaceBeforeListArgumentSeparator(' '));
+    }
+
+    /**
+     * @test
+     */
+    public function getSpaceAfterListArgumentSeparatorInitiallyReturnsEmptyString(): void
+    {
+        self::assertSame('', $this->subject->getSpaceAfterListArgumentSeparator());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceAfterListArgumentSeparatorSetsSpaceAfterListArgumentSeparator(): void
+    {
+        $value = '    ';
+        $this->subject->setSpaceAfterListArgumentSeparator($value);
+
+        self::assertSame($value, $this->subject->getSpaceAfterListArgumentSeparator());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceAfterListArgumentSeparatorProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setSpaceAfterListArgumentSeparator(' '));
+    }
+
+    /**
+     * @test
+     */
+    public function getBeforeDeclarationBlockInitiallyReturnsEmptyString(): void
+    {
+        self::assertSame('', $this->subject->getBeforeDeclarationBlock());
+    }
+
+    /**
+     * @test
+     */
+    public function setBeforeDeclarationBlockSetsBeforeDeclarationBlock(): void
+    {
+        $value = ' ';
+        $this->subject->setBeforeDeclarationBlock($value);
+
+        self::assertSame($value, $this->subject->getBeforeDeclarationBlock());
+    }
+
+    /**
+     * @test
+     */
+    public function setBeforeDeclarationBlockProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setBeforeDeclarationBlock(' '));
+    }
+
+    /**
+     * @test
+     */
+    public function getAfterDeclarationBlockSelectorsInitiallyReturnsEmptyString(): void
+    {
+        self::assertSame('', $this->subject->getAfterDeclarationBlockSelectors());
+    }
+
+    /**
+     * @test
+     */
+    public function setAfterDeclarationBlockSelectorsSetsAfterDeclarationBlockSelectors(): void
+    {
+        $value = ' ';
+        $this->subject->setAfterDeclarationBlockSelectors($value);
+
+        self::assertSame($value, $this->subject->getAfterDeclarationBlockSelectors());
+    }
+
+    /**
+     * @test
+     */
+    public function setAfterDeclarationBlockSelectorsProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setAfterDeclarationBlockSelectors(' '));
+    }
+
+    /**
+     * @test
+     */
+    public function getAfterDeclarationBlockInitiallyReturnsEmptyString(): void
+    {
+        self::assertSame('', $this->subject->getAfterDeclarationBlock());
+    }
+
+    /**
+     * @test
+     */
+    public function setAfterDeclarationBlockSetsAfterDeclarationBlock(): void
+    {
+        $value = ' ';
+        $this->subject->setAfterDeclarationBlock($value);
+
+        self::assertSame($value, $this->subject->getAfterDeclarationBlock());
+    }
+
+    /**
+     * @test
+     */
+    public function setAfterDeclarationBlockProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setAfterDeclarationBlock(' '));
+    }
+
+    /**
+     * @test
+     */
+    public function getIndentationInitiallyReturnsTab(): void
+    {
+        self::assertSame("\t", $this->subject->getIndentation());
+    }
+
+    /**
+     * @test
+     */
+    public function setIndentationSetsIndentation(): void
+    {
+        $value = ' ';
+        $this->subject->setIndentation($value);
+
+        self::assertSame($value, $this->subject->getIndentation());
+    }
+
+    /**
+     * @test
+     */
+    public function setIndentationProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setIndentation(' '));
+    }
+
+    /**
+     * @test
+     */
+    public function getIgnoreExceptionsInitiallyReturnsFalse(): void
+    {
+        self::assertFalse($this->subject->getIgnoreExceptions());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideBooleans
+     */
+    public function setIgnoreExceptionsSetsIgnoreExceptions(bool $value): void
+    {
+        $this->subject->setIgnoreExceptions($value);
+
+        self::assertSame($value, $this->subject->getIgnoreExceptions());
+    }
+
+    /**
+     * @test
+     */
+    public function setIgnoreExceptionsProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setIgnoreExceptions(true));
+    }
+
+    /**
+     * @test
+     */
+    public function getRenderCommentsInitiallyReturnsFalse(): void
+    {
+        self::assertFalse($this->subject->getRenderComments());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideBooleans
+     */
+    public function setRenderCommentsSetsRenderComments(bool $value): void
+    {
+        $this->subject->setRenderComments($value);
+
+        self::assertSame($value, $this->subject->getRenderComments());
+    }
+
+    /**
+     * @test
+     */
+    public function setRenderCommentsProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setRenderComments(true));
+    }
 }
