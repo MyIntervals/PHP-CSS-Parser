@@ -116,15 +116,20 @@ class Color extends CSSFunction
         }
 
         $containsVar = false;
+        $containsNone = false;
         $isLegacySyntax = false;
         $expectedArgumentCount = $parserState->strlen($colorModeForParsing);
         for ($argumentIndex = 0; $argumentIndex < $expectedArgumentCount; ++$argumentIndex) {
             $parserState->consumeWhiteSpace();
+            $valueKey = $colorModeForParsing[$argumentIndex];
             if ($parserState->comes('var')) {
-                $colorValues[$colorModeForParsing[$argumentIndex]] = CSSFunction::parseIdentifierOrFunction($parserState);
+                $colorValues[$valueKey] = CSSFunction::parseIdentifierOrFunction($parserState);
                 $containsVar = true;
+            } elseif (!$isLegacySyntax && $parserState->comes('none')) {
+                $colorValues[$valueKey] = $parserState->parseIdentifier();
+                $containsNone = true;
             } else {
-                $colorValues[$colorModeForParsing[$argumentIndex]] = Size::parse($parserState, true);
+                $colorValues[$valueKey] = Size::parse($parserState, true);
             }
 
             // This must be done first, to consume comments as well, so that the `comes` test will work.
@@ -139,10 +144,10 @@ class Color extends CSSFunction
                 break;
             }
 
-            // "Legacy" syntax is comma-delimited.
+            // "Legacy" syntax is comma-delimited, and does not allow the `none` keyword.
             // "Modern" syntax is space-delimited, with `/` as alpha delimiter.
             // They cannot be mixed.
-            if ($argumentIndex === 0) {
+            if ($argumentIndex === 0 && !$containsNone) {
                 // An immediate closing parenthesis is not valid.
                 if ($parserState->comes(')')) {
                     throw new UnexpectedTokenException(
@@ -291,7 +296,8 @@ class Color extends CSSFunction
     }
 
     /**
-     * The "legacy" syntax does not allow RGB colors to have a mixture of `percentage`s and `number`s.
+     * The "legacy" syntax does not allow RGB colors to have a mixture of `percentage`s and `number`s,
+     * and does not allow `none` as any component value.
      *
      * The "legacy" and "modern" monikers are part of the formal W3C syntax.
      * See the following for more information:
@@ -306,6 +312,10 @@ class Color extends CSSFunction
      */
     private function shouldRenderInModernSyntax(): bool
     {
+        if ($this->HasNoneAsComponentValue()) {
+            return true;
+        }
+
         if (!$this->colorFunctionMayHaveMixedValueTypes($this->getRealName())) {
             return false;
         }
@@ -335,6 +345,11 @@ class Color extends CSSFunction
         }
 
         return $hasPercentage && $hasNumber;
+    }
+
+    private function hasNoneAsComponentValue(): bool
+    {
+        return \in_array('none', $this->aComponents, true);
     }
 
     /**
