@@ -443,7 +443,7 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function getSpaceAfterListArgumentSeparatorInitiallyEmptyString(): void
+    public function getSpaceAfterListArgumentSeparatorInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getSpaceAfterListArgumentSeparator());
     }
