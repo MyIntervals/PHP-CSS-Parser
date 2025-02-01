@@ -68,12 +68,12 @@ abstract class CSSList implements Renderable, Commentable
         if (\is_string($parserState)) {
             $parserState = new ParserState($parserState, Settings::create());
         }
-        $bLenientParsing = $parserState->getSettings()->bLenientParsing;
+        $usesLenientParsing = $parserState->getSettings()->bLenientParsing;
         $comments = [];
         while (!$parserState->isEnd()) {
             $comments = \array_merge($comments, $parserState->consumeWhiteSpace());
             $listItem = null;
-            if ($bLenientParsing) {
+            if ($usesLenientParsing) {
                 try {
                     $listItem = self::parseListItem($parserState, $list);
                 } catch (UnexpectedTokenException $e) {
@@ -93,7 +93,7 @@ abstract class CSSList implements Renderable, Commentable
             $comments = $parserState->consumeWhiteSpace();
         }
         $list->addComments($comments);
-        if (!$bIsRoot && !$bLenientParsing) {
+        if (!$bIsRoot && !$usesLenientParsing) {
             throw new SourceException('Unexpected end of document', $parserState->currentLine());
         }
     }
