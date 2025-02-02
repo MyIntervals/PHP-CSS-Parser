@@ -37,15 +37,15 @@ class URL extends PrimitiveValue
     public static function parse(ParserState $parserState): URL
     {
         $oAnchor = $parserState->anchor();
-        $sIdentifier = '';
+        $identifier = '';
         for ($i = 0; $i < 3; $i++) {
             $sChar = $parserState->parseCharacter(true);
             if ($sChar === null) {
                 break;
             }
-            $sIdentifier .= $sChar;
+            $identifier .= $sChar;
         }
-        $bUseUrl = $parserState->streql($sIdentifier, 'url');
+        $bUseUrl = $parserState->streql($identifier, 'url');
         if ($bUseUrl) {
             $parserState->consumeWhiteSpace();
             $parserState->consume('(');
