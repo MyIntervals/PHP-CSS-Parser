@@ -6,6 +6,7 @@ namespace Sabberworm\CSS\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\OutputFormatter;
 
 /**
  * @covers \Sabberworm\CSS\OutputFormat
@@ -683,5 +684,182 @@ final class OutputFormatTest extends TestCase
     public function setIndentationLevelProvidesFluentInterface(): void
     {
         self::assertSame($this->subject, $this->subject->setIndentationLevel(4));
+    }
+
+    /**
+     * @test
+     */
+    public function indentWithTabsByDefaultSetsIndentationToOneTab(): void
+    {
+        $this->subject->indentWithTabs();
+
+        self::assertSame("\t", $this->subject->getIndentation());
+    }
+
+    /**
+     * @return array<string, array{0: int<0, max>, 1: string}>
+     */
+    public static function provideTabIndentation(): array
+    {
+        return [
+            'zero tabs' => [0, ''],
+            'one tab' => [1, "\t"],
+            'two tabs' => [2, "\t\t"],
+            'three tabs' => [3, "\t\t\t"],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideTabIndentation
+     */
+    public function indentWithTabsSetsIndentationToTheProvidedNumberOfTabs(
+        int $numberOfTabs,
+        string $expectedIndentation
+    ): void {
+        $this->subject->indentWithTabs($numberOfTabs);
+
+        self::assertSame($expectedIndentation, $this->subject->getIndentation());
+    }
+
+    /**
+     * @test
+     */
+    public function indentWithTabsProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->indentWithTabs());
+    }
+
+    /**
+     * @test
+     */
+    public function indentWithSpacesByDefaultSetsIndentationToTwoSpaces(): void
+    {
+        $this->subject->indentWithSpaces();
+
+        self::assertSame('  ', $this->subject->getIndentation());
+    }
+
+    /**
+     * @return array<string, array{0: int<0, max>, 1: string}>
+     */
+    public static function provideSpaceIndentation(): array
+    {
+        return [
+            'zero spaces' => [0, ''],
+            'one space' => [1, ' '],
+            'two spaces' => [2, '  '],
+            'three spaces' => [3, '   '],
+            'four spaces' => [4, '    '],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideSpaceIndentation
+     */
+    public function indentWithSpacesSetsIndentationToTheProvidedNumberOfSpaces(
+        int $numberOfSpaces,
+        string $expectedIndentation
+    ): void {
+        $this->subject->indentWithSpaces($numberOfSpaces);
+
+        self::assertSame($expectedIndentation, $this->subject->getIndentation());
+    }
+
+    /**
+     * @test
+     */
+    public function indentWithSpacesProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->indentWithSpaces());
+    }
+
+    /**
+     * @test
+     */
+    public function nextLevelReturnsOutputFormatInstance(): void
+    {
+        self::assertInstanceOf(OutputFormat::class, $this->subject->nextLevel());
+    }
+
+    /**
+     * @test
+     */
+    public function nextLevelReturnsDifferentInstance(): void
+    {
+        self::assertNotSame($this->subject, $this->subject->nextLevel());
+    }
+
+    /**
+     * @test
+     */
+    public function nextLevelReturnsInstanceWithIndentationLevelIncreasedByOne(): void
+    {
+        $originalIndentationLevel = 2;
+        $this->subject->setIndentationLevel($originalIndentationLevel);
+
+        self::assertSame($originalIndentationLevel + 1, $this->subject->nextLevel()->getIndentationLevel());
+    }
+
+    /**
+     * @test
+     */
+    public function beLenientSetsIgnoreExceptionsToTrue(): void
+    {
+        $this->subject->setIgnoreExceptions(false);
+
+        $this->subject->beLenient();
+
+        self::assertTrue($this->subject->getIgnoreExceptions());
+    }
+
+    /**
+     * @test
+     */
+    public function getFormatterReturnsOutputFormatterInstance(): void
+    {
+        self::assertInstanceOf(OutputFormatter::class, $this->subject->getFormatter());
+    }
+
+    /**
+     * @test
+     */
+    public function getFormatterCalledTwoTimesReturnsSameInstance(): void
+    {
+        $firstCallResult = $this->subject->getFormatter();
+        $secondCallResult = $this->subject->getFormatter();
+
+        self::assertSame($firstCallResult, $secondCallResult);
+    }
+
+    /**
+     * @test
+     */
+    public function levelReturnsIndentationLevel(): void
+    {
+        $value = 4;
+        $this->subject->setIndentationLevel($value);
+
+        self::assertSame($value, $this->subject->level());
+    }
+
+    /**
+     * @test
+     */
+    public function createReturnsNewOutputFormatInstance(): void
+    {
+        self::assertInstanceOf(OutputFormat::class, OutputFormat::create());
+    }
+
+    /**
+     * @test
+     */
+    public function createCalledTwoTimesReturnsDifferentInstances(): void
+    {
+        $firstCallResult = OutputFormat::create();
+        $secondCallResult = OutputFormat::create();
+
+        self::assertNotSame($firstCallResult, $secondCallResult);
     }
 }
