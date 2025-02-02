@@ -470,6 +470,33 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
+    public function getSpaceBeforeOpeningBraceInitiallyReturnsSpace(): void
+    {
+        self::assertSame(' ', $this->subject->getSpaceBeforeOpeningBrace());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceBeforeOpeningBraceSetsSpaceBeforeOpeningBrace(): void
+    {
+        $value = "\t";
+        $this->subject->setSpaceBeforeOpeningBrace($value);
+
+        self::assertSame($value, $this->subject->getSpaceBeforeOpeningBrace());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceBeforeOpeningBraceProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setSpaceBeforeOpeningBrace(' '));
+    }
+
+    /**
+     * @test
+     */
     public function getBeforeDeclarationBlockInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getBeforeDeclarationBlock());
@@ -629,5 +656,32 @@ final class OutputFormatTest extends TestCase
     public function setRenderCommentsProvidesFluentInterface(): void
     {
         self::assertSame($this->subject, $this->subject->setRenderComments(true));
+    }
+
+    /**
+     * @test
+     */
+    public function getIndentationLevelInitiallyReturnsZero(): void
+    {
+        self::assertSame(0, $this->subject->getIndentationLevel());
+    }
+
+    /**
+     * @test
+     */
+    public function setIndentationLevelSetsIndentationLevel(): void
+    {
+        $value = 4;
+        $this->subject->setIndentationLevel($value);
+
+        self::assertSame($value, $this->subject->getIndentationLevel());
+    }
+
+    /**
+     * @test
+     */
+    public function setIndentationLevelProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setIndentationLevel(4));
     }
 }
