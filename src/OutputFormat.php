@@ -288,14 +288,6 @@ class OutputFormat
     }
 
     /**
-     * @return int
-     */
-    public function level()
-    {
-        return $this->iIndentationLevel;
-    }
-
-    /**
      * Creates an instance of this class without any particular formatting settings.
      */
     public static function create(): self
