@@ -243,23 +243,19 @@ class OutputFormat
     }
 
     /**
-     * @param int $iNumber
-     *
-     * @return self
+     * @return $this fluent interface
      */
-    public function indentWithTabs($iNumber = 1)
+    public function indentWithTabs(int $numberOfTabs = 1): self
     {
-        return $this->setIndentation(\str_repeat("\t", $iNumber));
+        return $this->setIndentation(\str_repeat("\t", $numberOfTabs));
     }
 
     /**
-     * @param int $iNumber
-     *
-     * @return self
+     * @return $this fluent interface
      */
-    public function indentWithSpaces($iNumber = 2)
+    public function indentWithSpaces(int $numberOfSpaces = 2): self
     {
-        return $this->setIndentation(\str_repeat(' ', $iNumber));
+        return $this->setIndentation(\str_repeat(' ', $numberOfSpaces));
     }
 
     /**
