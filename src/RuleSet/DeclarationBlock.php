@@ -49,7 +49,7 @@ class DeclarationBlock extends RuleSet
     public static function parse(ParserState $parserState, $list = null)
     {
         $comments = [];
-        $oResult = new DeclarationBlock($parserState->currentLine());
+        $result = new DeclarationBlock($parserState->currentLine());
         try {
             $aSelectorParts = [];
             $sStringWrapperChar = false;
@@ -64,7 +64,7 @@ class DeclarationBlock extends RuleSet
                     }
                 }
             } while (!\in_array($parserState->peek(), ['{', '}'], true) || $sStringWrapperChar !== false);
-            $oResult->setSelectors(\implode('', $aSelectorParts), $list);
+            $result->setSelectors(\implode('', $aSelectorParts), $list);
             if ($parserState->comes('{')) {
                 $parserState->consume(1);
             }
@@ -78,9 +78,9 @@ class DeclarationBlock extends RuleSet
                 throw $e;
             }
         }
-        $oResult->setComments($comments);
-        RuleSet::parseRuleSet($parserState, $oResult);
-        return $oResult;
+        $result->setComments($comments);
+        RuleSet::parseRuleSet($parserState, $result);
+        return $result;
     }
 
     /**
