@@ -250,6 +250,6 @@ class OutputFormatter
      */
     private function indent()
     {
-        return str_repeat($this->oFormat->sIndentation, $this->oFormat->level());
+        return str_repeat($this->oFormat->sIndentation, $this->oFormat->getIndentationLevel());
     }
 }

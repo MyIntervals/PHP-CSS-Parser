@@ -297,6 +297,8 @@ class OutputFormat
 
     /**
      * @return int
+     *
+     * @deprecated #869 since version V8.8.0, will be removed in V9.0.0. Use `getIndentationLevel()` instead.
      */
     public function level()
     {
