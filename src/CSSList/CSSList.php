@@ -156,10 +156,10 @@ abstract class CSSList implements Renderable, Commentable
     private static function parseAtRule(ParserState $parserState)
     {
         $parserState->consume('@');
-        $sIdentifier = $parserState->parseIdentifier();
+        $identifier = $parserState->parseIdentifier();
         $iIdentifierLineNum = $parserState->currentLine();
         $parserState->consumeWhiteSpace();
-        if ($sIdentifier === 'import') {
+        if ($identifier === 'import') {
             $oLocation = URL::parse($parserState);
             $parserState->consumeWhiteSpace();
             $mediaQuery = null;
@@ -171,21 +171,21 @@ abstract class CSSList implements Renderable, Commentable
             }
             $parserState->consumeUntil([';', ParserState::EOF], true, true);
             return new Import($oLocation, $mediaQuery, $iIdentifierLineNum);
-        } elseif ($sIdentifier === 'charset') {
+        } elseif ($identifier === 'charset') {
             $oCharsetString = CSSString::parse($parserState);
             $parserState->consumeWhiteSpace();
             $parserState->consumeUntil([';', ParserState::EOF], true, true);
             return new Charset($oCharsetString, $iIdentifierLineNum);
-        } elseif (self::identifierIs($sIdentifier, 'keyframes')) {
+        } elseif (self::identifierIs($identifier, 'keyframes')) {
             $oResult = new KeyFrame($iIdentifierLineNum);
-            $oResult->setVendorKeyFrame($sIdentifier);
+            $oResult->setVendorKeyFrame($identifier);
             $oResult->setAnimationName(\trim($parserState->consumeUntil('{', false, true)));
             CSSList::parseList($parserState, $oResult);
             if ($parserState->comes('}')) {
                 $parserState->consume('}');
             }
             return $oResult;
-        } elseif ($sIdentifier === 'namespace') {
+        } elseif ($identifier === 'namespace') {
             $sPrefix = null;
             $mUrl = Value::parsePrimitiveValue($parserState);
             if (!$parserState->comes(';')) {
@@ -217,16 +217,16 @@ abstract class CSSList implements Renderable, Commentable
             }
             $bUseRuleSet = true;
             foreach (\explode('/', AtRule::BLOCK_RULES) as $sBlockRuleName) {
-                if (self::identifierIs($sIdentifier, $sBlockRuleName)) {
+                if (self::identifierIs($identifier, $sBlockRuleName)) {
                     $bUseRuleSet = false;
                     break;
                 }
             }
             if ($bUseRuleSet) {
-                $oAtRule = new AtRuleSet($sIdentifier, $sArgs, $iIdentifierLineNum);
+                $oAtRule = new AtRuleSet($identifier, $sArgs, $iIdentifierLineNum);
                 RuleSet::parseRuleSet($parserState, $oAtRule);
             } else {
-                $oAtRule = new AtRuleBlockList($sIdentifier, $sArgs, $iIdentifierLineNum);
+                $oAtRule = new AtRuleBlockList($identifier, $sArgs, $iIdentifierLineNum);
                 CSSList::parseList($parserState, $oAtRule);
                 if ($parserState->comes('}')) {
                     $parserState->consume('}');
@@ -240,12 +240,12 @@ abstract class CSSList implements Renderable, Commentable
      * Tests an identifier for a given value. Since identifiers are all keywords, they can be vendor-prefixed.
      * We need to check for these versions too.
      *
-     * @param string $sIdentifier
+     * @param string $identifier
      */
-    private static function identifierIs($sIdentifier, string $sMatch): bool
+    private static function identifierIs($identifier, string $sMatch): bool
     {
-        return (\strcasecmp($sIdentifier, $sMatch) === 0)
-            ?: \preg_match("/^(-\\w+-)?$sMatch$/i", $sIdentifier) === 1;
+        return (\strcasecmp($identifier, $sMatch) === 0)
+            ?: \preg_match("/^(-\\w+-)?$sMatch$/i", $identifier) === 1;
     }
 
     /**
