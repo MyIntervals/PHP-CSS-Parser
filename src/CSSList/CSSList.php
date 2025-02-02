@@ -160,7 +160,7 @@ abstract class CSSList implements Renderable, Commentable
         $iIdentifierLineNum = $parserState->currentLine();
         $parserState->consumeWhiteSpace();
         if ($identifier === 'import') {
-            $oLocation = URL::parse($parserState);
+            $location = URL::parse($parserState);
             $parserState->consumeWhiteSpace();
             $mediaQuery = null;
             if (!$parserState->comes(';')) {
@@ -170,7 +170,7 @@ abstract class CSSList implements Renderable, Commentable
                 }
             }
             $parserState->consumeUntil([';', ParserState::EOF], true, true);
-            return new Import($oLocation, $mediaQuery, $iIdentifierLineNum);
+            return new Import($location, $mediaQuery, $iIdentifierLineNum);
         } elseif ($identifier === 'charset') {
             $oCharsetString = CSSString::parse($parserState);
             $parserState->consumeWhiteSpace();
