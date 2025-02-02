@@ -64,7 +64,7 @@ abstract class CSSList implements Renderable, Commentable
      */
     public static function parseList(ParserState $parserState, CSSList $list): void
     {
-        $bIsRoot = $list instanceof Document;
+        $isRoot = $list instanceof Document;
         if (\is_string($parserState)) {
             $parserState = new ParserState($parserState, Settings::create());
         }
@@ -93,7 +93,7 @@ abstract class CSSList implements Renderable, Commentable
             $comments = $parserState->consumeWhiteSpace();
         }
         $list->addComments($comments);
-        if (!$bIsRoot && !$usesLenientParsing) {
+        if (!$isRoot && !$usesLenientParsing) {
             throw new SourceException('Unexpected end of document', $parserState->currentLine());
         }
     }
@@ -107,11 +107,11 @@ abstract class CSSList implements Renderable, Commentable
      */
     private static function parseListItem(ParserState $parserState, CSSList $list)
     {
-        $bIsRoot = $list instanceof Document;
+        $isRoot = $list instanceof Document;
         if ($parserState->comes('@')) {
-            $oAtRule = self::parseAtRule($parserState);
-            if ($oAtRule instanceof Charset) {
-                if (!$bIsRoot) {
+            $atRule = self::parseAtRule($parserState);
+            if ($atRule instanceof Charset) {
+                if (!$isRoot) {
                     throw new UnexpectedTokenException(
                         '@charset may only occur in root document',
                         '',
@@ -127,11 +127,11 @@ abstract class CSSList implements Renderable, Commentable
                         $parserState->currentLine()
                     );
                 }
-                $parserState->setCharset($oAtRule->getCharset());
+                $parserState->setCharset($atRule->getCharset());
             }
-            return $oAtRule;
+            return $atRule;
         } elseif ($parserState->comes('}')) {
-            if ($bIsRoot) {
+            if ($isRoot) {
                 if ($parserState->getSettings()->bLenientParsing) {
                     return DeclarationBlock::parse($parserState);
                 } else {
@@ -157,7 +157,7 @@ abstract class CSSList implements Renderable, Commentable
     {
         $parserState->consume('@');
         $identifier = $parserState->parseIdentifier();
-        $iIdentifierLineNum = $parserState->currentLine();
+        $identifierLineNumber = $parserState->currentLine();
         $parserState->consumeWhiteSpace();
         if ($identifier === 'import') {
             $location = URL::parse($parserState);
@@ -170,14 +170,14 @@ abstract class CSSList implements Renderable, Commentable
                 }
             }
             $parserState->consumeUntil([';', ParserState::EOF], true, true);
-            return new Import($location, $mediaQuery, $iIdentifierLineNum);
+            return new Import($location, $mediaQuery, $identifierLineNumber);
         } elseif ($identifier === 'charset') {
-            $oCharsetString = CSSString::parse($parserState);
+            $charsetString = CSSString::parse($parserState);
             $parserState->consumeWhiteSpace();
             $parserState->consumeUntil([';', ParserState::EOF], true, true);
-            return new Charset($oCharsetString, $iIdentifierLineNum);
+            return new Charset($charsetString, $identifierLineNumber);
         } elseif (self::identifierIs($identifier, 'keyframes')) {
-            $result = new KeyFrame($iIdentifierLineNum);
+            $result = new KeyFrame($identifierLineNumber);
             $result->setVendorKeyFrame($identifier);
             $result->setAnimationName(\trim($parserState->consumeUntil('{', false, true)));
             CSSList::parseList($parserState, $result);
@@ -187,52 +187,52 @@ abstract class CSSList implements Renderable, Commentable
             return $result;
         } elseif ($identifier === 'namespace') {
             $sPrefix = null;
-            $mUrl = Value::parsePrimitiveValue($parserState);
+            $url = Value::parsePrimitiveValue($parserState);
             if (!$parserState->comes(';')) {
-                $sPrefix = $mUrl;
-                $mUrl = Value::parsePrimitiveValue($parserState);
+                $sPrefix = $url;
+                $url = Value::parsePrimitiveValue($parserState);
             }
             $parserState->consumeUntil([';', ParserState::EOF], true, true);
             if ($sPrefix !== null && !\is_string($sPrefix)) {
-                throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom', $iIdentifierLineNum);
+                throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom', $identifierLineNumber);
             }
-            if (!($mUrl instanceof CSSString || $mUrl instanceof URL)) {
+            if (!($url instanceof CSSString || $url instanceof URL)) {
                 throw new UnexpectedTokenException(
                     'Wrong namespace url of invalid type',
-                    $mUrl,
+                    $url,
                     'custom',
-                    $iIdentifierLineNum
+                    $identifierLineNumber
                 );
             }
-            return new CSSNamespace($mUrl, $sPrefix, $iIdentifierLineNum);
+            return new CSSNamespace($url, $sPrefix, $identifierLineNumber);
         } else {
             // Unknown other at rule (font-face or such)
-            $sArgs = \trim($parserState->consumeUntil('{', false, true));
-            if (\substr_count($sArgs, '(') != \substr_count($sArgs, ')')) {
+            $arguments = \trim($parserState->consumeUntil('{', false, true));
+            if (\substr_count($arguments, '(') != \substr_count($arguments, ')')) {
                 if ($parserState->getSettings()->bLenientParsing) {
                     return null;
                 } else {
                     throw new SourceException('Unmatched brace count in media query', $parserState->currentLine());
                 }
             }
-            $bUseRuleSet = true;
-            foreach (\explode('/', AtRule::BLOCK_RULES) as $sBlockRuleName) {
-                if (self::identifierIs($identifier, $sBlockRuleName)) {
-                    $bUseRuleSet = false;
+            $useRuleSet = true;
+            foreach (\explode('/', AtRule::BLOCK_RULES) as $blockRuleName) {
+                if (self::identifierIs($identifier, $blockRuleName)) {
+                    $useRuleSet = false;
                     break;
                 }
             }
-            if ($bUseRuleSet) {
-                $oAtRule = new AtRuleSet($identifier, $sArgs, $iIdentifierLineNum);
-                RuleSet::parseRuleSet($parserState, $oAtRule);
+            if ($useRuleSet) {
+                $atRule = new AtRuleSet($identifier, $arguments, $identifierLineNumber);
+                RuleSet::parseRuleSet($parserState, $atRule);
             } else {
-                $oAtRule = new AtRuleBlockList($identifier, $sArgs, $iIdentifierLineNum);
-                CSSList::parseList($parserState, $oAtRule);
+                $atRule = new AtRuleBlockList($identifier, $arguments, $identifierLineNumber);
+                CSSList::parseList($parserState, $atRule);
                 if ($parserState->comes('}')) {
                     $parserState->consume('}');
                 }
             }
-            return $oAtRule;
+            return $atRule;
         }
     }
 
@@ -242,10 +242,10 @@ abstract class CSSList implements Renderable, Commentable
      *
      * @param string $identifier
      */
-    private static function identifierIs($identifier, string $sMatch): bool
+    private static function identifierIs($identifier, string $match): bool
     {
-        return (\strcasecmp($identifier, $sMatch) === 0)
-            ?: \preg_match("/^(-\\w+-)?$sMatch$/i", $identifier) === 1;
+        return (\strcasecmp($identifier, $match) === 0)
+            ?: \preg_match("/^(-\\w+-)?$match$/i", $identifier) === 1;
     }
 
     /**
@@ -279,13 +279,13 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Splices the list of contents.
      *
-     * @param int $iOffset
-     * @param int $iLength
-     * @param array<int, RuleSet|CSSList|Import|Charset> $mReplacement
+     * @param int $offset
+     * @param int $length
+     * @param array<int, RuleSet|CSSList|Import|Charset> $replacement
      */
-    public function splice($iOffset, $iLength = null, $mReplacement = null): void
+    public function splice($offset, $length = null, $replacement = null): void
     {
-        \array_splice($this->contents, $iOffset, $iLength, $mReplacement);
+        \array_splice($this->contents, $offset, $length, $replacement);
     }
 
     /**
@@ -360,36 +360,36 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Removes a declaration block from the CSS list if it matches all given selectors.
      *
-     * @param DeclarationBlock|array<array-key, Selector>|string $mSelector the selectors to match
-     * @param bool $bRemoveAll whether to stop at the first declaration block found or remove all blocks
+     * @param DeclarationBlock|array<array-key, Selector>|string $selectors the selectors to match
+     * @param bool $removeAll whether to stop at the first declaration block found or remove all blocks
      */
-    public function removeDeclarationBlockBySelector($mSelector, $bRemoveAll = false): void
+    public function removeDeclarationBlockBySelector($selectors, $removeAll = false): void
     {
-        if ($mSelector instanceof DeclarationBlock) {
-            $mSelector = $mSelector->getSelectors();
+        if ($selectors instanceof DeclarationBlock) {
+            $selectors = $selectors->getSelectors();
         }
-        if (!\is_array($mSelector)) {
-            $mSelector = \explode(',', $mSelector);
+        if (!\is_array($selectors)) {
+            $selectors = \explode(',', $selectors);
         }
-        foreach ($mSelector as $key => &$mSel) {
-            if (!($mSel instanceof Selector)) {
-                if (!Selector::isValid($mSel)) {
+        foreach ($selectors as $key => &$selector) {
+            if (!($selector instanceof Selector)) {
+                if (!Selector::isValid($selector)) {
                     throw new UnexpectedTokenException(
                         "Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.",
-                        $mSel,
+                        $selector,
                         'custom'
                     );
                 }
-                $mSel = new Selector($mSel);
+                $selector = new Selector($selector);
             }
         }
         foreach ($this->contents as $key => $item) {
             if (!($item instanceof DeclarationBlock)) {
                 continue;
             }
-            if ($item->getSelectors() == $mSelector) {
+            if ($item->getSelectors() == $selectors) {
                 unset($this->contents[$key]);
-                if (!$bRemoveAll) {
+                if (!$removeAll) {
                     return;
                 }
             }
@@ -406,34 +406,34 @@ abstract class CSSList implements Renderable, Commentable
      */
     protected function renderListContents(OutputFormat $oOutputFormat)
     {
-        $sResult = '';
-        $bIsFirst = true;
-        $oNextLevel = $oOutputFormat;
+        $result = '';
+        $isFirst = true;
+        $nextLevelFormat = $oOutputFormat;
         if (!$this->isRootList()) {
-            $oNextLevel = $oOutputFormat->nextLevel();
+            $nextLevelFormat = $oOutputFormat->nextLevel();
         }
         foreach ($this->contents as $listItem) {
-            $sRendered = $oOutputFormat->safely(static function () use ($oNextLevel, $listItem): string {
-                return $listItem->render($oNextLevel);
+            $renderedCss = $oOutputFormat->safely(static function () use ($nextLevelFormat, $listItem): string {
+                return $listItem->render($nextLevelFormat);
             });
-            if ($sRendered === null) {
+            if ($renderedCss === null) {
                 continue;
             }
-            if ($bIsFirst) {
-                $bIsFirst = false;
-                $sResult .= $oNextLevel->spaceBeforeBlocks();
+            if ($isFirst) {
+                $isFirst = false;
+                $result .= $nextLevelFormat->spaceBeforeBlocks();
             } else {
-                $sResult .= $oNextLevel->spaceBetweenBlocks();
+                $result .= $nextLevelFormat->spaceBetweenBlocks();
             }
-            $sResult .= $sRendered;
+            $result .= $renderedCss;
         }
 
-        if (!$bIsFirst) {
+        if (!$isFirst) {
             // Had some output
-            $sResult .= $oOutputFormat->spaceAfterBlocks();
+            $result .= $oOutputFormat->spaceAfterBlocks();
         }
 
-        return $sResult;
+        return $result;
     }
 
     /**
