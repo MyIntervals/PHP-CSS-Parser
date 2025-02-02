@@ -170,11 +170,9 @@ class OutputFormat
     public function __construct() {}
 
     /**
-     * @param string $sName
-     *
-     * @return string|null
+     * @return string|int|bool|null
      */
-    public function get($sName)
+    public function get(string $sName)
     {
         $aVarPrefixes = ['a', 's', 'm', 'b', 'f', 'o', 'c', 'i'];
         foreach ($aVarPrefixes as $sPrefix) {
@@ -258,10 +256,7 @@ class OutputFormat
         return $this->setIndentation(\str_repeat(' ', $numberOfSpaces));
     }
 
-    /**
-     * @return OutputFormat
-     */
-    public function nextLevel()
+    public function nextLevel(): self
     {
         if ($this->oNextLevelFormat === null) {
             $this->oNextLevelFormat = clone $this;
@@ -276,10 +271,7 @@ class OutputFormat
         $this->bIgnoreExceptions = true;
     }
 
-    /**
-     * @return OutputFormatter
-     */
-    public function getFormatter()
+    public function getFormatter(): OutputFormatter
     {
         if ($this->oFormatter === null) {
             $this->oFormatter = new OutputFormatter($this);
