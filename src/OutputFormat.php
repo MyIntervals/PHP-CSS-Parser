@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS;
 
-/**
- * Class OutputFormat
- *
- * @method OutputFormat setSemicolonAfterLastRule(bool $bSemicolonAfterLastRule) Set whether semicolons are added after
- *     last rule.
- */
 class OutputFormat
 {
     /**
@@ -251,15 +245,487 @@ class OutputFormat
      */
     public function __call(string $sMethodName, array $aArguments)
     {
-        if (\strpos($sMethodName, 'set') === 0) {
-            return $this->set(\substr($sMethodName, 3), $aArguments[0]);
-        } elseif (\strpos($sMethodName, 'get') === 0) {
-            return $this->get(\substr($sMethodName, 3));
-        } elseif (\method_exists(OutputFormatter::class, $sMethodName)) {
+        if (\method_exists(OutputFormatter::class, $sMethodName)) {
             return \call_user_func_array([$this->getFormatter(), $sMethodName], $aArguments);
         } else {
             throw new \Exception('Unknown OutputFormat method called: ' . $sMethodName);
         }
+    }
+
+    /**
+     * @internal
+     */
+    public function getStringQuotingType(): string
+    {
+        return $this->sStringQuotingType;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setStringQuotingType(string $quotingType): self
+    {
+        $this->sStringQuotingType = $quotingType;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getRGBHashNotation(): bool
+    {
+        return $this->bRGBHashNotation;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setRGBHashNotation(bool $rgbHashNotation): self
+    {
+        $this->bRGBHashNotation = $rgbHashNotation;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getSemicolonAfterLastRule(): bool
+    {
+        return $this->bSemicolonAfterLastRule;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setSemicolonAfterLastRule(bool $semicolonAfterLastRule): self
+    {
+        $this->bSemicolonAfterLastRule = $semicolonAfterLastRule;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getSpaceAfterRuleName(): string
+    {
+        return $this->sSpaceAfterRuleName;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setSpaceAfterRuleName(string $whitespace): self
+    {
+        $this->sSpaceAfterRuleName = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getSpaceBeforeRules(): string
+    {
+        return $this->sSpaceBeforeRules;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setSpaceBeforeRules(string $whitespace): self
+    {
+        $this->sSpaceBeforeRules = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getSpaceAfterRules(): string
+    {
+        return $this->sSpaceAfterRules;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setSpaceAfterRules(string $whitespace): self
+    {
+        $this->sSpaceAfterRules = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getSpaceBetweenRules(): string
+    {
+        return $this->sSpaceBetweenRules;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setSpaceBetweenRules(string $whitespace): self
+    {
+        $this->sSpaceBetweenRules = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getSpaceBeforeBlocks(): string
+    {
+        return $this->sSpaceBeforeBlocks;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setSpaceBeforeBlocks(string $whitespace): self
+    {
+        $this->sSpaceBeforeBlocks = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getSpaceAfterBlocks(): string
+    {
+        return $this->sSpaceAfterBlocks;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setSpaceAfterBlocks(string $whitespace): self
+    {
+        $this->sSpaceAfterBlocks = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getSpaceBetweenBlocks(): string
+    {
+        return $this->sSpaceBetweenBlocks;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setSpaceBetweenBlocks(string $whitespace): self
+    {
+        $this->sSpaceBetweenBlocks = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getBeforeAtRuleBlock(): string
+    {
+        return $this->sBeforeAtRuleBlock;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setBeforeAtRuleBlock(string $whitespace): self
+    {
+        $this->sBeforeAtRuleBlock = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getAfterAtRuleBlock(): string
+    {
+        return $this->sAfterAtRuleBlock;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setAfterAtRuleBlock(string $whitespace): self
+    {
+        $this->sAfterAtRuleBlock = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getSpaceBeforeSelectorSeparator(): string
+    {
+        return $this->sSpaceBeforeSelectorSeparator;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setSpaceBeforeSelectorSeparator(string $whitespace): self
+    {
+        $this->sSpaceBeforeSelectorSeparator = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getSpaceAfterSelectorSeparator(): string
+    {
+        return $this->sSpaceAfterSelectorSeparator;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setSpaceAfterSelectorSeparator(string $whitespace): self
+    {
+        $this->sSpaceAfterSelectorSeparator = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getSpaceBeforeListArgumentSeparator(): string
+    {
+        return $this->sSpaceBeforeListArgumentSeparator;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setSpaceBeforeListArgumentSeparator(string $whitespace): self
+    {
+        $this->sSpaceBeforeListArgumentSeparator = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @return array<non-empty-string, string>
+     *
+     * @internal
+     */
+    public function getSpaceBeforeListArgumentSeparators(): array
+    {
+        return $this->aSpaceBeforeListArgumentSeparators;
+    }
+
+    /**
+     * @param array<non-empty-string, string> $separators
+     *
+     * @return $this fluent interface
+     */
+    public function setSpaceBeforeListArgumentSeparators(array $separators): self
+    {
+        $this->aSpaceBeforeListArgumentSeparators = $separators;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getSpaceAfterListArgumentSeparator(): string
+    {
+        return $this->sSpaceAfterListArgumentSeparator;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setSpaceAfterListArgumentSeparator(string $whitespace): self
+    {
+        $this->sSpaceAfterListArgumentSeparator = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @return array<non-empty-string, string>
+     *
+     * @internal
+     */
+    public function getSpaceAfterListArgumentSeparators(): array
+    {
+        return $this->aSpaceAfterListArgumentSeparators;
+    }
+
+    /**
+     * @param array<non-empty-string, string> $separators
+     *
+     * @return $this fluent interface
+     */
+    public function setSpaceAfterListArgumentSeparators(array $separators): self
+    {
+        $this->aSpaceAfterListArgumentSeparators = $separators;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getSpaceBeforeOpeningBrace(): string
+    {
+        return $this->sSpaceBeforeOpeningBrace;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setSpaceBeforeOpeningBrace(string $whitespace): self
+    {
+        $this->sSpaceBeforeOpeningBrace = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getBeforeDeclarationBlock(): string
+    {
+        return $this->sBeforeDeclarationBlock;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setBeforeDeclarationBlock(string $whitespace): self
+    {
+        $this->sBeforeDeclarationBlock = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getAfterDeclarationBlockSelectors(): string
+    {
+        return $this->sAfterDeclarationBlockSelectors;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setAfterDeclarationBlockSelectors(string $whitespace): self
+    {
+        $this->sAfterDeclarationBlockSelectors = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getAfterDeclarationBlock(): string
+    {
+        return $this->sAfterDeclarationBlock;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setAfterDeclarationBlock(string $whitespace): self
+    {
+        $this->sAfterDeclarationBlock = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getIndentation(): string
+    {
+        return $this->sIndentation;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setIndentation(string $sIndentation): self
+    {
+        $this->sIndentation = $sIndentation;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getIgnoreExceptions(): bool
+    {
+        return $this->bIgnoreExceptions;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setIgnoreExceptions(bool $ignoreExceptions): self
+    {
+        $this->bIgnoreExceptions = $ignoreExceptions;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getRenderComments(): bool
+    {
+        return $this->bRenderComments;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setRenderComments(bool $renderComments): self
+    {
+        $this->bRenderComments = $renderComments;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function getIndentationLevel(): int
+    {
+        return $this->iIndentationLevel;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setIndentationLevel(int $indentationLevel): self
+    {
+        $this->iIndentationLevel = $indentationLevel;
+
+        return $this;
     }
 
     /**
