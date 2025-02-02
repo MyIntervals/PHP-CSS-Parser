@@ -16,7 +16,7 @@ class Import implements AtRule
     /**
      * @var URL
      */
-    private $oLocation;
+    private $location;
 
     /**
      * @var string
@@ -37,9 +37,9 @@ class Import implements AtRule
      * @param string $mediaQuery
      * @param int $lineNumber
      */
-    public function __construct(URL $oLocation, $mediaQuery, $lineNumber = 0)
+    public function __construct(URL $location, $mediaQuery, $lineNumber = 0)
     {
-        $this->oLocation = $oLocation;
+        $this->location = $location;
         $this->mediaQuery = $mediaQuery;
         $this->lineNumber = $lineNumber;
         $this->comments = [];
@@ -54,11 +54,11 @@ class Import implements AtRule
     }
 
     /**
-     * @param URL $oLocation
+     * @param URL $location
      */
-    public function setLocation($oLocation): void
+    public function setLocation($location): void
     {
-        $this->oLocation = $oLocation;
+        $this->location = $location;
     }
 
     /**
@@ -66,7 +66,7 @@ class Import implements AtRule
      */
     public function getLocation()
     {
-        return $this->oLocation;
+        return $this->location;
     }
 
     public function __toString(): string
@@ -76,7 +76,7 @@ class Import implements AtRule
 
     public function render(OutputFormat $oOutputFormat): string
     {
-        return $oOutputFormat->comments($this) . '@import ' . $this->oLocation->render($oOutputFormat)
+        return $oOutputFormat->comments($this) . '@import ' . $this->location->render($oOutputFormat)
             . ($this->mediaQuery === null ? '' : ' ' . $this->mediaQuery) . ';';
     }
 
@@ -90,7 +90,7 @@ class Import implements AtRule
      */
     public function atRuleArgs(): array
     {
-        $aResult = [$this->oLocation];
+        $aResult = [$this->location];
         if ($this->mediaQuery) {
             \array_push($aResult, $this->mediaQuery);
         }
