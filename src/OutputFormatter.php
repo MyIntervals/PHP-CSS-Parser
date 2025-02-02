@@ -208,6 +208,6 @@ class OutputFormatter
      */
     private function indent(): string
     {
-        return \str_repeat($this->oFormat->sIndentation, $this->oFormat->level());
+        return \str_repeat($this->oFormat->sIndentation, $this->oFormat->getIndentationLevel());
     }
 }

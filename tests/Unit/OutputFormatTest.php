@@ -836,17 +836,6 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function levelReturnsIndentationLevel(): void
-    {
-        $value = 4;
-        $this->subject->setIndentationLevel($value);
-
-        self::assertSame($value, $this->subject->level());
-    }
-
-    /**
-     * @test
-     */
     public function createReturnsNewOutputFormatInstance(): void
     {
         self::assertInstanceOf(OutputFormat::class, OutputFormat::create());
