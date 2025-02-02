@@ -46,10 +46,10 @@ class CSSFunction extends ValueList
         $parserState->consume('(');
         $mArguments = self::parseArguments($parserState);
 
-        $oResult = new CSSFunction($sName, $mArguments, ',', $parserState->currentLine());
+        $result = new CSSFunction($sName, $mArguments, ',', $parserState->currentLine());
         $parserState->consume(')');
 
-        return $oResult;
+        return $result;
     }
 
     /**

@@ -53,12 +53,12 @@ class URL extends PrimitiveValue
             $oAnchor->backtrack();
         }
         $parserState->consumeWhiteSpace();
-        $oResult = new URL(CSSString::parse($parserState), $parserState->currentLine());
+        $result = new URL(CSSString::parse($parserState), $parserState->currentLine());
         if ($bUseUrl) {
             $parserState->consumeWhiteSpace();
             $parserState->consume(')');
         }
-        return $oResult;
+        return $result;
     }
 
     public function setURL(CSSString $oURL): void

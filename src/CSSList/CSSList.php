@@ -177,14 +177,14 @@ abstract class CSSList implements Renderable, Commentable
             $parserState->consumeUntil([';', ParserState::EOF], true, true);
             return new Charset($oCharsetString, $iIdentifierLineNum);
         } elseif (self::identifierIs($identifier, 'keyframes')) {
-            $oResult = new KeyFrame($iIdentifierLineNum);
-            $oResult->setVendorKeyFrame($identifier);
-            $oResult->setAnimationName(\trim($parserState->consumeUntil('{', false, true)));
-            CSSList::parseList($parserState, $oResult);
+            $result = new KeyFrame($iIdentifierLineNum);
+            $result->setVendorKeyFrame($identifier);
+            $result->setAnimationName(\trim($parserState->consumeUntil('{', false, true)));
+            CSSList::parseList($parserState, $result);
             if ($parserState->comes('}')) {
                 $parserState->consume('}');
             }
-            return $oResult;
+            return $result;
         } elseif ($identifier === 'namespace') {
             $sPrefix = null;
             $mUrl = Value::parsePrimitiveValue($parserState);
