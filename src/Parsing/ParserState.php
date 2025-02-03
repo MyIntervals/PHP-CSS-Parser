@@ -221,7 +221,7 @@ class ParserState
                 $sUtf32 .= \chr($iUnicode & 0xff);
                 $iUnicode = $iUnicode >> 8;
             }
-            return \iconv('utf-32le', $this->sCharset, $sUtf32);
+            return mb_convert_encoding($sUtf32, $this->sCharset, 'UTF-32LE');
         }
 
         if (!$bIsForIdentifier) {
@@ -232,7 +232,7 @@ class ParserState
         // Ranges: a-z A-Z 0-9 - _
         //if (\preg_match('/[a-zA-Z0-9\-_]/', $sPeekChar) || \ord($sPeekChar) > 0xa1) {
         if (
-        ($peek >= 97 && $peek <= 122)
+            ($peek >= 97 && $peek <= 122)
             || ($peek >= 65 && $peek <= 90)
             || ($peek >= 48 && $peek <= 57)
             || ($peek === 45)
