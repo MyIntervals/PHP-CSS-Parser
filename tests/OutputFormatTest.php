@@ -104,6 +104,8 @@ EOT;
 
     /**
      * @test
+     *
+     * @deprecated #866 since 8.8.0, will be removed in 9.0.0.
      */
     public function spaceAfterListArgumentSeparatorComplex()
     {

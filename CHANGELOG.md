@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Deprecated
 
+- Deprecate `OutputFormat::sSpaceAfterListArgumentSeparator` being an array
+  (#876)
 - Deprecate `OutputFormat::level()` (#870)
 
 ### Removed

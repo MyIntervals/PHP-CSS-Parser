@@ -103,7 +103,9 @@ class OutputFormat
     public $sSpaceBeforeListArgumentSeparator = '';
 
     /**
-     * @var string
+     * #866 `array` is deprecated in version V8.8.0, will be changed to `string` only in V9.0.0.
+     *
+     * @var string|array<string, string>
      */
     public $sSpaceAfterListArgumentSeparator = '';
 
