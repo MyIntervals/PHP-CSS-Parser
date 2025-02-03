@@ -1,0 +1,64 @@
+# https://help.github.com/en/categories/automating-your-workflow-with-github-actions
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+
+name: Code coverage
+
+jobs:
+    code-coverage:
+        name: Code coverage
+
+        runs-on: ubuntu-22.04
+
+        strategy:
+            fail-fast: false
+            matrix:
+                php-version:
+                    - '7.4'
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Install PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-version }}
+                  ini-file: development
+                  tools: composer:v2
+                  coverage: xdebug
+
+            - name: Show the Composer version
+              run: composer --version
+
+            - name: Show the Composer configuration
+              run: composer config --global --list
+
+            - name: Cache dependencies installed with composer
+              uses: actions/cache@v4
+              with:
+                  path: ~/.cache/composer
+                  key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
+                  restore-keys: |
+                      php${{ matrix.php-version }}-composer-
+
+            - name: Install Composer dependencies
+              run: |
+                  composer update --with-dependencies --no-progress;
+                  composer show;
+
+            - name: Run Tests
+              run: composer ci:tests:coverage
+
+            - name: Show generated coverage files
+              run: ls -lah
+
+            - name: Upload coverage results to Coveralls
+              uses: coverallsapp/github-action@v2
+              env:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  file: coverage.xml

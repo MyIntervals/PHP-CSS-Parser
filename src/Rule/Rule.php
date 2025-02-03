@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\Rule;
 
 use Sabberworm\CSS\Comment\Comment;
@@ -13,8 +15,9 @@ use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Value;
 
 /**
- * RuleSets contains Rule objects which always have a key and a value.
- * In CSS, Rules are expressed as follows: “key: value[0][0] value[0][1], value[1][0] value[1][1];”
+ * `Rule`s just have a string key (the rule) and a 'Value'.
+ *
+ * In CSS, `Rule`s are expressed as follows: “key: value[0][0] value[0][1], value[1][0] value[1][1];”
  */
 class Rule implements Renderable, Commentable
 {
@@ -24,7 +27,7 @@ class Rule implements Renderable, Commentable
     private $sRule;
 
     /**
-     * @var RuleValueList|null
+     * @var RuleValueList|string|null
      */
     private $mValue;
 
@@ -41,7 +44,7 @@ class Rule implements Renderable, Commentable
     /**
      * @var int
      */
-    protected $iLineNo;
+    protected $lineNumber;
 
     /**
      * @var int
@@ -51,77 +54,86 @@ class Rule implements Renderable, Commentable
     /**
      * @var array<array-key, Comment>
      */
-    protected $aComments;
+    protected $comments;
 
     /**
      * @param string $sRule
-     * @param int $iLineNo
+     * @param int $lineNumber
      * @param int $iColNo
      */
-    public function __construct($sRule, $iLineNo = 0, $iColNo = 0)
+    public function __construct($sRule, $lineNumber = 0, $iColNo = 0)
     {
         $this->sRule = $sRule;
         $this->mValue = null;
         $this->bIsImportant = false;
         $this->aIeHack = [];
-        $this->iLineNo = $iLineNo;
+        $this->lineNumber = $lineNumber;
         $this->iColNo = $iColNo;
-        $this->aComments = [];
+        $this->comments = [];
     }
 
     /**
-     * @return Rule
-     *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState)
+    public static function parse(ParserState $parserState): Rule
     {
-        $aComments = $oParserState->consumeWhiteSpace();
-        $oRule = new Rule(
-            $oParserState->parseIdentifier(!$oParserState->comes("--")),
-            $oParserState->currentLine(),
-            $oParserState->currentColumn()
+        $comments = $parserState->consumeWhiteSpace();
+        $rule = new Rule(
+            $parserState->parseIdentifier(!$parserState->comes('--')),
+            $parserState->currentLine(),
+            $parserState->currentColumn()
         );
-        $oRule->setComments($aComments);
-        $oRule->addComments($oParserState->consumeWhiteSpace());
-        $oParserState->consume(':');
-        $oValue = Value::parseValue($oParserState, self::listDelimiterForRule($oRule->getRule()));
-        $oRule->setValue($oValue);
-        if ($oParserState->getSettings()->bLenientParsing) {
-            while ($oParserState->comes('\\')) {
-                $oParserState->consume('\\');
-                $oRule->addIeHack($oParserState->consume());
-                $oParserState->consumeWhiteSpace();
+        $rule->setComments($comments);
+        $rule->addComments($parserState->consumeWhiteSpace());
+        $parserState->consume(':');
+        $oValue = Value::parseValue($parserState, self::listDelimiterForRule($rule->getRule()));
+        $rule->setValue($oValue);
+        if ($parserState->getSettings()->bLenientParsing) {
+            while ($parserState->comes('\\')) {
+                $parserState->consume('\\');
+                $rule->addIeHack($parserState->consume());
+                $parserState->consumeWhiteSpace();
             }
         }
-        $oParserState->consumeWhiteSpace();
-        if ($oParserState->comes('!')) {
-            $oParserState->consume('!');
-            $oParserState->consumeWhiteSpace();
-            $oParserState->consume('important');
-            $oRule->setIsImportant(true);
+        $parserState->consumeWhiteSpace();
+        if ($parserState->comes('!')) {
+            $parserState->consume('!');
+            $parserState->consumeWhiteSpace();
+            $parserState->consume('important');
+            $rule->setIsImportant(true);
         }
-        $oParserState->consumeWhiteSpace();
-        while ($oParserState->comes(';')) {
-            $oParserState->consume(';');
+        $parserState->consumeWhiteSpace();
+        while ($parserState->comes(';')) {
+            $parserState->consume(';');
         }
-        $oParserState->consumeWhiteSpace();
 
-        return $oRule;
+        $parserState->consumeWhiteSpace();
+
+        return $rule;
     }
 
     /**
+     * Returns a list of delimiters (or separators).
+     * The first item is the innermost separator (or, put another way, the highest-precedence operator).
+     * The sequence continues to the outermost separator (or lowest-precedence operator).
+     *
      * @param string $sRule
      *
-     * @return array<int, string>
+     * @return list<non-empty-string>
      */
-    private static function listDelimiterForRule($sRule)
+    private static function listDelimiterForRule($sRule): array
     {
-        if (preg_match('/^font($|-)/', $sRule)) {
+        if (\preg_match('/^font($|-)/', $sRule)) {
             return [',', '/', ' '];
         }
-        return [',', ' ', '/'];
+
+        switch ($sRule) {
+            case 'src':
+                return [' ', ','];
+            default:
+                return [',', ' ', '/'];
+        }
     }
 
     /**
@@ -129,7 +141,7 @@ class Rule implements Renderable, Commentable
      */
     public function getLineNo()
     {
-        return $this->iLineNo;
+        return $this->lineNumber;
     }
 
     /**
@@ -143,21 +155,17 @@ class Rule implements Renderable, Commentable
     /**
      * @param int $iLine
      * @param int $iColumn
-     *
-     * @return void
      */
-    public function setPosition($iLine, $iColumn)
+    public function setPosition($iLine, $iColumn): void
     {
         $this->iColNo = $iColumn;
-        $this->iLineNo = $iLine;
+        $this->lineNumber = $iLine;
     }
 
     /**
      * @param string $sRule
-     *
-     * @return void
      */
-    public function setRule($sRule)
+    public function setRule($sRule): void
     {
         $this->sRule = $sRule;
     }
@@ -171,7 +179,7 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @return RuleValueList|null
+     * @return RuleValueList|string|null
      */
     public function getValue()
     {
@@ -179,86 +187,11 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param RuleValueList|null $mValue
-     *
-     * @return void
+     * @param RuleValueList|string|null $mValue
      */
-    public function setValue($mValue)
+    public function setValue($mValue): void
     {
         $this->mValue = $mValue;
-    }
-
-    /**
-     * @param array<array-key, array<array-key, RuleValueList>> $aSpaceSeparatedValues
-     *
-     * @return RuleValueList
-     *
-     * @deprecated will be removed in version 9.0
-     *             Old-Style 2-dimensional array given. Retained for (some) backwards-compatibility.
-     *             Use `setValue()` instead and wrap the value inside a RuleValueList if necessary.
-     */
-    public function setValues(array $aSpaceSeparatedValues)
-    {
-        $oSpaceSeparatedList = null;
-        if (count($aSpaceSeparatedValues) > 1) {
-            $oSpaceSeparatedList = new RuleValueList(' ', $this->iLineNo);
-        }
-        foreach ($aSpaceSeparatedValues as $aCommaSeparatedValues) {
-            $oCommaSeparatedList = null;
-            if (count($aCommaSeparatedValues) > 1) {
-                $oCommaSeparatedList = new RuleValueList(',', $this->iLineNo);
-            }
-            foreach ($aCommaSeparatedValues as $mValue) {
-                if (!$oSpaceSeparatedList && !$oCommaSeparatedList) {
-                    $this->mValue = $mValue;
-                    return $mValue;
-                }
-                if ($oCommaSeparatedList) {
-                    $oCommaSeparatedList->addListComponent($mValue);
-                } else {
-                    $oSpaceSeparatedList->addListComponent($mValue);
-                }
-            }
-            if (!$oSpaceSeparatedList) {
-                $this->mValue = $oCommaSeparatedList;
-                return $oCommaSeparatedList;
-            } else {
-                $oSpaceSeparatedList->addListComponent($oCommaSeparatedList);
-            }
-        }
-        $this->mValue = $oSpaceSeparatedList;
-        return $oSpaceSeparatedList;
-    }
-
-    /**
-     * @return array<int, array<int, RuleValueList>>
-     *
-     * @deprecated will be removed in version 9.0
-     *             Old-Style 2-dimensional array returned. Retained for (some) backwards-compatibility.
-     *             Use `getValue()` instead and check for the existence of a (nested set of) ValueList object(s).
-     */
-    public function getValues()
-    {
-        if (!$this->mValue instanceof RuleValueList) {
-            return [[$this->mValue]];
-        }
-        if ($this->mValue->getListSeparator() === ',') {
-            return [$this->mValue->getListComponents()];
-        }
-        $aResult = [];
-        foreach ($this->mValue->getListComponents() as $mValue) {
-            if (!$mValue instanceof RuleValueList || $mValue->getListSeparator() !== ',') {
-                $aResult[] = [$mValue];
-                continue;
-            }
-            if ($this->mValue->getListSeparator() === ' ' || count($aResult) === 0) {
-                $aResult[] = [];
-            }
-            foreach ($mValue->getListComponents() as $mValue) {
-                $aResult[count($aResult) - 1][] = $mValue;
-            }
-        }
-        return $aResult;
     }
 
     /**
@@ -267,17 +200,15 @@ class Rule implements Renderable, Commentable
      *
      * @param RuleValueList|array<int, RuleValueList> $mValue
      * @param string $sType
-     *
-     * @return void
      */
-    public function addValue($mValue, $sType = ' ')
+    public function addValue($mValue, $sType = ' '): void
     {
-        if (!is_array($mValue)) {
+        if (!\is_array($mValue)) {
             $mValue = [$mValue];
         }
-        if (!$this->mValue instanceof RuleValueList || $this->mValue->getListSeparator() !== $sType) {
+        if (!($this->mValue instanceof RuleValueList) || $this->mValue->getListSeparator() !== $sType) {
             $mCurrentValue = $this->mValue;
-            $this->mValue = new RuleValueList($sType, $this->iLineNo);
+            $this->mValue = new RuleValueList($sType, $this->lineNumber);
             if ($mCurrentValue) {
                 $this->mValue->addListComponent($mCurrentValue);
             }
@@ -289,20 +220,16 @@ class Rule implements Renderable, Commentable
 
     /**
      * @param int $iModifier
-     *
-     * @return void
      */
-    public function addIeHack($iModifier)
+    public function addIeHack($iModifier): void
     {
         $this->aIeHack[] = $iModifier;
     }
 
     /**
      * @param array<int, int> $aModifiers
-     *
-     * @return void
      */
-    public function setIeHack(array $aModifiers)
+    public function setIeHack(array $aModifiers): void
     {
         $this->aIeHack = $aModifiers;
     }
@@ -317,10 +244,8 @@ class Rule implements Renderable, Commentable
 
     /**
      * @param bool $bIsImportant
-     *
-     * @return void
      */
-    public function setIsImportant($bIsImportant)
+    public function setIsImportant($bIsImportant): void
     {
         $this->bIsImportant = $bIsImportant;
     }
@@ -333,27 +258,21 @@ class Rule implements Renderable, Commentable
         return $this->bIsImportant;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
-        $sResult = "{$this->sRule}:{$oOutputFormat->spaceAfterRuleName()}";
-        if ($this->mValue instanceof Value) { //Can also be a ValueList
+        $sResult = "{$oOutputFormat->comments($this)}{$this->sRule}:{$oOutputFormat->spaceAfterRuleName()}";
+        if ($this->mValue instanceof Value) { // Can also be a ValueList
             $sResult .= $this->mValue->render($oOutputFormat);
         } else {
             $sResult .= $this->mValue;
         }
         if (!empty($this->aIeHack)) {
-            $sResult .= ' \\' . implode('\\', $this->aIeHack);
+            $sResult .= ' \\' . \implode('\\', $this->aIeHack);
         }
         if ($this->bIsImportant) {
             $sResult .= ' !important';
@@ -363,13 +282,11 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param array<array-key, Comment> $aComments
-     *
-     * @return void
+     * @param array<array-key, Comment> $comments
      */
-    public function addComments(array $aComments)
+    public function addComments(array $comments): void
     {
-        $this->aComments = array_merge($this->aComments, $aComments);
+        $this->comments = \array_merge($this->comments, $comments);
     }
 
     /**
@@ -377,16 +294,14 @@ class Rule implements Renderable, Commentable
      */
     public function getComments()
     {
-        return $this->aComments;
+        return $this->comments;
     }
 
     /**
-     * @param array<array-key, Comment> $aComments
-     *
-     * @return void
+     * @param array<array-key, Comment> $comments
      */
-    public function setComments(array $aComments)
+    public function setComments(array $comments): void
     {
-        $this->aComments = $aComments;
+        $this->comments = $comments;
     }
 }

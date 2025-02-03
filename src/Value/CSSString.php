@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\Value;
 
 use Sabberworm\CSS\OutputFormat;
@@ -8,6 +10,11 @@ use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
+/**
+ * This class is a wrapper for quoted strings to distinguish them from keywords.
+ *
+ * `CSSString`s always output with double quotes.
+ */
 class CSSString extends PrimitiveValue
 {
     /**
@@ -17,24 +24,22 @@ class CSSString extends PrimitiveValue
 
     /**
      * @param string $sString
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($sString, $iLineNo = 0)
+    public function __construct($sString, $lineNumber = 0)
     {
         $this->sString = $sString;
-        parent::__construct($iLineNo);
+        parent::__construct($lineNumber);
     }
 
     /**
-     * @return CSSString
-     *
      * @throws SourceException
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState)
+    public static function parse(ParserState $parserState): CSSString
     {
-        $sBegin = $oParserState->peek();
+        $sBegin = $parserState->peek();
         $sQuote = null;
         if ($sBegin === "'") {
             $sQuote = "'";
@@ -42,37 +47,35 @@ class CSSString extends PrimitiveValue
             $sQuote = '"';
         }
         if ($sQuote !== null) {
-            $oParserState->consume($sQuote);
+            $parserState->consume($sQuote);
         }
-        $sResult = "";
+        $sResult = '';
         $sContent = null;
         if ($sQuote === null) {
             // Unquoted strings end in whitespace or with braces, brackets, parentheses
-            while (!preg_match('/[\\s{}()<>\\[\\]]/isu', $oParserState->peek())) {
-                $sResult .= $oParserState->parseCharacter(false);
+            while (\preg_match('/[\\s{}()<>\\[\\]]/isu', $parserState->peek()) !== 1) {
+                $sResult .= $parserState->parseCharacter(false);
             }
         } else {
-            while (!$oParserState->comes($sQuote)) {
-                $sContent = $oParserState->parseCharacter(false);
+            while (!$parserState->comes($sQuote)) {
+                $sContent = $parserState->parseCharacter(false);
                 if ($sContent === null) {
                     throw new SourceException(
-                        "Non-well-formed quoted string {$oParserState->peek(3)}",
-                        $oParserState->currentLine()
+                        "Non-well-formed quoted string {$parserState->peek(3)}",
+                        $parserState->currentLine()
                     );
                 }
                 $sResult .= $sContent;
             }
-            $oParserState->consume($sQuote);
+            $parserState->consume($sQuote);
         }
-        return new CSSString($sResult, $oParserState->currentLine());
+        return new CSSString($sResult, $parserState->currentLine());
     }
 
     /**
      * @param string $sString
-     *
-     * @return void
      */
-    public function setString($sString)
+    public function setString($sString): void
     {
         $this->sString = $sString;
     }
@@ -85,21 +88,15 @@ class CSSString extends PrimitiveValue
         return $this->sString;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
-        $sString = addslashes($this->sString);
-        $sString = str_replace("\n", '\A', $sString);
+        $sString = \addslashes($this->sString);
+        $sString = \str_replace("\n", '\\A', $sString);
         return $oOutputFormat->getStringQuotingType() . $sString . $oOutputFormat->getStringQuotingType();
     }
 }

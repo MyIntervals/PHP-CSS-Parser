@@ -1,28 +1,28 @@
 @charset "utf-8";
 
 @font-face {
-	font-family: "CrassRoots";
-	src: url("../media/cr.ttf")
+    font-family: "CrassRoots";
+    src: url("../media/cr.ttf")
 }
 
 html, body {
-	font-size: -0.6em
+    font-size: -0.6em
 }
 
 @keyframes mymove {
-	from { top: 0px; }
-	to { top: 200px; }
+    from { top: 0px; }
+    to { top: 200px; }
 }
 
 @-moz-keyframes some-move {
-	from { top: 0px; }
-	to { top: 200px; }
+    from { top: 0px; }
+    to { top: 200px; }
 }
 
 @supports ( (perspective: 10px) or (-moz-perspective: 10px) or (-webkit-perspective: 10px) or (-ms-perspective: 10px) or (-o-perspective: 10px) ) {
-	body {
-		font-family: 'Helvetica';
-	}
+    body {
+        font-family: 'Helvetica';
+    }
 }
 
 @page :pseudo-class {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS;
 
 /**
@@ -144,6 +146,13 @@ class OutputFormat
     public $bIgnoreExceptions = false;
 
     /**
+     * Render comments for lists and RuleSets
+     *
+     * @var bool
+     */
+    public $bRenderComments = false;
+
+    /**
      * @var OutputFormatter|null
      */
     private $oFormatter = null;
@@ -158,20 +167,16 @@ class OutputFormat
      */
     private $iIndentationLevel = 0;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
-     * @param string $sName
-     *
-     * @return string|null
+     * @return string|int|bool|null
      */
-    public function get($sName)
+    public function get(string $sName)
     {
         $aVarPrefixes = ['a', 's', 'm', 'b', 'f', 'o', 'c', 'i'];
         foreach ($aVarPrefixes as $sPrefix) {
-            $sFieldName = $sPrefix . ucfirst($sName);
+            $sFieldName = $sPrefix . \ucfirst($sName);
             if (isset($this->$sFieldName)) {
                 return $this->$sFieldName;
             }
@@ -188,20 +193,20 @@ class OutputFormat
     public function set($aNames, $mValue)
     {
         $aVarPrefixes = ['a', 's', 'm', 'b', 'f', 'o', 'c', 'i'];
-        if (is_string($aNames) && strpos($aNames, '*') !== false) {
+        if (\is_string($aNames) && \strpos($aNames, '*') !== false) {
             $aNames =
                 [
-                    str_replace('*', 'Before', $aNames),
-                    str_replace('*', 'Between', $aNames),
-                    str_replace('*', 'After', $aNames),
+                    \str_replace('*', 'Before', $aNames),
+                    \str_replace('*', 'Between', $aNames),
+                    \str_replace('*', 'After', $aNames),
                 ];
-        } elseif (!is_array($aNames)) {
+        } elseif (!\is_array($aNames)) {
             $aNames = [$aNames];
         }
         foreach ($aVarPrefixes as $sPrefix) {
             $bDidReplace = false;
             foreach ($aNames as $sName) {
-                $sFieldName = $sPrefix . ucfirst($sName);
+                $sFieldName = $sPrefix . \ucfirst($sName);
                 if (isset($this->$sFieldName)) {
                     $this->$sFieldName = $mValue;
                     $bDidReplace = true;
@@ -216,50 +221,42 @@ class OutputFormat
     }
 
     /**
-     * @param string $sMethodName
      * @param array<array-key, mixed> $aArguments
      *
      * @return mixed
      *
      * @throws \Exception
      */
-    public function __call($sMethodName, array $aArguments)
+    public function __call(string $sMethodName, array $aArguments)
     {
-        if (strpos($sMethodName, 'set') === 0) {
-            return $this->set(substr($sMethodName, 3), $aArguments[0]);
-        } elseif (strpos($sMethodName, 'get') === 0) {
-            return $this->get(substr($sMethodName, 3));
-        } elseif (method_exists(OutputFormatter::class, $sMethodName)) {
-            return call_user_func_array([$this->getFormatter(), $sMethodName], $aArguments);
+        if (\strpos($sMethodName, 'set') === 0) {
+            return $this->set(\substr($sMethodName, 3), $aArguments[0]);
+        } elseif (\strpos($sMethodName, 'get') === 0) {
+            return $this->get(\substr($sMethodName, 3));
+        } elseif (\method_exists(OutputFormatter::class, $sMethodName)) {
+            return \call_user_func_array([$this->getFormatter(), $sMethodName], $aArguments);
         } else {
             throw new \Exception('Unknown OutputFormat method called: ' . $sMethodName);
         }
     }
 
     /**
-     * @param int $iNumber
-     *
-     * @return self
+     * @return $this fluent interface
      */
-    public function indentWithTabs($iNumber = 1)
+    public function indentWithTabs(int $numberOfTabs = 1): self
     {
-        return $this->setIndentation(str_repeat("\t", $iNumber));
+        return $this->setIndentation(\str_repeat("\t", $numberOfTabs));
     }
 
     /**
-     * @param int $iNumber
-     *
-     * @return self
+     * @return $this fluent interface
      */
-    public function indentWithSpaces($iNumber = 2)
+    public function indentWithSpaces(int $numberOfSpaces = 2): self
     {
-        return $this->setIndentation(str_repeat(" ", $iNumber));
+        return $this->setIndentation(\str_repeat(' ', $numberOfSpaces));
     }
 
-    /**
-     * @return OutputFormat
-     */
-    public function nextLevel()
+    public function nextLevel(): self
     {
         if ($this->oNextLevelFormat === null) {
             $this->oNextLevelFormat = clone $this;
@@ -269,18 +266,12 @@ class OutputFormat
         return $this->oNextLevelFormat;
     }
 
-    /**
-     * @return void
-     */
-    public function beLenient()
+    public function beLenient(): void
     {
         $this->bIgnoreExceptions = true;
     }
 
-    /**
-     * @return OutputFormatter
-     */
-    public function getFormatter()
+    public function getFormatter(): OutputFormatter
     {
         if ($this->oFormatter === null) {
             $this->oFormatter = new OutputFormatter($this);
@@ -289,46 +280,39 @@ class OutputFormat
     }
 
     /**
-     * @return int
-     */
-    public function level()
-    {
-        return $this->iIndentationLevel;
-    }
-
-    /**
      * Creates an instance of this class without any particular formatting settings.
-     *
-     * @return self
      */
-    public static function create()
+    public static function create(): self
     {
         return new OutputFormat();
     }
 
     /**
      * Creates an instance of this class with a preset for compact formatting.
-     *
-     * @return self
      */
-    public static function createCompact()
+    public static function createCompact(): self
     {
         $format = self::create();
-        $format->set('Space*Rules', "")->set('Space*Blocks', "")->setSpaceAfterRuleName('')
-            ->setSpaceBeforeOpeningBrace('')->setSpaceAfterSelectorSeparator('');
+        $format->set('Space*Rules', '')
+            ->set('Space*Blocks', '')
+            ->setSpaceAfterRuleName('')
+            ->setSpaceBeforeOpeningBrace('')
+            ->setSpaceAfterSelectorSeparator('')
+            ->setRenderComments(false);
         return $format;
     }
 
     /**
      * Creates an instance of this class with a preset for pretty formatting.
-     *
-     * @return self
      */
-    public static function createPretty()
+    public static function createPretty(): self
     {
         $format = self::create();
-        $format->set('Space*Rules', "\n")->set('Space*Blocks', "\n")
-            ->setSpaceBetweenBlocks("\n\n")->set('SpaceAfterListArgumentSeparator', ['default' => '', ',' => ' ']);
+        $format->set('Space*Rules', "\n")
+            ->set('Space*Blocks', "\n")
+            ->setSpaceBetweenBlocks("\n\n")
+            ->set('SpaceAfterListArgumentSeparator', ['default' => '', ',' => ' '])
+            ->setRenderComments(true);
         return $format;
     }
 }

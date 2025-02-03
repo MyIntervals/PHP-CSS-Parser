@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS;
 
 /**
@@ -11,7 +13,8 @@ class Settings
 {
     /**
      * Multi-byte string support.
-     * If true (mbstring extension must be enabled), will use (slower) `mb_strlen`, `mb_convert_case`, `mb_substr`
+     *
+     * If `true` (`mbstring` extension must be enabled), will use (slower) `mb_strlen`, `mb_convert_case`, `mb_substr`
      * and `mb_strpos` functions. Otherwise, the normal (ASCII-Only) functions will be used.
      *
      * @var bool
@@ -19,15 +22,14 @@ class Settings
     public $bMultibyteSupport;
 
     /**
-     * The default charset for the CSS if no `@charset` rule is found. Defaults to utf-8.
+     * The default charset for the CSS if no `@charset` declaration is found. Defaults to utf-8.
      *
      * @var string
      */
     public $sDefaultCharset = 'utf-8';
 
     /**
-     * Lenient parsing. When used (which is true by default), the parser will not choke
-     * on unexpected tokens but simply ignore them.
+     * Whether the parser silently ignore invalid rules instead of choking on them.
      *
      * @var bool
      */
@@ -35,54 +37,65 @@ class Settings
 
     private function __construct()
     {
-        $this->bMultibyteSupport = extension_loaded('mbstring');
+        $this->bMultibyteSupport = \extension_loaded('mbstring');
     }
 
     /**
      * @return self new instance
      */
-    public static function create()
+    public static function create(): Settings
     {
         return new Settings();
     }
 
     /**
+     * Enables/disables multi-byte string support.
+     *
+     * If `true` (`mbstring` extension must be enabled), will use (slower) `mb_strlen`, `mb_convert_case`, `mb_substr`
+     * and `mb_strpos` functions. Otherwise, the normal (ASCII-Only) functions will be used.
+     *
      * @param bool $bMultibyteSupport
      *
-     * @return self fluent interface
+     * @return $this fluent interface
      */
-    public function withMultibyteSupport($bMultibyteSupport = true)
+    public function withMultibyteSupport($bMultibyteSupport = true): self
     {
         $this->bMultibyteSupport = $bMultibyteSupport;
         return $this;
     }
 
     /**
+     * Sets the charset to be used if the CSS does not contain an `@charset` declaration.
+     *
      * @param string $sDefaultCharset
      *
-     * @return self fluent interface
+     * @return $this fluent interface
      */
-    public function withDefaultCharset($sDefaultCharset)
+    public function withDefaultCharset($sDefaultCharset): self
     {
         $this->sDefaultCharset = $sDefaultCharset;
         return $this;
     }
 
     /**
-     * @param bool $bLenientParsing
+     * Configures whether the parser should silently ignore invalid rules.
      *
-     * @return self fluent interface
+     * @param bool $usesLenientParsing
+     *
+     * @return $this fluent interface
      */
-    public function withLenientParsing($bLenientParsing = true)
+    public function withLenientParsing($usesLenientParsing = true): self
     {
-        $this->bLenientParsing = $bLenientParsing;
+        $this->bLenientParsing = $usesLenientParsing;
         return $this;
     }
 
     /**
-     * @return self fluent interface
+     * Configures the parser to choke on invalid rules.
+     *
+     * @return $this fluent interface
      */
-    public function beStrict()
+    public function beStrict(): self
     {
         return $this->withLenientParsing(false);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\CSSList;
 
 use Sabberworm\CSS\OutputFormat;
@@ -18,11 +20,11 @@ class KeyFrame extends CSSList implements AtRule
     private $animationName;
 
     /**
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($iLineNo = 0)
+    public function __construct($lineNumber = 0)
     {
-        parent::__construct($iLineNo);
+        parent::__construct($lineNumber);
         $this->vendorKeyFrame = null;
         $this->animationName = null;
     }
@@ -30,7 +32,7 @@ class KeyFrame extends CSSList implements AtRule
     /**
      * @param string $vendorKeyFrame
      */
-    public function setVendorKeyFrame($vendorKeyFrame)
+    public function setVendorKeyFrame($vendorKeyFrame): void
     {
         $this->vendorKeyFrame = $vendorKeyFrame;
     }
@@ -46,7 +48,7 @@ class KeyFrame extends CSSList implements AtRule
     /**
      * @param string $animationName
      */
-    public function setAnimationName($animationName)
+    public function setAnimationName($animationName): void
     {
         $this->animationName = $animationName;
     }
@@ -59,29 +61,21 @@ class KeyFrame extends CSSList implements AtRule
         return $this->animationName;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
-        $sResult = "@{$this->vendorKeyFrame} {$this->animationName}{$oOutputFormat->spaceBeforeOpeningBrace()}{";
-        $sResult .= parent::render($oOutputFormat);
+        $sResult = $oOutputFormat->comments($this);
+        $sResult .= "@{$this->vendorKeyFrame} {$this->animationName}{$oOutputFormat->spaceBeforeOpeningBrace()}{";
+        $sResult .= $this->renderListContents($oOutputFormat);
         $sResult .= '}';
         return $sResult;
     }
 
-    /**
-     * @return bool
-     */
-    public function isRootList()
+    public function isRootList(): bool
     {
         return false;
     }

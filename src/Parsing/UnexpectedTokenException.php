@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\Parsing;
 
 /**
@@ -28,9 +30,9 @@ class UnexpectedTokenException extends SourceException
      * @param string $sExpected
      * @param string $sFound
      * @param string $sMatchType
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($sExpected, $sFound, $sMatchType = 'literal', $iLineNo = 0)
+    public function __construct($sExpected, $sFound, $sMatchType = 'literal', $lineNumber = 0)
     {
         $this->sExpected = $sExpected;
         $this->sFound = $sFound;
@@ -43,9 +45,9 @@ class UnexpectedTokenException extends SourceException
         } elseif ($this->sMatchType === 'identifier') {
             $sMessage = "Identifier expected. Got “{$sFound}”";
         } elseif ($this->sMatchType === 'custom') {
-            $sMessage = trim("$sExpected $sFound");
+            $sMessage = \trim("$sExpected $sFound");
         }
 
-        parent::__construct($sMessage, $iLineNo);
+        parent::__construct($sMessage, $lineNumber);
     }
 }

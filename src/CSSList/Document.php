@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\CSSList;
 
 use Sabberworm\CSS\OutputFormat;
@@ -11,37 +13,36 @@ use Sabberworm\CSS\RuleSet\RuleSet;
 use Sabberworm\CSS\Value\Value;
 
 /**
- * The root `CSSList` of a parsed file. Contains all top-level CSS contents, mostly declaration blocks,
- * but also any at-rules encountered.
+ * This class represents the root of a parsed CSS file. It contains all top-level CSS contents: mostly declaration
+ * blocks, but also any at-rules encountered (`Import` and `Charset`).
  */
 class Document extends CSSBlockList
 {
     /**
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($iLineNo = 0)
+    public function __construct($lineNumber = 0)
     {
-        parent::__construct($iLineNo);
+        parent::__construct($lineNumber);
     }
 
     /**
-     * @return Document
-     *
      * @throws SourceException
      */
-    public static function parse(ParserState $oParserState)
+    public static function parse(ParserState $parserState): Document
     {
-        $oDocument = new Document($oParserState->currentLine());
-        CSSList::parseList($oParserState, $oDocument);
+        $oDocument = new Document($parserState->currentLine());
+        CSSList::parseList($parserState, $oDocument);
         return $oDocument;
     }
 
     /**
-     * Gets all `DeclarationBlock` objects recursively.
+     * Gets all `DeclarationBlock` objects recursively, no matter how deeply nested the selectors are.
+     * Aliased as `getAllSelectors()`.
      *
      * @return array<int, DeclarationBlock>
      */
-    public function getAllDeclarationBlocks()
+    public function getAllDeclarationBlocks(): array
     {
         /** @var array<int, DeclarationBlock> $aResult */
         $aResult = [];
@@ -50,23 +51,11 @@ class Document extends CSSBlockList
     }
 
     /**
-     * Gets all `DeclarationBlock` objects recursively.
-     *
-     * @return array<int, DeclarationBlock>
-     *
-     * @deprecated will be removed in version 9.0; use `getAllDeclarationBlocks()` instead
-     */
-    public function getAllSelectors()
-    {
-        return $this->getAllDeclarationBlocks();
-    }
-
-    /**
-     * Returns all `RuleSet` objects found recursively in the tree.
+     * Returns all `RuleSet` objects recursively found in the tree, no matter how deeply nested the rule sets are.
      *
      * @return array<int, RuleSet>
      */
-    public function getAllRuleSets()
+    public function getAllRuleSets(): array
     {
         /** @var array<int, RuleSet> $aResult */
         $aResult = [];
@@ -75,7 +64,7 @@ class Document extends CSSBlockList
     }
 
     /**
-     * Returns all `Value` objects found recursively in the tree.
+     * Returns all `Value` objects found recursively in `Rule`s in the tree.
      *
      * @param CSSList|RuleSet|string $mElement
      *        the `CSSList` or `RuleSet` to start the search from (defaults to the whole document).
@@ -86,12 +75,12 @@ class Document extends CSSBlockList
      *
      * @see RuleSet->getRules()
      */
-    public function getAllValues($mElement = null, $bSearchInFunctionArguments = false)
+    public function getAllValues($mElement = null, $bSearchInFunctionArguments = false): array
     {
         $sSearchString = null;
         if ($mElement === null) {
             $mElement = $this;
-        } elseif (is_string($mElement)) {
+        } elseif (\is_string($mElement)) {
             $sSearchString = $mElement;
             $mElement = $this;
         }
@@ -102,7 +91,7 @@ class Document extends CSSBlockList
     }
 
     /**
-     * Returns all `Selector` objects found recursively in the tree.
+     * Returns all `Selector` objects with the requested specificity found recursively in the tree.
      *
      * Note that this does not yield the full `DeclarationBlock` that the selector belongs to
      * (and, currently, there is no way to get to that).
@@ -113,9 +102,8 @@ class Document extends CSSBlockList
      *
      * @return array<int, Selector>
      * @example `getSelectorsBySpecificity('>= 100')`
-     *
      */
-    public function getSelectorsBySpecificity($sSpecificitySearch = null)
+    public function getSelectorsBySpecificity($sSpecificitySearch = null): array
     {
         /** @var array<int, Selector> $aResult */
         $aResult = [];
@@ -124,48 +112,17 @@ class Document extends CSSBlockList
     }
 
     /**
-     * Expands all shorthand properties to their long value.
-     *
-     * @return void
-     */
-    public function expandShorthands()
-    {
-        foreach ($this->getAllDeclarationBlocks() as $oDeclaration) {
-            $oDeclaration->expandShorthands();
-        }
-    }
-
-    /**
-     * Create shorthands properties whenever possible.
-     *
-     * @return void
-     */
-    public function createShorthands()
-    {
-        foreach ($this->getAllDeclarationBlocks() as $oDeclaration) {
-            $oDeclaration->createShorthands();
-        }
-    }
-
-    /**
      * Overrides `render()` to make format argument optional.
-     *
-     * @param OutputFormat|null $oOutputFormat
-     *
-     * @return string
      */
-    public function render(OutputFormat $oOutputFormat = null)
+    public function render(?OutputFormat $oOutputFormat = null): string
     {
         if ($oOutputFormat === null) {
             $oOutputFormat = new OutputFormat();
         }
-        return parent::render($oOutputFormat);
+        return $oOutputFormat->comments($this) . $this->renderListContents($oOutputFormat);
     }
 
-    /**
-     * @return bool
-     */
-    public function isRootList()
+    public function isRootList(): bool
     {
         return true;
     }

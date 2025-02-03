@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\Parsing;
 
 /**
@@ -7,6 +9,4 @@ namespace Sabberworm\CSS\Parsing;
  *
  * Extends `UnexpectedTokenException` in order to preserve backwards compatibility.
  */
-class UnexpectedEOFException extends UnexpectedTokenException
-{
-}
+final class UnexpectedEOFException extends UnexpectedTokenException {}

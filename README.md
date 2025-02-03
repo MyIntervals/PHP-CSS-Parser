@@ -1,6 +1,7 @@
 # PHP CSS Parser
 
-[![Build Status](https://github.com/sabberworm/PHP-CSS-Parser/workflows/CI/badge.svg?branch=master)](https://github.com/sabberworm/PHP-CSS-Parser/actions/)
+[![Build Status](https://github.com/MyIntervals/PHP-CSS-Parser/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/MyIntervals/PHP-CSS-Parser/actions/)
+[![Coverage Status](https://coveralls.io/repos/github/MyIntervals/PHP-CSS-Parser/badge.svg?branch=main)](https://coveralls.io/github/MyIntervals/PHP-CSS-Parser?branch=main)
 
 A Parser for CSS Files written in PHP. Allows extraction of CSS files into a data structure, manipulation of said structure and output as (optimized) CSS.
 
@@ -33,7 +34,7 @@ The resulting CSS document structure can be manipulated prior to being output.
 
 #### Charset
 
-The charset option is used only if no `@charset` declaration is found in the CSS file. UTF-8 is the default, so you won’t have to create a settings object at all if you don’t intend to change that.
+The charset option will only be used if the CSS file does not contain an `@charset` declaration. UTF-8 is the default, so you won’t have to create a settings object at all if you don’t intend to change that.
 
 ```php
 $settings = \Sabberworm\CSS\Settings::create()
@@ -43,7 +44,7 @@ $parser = new \Sabberworm\CSS\Parser($css, $settings);
 
 #### Strict parsing
 
-To have the parser choke on invalid rules, supply a thusly configured `\Sabberworm\CSS\Settings` object:
+To have the parser throw an exception when encountering invalid/unknown constructs (as opposed to trying to ignore them and carry on parsing), supply a thusly configured `\Sabberworm\CSS\Settings` object:
 
 ```php
 $parser = new \Sabberworm\CSS\Parser(
@@ -51,6 +52,8 @@ $parser = new \Sabberworm\CSS\Parser(
     \Sabberworm\CSS\Settings::create()->beStrict()
 );
 ```
+
+Note that this will also disable a workaround for parsing the unquoted variant of the legacy IE-specific `filter` rule.
 
 #### Disable multibyte functions
 
@@ -67,12 +70,9 @@ The resulting data structure consists mainly of five basic types: `CSSList`, `Ru
 
 #### CSSList
 
-`CSSList` represents a generic CSS container, most likely containing declaration blocks (rule sets with a selector), but it may also contain at-rules, charset declarations, etc. `CSSList` has the following concrete subtypes:
+`CSSList` represents a generic CSS container, most likely containing declaration blocks (rule sets with a selector), but it may also contain at-rules, charset declarations, etc.
 
-* `Document` – representing the root of a CSS file.
-* `MediaQuery` – represents a subsection of a `CSSList` that only applies to an output device matching the contained media query.
-
-To access the items stored in a `CSSList` – like the document you got back when calling `$parser->parse()` –, use `getContents()`, then iterate over that collection and use instanceof to check whether you’re dealing with another `CSSList`, a `RuleSet`, a `Import` or a `Charset`.
+To access the items stored in a `CSSList` – like the document you got back when calling `$parser->parse()` –, use `getContents()`, then iterate over that collection and use `instanceof` to check whether you’re dealing with another `CSSList`, a `RuleSet`, a `Import` or a `Charset`.
 
 To append a new item (selector, media query, etc.) to an existing `CSSList`, construct it using the constructor for this class and use the `append($oItem)` method.
 
@@ -80,16 +80,16 @@ To append a new item (selector, media query, etc.) to an existing `CSSList`, con
 
 `RuleSet` is a container for individual rules. The most common form of a rule set is one constrained by a selector. The following concrete subtypes exist:
 
-* `AtRuleSet` – for generic at-rules which do not match the ones specifically mentioned like `@import`, `@charset` or `@media`. A common example for this is `@font-face`.
+* `AtRuleSet` – for generic at-rules for generic at-rules which are not covered by specific classes, i.e., not `@import`, `@charset` or `@media`. A common example for this is `@font-face`.
 * `DeclarationBlock` – a `RuleSet` constrained by a `Selector`; contains an array of selector objects (comma-separated in the CSS) as well as the rules to be applied to the matching elements.
 
 Note: A `CSSList` can contain other `CSSList`s (and `Import`s as well as a `Charset`), while a `RuleSet` can only contain `Rule`s.
 
-If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $rule)`, `getRules()` and `removeRule($rule)` (which accepts either a `Rule` instance or a rule name; optionally suffixed by a dash to remove all related rules).
+If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $rule)`, `getRules()` and `removeRule($rule)` (which accepts either a `Rule` or a rule name; optionally suffixed by a dash to remove all related rules).
 
 #### Rule
 
-`Rule`s just have a key (the rule) and a value. These values are all instances of a `Value`.
+`Rule`s just have a string key (the rule) and a `Value`.
 
 #### Value
 
@@ -98,19 +98,21 @@ If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $rule)`, `g
 * `Size` – consists of a numeric `size` value and a unit.
 * `Color` – colors can be input in the form #rrggbb, #rgb or schema(val1, val2, …) but are always stored as an array of ('s' => val1, 'c' => val2, 'h' => val3, …) and output in the second form.
 * `CSSString` – this is just a wrapper for quoted strings to distinguish them from keywords; always output with double quotes.
-* `URL` – URLs in CSS; always output in URL("") notation.
+* `URL` – URLs in CSS; always output in `URL("")` notation.
 
-There is another abstract subclass of `Value`, `ValueList`. A `ValueList` represents a lists of `Value`s, separated by some separation character (mostly `,`, whitespace, or `/`). There are two types of `ValueList`s:
+There is another abstract subclass of `Value`, `ValueList`: A `ValueList` represents a lists of `Value`s, separated by some separation character (mostly `,`, whitespace, or `/`).
 
-* `RuleValueList` – The default type, used to represent all multi-valued rules like `font: bold 12px/3 Helvetica, Verdana, sans-serif;` (where the value would be a whitespace-separated list of the primitive value `bold`, a slash-separated list and a comma-separated list).
+There are two types of `ValueList`s:
+
+* `RuleValueList` – The default type, used to represent all multivalued rules like `font: bold 12px/3 Helvetica, Verdana, sans-serif;` (where the value would be a whitespace-separated list of the primitive value `bold`, a slash-separated list and a comma-separated list).
 * `CSSFunction` – A special kind of value that also contains a function name and where the values are the function’s arguments. Also handles equals-sign-separated argument lists like `filter: alpha(opacity=90);`.
 
 #### Convenience methods
 
-There are a few convenience methods on Document to ease finding, manipulating and deleting rules:
+There are a few convenience methods on `Document` to ease finding, manipulating and deleting rules:
 
-* `getAllDeclarationBlocks()` – does what it says; no matter how deeply nested your selectors are. Aliased as `getAllSelectors()`.
-* `getAllRuleSets()` – does what it says; no matter how deeply nested your rule sets are.
+* `getAllDeclarationBlocks()` – does what it says; no matter how deeply nested the selectors are. Aliased as `getAllSelectors()`.
+* `getAllRuleSets()` – does what it says; no matter how deeply nested the rule sets are.
 * `getAllValues()` – finds all `Value` objects inside `Rule`s.
 
 ## To-Do
@@ -156,8 +158,8 @@ $cssDocument = $parser->parse();
 foreach($cssDocument->getAllRuleSets() as $oRuleSet) {
     // Note that the added dash will make this remove all rules starting with
     // `font-` (like `font-size`, `font-weight`, etc.) as well as a potential
-    // `font-rule`.
-    $oRuleSet->removeRule('font-'); 
+    // `font` rule.
+    $oRuleSet->removeRule('font-');
     $oRuleSet->removeRule('cursor');
 }
 ```
@@ -214,7 +216,8 @@ html, body {
 
 ```
 
-#### Structure (`var_dump()`)
+<details>
+  <summary><b>Structure (<code>var_dump()</code>)</b></summary>
 
 ```php
 class Sabberworm\CSS\CSSList\Document#4 (2) {
@@ -435,6 +438,7 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 }
 
 ```
+</details>
 
 #### Output (`render()`)
 
@@ -458,7 +462,8 @@ html, body {font-size: 1.6em;}
 
 ```
 
-#### Structure (`var_dump()`)
+<details>
+  <summary><b>Structure (<code>var_dump()</code>)</b></summary>
 
 ```php
 class Sabberworm\CSS\CSSList\Document#4 (2) {
@@ -603,12 +608,189 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 }
 
 ```
+</details>
 
 #### Output (`render()`)
 
 ```css
 #header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;color: red !important;}
 ```
+
+## Class diagram
+
+```mermaid
+classDiagram
+    direction LR
+
+    %% Start of the part generated from the PHP code using tasuku43/mermaid-class-diagram
+
+    class Renderable {
+        <<interface>>
+    }
+    class DeclarationBlock {
+    }
+    class RuleSet {
+        <<abstract>>
+    }
+    class AtRuleSet {
+    }
+    class KeyframeSelector {
+    }
+    class AtRule {
+        <<interface>>
+    }
+    class Charset {
+    }
+    class Import {
+    }
+    class Selector {
+    }
+    class CSSNamespace {
+    }
+    class Settings {
+    }
+    class Rule {
+    }
+    class Parser {
+    }
+    class OutputFormatter {
+    }
+    class OutputFormat {
+    }
+    class OutputException {
+    }
+    class UnexpectedEOFException {
+    }
+    class SourceException {
+    }
+    class UnexpectedTokenException {
+    }
+    class ParserState {
+    }
+    class Anchor {
+    }
+    class CSSBlockList {
+        <<abstract>>
+    }
+    class Document {
+    }
+    class CSSList {
+        <<abstract>>
+    }
+    class KeyFrame {
+    }
+    class AtRuleBlockList {
+    }
+    class Color {
+    }
+    class URL {
+    }
+    class CalcRuleValueList {
+    }
+    class ValueList {
+        <<abstract>>
+    }
+    class CalcFunction {
+    }
+    class LineName {
+    }
+    class Value {
+        <<abstract>>
+    }
+    class Size {
+    }
+    class CSSString {
+    }
+    class PrimitiveValue {
+        <<abstract>>
+    }
+    class CSSFunction {
+    }
+    class RuleValueList {
+    }
+    class Commentable {
+        <<interface>>
+    }
+    class Comment {
+    }
+
+    RuleSet <|-- DeclarationBlock: inheritance
+    Renderable <|.. RuleSet: realization
+    Commentable <|.. RuleSet: realization
+    RuleSet <|-- AtRuleSet: inheritance
+    AtRule <|.. AtRuleSet: realization
+    Selector <|-- KeyframeSelector: inheritance
+    Renderable <|-- AtRule: inheritance
+    Commentable <|-- AtRule: inheritance
+    AtRule <|.. Charset: realization
+    AtRule <|.. Import: realization
+    AtRule <|.. CSSNamespace: realization
+    Renderable <|.. Rule: realization
+    Commentable <|.. Rule: realization
+    SourceException <|-- OutputException: inheritance
+    UnexpectedTokenException <|-- UnexpectedEOFException: inheritance
+    Exception <|-- SourceException: inheritance
+    SourceException <|-- UnexpectedTokenException: inheritance
+    CSSList <|-- CSSBlockList: inheritance
+    CSSBlockList <|-- Document: inheritance
+    Renderable <|.. CSSList: realization
+    Commentable <|.. CSSList: realization
+    CSSList <|-- KeyFrame: inheritance
+    AtRule <|.. KeyFrame: realization
+    CSSBlockList <|-- AtRuleBlockList: inheritance
+    AtRule <|.. AtRuleBlockList: realization
+    CSSFunction <|-- Color: inheritance
+    PrimitiveValue <|-- URL: inheritance
+    RuleValueList <|-- CalcRuleValueList: inheritance
+    Value <|-- ValueList: inheritance
+    CSSFunction <|-- CalcFunction: inheritance
+    ValueList <|-- LineName: inheritance
+    Renderable <|.. Value: realization
+    PrimitiveValue <|-- Size: inheritance
+    PrimitiveValue <|-- CSSString: inheritance
+    Value <|-- PrimitiveValue: inheritance
+    ValueList <|-- CSSFunction: inheritance
+    ValueList <|-- RuleValueList: inheritance
+    Renderable <|.. Comment: realization
+
+    %% end of the generated part
+
+
+    Anchor --> "1" ParserState : oParserState
+    CSSList --> "*" CSSList : aContents
+    CSSList --> "*" Charset : aContents
+    CSSList --> "*" Comment : aComments
+    CSSList --> "*" Import : aContents
+    CSSList --> "*" RuleSet : aContents
+    CSSNamespace --> "*" Comment : aComments
+    Charset --> "*" Comment : aComments
+    Charset --> "1" CSSString : oCharset
+    DeclarationBlock --> "*" Selector : aSelectors
+    Import --> "*" Comment : aComments
+    OutputFormat --> "1" OutputFormat : oNextLevelFormat
+    OutputFormat --> "1" OutputFormatter : oFormatter
+    OutputFormatter --> "1" OutputFormat : oFormat
+    Parser --> "1" ParserState : oParserState
+    ParserState --> "1" Settings : oParserSettings
+    Rule --> "*" Comment : aComments
+    Rule --> "1" RuleValueList : mValue
+    RuleSet --> "*" Comment : aComments
+    RuleSet --> "*" Rule : aRules
+    URL --> "1" CSSString : oURL
+    ValueList --> "*" Value : aComponents
+```
+
+## API and deprecation policy
+
+Please have a look at our
+[API and deprecation policy](docs/API-and-deprecation-policy.md).
+
+## Contributing
+
+Contributions in the form of bug reports, feature requests, or pull requests are
+more than welcome. :pray: Please have a look at our
+[contribution guidelines](CONTRIBUTING.md) to learn more about how to
+contribute to PHP-CSS-Parser.
 
 ## Contributors/Thanks to
 
@@ -623,10 +805,12 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 * [docteurklein](https://github.com/docteurklein) for output formatting and `CSSList->remove()` inspiration.
 * [nicolopignatelli](https://github.com/nicolopignatelli) for PSR-0 compatibility.
 * [diegoembarcadero](https://github.com/diegoembarcadero) for keyframe at-rule parsing.
-* [goetas](https://github.com/goetas) for @namespace at-rule support.
+* [goetas](https://github.com/goetas) for `@namespace` at-rule support.
+* [ziegenberg](https://github.com/ziegenberg) for general housekeeping and cleanup.
 * [View full list](https://github.com/sabberworm/PHP-CSS-Parser/contributors)
 
 ## Misc
 
-* Legacy Support: The latest pre-PSR-0 version of this project can be checked with the `0.9.0` tag.
-* Running Tests: To run all unit tests for this project, run `composer install` to install phpunit and use `./vendor/bin/phpunit`.
+### Legacy Support
+
+The latest pre-PSR-0 version of this project can be checked with the `0.9.0` tag.

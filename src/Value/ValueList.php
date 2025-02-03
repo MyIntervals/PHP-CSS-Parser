@@ -1,13 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\Value;
 
 use Sabberworm\CSS\OutputFormat;
 
+/**
+ * A `ValueList` represents a lists of `Value`s, separated by some separation character
+ * (mostly `,`, whitespace, or `/`).
+ *
+ * There are two types of `ValueList`s: `RuleValueList` and `CSSFunction`
+ */
 abstract class ValueList extends Value
 {
     /**
-     * @var array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>
+     * @var array<array-key, Value|string>
      */
     protected $aComponents;
 
@@ -17,15 +25,14 @@ abstract class ValueList extends Value
     protected $sSeparator;
 
     /**
-     * phpcs:ignore Generic.Files.LineLength
-     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>|RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string $aComponents
+     * @param array<array-key, Value|string>|Value|string $aComponents
      * @param string $sSeparator
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($aComponents = [], $sSeparator = ',', $iLineNo = 0)
+    public function __construct($aComponents = [], $sSeparator = ',', $lineNumber = 0)
     {
-        parent::__construct($iLineNo);
-        if (!is_array($aComponents)) {
+        parent::__construct($lineNumber);
+        if (!\is_array($aComponents)) {
             $aComponents = [$aComponents];
         }
         $this->aComponents = $aComponents;
@@ -33,17 +40,15 @@ abstract class ValueList extends Value
     }
 
     /**
-     * @param RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string $mComponent
-     *
-     * @return void
+     * @param Value|string $mComponent
      */
-    public function addListComponent($mComponent)
+    public function addListComponent($mComponent): void
     {
         $this->aComponents[] = $mComponent;
     }
 
     /**
-     * @return array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>
+     * @return array<array-key, Value|string>
      */
     public function getListComponents()
     {
@@ -51,11 +56,9 @@ abstract class ValueList extends Value
     }
 
     /**
-     * @param array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string> $aComponents
-     *
-     * @return void
+     * @param array<array-key, Value|string> $aComponents
      */
-    public function setListComponents(array $aComponents)
+    public function setListComponents(array $aComponents): void
     {
         $this->aComponents = $aComponents;
     }
@@ -70,18 +73,13 @@ abstract class ValueList extends Value
 
     /**
      * @param string $sSeparator
-     *
-     * @return void
      */
-    public function setListSeparator($sSeparator)
+    public function setListSeparator($sSeparator): void
     {
         $this->sSeparator = $sSeparator;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }

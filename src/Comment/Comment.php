@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\Comment;
 
 use Sabberworm\CSS\OutputFormat;
@@ -10,21 +12,21 @@ class Comment implements Renderable
     /**
      * @var int
      */
-    protected $iLineNo;
+    protected $lineNumber;
 
     /**
      * @var string
      */
-    protected $sComment;
+    protected $commentText;
 
     /**
-     * @param string $sComment
-     * @param int $iLineNo
+     * @param string $commentText
+     * @param int $lineNumber
      */
-    public function __construct($sComment = '', $iLineNo = 0)
+    public function __construct($commentText = '', $lineNumber = 0)
     {
-        $this->sComment = $sComment;
-        $this->iLineNo = $iLineNo;
+        $this->commentText = $commentText;
+        $this->lineNumber = $lineNumber;
     }
 
     /**
@@ -32,7 +34,7 @@ class Comment implements Renderable
      */
     public function getComment()
     {
-        return $this->sComment;
+        return $this->commentText;
     }
 
     /**
@@ -40,32 +42,24 @@ class Comment implements Renderable
      */
     public function getLineNo()
     {
-        return $this->iLineNo;
+        return $this->lineNumber;
     }
 
     /**
-     * @param string $sComment
-     *
-     * @return void
+     * @param string $commentText
      */
-    public function setComment($sComment)
+    public function setComment($commentText): void
     {
-        $this->sComment = $sComment;
+        $this->commentText = $commentText;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $outputFormat): string
     {
-        return '/*' . $this->sComment . '*/';
+        return '/*' . $this->commentText . '*/';
     }
 }

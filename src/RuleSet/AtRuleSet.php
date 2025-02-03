@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\RuleSet;
 
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Property\AtRule;
 
 /**
- * A RuleSet constructed by an unknown at-rule. `@font-face` rules are rendered into AtRuleSet objects.
+ * This class represents rule sets for generic at-rules which are not covered by specific classes, i.e., not
+ * `@import`, `@charset` or `@media`.
+ *
+ * A common example for this is `@font-face`.
  */
 class AtRuleSet extends RuleSet implements AtRule
 {
@@ -23,11 +28,11 @@ class AtRuleSet extends RuleSet implements AtRule
     /**
      * @param string $sType
      * @param string $sArgs
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($sType, $sArgs = '', $iLineNo = 0)
+    public function __construct($sType, $sArgs = '', $lineNumber = 0)
     {
-        parent::__construct($iLineNo);
+        parent::__construct($lineNumber);
         $this->sType = $sType;
         $this->sArgs = $sArgs;
     }
@@ -48,25 +53,20 @@ class AtRuleSet extends RuleSet implements AtRule
         return $this->sArgs;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
+        $sResult = $oOutputFormat->comments($this);
         $sArgs = $this->sArgs;
         if ($sArgs) {
             $sArgs = ' ' . $sArgs;
         }
-        $sResult = "@{$this->sType}$sArgs{$oOutputFormat->spaceBeforeOpeningBrace()}{";
-        $sResult .= parent::render($oOutputFormat);
+        $sResult .= "@{$this->sType}$sArgs{$oOutputFormat->spaceBeforeOpeningBrace()}{";
+        $sResult .= $this->renderRules($oOutputFormat);
         $sResult .= '}';
         return $sResult;
     }

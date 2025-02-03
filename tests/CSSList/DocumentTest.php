@@ -1,22 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\Tests\CSSList;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSList\Document;
+use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 
 /**
  * @covers \Sabberworm\CSS\CSSList\Document
  */
-class DocumentTest extends TestCase
+final class DocumentTest extends TestCase
 {
     /**
      * @var Document
      */
     private $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subject = new Document();
     }
@@ -24,7 +28,23 @@ class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function getContentsInitiallyReturnsEmptyArray()
+    public function implementsRenderable(): void
+    {
+        self::assertInstanceOf(Renderable::class, $this->subject);
+    }
+
+    /**
+     * @test
+     */
+    public function implementsCommentable(): void
+    {
+        self::assertInstanceOf(Commentable::class, $this->subject);
+    }
+
+    /**
+     * @test
+     */
+    public function getContentsInitiallyReturnsEmptyArray(): void
     {
         self::assertSame([], $this->subject->getContents());
     }
@@ -32,7 +52,7 @@ class DocumentTest extends TestCase
     /**
      * @return array<string, array<int, array<int, DeclarationBlock>>>
      */
-    public function contentsDataProvider()
+    public static function contentsDataProvider(): array
     {
         return [
             'empty array' => [[]],
@@ -48,7 +68,7 @@ class DocumentTest extends TestCase
      *
      * @dataProvider contentsDataProvider
      */
-    public function setContentsSetsContents(array $contents)
+    public function setContentsSetsContents(array $contents): void
     {
         $this->subject->setContents($contents);
 
@@ -58,7 +78,7 @@ class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function setContentsReplacesContentsSetInPreviousCall()
+    public function setContentsReplacesContentsSetInPreviousCall(): void
     {
         $contents2 = [new DeclarationBlock()];
 
@@ -66,5 +86,60 @@ class DocumentTest extends TestCase
         $this->subject->setContents($contents2);
 
         self::assertSame($contents2, $this->subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function insertContentBeforeInsertsContentBeforeSibling(): void
+    {
+        $bogusOne = new DeclarationBlock();
+        $bogusOne->setSelectors('.bogus-one');
+        $bogusTwo = new DeclarationBlock();
+        $bogusTwo->setSelectors('.bogus-two');
+
+        $item = new DeclarationBlock();
+        $item->setSelectors('.item');
+
+        $sibling = new DeclarationBlock();
+        $sibling->setSelectors('.sibling');
+
+        $this->subject->setContents([$bogusOne, $sibling, $bogusTwo]);
+
+        self::assertCount(3, $this->subject->getContents());
+
+        $this->subject->insertBefore($item, $sibling);
+
+        self::assertCount(4, $this->subject->getContents());
+        self::assertSame([$bogusOne, $item, $sibling, $bogusTwo], $this->subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function insertContentBeforeAppendsIfSiblingNotFound(): void
+    {
+        $bogusOne = new DeclarationBlock();
+        $bogusOne->setSelectors('.bogus-one');
+        $bogusTwo = new DeclarationBlock();
+        $bogusTwo->setSelectors('.bogus-two');
+
+        $item = new DeclarationBlock();
+        $item->setSelectors('.item');
+
+        $sibling = new DeclarationBlock();
+        $sibling->setSelectors('.sibling');
+
+        $orphan = new DeclarationBlock();
+        $orphan->setSelectors('.forever-alone');
+
+        $this->subject->setContents([$bogusOne, $sibling, $bogusTwo]);
+
+        self::assertCount(3, $this->subject->getContents());
+
+        $this->subject->insertBefore($item, $orphan);
+
+        self::assertCount(4, $this->subject->getContents());
+        self::assertSame([$bogusOne, $sibling, $bogusTwo, $item], $this->subject->getContents());
     }
 }

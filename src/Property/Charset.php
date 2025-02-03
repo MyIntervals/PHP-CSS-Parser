@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\Property;
 
 use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Value\CSSString;
 
 /**
  * Class representing an `@charset` rule.
@@ -16,29 +19,28 @@ use Sabberworm\CSS\OutputFormat;
 class Charset implements AtRule
 {
     /**
-     * @var string
+     * @var CSSString
      */
-    private $sCharset;
+    private $oCharset;
 
     /**
      * @var int
      */
-    protected $iLineNo;
+    protected $lineNumber;
 
     /**
      * @var array<array-key, Comment>
      */
-    protected $aComments;
+    protected $comments;
 
     /**
-     * @param string $sCharset
-     * @param int $iLineNo
+     * @param int $lineNumber
      */
-    public function __construct($sCharset, $iLineNo = 0)
+    public function __construct(CSSString $oCharset, $lineNumber = 0)
     {
-        $this->sCharset = $sCharset;
-        $this->iLineNo = $iLineNo;
-        $this->aComments = [];
+        $this->oCharset = $oCharset;
+        $this->lineNumber = $lineNumber;
+        $this->comments = [];
     }
 
     /**
@@ -46,17 +48,16 @@ class Charset implements AtRule
      */
     public function getLineNo()
     {
-        return $this->iLineNo;
+        return $this->lineNumber;
     }
 
     /**
-     * @param string $sCharset
-     *
-     * @return void
+     * @param string|CSSString $oCharset
      */
-    public function setCharset($sCharset)
+    public function setCharset($sCharset): void
     {
-        $this->sCharset = $sCharset;
+        $sCharset = $sCharset instanceof CSSString ? $sCharset : new CSSString($sCharset);
+        $this->oCharset = $sCharset;
     }
 
     /**
@@ -64,29 +65,20 @@ class Charset implements AtRule
      */
     public function getCharset()
     {
-        return $this->sCharset;
+        return $this->oCharset->getString();
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
-        return "@charset {$this->sCharset->render($oOutputFormat)};";
+        return "{$oOutputFormat->comments($this)}@charset {$this->oCharset->render($oOutputFormat)};";
     }
 
-    /**
-     * @return string
-     */
-    public function atRuleName()
+    public function atRuleName(): string
     {
         return 'charset';
     }
@@ -96,17 +88,15 @@ class Charset implements AtRule
      */
     public function atRuleArgs()
     {
-        return $this->sCharset;
+        return $this->oCharset;
     }
 
     /**
-     * @param array<array-key, Comment> $aComments
-     *
-     * @return void
+     * @param array<array-key, Comment> $comments
      */
-    public function addComments(array $aComments)
+    public function addComments(array $comments): void
     {
-        $this->aComments = array_merge($this->aComments, $aComments);
+        $this->comments = \array_merge($this->comments, $comments);
     }
 
     /**
@@ -114,16 +104,14 @@ class Charset implements AtRule
      */
     public function getComments()
     {
-        return $this->aComments;
+        return $this->comments;
     }
 
     /**
-     * @param array<array-key, Comment> $aComments
-     *
-     * @return void
+     * @param array<array-key, Comment> $comments
      */
-    public function setComments(array $aComments)
+    public function setComments(array $comments): void
     {
-        $this->aComments = $aComments;
+        $this->comments = $comments;
     }
 }

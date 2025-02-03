@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS;
 
 use Sabberworm\CSS\CSSList\Document;
@@ -14,47 +16,27 @@ class Parser
     /**
      * @var ParserState
      */
-    private $oParserState;
+    private $parserState;
 
     /**
-     * @param string $sText
-     * @param Settings|null $oParserSettings
-     * @param int $iLineNo the line number (starting from 1, not from 0)
+     * @param string $sText the complete CSS as text (i.e., usually the contents of a CSS file)
+     * @param int $lineNumber the line number (starting from 1, not from 0)
      */
-    public function __construct($sText, Settings $oParserSettings = null, $iLineNo = 1)
+    public function __construct($sText, ?Settings $oParserSettings = null, $lineNumber = 1)
     {
         if ($oParserSettings === null) {
             $oParserSettings = Settings::create();
         }
-        $this->oParserState = new ParserState($sText, $oParserSettings, $iLineNo);
+        $this->parserState = new ParserState($sText, $oParserSettings, $lineNumber);
     }
 
     /**
-     * @param string $sCharset
-     *
-     * @return void
-     */
-    public function setCharset($sCharset)
-    {
-        $this->oParserState->setCharset($sCharset);
-    }
-
-    /**
-     * @return void
-     */
-    public function getCharset()
-    {
-        // Note: The `return` statement is missing here. This is a bug that needs to be fixed.
-        $this->oParserState->getCharset();
-    }
-
-    /**
-     * @return Document
+     * Parses the CSS provided to the constructor and creates a `Document` from it.
      *
      * @throws SourceException
      */
-    public function parse()
+    public function parse(): Document
     {
-        return Document::parse($this->oParserState);
+        return Document::parse($this->parserState);
     }
 }
