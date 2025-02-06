@@ -725,16 +725,6 @@ class OutputFormat
     /**
      * @return $this fluent interface
      */
-    public function setIndentationLevel(int $indentationLevel): self
-    {
-        $this->iIndentationLevel = $indentationLevel;
-
-        return $this;
-    }
-
-    /**
-     * @return $this fluent interface
-     */
     public function indentWithTabs(int $numberOfTabs = 1): self
     {
         return $this->setIndentation(\str_repeat("\t", $numberOfTabs));

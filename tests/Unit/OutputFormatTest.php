@@ -724,25 +724,6 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function setIndentationLevelSetsIndentationLevel(): void
-    {
-        $value = 4;
-        $this->subject->setIndentationLevel($value);
-
-        self::assertSame($value, $this->subject->getIndentationLevel());
-    }
-
-    /**
-     * @test
-     */
-    public function setIndentationLevelProvidesFluentInterface(): void
-    {
-        self::assertSame($this->subject, $this->subject->setIndentationLevel(4));
-    }
-
-    /**
-     * @test
-     */
     public function indentWithTabsByDefaultSetsIndentationToOneTab(): void
     {
         $this->subject->indentWithTabs();
@@ -850,8 +831,7 @@ final class OutputFormatTest extends TestCase
      */
     public function nextLevelReturnsInstanceWithIndentationLevelIncreasedByOne(): void
     {
-        $originalIndentationLevel = 2;
-        $this->subject->setIndentationLevel($originalIndentationLevel);
+        $originalIndentationLevel = $this->subject->getIndentationLevel();
 
         self::assertSame($originalIndentationLevel + 1, $this->subject->nextLevel()->getIndentationLevel());
     }
