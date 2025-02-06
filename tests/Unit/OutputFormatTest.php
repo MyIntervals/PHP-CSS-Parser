@@ -444,6 +444,33 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
+    public function getSpaceBeforeListArgumentSeparatorsInitiallyReturnsEmptyArray(): void
+    {
+        self::assertSame([], $this->subject->getSpaceBeforeListArgumentSeparators());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceBeforeListArgumentSeparatorsSetsSpaceBeforeListArgumentSeparators(): void
+    {
+        $value = ['/' => ' '];
+        $this->subject->setSpaceBeforeListArgumentSeparators($value);
+
+        self::assertSame($value, $this->subject->getSpaceBeforeListArgumentSeparators());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceBeforeListArgumentSeparatorsProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setSpaceBeforeListArgumentSeparators([]));
+    }
+
+    /**
+     * @test
+     */
     public function getSpaceAfterListArgumentSeparatorInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getSpaceAfterListArgumentSeparator());
@@ -466,6 +493,33 @@ final class OutputFormatTest extends TestCase
     public function setSpaceAfterListArgumentSeparatorProvidesFluentInterface(): void
     {
         self::assertSame($this->subject, $this->subject->setSpaceAfterListArgumentSeparator(' '));
+    }
+
+    /**
+     * @test
+     */
+    public function getSpaceAfterListArgumentSeparatorsInitiallyReturnsEmptyArray(): void
+    {
+        self::assertSame([], $this->subject->getSpaceAfterListArgumentSeparators());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceAfterListArgumentSeparatorsSetsSpaceAfterListArgumentSeparators(): void
+    {
+        $value = [',' => ' '];
+        $this->subject->setSpaceAfterListArgumentSeparators($value);
+
+        self::assertSame($value, $this->subject->getSpaceAfterListArgumentSeparators());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceAfterListArgumentSeparatorsProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setSpaceAfterListArgumentSeparators([]));
     }
 
     /**
