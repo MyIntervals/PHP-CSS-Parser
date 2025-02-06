@@ -443,9 +443,9 @@ class OutputFormat
     /**
      * @return $this fluent interface
      */
-    public function setBeforeAtRuleBlock(string $whitespace): self
+    public function setBeforeAtRuleBlock(string $content): self
     {
-        $this->sBeforeAtRuleBlock = $whitespace;
+        $this->sBeforeAtRuleBlock = $content;
 
         return $this;
     }
@@ -461,9 +461,9 @@ class OutputFormat
     /**
      * @return $this fluent interface
      */
-    public function setAfterAtRuleBlock(string $whitespace): self
+    public function setAfterAtRuleBlock(string $content): self
     {
-        $this->sAfterAtRuleBlock = $whitespace;
+        $this->sAfterAtRuleBlock = $content;
 
         return $this;
     }
@@ -533,29 +533,33 @@ class OutputFormat
     }
 
     /**
-     * @param array<non-empty-string, string> $separators
+     * @param array<non-empty-string, string> $separatorSpaces
      *
      * @return $this fluent interface
      */
-    public function setSpaceBeforeListArgumentSeparators(array $separators): self
+    public function setSpaceBeforeListArgumentSeparators(array $separatorSpaces): self
     {
-        $this->aSpaceBeforeListArgumentSeparators = $separators;
+        $this->aSpaceBeforeListArgumentSeparators = $separatorSpaces;
 
         return $this;
     }
 
     /**
+     * @return string|array<non-empty-string, string>
+     *
      * @internal
      */
-    public function getSpaceAfterListArgumentSeparator(): string
+    public function getSpaceAfterListArgumentSeparator()
     {
         return $this->sSpaceAfterListArgumentSeparator;
     }
 
     /**
+     * @param string|array<non-empty-string, string> $whitespace
+     *
      * @return $this fluent interface
      */
-    public function setSpaceAfterListArgumentSeparator(string $whitespace): self
+    public function setSpaceAfterListArgumentSeparator($whitespace): self
     {
         $this->sSpaceAfterListArgumentSeparator = $whitespace;
 
@@ -573,13 +577,13 @@ class OutputFormat
     }
 
     /**
-     * @param array<non-empty-string, string> $separators
+     * @param array<non-empty-string, string> $separatorSpaces
      *
      * @return $this fluent interface
      */
-    public function setSpaceAfterListArgumentSeparators(array $separators): self
+    public function setSpaceAfterListArgumentSeparators(array $separatorSpaces): self
     {
-        $this->aSpaceAfterListArgumentSeparators = $separators;
+        $this->aSpaceAfterListArgumentSeparators = $separatorSpaces;
 
         return $this;
     }
@@ -613,9 +617,9 @@ class OutputFormat
     /**
      * @return $this fluent interface
      */
-    public function setBeforeDeclarationBlock(string $whitespace): self
+    public function setBeforeDeclarationBlock(string $content): self
     {
-        $this->sBeforeDeclarationBlock = $whitespace;
+        $this->sBeforeDeclarationBlock = $content;
 
         return $this;
     }
@@ -631,9 +635,9 @@ class OutputFormat
     /**
      * @return $this fluent interface
      */
-    public function setAfterDeclarationBlockSelectors(string $whitespace): self
+    public function setAfterDeclarationBlockSelectors(string $content): self
     {
-        $this->sAfterDeclarationBlockSelectors = $whitespace;
+        $this->sAfterDeclarationBlockSelectors = $content;
 
         return $this;
     }
@@ -649,9 +653,9 @@ class OutputFormat
     /**
      * @return $this fluent interface
      */
-    public function setAfterDeclarationBlock(string $whitespace): self
+    public function setAfterDeclarationBlock(string $content): self
     {
-        $this->sAfterDeclarationBlock = $whitespace;
+        $this->sAfterDeclarationBlock = $content;
 
         return $this;
     }
@@ -667,9 +671,9 @@ class OutputFormat
     /**
      * @return $this fluent interface
      */
-    public function setIndentation(string $sIndentation): self
+    public function setIndentation(string $indentation): self
     {
-        $this->sIndentation = $sIndentation;
+        $this->sIndentation = $indentation;
 
         return $this;
     }
