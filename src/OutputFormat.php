@@ -98,16 +98,38 @@ class OutputFormat
     public $sSpaceAfterSelectorSeparator = ' ';
 
     /**
-     * This is what’s printed after the comma of value lists
+     * This is what’s inserted before the separator in value lists, by default.
      *
-     * @var string
+     * `array` is deprecated in version 8.8.0, and will be removed in version 9.0.0.
+     * To set the spacing for specific separators, use {@see $aSpaceBeforeListArgumentSeparators} instead.
+     *
+     * @var string|array<non-empty-string, string>
      */
     public $sSpaceBeforeListArgumentSeparator = '';
 
     /**
-     * @var string
+     * Keys are separators (e.g. `,`).  Values are the space sequence to insert, or an empty string.
+     *
+     * @var array<non-empty-string, string>
+     */
+    public $aSpaceBeforeListArgumentSeparators = [];
+
+    /**
+     * This is what’s inserted after the separator in value lists, by default.
+     *
+     * `array` is deprecated in version 8.8.0, and will be removed in version 9.0.0.
+     * To set the spacing for specific separators, use {@see $aSpaceAfterListArgumentSeparators} instead.
+     *
+     * @var string|array<non-empty-string, string>
      */
     public $sSpaceAfterListArgumentSeparator = '';
+
+    /**
+     * Keys are separators (e.g. `,`).  Values are the space sequence to insert, or an empty string.
+     *
+     * @var array<non-empty-string, string>
+     */
+    public $aSpaceAfterListArgumentSeparators = [];
 
     /**
      * @var string
@@ -311,7 +333,7 @@ class OutputFormat
         $format->set('Space*Rules', "\n")
             ->set('Space*Blocks', "\n")
             ->setSpaceBetweenBlocks("\n\n")
-            ->set('SpaceAfterListArgumentSeparator', ['default' => '', ',' => ' '])
+            ->set('SpaceAfterListArgumentSeparators', [',' => ' '])
             ->setRenderComments(true);
         return $format;
     }

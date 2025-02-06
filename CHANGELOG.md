@@ -10,6 +10,7 @@ Please also have a look at our
 
 ### Added
 
+- `OutputFormat` properties for space around specific list separators (#880)
 - Partial support for CSS Color Module Level 4:
     - `rgb` and `rgba`, and `hsl` and `hsla` are now aliases (#797}
     - Parse color functions that use the "modern" syntax (#800)
@@ -25,6 +26,8 @@ Please also have a look at our
 - Add visibility to all class/interface constants (#469)
 
 ### Deprecated
+
+- `OutputFormat` properties for space around list separators as an array (#880)
 
 ### Removed
 
