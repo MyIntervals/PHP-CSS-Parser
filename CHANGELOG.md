@@ -7,10 +7,13 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- `OutputFormat` properties for space around specific list separators (#880)
+
 ### Changed
 
 ### Deprecated
 
+- `OutputFormat` properties for space around list separators as an array (#880)
 - Deprecate `OutputFormat::level()` (#870)
 
 ### Removed
