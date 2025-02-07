@@ -1,3 +1,248 @@
 parameters:
-	ignoreErrors: []
+	ignoreErrors:
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/CSSList/AtRuleBlockList.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeOpeningBrace\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/CSSList/AtRuleBlockList.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:safely\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/CSSList/CSSList.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceAfterBlocks\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/CSSList/CSSList.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeBlocks\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/CSSList/CSSList.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBetweenBlocks\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/CSSList/CSSList.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/CSSList/Document.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/CSSList/KeyFrame.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeOpeningBrace\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/CSSList/KeyFrame.php
+
+		-
+			message: '#^Default value of the parameter \#2 \$bIncludeEnd \(false\) of method Sabberworm\\CSS\\Parsing\\ParserState\:\:consumeUntil\(\) is incompatible with type string\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: ../src/Parsing/ParserState.php
+
+		-
+			message: '#^Default value of the parameter \#3 \$consumeEnd \(false\) of method Sabberworm\\CSS\\Parsing\\ParserState\:\:consumeUntil\(\) is incompatible with type string\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: ../src/Parsing/ParserState.php
+
+		-
+			message: '#^PHPDoc tag @return with type array\<int, Sabberworm\\CSS\\Comment\\Comment\>\|void is not subtype of native type array\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: ../src/Parsing/ParserState.php
+
+		-
+			message: '#^Cannot call method render\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: ../src/Property/CSSNamespace.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/Property/Charset.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$oCharset$#'
+			identifier: parameter.notFound
+			count: 1
+			path: ../src/Property/Charset.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/Property/Import.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/Rule/Rule.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceAfterRuleName\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/Rule/Rule.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/RuleSet/AtRuleSet.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeOpeningBrace\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/RuleSet/AtRuleSet.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:implode\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceAfterSelectorSeparator\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeOpeningBrace\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeSelectorSeparator\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:removeLastSemicolon\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/RuleSet/RuleSet.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:safely\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/RuleSet/RuleSet.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceAfterRules\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/RuleSet/RuleSet.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeRules\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/RuleSet/RuleSet.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBetweenRules\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/RuleSet/RuleSet.php
+
+		-
+			message: '#^PHPDoc tag @throws with type Sabberworm\\CSS\\Value\\SourceException\|Sabberworm\\CSS\\Value\\UnexpectedEOFException\|Sabberworm\\CSS\\Value\\UnexpectedTokenException is not subtype of Throwable$#'
+			identifier: throws.notThrowable
+			count: 3
+			path: ../src/Value/CSSFunction.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:implode\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/Value/CalcRuleValueList.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:implode\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: ../src/Value/Color.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceAfterListArgumentSeparator\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/Value/Color.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeListArgumentSeparator\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/Value/Color.php
+
+		-
+			message: '#^Cannot call method getSize\(\) on Sabberworm\\CSS\\Value\\Value\|string\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: ../src/Value/Color.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:implode\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/Value/ValueList.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceAfterListArgumentSeparator\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/Value/ValueList.php
+
+		-
+			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeListArgumentSeparator\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: ../src/Value/ValueList.php
+
+		-
+			message: '#^Cannot call method getColor\(\) on Sabberworm\\CSS\\Value\\RuleValueList\|string\.$#'
+			identifier: method.nonObject
+			count: 7
+			path: ../tests/ParserTest.php
+
+		-
+			message: '#^Cannot call method getListSeparator\(\) on Sabberworm\\CSS\\Value\\Value\|string\.$#'
+			identifier: method.nonObject
+			count: 4
+			path: ../tests/ParserTest.php
 
