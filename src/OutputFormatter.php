@@ -118,8 +118,11 @@ class OutputFormatter
     public function spaceBeforeListArgumentSeparator($sSeparator)
     {
         $spaceForSeparator = $this->oFormat->getSpaceBeforeListArgumentSeparators();
+        if (isset($spaceForSeparator[$sSeparator])) {
+            return $spaceForSeparator[$sSeparator];
+        }
 
-        return $spaceForSeparator[$sSeparator] ?? $this->space('BeforeListArgumentSeparator', $sSeparator);
+        return $this->space('BeforeListArgumentSeparator', $sSeparator);
     }
 
     /**
@@ -130,8 +133,11 @@ class OutputFormatter
     public function spaceAfterListArgumentSeparator($sSeparator)
     {
         $spaceForSeparator = $this->oFormat->getSpaceAfterListArgumentSeparators();
+        if (isset($spaceForSeparator[$sSeparator])) {
+            return $spaceForSeparator[$sSeparator];
+        }
 
-        return $spaceForSeparator[$sSeparator] ?? $this->space('AfterListArgumentSeparator', $sSeparator);
+        return $this->space('AfterListArgumentSeparator', $sSeparator);
     }
 
     /**
