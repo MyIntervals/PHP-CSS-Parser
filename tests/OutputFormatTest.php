@@ -104,8 +104,11 @@ EOT;
 
     /**
      * @test
+     *
+     * @deprecated since version 8.8.0; will be removed in version 9.0.
+     * Use `setSpaceAfterListArgumentSeparators()` to set different spacing per separator.
      */
-    public function spaceAfterListArgumentSeparatorComplex()
+    public function spaceAfterListArgumentSeparatorComplexDeprecated()
     {
         $this->setUpTestcase();
 
@@ -118,6 +121,28 @@ EOT;
                 '/' => '',
                 ' ' => '',
             ]))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function spaceAfterListArgumentSeparatorComplex()
+    {
+        $this->setUpTestcase();
+
+        self::assertSame(
+            '.main, .test {font: italic normal bold 16px/1.2 "Helvetica",	Verdana,	sans-serif;background: white;}'
+            . "\n@media screen {.main {background-size: 100% 100%;font-size: 1.3em;background-color: #fff;}}",
+            $this->oDocument->render(
+                OutputFormat::create()
+                    ->setSpaceAfterListArgumentSeparator(' ')
+                    ->setSpaceAfterListArgumentSeparators([
+                        ',' => "\t",
+                        '/' => '',
+                        ' ' => '',
+                    ])
+            )
         );
     }
 
