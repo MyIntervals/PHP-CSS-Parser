@@ -234,15 +234,4 @@ parameters:
 			count: 1
 			path: ../src/Value/ValueList.php
 
-		-
-			message: '#^Cannot call method getColor\(\) on Sabberworm\\CSS\\Value\\RuleValueList\|string\.$#'
-			identifier: method.nonObject
-			count: 7
-			path: ../tests/ParserTest.php
-
-		-
-			message: '#^Cannot call method getListSeparator\(\) on Sabberworm\\CSS\\Value\\Value\|string\.$#'
-			identifier: method.nonObject
-			count: 4
-			path: ../tests/ParserTest.php
 

@@ -24,6 +24,8 @@ use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\URL;
+use Sabberworm\CSS\Value\Value;
+use Sabberworm\CSS\Value\ValueList;
 
 /**
  * @covers \Sabberworm\CSS\CSSList\Document
@@ -108,6 +110,7 @@ final class ParserTest extends TestCase
                 self::assertSame('red', $colorRuleValue);
                 $colorRules = $ruleSet->getRules('background-');
                 $colorRuleValue = $colorRules[0]->getValue();
+                self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
                     'r' => new Size(35.0, null, true, $colorRuleValue->getLineNo()),
                     'g' => new Size(35.0, null, true, $colorRuleValue->getLineNo()),
@@ -115,12 +118,14 @@ final class ParserTest extends TestCase
                 ], $colorRuleValue->getColor());
                 $colorRules = $ruleSet->getRules('border-color');
                 $colorRuleValue = $colorRules[0]->getValue();
+                self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
                     'r' => new Size(10.0, null, true, $colorRuleValue->getLineNo()),
                     'g' => new Size(100.0, null, true, $colorRuleValue->getLineNo()),
                     'b' => new Size(230.0, null, true, $colorRuleValue->getLineNo()),
                 ], $colorRuleValue->getColor());
                 $colorRuleValue = $colorRules[1]->getValue();
+                self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
                     'r' => new Size(10.0, null, true, $colorRuleValue->getLineNo()),
                     'g' => new Size(100.0, null, true, $colorRuleValue->getLineNo()),
@@ -129,6 +134,7 @@ final class ParserTest extends TestCase
                 ], $colorRuleValue->getColor());
                 $colorRules = $ruleSet->getRules('outline-color');
                 $colorRuleValue = $colorRules[0]->getValue();
+                self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
                     'r' => new Size(34.0, null, true, $colorRuleValue->getLineNo()),
                     'g' => new Size(34.0, null, true, $colorRuleValue->getLineNo()),
@@ -137,12 +143,14 @@ final class ParserTest extends TestCase
             } elseif ($selector === '#yours') {
                 $colorRules = $ruleSet->getRules('background-color');
                 $colorRuleValue = $colorRules[0]->getValue();
+                self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
                     'h' => new Size(220.0, null, true, $colorRuleValue->getLineNo()),
                     's' => new Size(10.0, '%', true, $colorRuleValue->getLineNo()),
                     'l' => new Size(220.0, '%', true, $colorRuleValue->getLineNo()),
                 ], $colorRuleValue->getColor());
                 $colorRuleValue = $colorRules[1]->getValue();
+                self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
                     'h' => new Size(220.0, null, true, $colorRuleValue->getLineNo()),
                     's' => new Size(10.0, '%', true, $colorRuleValue->getLineNo()),
@@ -435,7 +443,9 @@ body {color: green;}',
             self::assertSame(' ', $fontRuleValue->getListSeparator());
             $fontRuleValueComponents = $fontRuleValue->getListComponents();
             $commaList = $fontRuleValueComponents[1];
+            self::assertInstanceOf(ValueList::class, $commaList);
             $slashList = $fontRuleValueComponents[0];
+            self::assertInstanceOf(ValueList::class, $slashList);
             self::assertSame(',', $commaList->getListSeparator());
             self::assertSame('/', $slashList->getListSeparator());
             $borderRadiusRules = $declarationBlock->getRules('border-radius');
@@ -444,7 +454,9 @@ body {color: green;}',
             self::assertSame('/', $slashList->getListSeparator());
             $slashListComponents = $slashList->getListComponents();
             $secondSlashListComponent = $slashListComponents[1];
+            self::assertInstanceOf(ValueList::class, $secondSlashListComponent);
             $firstSlashListComponent = $slashListComponents[0];
+            self::assertInstanceOf(ValueList::class, $firstSlashListComponent);
             self::assertSame(' ', $firstSlashListComponent->getListSeparator());
             self::assertSame(' ', $secondSlashListComponent->getListSeparator());
         }
@@ -1019,6 +1031,7 @@ body {background-color: red;}';
         $rules = $secondDeclarationBlock->getRules();
         // Choose the 2nd one
         $valueOfSecondRule = $rules[1]->getValue();
+        self::assertInstanceOf(Color::class, $valueOfSecondRule);
         self::assertSame(27, $rules[1]->getLineNo());
 
         $actualColorLineNumbers = [];
