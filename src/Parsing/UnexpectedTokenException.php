@@ -30,7 +30,7 @@ class UnexpectedTokenException extends SourceException
      * @param string $sExpected
      * @param string $sFound
      * @param string $sMatchType
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct($sExpected, $sFound, $sMatchType = 'literal', $lineNumber = 0)
     {

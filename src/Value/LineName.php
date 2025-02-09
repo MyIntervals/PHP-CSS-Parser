@@ -13,7 +13,7 @@ class LineName extends ValueList
 {
     /**
      * @param array<int, Value|string> $aComponents
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct(array $aComponents = [], $lineNumber = 0)
     {

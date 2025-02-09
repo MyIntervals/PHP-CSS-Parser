@@ -13,7 +13,7 @@ class RuleValueList extends ValueList
 {
     /**
      * @param string $sSeparator
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct($sSeparator = ',', $lineNumber = 0)
     {

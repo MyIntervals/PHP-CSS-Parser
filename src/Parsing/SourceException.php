@@ -13,7 +13,7 @@ class SourceException extends \Exception
 
     /**
      * @param string $sMessage
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct($sMessage, $lineNumber = 0)
     {
@@ -25,9 +25,9 @@ class SourceException extends \Exception
     }
 
     /**
-     * @return int
+     * @return int<0, max>
      */
-    public function getLineNo()
+    public function getLineNo(): int
     {
         return $this->lineNumber;
     }

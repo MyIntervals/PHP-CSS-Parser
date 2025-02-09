@@ -48,14 +48,14 @@ abstract class CSSList implements Renderable, Commentable
     protected $contents;
 
     /**
-     * @var int
+     * @var int<0, max>
      *
      * @internal since 8.8.0
      */
     protected $lineNumber;
 
     /**
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct($lineNumber = 0)
     {
@@ -255,9 +255,9 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * @return int
+     * @return int<0, max>
      */
-    public function getLineNo()
+    public function getLineNo(): int
     {
         return $this->lineNumber;
     }

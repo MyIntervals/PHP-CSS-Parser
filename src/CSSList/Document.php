@@ -19,7 +19,7 @@ use Sabberworm\CSS\Value\Value;
 class Document extends CSSBlockList
 {
     /**
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct($lineNumber = 0)
     {

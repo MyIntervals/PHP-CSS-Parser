@@ -20,7 +20,7 @@ class KeyFrame extends CSSList implements AtRule
     private $animationName;
 
     /**
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct($lineNumber = 0)
     {

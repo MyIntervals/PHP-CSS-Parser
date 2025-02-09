@@ -62,7 +62,7 @@ class Rule implements Renderable, Commentable
 
     /**
      * @param string $sRule
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      * @param int $iColNo
      */
     public function __construct($sRule, $lineNumber = 0, $iColNo = 0)
@@ -141,9 +141,9 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @return int
+     * @return int<0, max>
      */
-    public function getLineNo()
+    public function getLineNo(): int
     {
         return $this->lineNumber;
     }

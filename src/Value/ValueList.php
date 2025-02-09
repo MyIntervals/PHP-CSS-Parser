@@ -31,7 +31,7 @@ abstract class ValueList extends Value
     /**
      * @param array<array-key, Value|string>|Value|string $aComponents
      * @param string $sSeparator
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct($aComponents = [], $sSeparator = ',', $lineNumber = 0)
     {
@@ -88,10 +88,7 @@ abstract class ValueList extends Value
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         return $oOutputFormat->implode(
             $oOutputFormat->spaceBeforeListArgumentSeparator($this->sSeparator) . $this->sSeparator

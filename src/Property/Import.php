@@ -24,7 +24,7 @@ class Import implements AtRule
     private $mediaQuery;
 
     /**
-     * @var int
+     * @var int<0, max>
      *
      * @internal since 8.8.0
      */
@@ -39,7 +39,7 @@ class Import implements AtRule
 
     /**
      * @param string $mediaQuery
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct(URL $location, $mediaQuery, $lineNumber = 0)
     {
@@ -50,9 +50,9 @@ class Import implements AtRule
     }
 
     /**
-     * @return int
+     * @return int<0, max>
      */
-    public function getLineNo()
+    public function getLineNo(): int
     {
         return $this->lineNumber;
     }
