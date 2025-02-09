@@ -32,6 +32,8 @@ Please also have a look at our
 
 ### Deprecated
 
+- Deprecate magic method forwarding from `OutputFormat` to `OutputFormatter`
+  (#894)
 - `OutputFormat` properties for space around list separators as an array (#880)
 
 ### Removed
