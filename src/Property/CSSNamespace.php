@@ -37,7 +37,7 @@ class CSSNamespace implements AtRule
     /**
      * @param string $mUrl
      * @param string|null $sPrefix
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct($mUrl, $sPrefix = null, $lineNumber = 0)
     {
@@ -48,9 +48,9 @@ class CSSNamespace implements AtRule
     }
 
     /**
-     * @return int
+     * @return int<0, max>
      */
-    public function getLineNo()
+    public function getLineNo(): int
     {
         return $this->lineNumber;
     }

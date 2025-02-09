@@ -58,7 +58,7 @@ class ParserState
 
     /**
      * @param string $sText the complete CSS as text (i.e., usually the contents of a CSS file)
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct($sText, Settings $oParserSettings, $lineNumber = 1)
     {

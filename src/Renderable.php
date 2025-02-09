@@ -6,18 +6,12 @@ namespace Sabberworm\CSS;
 
 interface Renderable
 {
-    /**
-     * @return string
-     */
-    public function __toString();
+    public function __toString(): string;
+
+    public function render(OutputFormat $oOutputFormat): string;
 
     /**
-     * @return string
+     * @return int<0, max>
      */
-    public function render(OutputFormat $oOutputFormat);
-
-    /**
-     * @return int
-     */
-    public function getLineNo();
+    public function getLineNo(): int;
 }

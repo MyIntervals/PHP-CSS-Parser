@@ -9,17 +9,14 @@ use Sabberworm\CSS\OutputFormat;
 class CalcRuleValueList extends RuleValueList
 {
     /**
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct($lineNumber = 0)
     {
         parent::__construct(',', $lineNumber);
     }
 
-    /**
-     * @return string
-     */
-    public function render(OutputFormat $oOutputFormat)
+    public function render(OutputFormat $oOutputFormat): string
     {
         return $oOutputFormat->implode(' ', $this->aComponents);
     }

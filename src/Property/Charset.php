@@ -24,7 +24,7 @@ class Charset implements AtRule
     private $oCharset;
 
     /**
-     * @var int
+     * @var int<0, max>
      *
      * @internal since 8.8.0
      */
@@ -38,7 +38,7 @@ class Charset implements AtRule
     protected $comments;
 
     /**
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct(CSSString $oCharset, $lineNumber = 0)
     {
@@ -48,9 +48,9 @@ class Charset implements AtRule
     }
 
     /**
-     * @return int
+     * @return int<0, max>
      */
-    public function getLineNo()
+    public function getLineNo(): int
     {
         return $this->lineNumber;
     }

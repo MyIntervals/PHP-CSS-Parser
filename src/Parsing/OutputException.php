@@ -11,7 +11,7 @@ final class OutputException extends SourceException
 {
     /**
      * @param string $sMessage
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct($sMessage, $lineNumber = 0)
     {

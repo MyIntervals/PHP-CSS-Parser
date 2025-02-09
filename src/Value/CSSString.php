@@ -24,7 +24,7 @@ class CSSString extends PrimitiveValue
 
     /**
      * @param string $sString
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber
      */
     public function __construct($sString, $lineNumber = 0)
     {
