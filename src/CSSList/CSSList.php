@@ -33,16 +33,22 @@ abstract class CSSList implements Renderable, Commentable
 {
     /**
      * @var array<array-key, Comment>
+     *
+     * @internal since 8.8.0
      */
     protected $aComments;
 
     /**
      * @var array<int, RuleSet|CSSList|Import|Charset>
+     *
+     * @internal since 8.8.0
      */
     protected $aContents;
 
     /**
      * @var int
+     *
+     * @internal since 8.8.0
      */
     protected $iLineNo;
 

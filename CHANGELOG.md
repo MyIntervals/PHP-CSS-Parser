@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Make all non-private properties `@internal` (#886)
+
 ### Deprecated
 
 - `OutputFormat` properties for space around list separators as an array (#880)

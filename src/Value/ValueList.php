@@ -14,11 +14,15 @@ abstract class ValueList extends Value
 {
     /**
      * @var array<int, RuleValueList|CSSFunction|CSSString|LineName|Size|URL|string>
+     *
+     * @internal since 8.8.0
      */
     protected $aComponents;
 
     /**
      * @var string
+     *
+     * @internal since 8.8.0
      */
     protected $sSeparator;
 
