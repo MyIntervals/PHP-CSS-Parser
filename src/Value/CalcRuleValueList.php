@@ -10,6 +10,8 @@ class CalcRuleValueList extends RuleValueList
 {
     /**
      * @param int $lineNumber
+     *
+     * @internal since 8.8.0
      */
     public function __construct($lineNumber = 0)
     {

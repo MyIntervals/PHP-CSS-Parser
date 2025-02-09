@@ -40,6 +40,8 @@ class Import implements AtRule
     /**
      * @param string $mediaQuery
      * @param int $lineNumber
+     *
+     * @internal since 8.8.0
      */
     public function __construct(URL $location, $mediaQuery, $lineNumber = 0)
     {

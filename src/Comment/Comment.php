@@ -26,6 +26,8 @@ class Comment implements Renderable
     /**
      * @param string $commentText
      * @param int $lineNumber
+     *
+     * @internal since 8.8.0
      */
     public function __construct($commentText = '', $lineNumber = 0)
     {

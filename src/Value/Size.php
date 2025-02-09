@@ -72,6 +72,8 @@ class Size extends PrimitiveValue
      * @param string|null $sUnit
      * @param bool $bIsColorComponent
      * @param int $lineNumber
+     *
+     * @internal since 8.8.0
      */
     public function __construct($fSize, $sUnit = null, $bIsColorComponent = false, $lineNumber = 0)
     {

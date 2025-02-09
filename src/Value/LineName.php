@@ -14,6 +14,8 @@ class LineName extends ValueList
     /**
      * @param array<int, Value|string> $aComponents
      * @param int $lineNumber
+     *
+     * @internal since 8.8.0
      */
     public function __construct(array $aComponents = [], $lineNumber = 0)
     {

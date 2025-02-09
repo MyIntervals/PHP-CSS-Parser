@@ -39,6 +39,8 @@ class Charset implements AtRule
 
     /**
      * @param int $lineNumber
+     *
+     * @internal since 8.8.0
      */
     public function __construct(CSSString $oCharset, $lineNumber = 0)
     {

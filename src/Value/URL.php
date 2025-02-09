@@ -22,6 +22,8 @@ class URL extends PrimitiveValue
 
     /**
      * @param int $lineNumber
+     *
+     * @internal since 8.8.0
      */
     public function __construct(CSSString $oURL, $lineNumber = 0)
     {

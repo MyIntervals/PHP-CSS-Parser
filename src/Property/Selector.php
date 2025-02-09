@@ -87,6 +87,8 @@ class Selector
     /**
      * @param string $sSelector
      * @param bool $bCalculateSpecificity
+     *
+     * @internal since 8.8.0
      */
     public function __construct($sSelector, $bCalculateSpecificity = false)
     {

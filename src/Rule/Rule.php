@@ -64,6 +64,8 @@ class Rule implements Renderable, Commentable
      * @param string $sRule
      * @param int $lineNumber
      * @param int $iColNo
+     *
+     * @internal since 8.8.0
      */
     public function __construct($sRule, $lineNumber = 0, $iColNo = 0)
     {

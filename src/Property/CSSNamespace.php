@@ -38,6 +38,8 @@ class CSSNamespace implements AtRule
      * @param string $mUrl
      * @param string|null $sPrefix
      * @param int $lineNumber
+     *
+     * @internal since 8.8.0
      */
     public function __construct($mUrl, $sPrefix = null, $lineNumber = 0)
     {

@@ -21,6 +21,7 @@ Please also have a look at our
 
 ### Changed
 
+- Make constructors of CSS element classes `@internal` (#888)
 - Make all non-private properties `@internal` (#886)
 - Use more native type declarations and strict mode
   (#641, #772, #774, #778, #804, #841, #873, #875)

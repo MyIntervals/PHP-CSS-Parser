@@ -32,6 +32,8 @@ abstract class ValueList extends Value
      * @param array<array-key, Value|string>|Value|string $aComponents
      * @param string $sSeparator
      * @param int $lineNumber
+     *
+     * @internal since 8.8.0
      */
     public function __construct($aComponents = [], $sSeparator = ',', $lineNumber = 0)
     {

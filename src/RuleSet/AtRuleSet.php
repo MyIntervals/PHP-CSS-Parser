@@ -29,6 +29,8 @@ class AtRuleSet extends RuleSet implements AtRule
      * @param string $sType
      * @param string $sArgs
      * @param int $lineNumber
+     *
+     * @internal since 8.8.0
      */
     public function __construct($sType, $sArgs = '', $lineNumber = 0)
     {

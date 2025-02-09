@@ -18,6 +18,8 @@ class Color extends CSSFunction
     /**
      * @param array<array-key, Value|string> $colorValues
      * @param int $lineNumber
+     *
+     * @internal since 8.8.0
      */
     public function __construct(array $colorValues, $lineNumber = 0)
     {

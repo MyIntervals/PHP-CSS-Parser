@@ -21,6 +21,8 @@ class Anchor
 
     /**
      * @param int $iPosition
+     *
+     * @internal since 8.8.0
      */
     public function __construct($iPosition, ParserState $parserState)
     {
