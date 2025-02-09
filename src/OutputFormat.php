@@ -124,10 +124,7 @@ class OutputFormat
     /**
      * This is what’s inserted before the separator in value lists, by default.
      *
-     * `array` is deprecated in version 8.8.0, and will be removed in version 9.0.0.
-     * To set the spacing for specific separators, use {@see $aSpaceBeforeListArgumentSeparators} instead.
-     *
-     * @var string|array<non-empty-string, string>
+     * @var string
      *
      * @internal since 8.8.0, will be made private in 9.0.0
      */
@@ -145,10 +142,7 @@ class OutputFormat
     /**
      * This is what’s inserted after the separator in value lists, by default.
      *
-     * `array` is deprecated in version 8.8.0, and will be removed in version 9.0.0.
-     * To set the spacing for specific separators, use {@see $aSpaceAfterListArgumentSeparators} instead.
-     *
-     * @var string|array<non-empty-string, string>
+     * @var string
      *
      * @internal since 8.8.0, will be made private in 9.0.0
      */
@@ -597,21 +591,17 @@ class OutputFormat
     }
 
     /**
-     * @return string|array<non-empty-string, string>
-     *
      * @internal
      */
-    public function getSpaceAfterListArgumentSeparator()
+    public function getSpaceAfterListArgumentSeparator(): string
     {
         return $this->sSpaceAfterListArgumentSeparator;
     }
 
     /**
-     * @param string|array<non-empty-string, string> $whitespace
-     *
      * @return $this fluent interface
      */
-    public function setSpaceAfterListArgumentSeparator($whitespace): self
+    public function setSpaceAfterListArgumentSeparator(string $whitespace): self
     {
         $this->sSpaceAfterListArgumentSeparator = $whitespace;
 
