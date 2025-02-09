@@ -18,6 +18,8 @@ abstract class Value implements Renderable
 {
     /**
      * @var int
+     *
+     * @internal since 8.8.0
      */
     protected $lineNumber;
 

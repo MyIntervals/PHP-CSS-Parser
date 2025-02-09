@@ -25,11 +25,15 @@ class Charset implements AtRule
 
     /**
      * @var int
+     *
+     * @internal since 8.8.0
      */
     protected $lineNumber;
 
     /**
      * @var array<array-key, Comment>
+     *
+     * @internal since 8.8.0
      */
     protected $comments;
 

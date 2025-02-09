@@ -10,6 +10,8 @@ class OutputFormat
      * Value format: `"` means double-quote, `'` means single-quote
      *
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sStringQuotingType = '"';
 
@@ -17,6 +19,8 @@ class OutputFormat
      * Output RGB colors in hash notation if possible
      *
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $bRGBHashNotation = true;
 
@@ -26,6 +30,8 @@ class OutputFormat
      * Semicolon after the last rule of a declaration block can be omitted. To do that, set this false.
      *
      * @var bool
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $bSemicolonAfterLastRule = true;
 
@@ -34,36 +40,52 @@ class OutputFormat
      * Note that these strings are not sanity-checked: the value should only consist of whitespace
      * Any newline character will be indented according to the current level.
      * The triples (After, Before, Between) can be set using a wildcard (e.g. `$oFormat->set('Space*Rules', "\n");`)
+     *
+     * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sSpaceAfterRuleName = ' ';
 
     /**
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sSpaceBeforeRules = '';
 
     /**
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sSpaceAfterRules = '';
 
     /**
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sSpaceBetweenRules = '';
 
     /**
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sSpaceBeforeBlocks = '';
 
     /**
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sSpaceAfterBlocks = '';
 
     /**
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sSpaceBetweenBlocks = "\n";
 
@@ -71,11 +93,15 @@ class OutputFormat
      * Content injected in and around at-rule blocks.
      *
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sBeforeAtRuleBlock = '';
 
     /**
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sAfterAtRuleBlock = '';
 
@@ -83,11 +109,15 @@ class OutputFormat
      * This is what’s printed before and after the comma if a declaration block contains multiple selectors.
      *
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sSpaceBeforeSelectorSeparator = '';
 
     /**
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sSpaceAfterSelectorSeparator = ' ';
 
@@ -98,6 +128,8 @@ class OutputFormat
      * To set the spacing for specific separators, use {@see $aSpaceBeforeListArgumentSeparators} instead.
      *
      * @var string|array<non-empty-string, string>
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sSpaceBeforeListArgumentSeparator = '';
 
@@ -105,6 +137,8 @@ class OutputFormat
      * Keys are separators (e.g. `,`).  Values are the space sequence to insert, or an empty string.
      *
      * @var array<non-empty-string, string>
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $aSpaceBeforeListArgumentSeparators = [];
 
@@ -115,6 +149,8 @@ class OutputFormat
      * To set the spacing for specific separators, use {@see $aSpaceAfterListArgumentSeparators} instead.
      *
      * @var string|array<non-empty-string, string>
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sSpaceAfterListArgumentSeparator = '';
 
@@ -122,11 +158,15 @@ class OutputFormat
      * Keys are separators (e.g. `,`).  Values are the space sequence to insert, or an empty string.
      *
      * @var array<non-empty-string, string>
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $aSpaceAfterListArgumentSeparators = [];
 
     /**
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sSpaceBeforeOpeningBrace = ' ';
 
@@ -134,16 +174,22 @@ class OutputFormat
      * Content injected in and around declaration blocks.
      *
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sBeforeDeclarationBlock = '';
 
     /**
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sAfterDeclarationBlockSelectors = '';
 
     /**
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sAfterDeclarationBlock = '';
 
@@ -151,6 +197,8 @@ class OutputFormat
      * Indentation character(s) per level. Only applicable if newlines are used in any of the spacing settings.
      *
      * @var string
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $sIndentation = "\t";
 
@@ -158,6 +206,8 @@ class OutputFormat
      * Output exceptions.
      *
      * @var bool
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $bIgnoreExceptions = false;
 
@@ -165,6 +215,8 @@ class OutputFormat
      * Render comments for lists and RuleSets
      *
      * @var bool
+     *
+     * @internal since 8.8.0, will be made private in 9.0.0
      */
     public $bRenderComments = false;
 
