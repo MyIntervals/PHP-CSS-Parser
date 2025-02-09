@@ -48,11 +48,15 @@ class Rule implements Renderable, Commentable
 
     /**
      * @var int
+     *
+     * @internal since 8.8.0
      */
     protected $iColNo;
 
     /**
      * @var array<array-key, Comment>
+     *
+     * @internal since 8.8.0
      */
     protected $comments;
 

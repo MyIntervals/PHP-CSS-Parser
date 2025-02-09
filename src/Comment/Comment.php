@@ -11,11 +11,15 @@ class Comment implements Renderable
 {
     /**
      * @var int
+     *
+     * @internal since 8.8.0
      */
     protected $lineNumber;
 
     /**
      * @var string
+     *
+     * @internal since 8.8.0
      */
     protected $commentText;
 
