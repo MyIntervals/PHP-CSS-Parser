@@ -829,11 +829,32 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
+    public function nextLevelReturnsCloneWithSameProperties(): void
+    {
+        $space = '   ';
+        $this->subject->setSpaceAfterRuleName($space);
+
+        self::assertSame($space, $this->subject->nextLevel()->getSpaceAfterRuleName());
+    }
+
+    /**
+     * @test
+     */
     public function nextLevelReturnsInstanceWithIndentationLevelIncreasedByOne(): void
     {
         $originalIndentationLevel = $this->subject->getIndentationLevel();
 
         self::assertSame($originalIndentationLevel + 1, $this->subject->nextLevel()->getIndentationLevel());
+    }
+
+    /**
+     * @test
+     */
+    public function nextLevelReturnsInstanceWithDifferentFormatterInstance(): void
+    {
+        $formatter = $this->subject->getFormatter();
+
+        self::assertNotSame($formatter, $this->subject->nextLevel()->getFormatter());
     }
 
     /**
@@ -884,5 +905,124 @@ final class OutputFormatTest extends TestCase
         $secondCallResult = OutputFormat::create();
 
         self::assertNotSame($firstCallResult, $secondCallResult);
+    }
+
+    /**
+     * @test
+     */
+    public function createCompactReturnsNewOutputFormatInstance(): void
+    {
+        self::assertInstanceOf(OutputFormat::class, OutputFormat::createCompact());
+    }
+
+    /**
+     * @test
+     */
+    public function createCompactCalledTwoTimesReturnsDifferentInstances(): void
+    {
+        $firstCallResult = OutputFormat::createCompact();
+        $secondCallResult = OutputFormat::createCompact();
+
+        self::assertNotSame($firstCallResult, $secondCallResult);
+    }
+
+    /**
+     * @test
+     */
+    public function createCompactReturnsInstanceWithSpaceBeforeRulesSetToEmptyString(): void
+    {
+        $newInstance = OutputFormat::createCompact();
+
+        self::assertSame('', $newInstance->getSpaceBeforeRules());
+    }
+
+    /**
+     * @test
+     */
+    public function createCompactReturnsInstanceWithSpaceBetweenRulesSetToEmptyString(): void
+    {
+        $newInstance = OutputFormat::createCompact();
+
+        self::assertSame('', $newInstance->getSpaceBetweenRules());
+    }
+
+    /**
+     * @test
+     */
+    public function createCompactReturnsInstanceWithSpaceAfterRulesSetToEmptyString(): void
+    {
+        $newInstance = OutputFormat::createCompact();
+
+        self::assertSame('', $newInstance->getSpaceAfterRules());
+    }
+
+    /**
+     * @test
+     */
+    public function createCompactReturnsInstanceWithSpaceBeforeBlocksSetToEmptyString(): void
+    {
+        $newInstance = OutputFormat::createCompact();
+
+        self::assertSame('', $newInstance->getSpaceBeforeBlocks());
+    }
+
+    /**
+     * @test
+     */
+    public function createCompactReturnsInstanceWithSpaceBetweenBlocksSetToEmptyString(): void
+    {
+        $newInstance = OutputFormat::createCompact();
+
+        self::assertSame('', $newInstance->getSpaceBetweenBlocks());
+    }
+
+    /**
+     * @test
+     */
+    public function createCompactReturnsInstanceWithSpaceAfterBlocksSetToEmptyString(): void
+    {
+        $newInstance = OutputFormat::createCompact();
+
+        self::assertSame('', $newInstance->getSpaceAfterBlocks());
+    }
+
+    /**
+     * @test
+     */
+    public function createCompactReturnsInstanceWithSpaceAfterRuleNameSetToEmptyString(): void
+    {
+        $newInstance = OutputFormat::createCompact();
+
+        self::assertSame('', $newInstance->getSpaceAfterRuleName());
+    }
+
+    /**
+     * @test
+     */
+    public function createCompactReturnsInstanceWithSpaceBeforeOpeningBraceSetToEmptyString(): void
+    {
+        $newInstance = OutputFormat::createCompact();
+
+        self::assertSame('', $newInstance->getSpaceBeforeOpeningBrace());
+    }
+
+    /**
+     * @test
+     */
+    public function createCompactReturnsInstanceWithSpaceAfterSelectorSeparatorSetToEmptyString(): void
+    {
+        $newInstance = OutputFormat::createCompact();
+
+        self::assertSame('', $newInstance->getSpaceAfterSelectorSeparator());
+    }
+
+    /**
+     * @test
+     */
+    public function createCompactReturnsInstanceWithRenderCommentsDisabled(): void
+    {
+        $newInstance = OutputFormat::createCompact();
+
+        self::assertFalse($newInstance->getRenderComments());
     }
 }
