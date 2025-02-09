@@ -13,6 +13,8 @@ class CSSFunction extends ValueList
 {
     /**
      * @var string
+     *
+     * @internal since 8.8.0
      */
     protected $sName;
 

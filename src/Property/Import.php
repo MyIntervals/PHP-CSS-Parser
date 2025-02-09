@@ -23,11 +23,15 @@ class Import implements AtRule
 
     /**
      * @var int
+     *
+     * @internal since 8.8.0
      */
     protected $iLineNo;
 
     /**
      * @var array<array-key, Comment>
+     *
+     * @internal since 8.8.0
      */
     protected $aComments;
 
