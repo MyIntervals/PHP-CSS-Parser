@@ -186,7 +186,8 @@ class Size extends PrimitiveValue
     /**
      * Returns whether the number stored in this Size really represents a size (as in a length of something on screen).
      *
-     * @return false if the unit an angle, a duration, a frequency or the number is a component in a Color object.
+     * Returns `false` if the unit is an angle, a duration, a frequency, or the number is a component in a `Color`
+     * object.
      */
     public function isSize(): bool
     {
