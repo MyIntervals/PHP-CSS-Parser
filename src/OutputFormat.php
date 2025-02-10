@@ -799,11 +799,15 @@ class OutputFormat
         $this->bIgnoreExceptions = true;
     }
 
+    /**
+     * @internal since 8.8.0
+     */
     public function getFormatter(): OutputFormatter
     {
         if ($this->outputFormatter === null) {
             $this->outputFormatter = new OutputFormatter($this);
         }
+
         return $this->outputFormatter;
     }
 
