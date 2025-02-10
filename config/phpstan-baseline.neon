@@ -181,12 +181,6 @@ parameters:
 			path: ../src/RuleSet/RuleSet.php
 
 		-
-			message: '#^PHPDoc tag @throws with type Sabberworm\\CSS\\Value\\SourceException\|Sabberworm\\CSS\\Value\\UnexpectedEOFException\|Sabberworm\\CSS\\Value\\UnexpectedTokenException is not subtype of Throwable$#'
-			identifier: throws.notThrowable
-			count: 3
-			path: ../src/Value/CSSFunction.php
-
-		-
 			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:implode\(\)\.$#'
 			identifier: method.notFound
 			count: 1
