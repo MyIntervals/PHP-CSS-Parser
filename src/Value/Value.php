@@ -46,10 +46,10 @@ abstract class Value implements Renderable
         $parserState->consumeWhiteSpace();
         //Build a list of delimiters and parsed values
         while (
-            !($parserState->comes('}') || $parserState->comes(';') || $parserState->comes('!')
-                || $parserState->comes(')')
-                || $parserState->comes('\\')
-                || $parserState->isEnd())
+        !($parserState->comes('}') || $parserState->comes(';') || $parserState->comes('!')
+            || $parserState->comes(')')
+            || $parserState->comes('\\')
+            || $parserState->isEnd())
         ) {
             if (\count($aStack) > 0) {
                 $bFoundDelimiter = false;
