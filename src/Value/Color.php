@@ -32,8 +32,8 @@ class Color extends CSSFunction
     {
         return
             $parserState->comes('#')
-            ? self::parseHexColor($parserState)
-            : self::parseColorFunction($parserState);
+                ? self::parseHexColor($parserState)
+                : self::parseColorFunction($parserState);
     }
 
     /**
@@ -138,8 +138,8 @@ class Color extends CSSFunction
             // With a `var` argument, the function can have fewer arguments.
             // And as of CSS Color Module Level 4, the alpha argument is optional.
             $canCloseNow =
-                $containsVar ||
-                ($mayHaveOptionalAlpha && $argumentIndex >= $expectedArgumentCount - 2);
+                $containsVar
+                || ($mayHaveOptionalAlpha && $argumentIndex >= $expectedArgumentCount - 2);
             if ($canCloseNow && $parserState->comes(')')) {
                 break;
             }
@@ -183,8 +183,8 @@ class Color extends CSSFunction
 
         return
             $containsVar
-            ? new CSSFunction($colorMode, \array_values($colorValues), ',', $parserState->currentLine())
-            : new Color($colorValues, $parserState->currentLine());
+                ? new CSSFunction($colorMode, \array_values($colorValues), ',', $parserState->currentLine())
+                : new Color($colorValues, $parserState->currentLine());
     }
 
     private static function mapRange(float $value, float $fromMin, float $fromMax, float $toMin, float $toMax): float

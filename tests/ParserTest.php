@@ -24,7 +24,6 @@ use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\URL;
-use Sabberworm\CSS\Value\Value;
 use Sabberworm\CSS\Value\ValueList;
 
 /**
