@@ -1118,7 +1118,7 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function createPrettyReturnsInstanceWithSpaceAfterRuleNameSetSpace(): void
+    public function createPrettyReturnsInstanceWithSpaceAfterRuleNameSetToSpace(): void
     {
         $newInstance = OutputFormat::createPretty();
 
