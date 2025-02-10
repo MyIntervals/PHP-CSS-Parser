@@ -57,7 +57,7 @@ final class ValueTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: string, 1: string}>
+     * @return array<string, array{'to be parsed': non-empty-string, 'expected': non-empty-string}>
      * The first datum is a template for the parser (using `sprintf` insertion marker `%s` for some expression).
      * The second is for the expected result, which may have whitespace and trailing semicolon removed.
      */
