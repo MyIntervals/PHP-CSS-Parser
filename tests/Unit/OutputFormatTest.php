@@ -891,7 +891,7 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function createReturnsNewOutputFormatInstance(): void
+    public function createReturnsOutputFormatInstance(): void
     {
         self::assertInstanceOf(OutputFormat::class, OutputFormat::create());
     }
@@ -910,7 +910,7 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function createCompactReturnsNewOutputFormatInstance(): void
+    public function createCompactReturnsOutputFormatInstance(): void
     {
         self::assertInstanceOf(OutputFormat::class, OutputFormat::createCompact());
     }
@@ -1039,7 +1039,7 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function createPrettyReturnsNewOutputFormatInstance(): void
+    public function createPrettyReturnsOutputFormatInstance(): void
     {
         self::assertInstanceOf(OutputFormat::class, OutputFormat::createPretty());
     }
@@ -1148,7 +1148,7 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function createPrettyReturnsInstanceWithSpaceAfterListArgumentSeparatorsSetToSpaceForComma(): void
+    public function createPrettyReturnsInstanceWithSpaceAfterListArgumentSeparatorsSetToSpaceForCommaOnly(): void
     {
         $newInstance = OutputFormat::createPretty();
 
