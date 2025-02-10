@@ -60,12 +60,13 @@ class AtRuleSet extends RuleSet implements AtRule
 
     public function render(OutputFormat $outputFormat): string
     {
-        $result = $outputFormat->comments($this);
+        $formatter = $outputFormat->getFormatter();
+        $result = $formatter->comments($this);
         $arguments = $this->arguments;
         if ($arguments) {
             $arguments = ' ' . $arguments;
         }
-        $result .= "@{$this->sType}$arguments{$outputFormat->spaceBeforeOpeningBrace()}{";
+        $result .= "@{$this->sType}$arguments{$formatter->spaceBeforeOpeningBrace()}{";
         $result .= $this->renderRules($outputFormat);
         $result .= '}';
         return $result;
