@@ -181,24 +181,6 @@ final class OutputFormat
     private $indentationLevel = 0;
 
     /**
-     * @param non-empty-string $methodName
-     * @param array<array-key, mixed> $arguments
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     */
-    public function __call(string $methodName, array $arguments)
-    {
-        if (\method_exists(OutputFormatter::class, $methodName)) {
-            // @deprecated since 8.8.0, will be removed in 9.0.0. Call the method on the formatter directly instead.
-            return \call_user_func_array([$this->getFormatter(), $methodName], $arguments);
-        } else {
-            throw new \Exception('Unknown OutputFormat method called: ' . $methodName);
-        }
-    }
-
-    /**
      * @internal
      */
     public function getStringQuotingType(): string
