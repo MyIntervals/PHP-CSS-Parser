@@ -891,7 +891,7 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function createReturnsNewOutputFormatInstance(): void
+    public function createReturnsOutputFormatInstance(): void
     {
         self::assertInstanceOf(OutputFormat::class, OutputFormat::create());
     }
@@ -910,7 +910,7 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function createCompactReturnsNewOutputFormatInstance(): void
+    public function createCompactReturnsOutputFormatInstance(): void
     {
         self::assertInstanceOf(OutputFormat::class, OutputFormat::createCompact());
     }
@@ -1019,10 +1019,149 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
+    public function createCompactReturnsInstanceWithSpaceAfterListArgumentSeparatorsSetToEmptyArray(): void
+    {
+        $newInstance = OutputFormat::createCompact();
+
+        self::assertSame([], $newInstance->getSpaceAfterListArgumentSeparators());
+    }
+
+    /**
+     * @test
+     */
     public function createCompactReturnsInstanceWithRenderCommentsDisabled(): void
     {
         $newInstance = OutputFormat::createCompact();
 
         self::assertFalse($newInstance->getRenderComments());
+    }
+
+    /**
+     * @test
+     */
+    public function createPrettyReturnsOutputFormatInstance(): void
+    {
+        self::assertInstanceOf(OutputFormat::class, OutputFormat::createPretty());
+    }
+
+    /**
+     * @test
+     */
+    public function createPrettyCalledTwoTimesReturnsDifferentInstances(): void
+    {
+        $firstCallResult = OutputFormat::createPretty();
+        $secondCallResult = OutputFormat::createPretty();
+
+        self::assertNotSame($firstCallResult, $secondCallResult);
+    }
+
+    /**
+     * @test
+     */
+    public function createPrettyReturnsInstanceWithSpaceBeforeRulesSetToNewline(): void
+    {
+        $newInstance = OutputFormat::createPretty();
+
+        self::assertSame("\n", $newInstance->getSpaceBeforeRules());
+    }
+
+    /**
+     * @test
+     */
+    public function createPrettyReturnsInstanceWithSpaceBetweenRulesSetToNewline(): void
+    {
+        $newInstance = OutputFormat::createPretty();
+
+        self::assertSame("\n", $newInstance->getSpaceBetweenRules());
+    }
+
+    /**
+     * @test
+     */
+    public function createPrettyReturnsInstanceWithSpaceAfterRulesSetToNewline(): void
+    {
+        $newInstance = OutputFormat::createPretty();
+
+        self::assertSame("\n", $newInstance->getSpaceAfterRules());
+    }
+
+    /**
+     * @test
+     */
+    public function createPrettyReturnsInstanceWithSpaceBeforeBlocksSetToNewline(): void
+    {
+        $newInstance = OutputFormat::createPretty();
+
+        self::assertSame("\n", $newInstance->getSpaceBeforeBlocks());
+    }
+
+    /**
+     * @test
+     */
+    public function createPrettyReturnsInstanceWithSpaceBetweenBlocksSetToTwoNewlines(): void
+    {
+        $newInstance = OutputFormat::createPretty();
+
+        self::assertSame("\n\n", $newInstance->getSpaceBetweenBlocks());
+    }
+
+    /**
+     * @test
+     */
+    public function createPrettyReturnsInstanceWithSpaceAfterBlocksSetToNewline(): void
+    {
+        $newInstance = OutputFormat::createPretty();
+
+        self::assertSame("\n", $newInstance->getSpaceAfterBlocks());
+    }
+
+    /**
+     * @test
+     */
+    public function createPrettyReturnsInstanceWithSpaceAfterRuleNameSetToSpace(): void
+    {
+        $newInstance = OutputFormat::createPretty();
+
+        self::assertSame(' ', $newInstance->getSpaceAfterRuleName());
+    }
+
+    /**
+     * @test
+     */
+    public function createPrettyReturnsInstanceWithSpaceBeforeOpeningBraceSetToSpace(): void
+    {
+        $newInstance = OutputFormat::createPretty();
+
+        self::assertSame(' ', $newInstance->getSpaceBeforeOpeningBrace());
+    }
+
+    /**
+     * @test
+     */
+    public function createPrettyReturnsInstanceWithSpaceAfterSelectorSeparatorSetToSpace(): void
+    {
+        $newInstance = OutputFormat::createPretty();
+
+        self::assertSame(' ', $newInstance->getSpaceAfterSelectorSeparator());
+    }
+
+    /**
+     * @test
+     */
+    public function createPrettyReturnsInstanceWithSpaceAfterListArgumentSeparatorsSetToSpaceForCommaOnly(): void
+    {
+        $newInstance = OutputFormat::createPretty();
+
+        self::assertSame([',' => ' '], $newInstance->getSpaceAfterListArgumentSeparators());
+    }
+
+    /**
+     * @test
+     */
+    public function createPrettyReturnsInstanceWithRenderCommentsEnabled(): void
+    {
+        $newInstance = OutputFormat::createPretty();
+
+        self::assertTrue($newInstance->getRenderComments());
     }
 }
