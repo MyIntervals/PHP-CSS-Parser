@@ -7,6 +7,9 @@ namespace Sabberworm\CSS;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\Parsing\OutputException;
 
+/**
+ * @internal since 8.8.0
+ */
 class OutputFormatter
 {
     /**
