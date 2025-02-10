@@ -61,8 +61,9 @@ class KeyFrame extends CSSList implements AtRule
 
     public function render(OutputFormat $outputFormat): string
     {
-        $result = $outputFormat->comments($this);
-        $result .= "@{$this->vendorKeyFrame} {$this->animationName}{$outputFormat->spaceBeforeOpeningBrace()}{";
+        $formatter = $outputFormat->getFormatter();
+        $result = $formatter->comments($this);
+        $result .= "@{$this->vendorKeyFrame} {$this->animationName}{$formatter->spaceBeforeOpeningBrace()}{";
         $result .= $this->renderListContents($outputFormat);
         $result .= '}';
         return $result;
