@@ -339,6 +339,8 @@ class OutputFormat
 
     /**
      * @return OutputFormat
+     *
+     * @internal since V8.8.0
      */
     public function nextLevel()
     {

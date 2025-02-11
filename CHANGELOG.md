@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Mark `OutputFormat::nextLevel()` as `@internal` (#901)
 - Make all non-private properties `@internal` (#886)
 
 ### Deprecated
