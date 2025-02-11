@@ -213,7 +213,7 @@ class Size extends PrimitiveValue
         return $this->render(new OutputFormat());
     }
 
-    public function render(OutputFormat $oOutputFormat): string
+    public function render(OutputFormat $outputFormat): string
     {
         $l = \localeconv();
         $sPoint = \preg_quote($l['decimal_point'], '/');

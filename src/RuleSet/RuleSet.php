@@ -263,11 +263,11 @@ abstract class RuleSet implements Renderable, Commentable
     /**
      * @return string
      */
-    protected function renderRules(OutputFormat $oOutputFormat)
+    protected function renderRules(OutputFormat $outputFormat)
     {
         $sResult = '';
         $bIsFirst = true;
-        $oNextLevel = $oOutputFormat->nextLevel();
+        $oNextLevel = $outputFormat->nextLevel();
         foreach ($this->aRules as $aRules) {
             foreach ($aRules as $rule) {
                 $sRendered = $oNextLevel->safely(static function () use ($rule, $oNextLevel): string {
@@ -288,10 +288,10 @@ abstract class RuleSet implements Renderable, Commentable
 
         if (!$bIsFirst) {
             // Had some output
-            $sResult .= $oOutputFormat->spaceAfterRules();
+            $sResult .= $outputFormat->spaceAfterRules();
         }
 
-        return $oOutputFormat->removeLastSemicolon($sResult);
+        return $outputFormat->removeLastSemicolon($sResult);
     }
 
     /**

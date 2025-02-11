@@ -114,12 +114,12 @@ class Document extends CSSBlockList
     /**
      * Overrides `render()` to make format argument optional.
      */
-    public function render(?OutputFormat $oOutputFormat = null): string
+    public function render(?OutputFormat $outputFormat = null): string
     {
-        if ($oOutputFormat === null) {
-            $oOutputFormat = new OutputFormat();
+        if ($outputFormat === null) {
+            $outputFormat = new OutputFormat();
         }
-        return $oOutputFormat->comments($this) . $this->renderListContents($oOutputFormat);
+        return $outputFormat->comments($this) . $this->renderListContents($outputFormat);
     }
 
     public function isRootList(): bool
