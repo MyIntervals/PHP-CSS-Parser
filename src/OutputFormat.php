@@ -22,7 +22,7 @@ class OutputFormat
     /**
      * Output RGB colors in hash notation if possible
      *
-     * @var string
+     * @var bool
      *
      * @internal since 8.8.0, will be made private in 9.0.0
      */
