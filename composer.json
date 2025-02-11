@@ -31,6 +31,7 @@
         "phpstan/extension-installer": "1.4.3",
         "phpstan/phpstan": "1.12.16 || 2.1.2",
         "phpstan/phpstan-phpunit": "1.4.2 || 2.0.4",
+        "phpstan/phpstan-strict-rules": "1.6.2 || 2.0.3",
         "phpunit/phpunit": "8.5.41",
         "rector/rector": "1.2.10 || 2.0.7"
     },
