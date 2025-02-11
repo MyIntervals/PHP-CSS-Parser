@@ -21,6 +21,7 @@ Please also have a look at our
 
 ### Changed
 
+- Mark `OutputFormat::nextLevel()` as `@internal` (#901)
 - Only allow `string` for some `OutputFormat` properties (#885)
 - Make all non-private properties `@internal` (#886)
 - Use more native type declarations and strict mode

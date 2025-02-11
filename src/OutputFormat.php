@@ -780,6 +780,9 @@ class OutputFormat
         return $this->setIndentation(\str_repeat(' ', $numberOfSpaces));
     }
 
+    /**
+     * @internal since V8.8.0
+     */
     public function nextLevel(): self
     {
         if ($this->oNextLevelFormat === null) {
