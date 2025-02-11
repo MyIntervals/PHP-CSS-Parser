@@ -23,6 +23,8 @@ class CalcFunction extends CSSFunction
     /**
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
+     *
+     * @internal since V8.8.0
      */
     public static function parse(ParserState $parserState, bool $bIgnoreCase = false): CSSFunction
     {

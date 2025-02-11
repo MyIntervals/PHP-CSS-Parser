@@ -86,6 +86,8 @@ class Size extends PrimitiveValue
      *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
+     *
+     * @internal since V8.8.0
      */
     public static function parse(ParserState $parserState, $bIsColorComponent = false): Size
     {
