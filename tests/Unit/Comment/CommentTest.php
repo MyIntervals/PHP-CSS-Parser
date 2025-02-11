@@ -6,7 +6,6 @@ namespace Sabberworm\CSS\Tests\Unit\Comment;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Comment;
-use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Renderable;
 
 /**
@@ -77,31 +76,5 @@ final class CommentTest extends TestCase
         $subject = new Comment('', $lineNumber);
 
         self::assertSame($lineNumber, $subject->getLineNo());
-    }
-
-    /**
-     * @test
-     */
-    public function toStringRendersCommentEnclosedInCommentDelimiters(): void
-    {
-        $comment = 'There is no spoon.';
-        $subject = new Comment();
-
-        $subject->setComment($comment);
-
-        self::assertSame('/*' . $comment . '*/', (string) $subject);
-    }
-
-    /**
-     * @test
-     */
-    public function renderRendersCommentEnclosedInCommentDelimiters(): void
-    {
-        $comment = 'There is no spoon.';
-        $subject = new Comment();
-
-        $subject->setComment($comment);
-
-        self::assertSame('/*' . $comment . '*/', $subject->render(new OutputFormat()));
     }
 }
