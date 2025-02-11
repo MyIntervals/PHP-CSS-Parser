@@ -67,6 +67,8 @@ abstract class CSSList implements Renderable, Commentable
      *
      * @throws UnexpectedTokenException
      * @throws SourceException
+     *
+     * @internal since V8.8.0
      */
     public static function parseList(ParserState $oParserState, CSSList $oList)
     {
