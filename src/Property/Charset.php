@@ -56,7 +56,7 @@ class Charset implements AtRule
     }
 
     /**
-     * @param string|CSSString $oCharset
+     * @param string|CSSString $sCharset
      */
     public function setCharset($sCharset): void
     {

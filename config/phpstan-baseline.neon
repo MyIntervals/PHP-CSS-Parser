@@ -109,12 +109,6 @@ parameters:
 			path: ../src/Property/Charset.php
 
 		-
-			message: '#^PHPDoc tag @param references unknown parameter\: \$oCharset$#'
-			identifier: parameter.notFound
-			count: 1
-			path: ../src/Property/Charset.php
-
-		-
 			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
 			identifier: method.notFound
 			count: 1
