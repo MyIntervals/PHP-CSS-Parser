@@ -47,7 +47,7 @@ final class SourceExceptionTest extends TestCase
     /**
      * @test
      */
-    public function getMessageForLineNumberProvidedIncludesMessage(): void
+    public function getMessageWithLineNumberProvidedIncludesLineNumber(): void
     {
         $lineNumber = 17;
         $exception = new SourceException('foo', $lineNumber);

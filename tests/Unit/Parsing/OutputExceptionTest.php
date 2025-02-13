@@ -56,7 +56,7 @@ final class OutputExceptionTest extends TestCase
     /**
      * @test
      */
-    public function getMessageForLineNumberProvidedIncludesMessage(): void
+    public function getMessageWithLineNumberProvidedIncludesLineNumber(): void
     {
         $lineNumber = 17;
         $exception = new OutputException('foo', $lineNumber);
