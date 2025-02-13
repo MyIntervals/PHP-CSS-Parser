@@ -44,11 +44,11 @@ abstract class ValueList extends Value
     }
 
     /**
-     * @param Value|string $mComponent
+     * @param Value|string $component
      */
-    public function addListComponent($mComponent): void
+    public function addListComponent($component): void
     {
-        $this->aComponents[] = $mComponent;
+        $this->aComponents[] = $component;
     }
 
     /**
