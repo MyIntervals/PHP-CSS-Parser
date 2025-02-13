@@ -62,6 +62,6 @@ final class CommentTest extends TestCase
 
         $subject->setComment($comment);
 
-        self::assertSame('/*' . $comment . '*/', $subject->render(new OutputFormat()));
+        self::assertSame('/*' . $comment . '*/', $subject->render(OutputFormat::createPretty()));
     }
 }
