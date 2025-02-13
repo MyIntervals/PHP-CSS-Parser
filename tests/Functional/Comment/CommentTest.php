@@ -29,7 +29,7 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function renderWithDefaultOutputFormatRendersCommentEnclosedInCommentDelimiters(): void
+    public function renderWithVirginOutputFormatRendersCommentEnclosedInCommentDelimiters(): void
     {
         $comment = 'There is no spoon.';
         $subject = new Comment();
@@ -37,6 +37,19 @@ final class CommentTest extends TestCase
         $subject->setComment($comment);
 
         self::assertSame('/*' . $comment . '*/', $subject->render(new OutputFormat()));
+    }
+
+    /**
+     * @test
+     */
+    public function renderWithDefaultOutputFormatRendersCommentEnclosedInCommentDelimiters(): void
+    {
+        $comment = 'There is no spoon.';
+        $subject = new Comment();
+
+        $subject->setComment($comment);
+
+        self::assertSame('/*' . $comment . '*/', $subject->render(OutputFormat::create()));
     }
 
     /**
