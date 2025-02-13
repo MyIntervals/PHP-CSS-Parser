@@ -21,6 +21,7 @@ use Sabberworm\CSS\RuleSet\AtRuleSet;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\RuleSet\RuleSet;
 use Sabberworm\CSS\Settings;
+use Sabberworm\CSS\Value\CalcFunction;
 use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\URL;
@@ -193,37 +194,37 @@ final class ParserTest extends TestCase
             }
             $contentRules = $ruleSet->getRules('content');
             $firstContentRuleAsString = $contentRules[0]->getValue()->__toString();
-            if ($selector == '.test-1') {
+            if ($selector === '.test-1') {
                 self::assertSame('" "', $firstContentRuleAsString);
             }
-            if ($selector == '.test-2') {
+            if ($selector === '.test-2') {
                 self::assertSame('"é"', $firstContentRuleAsString);
             }
-            if ($selector == '.test-3') {
+            if ($selector === '.test-3') {
                 self::assertSame('" "', $firstContentRuleAsString);
             }
-            if ($selector == '.test-4') {
+            if ($selector === '.test-4') {
                 self::assertSame('"𝄞"', $firstContentRuleAsString);
             }
-            if ($selector == '.test-5') {
+            if ($selector === '.test-5') {
                 self::assertSame('"水"', $firstContentRuleAsString);
             }
-            if ($selector == '.test-6') {
+            if ($selector === '.test-6') {
                 self::assertSame('"¥"', $firstContentRuleAsString);
             }
-            if ($selector == '.test-7') {
+            if ($selector === '.test-7') {
                 self::assertSame('"\\A"', $firstContentRuleAsString);
             }
-            if ($selector == '.test-8') {
+            if ($selector === '.test-8') {
                 self::assertSame('"\\"\\""', $firstContentRuleAsString);
             }
-            if ($selector == '.test-9') {
+            if ($selector === '.test-9') {
                 self::assertSame('"\\"\\\'"', $firstContentRuleAsString);
             }
-            if ($selector == '.test-10') {
+            if ($selector === '.test-10') {
                 self::assertSame('"\\\'\\\\"', $firstContentRuleAsString);
             }
-            if ($selector == '.test-11') {
+            if ($selector === '.test-11') {
                 self::assertSame('"test"', $firstContentRuleAsString);
             }
         }
@@ -1158,8 +1159,8 @@ body {background-color: red;}';
         $rule2Comments = $divRules[1]->getComments();
         self::assertCount(1, $rule1Comments);
         self::assertCount(1, $rule2Comments);
-        self::assertEquals('Find Me!', $rule1Comments[0]->getComment());
-        self::assertEquals('Find Me Too!', $rule2Comments[0]->getComment());
+        self::assertSame('Find Me!', $rule1Comments[0]->getComment());
+        self::assertSame('Find Me Too!', $rule2Comments[0]->getComment());
     }
 
     /**
@@ -1211,7 +1212,7 @@ body {background-color: red;}';
      */
     public function scientificNotationSizeValuesInFile(): void
     {
-        $document = $this->parsedStructureForFile(
+        $document = self::parsedStructureForFile(
             'scientific-notation-numbers',
             Settings::create()->withMultibyteSupport(false)
         );
@@ -1233,12 +1234,12 @@ body {background-color: red;}';
 
     public function escapedSpecialCaseTokens(): void
     {
-        $document = $this->parsedStructureForFile('escaped-tokens');
+        $document = self::parsedStructureForFile('escaped-tokens');
         $contents = $document->getContents();
         $rules = $contents[0]->getRules();
         $urlRule = $rules[0];
         $calcRule = $rules[1];
-        self::assertTrue(\is_a($urlRule->getValue(), '\\Sabberworm\\CSS\\Value\\URL'));
-        self::assertTrue(\is_a($calcRule->getValue(), '\\Sabberworm\\CSS\\Value\\CalcFunction'));
+        self::assertInstanceOf(URL::class, $urlRule->getValue());
+        self::assertInstanceOf(CalcFunction::class, $calcRule->getValue());
     }
 }
