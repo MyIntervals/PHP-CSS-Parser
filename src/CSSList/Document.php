@@ -28,6 +28,8 @@ class Document extends CSSBlockList
 
     /**
      * @throws SourceException
+     *
+     * @internal since V8.8.0
      */
     public static function parse(ParserState $parserState): Document
     {
