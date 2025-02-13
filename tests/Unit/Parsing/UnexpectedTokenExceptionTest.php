@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit\Parsing;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 /**
@@ -12,6 +13,14 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
  */
 final class UnexpectedTokenExceptionTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function extendsSourceException(): void
+    {
+        self::assertInstanceOf(SourceException::class, new UnexpectedTokenException('expected', 'found'));
+    }
+
     /**
      * @test
      */

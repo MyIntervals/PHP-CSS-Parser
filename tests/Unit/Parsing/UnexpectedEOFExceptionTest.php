@@ -6,12 +6,21 @@ namespace Sabberworm\CSS\Tests\Unit\Parsing;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 /**
  * @covers \Sabberworm\CSS\Parsing\UnexpectedEOFException
  */
 final class UnexpectedEOFExceptionTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function extendsUnexpectedTokenException(): void
+    {
+        self::assertInstanceOf(UnexpectedTokenException::class, new UnexpectedEOFException('expected', 'found'));
+    }
+
     /**
      * @test
      */

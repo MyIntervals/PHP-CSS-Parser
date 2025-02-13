@@ -6,12 +6,21 @@ namespace Sabberworm\CSS\Tests\Unit\Parsing;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parsing\OutputException;
+use Sabberworm\CSS\Parsing\SourceException;
 
 /**
  * @covers \Sabberworm\CSS\Parsing\OutputException
  */
 final class OutputExceptionTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function extendsSourceException(): void
+    {
+        self::assertInstanceOf(SourceException::class, new OutputException('foo'));
+    }
+
     /**
      * @test
      */
