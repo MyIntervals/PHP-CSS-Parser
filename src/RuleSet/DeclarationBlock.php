@@ -49,6 +49,8 @@ class DeclarationBlock extends RuleSet
      *
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
+     *
+     * @internal since V8.8.0
      */
     public static function parse(ParserState $oParserState, $oList = null)
     {

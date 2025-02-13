@@ -33,6 +33,8 @@ class URL extends PrimitiveValue
      * @throws SourceException
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
+     *
+     * @internal since V8.8.0
      */
     public static function parse(ParserState $oParserState)
     {
