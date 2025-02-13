@@ -20,7 +20,7 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
     /**
      * @var string
      */
-    private $sArgs;
+    private $arguments;
 
     /**
      * @param string $type
@@ -31,7 +31,7 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
     {
         parent::__construct($lineNumber);
         $this->type = $type;
-        $this->sArgs = $arguments;
+        $this->arguments = $arguments;
     }
 
     /**
@@ -47,7 +47,7 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
      */
     public function atRuleArgs()
     {
-        return $this->sArgs;
+        return $this->arguments;
     }
 
     public function __toString(): string
@@ -59,11 +59,11 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
     {
         $sResult = $outputFormat->comments($this);
         $sResult .= $outputFormat->sBeforeAtRuleBlock;
-        $sArgs = $this->sArgs;
-        if ($sArgs) {
-            $sArgs = ' ' . $sArgs;
+        $arguments = $this->arguments;
+        if ($arguments) {
+            $arguments = ' ' . $arguments;
         }
-        $sResult .= "@{$this->type}$sArgs{$outputFormat->spaceBeforeOpeningBrace()}{";
+        $sResult .= "@{$this->type}$arguments{$outputFormat->spaceBeforeOpeningBrace()}{";
         $sResult .= $this->renderListContents($outputFormat);
         $sResult .= '}';
         $sResult .= $outputFormat->sAfterAtRuleBlock;
