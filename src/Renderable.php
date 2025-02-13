@@ -8,7 +8,7 @@ interface Renderable
 {
     public function __toString(): string;
 
-    public function render(OutputFormat $oOutputFormat): string;
+    public function render(OutputFormat $outputFormat): string;
 
     /**
      * @return int<0, max>

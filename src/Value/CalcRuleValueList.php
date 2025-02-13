@@ -16,8 +16,8 @@ class CalcRuleValueList extends RuleValueList
         parent::__construct(',', $lineNumber);
     }
 
-    public function render(OutputFormat $oOutputFormat): string
+    public function render(OutputFormat $outputFormat): string
     {
-        return $oOutputFormat->implode(' ', $this->aComponents);
+        return $outputFormat->implode(' ', $this->aComponents);
     }
 }

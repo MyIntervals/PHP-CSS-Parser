@@ -410,16 +410,16 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * @return string
      */
-    protected function renderListContents(OutputFormat $oOutputFormat)
+    protected function renderListContents(OutputFormat $outputFormat)
     {
         $result = '';
         $isFirst = true;
-        $nextLevelFormat = $oOutputFormat;
+        $nextLevelFormat = $outputFormat;
         if (!$this->isRootList()) {
-            $nextLevelFormat = $oOutputFormat->nextLevel();
+            $nextLevelFormat = $outputFormat->nextLevel();
         }
         foreach ($this->contents as $listItem) {
-            $renderedCss = $oOutputFormat->safely(static function () use ($nextLevelFormat, $listItem): string {
+            $renderedCss = $outputFormat->safely(static function () use ($nextLevelFormat, $listItem): string {
                 return $listItem->render($nextLevelFormat);
             });
             if ($renderedCss === null) {
@@ -436,7 +436,7 @@ abstract class CSSList implements Renderable, Commentable
 
         if (!$isFirst) {
             // Had some output
-            $result .= $oOutputFormat->spaceAfterBlocks();
+            $result .= $outputFormat->spaceAfterBlocks();
         }
 
         return $result;

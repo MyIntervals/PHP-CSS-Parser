@@ -159,23 +159,23 @@ class DeclarationBlock extends RuleSet
     /**
      * @throws OutputException
      */
-    public function render(OutputFormat $oOutputFormat): string
+    public function render(OutputFormat $outputFormat): string
     {
-        $sResult = $oOutputFormat->comments($this);
+        $sResult = $outputFormat->comments($this);
         if (\count($this->aSelectors) === 0) {
             // If all the selectors have been removed, this declaration block becomes invalid
             throw new OutputException('Attempt to print declaration block with missing selector', $this->lineNumber);
         }
-        $sResult .= $oOutputFormat->sBeforeDeclarationBlock;
-        $sResult .= $oOutputFormat->implode(
-            $oOutputFormat->spaceBeforeSelectorSeparator() . ',' . $oOutputFormat->spaceAfterSelectorSeparator(),
+        $sResult .= $outputFormat->sBeforeDeclarationBlock;
+        $sResult .= $outputFormat->implode(
+            $outputFormat->spaceBeforeSelectorSeparator() . ',' . $outputFormat->spaceAfterSelectorSeparator(),
             $this->aSelectors
         );
-        $sResult .= $oOutputFormat->sAfterDeclarationBlockSelectors;
-        $sResult .= $oOutputFormat->spaceBeforeOpeningBrace() . '{';
-        $sResult .= $this->renderRules($oOutputFormat);
+        $sResult .= $outputFormat->sAfterDeclarationBlockSelectors;
+        $sResult .= $outputFormat->spaceBeforeOpeningBrace() . '{';
+        $sResult .= $this->renderRules($outputFormat);
         $sResult .= '}';
-        $sResult .= $oOutputFormat->sAfterDeclarationBlock;
+        $sResult .= $outputFormat->sAfterDeclarationBlock;
         return $sResult;
     }
 }
