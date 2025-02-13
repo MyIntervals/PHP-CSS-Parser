@@ -13,6 +13,12 @@ parameters:
 			path: ../src/CSSList/AtRuleBlockList.php
 
 		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: ../src/CSSList/AtRuleBlockList.php
+
+		-
 			message: '#^Parameter &\$result by\-ref type of method Sabberworm\\CSS\\CSSList\\CSSBlockList\:\:allSelectors\(\) expects array\<int, Sabberworm\\CSS\\Property\\Selector\>, array\<int, Sabberworm\\CSS\\Property\\Selector\|string\> given\.$#'
 			identifier: parameterByRef.type
 			count: 2
@@ -49,6 +55,24 @@ parameters:
 			path: ../src/CSSList/CSSList.php
 
 		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: ../src/CSSList/CSSList.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: ../src/CSSList/CSSList.php
+
+		-
+			message: '#^Short ternary operator is not allowed\. Use null coalesce operator if applicable or consider using long ternary\.$#'
+			identifier: ternary.shortNotAllowed
+			count: 1
+			path: ../src/CSSList/CSSList.php
+
+		-
 			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -67,6 +91,12 @@ parameters:
 			path: ../src/CSSList/KeyFrame.php
 
 		-
+			message: '#^Variable property access on \$this\(Sabberworm\\CSS\\OutputFormat\)\.$#'
+			identifier: property.dynamicName
+			count: 4
+			path: ../src/OutputFormat.php
+
+		-
 			message: '#^Default value of the parameter \#2 \$bIncludeEnd \(false\) of method Sabberworm\\CSS\\Parsing\\ParserState\:\:consumeUntil\(\) is incompatible with type string\.$#'
 			identifier: parameter.defaultValue
 			count: 1
@@ -79,6 +109,24 @@ parameters:
 			path: ../src/Parsing/ParserState.php
 
 		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: ../src/Parsing/ParserState.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: ../src/Parsing/ParserState.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: ../src/Parsing/ParserState.php
+
+		-
 			message: '#^PHPDoc tag @return with type array\<int, Sabberworm\\CSS\\Comment\\Comment\>\|void is not subtype of native type array\.$#'
 			identifier: return.phpDocType
 			count: 1
@@ -87,6 +135,12 @@ parameters:
 		-
 			message: '#^Cannot call method render\(\) on string\.$#'
 			identifier: method.nonObject
+			count: 1
+			path: ../src/Property/CSSNamespace.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
 			count: 1
 			path: ../src/Property/CSSNamespace.php
 
@@ -115,6 +169,12 @@ parameters:
 			path: ../src/Property/Import.php
 
 		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: ../src/Property/Import.php
+
+		-
 			message: '#^Return type \(array\<int, Sabberworm\\CSS\\Value\\URL\|string\>\) of method Sabberworm\\CSS\\Property\\Import\:\:atRuleArgs\(\) should be compatible with return type \(string\|null\) of method Sabberworm\\CSS\\Property\\AtRule\:\:atRuleArgs\(\)$#'
 			identifier: method.childReturnType
 			count: 1
@@ -133,6 +193,18 @@ parameters:
 			path: ../src/Rule/Rule.php
 
 		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: ../src/Rule/Rule.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, Sabberworm\\CSS\\Value\\RuleValueList\|string\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: ../src/Rule/Rule.php
+
+		-
 			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -141,6 +213,12 @@ parameters:
 		-
 			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeOpeningBrace\(\)\.$#'
 			identifier: method.notFound
+			count: 1
+			path: ../src/RuleSet/AtRuleSet.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
 			count: 1
 			path: ../src/RuleSet/AtRuleSet.php
 
@@ -171,6 +249,24 @@ parameters:
 		-
 			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeSelectorSeparator\(\)\.$#'
 			identifier: method.notFound
+			count: 1
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: '#^Foreach overwrites \$mSelector with its value variable\.$#'
+			identifier: foreach.valueOverwrite
+			count: 1
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
 			count: 1
 			path: ../src/RuleSet/DeclarationBlock.php
 
@@ -211,6 +307,30 @@ parameters:
 			path: ../src/RuleSet/RuleSet.php
 
 		-
+			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: ../src/RuleSet/RuleSet.php
+
+		-
+			message: '#^Parameter \#1 \$comments \(array\<string, Sabberworm\\CSS\\Comment\\Comment\>\) of method Sabberworm\\CSS\\RuleSet\\RuleSet\:\:addComments\(\) should be contravariant with parameter \$comments \(array\<Sabberworm\\CSS\\Comment\\Comment\>\) of method Sabberworm\\CSS\\Comment\\Commentable\:\:addComments\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: ../src/RuleSet/RuleSet.php
+
+		-
+			message: '#^Parameter \#1 \$comments \(array\<string, Sabberworm\\CSS\\Comment\\Comment\>\) of method Sabberworm\\CSS\\RuleSet\\RuleSet\:\:setComments\(\) should be contravariant with parameter \$comments \(array\<Sabberworm\\CSS\\Comment\\Comment\>\) of method Sabberworm\\CSS\\Comment\\Commentable\:\:setComments\(\)$#'
+			identifier: method.childParameterType
+			count: 1
+			path: ../src/RuleSet/RuleSet.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 3
+			path: ../src/Value/CalcFunction.php
+
+		-
 			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:implode\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -235,10 +355,28 @@ parameters:
 			path: ../src/Value/Color.php
 
 		-
+			message: '#^Call to method Sabberworm\\CSS\\Value\\Color\:\:hasNoneAsComponentValue\(\) with incorrect case\: HasNoneAsComponentValue$#'
+			identifier: method.nameCase
+			count: 1
+			path: ../src/Value/Color.php
+
+		-
 			message: '#^Cannot call method getSize\(\) on Sabberworm\\CSS\\Value\\Value\|string\.$#'
 			identifier: method.nonObject
 			count: 3
 			path: ../src/Value/Color.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 3
+			path: ../src/Value/Color.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: ../src/Value/Size.php
 
 		-
 			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:implode\(\)\.$#'
@@ -257,4 +395,16 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: ../src/Value/ValueList.php
+
+		-
+			message: '#^Dynamic call to static method Sabberworm\\CSS\\Tests\\ParserTest\:\:parsedStructureForFile\(\)\.$#'
+			identifier: staticMethod.dynamicCall
+			count: 2
+			path: ../tests/ParserTest.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 11
+			path: ../tests/ParserTest.php
 
