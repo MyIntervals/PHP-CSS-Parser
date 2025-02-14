@@ -23,18 +23,18 @@ class AtRuleSet extends RuleSet implements AtRule
     /**
      * @var string
      */
-    private $sArgs;
+    private $arguments;
 
     /**
      * @param string $sType
-     * @param string $sArgs
+     * @param string $arguments
      * @param int<0, max> $lineNumber
      */
-    public function __construct($sType, $sArgs = '', $lineNumber = 0)
+    public function __construct($sType, $arguments = '', $lineNumber = 0)
     {
         parent::__construct($lineNumber);
         $this->sType = $sType;
-        $this->sArgs = $sArgs;
+        $this->arguments = $arguments;
     }
 
     /**
@@ -50,7 +50,7 @@ class AtRuleSet extends RuleSet implements AtRule
      */
     public function atRuleArgs()
     {
-        return $this->sArgs;
+        return $this->arguments;
     }
 
     public function __toString(): string
@@ -61,11 +61,11 @@ class AtRuleSet extends RuleSet implements AtRule
     public function render(OutputFormat $outputFormat): string
     {
         $sResult = $outputFormat->comments($this);
-        $sArgs = $this->sArgs;
-        if ($sArgs) {
-            $sArgs = ' ' . $sArgs;
+        $arguments = $this->arguments;
+        if ($arguments) {
+            $arguments = ' ' . $arguments;
         }
-        $sResult .= "@{$this->sType}$sArgs{$outputFormat->spaceBeforeOpeningBrace()}{";
+        $sResult .= "@{$this->sType}$arguments{$outputFormat->spaceBeforeOpeningBrace()}{";
         $sResult .= $this->renderRules($outputFormat);
         $sResult .= '}';
         return $sResult;
