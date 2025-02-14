@@ -11,7 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
-- Mark parsing-related methods of most CSS elements as `@internal` (#90)
+- Mark parsing-related methods of most CSS elements as `@internal` (#908)
 - Mark `OutputFormat::nextLevel()` as `@internal` (#901)
 - Make all non-private properties `@internal` (#886)
 
