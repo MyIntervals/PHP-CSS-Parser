@@ -395,16 +395,3 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: ../src/Value/ValueList.php
-
-		-
-			message: '#^Dynamic call to static method Sabberworm\\CSS\\Tests\\ParserTest\:\:parsedStructureForFile\(\)\.$#'
-			identifier: staticMethod.dynamicCall
-			count: 2
-			path: ../tests/ParserTest.php
-
-		-
-			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
-			identifier: equal.notAllowed
-			count: 11
-			path: ../tests/ParserTest.php
-
