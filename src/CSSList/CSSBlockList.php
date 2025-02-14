@@ -80,8 +80,8 @@ abstract class CSSBlockList extends CSSList
             $this->allValues($element->getValue(), $result, $searchString, $searchInFunctionArguments);
         } elseif ($element instanceof ValueList) {
             if ($searchInFunctionArguments || !($element instanceof CSSFunction)) {
-                foreach ($element->getListComponents() as $mComponent) {
-                    $this->allValues($mComponent, $result, $searchString, $searchInFunctionArguments);
+                foreach ($element->getListComponents() as $component) {
+                    $this->allValues($component, $result, $searchString, $searchInFunctionArguments);
                 }
             }
         } else {
