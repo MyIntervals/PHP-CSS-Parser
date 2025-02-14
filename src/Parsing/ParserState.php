@@ -146,7 +146,7 @@ class ParserState
         }
         $result = $this->parseCharacter(true);
         if ($result === null) {
-            throw new UnexpectedTokenException($result, $this->peek(5), 'identifier', $this->lineNumber);
+            throw new UnexpectedTokenException('', $this->peek(5), 'identifier', $this->lineNumber);
         }
         $sCharacter = null;
         while (!$this->isEnd() && ($sCharacter = $this->parseCharacter(true)) !== null) {
@@ -294,14 +294,19 @@ class ParserState
             $iLineCount = \substr_count($mValue, "\n");
             $iLength = $this->strlen($mValue);
             if (!$this->streql($this->substr($this->iCurrentPosition, $iLength), $mValue)) {
-                throw new UnexpectedTokenException($mValue, $this->peek(\max($iLength, 5)), $this->lineNumber);
+                throw new UnexpectedTokenException(
+                    $mValue,
+                    $this->peek(\max($iLength, 5)),
+                    'literal',
+                    $this->lineNumber
+                );
             }
             $this->lineNumber += $iLineCount;
             $this->iCurrentPosition += $this->strlen($mValue);
             return $mValue;
         } else {
             if ($this->iCurrentPosition + $mValue > $this->iLength) {
-                throw new UnexpectedEOFException($mValue, $this->peek(5), 'count', $this->lineNumber);
+                throw new UnexpectedEOFException((string) $mValue, $this->peek(5), 'count', $this->lineNumber);
             }
             $result = $this->substr($this->iCurrentPosition, $mValue);
             $iLineCount = \substr_count($result, "\n");
