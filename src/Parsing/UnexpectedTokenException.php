@@ -20,19 +20,15 @@ class UnexpectedTokenException extends SourceException
     private $sFound;
 
     /**
-     * Possible values: literal, identifier, count, expression, search
-     *
-     * @var string
+     * @var 'literal'|'identifier'|'count'|'expression'|'search'|'custom'
      */
     private $sMatchType;
 
     /**
-     * @param string $sExpected
-     * @param string $sFound
-     * @param string $sMatchType
+     * @param 'literal'|'identifier'|'count'|'expression'|'search'|'custom' $sMatchType
      * @param int<0, max> $lineNumber
      */
-    public function __construct($sExpected, $sFound, $sMatchType = 'literal', $lineNumber = 0)
+    public function __construct(string $sExpected, string $sFound, string $sMatchType = 'literal', int $lineNumber = 0)
     {
         $this->sExpected = $sExpected;
         $this->sFound = $sFound;
