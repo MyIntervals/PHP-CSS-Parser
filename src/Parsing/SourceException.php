@@ -7,15 +7,14 @@ namespace Sabberworm\CSS\Parsing;
 class SourceException extends \Exception
 {
     /**
-     * @var int
+     * @var int<0, max>
      */
     private $lineNumber;
 
     /**
-     * @param string $sMessage
      * @param int<0, max> $lineNumber
      */
-    public function __construct($sMessage, $lineNumber = 0)
+    public function __construct(string $sMessage, int $lineNumber = 0)
     {
         $this->lineNumber = $lineNumber;
         if ($lineNumber !== 0) {
