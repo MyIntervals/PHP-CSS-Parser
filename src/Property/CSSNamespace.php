@@ -111,11 +111,11 @@ class CSSNamespace implements AtRule
      */
     public function atRuleArgs(): array
     {
-        $aResult = [$this->mUrl];
+        $result = [$this->mUrl];
         if ($this->sPrefix) {
-            \array_unshift($aResult, $this->sPrefix);
+            \array_unshift($result, $this->sPrefix);
         }
-        return $aResult;
+        return $result;
     }
 
     /**

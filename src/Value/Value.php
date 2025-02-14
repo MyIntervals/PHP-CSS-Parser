@@ -122,24 +122,24 @@ abstract class Value implements Renderable
     public static function parseIdentifierOrFunction(ParserState $parserState, $bIgnoreCase = false)
     {
         $oAnchor = $parserState->anchor();
-        $mResult = $parserState->parseIdentifier($bIgnoreCase);
+        $result = $parserState->parseIdentifier($bIgnoreCase);
 
         if ($parserState->comes('(')) {
             $oAnchor->backtrack();
-            if ($parserState->streql('url', $mResult)) {
-                $mResult = URL::parse($parserState);
+            if ($parserState->streql('url', $result)) {
+                $result = URL::parse($parserState);
             } elseif (
-                $parserState->streql('calc', $mResult)
-                || $parserState->streql('-webkit-calc', $mResult)
-                || $parserState->streql('-moz-calc', $mResult)
+                $parserState->streql('calc', $result)
+                || $parserState->streql('-webkit-calc', $result)
+                || $parserState->streql('-moz-calc', $result)
             ) {
-                $mResult = CalcFunction::parse($parserState);
+                $result = CalcFunction::parse($parserState);
             } else {
-                $mResult = CSSFunction::parse($parserState, $bIgnoreCase);
+                $result = CSSFunction::parse($parserState, $bIgnoreCase);
             }
         }
 
-        return $mResult;
+        return $result;
     }
 
     /**

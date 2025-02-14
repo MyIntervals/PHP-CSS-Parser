@@ -51,12 +51,12 @@ class CSSString extends PrimitiveValue
         if ($sQuote !== null) {
             $parserState->consume($sQuote);
         }
-        $sResult = '';
+        $result = '';
         $sContent = null;
         if ($sQuote === null) {
             // Unquoted strings end in whitespace or with braces, brackets, parentheses
             while (\preg_match('/[\\s{}()<>\\[\\]]/isu', $parserState->peek()) !== 1) {
-                $sResult .= $parserState->parseCharacter(false);
+                $result .= $parserState->parseCharacter(false);
             }
         } else {
             while (!$parserState->comes($sQuote)) {
@@ -67,11 +67,11 @@ class CSSString extends PrimitiveValue
                         $parserState->currentLine()
                     );
                 }
-                $sResult .= $sContent;
+                $result .= $sContent;
             }
             $parserState->consume($sQuote);
         }
-        return new CSSString($sResult, $parserState->currentLine());
+        return new CSSString($result, $parserState->currentLine());
     }
 
     /**

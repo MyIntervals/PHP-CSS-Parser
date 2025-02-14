@@ -271,20 +271,20 @@ class Rule implements Renderable, Commentable
 
     public function render(OutputFormat $outputFormat): string
     {
-        $sResult = "{$outputFormat->comments($this)}{$this->sRule}:{$outputFormat->spaceAfterRuleName()}";
+        $result = "{$outputFormat->comments($this)}{$this->sRule}:{$outputFormat->spaceAfterRuleName()}";
         if ($this->mValue instanceof Value) { // Can also be a ValueList
-            $sResult .= $this->mValue->render($outputFormat);
+            $result .= $this->mValue->render($outputFormat);
         } else {
-            $sResult .= $this->mValue;
+            $result .= $this->mValue;
         }
         if (!empty($this->aIeHack)) {
-            $sResult .= ' \\' . \implode('\\', $this->aIeHack);
+            $result .= ' \\' . \implode('\\', $this->aIeHack);
         }
         if ($this->bIsImportant) {
-            $sResult .= ' !important';
+            $result .= ' !important';
         }
-        $sResult .= ';';
-        return $sResult;
+        $result .= ';';
+        return $result;
     }
 
     /**

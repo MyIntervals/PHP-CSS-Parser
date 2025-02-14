@@ -144,22 +144,22 @@ class ParserState
         if ($this->isEnd()) {
             throw new UnexpectedEOFException('', '', 'identifier', $this->lineNumber);
         }
-        $sResult = $this->parseCharacter(true);
-        if ($sResult === null) {
-            throw new UnexpectedTokenException($sResult, $this->peek(5), 'identifier', $this->lineNumber);
+        $result = $this->parseCharacter(true);
+        if ($result === null) {
+            throw new UnexpectedTokenException($result, $this->peek(5), 'identifier', $this->lineNumber);
         }
         $sCharacter = null;
         while (!$this->isEnd() && ($sCharacter = $this->parseCharacter(true)) !== null) {
             if (\preg_match('/[a-zA-Z0-9\\x{00A0}-\\x{FFFF}_-]/Sux', $sCharacter)) {
-                $sResult .= $sCharacter;
+                $result .= $sCharacter;
             } else {
-                $sResult .= '\\' . $sCharacter;
+                $result .= '\\' . $sCharacter;
             }
         }
         if ($bIgnoreCase) {
-            $sResult = $this->strtolower($sResult);
+            $result = $this->strtolower($result);
         }
-        return $sResult;
+        return $result;
     }
 
     /**
@@ -303,11 +303,11 @@ class ParserState
             if ($this->iCurrentPosition + $mValue > $this->iLength) {
                 throw new UnexpectedEOFException($mValue, $this->peek(5), 'count', $this->lineNumber);
             }
-            $sResult = $this->substr($this->iCurrentPosition, $mValue);
-            $iLineCount = \substr_count($sResult, "\n");
+            $result = $this->substr($this->iCurrentPosition, $mValue);
+            $iLineCount = \substr_count($result, "\n");
             $this->lineNumber += $iLineCount;
             $this->iCurrentPosition += $mValue;
-            return $sResult;
+            return $result;
         }
     }
 
@@ -455,13 +455,13 @@ class ParserState
         if ($iStart + $iLength > $this->iLength) {
             $iLength = $this->iLength - $iStart;
         }
-        $sResult = '';
+        $result = '';
         while ($iLength > 0) {
-            $sResult .= $this->aText[$iStart];
+            $result .= $this->aText[$iStart];
             $iStart++;
             $iLength--;
         }
-        return $sResult;
+        return $result;
     }
 
     /**
@@ -488,11 +488,11 @@ class ParserState
                 return \preg_split('//u', $sString, -1, PREG_SPLIT_NO_EMPTY);
             } else {
                 $iLength = \mb_strlen($sString, $this->sCharset);
-                $aResult = [];
+                $result = [];
                 for ($i = 0; $i < $iLength; ++$i) {
-                    $aResult[] = \mb_substr($sString, $i, 1, $this->sCharset);
+                    $result[] = \mb_substr($sString, $i, 1, $this->sCharset);
                 }
-                return $aResult;
+                return $result;
             }
         } else {
             if ($sString === '') {

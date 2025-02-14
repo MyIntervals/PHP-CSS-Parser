@@ -94,11 +94,11 @@ class Import implements AtRule
      */
     public function atRuleArgs(): array
     {
-        $aResult = [$this->location];
+        $result = [$this->location];
         if ($this->mediaQuery) {
-            \array_push($aResult, $this->mediaQuery);
+            \array_push($result, $this->mediaQuery);
         }
-        return $aResult;
+        return $result;
     }
 
     /**
