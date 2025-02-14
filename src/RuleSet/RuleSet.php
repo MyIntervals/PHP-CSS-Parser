@@ -153,8 +153,8 @@ abstract class RuleSet implements Renderable, Commentable
         if ($mRule instanceof Rule) {
             $mRule = $mRule->getRule();
         }
-        /** @var array<int, Rule> $aResult */
-        $aResult = [];
+        /** @var array<int, Rule> $result */
+        $result = [];
         foreach ($this->aRules as $sName => $aRules) {
             // Either no search rule is given or the search rule matches the found rule exactly
             // or the search rule ends in “-” and the found rule starts with the search rule.
@@ -165,16 +165,16 @@ abstract class RuleSet implements Renderable, Commentable
                     && (\strpos($sName, $mRule) === 0 || $sName === \substr($mRule, 0, -1))
                 )
             ) {
-                $aResult = \array_merge($aResult, $aRules);
+                $result = \array_merge($result, $aRules);
             }
         }
-        \usort($aResult, static function (Rule $first, Rule $second): int {
+        \usort($result, static function (Rule $first, Rule $second): int {
             if ($first->getLineNo() === $second->getLineNo()) {
                 return $first->getColNo() - $second->getColNo();
             }
             return $first->getLineNo() - $second->getLineNo();
         });
-        return $aResult;
+        return $result;
     }
 
     /**
@@ -207,12 +207,12 @@ abstract class RuleSet implements Renderable, Commentable
      */
     public function getRulesAssoc($mRule = null)
     {
-        /** @var array<string, Rule> $aResult */
-        $aResult = [];
+        /** @var array<string, Rule> $result */
+        $result = [];
         foreach ($this->getRules($mRule) as $rule) {
-            $aResult[$rule->getRule()] = $rule;
+            $result[$rule->getRule()] = $rule;
         }
-        return $aResult;
+        return $result;
     }
 
     /**
@@ -267,7 +267,7 @@ abstract class RuleSet implements Renderable, Commentable
      */
     protected function renderRules(OutputFormat $outputFormat)
     {
-        $sResult = '';
+        $result = '';
         $bIsFirst = true;
         $oNextLevel = $outputFormat->nextLevel();
         foreach ($this->aRules as $aRules) {
@@ -280,20 +280,20 @@ abstract class RuleSet implements Renderable, Commentable
                 }
                 if ($bIsFirst) {
                     $bIsFirst = false;
-                    $sResult .= $oNextLevel->spaceBeforeRules();
+                    $result .= $oNextLevel->spaceBeforeRules();
                 } else {
-                    $sResult .= $oNextLevel->spaceBetweenRules();
+                    $result .= $oNextLevel->spaceBetweenRules();
                 }
-                $sResult .= $sRendered;
+                $result .= $sRendered;
             }
         }
 
         if (!$bIsFirst) {
             // Had some output
-            $sResult .= $outputFormat->spaceAfterRules();
+            $result .= $outputFormat->spaceAfterRules();
         }
 
-        return $outputFormat->removeLastSemicolon($sResult);
+        return $outputFormat->removeLastSemicolon($result);
     }
 
     /**

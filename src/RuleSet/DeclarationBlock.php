@@ -163,21 +163,21 @@ class DeclarationBlock extends RuleSet
      */
     public function render(OutputFormat $outputFormat): string
     {
-        $sResult = $outputFormat->comments($this);
+        $result = $outputFormat->comments($this);
         if (\count($this->aSelectors) === 0) {
             // If all the selectors have been removed, this declaration block becomes invalid
             throw new OutputException('Attempt to print declaration block with missing selector', $this->lineNumber);
         }
-        $sResult .= $outputFormat->sBeforeDeclarationBlock;
-        $sResult .= $outputFormat->implode(
+        $result .= $outputFormat->sBeforeDeclarationBlock;
+        $result .= $outputFormat->implode(
             $outputFormat->spaceBeforeSelectorSeparator() . ',' . $outputFormat->spaceAfterSelectorSeparator(),
             $this->aSelectors
         );
-        $sResult .= $outputFormat->sAfterDeclarationBlockSelectors;
-        $sResult .= $outputFormat->spaceBeforeOpeningBrace() . '{';
-        $sResult .= $this->renderRules($outputFormat);
-        $sResult .= '}';
-        $sResult .= $outputFormat->sAfterDeclarationBlock;
-        return $sResult;
+        $result .= $outputFormat->sAfterDeclarationBlockSelectors;
+        $result .= $outputFormat->spaceBeforeOpeningBrace() . '{';
+        $result .= $this->renderRules($outputFormat);
+        $result .= '}';
+        $result .= $outputFormat->sAfterDeclarationBlock;
+        return $result;
     }
 }

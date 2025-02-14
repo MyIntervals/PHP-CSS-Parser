@@ -46,10 +46,10 @@ class Document extends CSSBlockList
      */
     public function getAllDeclarationBlocks(): array
     {
-        /** @var array<int, DeclarationBlock> $aResult */
-        $aResult = [];
-        $this->allDeclarationBlocks($aResult);
-        return $aResult;
+        /** @var array<int, DeclarationBlock> $result */
+        $result = [];
+        $this->allDeclarationBlocks($result);
+        return $result;
     }
 
     /**
@@ -59,10 +59,10 @@ class Document extends CSSBlockList
      */
     public function getAllRuleSets(): array
     {
-        /** @var array<int, RuleSet> $aResult */
-        $aResult = [];
-        $this->allRuleSets($aResult);
-        return $aResult;
+        /** @var array<int, RuleSet> $result */
+        $result = [];
+        $this->allRuleSets($result);
+        return $result;
     }
 
     /**
@@ -86,10 +86,10 @@ class Document extends CSSBlockList
             $sSearchString = $element;
             $element = $this;
         }
-        /** @var array<int, Value> $aResult */
-        $aResult = [];
-        $this->allValues($element, $aResult, $sSearchString, $bSearchInFunctionArguments);
-        return $aResult;
+        /** @var array<int, Value> $result */
+        $result = [];
+        $this->allValues($element, $result, $sSearchString, $bSearchInFunctionArguments);
+        return $result;
     }
 
     /**
@@ -107,10 +107,10 @@ class Document extends CSSBlockList
      */
     public function getSelectorsBySpecificity($sSpecificitySearch = null): array
     {
-        /** @var array<int, Selector> $aResult */
-        $aResult = [];
-        $this->allSelectors($aResult, $sSpecificitySearch);
-        return $aResult;
+        /** @var array<int, Selector> $result */
+        $result = [];
+        $this->allSelectors($result, $sSpecificitySearch);
+        return $result;
     }
 
     /**

@@ -141,7 +141,7 @@ class OutputFormatter
      */
     public function implode(string $sSeparator, array $aValues, $bIncreaseLevel = false): string
     {
-        $sResult = '';
+        $result = '';
         $oFormat = $this->oFormat;
         if ($bIncreaseLevel) {
             $oFormat = $oFormat->nextLevel();
@@ -151,15 +151,15 @@ class OutputFormatter
             if ($bIsFirst) {
                 $bIsFirst = false;
             } else {
-                $sResult .= $sSeparator;
+                $result .= $sSeparator;
             }
             if ($mValue instanceof Renderable) {
-                $sResult .= $mValue->render($oFormat);
+                $result .= $mValue->render($oFormat);
             } else {
-                $sResult .= $mValue;
+                $result .= $mValue;
             }
         }
-        return $sResult;
+        return $result;
     }
 
     /**
@@ -188,15 +188,15 @@ class OutputFormatter
             return '';
         }
 
-        $sResult = '';
+        $result = '';
         $comments = $oCommentable->getComments();
         $iLastCommentIndex = \count($comments) - 1;
 
         foreach ($comments as $i => $oComment) {
-            $sResult .= $oComment->render($this->oFormat);
-            $sResult .= $i === $iLastCommentIndex ? $this->spaceAfterBlocks() : $this->spaceBetweenBlocks();
+            $result .= $oComment->render($this->oFormat);
+            $result .= $i === $iLastCommentIndex ? $this->spaceAfterBlocks() : $this->spaceBetweenBlocks();
         }
-        return $sResult;
+        return $result;
     }
 
     /**

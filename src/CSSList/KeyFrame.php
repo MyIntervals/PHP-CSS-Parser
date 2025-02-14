@@ -68,11 +68,11 @@ class KeyFrame extends CSSList implements AtRule
 
     public function render(OutputFormat $outputFormat): string
     {
-        $sResult = $outputFormat->comments($this);
-        $sResult .= "@{$this->vendorKeyFrame} {$this->animationName}{$outputFormat->spaceBeforeOpeningBrace()}{";
-        $sResult .= $this->renderListContents($outputFormat);
-        $sResult .= '}';
-        return $sResult;
+        $result = $outputFormat->comments($this);
+        $result .= "@{$this->vendorKeyFrame} {$this->animationName}{$outputFormat->spaceBeforeOpeningBrace()}{";
+        $result .= $this->renderListContents($outputFormat);
+        $result .= '}';
+        return $result;
     }
 
     public function isRootList(): bool

@@ -57,17 +57,17 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
 
     public function render(OutputFormat $outputFormat): string
     {
-        $sResult = $outputFormat->comments($this);
-        $sResult .= $outputFormat->sBeforeAtRuleBlock;
+        $result = $outputFormat->comments($this);
+        $result .= $outputFormat->sBeforeAtRuleBlock;
         $arguments = $this->arguments;
         if ($arguments) {
             $arguments = ' ' . $arguments;
         }
-        $sResult .= "@{$this->type}$arguments{$outputFormat->spaceBeforeOpeningBrace()}{";
-        $sResult .= $this->renderListContents($outputFormat);
-        $sResult .= '}';
-        $sResult .= $outputFormat->sAfterAtRuleBlock;
-        return $sResult;
+        $result .= "@{$this->type}$arguments{$outputFormat->spaceBeforeOpeningBrace()}{";
+        $result .= $this->renderListContents($outputFormat);
+        $result .= '}';
+        $result .= $outputFormat->sAfterAtRuleBlock;
+        return $result;
     }
 
     public function isRootList(): bool
