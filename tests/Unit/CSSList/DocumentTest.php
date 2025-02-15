@@ -237,4 +237,14 @@ final class DocumentTest extends TestCase
 
         self::assertSame([], $result);
     }
+
+    /**
+     * @test
+     */
+    public function isRootListAlwaysReturnsTrue(): void
+    {
+        $subject = new Document();
+
+        self::assertTrue($subject->isRootList());
+    }
 }
