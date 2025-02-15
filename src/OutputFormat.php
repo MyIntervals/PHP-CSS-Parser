@@ -217,12 +217,12 @@ class OutputFormat
     /**
      * @var OutputFormatter|null
      */
-    private $oFormatter = null;
+    private $oFormatter;
 
     /**
      * @var OutputFormat|null
      */
-    private $oNextLevelFormat = null;
+    private $oNextLevelFormat;
 
     /**
      * @var int

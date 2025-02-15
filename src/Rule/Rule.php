@@ -29,7 +29,7 @@ class Rule implements Renderable, Commentable
     /**
      * @var RuleValueList|string|null
      */
-    private $mValue = null;
+    private $mValue;
 
     /**
      * @var bool

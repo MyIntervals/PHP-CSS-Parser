@@ -12,12 +12,12 @@ class KeyFrame extends CSSList implements AtRule
     /**
      * @var string|null
      */
-    private $vendorKeyFrame = null;
+    private $vendorKeyFrame;
 
     /**
      * @var string|null
      */
-    private $animationName = null;
+    private $animationName;
 
     /**
      * @param string $vendorKeyFrame
