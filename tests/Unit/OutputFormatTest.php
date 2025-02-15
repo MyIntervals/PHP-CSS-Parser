@@ -899,6 +899,14 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
+    public function createCreatesInstanceWithDefaultSettings(): void
+    {
+        self::assertEquals(new OutputFormat(), OutputFormat::create());
+    }
+
+    /**
+     * @test
+     */
     public function createCalledTwoTimesReturnsDifferentInstances(): void
     {
         $firstCallResult = OutputFormat::create();
