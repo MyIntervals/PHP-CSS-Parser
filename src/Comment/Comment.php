@@ -24,19 +24,15 @@ class Comment implements Renderable
     protected $commentText;
 
     /**
-     * @param string $commentText
      * @param int<0, max> $lineNumber
      */
-    public function __construct($commentText = '', $lineNumber = 0)
+    public function __construct(string $commentText = '', int $lineNumber = 0)
     {
         $this->commentText = $commentText;
         $this->lineNumber = $lineNumber;
     }
 
-    /**
-     * @return string
-     */
-    public function getComment()
+    public function getComment(): string
     {
         return $this->commentText;
     }
@@ -49,10 +45,7 @@ class Comment implements Renderable
         return $this->lineNumber;
     }
 
-    /**
-     * @param string $commentText
-     */
-    public function setComment($commentText): void
+    public function setComment(string $commentText): void
     {
         $this->commentText = $commentText;
     }
