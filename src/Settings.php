@@ -46,10 +46,7 @@ class Settings
         $this->bMultibyteSupport = \extension_loaded('mbstring');
     }
 
-    /**
-     * @return self new instance
-     */
-    public static function create(): Settings
+    public static function create(): self
     {
         return new Settings();
     }
@@ -60,11 +57,9 @@ class Settings
      * If `true` (`mbstring` extension must be enabled), will use (slower) `mb_strlen`, `mb_convert_case`, `mb_substr`
      * and `mb_strpos` functions. Otherwise, the normal (ASCII-Only) functions will be used.
      *
-     * @param bool $bMultibyteSupport
-     *
      * @return $this fluent interface
      */
-    public function withMultibyteSupport($bMultibyteSupport = true): self
+    public function withMultibyteSupport(bool $bMultibyteSupport = true): self
     {
         $this->bMultibyteSupport = $bMultibyteSupport;
         return $this;
@@ -73,11 +68,9 @@ class Settings
     /**
      * Sets the charset to be used if the CSS does not contain an `@charset` declaration.
      *
-     * @param string $sDefaultCharset
-     *
      * @return $this fluent interface
      */
-    public function withDefaultCharset($sDefaultCharset): self
+    public function withDefaultCharset(string $sDefaultCharset): self
     {
         $this->sDefaultCharset = $sDefaultCharset;
         return $this;
@@ -86,11 +79,9 @@ class Settings
     /**
      * Configures whether the parser should silently ignore invalid rules.
      *
-     * @param bool $usesLenientParsing
-     *
      * @return $this fluent interface
      */
-    public function withLenientParsing($usesLenientParsing = true): self
+    public function withLenientParsing(bool $usesLenientParsing = true): self
     {
         $this->bLenientParsing = $usesLenientParsing;
         return $this;
