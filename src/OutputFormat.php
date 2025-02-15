@@ -820,12 +820,18 @@ class OutputFormat
     public static function createCompact(): self
     {
         $format = self::create();
-        $format->set('Space*Rules', '')
-            ->set('Space*Blocks', '')
+        $format
+            ->setSpaceBeforeRules('')
+            ->setSpaceBetweenRules('')
+            ->setSpaceAfterRules('')
+            ->setSpaceBeforeBlocks('')
+            ->setSpaceBetweenBlocks('')
+            ->setSpaceAfterBlocks('')
             ->setSpaceAfterRuleName('')
             ->setSpaceBeforeOpeningBrace('')
             ->setSpaceAfterSelectorSeparator('')
             ->setRenderComments(false);
+
         return $format;
     }
 
@@ -835,11 +841,16 @@ class OutputFormat
     public static function createPretty(): self
     {
         $format = self::create();
-        $format->set('Space*Rules', "\n")
-            ->set('Space*Blocks', "\n")
+        $format
+            ->setSpaceBeforeRules("\n")
+            ->setSpaceBetweenRules("\n")
+            ->setSpaceAfterRules("\n")
+            ->setSpaceBeforeBlocks("\n")
             ->setSpaceBetweenBlocks("\n\n")
-            ->set('SpaceAfterListArgumentSeparators', [',' => ' '])
+            ->setSpaceAfterBlocks("\n")
+            ->setSpaceAfterListArgumentSeparators([',' => ' '])
             ->setRenderComments(true);
+
         return $format;
     }
 }
