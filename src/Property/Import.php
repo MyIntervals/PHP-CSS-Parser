@@ -35,7 +35,7 @@ class Import implements AtRule
      *
      * @internal since 8.8.0
      */
-    protected $comments;
+    protected $comments = [];
 
     /**
      * @param string $mediaQuery
@@ -46,7 +46,6 @@ class Import implements AtRule
         $this->location = $location;
         $this->mediaQuery = $mediaQuery;
         $this->lineNumber = $lineNumber;
-        $this->comments = [];
     }
 
     /**

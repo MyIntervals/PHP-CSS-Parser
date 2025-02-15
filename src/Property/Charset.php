@@ -35,7 +35,7 @@ class Charset implements AtRule
      *
      * @internal since 8.8.0
      */
-    protected $comments;
+    protected $comments = [];
 
     /**
      * @param int<0, max> $lineNumber
@@ -44,7 +44,6 @@ class Charset implements AtRule
     {
         $this->oCharset = $oCharset;
         $this->lineNumber = $lineNumber;
-        $this->comments = [];
     }
 
     /**
