@@ -194,15 +194,15 @@ abstract class CSSList implements Renderable, Commentable
             }
             return $result;
         } elseif ($identifier === 'namespace') {
-            $sPrefix = null;
+            $prefix = null;
             $url = Value::parsePrimitiveValue($parserState);
             if (!$parserState->comes(';')) {
-                $sPrefix = $url;
+                $prefix = $url;
                 $url = Value::parsePrimitiveValue($parserState);
             }
             $parserState->consumeUntil([';', ParserState::EOF], true, true);
-            if ($sPrefix !== null && !\is_string($sPrefix)) {
-                throw new UnexpectedTokenException('Wrong namespace prefix', $sPrefix, 'custom', $identifierLineNumber);
+            if ($prefix !== null && !\is_string($prefix)) {
+                throw new UnexpectedTokenException('Wrong namespace prefix', $prefix, 'custom', $identifierLineNumber);
             }
             if (!($url instanceof CSSString || $url instanceof URL)) {
                 throw new UnexpectedTokenException(
@@ -212,7 +212,7 @@ abstract class CSSList implements Renderable, Commentable
                     $identifierLineNumber
                 );
             }
-            return new CSSNamespace($url, $sPrefix, $identifierLineNumber);
+            return new CSSNamespace($url, $prefix, $identifierLineNumber);
         } else {
             // Unknown other at rule (font-face or such)
             $arguments = \trim($parserState->consumeUntil('{', false, true));

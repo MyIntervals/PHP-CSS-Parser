@@ -237,8 +237,8 @@ class OutputFormat
     public function get(string $sName)
     {
         $aVarPrefixes = ['a', 's', 'm', 'b', 'f', 'o', 'c', 'i'];
-        foreach ($aVarPrefixes as $sPrefix) {
-            $sFieldName = $sPrefix . \ucfirst($sName);
+        foreach ($aVarPrefixes as $prefix) {
+            $sFieldName = $prefix . \ucfirst($sName);
             if (isset($this->$sFieldName)) {
                 return $this->$sFieldName;
             }
@@ -265,10 +265,10 @@ class OutputFormat
         } elseif (!\is_array($aNames)) {
             $aNames = [$aNames];
         }
-        foreach ($aVarPrefixes as $sPrefix) {
+        foreach ($aVarPrefixes as $prefix) {
             $bDidReplace = false;
             foreach ($aNames as $sName) {
-                $sFieldName = $sPrefix . \ucfirst($sName);
+                $sFieldName = $prefix . \ucfirst($sName);
                 if (isset($this->$sFieldName)) {
                     $this->$sFieldName = $mValue;
                     $bDidReplace = true;
