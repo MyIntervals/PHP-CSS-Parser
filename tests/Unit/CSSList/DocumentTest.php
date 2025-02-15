@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sabberworm\CSS\Tests\CSSList;
+namespace Sabberworm\CSS\Tests\Unit\CSSList;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Commentable;
@@ -50,7 +50,7 @@ final class DocumentTest extends TestCase
     }
 
     /**
-     * @return array<string, array<int, array<int, DeclarationBlock>>>
+     * @return array<string, array{0: list<DeclarationBlock>}>
      */
     public static function contentsDataProvider(): array
     {
@@ -64,7 +64,7 @@ final class DocumentTest extends TestCase
     /**
      * @test
      *
-     * @param array<int, DeclarationBlock> $contents
+     * @param list<DeclarationBlock> $contents
      *
      * @dataProvider contentsDataProvider
      */
