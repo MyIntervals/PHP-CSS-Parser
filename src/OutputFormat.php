@@ -39,7 +39,8 @@ class OutputFormat
      * Spacing
      * Note that these strings are not sanity-checked: the value should only consist of whitespace
      * Any newline character will be indented according to the current level.
-     * The triples (After, Before, Between) can be set using a wildcard (e.g. `$oFormat->set('Space*Rules', "\n");`)
+     * The triples (After, Before, Between) can be set using a wildcard
+     * (e.g. `$outputFormat->set('Space*Rules', "\n");`)
      *
      * @var string
      *
@@ -217,7 +218,7 @@ class OutputFormat
     /**
      * @var OutputFormatter|null
      */
-    private $oFormatter;
+    private $outputFormatter;
 
     /**
      * @var OutputFormat|null
@@ -788,7 +789,7 @@ class OutputFormat
         if ($this->oNextLevelFormat === null) {
             $this->oNextLevelFormat = clone $this;
             $this->oNextLevelFormat->iIndentationLevel++;
-            $this->oNextLevelFormat->oFormatter = null;
+            $this->oNextLevelFormat->outputFormatter = null;
         }
         return $this->oNextLevelFormat;
     }
@@ -800,10 +801,10 @@ class OutputFormat
 
     public function getFormatter(): OutputFormatter
     {
-        if ($this->oFormatter === null) {
-            $this->oFormatter = new OutputFormatter($this);
+        if ($this->outputFormatter === null) {
+            $this->outputFormatter = new OutputFormatter($this);
         }
-        return $this->oFormatter;
+        return $this->outputFormatter;
     }
 
     /**

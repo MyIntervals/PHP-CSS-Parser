@@ -12,11 +12,11 @@ class OutputFormatter
     /**
      * @var OutputFormat
      */
-    private $oFormat;
+    private $outputFormat;
 
-    public function __construct(OutputFormat $oFormat)
+    public function __construct(OutputFormat $outputFormat)
     {
-        $this->oFormat = $oFormat;
+        $this->outputFormat = $outputFormat;
     }
 
     /**
@@ -25,7 +25,7 @@ class OutputFormatter
      */
     public function space($sName, $sType = null): string
     {
-        $sSpaceString = $this->oFormat->get("Space$sName");
+        $sSpaceString = $this->outputFormat->get("Space$sName");
         // If $sSpaceString is an array, we have multiple values configured
         // depending on the type of object the space applies to
         if (\is_array($sSpaceString)) {
@@ -91,7 +91,7 @@ class OutputFormatter
      */
     public function spaceBeforeListArgumentSeparator($sSeparator): string
     {
-        $spaceForSeparator = $this->oFormat->getSpaceBeforeListArgumentSeparators();
+        $spaceForSeparator = $this->outputFormat->getSpaceBeforeListArgumentSeparators();
 
         return $spaceForSeparator[$sSeparator] ?? $this->space('BeforeListArgumentSeparator', $sSeparator);
     }
@@ -101,7 +101,7 @@ class OutputFormatter
      */
     public function spaceAfterListArgumentSeparator($sSeparator): string
     {
-        $spaceForSeparator = $this->oFormat->getSpaceAfterListArgumentSeparators();
+        $spaceForSeparator = $this->outputFormat->getSpaceAfterListArgumentSeparators();
 
         return $spaceForSeparator[$sSeparator] ?? $this->space('AfterListArgumentSeparator', $sSeparator);
     }
@@ -120,7 +120,7 @@ class OutputFormatter
      */
     public function safely($cCode)
     {
-        if ($this->oFormat->get('IgnoreExceptions')) {
+        if ($this->outputFormat->get('IgnoreExceptions')) {
             // If output exceptions are ignored, run the code with exception guards
             try {
                 return $cCode();
@@ -142,9 +142,9 @@ class OutputFormatter
     public function implode(string $sSeparator, array $aValues, $bIncreaseLevel = false): string
     {
         $result = '';
-        $oFormat = $this->oFormat;
+        $outputFormat = $this->outputFormat;
         if ($bIncreaseLevel) {
-            $oFormat = $oFormat->nextLevel();
+            $outputFormat = $outputFormat->nextLevel();
         }
         $bIsFirst = true;
         foreach ($aValues as $mValue) {
@@ -154,7 +154,7 @@ class OutputFormatter
                 $result .= $sSeparator;
             }
             if ($mValue instanceof Renderable) {
-                $result .= $mValue->render($oFormat);
+                $result .= $mValue->render($outputFormat);
             } else {
                 $result .= $mValue;
             }
@@ -169,7 +169,7 @@ class OutputFormatter
      */
     public function removeLastSemicolon($sString)
     {
-        if ($this->oFormat->get('SemicolonAfterLastRule')) {
+        if ($this->outputFormat->get('SemicolonAfterLastRule')) {
             return $sString;
         }
         $sString = \explode(';', $sString);
@@ -184,7 +184,7 @@ class OutputFormatter
 
     public function comments(Commentable $oCommentable): string
     {
-        if (!$this->oFormat->bRenderComments) {
+        if (!$this->outputFormat->bRenderComments) {
             return '';
         }
 
@@ -193,7 +193,7 @@ class OutputFormatter
         $iLastCommentIndex = \count($comments) - 1;
 
         foreach ($comments as $i => $oComment) {
-            $result .= $oComment->render($this->oFormat);
+            $result .= $oComment->render($this->outputFormat);
             $result .= $i === $iLastCommentIndex ? $this->spaceAfterBlocks() : $this->spaceBetweenBlocks();
         }
         return $result;
@@ -212,6 +212,6 @@ class OutputFormatter
      */
     private function indent(): string
     {
-        return \str_repeat($this->oFormat->sIndentation, $this->oFormat->getIndentationLevel());
+        return \str_repeat($this->outputFormat->sIndentation, $this->outputFormat->getIndentationLevel());
     }
 }
