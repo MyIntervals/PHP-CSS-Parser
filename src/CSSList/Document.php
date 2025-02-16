@@ -63,24 +63,24 @@ class Document extends CSSBlockList
      * @param CSSList|RuleSet|string $element
      *        the `CSSList` or `RuleSet` to start the search from (defaults to the whole document).
      *        If a string is given, it is used as rule name filter.
-     * @param bool $bSearchInFunctionArguments whether to also return Value objects used as Function arguments.
+     * @param bool $searchInFunctionArguments whether to also return Value objects used as Function arguments.
      *
      * @return array<int, Value>
      *
      * @see RuleSet->getRules()
      */
-    public function getAllValues($element = null, $bSearchInFunctionArguments = false): array
+    public function getAllValues($element = null, $searchInFunctionArguments = false): array
     {
-        $sSearchString = null;
+        $searchString = null;
         if ($element === null) {
             $element = $this;
         } elseif (\is_string($element)) {
-            $sSearchString = $element;
+            $searchString = $element;
             $element = $this;
         }
         /** @var array<int, Value> $result */
         $result = [];
-        $this->allValues($element, $result, $sSearchString, $bSearchInFunctionArguments);
+        $this->allValues($element, $result, $searchString, $searchInFunctionArguments);
         return $result;
     }
 
@@ -90,18 +90,18 @@ class Document extends CSSBlockList
      * Note that this does not yield the full `DeclarationBlock` that the selector belongs to
      * (and, currently, there is no way to get to that).
      *
-     * @param string|null $sSpecificitySearch
+     * @param string|null $specificitySearch
      *        An optional filter by specificity.
      *        May contain a comparison operator and a number or just a number (defaults to "==").
      *
      * @return array<int, Selector>
      * @example `getSelectorsBySpecificity('>= 100')`
      */
-    public function getSelectorsBySpecificity($sSpecificitySearch = null): array
+    public function getSelectorsBySpecificity($specificitySearch = null): array
     {
         /** @var array<int, Selector> $result */
         $result = [];
-        $this->allSelectors($result, $sSpecificitySearch);
+        $this->allSelectors($result, $specificitySearch);
         return $result;
     }
 
