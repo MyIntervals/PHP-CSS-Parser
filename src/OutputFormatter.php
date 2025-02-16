@@ -87,7 +87,7 @@ class OutputFormatter
     }
 
     /**
-     * @param string $sSeparator
+     * @param non-empty-string $sSeparator
      */
     public function spaceBeforeListArgumentSeparator($sSeparator): string
     {
@@ -97,7 +97,7 @@ class OutputFormatter
     }
 
     /**
-     * @param string $sSeparator
+     * @param non-empty-string $sSeparator
      */
     public function spaceAfterListArgumentSeparator($sSeparator): string
     {
@@ -136,6 +136,7 @@ class OutputFormatter
     /**
      * Clone of the `implode` function, but calls `render` with the current output format instead of `__toString()`.
      *
+     * @param non-empty-string $sSeparator
      * @param array<array-key, Renderable|string> $aValues
      * @param bool $bIncreaseLevel
      */
