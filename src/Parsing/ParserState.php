@@ -122,11 +122,11 @@ class ParserState
     }
 
     /**
-     * @param int $iPosition
+     * @param int $position
      */
-    public function setPosition($iPosition): void
+    public function setPosition($position): void
     {
-        $this->iCurrentPosition = $iPosition;
+        $this->iCurrentPosition = $position;
     }
 
     /**
