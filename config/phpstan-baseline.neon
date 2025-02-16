@@ -121,6 +121,12 @@ parameters:
 			path: ../src/OutputFormat.php
 
 		-
+			message: '#^Parameters should have "string" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
+			count: 2
+			path: ../src/OutputFormatter.php
+
+		-
 			message: '#^Default value of the parameter \#2 \$bIncludeEnd \(false\) of method Sabberworm\\CSS\\Parsing\\ParserState\:\:consumeUntil\(\) is incompatible with type string\.$#'
 			identifier: parameter.defaultValue
 			count: 1
