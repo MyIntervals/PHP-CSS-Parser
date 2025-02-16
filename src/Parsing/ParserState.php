@@ -83,16 +83,6 @@ class ParserState
     }
 
     /**
-     * Returns the charset that is used if the CSS does not contain an `@charset` declaration.
-     *
-     * @return string
-     */
-    public function getCharset()
-    {
-        return $this->sCharset;
-    }
-
-    /**
      * @return int
      */
     public function currentLine()
