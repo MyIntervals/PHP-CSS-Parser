@@ -81,7 +81,7 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      */
-    public function atRuleArgusReturnsArgumentsProvidedToConstructor(): void
+    public function atRuleArgsReturnsArgumentsProvidedToConstructor(): void
     {
         $arguments = 'bar';
 
