@@ -108,12 +108,12 @@ abstract class RuleSet implements Renderable, Commentable
             $this->aRules[$sRule] = [];
         }
 
-        $iPosition = \count($this->aRules[$sRule]);
+        $position = \count($this->aRules[$sRule]);
 
         if ($oSibling !== null) {
             $iSiblingPos = \array_search($oSibling, $this->aRules[$sRule], true);
             if ($iSiblingPos !== false) {
-                $iPosition = $iSiblingPos;
+                $position = $iSiblingPos;
                 $rule->setPosition($oSibling->getLineNo(), $oSibling->getColNo() - 1);
             }
         }
@@ -127,7 +127,7 @@ abstract class RuleSet implements Renderable, Commentable
             }
         }
 
-        \array_splice($this->aRules[$sRule], $iPosition, 0, [$rule]);
+        \array_splice($this->aRules[$sRule], $position, 0, [$rule]);
     }
 
     /**
