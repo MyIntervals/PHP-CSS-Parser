@@ -19,14 +19,6 @@ use Sabberworm\CSS\Value\Value;
 class Document extends CSSBlockList
 {
     /**
-     * @param int<0, max> $lineNumber
-     */
-    public function __construct($lineNumber = 0)
-    {
-        parent::__construct($lineNumber);
-    }
-
-    /**
      * @throws SourceException
      *
      * @internal since V8.8.0

@@ -37,7 +37,7 @@ class ParserState
     /**
      * @var int
      */
-    private $iCurrentPosition;
+    private $iCurrentPosition = 0;
 
     /**
      * will only be used if the CSS does not contain an `@charset` declaration
@@ -64,7 +64,6 @@ class ParserState
     {
         $this->oParserSettings = $oParserSettings;
         $this->sText = $sText;
-        $this->iCurrentPosition = 0;
         $this->lineNumber = $lineNumber;
         $this->setCharset($this->oParserSettings->sDefaultCharset);
     }

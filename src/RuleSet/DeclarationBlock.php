@@ -27,16 +27,7 @@ class DeclarationBlock extends RuleSet
     /**
      * @var array<int, Selector|string>
      */
-    private $aSelectors;
-
-    /**
-     * @param int<0, max> $lineNumber
-     */
-    public function __construct($lineNumber = 0)
-    {
-        parent::__construct($lineNumber);
-        $this->aSelectors = [];
-    }
+    private $aSelectors = [];
 
     /**
      * @param CSSList|null $list

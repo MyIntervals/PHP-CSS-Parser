@@ -32,7 +32,7 @@ class CSSNamespace implements AtRule
      *
      * @internal since 8.8.0
      */
-    protected $comments;
+    protected $comments = [];
 
     /**
      * @param string $mUrl
@@ -44,7 +44,6 @@ class CSSNamespace implements AtRule
         $this->mUrl = $mUrl;
         $this->prefix = $prefix;
         $this->lineNumber = $lineNumber;
-        $this->comments = [];
     }
 
     /**
