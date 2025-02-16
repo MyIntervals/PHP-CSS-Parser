@@ -87,7 +87,7 @@ class ParserState
      *
      * @return string
      */
-    public function getCharset()
+    private function getCharset()
     {
         return $this->sCharset;
     }
@@ -205,7 +205,7 @@ class ParserState
                 $sUtf32 .= \chr($iUnicode & 0xff);
                 $iUnicode = $iUnicode >> 8;
             }
-            return \iconv('utf-32le', $this->sCharset, $sUtf32);
+            return \iconv('utf-32le', $this->getCharset(), $sUtf32);
         }
         if ($bIsForIdentifier) {
             $peek = \ord($this->peek());
@@ -441,7 +441,7 @@ class ParserState
     public function strlen($sString): int
     {
         if ($this->oParserSettings->bMultibyteSupport) {
-            return \mb_strlen($sString, $this->sCharset);
+            return \mb_strlen($sString, $this->getCharset());
         } else {
             return \strlen($sString);
         }
@@ -474,7 +474,7 @@ class ParserState
     private function strtolower($sString): string
     {
         if ($this->oParserSettings->bMultibyteSupport) {
-            return \mb_strtolower($sString, $this->sCharset);
+            return \mb_strtolower($sString, $this->getCharset());
         } else {
             return \strtolower($sString);
         }
@@ -488,13 +488,13 @@ class ParserState
     private function strsplit($sString)
     {
         if ($this->oParserSettings->bMultibyteSupport) {
-            if ($this->streql($this->sCharset, 'utf-8')) {
+            if ($this->streql($this->getCharset(), 'utf-8')) {
                 return \preg_split('//u', $sString, -1, PREG_SPLIT_NO_EMPTY);
             } else {
-                $iLength = \mb_strlen($sString, $this->sCharset);
+                $iLength = \mb_strlen($sString, $this->getCharset());
                 $result = [];
                 for ($i = 0; $i < $iLength; ++$i) {
-                    $result[] = \mb_substr($sString, $i, 1, $this->sCharset);
+                    $result[] = \mb_substr($sString, $i, 1, $this->getCharset());
                 }
                 return $result;
             }
@@ -517,7 +517,7 @@ class ParserState
     private function strpos($sString, $sNeedle, $iOffset)
     {
         if ($this->oParserSettings->bMultibyteSupport) {
-            return \mb_strpos($sString, $sNeedle, $iOffset, $this->sCharset);
+            return \mb_strpos($sString, $sNeedle, $iOffset, $this->getCharset());
         } else {
             return \strpos($sString, $sNeedle, $iOffset);
         }
