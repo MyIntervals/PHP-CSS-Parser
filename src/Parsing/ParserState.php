@@ -22,7 +22,7 @@ class ParserState
     /**
      * @var Settings
      */
-    private $oParserSettings;
+    private $parserSettings;
 
     /**
      * @var string
@@ -60,12 +60,12 @@ class ParserState
      * @param string $sText the complete CSS as text (i.e., usually the contents of a CSS file)
      * @param int<0, max> $lineNumber
      */
-    public function __construct($sText, Settings $oParserSettings, $lineNumber = 1)
+    public function __construct($sText, Settings $parserSettings, $lineNumber = 1)
     {
-        $this->oParserSettings = $oParserSettings;
+        $this->parserSettings = $parserSettings;
         $this->sText = $sText;
         $this->lineNumber = $lineNumber;
-        $this->setCharset($this->oParserSettings->sDefaultCharset);
+        $this->setCharset($this->parserSettings->sDefaultCharset);
     }
 
     /**
@@ -113,7 +113,7 @@ class ParserState
      */
     public function getSettings()
     {
-        return $this->oParserSettings;
+        return $this->parserSettings;
     }
 
     public function anchor(): Anchor
@@ -175,7 +175,7 @@ class ParserState
     {
         if ($this->peek() === '\\') {
             if (
-                $bIsForIdentifier && $this->oParserSettings->bLenientParsing
+                $bIsForIdentifier && $this->parserSettings->bLenientParsing
                 && ($this->comes('\\0') || $this->comes('\\9'))
             ) {
                 // Non-strings can contain \0 or \9 which is an IE hack supported in lenient parsing.
@@ -239,7 +239,7 @@ class ParserState
             while (\preg_match('/\\s/isSu', $this->peek()) === 1) {
                 $this->consume(1);
             }
-            if ($this->oParserSettings->bLenientParsing) {
+            if ($this->parserSettings->bLenientParsing) {
                 try {
                     $oComment = $this->consumeComment();
                 } catch (UnexpectedEOFException $e) {
@@ -440,7 +440,7 @@ class ParserState
      */
     public function strlen($sString): int
     {
-        if ($this->oParserSettings->bMultibyteSupport) {
+        if ($this->parserSettings->bMultibyteSupport) {
             return \mb_strlen($sString, $this->sCharset);
         } else {
             return \strlen($sString);
@@ -473,7 +473,7 @@ class ParserState
      */
     private function strtolower($sString): string
     {
-        if ($this->oParserSettings->bMultibyteSupport) {
+        if ($this->parserSettings->bMultibyteSupport) {
             return \mb_strtolower($sString, $this->sCharset);
         } else {
             return \strtolower($sString);
@@ -487,7 +487,7 @@ class ParserState
      */
     private function strsplit($sString)
     {
-        if ($this->oParserSettings->bMultibyteSupport) {
+        if ($this->parserSettings->bMultibyteSupport) {
             if ($this->streql($this->sCharset, 'utf-8')) {
                 return \preg_split('//u', $sString, -1, PREG_SPLIT_NO_EMPTY);
             } else {
@@ -516,7 +516,7 @@ class ParserState
      */
     private function strpos($sString, $sNeedle, $iOffset)
     {
-        if ($this->oParserSettings->bMultibyteSupport) {
+        if ($this->parserSettings->bMultibyteSupport) {
             return \mb_strpos($sString, $sNeedle, $iOffset, $this->sCharset);
         } else {
             return \strpos($sString, $sNeedle, $iOffset);
