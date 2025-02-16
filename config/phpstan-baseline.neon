@@ -79,6 +79,12 @@ parameters:
 			path: ../src/CSSList/Document.php
 
 		-
+			message: '#^Parameters should have "string\|null" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
+			count: 1
+			path: ../src/CSSList/Document.php
+
+		-
 			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -89,6 +95,24 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: ../src/CSSList/KeyFrame.php
+
+		-
+			message: '#^Parameters should have "string" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
+			count: 2
+			path: ../src/CSSList/KeyFrame.php
+
+		-
+			message: '#^Parameters should have "string\|string" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
+			count: 1
+			path: ../src/OutputFormat.php
+
+		-
+			message: '#^Returning false in non return bool class method\. Use null with type\|null instead or add bool return type$#'
+			identifier: typePerfect.nullOverFalse
+			count: 1
+			path: ../src/OutputFormat.php
 
 		-
 			message: '#^Variable property access on \$this\(Sabberworm\\CSS\\OutputFormat\)\.$#'
@@ -129,6 +153,30 @@ parameters:
 		-
 			message: '#^PHPDoc tag @return with type array\<int, Sabberworm\\CSS\\Comment\\Comment\>\|void is not subtype of native type array\.$#'
 			identifier: return.phpDocType
+			count: 1
+			path: ../src/Parsing/ParserState.php
+
+		-
+			message: '#^Parameters should have "bool" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
+			count: 2
+			path: ../src/Parsing/ParserState.php
+
+		-
+			message: '#^Parameters should have "int" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
+			count: 2
+			path: ../src/Parsing/ParserState.php
+
+		-
+			message: '#^Parameters should have "string" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
+			count: 1
+			path: ../src/Parsing/ParserState.php
+
+		-
+			message: '#^Parameters should have "string\|int\|null" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
 			path: ../src/Parsing/ParserState.php
 
@@ -181,6 +229,12 @@ parameters:
 			path: ../src/Property/Import.php
 
 		-
+			message: '#^Parameters should have "string" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
+			count: 1
+			path: ../src/Property/Selector.php
+
+		-
 			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -201,6 +255,24 @@ parameters:
 		-
 			message: '#^Only booleans are allowed in an if condition, Sabberworm\\CSS\\Value\\RuleValueList\|string\|null given\.$#'
 			identifier: if.condNotBoolean
+			count: 1
+			path: ../src/Rule/Rule.php
+
+		-
+			message: '#^Parameters should have "bool" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
+			count: 1
+			path: ../src/Rule/Rule.php
+
+		-
+			message: '#^Parameters should have "int\|int" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
+			count: 1
+			path: ../src/Rule/Rule.php
+
+		-
+			message: '#^Parameters should have "string" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
 			path: ../src/Rule/Rule.php
 
@@ -271,6 +343,18 @@ parameters:
 			path: ../src/RuleSet/DeclarationBlock.php
 
 		-
+			message: '#^Parameters should have "string" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
+			count: 1
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: '#^Returning false in non return bool class method\. Use null with type\|null instead or add bool return type$#'
+			identifier: typePerfect.nullOverFalse
+			count: 1
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
 			message: '#^Argument of an invalid type Sabberworm\\CSS\\Rule\\Rule supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
 			count: 2
@@ -325,6 +409,24 @@ parameters:
 			path: ../src/RuleSet/RuleSet.php
 
 		-
+			message: '#^Parameters should have "Sabberworm\\CSS\\Rule\\Rule" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
+			count: 1
+			path: ../src/RuleSet/RuleSet.php
+
+		-
+			message: '#^Parameters should have "string" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
+			count: 1
+			path: ../src/RuleSet/RuleSet.php
+
+		-
+			message: '#^Use explicit methods over array access on object$#'
+			identifier: typePerfect.noArrayAccessOnObject
+			count: 1
+			path: ../src/RuleSet/RuleSet.php
+
+		-
 			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
 			identifier: notEqual.notAllowed
 			count: 3
@@ -373,8 +475,20 @@ parameters:
 			path: ../src/Value/Color.php
 
 		-
+			message: '#^Provide more specific return type "Sabberworm\\CSS\\Value\\Color" over abstract one$#'
+			identifier: typePerfect.narrowReturnObjectType
+			count: 1
+			path: ../src/Value/Color.php
+
+		-
 			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
 			identifier: notEqual.notAllowed
+			count: 1
+			path: ../src/Value/Size.php
+
+		-
+			message: '#^Parameters should have "float" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
 			path: ../src/Value/Size.php
 
