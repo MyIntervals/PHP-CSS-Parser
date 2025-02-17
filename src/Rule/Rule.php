@@ -61,11 +61,9 @@ class Rule implements Renderable, Commentable
     protected $comments = [];
 
     /**
-     * @param string $sRule
      * @param int<0, max> $lineNumber
-     * @param int $iColNo
      */
-    public function __construct($sRule, $lineNumber = 0, $iColNo = 0)
+    public function __construct(string $sRule, int $lineNumber = 0, int $iColNo = 0)
     {
         $this->sRule = $sRule;
         $this->lineNumber = $lineNumber;
