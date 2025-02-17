@@ -37,7 +37,7 @@ class ParserState
     /**
      * @var int
      */
-    private $iCurrentPosition = 0;
+    private $currentPosition = 0;
 
     /**
      * will only be used if the CSS does not contain an `@charset` declaration
@@ -95,7 +95,7 @@ class ParserState
      */
     public function currentColumn()
     {
-        return $this->iCurrentPosition;
+        return $this->currentPosition;
     }
 
     /**
@@ -108,7 +108,7 @@ class ParserState
 
     public function anchor(): Anchor
     {
-        return new Anchor($this->iCurrentPosition, $this);
+        return new Anchor($this->currentPosition, $this);
     }
 
     /**
@@ -116,7 +116,7 @@ class ParserState
      */
     public function setPosition($position): void
     {
-        $this->iCurrentPosition = $position;
+        $this->currentPosition = $position;
     }
 
     /**
@@ -233,7 +233,7 @@ class ParserState
                 try {
                     $oComment = $this->consumeComment();
                 } catch (UnexpectedEOFException $e) {
-                    $this->iCurrentPosition = $this->iLength;
+                    $this->currentPosition = $this->iLength;
                     return $comments;
                 }
             } else {
@@ -264,7 +264,7 @@ class ParserState
      */
     public function peek($iLength = 1, $iOffset = 0): string
     {
-        $iOffset += $this->iCurrentPosition;
+        $iOffset += $this->currentPosition;
         if ($iOffset >= $this->iLength) {
             return '';
         }
@@ -282,7 +282,7 @@ class ParserState
         if (\is_string($mValue)) {
             $iLineCount = \substr_count($mValue, "\n");
             $iLength = $this->strlen($mValue);
-            if (!$this->streql($this->substr($this->iCurrentPosition, $iLength), $mValue)) {
+            if (!$this->streql($this->substr($this->currentPosition, $iLength), $mValue)) {
                 throw new UnexpectedTokenException(
                     $mValue,
                     $this->peek(\max($iLength, 5)),
@@ -291,16 +291,16 @@ class ParserState
                 );
             }
             $this->lineNumber += $iLineCount;
-            $this->iCurrentPosition += $this->strlen($mValue);
+            $this->currentPosition += $this->strlen($mValue);
             return $mValue;
         } else {
-            if ($this->iCurrentPosition + $mValue > $this->iLength) {
+            if ($this->currentPosition + $mValue > $this->iLength) {
                 throw new UnexpectedEOFException((string) $mValue, $this->peek(5), 'count', $this->lineNumber);
             }
-            $result = $this->substr($this->iCurrentPosition, $mValue);
+            $result = $this->substr($this->currentPosition, $mValue);
             $iLineCount = \substr_count($result, "\n");
             $this->lineNumber += $iLineCount;
-            $this->iCurrentPosition += $mValue;
+            $this->currentPosition += $mValue;
             return $result;
         }
     }
@@ -351,7 +351,7 @@ class ParserState
 
     public function isEnd(): bool
     {
-        return $this->iCurrentPosition >= $this->iLength;
+        return $this->currentPosition >= $this->iLength;
     }
 
     /**
@@ -367,7 +367,7 @@ class ParserState
     {
         $aEnd = \is_array($aEnd) ? $aEnd : [$aEnd];
         $out = '';
-        $start = $this->iCurrentPosition;
+        $start = $this->currentPosition;
 
         while (!$this->isEnd()) {
             $char = $this->consume(1);
@@ -375,7 +375,7 @@ class ParserState
                 if ($bIncludeEnd) {
                     $out .= $char;
                 } elseif (!$consumeEnd) {
-                    $this->iCurrentPosition -= $this->strlen($char);
+                    $this->currentPosition -= $this->strlen($char);
                 }
                 return $out;
             }
@@ -389,7 +389,7 @@ class ParserState
             return $out;
         }
 
-        $this->iCurrentPosition = $start;
+        $this->currentPosition = $start;
         throw new UnexpectedEOFException(
             'One of ("' . \implode('","', $aEnd) . '")',
             $this->peek(5),
@@ -400,7 +400,7 @@ class ParserState
 
     private function inputLeft(): string
     {
-        return $this->substr($this->iCurrentPosition, -1);
+        return $this->substr($this->currentPosition, -1);
     }
 
     /**
@@ -422,7 +422,7 @@ class ParserState
      */
     public function backtrack($iAmount): void
     {
-        $this->iCurrentPosition -= $iAmount;
+        $this->currentPosition -= $iAmount;
     }
 
     /**
