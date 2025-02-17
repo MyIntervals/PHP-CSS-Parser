@@ -87,7 +87,7 @@ class OutputFormatter
     }
 
     /**
-     * @param string $sSeparator
+     * @param non-empty-string $sSeparator
      */
     public function spaceBeforeListArgumentSeparator($sSeparator): string
     {
@@ -97,7 +97,7 @@ class OutputFormatter
     }
 
     /**
-     * @param string $sSeparator
+     * @param non-empty-string $sSeparator
      */
     public function spaceAfterListArgumentSeparator($sSeparator): string
     {
