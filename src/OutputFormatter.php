@@ -136,7 +136,6 @@ class OutputFormatter
     /**
      * Clone of the `implode` function, but calls `render` with the current output format instead of `__toString()`.
      *
-     * @param non-empty-string $sSeparator
      * @param array<array-key, Renderable|string> $aValues
      * @param bool $bIncreaseLevel
      */
