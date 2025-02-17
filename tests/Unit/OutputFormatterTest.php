@@ -229,7 +229,7 @@ final class OutputFormatterTest extends TestCase
         $values = [$value1, $value2];
         $separator = ', ';
 
-        $result = $this->subject->implode(', ', $values);
+        $result = $this->subject->implode($separator, $values);
 
         self::assertSame($value1 . $separator . $value2, $result);
     }
