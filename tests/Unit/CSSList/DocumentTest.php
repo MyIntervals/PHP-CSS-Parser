@@ -12,6 +12,8 @@ use Sabberworm\CSS\RuleSet\DeclarationBlock;
 
 /**
  * @covers \Sabberworm\CSS\CSSList\Document
+ * @covers \Sabberworm\CSS\CSSList\CSSBlockList
+ * @covers \Sabberworm\CSS\CSSList\CSSList
  */
 final class DocumentTest extends TestCase
 {
@@ -39,6 +41,14 @@ final class DocumentTest extends TestCase
     public function implementsCommentable(): void
     {
         self::assertInstanceOf(Commentable::class, $this->subject);
+    }
+
+    /**
+     * @test
+     */
+    public function getAllDeclarationBlocksInitiallyReturnsEmptyArray(): void
+    {
+        self::assertSame([], $this->subject->getAllDeclarationBlocks());
     }
 
     /**
@@ -141,5 +151,13 @@ final class DocumentTest extends TestCase
 
         self::assertCount(4, $this->subject->getContents());
         self::assertSame([$bogusOne, $sibling, $bogusTwo, $item], $this->subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function isRootListAlwaysReturnsTrue(): void
+    {
+        self::assertTrue($this->subject->isRootList());
     }
 }
