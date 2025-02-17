@@ -32,7 +32,7 @@ class ParserState
     /**
      * @var array<int, string>
      */
-    private $texts;
+    private $characters;
 
     /**
      * @var int
@@ -76,9 +76,9 @@ class ParserState
     public function setCharset($sCharset): void
     {
         $this->sCharset = $sCharset;
-        $this->texts = $this->strsplit($this->text);
-        if (\is_array($this->texts)) {
-            $this->iLength = \count($this->texts);
+        $this->characters = $this->strsplit($this->text);
+        if (\is_array($this->characters)) {
+            $this->iLength = \count($this->characters);
         }
     }
 
@@ -451,7 +451,7 @@ class ParserState
         }
         $result = '';
         while ($iLength > 0) {
-            $result .= $this->texts[$iStart];
+            $result .= $this->characters[$iStart];
             $iStart++;
             $iLength--;
         }
