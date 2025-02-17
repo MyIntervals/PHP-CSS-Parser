@@ -55,12 +55,12 @@ class Charset implements AtRule
     }
 
     /**
-     * @param string|CSSString $sCharset
+     * @param string|CSSString $charset
      */
-    public function setCharset($sCharset): void
+    public function setCharset($charset): void
     {
-        $sCharset = $sCharset instanceof CSSString ? $sCharset : new CSSString($sCharset);
-        $this->oCharset = $sCharset;
+        $charset = $charset instanceof CSSString ? $charset : new CSSString($charset);
+        $this->oCharset = $charset;
     }
 
     /**
