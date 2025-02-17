@@ -173,7 +173,7 @@ final class OutputFormatterTest extends TestCase
     /**
      * @test
      */
-    public function spaceAfterListArgumentSeparatorForNoExistingSpaceAfterProvidedSeparatorReturnsDefaultSeparator(
+    public function spaceAfterListArgumentSeparatorWithoutSpecificSettingReturnsDefaultSpace(
     ): void {
         $space = '        ';
         $this->outputFormat->setSpaceAfterListArgumentSeparators([',' => $space]);
