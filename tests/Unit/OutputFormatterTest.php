@@ -132,7 +132,7 @@ final class OutputFormatterTest extends TestCase
     /**
      * @test
      */
-    public function spaceBeforeListArgumentSeparatorForExistingSpaceBeforeProvidedSeparatorReturnsThat(): void
+    public function spaceBeforeListArgumentSeparatorReturnsSpaceSetForSpecificSeparator(): void
     {
         $separator = ',';
         $space = '        ';
