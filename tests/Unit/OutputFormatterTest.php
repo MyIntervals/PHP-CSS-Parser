@@ -258,7 +258,7 @@ final class OutputFormatterTest extends TestCase
         $renderedRenderable1 = 'tea';
         $renderable1->method('render')->with($this->outputFormat)->willReturn($renderedRenderable1);
         $renderable2 = $this->createMock(Renderable::class);
-        $renderedRenderable2 = 'tea';
+        $renderedRenderable2 = 'coffee';
         $renderable2->method('render')->with($this->outputFormat)->willReturn($renderedRenderable2);
         $values = [$renderable1, $renderable2];
         $separator = ', ';
