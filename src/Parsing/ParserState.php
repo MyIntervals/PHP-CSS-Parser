@@ -27,12 +27,12 @@ class ParserState
     /**
      * @var string
      */
-    private $sText;
+    private $text;
 
     /**
      * @var array<int, string>
      */
-    private $aText;
+    private $characters;
 
     /**
      * @var int
@@ -57,13 +57,13 @@ class ParserState
     private $lineNumber;
 
     /**
-     * @param string $sText the complete CSS as text (i.e., usually the contents of a CSS file)
+     * @param string $text the complete CSS as text (i.e., usually the contents of a CSS file)
      * @param int<0, max> $lineNumber
      */
-    public function __construct($sText, Settings $parserSettings, $lineNumber = 1)
+    public function __construct($text, Settings $parserSettings, $lineNumber = 1)
     {
         $this->parserSettings = $parserSettings;
-        $this->sText = $sText;
+        $this->text = $text;
         $this->lineNumber = $lineNumber;
         $this->setCharset($this->parserSettings->sDefaultCharset);
     }
@@ -76,9 +76,9 @@ class ParserState
     public function setCharset($sCharset): void
     {
         $this->sCharset = $sCharset;
-        $this->aText = $this->strsplit($this->sText);
-        if (\is_array($this->aText)) {
-            $this->iLength = \count($this->aText);
+        $this->characters = $this->strsplit($this->text);
+        if (\is_array($this->characters)) {
+            $this->iLength = \count($this->characters);
         }
     }
 
@@ -451,7 +451,7 @@ class ParserState
         }
         $result = '';
         while ($iLength > 0) {
-            $result .= $this->aText[$iStart];
+            $result .= $this->characters[$iStart];
             $iStart++;
             $iLength--;
         }

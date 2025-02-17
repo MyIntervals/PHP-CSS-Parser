@@ -19,15 +19,15 @@ class Parser
     private $parserState;
 
     /**
-     * @param string $sText the complete CSS as text (i.e., usually the contents of a CSS file)
+     * @param string $text the complete CSS as text (i.e., usually the contents of a CSS file)
      * @param int<0, max> $lineNumber the line number (starting from 1, not from 0)
      */
-    public function __construct($sText, ?Settings $parserSettings = null, $lineNumber = 1)
+    public function __construct($text, ?Settings $parserSettings = null, $lineNumber = 1)
     {
         if ($parserSettings === null) {
             $parserSettings = Settings::create();
         }
-        $this->parserState = new ParserState($sText, $parserSettings, $lineNumber);
+        $this->parserState = new ParserState($text, $parserSettings, $lineNumber);
     }
 
     /**
