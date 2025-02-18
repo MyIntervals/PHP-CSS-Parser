@@ -354,7 +354,7 @@ final class OutputFormatterTest extends TestCase
      * @test
      * @dataProvider provideChangedStringForRemoveLastSemicolon
      */
-    public function removeLastSemicolonWithSemicolonAfterLastRuleDisabledRemovesTheLastSemicolon(
+    public function removeLastSemicolonWithSemicolonAfterLastRuleDisabledRemovesLastSemicolon(
         string $input,
         string $expected
     ): void {
