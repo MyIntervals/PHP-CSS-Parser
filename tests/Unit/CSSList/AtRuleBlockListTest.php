@@ -21,7 +21,7 @@ final class AtRuleBlockListTest extends TestCase
      */
     public function implementsAtRule(): void
     {
-        $subject = new AtRuleBlockList('');
+        $subject = new AtRuleBlockList('supports');
 
         self::assertInstanceOf(AtRuleBlockList::class, $subject);
     }
@@ -31,7 +31,7 @@ final class AtRuleBlockListTest extends TestCase
      */
     public function implementsRenderable(): void
     {
-        $subject = new AtRuleBlockList('');
+        $subject = new AtRuleBlockList('supports');
 
         self::assertInstanceOf(Renderable::class, $subject);
     }
@@ -41,7 +41,7 @@ final class AtRuleBlockListTest extends TestCase
      */
     public function implementsCommentable(): void
     {
-        $subject = new AtRuleBlockList('');
+        $subject = new AtRuleBlockList('supports');
 
         self::assertInstanceOf(Commentable::class, $subject);
     }
@@ -51,7 +51,7 @@ final class AtRuleBlockListTest extends TestCase
      */
     public function atRuleNameReturnsTypeProvidedToConstructor(): void
     {
-        $type = 'foo';
+        $type = 'keyframes';
 
         $subject = new AtRuleBlockList($type);
 
@@ -63,7 +63,7 @@ final class AtRuleBlockListTest extends TestCase
      */
     public function getLineNoByDefaultReturnsZero(): void
     {
-        $subject = new AtRuleBlockList('');
+        $subject = new AtRuleBlockList('supports');
 
         self::assertSame(0, $subject->getLineNo());
     }
@@ -73,7 +73,7 @@ final class AtRuleBlockListTest extends TestCase
      */
     public function atRuleArgsByDefaultReturnsEmptyString(): void
     {
-        $subject = new AtRuleBlockList('');
+        $subject = new AtRuleBlockList('supports');
 
         self::assertSame('', $subject->atRuleArgs());
     }
@@ -107,7 +107,7 @@ final class AtRuleBlockListTest extends TestCase
      */
     public function isRootListAlwaysReturnsFalse(): void
     {
-        $subject = new AtRuleBlockList('');
+        $subject = new AtRuleBlockList('supports');
 
         self::assertFalse($subject->isRootList());
     }
