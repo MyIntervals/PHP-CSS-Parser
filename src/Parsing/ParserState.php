@@ -49,7 +49,7 @@ class ParserState
     /**
      * @var int
      */
-    private $iLength;
+    private $length;
 
     /**
      * @var int
@@ -78,7 +78,7 @@ class ParserState
         $this->charset = $charset;
         $this->characters = $this->strsplit($this->text);
         if (\is_array($this->characters)) {
-            $this->iLength = \count($this->characters);
+            $this->length = \count($this->characters);
         }
     }
 
@@ -233,7 +233,7 @@ class ParserState
                 try {
                     $oComment = $this->consumeComment();
                 } catch (UnexpectedEOFException $e) {
-                    $this->currentPosition = $this->iLength;
+                    $this->currentPosition = $this->length;
                     return $comments;
                 }
             } else {
@@ -259,16 +259,16 @@ class ParserState
     }
 
     /**
-     * @param int $iLength
+     * @param int $length
      * @param int $iOffset
      */
-    public function peek($iLength = 1, $iOffset = 0): string
+    public function peek($length = 1, $iOffset = 0): string
     {
         $iOffset += $this->currentPosition;
-        if ($iOffset >= $this->iLength) {
+        if ($iOffset >= $this->length) {
             return '';
         }
-        return $this->substr($iOffset, $iLength);
+        return $this->substr($iOffset, $length);
     }
 
     /**
@@ -281,11 +281,11 @@ class ParserState
     {
         if (\is_string($mValue)) {
             $iLineCount = \substr_count($mValue, "\n");
-            $iLength = $this->strlen($mValue);
-            if (!$this->streql($this->substr($this->currentPosition, $iLength), $mValue)) {
+            $length = $this->strlen($mValue);
+            if (!$this->streql($this->substr($this->currentPosition, $length), $mValue)) {
                 throw new UnexpectedTokenException(
                     $mValue,
-                    $this->peek(\max($iLength, 5)),
+                    $this->peek(\max($length, 5)),
                     'literal',
                     $this->lineNumber
                 );
@@ -294,7 +294,7 @@ class ParserState
             $this->currentPosition += $this->strlen($mValue);
             return $mValue;
         } else {
-            if ($this->currentPosition + $mValue > $this->iLength) {
+            if ($this->currentPosition + $mValue > $this->length) {
                 throw new UnexpectedEOFException((string) $mValue, $this->peek(5), 'count', $this->lineNumber);
             }
             $result = $this->substr($this->currentPosition, $mValue);
@@ -351,7 +351,7 @@ class ParserState
 
     public function isEnd(): bool
     {
-        return $this->currentPosition >= $this->iLength;
+        return $this->currentPosition >= $this->length;
     }
 
     /**
@@ -439,21 +439,21 @@ class ParserState
 
     /**
      * @param int $iStart
-     * @param int $iLength
+     * @param int $length
      */
-    private function substr($iStart, $iLength): string
+    private function substr($iStart, $length): string
     {
-        if ($iLength < 0) {
-            $iLength = $this->iLength - $iStart + $iLength;
+        if ($length < 0) {
+            $length = $this->length - $iStart + $length;
         }
-        if ($iStart + $iLength > $this->iLength) {
-            $iLength = $this->iLength - $iStart;
+        if ($iStart + $length > $this->length) {
+            $length = $this->length - $iStart;
         }
         $result = '';
-        while ($iLength > 0) {
+        while ($length > 0) {
             $result .= $this->characters[$iStart];
             $iStart++;
-            $iLength--;
+            $length--;
         }
         return $result;
     }
@@ -481,9 +481,9 @@ class ParserState
             if ($this->streql($this->charset, 'utf-8')) {
                 return \preg_split('//u', $sString, -1, PREG_SPLIT_NO_EMPTY);
             } else {
-                $iLength = \mb_strlen($sString, $this->charset);
+                $length = \mb_strlen($sString, $this->charset);
                 $result = [];
-                for ($i = 0; $i < $iLength; ++$i) {
+                for ($i = 0; $i < $length; ++$i) {
                     $result[] = \mb_substr($sString, $i, 1, $this->charset);
                 }
                 return $result;
