@@ -318,7 +318,7 @@ final class OutputFormatterTest extends TestCase
      * @test
      * @dataProvider provideUnchangedStringForRemoveLastSemicolon
      */
-    public function removeLastSemicolonWithSemicolonAfterLastRuleEnabledUnchangedArgument(string $string): void
+    public function removeLastSemicolonWithSemicolonAfterLastRuleEnabledReturnsUnchangedArgument(string $string): void
     {
         $this->outputFormat->setSemicolonAfterLastRule(true);
 
