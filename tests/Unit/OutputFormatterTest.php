@@ -491,7 +491,7 @@ final class OutputFormatterTest extends TestCase
 
         $commentText1 = 'This is a comment 1.';
         $comment1 = new Comment($commentText1);
-        $commentText2 = 'This is a comment 2.';
+        $commentText2 = 'You like pears.';
         $comment2 = new Comment($commentText2);
         $commentable = $this->createMock(Commentable::class);
         $commentable->method('getComments')->willReturn([$comment1, $comment2]);
