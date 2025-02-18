@@ -112,11 +112,11 @@ class Size extends PrimitiveValue
 
         $sUnit = null;
         $aSizeUnits = self::getSizeUnits();
-        foreach ($aSizeUnits as $iLength => &$aValues) {
-            $sKey = \strtolower($parserState->peek($iLength));
+        foreach ($aSizeUnits as $length => &$aValues) {
+            $sKey = \strtolower($parserState->peek($length));
             if (\array_key_exists($sKey, $aValues)) {
                 if (($sUnit = $aValues[$sKey]) !== null) {
-                    $parserState->consume($iLength);
+                    $parserState->consume($length);
                     break;
                 }
             }
