@@ -436,8 +436,6 @@ final class OutputFormatterTest extends TestCase
     public function commentsWithCommentableWithOneCommentRendersComment(): void
     {
         $this->outputFormat->setRenderComments(true);
-        $this->outputFormat->setSpaceBetweenBlocks(' between-space ');
-        $this->outputFormat->setSpaceAfterBlocks(' after-space ');
 
         $commentText = 'I am a teapot.';
         $comment = new Comment($commentText);
@@ -455,7 +453,6 @@ final class OutputFormatterTest extends TestCase
     public function commentsWithCommentableWithOneCommentPutsSpaceAfterBlocksAfterRenderedComment(): void
     {
         $this->outputFormat->setRenderComments(true);
-        $this->outputFormat->setSpaceBetweenBlocks(' between-space ');
         $afterSpace = ' after-space ';
         $this->outputFormat->setSpaceAfterBlocks($afterSpace);
 
@@ -475,7 +472,6 @@ final class OutputFormatterTest extends TestCase
     public function commentsWithCommentableWithTwoCommentsPutsSpaceAfterBlocksAfterLastRenderedComment(): void
     {
         $this->outputFormat->setRenderComments(true);
-        $this->outputFormat->setSpaceBetweenBlocks(' between-space ');
         $afterSpace = ' after-space ';
         $this->outputFormat->setSpaceAfterBlocks($afterSpace);
 
@@ -499,7 +495,6 @@ final class OutputFormatterTest extends TestCase
         $this->outputFormat->setRenderComments(true);
         $betweenSpace = ' between-space ';
         $this->outputFormat->setSpaceBetweenBlocks($betweenSpace);
-        $this->outputFormat->setSpaceAfterBlocks(' after-space ');
 
         $commentText1 = 'I am a teapot.';
         $comment1 = new Comment($commentText1);
@@ -520,7 +515,6 @@ final class OutputFormatterTest extends TestCase
     public function commentsWithCommentableWithMoreThanTwoCommentsPutsSpaceAfterBlocksAfterLastRenderedComment(): void
     {
         $this->outputFormat->setRenderComments(true);
-        $this->outputFormat->setSpaceBetweenBlocks(' between-space ');
         $afterSpace = ' after-space ';
         $this->outputFormat->setSpaceAfterBlocks($afterSpace);
 
@@ -546,7 +540,6 @@ final class OutputFormatterTest extends TestCase
         $this->outputFormat->setRenderComments(true);
         $betweenSpace = ' between-space ';
         $this->outputFormat->setSpaceBetweenBlocks($betweenSpace);
-        $this->outputFormat->setSpaceAfterBlocks(' after-space ');
 
         $commentText1 = 'I am a teapot.';
         $comment1 = new Comment($commentText1);
