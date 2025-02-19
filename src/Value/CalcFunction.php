@@ -26,7 +26,7 @@ class CalcFunction extends CSSFunction
      *
      * @internal since V8.8.0
      */
-    public static function parse(ParserState $parserState, bool $bIgnoreCase = false): CSSFunction
+    public static function parse(ParserState $parserState, bool $ignoreCase = false): CSSFunction
     {
         $aOperators = ['+', '-', '*', '/'];
         $sFunction = $parserState->parseIdentifier();
