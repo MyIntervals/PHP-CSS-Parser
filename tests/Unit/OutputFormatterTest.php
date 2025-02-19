@@ -307,10 +307,10 @@ final class OutputFormatterTest extends TestCase
     {
         return [
             'empty string' => [''],
-            'string without semicolon' => ['Tea or coffee?'],
-            'string with trailing semicolon' => ['Tea or coffee;'],
-            'string with semicolon in the middle' => ['Tea; coffee'],
-            'string with semicolons in the middle and trailing' => ['Tea; coffee;'],
+            'string without semicolon' => ['Earl Grey: hot'],
+            'string with trailing semicolon' => ['Earl Grey: hot;'],
+            'string with semicolon in the middle' => ['Earl Grey: hot; Coffee: Americano'],
+            'string with semicolons in the middle and trailing' => ['Earl Grey: hot; Coffee: Americano;'],
         ];
     }
 
@@ -334,19 +334,31 @@ final class OutputFormatterTest extends TestCase
     {
         return [
             'empty string' => ['', ''],
-            'non-empty string without semicolon' => ['Tea or coffee?', 'Tea or coffee?'],
+            'non-empty string without semicolon' => ['Earl Grey: hot', 'Earl Grey: hot'],
             'just 1 semicolon' => [';', ''],
             'just 2 semicolons' => [';;', ';'],
-            'string with trailing semicolon' => ['tea or coffee;', 'tea or coffee'],
-            'string with semicolon in the middle' => ['tea; coffee', 'tea coffee'],
-            'string with semicolon in the middle and trailing' => ['tea; coffee;', 'tea; coffee'],
+            'string with trailing semicolon' => ['Earl Grey: hot;', 'Earl Grey: hot'],
+            'string with semicolon in the middle' => [
+                'Earl Grey: hot; Coffee: Americano',
+                'Earl Grey: hot Coffee: Americano',
+            ],
+            'string with semicolon in the middle and trailing' => [
+                'Earl Grey: hot; Coffee: Americano;',
+                'Earl Grey: hot; Coffee: Americano',
+            ],
             'string with 2 semicolons in the middle' => ['tea; coffee; Club-Mate', 'tea; coffee Club-Mate'],
             'string with 2 semicolons in the middle surrounded by spaces' => [
-                'tea ; coffee ; Club-Mate',
-                'tea ; coffee  Club-Mate',
+                'Earl Grey: hot ; Coffee: Americano ; Club-Mate: cold',
+                'Earl Grey: hot ; Coffee: Americano  Club-Mate: cold',
             ],
-            'string with 2 adjacent semicolons in the middle' => ['tea ;; coffee', 'tea ; coffee'],
-            'string with 3 adjacent semicolons in the middle' => ['tea ;;; coffee', 'tea ;; coffee'],
+            'string with 2 adjacent semicolons in the middle' => [
+                'Earl Grey: hot;; Coffee: Americano',
+                'Earl Grey: hot; Coffee: Americano',
+            ],
+            'string with 3 adjacent semicolons in the middle' => [
+                'Earl Grey: hot;;; Coffee: Americano',
+                'Earl Grey: hot;; Coffee: Americano',
+            ],
         ];
     }
 
