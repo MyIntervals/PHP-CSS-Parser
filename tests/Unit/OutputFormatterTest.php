@@ -420,7 +420,7 @@ final class OutputFormatterTest extends TestCase
         $this->outputFormat->setSpaceBetweenBlocks(' between-space ');
         $this->outputFormat->setSpaceAfterBlocks(' after-space ');
 
-        $commentText = 'This is a comment.';
+        $commentText = 'I am a teapot.';
         $comment = new Comment($commentText);
         $commentable = $this->createMock(Commentable::class);
         $commentable->method('getComments')->willReturn([$comment]);
@@ -439,7 +439,7 @@ final class OutputFormatterTest extends TestCase
         $this->outputFormat->setSpaceBetweenBlocks(' between-space ');
         $this->outputFormat->setSpaceAfterBlocks(' after-space ');
 
-        $commentText = 'This is a comment.';
+        $commentText = 'I am a teapot.';
         $comment = new Comment($commentText);
         $commentable = $this->createMock(Commentable::class);
         $commentable->method('getComments')->willReturn([$comment]);
@@ -459,7 +459,7 @@ final class OutputFormatterTest extends TestCase
         $afterSpace = ' after-space ';
         $this->outputFormat->setSpaceAfterBlocks($afterSpace);
 
-        $commentText = 'This is a comment.';
+        $commentText = 'I am a teapot.';
         $comment = new Comment($commentText);
         $commentable = $this->createMock(Commentable::class);
         $commentable->method('getComments')->willReturn([$comment]);
@@ -479,9 +479,9 @@ final class OutputFormatterTest extends TestCase
         $afterSpace = ' after-space ';
         $this->outputFormat->setSpaceAfterBlocks($afterSpace);
 
-        $commentText1 = 'This is a comment 1.';
+        $commentText1 = 'I am a teapot.';
         $comment1 = new Comment($commentText1);
-        $commentText2 = 'This is a comment 2.';
+        $commentText2 = 'But I am not.';
         $comment2 = new Comment($commentText2);
         $commentable = $this->createMock(Commentable::class);
         $commentable->method('getComments')->willReturn([$comment1, $comment2]);
@@ -501,9 +501,9 @@ final class OutputFormatterTest extends TestCase
         $this->outputFormat->setSpaceBetweenBlocks($betweenSpace);
         $this->outputFormat->setSpaceAfterBlocks(' after-space ');
 
-        $commentText1 = 'This is a comment 1.';
+        $commentText1 = 'I am a teapot.';
         $comment1 = new Comment($commentText1);
-        $commentText2 = 'You like pears.';
+        $commentText2 = 'But I am not.';
         $comment2 = new Comment($commentText2);
         $commentable = $this->createMock(Commentable::class);
         $commentable->method('getComments')->willReturn([$comment1, $comment2]);
@@ -524,11 +524,11 @@ final class OutputFormatterTest extends TestCase
         $afterSpace = ' after-space ';
         $this->outputFormat->setSpaceAfterBlocks($afterSpace);
 
-        $commentText1 = 'This is a comment 1.';
+        $commentText1 = 'I am a teapot.';
         $comment1 = new Comment($commentText1);
-        $commentText2 = 'This is a comment 2.';
+        $commentText2 = 'But I am what.';
         $comment2 = new Comment($commentText2);
-        $commentText3 = 'This is a comment 3.';
+        $commentText3 = 'So what am I then?';
         $comment3 = new Comment($commentText3);
         $commentable = $this->createMock(Commentable::class);
         $commentable->method('getComments')->willReturn([$comment1, $comment2, $comment3]);
@@ -548,11 +548,11 @@ final class OutputFormatterTest extends TestCase
         $this->outputFormat->setSpaceBetweenBlocks($betweenSpace);
         $this->outputFormat->setSpaceAfterBlocks(' after-space ');
 
-        $commentText1 = 'This is a comment 1.';
+        $commentText1 = 'I am a teapot.';
         $comment1 = new Comment($commentText1);
-        $commentText2 = 'This is a comment 2.';
+        $commentText2 = 'But I am what.';
         $comment2 = new Comment($commentText2);
-        $commentText3 = 'This is a comment 3.';
+        $commentText3 = 'So what am I then?';
         $comment3 = new Comment($commentText3);
         $commentable = $this->createMock(Commentable::class);
         $commentable->method('getComments')->willReturn([$comment1, $comment2, $comment3]);
