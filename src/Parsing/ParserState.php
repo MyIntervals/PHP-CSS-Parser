@@ -30,7 +30,7 @@ class ParserState
     /**
      * @var array<int, string>
      */
-    private $characters;
+    private $characters = [];
 
     /**
      * @var int
@@ -43,11 +43,6 @@ class ParserState
      * @var string
      */
     private $charset;
-
-    /**
-     * @var int
-     */
-    private $length;
 
     /**
      * @var int
@@ -75,7 +70,6 @@ class ParserState
     {
         $this->charset = $charset;
         $this->characters = $this->strsplit($this->text);
-        $this->length = \count($this->characters);
     }
 
     /**
@@ -225,7 +219,7 @@ class ParserState
                 try {
                     $oComment = $this->consumeComment();
                 } catch (UnexpectedEOFException $e) {
-                    $this->currentPosition = $this->length;
+                    $this->currentPosition = \count($this->characters);
                     return $comments;
                 }
             } else {
@@ -257,7 +251,7 @@ class ParserState
     public function peek($length = 1, $offset = 0): string
     {
         $offset += $this->currentPosition;
-        if ($offset >= $this->length) {
+        if ($offset >= \count($this->characters)) {
             return '';
         }
         return $this->substr($offset, $length);
@@ -286,7 +280,7 @@ class ParserState
             $this->currentPosition += $this->strlen($mValue);
             return $mValue;
         } else {
-            if ($this->currentPosition + $mValue > $this->length) {
+            if ($this->currentPosition + $mValue > \count($this->characters)) {
                 throw new UnexpectedEOFException((string) $mValue, $this->peek(5), 'count', $this->lineNumber);
             }
             $result = $this->substr($this->currentPosition, $mValue);
@@ -343,7 +337,7 @@ class ParserState
 
     public function isEnd(): bool
     {
-        return $this->currentPosition >= $this->length;
+        return $this->currentPosition >= \count($this->characters);
     }
 
     /**
@@ -436,10 +430,10 @@ class ParserState
     private function substr($iStart, $length): string
     {
         if ($length < 0) {
-            $length = $this->length - $iStart + $length;
+            $length = \count($this->characters) - $iStart + $length;
         }
-        if ($iStart + $length > $this->length) {
-            $length = $this->length - $iStart;
+        if ($iStart + $length > \count($this->characters)) {
+            $length = \count($this->characters) - $iStart;
         }
         $result = '';
         while ($length > 0) {
