@@ -170,8 +170,8 @@ class ParserState
             if (\preg_match('/[0-9a-fA-F]/Su', $this->peek()) === 0) {
                 return $this->consume(1);
             }
-            $sUnicode = $this->consumeExpression('/^[0-9a-fA-F]{1,6}/u', 6);
-            if ($this->strlen($sUnicode) < 6) {
+            $hexCodePoint = $this->consumeExpression('/^[0-9a-fA-F]{1,6}/u', 6);
+            if ($this->strlen($hexCodePoint) < 6) {
                 // Consume whitespace after incomplete unicode escape
                 if (\preg_match('/\\s/isSu', $this->peek())) {
                     if ($this->comes('\\r\\n')) {
@@ -181,13 +181,13 @@ class ParserState
                     }
                 }
             }
-            $iUnicode = \intval($sUnicode, 16);
-            $sUtf32 = '';
+            $codePoint = \intval($hexCodePoint, 16);
+            $utf32EncodedCharacter = '';
             for ($i = 0; $i < 4; ++$i) {
-                $sUtf32 .= \chr($iUnicode & 0xff);
-                $iUnicode = $iUnicode >> 8;
+                $utf32EncodedCharacter .= \chr($codePoint & 0xff);
+                $codePoint = $codePoint >> 8;
             }
-            return \iconv('utf-32le', $this->charset, $sUtf32);
+            return \iconv('utf-32le', $this->charset, $utf32EncodedCharacter);
         }
         if ($isForIdentifier) {
             $peek = \ord($this->peek());
