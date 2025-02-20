@@ -47,9 +47,9 @@ class CSSFunction extends ValueList
      *
      * @internal since V8.8.0
      */
-    public static function parse(ParserState $parserState, bool $bIgnoreCase = false): CSSFunction
+    public static function parse(ParserState $parserState, bool $ignoreCase = false): CSSFunction
     {
-        $sName = self::parseName($parserState, $bIgnoreCase);
+        $sName = self::parseName($parserState, $ignoreCase);
         $parserState->consume('(');
         $mArguments = self::parseArguments($parserState);
 
@@ -64,9 +64,9 @@ class CSSFunction extends ValueList
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    private static function parseName(ParserState $parserState, bool $bIgnoreCase = false): string
+    private static function parseName(ParserState $parserState, bool $ignoreCase = false): string
     {
-        return $parserState->parseIdentifier($bIgnoreCase);
+        return $parserState->parseIdentifier($ignoreCase);
     }
 
     /**

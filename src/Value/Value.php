@@ -110,7 +110,7 @@ abstract class Value implements Renderable
     }
 
     /**
-     * @param bool $bIgnoreCase
+     * @param bool $ignoreCase
      *
      * @return CSSFunction|string
      *
@@ -119,10 +119,10 @@ abstract class Value implements Renderable
      *
      * @internal since V8.8.0
      */
-    public static function parseIdentifierOrFunction(ParserState $parserState, $bIgnoreCase = false)
+    public static function parseIdentifierOrFunction(ParserState $parserState, $ignoreCase = false)
     {
         $oAnchor = $parserState->anchor();
-        $result = $parserState->parseIdentifier($bIgnoreCase);
+        $result = $parserState->parseIdentifier($ignoreCase);
 
         if ($parserState->comes('(')) {
             $oAnchor->backtrack();
@@ -135,7 +135,7 @@ abstract class Value implements Renderable
             ) {
                 $result = CalcFunction::parse($parserState);
             } else {
-                $result = CSSFunction::parse($parserState, $bIgnoreCase);
+                $result = CSSFunction::parse($parserState, $ignoreCase);
             }
         }
 

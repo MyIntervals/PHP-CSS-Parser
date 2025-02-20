@@ -118,13 +118,13 @@ class ParserState
     }
 
     /**
-     * @param bool $bIgnoreCase
+     * @param bool $ignoreCase
      *
      * @return string
      *
      * @throws UnexpectedTokenException
      */
-    public function parseIdentifier($bIgnoreCase = true)
+    public function parseIdentifier($ignoreCase = true)
     {
         if ($this->isEnd()) {
             throw new UnexpectedEOFException('', '', 'identifier', $this->lineNumber);
@@ -141,7 +141,7 @@ class ParserState
                 $result .= '\\' . $sCharacter;
             }
         }
-        if ($bIgnoreCase) {
+        if ($ignoreCase) {
             $result = $this->strtolower($result);
         }
         return $result;
