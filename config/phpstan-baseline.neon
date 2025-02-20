@@ -175,12 +175,6 @@ parameters:
 			path: ../src/Parsing/ParserState.php
 
 		-
-			message: '#^Parameters should have "string" types as the only types passed to this method$#'
-			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 1
-			path: ../src/Parsing/ParserState.php
-
-		-
 			message: '#^Parameters should have "string\|int\|null" types as the only types passed to this method$#'
 			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
