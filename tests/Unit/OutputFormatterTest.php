@@ -380,11 +380,43 @@ final class OutputFormatterTest extends TestCase
     /**
      * @test
      */
+    public function commentsWithEmptyCommentableAndRenderCommentsDisabledDoesNotReturnSpaceBetweenBlocks(): void
+    {
+        $this->outputFormat->setRenderComments(false);
+        $spaceBetweenBlocks = ' between-space ';
+        $this->outputFormat->setSpaceBetweenBlocks($spaceBetweenBlocks);
+
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertStringNotContainsString($spaceBetweenBlocks, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithEmptyCommentableAndRenderCommentsDisabledDoesNotReturnSpaceAfterBlocks(): void
+    {
+        $this->outputFormat->setRenderComments(false);
+        $spaceAfterBlocks = ' after-space ';
+        $this->outputFormat->setSpaceAfterBlocks($spaceAfterBlocks);
+
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertStringNotContainsString($spaceAfterBlocks, $result);
+    }
+
+    /**
+     * @test
+     */
     public function commentsWithEmptyCommentableAndRenderCommentsDisabledReturnsEmptyString(): void
     {
         $this->outputFormat->setRenderComments(false);
-        $this->outputFormat->setSpaceBetweenBlocks(' between-space ');
-        $this->outputFormat->setSpaceAfterBlocks(' after-space ');
 
         $commentable = $this->createMock(Commentable::class);
         $commentable->method('getComments')->willReturn([]);
@@ -397,11 +429,43 @@ final class OutputFormatterTest extends TestCase
     /**
      * @test
      */
+    public function commentsWithEmptyCommentableAndRenderCommentsEnabledDoesNotReturnSpaceBetweenBlocks(): void
+    {
+        $this->outputFormat->setRenderComments(true);
+        $spaceBetweenBlocks = ' between-space ';
+        $this->outputFormat->setSpaceBetweenBlocks($spaceBetweenBlocks);
+
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertStringNotContainsString($spaceBetweenBlocks, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithEmptyCommentableAndRenderCommentsEnabledDoesNotReturnSpaceAfterBlocks(): void
+    {
+        $this->outputFormat->setRenderComments(true);
+        $spaceAfterBlocks = ' after-space ';
+        $this->outputFormat->setSpaceAfterBlocks($spaceAfterBlocks);
+
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertStringNotContainsString($spaceAfterBlocks, $result);
+    }
+
+    /**
+     * @test
+     */
     public function commentsWithEmptyCommentableAndRenderCommentsEnabledReturnsEmptyString(): void
     {
         $this->outputFormat->setRenderComments(true);
-        $this->outputFormat->setSpaceBetweenBlocks(' between-space ');
-        $this->outputFormat->setSpaceAfterBlocks(' after-space ');
 
         $commentable = $this->createMock(Commentable::class);
         $commentable->method('getComments')->willReturn([]);
@@ -417,8 +481,6 @@ final class OutputFormatterTest extends TestCase
     public function commentsWithCommentableWithOneCommentAndRenderCommentsDisabledReturnsEmptyString(): void
     {
         $this->outputFormat->setRenderComments(false);
-        $this->outputFormat->setSpaceBetweenBlocks(' between-space ');
-        $this->outputFormat->setSpaceAfterBlocks(' after-space ');
 
         $commentText = 'I am a teapot.';
         $comment = new Comment($commentText);
