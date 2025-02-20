@@ -234,14 +234,14 @@ class ParserState
 
     /**
      * @param string $sString
-     * @param bool $bCaseInsensitive
+     * @param bool $caseInsensitive
      */
-    public function comes($sString, $bCaseInsensitive = false): bool
+    public function comes($sString, $caseInsensitive = false): bool
     {
         $sPeek = $this->peek(\strlen($sString));
         return ($sPeek == '')
             ? false
-            : $this->streql($sPeek, $sString, $bCaseInsensitive);
+            : $this->streql($sPeek, $sString, $caseInsensitive);
     }
 
     /**
@@ -392,11 +392,11 @@ class ParserState
     /**
      * @param string $sString1
      * @param string $sString2
-     * @param bool $bCaseInsensitive
+     * @param bool $caseInsensitive
      */
-    public function streql($sString1, $sString2, $bCaseInsensitive = true): bool
+    public function streql($sString1, $sString2, $caseInsensitive = true): bool
     {
-        if ($bCaseInsensitive) {
+        if ($caseInsensitive) {
             return $this->strtolower($sString1) === $this->strtolower($sString2);
         } else {
             return $sString1 === $sString2;
