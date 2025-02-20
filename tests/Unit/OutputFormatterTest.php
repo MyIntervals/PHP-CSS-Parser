@@ -520,7 +520,7 @@ final class OutputFormatterTest extends TestCase
 
         $commentText1 = 'I am a teapot.';
         $comment1 = new Comment($commentText1);
-        $commentText2 = 'But I am what.';
+        $commentText2 = 'But I am not.';
         $comment2 = new Comment($commentText2);
         $commentText3 = 'So what am I then?';
         $comment3 = new Comment($commentText3);
