@@ -252,15 +252,15 @@ class ParserState
 
     /**
      * @param int $length
-     * @param int $iOffset
+     * @param int $offset
      */
-    public function peek($length = 1, $iOffset = 0): string
+    public function peek($length = 1, $offset = 0): string
     {
-        $iOffset += $this->currentPosition;
-        if ($iOffset >= $this->length) {
+        $offset += $this->currentPosition;
+        if ($offset >= $this->length) {
             return '';
         }
-        return $this->substr($iOffset, $length);
+        return $this->substr($offset, $length);
     }
 
     /**
@@ -498,16 +498,16 @@ class ParserState
     /**
      * @param string $sString
      * @param string $sNeedle
-     * @param int $iOffset
+     * @param int $offset
      *
      * @return int|false
      */
-    private function strpos($sString, $sNeedle, $iOffset)
+    private function strpos($sString, $sNeedle, $offset)
     {
         if ($this->parserSettings->bMultibyteSupport) {
-            return \mb_strpos($sString, $sNeedle, $iOffset, $this->charset);
+            return \mb_strpos($sString, $sNeedle, $offset, $this->charset);
         } else {
-            return \strpos($sString, $sNeedle, $iOffset);
+            return \strpos($sString, $sNeedle, $offset);
         }
     }
 }
