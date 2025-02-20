@@ -305,7 +305,7 @@ abstract class RuleSet implements Renderable, Commentable
     /**
      * @return array<string, Comment>
      */
-    public function getComments()
+    public function getComments(): array
     {
         return $this->comments;
     }

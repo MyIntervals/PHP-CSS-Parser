@@ -14,7 +14,7 @@ interface Commentable
     /**
      * @return array<array-key, Comment>
      */
-    public function getComments();
+    public function getComments(): array;
 
     /**
      * @param array<array-key, Comment> $comments
