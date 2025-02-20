@@ -146,18 +146,18 @@ class ParserState
     }
 
     /**
-     * @param bool $bIsForIdentifier
+     * @param bool $isForIdentifier
      *
      * @return string|null
      *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public function parseCharacter($bIsForIdentifier)
+    public function parseCharacter($isForIdentifier)
     {
         if ($this->peek() === '\\') {
             if (
-                $bIsForIdentifier && $this->parserSettings->bLenientParsing
+                $isForIdentifier && $this->parserSettings->bLenientParsing
                 && ($this->comes('\\0') || $this->comes('\\9'))
             ) {
                 // Non-strings can contain \0 or \9 which is an IE hack supported in lenient parsing.
@@ -189,7 +189,7 @@ class ParserState
             }
             return \iconv('utf-32le', $this->charset, $sUtf32);
         }
-        if ($bIsForIdentifier) {
+        if ($isForIdentifier) {
             $peek = \ord($this->peek());
             // Ranges: a-z A-Z 0-9 - _
             if (
