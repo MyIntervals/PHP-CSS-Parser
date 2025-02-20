@@ -30,7 +30,7 @@ class ParserState
     /**
      * @var array<int, string>
      */
-    private $characters = [];
+    private $characters;
 
     /**
      * @var int
