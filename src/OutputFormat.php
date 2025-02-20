@@ -284,6 +284,7 @@ class OutputFormat
     }
 
     /**
+     * @param non-empty-string $sMethodName
      * @param array<array-key, mixed> $aArguments
      *
      * @return mixed

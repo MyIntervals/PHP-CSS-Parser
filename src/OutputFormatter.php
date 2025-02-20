@@ -19,11 +19,7 @@ class OutputFormatter
         $this->outputFormat = $outputFormat;
     }
 
-    /**
-     * @param string $sName
-     * @param string|null $sType
-     */
-    public function space($sName, $sType = null): string
+    public function space(string $sName, ?string $sType = null): string
     {
         $sSpaceString = $this->outputFormat->get("Space$sName");
         // If $sSpaceString is an array, we have multiple values configured
@@ -78,9 +74,6 @@ class OutputFormatter
         return $this->space('BeforeSelectorSeparator');
     }
 
-    /**
-     * @return string
-     */
     public function spaceAfterSelectorSeparator(): string
     {
         return $this->space('AfterSelectorSeparator');
@@ -89,7 +82,7 @@ class OutputFormatter
     /**
      * @param non-empty-string $sSeparator
      */
-    public function spaceBeforeListArgumentSeparator($sSeparator): string
+    public function spaceBeforeListArgumentSeparator(string $sSeparator): string
     {
         $spaceForSeparator = $this->outputFormat->getSpaceBeforeListArgumentSeparators();
 
@@ -99,7 +92,7 @@ class OutputFormatter
     /**
      * @param non-empty-string $sSeparator
      */
-    public function spaceAfterListArgumentSeparator($sSeparator): string
+    public function spaceAfterListArgumentSeparator(string $sSeparator): string
     {
         $spaceForSeparator = $this->outputFormat->getSpaceAfterListArgumentSeparators();
 
@@ -112,13 +105,9 @@ class OutputFormatter
     }
 
     /**
-     * Runs the given code, either swallowing or passing exceptions, depending on the `bIgnoreExceptions` setting.
-     *
-     * @param string $cCode the name of the function to call
-     *
-     * @return string|null
+     * Runs the given code, either swallowing or passing exceptions, depending on the `ignoreExceptions` setting.
      */
-    public function safely($cCode)
+    public function safely(callable $cCode): ?string
     {
         if ($this->outputFormat->get('IgnoreExceptions')) {
             // If output exceptions are ignored, run the code with exception guards
@@ -137,9 +126,8 @@ class OutputFormatter
      * Clone of the `implode` function, but calls `render` with the current output format instead of `__toString()`.
      *
      * @param array<array-key, Renderable|string> $aValues
-     * @param bool $bIncreaseLevel
      */
-    public function implode(string $sSeparator, array $aValues, $bIncreaseLevel = false): string
+    public function implode(string $sSeparator, array $aValues, bool $bIncreaseLevel = false): string
     {
         $result = '';
         $outputFormat = $this->outputFormat;
@@ -162,12 +150,7 @@ class OutputFormatter
         return $result;
     }
 
-    /**
-     * @param string $sString
-     *
-     * @return string
-     */
-    public function removeLastSemicolon($sString)
+    public function removeLastSemicolon(string $sString): string
     {
         if ($this->outputFormat->get('SemicolonAfterLastRule')) {
             return $sString;
@@ -199,17 +182,11 @@ class OutputFormatter
         return $result;
     }
 
-    /**
-     * @param string $sSpaceString
-     */
-    private function prepareSpace($sSpaceString): string
+    private function prepareSpace(string $sSpaceString): string
     {
         return \str_replace("\n", "\n" . $this->indent(), $sSpaceString);
     }
 
-    /**
-     * @return string
-     */
     private function indent(): string
     {
         return \str_repeat($this->outputFormat->sIndentation, $this->outputFormat->getIndentationLevel());
