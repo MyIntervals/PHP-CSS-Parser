@@ -105,7 +105,7 @@ class Charset implements AtRule
     /**
      * @return array<array-key, Comment>
      */
-    public function getComments()
+    public function getComments(): array
     {
         return $this->comments;
     }
