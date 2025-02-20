@@ -19,18 +19,54 @@ class OutputFormatter
         $this->outputFormat = $outputFormat;
     }
 
-    public function space(string $sName, ?string $sType = null): string
+    /**
+     * @param non-empty-string $sName
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function space(string $sName): string
     {
-        $sSpaceString = $this->outputFormat->get("Space$sName");
-        // If $sSpaceString is an array, we have multiple values configured
-        // depending on the type of object the space applies to
-        if (\is_array($sSpaceString)) {
-            if ($sType !== null && isset($sSpaceString[$sType])) {
-                $sSpaceString = $sSpaceString[$sType];
-            } else {
-                $sSpaceString = \reset($sSpaceString);
-            }
+        switch ($sName) {
+            case 'AfterRuleName':
+                $sSpaceString = $this->outputFormat->getSpaceAfterRuleName();
+                break;
+            case 'BeforeRules':
+                $sSpaceString = $this->outputFormat->getSpaceBeforeRules();
+                break;
+            case 'AfterRules':
+                $sSpaceString = $this->outputFormat->getSpaceAfterRules();
+                break;
+            case 'BetweenRules':
+                $sSpaceString = $this->outputFormat->getSpaceBetweenRules();
+                break;
+            case 'BeforeBlocks':
+                $sSpaceString = $this->outputFormat->getSpaceBeforeBlocks();
+                break;
+            case 'AfterBlocks':
+                $sSpaceString = $this->outputFormat->getSpaceAfterBlocks();
+                break;
+            case 'BetweenBlocks':
+                $sSpaceString = $this->outputFormat->getSpaceBetweenBlocks();
+                break;
+            case 'BeforeSelectorSeparator':
+                $sSpaceString = $this->outputFormat->getSpaceBeforeSelectorSeparator();
+                break;
+            case 'AfterSelectorSeparator':
+                $sSpaceString = $this->outputFormat->getSpaceAfterSelectorSeparator();
+                break;
+            case 'BeforeOpeningBrace':
+                $sSpaceString = $this->outputFormat->getSpaceBeforeOpeningBrace();
+                break;
+            case 'BeforeListArgumentSeparator':
+                $sSpaceString = $this->outputFormat->getSpaceBeforeListArgumentSeparator();
+                break;
+            case 'AfterListArgumentSeparator':
+                $sSpaceString = $this->outputFormat->getSpaceAfterListArgumentSeparator();
+                break;
+            default:
+                throw new \InvalidArgumentException("Unknown space type: $sName", 1740049248);
         }
+
         return $this->prepareSpace($sSpaceString);
     }
 
@@ -86,7 +122,7 @@ class OutputFormatter
     {
         $spaceForSeparator = $this->outputFormat->getSpaceBeforeListArgumentSeparators();
 
-        return $spaceForSeparator[$sSeparator] ?? $this->space('BeforeListArgumentSeparator', $sSeparator);
+        return $spaceForSeparator[$sSeparator] ?? $this->space('BeforeListArgumentSeparator');
     }
 
     /**
@@ -96,7 +132,7 @@ class OutputFormatter
     {
         $spaceForSeparator = $this->outputFormat->getSpaceAfterListArgumentSeparators();
 
-        return $spaceForSeparator[$sSeparator] ?? $this->space('AfterListArgumentSeparator', $sSeparator);
+        return $spaceForSeparator[$sSeparator] ?? $this->space('AfterListArgumentSeparator');
     }
 
     public function spaceBeforeOpeningBrace(): string
@@ -109,7 +145,7 @@ class OutputFormatter
      */
     public function safely(callable $cCode): ?string
     {
-        if ($this->outputFormat->get('IgnoreExceptions')) {
+        if ($this->outputFormat->getIgnoreExceptions()) {
             // If output exceptions are ignored, run the code with exception guards
             try {
                 return $cCode();
@@ -152,7 +188,7 @@ class OutputFormatter
 
     public function removeLastSemicolon(string $sString): string
     {
-        if ($this->outputFormat->get('SemicolonAfterLastRule')) {
+        if ($this->outputFormat->getSemicolonAfterLastRule()) {
             return $sString;
         }
         $sString = \explode(';', $sString);
@@ -167,7 +203,7 @@ class OutputFormatter
 
     public function comments(Commentable $oCommentable): string
     {
-        if (!$this->outputFormat->bRenderComments) {
+        if (!$this->outputFormat->getRenderComments()) {
             return '';
         }
 
