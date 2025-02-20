@@ -194,7 +194,7 @@ final class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function getAllDeclarationBlocksAlsoReturnsDeclarationBlocksWithinAtRuleBlockList(): void
+    public function getAllDeclarationBlocksReturnsDeclarationBlocksWithinAtRuleBlockList(): void
     {
         $subject = new Document();
 
