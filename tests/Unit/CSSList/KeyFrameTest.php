@@ -11,26 +11,19 @@ use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Renderable;
 
 /**
+ * @covers \Sabberworm\CSS\CSSList\CSSList
  * @covers \Sabberworm\CSS\CSSList\KeyFrame
  */
 final class KeyFrameTest extends TestCase
 {
     /**
-     * @var KeyFrame
-     */
-    private $subject;
-
-    protected function setUp(): void
-    {
-        $this->subject = new KeyFrame();
-    }
-
-    /**
      * @test
      */
     public function implementsAtRule(): void
     {
-        self::assertInstanceOf(AtRule::class, $this->subject);
+        $subject = new KeyFrame();
+
+        self::assertInstanceOf(AtRule::class, $subject);
     }
 
     /**
@@ -38,7 +31,9 @@ final class KeyFrameTest extends TestCase
      */
     public function implementsRenderable(): void
     {
-        self::assertInstanceOf(Renderable::class, $this->subject);
+        $subject = new KeyFrame();
+
+        self::assertInstanceOf(Renderable::class, $subject);
     }
 
     /**
@@ -46,6 +41,30 @@ final class KeyFrameTest extends TestCase
      */
     public function implementsCommentable(): void
     {
-        self::assertInstanceOf(Commentable::class, $this->subject);
+        $subject = new KeyFrame();
+
+        self::assertInstanceOf(Commentable::class, $subject);
+    }
+
+    /**
+     * @test
+     */
+    public function getLineNoByDefaultReturnsZero(): void
+    {
+        $subject = new KeyFrame();
+
+        self::assertSame(0, $subject->getLineNo());
+    }
+
+    /**
+     * @test
+     */
+    public function getLineNoReturnsLineNumberProvidedToConstructor(): void
+    {
+        $lineNumber = 42;
+
+        $subject = new KeyFrame($lineNumber);
+
+        self::assertSame($lineNumber, $subject->getLineNo());
     }
 }
