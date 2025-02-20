@@ -131,12 +131,12 @@ class ParserState
         if ($result === null) {
             throw new UnexpectedTokenException('', $this->peek(5), 'identifier', $this->lineNumber);
         }
-        $sCharacter = null;
-        while (!$this->isEnd() && ($sCharacter = $this->parseCharacter(true)) !== null) {
-            if (\preg_match('/[a-zA-Z0-9\\x{00A0}-\\x{FFFF}_-]/Sux', $sCharacter)) {
-                $result .= $sCharacter;
+        $character = null;
+        while (!$this->isEnd() && ($character = $this->parseCharacter(true)) !== null) {
+            if (\preg_match('/[a-zA-Z0-9\\x{00A0}-\\x{FFFF}_-]/Sux', $character)) {
+                $result .= $character;
             } else {
-                $result .= '\\' . $sCharacter;
+                $result .= '\\' . $character;
             }
         }
         if ($ignoreCase) {
