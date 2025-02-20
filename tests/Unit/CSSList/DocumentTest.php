@@ -215,7 +215,7 @@ final class DocumentTest extends TestCase
     {
         $subject = new Document();
 
-        $import = new Import(new URL(new CSSString('')), '');
+        $import = new Import(new URL(new CSSString('https://www.example.com/')), '');
         $subject->setContents([$import]);
 
         $result = $subject->getAllDeclarationBlocks();
@@ -230,7 +230,7 @@ final class DocumentTest extends TestCase
     {
         $subject = new Document();
 
-        $charset = new Charset(new CSSString(''));
+        $charset = new Charset(new CSSString('UTF-8'));
         $subject->setContents([$charset]);
 
         $result = $subject->getAllDeclarationBlocks();
