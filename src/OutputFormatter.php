@@ -201,18 +201,18 @@ class OutputFormatter
         return \implode(';', $sString);
     }
 
-    public function comments(Commentable $oCommentable): string
+    public function comments(Commentable $commentable): string
     {
         if (!$this->outputFormat->getRenderComments()) {
             return '';
         }
 
         $result = '';
-        $comments = $oCommentable->getComments();
+        $comments = $commentable->getComments();
         $iLastCommentIndex = \count($comments) - 1;
 
-        foreach ($comments as $i => $oComment) {
-            $result .= $oComment->render($this->outputFormat);
+        foreach ($comments as $i => $comment) {
+            $result .= $comment->render($this->outputFormat);
             $result .= $i === $iLastCommentIndex ? $this->spaceAfterBlocks() : $this->spaceBetweenBlocks();
         }
         return $result;

@@ -223,18 +223,18 @@ class ParserState
             }
             if ($this->parserSettings->bLenientParsing) {
                 try {
-                    $oComment = $this->consumeComment();
+                    $comment = $this->consumeComment();
                 } catch (UnexpectedEOFException $e) {
                     $this->currentPosition = $this->length;
                     return $comments;
                 }
             } else {
-                $oComment = $this->consumeComment();
+                $comment = $this->consumeComment();
             }
-            if ($oComment !== false) {
-                $comments[] = $oComment;
+            if ($comment !== false) {
+                $comments[] = $comment;
             }
-        } while ($oComment !== false);
+        } while ($comment !== false);
         return $comments;
     }
 
