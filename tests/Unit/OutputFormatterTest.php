@@ -307,7 +307,7 @@ final class OutputFormatterTest extends TestCase
     {
         return [
             'empty string' => [''],
-            'string without semicolon' => ['Earl Grey: hot'],
+            'string without semicolon' => ['earl-grey: hot'],
             'string with trailing semicolon' => ['Earl Grey: hot;'],
             'string with semicolon in the middle' => ['Earl Grey: hot; Coffee: Americano'],
             'string with semicolons in the middle and trailing' => ['Earl Grey: hot; Coffee: Americano;'],
