@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\Comment\Comment;
+use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\OutputFormatter;
 use Sabberworm\CSS\Renderable;
@@ -146,8 +148,8 @@ final class OutputFormatterTest extends TestCase
     /**
      * @test
      */
-    public function spaceBeforeListArgumentSeparatorWithoutSpecificSettingReturnsDefaultSpace(
-    ): void {
+    public function spaceBeforeListArgumentSeparatorWithoutSpecificSettingReturnsDefaultSpace(): void
+    {
         $space = '        ';
         $this->outputFormat->setSpaceBeforeListArgumentSeparators([',' => $space]);
         $defaultSpace = "\t\t\t\t";
@@ -173,8 +175,8 @@ final class OutputFormatterTest extends TestCase
     /**
      * @test
      */
-    public function spaceAfterListArgumentSeparatorWithoutSpecificSettingReturnsDefaultSpace(
-    ): void {
+    public function spaceAfterListArgumentSeparatorWithoutSpecificSettingReturnsDefaultSpace(): void
+    {
         $space = '        ';
         $this->outputFormat->setSpaceAfterListArgumentSeparators([',' => $space]);
         $defaultSpace = "\t\t\t\t";
@@ -296,5 +298,325 @@ final class OutputFormatterTest extends TestCase
         $result = $this->subject->implode(', ', $values, true);
 
         self::assertSame($renderedRenderable, $result);
+    }
+
+    /**
+     * @return array<string, array{0: string}>
+     */
+    public function provideUnchangedStringForRemoveLastSemicolon(): array
+    {
+        return [
+            'empty string' => [''],
+            'string without semicolon' => ['earl-grey: hot'],
+            'string with trailing semicolon' => ['Earl Grey: hot;'],
+            'string with semicolon in the middle' => ['Earl Grey: hot; Coffee: Americano'],
+            'string with semicolons in the middle and trailing' => ['Earl Grey: hot; Coffee: Americano;'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideUnchangedStringForRemoveLastSemicolon
+     */
+    public function removeLastSemicolonWithSemicolonAfterLastRuleEnabledReturnsUnchangedArgument(string $string): void
+    {
+        $this->outputFormat->setSemicolonAfterLastRule(true);
+
+        $result = $this->subject->removeLastSemicolon($string);
+
+        self::assertSame($string, $result);
+    }
+
+    /**
+     * @return array<string, array{0: string, 1: string}>
+     */
+    public function provideChangedStringForRemoveLastSemicolon(): array
+    {
+        return [
+            'empty string' => ['', ''],
+            'non-empty string without semicolon' => ['Earl Grey: hot', 'Earl Grey: hot'],
+            'just 1 semicolon' => [';', ''],
+            'just 2 semicolons' => [';;', ';'],
+            'string with trailing semicolon' => ['Earl Grey: hot;', 'Earl Grey: hot'],
+            'string with semicolon in the middle' => [
+                'Earl Grey: hot; Coffee: Americano',
+                'Earl Grey: hot Coffee: Americano',
+            ],
+            'string with semicolon in the middle and trailing' => [
+                'Earl Grey: hot; Coffee: Americano;',
+                'Earl Grey: hot; Coffee: Americano',
+            ],
+            'string with 2 semicolons in the middle' => ['tea; coffee; Club-Mate', 'tea; coffee Club-Mate'],
+            'string with 2 semicolons in the middle surrounded by spaces' => [
+                'Earl Grey: hot ; Coffee: Americano ; Club-Mate: cold',
+                'Earl Grey: hot ; Coffee: Americano  Club-Mate: cold',
+            ],
+            'string with 2 adjacent semicolons in the middle' => [
+                'Earl Grey: hot;; Coffee: Americano',
+                'Earl Grey: hot; Coffee: Americano',
+            ],
+            'string with 3 adjacent semicolons in the middle' => [
+                'Earl Grey: hot;;; Coffee: Americano',
+                'Earl Grey: hot;; Coffee: Americano',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideChangedStringForRemoveLastSemicolon
+     */
+    public function removeLastSemicolonWithSemicolonAfterLastRuleDisabledRemovesLastSemicolon(
+        string $input,
+        string $expected
+    ): void {
+        $this->outputFormat->setSemicolonAfterLastRule(false);
+
+        $result = $this->subject->removeLastSemicolon($input);
+
+        self::assertSame($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithEmptyCommentableAndRenderCommentsDisabledDoesNotReturnSpaceBetweenBlocks(): void
+    {
+        $this->outputFormat->setRenderComments(false);
+        $spaceBetweenBlocks = ' between-space ';
+        $this->outputFormat->setSpaceBetweenBlocks($spaceBetweenBlocks);
+
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertStringNotContainsString($spaceBetweenBlocks, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithEmptyCommentableAndRenderCommentsDisabledDoesNotReturnSpaceAfterBlocks(): void
+    {
+        $this->outputFormat->setRenderComments(false);
+        $spaceAfterBlocks = ' after-space ';
+        $this->outputFormat->setSpaceAfterBlocks($spaceAfterBlocks);
+
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertStringNotContainsString($spaceAfterBlocks, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithEmptyCommentableAndRenderCommentsDisabledReturnsEmptyString(): void
+    {
+        $this->outputFormat->setRenderComments(false);
+
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertSame('', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithEmptyCommentableAndRenderCommentsEnabledDoesNotReturnSpaceBetweenBlocks(): void
+    {
+        $this->outputFormat->setRenderComments(true);
+        $spaceBetweenBlocks = ' between-space ';
+        $this->outputFormat->setSpaceBetweenBlocks($spaceBetweenBlocks);
+
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertStringNotContainsString($spaceBetweenBlocks, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithEmptyCommentableAndRenderCommentsEnabledDoesNotReturnSpaceAfterBlocks(): void
+    {
+        $this->outputFormat->setRenderComments(true);
+        $spaceAfterBlocks = ' after-space ';
+        $this->outputFormat->setSpaceAfterBlocks($spaceAfterBlocks);
+
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertStringNotContainsString($spaceAfterBlocks, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithEmptyCommentableAndRenderCommentsEnabledReturnsEmptyString(): void
+    {
+        $this->outputFormat->setRenderComments(true);
+
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertSame('', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithCommentableWithOneCommentAndRenderCommentsDisabledReturnsEmptyString(): void
+    {
+        $this->outputFormat->setRenderComments(false);
+
+        $commentText = 'I am a teapot.';
+        $comment = new Comment($commentText);
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([$comment]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertSame('', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithCommentableWithOneCommentRendersComment(): void
+    {
+        $this->outputFormat->setRenderComments(true);
+
+        $commentText = 'I am a teapot.';
+        $comment = new Comment($commentText);
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([$comment]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertStringContainsString('/*' . $commentText . '*/', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithCommentableWithOneCommentPutsSpaceAfterBlocksAfterRenderedComment(): void
+    {
+        $this->outputFormat->setRenderComments(true);
+        $afterSpace = ' after-space ';
+        $this->outputFormat->setSpaceAfterBlocks($afterSpace);
+
+        $commentText = 'I am a teapot.';
+        $comment = new Comment($commentText);
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([$comment]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertSame('/*' . $commentText . '*/' . $afterSpace, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithCommentableWithTwoCommentsPutsSpaceAfterBlocksAfterLastRenderedComment(): void
+    {
+        $this->outputFormat->setRenderComments(true);
+        $afterSpace = ' after-space ';
+        $this->outputFormat->setSpaceAfterBlocks($afterSpace);
+
+        $commentText1 = 'I am a teapot.';
+        $comment1 = new Comment($commentText1);
+        $commentText2 = 'But I am not.';
+        $comment2 = new Comment($commentText2);
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([$comment1, $comment2]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertStringContainsString('/*' . $commentText2 . '*/' . $afterSpace, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithCommentableWithTwoCommentsSeparatesCommentsBySpaceBetweenBlocks(): void
+    {
+        $this->outputFormat->setRenderComments(true);
+        $betweenSpace = ' between-space ';
+        $this->outputFormat->setSpaceBetweenBlocks($betweenSpace);
+
+        $commentText1 = 'I am a teapot.';
+        $comment1 = new Comment($commentText1);
+        $commentText2 = 'But I am not.';
+        $comment2 = new Comment($commentText2);
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([$comment1, $comment2]);
+
+        $result = $this->subject->comments($commentable);
+
+        $expected = '/*' . $commentText1 . '*/' . $betweenSpace . '/*' . $commentText2 . '*/';
+        self::assertStringContainsString($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithCommentableWithMoreThanTwoCommentsPutsSpaceAfterBlocksAfterLastRenderedComment(): void
+    {
+        $this->outputFormat->setRenderComments(true);
+        $afterSpace = ' after-space ';
+        $this->outputFormat->setSpaceAfterBlocks($afterSpace);
+
+        $commentText1 = 'I am a teapot.';
+        $comment1 = new Comment($commentText1);
+        $commentText2 = 'But I am not.';
+        $comment2 = new Comment($commentText2);
+        $commentText3 = 'So what am I then?';
+        $comment3 = new Comment($commentText3);
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([$comment1, $comment2, $comment3]);
+
+        $result = $this->subject->comments($commentable);
+
+        self::assertStringContainsString('/*' . $commentText3 . '*/' . $afterSpace, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function commentsWithCommentableWithMoreThanTwoCommentsSeparatesCommentsBySpaceBetweenBlocks(): void
+    {
+        $this->outputFormat->setRenderComments(true);
+        $betweenSpace = ' between-space ';
+        $this->outputFormat->setSpaceBetweenBlocks($betweenSpace);
+
+        $commentText1 = 'I am a teapot.';
+        $comment1 = new Comment($commentText1);
+        $commentText2 = 'But I am not.';
+        $comment2 = new Comment($commentText2);
+        $commentText3 = 'So what am I then?';
+        $comment3 = new Comment($commentText3);
+        $commentable = $this->createMock(Commentable::class);
+        $commentable->method('getComments')->willReturn([$comment1, $comment2, $comment3]);
+
+        $result = $this->subject->comments($commentable);
+
+        $expected = '/*' . $commentText1 . '*/'
+            . $betweenSpace . '/*' . $commentText2 . '*/'
+            . $betweenSpace . '/*' . $commentText3 . '*/';
+        self::assertStringContainsString($expected, $result);
     }
 }

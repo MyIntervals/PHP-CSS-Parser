@@ -123,7 +123,7 @@ parameters:
 		-
 			message: '#^Parameters should have "string" types as the only types passed to this method$#'
 			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 2
+			count: 3
 			path: ../src/OutputFormatter.php
 
 		-
