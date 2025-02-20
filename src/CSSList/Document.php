@@ -32,7 +32,6 @@ class Document extends CSSBlockList
 
     /**
      * Gets all `DeclarationBlock` objects recursively, no matter how deeply nested the selectors are.
-     * Aliased as `getAllSelectors()`.
      *
      * @return array<int, DeclarationBlock>
      */
