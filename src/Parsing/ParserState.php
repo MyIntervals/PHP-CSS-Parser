@@ -68,14 +68,14 @@ class ParserState
 
     /**
      * Sets the charset to be used if the CSS does not contain an `@charset` declaration.
+     *
+     * @throws SourceException if the charset is UTF-8 and the content has invalid byte sequences
      */
     public function setCharset(string $charset): void
     {
         $this->charset = $charset;
         $this->characters = $this->strsplit($this->text);
-        if (\is_array($this->characters)) {
-            $this->length = \count($this->characters);
-        }
+        $this->length = \count($this->characters);
     }
 
     /**
@@ -466,12 +466,18 @@ class ParserState
      * @param string $sString
      *
      * @return array<int, string>
+     *
+     * @throws SourceException if the charset is UTF-8 and the string contains invalid byte sequences
      */
     private function strsplit($sString)
     {
         if ($this->parserSettings->bMultibyteSupport) {
             if ($this->streql($this->charset, 'utf-8')) {
-                return \preg_split('//u', $sString, -1, PREG_SPLIT_NO_EMPTY);
+                $result = \preg_split('//u', $sString, -1, PREG_SPLIT_NO_EMPTY);
+                if (!\is_array($result)) {
+                    throw new SourceException('`preg_split` failed with error ' . \preg_last_error());
+                }
+                return $result;
             } else {
                 $length = \mb_strlen($sString, $this->charset);
                 $result = [];
