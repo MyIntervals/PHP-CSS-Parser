@@ -68,10 +68,8 @@ class ParserState
 
     /**
      * Sets the charset to be used if the CSS does not contain an `@charset` declaration.
-     *
-     * @param string $charset
      */
-    public function setCharset($charset): void
+    public function setCharset(string $charset): void
     {
         $this->charset = $charset;
         $this->characters = $this->strsplit($this->text);
