@@ -20,15 +20,15 @@ class CSSString extends PrimitiveValue
     /**
      * @var string
      */
-    private $sString;
+    private $string;
 
     /**
-     * @param string $sString
+     * @param string $string
      * @param int<0, max> $lineNumber
      */
-    public function __construct($sString, $lineNumber = 0)
+    public function __construct($string, $lineNumber = 0)
     {
-        $this->sString = $sString;
+        $this->string = $string;
         parent::__construct($lineNumber);
     }
 
@@ -75,11 +75,11 @@ class CSSString extends PrimitiveValue
     }
 
     /**
-     * @param string $sString
+     * @param string $string
      */
-    public function setString($sString): void
+    public function setString($string): void
     {
-        $this->sString = $sString;
+        $this->string = $string;
     }
 
     /**
@@ -87,7 +87,7 @@ class CSSString extends PrimitiveValue
      */
     public function getString()
     {
-        return $this->sString;
+        return $this->string;
     }
 
     public function __toString(): string
@@ -97,8 +97,8 @@ class CSSString extends PrimitiveValue
 
     public function render(OutputFormat $outputFormat): string
     {
-        $sString = \addslashes($this->sString);
-        $sString = \str_replace("\n", '\\A', $sString);
-        return $outputFormat->getStringQuotingType() . $sString . $outputFormat->getStringQuotingType();
+        $string = \addslashes($this->string);
+        $string = \str_replace("\n", '\\A', $string);
+        return $outputFormat->getStringQuotingType() . $string . $outputFormat->getStringQuotingType();
     }
 }

@@ -13,7 +13,7 @@ class OutputFormat
      *
      * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sStringQuotingType = '"';
+    public $stringQuotingType = '"';
 
     /**
      * Output RGB colors in hash notation if possible
@@ -305,7 +305,7 @@ class OutputFormat
      */
     public function getStringQuotingType(): string
     {
-        return $this->sStringQuotingType;
+        return $this->stringQuotingType;
     }
 
     /**
@@ -313,7 +313,7 @@ class OutputFormat
      */
     public function setStringQuotingType(string $quotingType): self
     {
-        $this->sStringQuotingType = $quotingType;
+        $this->stringQuotingType = $quotingType;
 
         return $this;
     }

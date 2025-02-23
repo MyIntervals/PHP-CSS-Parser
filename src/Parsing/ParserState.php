@@ -233,15 +233,15 @@ class ParserState
     }
 
     /**
-     * @param string $sString
+     * @param string $string
      * @param bool $caseInsensitive
      */
-    public function comes($sString, $caseInsensitive = false): bool
+    public function comes($string, $caseInsensitive = false): bool
     {
-        $sPeek = $this->peek(\strlen($sString));
+        $sPeek = $this->peek(\strlen($string));
         return ($sPeek == '')
             ? false
-            : $this->streql($sPeek, $sString, $caseInsensitive);
+            : $this->streql($sPeek, $string, $caseInsensitive);
     }
 
     /**
@@ -390,16 +390,16 @@ class ParserState
     }
 
     /**
-     * @param string $sString1
-     * @param string $sString2
+     * @param string $string1
+     * @param string $string2
      * @param bool $caseInsensitive
      */
-    public function streql($sString1, $sString2, $caseInsensitive = true): bool
+    public function streql($string1, $string2, $caseInsensitive = true): bool
     {
         if ($caseInsensitive) {
-            return $this->strtolower($sString1) === $this->strtolower($sString2);
+            return $this->strtolower($string1) === $this->strtolower($string2);
         } else {
-            return $sString1 === $sString2;
+            return $string1 === $string2;
         }
     }
 
@@ -412,14 +412,14 @@ class ParserState
     }
 
     /**
-     * @param string $sString
+     * @param string $string
      */
-    public function strlen($sString): int
+    public function strlen($string): int
     {
         if ($this->parserSettings->bMultibyteSupport) {
-            return \mb_strlen($sString, $this->charset);
+            return \mb_strlen($string, $this->charset);
         } else {
-            return \strlen($sString);
+            return \strlen($string);
         }
     }
 
@@ -445,63 +445,63 @@ class ParserState
     }
 
     /**
-     * @param string $sString
+     * @param string $string
      */
-    private function strtolower($sString): string
+    private function strtolower($string): string
     {
         if ($this->parserSettings->bMultibyteSupport) {
-            return \mb_strtolower($sString, $this->charset);
+            return \mb_strtolower($string, $this->charset);
         } else {
-            return \strtolower($sString);
+            return \strtolower($string);
         }
     }
 
     /**
-     * @param string $sString
+     * @param string $string
      *
      * @return array<int, string>
      *
      * @throws SourceException if the charset is UTF-8 and the string contains invalid byte sequences
      */
-    private function strsplit($sString)
+    private function strsplit($string)
     {
         if ($this->parserSettings->bMultibyteSupport) {
             if ($this->streql($this->charset, 'utf-8')) {
-                $result = \preg_split('//u', $sString, -1, PREG_SPLIT_NO_EMPTY);
+                $result = \preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY);
                 if (!\is_array($result)) {
                     throw new SourceException('`preg_split` failed with error ' . \preg_last_error());
                 }
                 return $result;
             } else {
-                $length = \mb_strlen($sString, $this->charset);
+                $length = \mb_strlen($string, $this->charset);
                 $result = [];
                 for ($i = 0; $i < $length; ++$i) {
-                    $result[] = \mb_substr($sString, $i, 1, $this->charset);
+                    $result[] = \mb_substr($string, $i, 1, $this->charset);
                 }
                 return $result;
             }
         } else {
-            if ($sString === '') {
+            if ($string === '') {
                 return [];
             } else {
-                return \str_split($sString);
+                return \str_split($string);
             }
         }
     }
 
     /**
-     * @param string $sString
+     * @param string $string
      * @param string $sNeedle
      * @param int $offset
      *
      * @return int|false
      */
-    private function strpos($sString, $sNeedle, $offset)
+    private function strpos($string, $sNeedle, $offset)
     {
         if ($this->parserSettings->bMultibyteSupport) {
-            return \mb_strpos($sString, $sNeedle, $offset, $this->charset);
+            return \mb_strpos($string, $sNeedle, $offset, $this->charset);
         } else {
-            return \strpos($sString, $sNeedle, $offset);
+            return \strpos($string, $sNeedle, $offset);
         }
     }
 }
