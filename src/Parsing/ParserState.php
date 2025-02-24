@@ -404,11 +404,11 @@ class ParserState
     }
 
     /**
-     * @param int $amount
+     * @param int $numberOfCharacters
      */
-    public function backtrack($amount): void
+    public function backtrack($numberOfCharacters): void
     {
-        $this->currentPosition -= $amount;
+        $this->currentPosition -= $numberOfCharacters;
     }
 
     /**
