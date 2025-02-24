@@ -78,23 +78,23 @@ abstract class Value implements Renderable
                 return $aStack[0];
             }
             $aNewStack = [];
-            for ($iStartPosition = 0; $iStartPosition < $iStackLength; ++$iStartPosition) {
-                if ($iStartPosition === ($iStackLength - 1) || $sDelimiter !== $aStack[$iStartPosition + 1]) {
-                    $aNewStack[] = $aStack[$iStartPosition];
+            for ($startPosition = 0; $startPosition < $iStackLength; ++$startPosition) {
+                if ($startPosition === ($iStackLength - 1) || $sDelimiter !== $aStack[$startPosition + 1]) {
+                    $aNewStack[] = $aStack[$startPosition];
                     continue;
                 }
                 $length = 2; //Number of elements to be joined
-                for ($i = $iStartPosition + 3; $i < $iStackLength; $i += 2, ++$length) {
+                for ($i = $startPosition + 3; $i < $iStackLength; $i += 2, ++$length) {
                     if ($sDelimiter !== $aStack[$i]) {
                         break;
                     }
                 }
                 $list = new RuleValueList($sDelimiter, $parserState->currentLine());
-                for ($i = $iStartPosition; $i - $iStartPosition < $length * 2; $i += 2) {
+                for ($i = $startPosition; $i - $startPosition < $length * 2; $i += 2) {
                     $list->addListComponent($aStack[$i]);
                 }
                 $aNewStack[] = $list;
-                $iStartPosition += $length * 2 - 2;
+                $startPosition += $length * 2 - 2;
             }
             $aStack = $aNewStack;
         }
