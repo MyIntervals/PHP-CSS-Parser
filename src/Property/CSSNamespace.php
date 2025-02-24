@@ -15,7 +15,7 @@ class CSSNamespace implements AtRule
     /**
      * @var string
      */
-    private $mUrl;
+    private $url;
 
     /**
      * @var string
@@ -35,13 +35,13 @@ class CSSNamespace implements AtRule
     protected $comments = [];
 
     /**
-     * @param string $mUrl
+     * @param string $url
      * @param string|null $prefix
      * @param int<0, max> $lineNumber
      */
-    public function __construct($mUrl, $prefix = null, $lineNumber = 0)
+    public function __construct($url, $prefix = null, $lineNumber = 0)
     {
-        $this->mUrl = $mUrl;
+        $this->url = $url;
         $this->prefix = $prefix;
         $this->lineNumber = $lineNumber;
     }
@@ -62,7 +62,7 @@ class CSSNamespace implements AtRule
     public function render(OutputFormat $outputFormat): string
     {
         return '@namespace ' . ($this->prefix === null ? '' : $this->prefix . ' ')
-            . $this->mUrl->render($outputFormat) . ';';
+            . $this->url->render($outputFormat) . ';';
     }
 
     /**
@@ -70,7 +70,7 @@ class CSSNamespace implements AtRule
      */
     public function getUrl()
     {
-        return $this->mUrl;
+        return $this->url;
     }
 
     /**
@@ -82,11 +82,11 @@ class CSSNamespace implements AtRule
     }
 
     /**
-     * @param string $mUrl
+     * @param string $url
      */
-    public function setUrl($mUrl): void
+    public function setUrl($url): void
     {
-        $this->mUrl = $mUrl;
+        $this->url = $url;
     }
 
     /**
@@ -110,7 +110,7 @@ class CSSNamespace implements AtRule
      */
     public function atRuleArgs(): array
     {
-        $result = [$this->mUrl];
+        $result = [$this->url];
         if ($this->prefix) {
             \array_unshift($result, $this->prefix);
         }
