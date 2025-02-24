@@ -78,23 +78,23 @@ abstract class Value implements Renderable
                 return $aStack[0];
             }
             $aNewStack = [];
-            for ($startPosition = 0; $startPosition < $iStackLength; ++$startPosition) {
-                if ($startPosition === ($iStackLength - 1) || $sDelimiter !== $aStack[$startPosition + 1]) {
-                    $aNewStack[] = $aStack[$startPosition];
+            for ($offset = 0; $offset < $iStackLength; ++$offset) {
+                if ($offset === ($iStackLength - 1) || $sDelimiter !== $aStack[$offset + 1]) {
+                    $aNewStack[] = $aStack[$offset];
                     continue;
                 }
                 $length = 2; //Number of elements to be joined
-                for ($i = $startPosition + 3; $i < $iStackLength; $i += 2, ++$length) {
+                for ($i = $offset + 3; $i < $iStackLength; $i += 2, ++$length) {
                     if ($sDelimiter !== $aStack[$i]) {
                         break;
                     }
                 }
                 $list = new RuleValueList($sDelimiter, $parserState->currentLine());
-                for ($i = $startPosition; $i - $startPosition < $length * 2; $i += 2) {
+                for ($i = $offset; $i - $offset < $length * 2; $i += 2) {
                     $list->addListComponent($aStack[$i]);
                 }
                 $aNewStack[] = $list;
-                $startPosition += $length * 2 - 2;
+                $offset += $length * 2 - 2;
             }
             $aStack = $aNewStack;
         }

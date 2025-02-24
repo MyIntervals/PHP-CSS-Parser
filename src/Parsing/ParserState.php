@@ -424,21 +424,21 @@ class ParserState
     }
 
     /**
-     * @param int $start
+     * @param int $offset
      * @param int $length
      */
-    private function substr($start, $length): string
+    private function substr($offset, $length): string
     {
         if ($length < 0) {
-            $length = \count($this->characters) - $start + $length;
+            $length = \count($this->characters) - $offset + $length;
         }
-        if ($start + $length > \count($this->characters)) {
-            $length = \count($this->characters) - $start;
+        if ($offset + $length > \count($this->characters)) {
+            $length = \count($this->characters) - $offset;
         }
         $result = '';
         while ($length > 0) {
-            $result .= $this->characters[$start];
-            $start++;
+            $result .= $this->characters[$offset];
+            $offset++;
             $length--;
         }
         return $result;
