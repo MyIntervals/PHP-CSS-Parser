@@ -22,6 +22,10 @@ use Sabberworm\CSS\Value\URL;
  */
 final class DocumentTest extends TestCase
 {
+    /*
+    * Tests for the implemented interfaces
+    */
+
     /**
      * @test
      */
@@ -37,6 +41,10 @@ final class DocumentTest extends TestCase
     {
         self::assertInstanceOf(Commentable::class, new Document());
     }
+
+    /*
+     * not grouped yet
+     */
 
     /**
      * @test

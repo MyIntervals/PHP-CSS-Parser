@@ -16,6 +16,10 @@ use Sabberworm\CSS\Renderable;
  */
 final class KeyFrameTest extends TestCase
 {
+    /*
+    * Tests for the implemented interfaces
+    */
+
     /**
      * @test
      */
@@ -45,6 +49,10 @@ final class KeyFrameTest extends TestCase
 
         self::assertInstanceOf(Commentable::class, $subject);
     }
+
+    /*
+     * not grouped yet
+     */
 
     /**
      * @test
