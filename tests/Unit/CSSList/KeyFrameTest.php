@@ -6,6 +6,7 @@ namespace Sabberworm\CSS\Tests\Unit\CSSList;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Commentable;
+use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\CSSList\KeyFrame;
 use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Renderable;
@@ -17,8 +18,8 @@ use Sabberworm\CSS\Renderable;
 final class KeyFrameTest extends TestCase
 {
     /*
-    * Tests for the implemented interfaces
-    */
+     * Tests for the implemented interfaces and superclasses
+     */
 
     /**
      * @test
@@ -50,19 +51,19 @@ final class KeyFrameTest extends TestCase
         self::assertInstanceOf(Commentable::class, $subject);
     }
 
-    /*
-     * not grouped yet
-     */
-
     /**
      * @test
      */
-    public function getLineNoByDefaultReturnsZero(): void
+    public function isCSSList(): void
     {
         $subject = new KeyFrame();
 
-        self::assertSame(0, $subject->getLineNo());
+        self::assertInstanceOf(CSSList::class, $subject);
     }
+
+    /*
+     * not grouped yet
+     */
 
     /**
      * @test
