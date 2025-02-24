@@ -7,6 +7,7 @@ namespace Sabberworm\CSS\Tests\Unit\CSSList;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSList\AtRuleBlockList;
+use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\Property\Charset;
 use Sabberworm\CSS\Property\Import;
@@ -23,8 +24,8 @@ use Sabberworm\CSS\Value\URL;
 final class DocumentTest extends TestCase
 {
     /*
-    * Tests for the implemented interfaces
-    */
+     * Tests for the implemented interfaces and superclasses
+     */
 
     /**
      * @test
@@ -42,121 +43,19 @@ final class DocumentTest extends TestCase
         self::assertInstanceOf(Commentable::class, new Document());
     }
 
+    /**
+     * @test
+     */
+    public function isCSSList(): void
+    {
+        $subject = new Document();
+
+        self::assertInstanceOf(CSSList::class, $subject);
+    }
+
     /*
      * not grouped yet
      */
-
-    /**
-     * @test
-     */
-    public function getContentsInitiallyReturnsEmptyArray(): void
-    {
-        $subject = new Document();
-
-        self::assertSame([], $subject->getContents());
-    }
-
-    /**
-     * @return array<string, array{0: list<DeclarationBlock>}>
-     */
-    public static function contentsDataProvider(): array
-    {
-        return [
-            'empty array' => [[]],
-            '1 item' => [[new DeclarationBlock()]],
-            '2 items' => [[new DeclarationBlock(), new DeclarationBlock()]],
-        ];
-    }
-
-    /**
-     * @test
-     *
-     * @param list<DeclarationBlock> $contents
-     *
-     * @dataProvider contentsDataProvider
-     */
-    public function setContentsSetsContents(array $contents): void
-    {
-        $subject = new Document();
-
-        $subject->setContents($contents);
-
-        self::assertSame($contents, $subject->getContents());
-    }
-
-    /**
-     * @test
-     */
-    public function setContentsReplacesContentsSetInPreviousCall(): void
-    {
-        $subject = new Document();
-
-        $contents2 = [new DeclarationBlock()];
-
-        $subject->setContents([new DeclarationBlock()]);
-        $subject->setContents($contents2);
-
-        self::assertSame($contents2, $subject->getContents());
-    }
-
-    /**
-     * @test
-     */
-    public function insertContentBeforeInsertsContentBeforeSibling(): void
-    {
-        $subject = new Document();
-
-        $bogusOne = new DeclarationBlock();
-        $bogusOne->setSelectors('.bogus-one');
-        $bogusTwo = new DeclarationBlock();
-        $bogusTwo->setSelectors('.bogus-two');
-
-        $item = new DeclarationBlock();
-        $item->setSelectors('.item');
-
-        $sibling = new DeclarationBlock();
-        $sibling->setSelectors('.sibling');
-
-        $subject->setContents([$bogusOne, $sibling, $bogusTwo]);
-
-        self::assertCount(3, $subject->getContents());
-
-        $subject->insertBefore($item, $sibling);
-
-        self::assertCount(4, $subject->getContents());
-        self::assertSame([$bogusOne, $item, $sibling, $bogusTwo], $subject->getContents());
-    }
-
-    /**
-     * @test
-     */
-    public function insertContentBeforeAppendsIfSiblingNotFound(): void
-    {
-        $subject = new Document();
-
-        $bogusOne = new DeclarationBlock();
-        $bogusOne->setSelectors('.bogus-one');
-        $bogusTwo = new DeclarationBlock();
-        $bogusTwo->setSelectors('.bogus-two');
-
-        $item = new DeclarationBlock();
-        $item->setSelectors('.item');
-
-        $sibling = new DeclarationBlock();
-        $sibling->setSelectors('.sibling');
-
-        $orphan = new DeclarationBlock();
-        $orphan->setSelectors('.forever-alone');
-
-        $subject->setContents([$bogusOne, $sibling, $bogusTwo]);
-
-        self::assertCount(3, $subject->getContents());
-
-        $subject->insertBefore($item, $orphan);
-
-        self::assertCount(4, $subject->getContents());
-        self::assertSame([$bogusOne, $sibling, $bogusTwo, $item], $subject->getContents());
-    }
 
     /**
      * @test

@@ -7,6 +7,7 @@ namespace Sabberworm\CSS\Tests\Unit\CSSList;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSList\AtRuleBlockList;
+use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\Renderable;
 
 /**
@@ -17,8 +18,8 @@ use Sabberworm\CSS\Renderable;
 final class AtRuleBlockListTest extends TestCase
 {
     /*
-    * Tests for the implemented interfaces
-    */
+     * Tests for the implemented interfaces and superclasses
+     */
 
     /**
      * @test
@@ -50,6 +51,16 @@ final class AtRuleBlockListTest extends TestCase
         self::assertInstanceOf(Commentable::class, $subject);
     }
 
+    /**
+     * @test
+     */
+    public function isCSSList(): void
+    {
+        $subject = new AtRuleBlockList('supports');
+
+        self::assertInstanceOf(CSSList::class, $subject);
+    }
+
     /*
      * not grouped yet
      */
@@ -64,16 +75,6 @@ final class AtRuleBlockListTest extends TestCase
         $subject = new AtRuleBlockList($type);
 
         self::assertSame($type, $subject->atRuleName());
-    }
-
-    /**
-     * @test
-     */
-    public function getLineNoByDefaultReturnsZero(): void
-    {
-        $subject = new AtRuleBlockList('supports');
-
-        self::assertSame(0, $subject->getLineNo());
     }
 
     /**
