@@ -404,11 +404,11 @@ class ParserState
     }
 
     /**
-     * @param int $iAmount
+     * @param int $numberOfCharacters
      */
-    public function backtrack($iAmount): void
+    public function backtrack($numberOfCharacters): void
     {
-        $this->currentPosition -= $iAmount;
+        $this->currentPosition -= $numberOfCharacters;
     }
 
     /**
@@ -490,18 +490,18 @@ class ParserState
     }
 
     /**
-     * @param string $string
-     * @param string $sNeedle
+     * @param string $haystack
+     * @param string $needle
      * @param int $offset
      *
      * @return int|false
      */
-    private function strpos($string, $sNeedle, $offset)
+    private function strpos($haystack, $needle, $offset)
     {
         if ($this->parserSettings->bMultibyteSupport) {
-            return \mb_strpos($string, $sNeedle, $offset, $this->charset);
+            return \mb_strpos($haystack, $needle, $offset, $this->charset);
         } else {
-            return \strpos($string, $sNeedle, $offset);
+            return \strpos($haystack, $needle, $offset);
         }
     }
 }
