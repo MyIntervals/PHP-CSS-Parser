@@ -7,6 +7,7 @@ namespace Sabberworm\CSS\Tests\Unit\CSSList;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSList\AtRuleBlockList;
+use Sabberworm\CSS\CSSList\CSSBlockList;
 use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\Renderable;
 
@@ -49,6 +50,16 @@ final class AtRuleBlockListTest extends TestCase
         $subject = new AtRuleBlockList('supports');
 
         self::assertInstanceOf(Commentable::class, $subject);
+    }
+
+    /**
+     * @test
+     */
+    public function isCSSBLockList(): void
+    {
+        $subject = new AtRuleBlockList('supports');
+
+        self::assertInstanceOf(CSSBlockList::class, $subject);
     }
 
     /**

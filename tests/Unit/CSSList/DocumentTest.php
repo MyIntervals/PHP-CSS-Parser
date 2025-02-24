@@ -7,6 +7,7 @@ namespace Sabberworm\CSS\Tests\Unit\CSSList;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSList\AtRuleBlockList;
+use Sabberworm\CSS\CSSList\CSSBlockList;
 use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\Property\Charset;
@@ -41,6 +42,16 @@ final class DocumentTest extends TestCase
     public function implementsCommentable(): void
     {
         self::assertInstanceOf(Commentable::class, new Document());
+    }
+
+    /**
+     * @test
+     */
+    public function isCSSBlockList(): void
+    {
+        $subject = new Document();
+
+        self::assertInstanceOf(CSSBlockList::class, $subject);
     }
 
     /**
