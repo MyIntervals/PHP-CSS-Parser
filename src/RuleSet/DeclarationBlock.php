@@ -45,18 +45,18 @@ class DeclarationBlock extends RuleSet
         $result = new DeclarationBlock($parserState->currentLine());
         try {
             $aSelectorParts = [];
-            $stringWrapperChar = false;
+            $stringWrapperCharacter = false;
             do {
                 $aSelectorParts[] = $parserState->consume(1)
                     . $parserState->consumeUntil(['{', '}', '\'', '"'], false, false, $comments);
                 if (\in_array($parserState->peek(), ['\'', '"'], true) && \substr(\end($aSelectorParts), -1) != '\\') {
-                    if ($stringWrapperChar === false) {
-                        $stringWrapperChar = $parserState->peek();
-                    } elseif ($stringWrapperChar == $parserState->peek()) {
-                        $stringWrapperChar = false;
+                    if ($stringWrapperCharacter === false) {
+                        $stringWrapperCharacter = $parserState->peek();
+                    } elseif ($stringWrapperCharacter == $parserState->peek()) {
+                        $stringWrapperCharacter = false;
                     }
                 }
-            } while (!\in_array($parserState->peek(), ['{', '}'], true) || $stringWrapperChar !== false);
+            } while (!\in_array($parserState->peek(), ['{', '}'], true) || $stringWrapperCharacter !== false);
             $result->setSelectors(\implode('', $aSelectorParts), $list);
             if ($parserState->comes('{')) {
                 $parserState->consume(1);
