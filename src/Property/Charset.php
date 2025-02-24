@@ -21,7 +21,7 @@ class Charset implements AtRule
     /**
      * @var CSSString
      */
-    private $oCharset;
+    private $charset;
 
     /**
      * @var int<0, max>
@@ -40,9 +40,9 @@ class Charset implements AtRule
     /**
      * @param int<0, max> $lineNumber
      */
-    public function __construct(CSSString $oCharset, $lineNumber = 0)
+    public function __construct(CSSString $charset, $lineNumber = 0)
     {
-        $this->oCharset = $oCharset;
+        $this->charset = $charset;
         $this->lineNumber = $lineNumber;
     }
 
@@ -60,7 +60,7 @@ class Charset implements AtRule
     public function setCharset($charset): void
     {
         $charset = $charset instanceof CSSString ? $charset : new CSSString($charset);
-        $this->oCharset = $charset;
+        $this->charset = $charset;
     }
 
     /**
@@ -68,7 +68,7 @@ class Charset implements AtRule
      */
     public function getCharset()
     {
-        return $this->oCharset->getString();
+        return $this->charset->getString();
     }
 
     public function __toString(): string
@@ -78,7 +78,7 @@ class Charset implements AtRule
 
     public function render(OutputFormat $outputFormat): string
     {
-        return "{$outputFormat->comments($this)}@charset {$this->oCharset->render($outputFormat)};";
+        return "{$outputFormat->comments($this)}@charset {$this->charset->render($outputFormat)};";
     }
 
     public function atRuleName(): string
@@ -91,7 +91,7 @@ class Charset implements AtRule
      */
     public function atRuleArgs()
     {
-        return $this->oCharset;
+        return $this->charset;
     }
 
     /**
