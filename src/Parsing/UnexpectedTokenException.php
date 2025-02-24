@@ -12,38 +12,38 @@ class UnexpectedTokenException extends SourceException
     /**
      * @var string
      */
-    private $sExpected;
+    private $expected;
 
     /**
      * @var string
      */
-    private $sFound;
+    private $found;
 
     /**
      * @var 'literal'|'identifier'|'count'|'expression'|'search'|'custom'
      */
-    private $sMatchType;
+    private $matchType;
 
     /**
-     * @param 'literal'|'identifier'|'count'|'expression'|'search'|'custom' $sMatchType
+     * @param 'literal'|'identifier'|'count'|'expression'|'search'|'custom' $matchType
      * @param int<0, max> $lineNumber
      */
-    public function __construct(string $sExpected, string $sFound, string $sMatchType = 'literal', int $lineNumber = 0)
+    public function __construct(string $expected, string $found, string $matchType = 'literal', int $lineNumber = 0)
     {
-        $this->sExpected = $sExpected;
-        $this->sFound = $sFound;
-        $this->sMatchType = $sMatchType;
-        $sMessage = "Token “{$sExpected}” ({$sMatchType}) not found. Got “{$sFound}”.";
-        if ($this->sMatchType === 'search') {
-            $sMessage = "Search for “{$sExpected}” returned no results. Context: “{$sFound}”.";
-        } elseif ($this->sMatchType === 'count') {
-            $sMessage = "Next token was expected to have {$sExpected} chars. Context: “{$sFound}”.";
-        } elseif ($this->sMatchType === 'identifier') {
-            $sMessage = "Identifier expected. Got “{$sFound}”";
-        } elseif ($this->sMatchType === 'custom') {
-            $sMessage = \trim("$sExpected $sFound");
+        $this->expected = $expected;
+        $this->found = $found;
+        $this->matchType = $matchType;
+        $message = "Token “{$expected}” ({$matchType}) not found. Got “{$found}”.";
+        if ($this->matchType === 'search') {
+            $message = "Search for “{$expected}” returned no results. Context: “{$found}”.";
+        } elseif ($this->matchType === 'count') {
+            $message = "Next token was expected to have {$expected} chars. Context: “{$found}”.";
+        } elseif ($this->matchType === 'identifier') {
+            $message = "Identifier expected. Got “{$found}”";
+        } elseif ($this->matchType === 'custom') {
+            $message = \trim("$expected $found");
         }
 
-        parent::__construct($sMessage, $lineNumber);
+        parent::__construct($message, $lineNumber);
     }
 }

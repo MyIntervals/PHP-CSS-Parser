@@ -14,13 +14,13 @@ class SourceException extends \Exception
     /**
      * @param int<0, max> $lineNumber
      */
-    public function __construct(string $sMessage, int $lineNumber = 0)
+    public function __construct(string $message, int $lineNumber = 0)
     {
         $this->lineNumber = $lineNumber;
         if ($lineNumber !== 0) {
-            $sMessage .= " [line no: $lineNumber]";
+            $message .= " [line no: $lineNumber]";
         }
-        parent::__construct($sMessage);
+        parent::__construct($message);
     }
 
     /**
