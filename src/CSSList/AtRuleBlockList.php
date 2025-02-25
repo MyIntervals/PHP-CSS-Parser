@@ -23,29 +23,21 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
     private $arguments;
 
     /**
-     * @param string $type
-     * @param string $arguments
      * @param int<0, max> $lineNumber
      */
-    public function __construct($type, $arguments = '', $lineNumber = 0)
+    public function __construct(string $type, string $arguments = '', int $lineNumber = 0)
     {
         parent::__construct($lineNumber);
         $this->type = $type;
         $this->arguments = $arguments;
     }
 
-    /**
-     * @return string
-     */
-    public function atRuleName()
+    public function atRuleName(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return string
-     */
-    public function atRuleArgs()
+    public function atRuleArgs(): string
     {
         return $this->arguments;
     }
