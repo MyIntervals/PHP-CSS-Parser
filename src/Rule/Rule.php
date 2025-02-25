@@ -24,22 +24,22 @@ class Rule implements Renderable, Commentable
     /**
      * @var string
      */
-    private $sRule;
+    private $rule;
 
     /**
      * @var RuleValueList|string|null
      */
-    private $mValue;
+    private $value;
 
     /**
      * @var bool
      */
-    private $bIsImportant = false;
+    private $isImportant = false;
 
     /**
      * @var array<int, int>
      */
-    private $aIeHack = [];
+    private $ieHack = [];
 
     /**
      * @var int
@@ -51,7 +51,7 @@ class Rule implements Renderable, Commentable
      *
      * @internal since 8.8.0
      */
-    protected $iColNo;
+    protected $columnNumber;
 
     /**
      * @var array<array-key, Comment>
@@ -61,15 +61,15 @@ class Rule implements Renderable, Commentable
     protected $comments = [];
 
     /**
-     * @param string $sRule
+     * @param string $rule
      * @param int<0, max> $lineNumber
-     * @param int $iColNo
+     * @param int $columnNumber
      */
-    public function __construct($sRule, $lineNumber = 0, $iColNo = 0)
+    public function __construct($rule, $lineNumber = 0, $columnNumber = 0)
     {
-        $this->sRule = $sRule;
+        $this->rule = $rule;
         $this->lineNumber = $lineNumber;
-        $this->iColNo = $iColNo;
+        $this->columnNumber = $columnNumber;
     }
 
     /**
@@ -89,8 +89,8 @@ class Rule implements Renderable, Commentable
         $rule->setComments($comments);
         $rule->addComments($parserState->consumeWhiteSpace());
         $parserState->consume(':');
-        $oValue = Value::parseValue($parserState, self::listDelimiterForRule($rule->getRule()));
-        $rule->setValue($oValue);
+        $value = Value::parseValue($parserState, self::listDelimiterForRule($rule->getRule()));
+        $rule->setValue($value);
         if ($parserState->getSettings()->bLenientParsing) {
             while ($parserState->comes('\\')) {
                 $parserState->consume('\\');
@@ -120,17 +120,17 @@ class Rule implements Renderable, Commentable
      * The first item is the innermost separator (or, put another way, the highest-precedence operator).
      * The sequence continues to the outermost separator (or lowest-precedence operator).
      *
-     * @param string $sRule
+     * @param string $rule
      *
      * @return list<non-empty-string>
      */
-    private static function listDelimiterForRule($sRule): array
+    private static function listDelimiterForRule($rule): array
     {
-        if (\preg_match('/^font($|-)/', $sRule)) {
+        if (\preg_match('/^font($|-)/', $rule)) {
             return [',', '/', ' '];
         }
 
-        switch ($sRule) {
+        switch ($rule) {
             case 'src':
                 return [' ', ','];
             default:
@@ -151,25 +151,25 @@ class Rule implements Renderable, Commentable
      */
     public function getColNo()
     {
-        return $this->iColNo;
+        return $this->columnNumber;
     }
 
     /**
-     * @param int $iLine
-     * @param int $iColumn
+     * @param int $lineNumber
+     * @param int $columnNumber
      */
-    public function setPosition($iLine, $iColumn): void
+    public function setPosition($lineNumber, $columnNumber): void
     {
-        $this->iColNo = $iColumn;
-        $this->lineNumber = $iLine;
+        $this->columnNumber = $columnNumber;
+        $this->lineNumber = $lineNumber;
     }
 
     /**
-     * @param string $sRule
+     * @param string $rule
      */
-    public function setRule($sRule): void
+    public function setRule($rule): void
     {
-        $this->sRule = $sRule;
+        $this->rule = $rule;
     }
 
     /**
@@ -177,7 +177,7 @@ class Rule implements Renderable, Commentable
      */
     public function getRule()
     {
-        return $this->sRule;
+        return $this->rule;
     }
 
     /**
@@ -185,7 +185,7 @@ class Rule implements Renderable, Commentable
      */
     public function getValue()
     {
-        return $this->mValue;
+        return $this->value;
     }
 
     /**
@@ -193,47 +193,47 @@ class Rule implements Renderable, Commentable
      */
     public function setValue($mValue): void
     {
-        $this->mValue = $mValue;
+        $this->value = $mValue;
     }
 
     /**
      * Adds a value to the existing value. Value will be appended if a `RuleValueList` exists of the given type.
      * Otherwise, the existing value will be wrapped by one.
      *
-     * @param RuleValueList|array<int, RuleValueList> $mValue
-     * @param string $sType
+     * @param RuleValueList|array<int, RuleValueList> $value
+     * @param string $type
      */
-    public function addValue($mValue, $sType = ' '): void
+    public function addValue($value, $type = ' '): void
     {
-        if (!\is_array($mValue)) {
-            $mValue = [$mValue];
+        if (!\is_array($value)) {
+            $value = [$value];
         }
-        if (!($this->mValue instanceof RuleValueList) || $this->mValue->getListSeparator() !== $sType) {
-            $mCurrentValue = $this->mValue;
-            $this->mValue = new RuleValueList($sType, $this->lineNumber);
-            if ($mCurrentValue) {
-                $this->mValue->addListComponent($mCurrentValue);
+        if (!($this->value instanceof RuleValueList) || $this->value->getListSeparator() !== $type) {
+            $currentValue = $this->value;
+            $this->value = new RuleValueList($type, $this->lineNumber);
+            if ($currentValue) {
+                $this->value->addListComponent($currentValue);
             }
         }
-        foreach ($mValue as $mValueItem) {
-            $this->mValue->addListComponent($mValueItem);
+        foreach ($value as $valueItem) {
+            $this->value->addListComponent($valueItem);
         }
     }
 
     /**
-     * @param int $iModifier
+     * @param int $modifier
      */
-    public function addIeHack($iModifier): void
+    public function addIeHack($modifier): void
     {
-        $this->aIeHack[] = $iModifier;
+        $this->ieHack[] = $modifier;
     }
 
     /**
-     * @param array<int, int> $aModifiers
+     * @param array<int, int> $modifiers
      */
-    public function setIeHack(array $aModifiers): void
+    public function setIeHack(array $modifiers): void
     {
-        $this->aIeHack = $aModifiers;
+        $this->ieHack = $modifiers;
     }
 
     /**
@@ -241,15 +241,15 @@ class Rule implements Renderable, Commentable
      */
     public function getIeHack()
     {
-        return $this->aIeHack;
+        return $this->ieHack;
     }
 
     /**
-     * @param bool $bIsImportant
+     * @param bool $isImportant
      */
-    public function setIsImportant($bIsImportant): void
+    public function setIsImportant($isImportant): void
     {
-        $this->bIsImportant = $bIsImportant;
+        $this->isImportant = $isImportant;
     }
 
     /**
@@ -257,7 +257,7 @@ class Rule implements Renderable, Commentable
      */
     public function getIsImportant()
     {
-        return $this->bIsImportant;
+        return $this->isImportant;
     }
 
     public function __toString(): string
@@ -267,16 +267,16 @@ class Rule implements Renderable, Commentable
 
     public function render(OutputFormat $outputFormat): string
     {
-        $result = "{$outputFormat->comments($this)}{$this->sRule}:{$outputFormat->spaceAfterRuleName()}";
-        if ($this->mValue instanceof Value) { // Can also be a ValueList
-            $result .= $this->mValue->render($outputFormat);
+        $result = "{$outputFormat->comments($this)}{$this->rule}:{$outputFormat->spaceAfterRuleName()}";
+        if ($this->value instanceof Value) { // Can also be a ValueList
+            $result .= $this->value->render($outputFormat);
         } else {
-            $result .= $this->mValue;
+            $result .= $this->value;
         }
-        if (!empty($this->aIeHack)) {
-            $result .= ' \\' . \implode('\\', $this->aIeHack);
+        if (!empty($this->ieHack)) {
+            $result .= ' \\' . \implode('\\', $this->ieHack);
         }
-        if ($this->bIsImportant) {
+        if ($this->isImportant) {
             $result .= ' !important';
         }
         $result .= ';';
