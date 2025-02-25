@@ -36,6 +36,8 @@ class Rule implements Renderable, Commentable
 
     /**
      * @var array<int, int>
+     *
+     * @deprecated since V8.8.0, will be removed in V9.0
      */
     private $aIeHack;
 
@@ -319,6 +321,8 @@ class Rule implements Renderable, Commentable
      * @param array<int, int> $aModifiers
      *
      * @return void
+     *
+     * @deprecated since V8.8.0, will be removed in V9.0
      */
     public function setIeHack(array $aModifiers)
     {
@@ -327,6 +331,8 @@ class Rule implements Renderable, Commentable
 
     /**
      * @return array<int, int>
+     *
+     * @deprecated since V8.8.0, will be removed in V9.0
      */
     public function getIeHack()
     {

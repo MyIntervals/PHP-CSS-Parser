@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Deprecated
 
+- Deprecate the IE hack in `Rule` (#993)
 - `OutputFormat` properties for space around list separators as an array (#880)
 - Deprecate `OutputFormat::level()` (#870)
 
