@@ -24,7 +24,7 @@ class CSSFunction extends ValueList
     protected $name;
 
     /**
-     * @param RuleValueList|array<array-key, Value|string> $aArguments
+     * @param RuleValueList|array<array-key, Value|string> $arguments
      * @param int<0, max> $lineNumber
      */
     public function __construct(string $name, $arguments, string $separator = ',', int $lineNumber = 0)

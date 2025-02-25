@@ -43,8 +43,8 @@ parameters:
 			path: ../src/CSSList/Document.php
 
 		-
-			message: '#^Cannot call method render\(\) on string\.$#'
-			identifier: method.nonObject
+			message: '#^Method Sabberworm\\CSS\\Property\\CSSNamespace\:\:atRuleArgs\(\) should return array\<int, string\> but returns list\<Sabberworm\\CSS\\Value\\CSSString\|Sabberworm\\CSS\\Value\\URL\|string\>\.$#'
+			identifier: return.type
 			count: 1
 			path: ../src/Property/CSSNamespace.php
 
