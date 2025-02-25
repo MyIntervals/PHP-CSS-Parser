@@ -162,7 +162,7 @@ final class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function getAllRuleSetsCanReturnOneDirectDeclarationBlockContent(): void
+    public function getAllRuleSetsReturnsOneDeclarationBlockDirectlySetAsContent(): void
     {
         $subject = new Document();
 
