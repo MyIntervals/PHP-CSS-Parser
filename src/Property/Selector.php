@@ -72,7 +72,7 @@ class Selector
     /**
      * @var int|null
      */
-    private $iSpecificity;
+    private $specificity;
 
     /**
      * @param string $selector
@@ -86,12 +86,12 @@ class Selector
 
     /**
      * @param string $selector
-     * @param bool $bCalculateSpecificity
+     * @param bool $calculateSpecificity
      */
-    public function __construct($selector, $bCalculateSpecificity = false)
+    public function __construct($selector, $calculateSpecificity = false)
     {
         $this->setSelector($selector);
-        if ($bCalculateSpecificity) {
+        if ($calculateSpecificity) {
             $this->getSpecificity();
         }
     }
@@ -110,7 +110,7 @@ class Selector
     public function setSelector($selector): void
     {
         $this->selector = \trim($selector);
-        $this->iSpecificity = null;
+        $this->specificity = null;
     }
 
     public function __toString(): string
@@ -123,15 +123,15 @@ class Selector
      */
     public function getSpecificity()
     {
-        if ($this->iSpecificity === null) {
+        if ($this->specificity === null) {
             $a = 0;
             /// @todo should exclude \# as well as "#"
             $aMatches = null;
             $b = \substr_count($this->selector, '#');
             $c = \preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $this->selector, $aMatches);
             $d = \preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $this->selector, $aMatches);
-            $this->iSpecificity = ($a * 1000) + ($b * 100) + ($c * 10) + $d;
+            $this->specificity = ($a * 1000) + ($b * 100) + ($c * 10) + $d;
         }
-        return $this->iSpecificity;
+        return $this->specificity;
     }
 }
