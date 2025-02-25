@@ -18,7 +18,7 @@ class AtRuleSet extends RuleSet implements AtRule
     /**
      * @var string
      */
-    private $sType;
+    private $type;
 
     /**
      * @var string
@@ -26,14 +26,14 @@ class AtRuleSet extends RuleSet implements AtRule
     private $arguments;
 
     /**
-     * @param string $sType
+     * @param string $type
      * @param string $arguments
      * @param int<0, max> $lineNumber
      */
-    public function __construct($sType, $arguments = '', $lineNumber = 0)
+    public function __construct($type, $arguments = '', $lineNumber = 0)
     {
         parent::__construct($lineNumber);
-        $this->sType = $sType;
+        $this->type = $type;
         $this->arguments = $arguments;
     }
 
@@ -42,7 +42,7 @@ class AtRuleSet extends RuleSet implements AtRule
      */
     public function atRuleName()
     {
-        return $this->sType;
+        return $this->type;
     }
 
     /**
@@ -65,7 +65,7 @@ class AtRuleSet extends RuleSet implements AtRule
         if ($arguments) {
             $arguments = ' ' . $arguments;
         }
-        $result .= "@{$this->sType}$arguments{$outputFormat->spaceBeforeOpeningBrace()}{";
+        $result .= "@{$this->type}$arguments{$outputFormat->spaceBeforeOpeningBrace()}{";
         $result .= $this->renderRules($outputFormat);
         $result .= '}';
         return $result;
