@@ -192,7 +192,7 @@ final class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function getAllRuleSetsCanReturnMultipleDirectDeclarationBlockContents(): void
+    public function getAllRuleSetsReturnsMultipleDeclarationBlocksDirectlySetAsContents(): void
     {
         $subject = new Document();
 
