@@ -21,6 +21,19 @@ use Sabberworm\CSS\Value\ValueList;
 abstract class CSSBlockList extends CSSList
 {
     /**
+     * Gets all `DeclarationBlock` objects recursively, no matter how deeply nested the selectors are.
+     *
+     * @return array<int, DeclarationBlock>
+     */
+    public function getAllDeclarationBlocks(): array
+    {
+        /** @var array<int, DeclarationBlock> $result */
+        $result = [];
+        $this->allDeclarationBlocks($result);
+        return $result;
+    }
+
+    /**
      * @param array<int, DeclarationBlock> $result
      */
     protected function allDeclarationBlocks(array &$result): void
