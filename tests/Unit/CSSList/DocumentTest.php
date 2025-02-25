@@ -152,7 +152,7 @@ final class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function getAllRuleSetsForNoContentsReturnsEmptyArray(): void
+    public function getAllRuleSetsWhenNoContentSetReturnsEmptyArray(): void
     {
         $subject = new Document();
 
