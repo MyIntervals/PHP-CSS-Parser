@@ -67,7 +67,7 @@ class Selector
     /**
      * @var string
      */
-    private $sSelector;
+    private $selector;
 
     /**
      * @var int|null
@@ -75,22 +75,22 @@ class Selector
     private $iSpecificity;
 
     /**
-     * @param string $sSelector
+     * @param string $selector
      *
      * @return bool
      */
-    public static function isValid($sSelector)
+    public static function isValid($selector)
     {
-        return \preg_match(static::SELECTOR_VALIDATION_RX, $sSelector);
+        return \preg_match(static::SELECTOR_VALIDATION_RX, $selector);
     }
 
     /**
-     * @param string $sSelector
+     * @param string $selector
      * @param bool $bCalculateSpecificity
      */
-    public function __construct($sSelector, $bCalculateSpecificity = false)
+    public function __construct($selector, $bCalculateSpecificity = false)
     {
-        $this->setSelector($sSelector);
+        $this->setSelector($selector);
         if ($bCalculateSpecificity) {
             $this->getSpecificity();
         }
@@ -101,15 +101,15 @@ class Selector
      */
     public function getSelector()
     {
-        return $this->sSelector;
+        return $this->selector;
     }
 
     /**
-     * @param string $sSelector
+     * @param string $selector
      */
-    public function setSelector($sSelector): void
+    public function setSelector($selector): void
     {
-        $this->sSelector = \trim($sSelector);
+        $this->selector = \trim($selector);
         $this->iSpecificity = null;
     }
 
@@ -127,9 +127,9 @@ class Selector
             $a = 0;
             /// @todo should exclude \# as well as "#"
             $aMatches = null;
-            $b = \substr_count($this->sSelector, '#');
-            $c = \preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $this->sSelector, $aMatches);
-            $d = \preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $this->sSelector, $aMatches);
+            $b = \substr_count($this->selector, '#');
+            $c = \preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $this->selector, $aMatches);
+            $d = \preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $this->selector, $aMatches);
             $this->iSpecificity = ($a * 1000) + ($b * 100) + ($c * 10) + $d;
         }
         return $this->iSpecificity;
