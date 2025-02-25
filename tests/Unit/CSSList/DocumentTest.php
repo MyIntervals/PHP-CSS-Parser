@@ -177,7 +177,7 @@ final class DocumentTest extends TestCase
     /**
      * @test
      */
-    public function getAllRuleSetsCanReturnOneDirectAtRuleSetContent(): void
+    public function getAllRuleSetsReturnsOneAtRuleSetDirectlySetAsContent(): void
     {
         $subject = new Document();
 
