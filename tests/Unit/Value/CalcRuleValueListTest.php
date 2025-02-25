@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sabberworm\CSS\Tests\Value;
+namespace Sabberworm\CSS\Tests\Unit\Value;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Value\CalcRuleValueList;
@@ -10,6 +10,9 @@ use Sabberworm\CSS\Value\RuleValueList;
 
 /**
  * @covers \Sabberworm\CSS\Value\CalcRuleValueList
+ * @covers \Sabberworm\CSS\Value\RuleValueList
+ * @covers \Sabberworm\CSS\Value\Value
+ * @covers \Sabberworm\CSS\Value\ValueList
  */
 final class CalcRuleValueListTest extends TestCase
 {
