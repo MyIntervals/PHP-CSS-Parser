@@ -23,13 +23,23 @@ abstract class CSSBlockList extends CSSList
     /**
      * Gets all `DeclarationBlock` objects recursively, no matter how deeply nested the selectors are.
      *
-     * @return array<int, DeclarationBlock>
+     * @return list<DeclarationBlock>
      */
     public function getAllDeclarationBlocks(): array
     {
-        /** @var array<int, DeclarationBlock> $result */
+        /** @var list<DeclarationBlock> $result */
         $result = [];
-        $this->allDeclarationBlocks($result);
+
+        foreach ($this->contents as $directSibling) {
+            if ($directSibling instanceof DeclarationBlock) {
+                $result[] = $directSibling;
+            } elseif ($directSibling instanceof CSSBlockList) {
+                foreach ($directSibling->getAllDeclarationBlocks() as $grandchild) {
+                    $result[] = $grandchild;
+                }
+            }
+        }
+
         return $result;
     }
 
