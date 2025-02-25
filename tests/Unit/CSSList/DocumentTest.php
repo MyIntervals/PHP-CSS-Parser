@@ -24,10 +24,6 @@ use Sabberworm\CSS\Value\URL;
  */
 final class DocumentTest extends TestCase
 {
-    /*
-     * Tests for the implemented interfaces and superclasses
-     */
-
     /**
      * @test
      */
@@ -63,10 +59,6 @@ final class DocumentTest extends TestCase
 
         self::assertInstanceOf(CSSList::class, $subject);
     }
-
-    /*
-     * not grouped yet
-     */
 
     /**
      * @test
