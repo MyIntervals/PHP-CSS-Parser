@@ -176,7 +176,7 @@ abstract class CSSList implements Renderable, Commentable
                 }
             }
             $parserState->consumeUntil([';', ParserState::EOF], true, true);
-            return new Import($location, $mediaQuery, $identifierLineNumber);
+            return new Import($location, $mediaQuery ?? '', $identifierLineNumber);
         } elseif ($identifier === 'charset') {
             $charsetString = CSSString::parse($parserState);
             $parserState->consumeWhiteSpace();
