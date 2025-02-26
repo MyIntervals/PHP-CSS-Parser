@@ -27,7 +27,7 @@ class DeclarationBlock extends RuleSet
     /**
      * @var array<int, Selector|string>
      */
-    private $aSelectors = [];
+    private $selectors = [];
 
     /**
      * @param CSSList|null $list
@@ -76,38 +76,38 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * @param array<int, Selector|string>|string $mSelector
+     * @param array<int, Selector|string>|string $selectors
      * @param CSSList|null $list
      *
      * @throws UnexpectedTokenException
      */
-    public function setSelectors($mSelector, $list = null): void
+    public function setSelectors($selectors, $list = null): void
     {
-        if (\is_array($mSelector)) {
-            $this->aSelectors = $mSelector;
+        if (\is_array($selectors)) {
+            $this->selectors = $selectors;
         } else {
-            $this->aSelectors = \explode(',', $mSelector);
+            $this->selectors = \explode(',', $selectors);
         }
-        foreach ($this->aSelectors as $key => $mSelector) {
-            if (!($mSelector instanceof Selector)) {
+        foreach ($this->selectors as $key => $selector) {
+            if (!($selector instanceof Selector)) {
                 if ($list === null || !($list instanceof KeyFrame)) {
-                    if (!Selector::isValid($mSelector)) {
+                    if (!Selector::isValid($selector)) {
                         throw new UnexpectedTokenException(
                             "Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.",
-                            $mSelector,
+                            $selectors,
                             'custom'
                         );
                     }
-                    $this->aSelectors[$key] = new Selector($mSelector);
+                    $this->selectors[$key] = new Selector($selector);
                 } else {
-                    if (!KeyframeSelector::isValid($mSelector)) {
+                    if (!KeyframeSelector::isValid($selector)) {
                         throw new UnexpectedTokenException(
                             "Selector did not match '" . KeyframeSelector::SELECTOR_VALIDATION_RX . "'.",
-                            $mSelector,
+                            $selector,
                             'custom'
                         );
                     }
-                    $this->aSelectors[$key] = new KeyframeSelector($mSelector);
+                    $this->selectors[$key] = new KeyframeSelector($selector);
                 }
             }
         }
@@ -116,16 +116,16 @@ class DeclarationBlock extends RuleSet
     /**
      * Remove one of the selectors of the block.
      *
-     * @param Selector|string $mSelector
+     * @param Selector|string $selectorToRemove
      */
-    public function removeSelector($mSelector): bool
+    public function removeSelector($selectorToRemove): bool
     {
-        if ($mSelector instanceof Selector) {
-            $mSelector = $mSelector->getSelector();
+        if ($selectorToRemove instanceof Selector) {
+            $selectorToRemove = $selectorToRemove->getSelector();
         }
-        foreach ($this->aSelectors as $key => $selector) {
-            if ($selector->getSelector() === $mSelector) {
-                unset($this->aSelectors[$key]);
+        foreach ($this->selectors as $key => $subSelector) {
+            if ($subSelector->getSelector() === $selectorToRemove) {
+                unset($this->selectors[$key]);
                 return true;
             }
         }
@@ -137,7 +137,7 @@ class DeclarationBlock extends RuleSet
      */
     public function getSelectors()
     {
-        return $this->aSelectors;
+        return $this->selectors;
     }
 
     /**
@@ -154,14 +154,14 @@ class DeclarationBlock extends RuleSet
     public function render(OutputFormat $outputFormat): string
     {
         $result = $outputFormat->comments($this);
-        if (\count($this->aSelectors) === 0) {
+        if (\count($this->selectors) === 0) {
             // If all the selectors have been removed, this declaration block becomes invalid
             throw new OutputException('Attempt to print declaration block with missing selector', $this->lineNumber);
         }
         $result .= $outputFormat->sBeforeDeclarationBlock;
         $result .= $outputFormat->implode(
             $outputFormat->spaceBeforeSelectorSeparator() . ',' . $outputFormat->spaceAfterSelectorSeparator(),
-            $this->aSelectors
+            $this->selectors
         );
         $result .= $outputFormat->sAfterDeclarationBlockSelectors;
         $result .= $outputFormat->spaceBeforeOpeningBrace() . '{';
