@@ -159,7 +159,7 @@ class OutputFormatter
     }
 
     /**
-     * Clone of the `implode` function, but calls `render` with the current output format instead of `__toString()`.
+     * Clone of the `implode` function, but calls `render` with the current output format.
      *
      * @param array<array-key, Renderable|string> $values
      */

@@ -16,19 +16,6 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function toStringRendersCommentEnclosedInCommentDelimiters(): void
-    {
-        $comment = 'There is no spoon.';
-        $subject = new Comment();
-
-        $subject->setComment($comment);
-
-        self::assertSame('/*' . $comment . '*/', (string) $subject);
-    }
-
-    /**
-     * @test
-     */
     public function renderWithVirginOutputFormatRendersCommentEnclosedInCommentDelimiters(): void
     {
         $comment = 'There is no spoon.';
