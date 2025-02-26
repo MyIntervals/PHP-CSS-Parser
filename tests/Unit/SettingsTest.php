@@ -48,7 +48,7 @@ final class SettingsTest extends TestCase
      */
     public function multibyteSupportByDefaultStateOfMbStringExtension(): void
     {
-        self::assertSame(\extension_loaded('mbstring'), $this->subject->bMultibyteSupport);
+        self::assertSame(\extension_loaded('mbstring'), $this->subject->multibyteSupport);
     }
 
     /**
@@ -78,7 +78,7 @@ final class SettingsTest extends TestCase
     {
         $this->subject->withMultibyteSupport($value);
 
-        self::assertSame($value, $this->subject->bMultibyteSupport);
+        self::assertSame($value, $this->subject->multibyteSupport);
     }
 
     /**
@@ -86,7 +86,7 @@ final class SettingsTest extends TestCase
      */
     public function defaultCharsetByDefaultIsUtf8(): void
     {
-        self::assertSame('utf-8', $this->subject->sDefaultCharset);
+        self::assertSame('utf-8', $this->subject->defaultCharset);
     }
 
     /**
@@ -105,7 +105,7 @@ final class SettingsTest extends TestCase
         $charset = 'ISO-8859-1';
         $this->subject->withDefaultCharset($charset);
 
-        self::assertSame($charset, $this->subject->sDefaultCharset);
+        self::assertSame($charset, $this->subject->defaultCharset);
     }
 
     /**
@@ -113,7 +113,7 @@ final class SettingsTest extends TestCase
      */
     public function lenientParsingByDefaultIsTrue(): void
     {
-        self::assertTrue($this->subject->bLenientParsing);
+        self::assertTrue($this->subject->lenientParsing);
     }
 
     /**
@@ -132,7 +132,7 @@ final class SettingsTest extends TestCase
     {
         $this->subject->withLenientParsing($value);
 
-        self::assertSame($value, $this->subject->bLenientParsing);
+        self::assertSame($value, $this->subject->lenientParsing);
     }
 
     /**
@@ -150,6 +150,6 @@ final class SettingsTest extends TestCase
     {
         $this->subject->beStrict();
 
-        self::assertFalse($this->subject->bLenientParsing);
+        self::assertFalse($this->subject->lenientParsing);
     }
 }
