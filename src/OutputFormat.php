@@ -284,23 +284,6 @@ class OutputFormat
     }
 
     /**
-     * @param non-empty-string $sMethodName
-     * @param array<array-key, mixed> $aArguments
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     */
-    public function __call(string $sMethodName, array $aArguments)
-    {
-        if (\method_exists(OutputFormatter::class, $sMethodName)) {
-            return \call_user_func_array([$this->getFormatter(), $sMethodName], $aArguments);
-        } else {
-            throw new \Exception('Unknown OutputFormat method called: ' . $sMethodName);
-        }
-    }
-
-    /**
      * @internal
      */
     public function getStringQuotingType(): string
