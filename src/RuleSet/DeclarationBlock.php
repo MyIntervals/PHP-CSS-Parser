@@ -123,8 +123,8 @@ class DeclarationBlock extends RuleSet
         if ($selectorToRemove instanceof Selector) {
             $selectorToRemove = $selectorToRemove->getSelector();
         }
-        foreach ($this->selectors as $key => $subSelector) {
-            if ($subSelector->getSelector() === $selectorToRemove) {
+        foreach ($this->selectors as $key => $selector) {
+            if ($selector->getSelector() === $selectorToRemove) {
                 unset($this->selectors[$key]);
                 return true;
             }
