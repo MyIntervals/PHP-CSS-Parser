@@ -55,7 +55,7 @@ final class CSSBlockListTest extends TestCase
     /**
      * @test
      */
-    public function getAllDeclarationBlocksForNoContentsReturnsEmptyArray(): void
+    public function getAllDeclarationBlocksWhenNoContentSetReturnsEmptyArray(): void
     {
         $subject = new ConcreteCSSBlockList();
 
@@ -65,7 +65,7 @@ final class CSSBlockListTest extends TestCase
     /**
      * @test
      */
-    public function getAllDeclarationBlocksCanReturnOneDirectDeclarationBlockContent(): void
+    public function getAllDeclarationBlocksReturnsOneDeclarationBlockDirectlySetAsContent(): void
     {
         $subject = new ConcreteCSSBlockList();
 
@@ -80,7 +80,7 @@ final class CSSBlockListTest extends TestCase
     /**
      * @test
      */
-    public function getAllDeclarationBlocksCanReturnMultipleDirectDeclarationBlockContents(): void
+    public function getAllDeclarationBlocksReturnsMultipleDeclarationBlocksDirectlySetAsContents(): void
     {
         $subject = new ConcreteCSSBlockList();
 
