@@ -36,6 +36,7 @@ Please also have a look at our
 
 ### Removed
 
+- Remove the IE hack in `Rule` (#995)
 - Remove `OutputFormat::level()` (#874)
 - Remove expansion of shorthand properties (#838)
 - Remove `Parser::setCharset/getCharset` (#808)

@@ -1063,22 +1063,22 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function ieHacksStrictParsing(): void
+    public function ieHacksCauseExceptionInStrictMode(): void
     {
         $this->expectException(UnexpectedTokenException::class);
 
-        // We can't strictly parse IE hacks.
         self::parsedStructureForFile('ie-hacks', Settings::create()->beStrict());
     }
 
     /**
      * @test
      */
-    public function ieHacksParsing(): void
+    public function ieHacksArePartiallyRemovedInLenientMode(): void
     {
         $document = self::parsedStructureForFile('ie-hacks', Settings::create()->withLenientParsing(true));
-        $expected = 'p {padding-right: .75rem \\9;background-image: none \\9;color: red \\9\\0;'
-            . 'background-color: red \\9\\0;background-color: red \\9\\0 !important;content: "red 	\\0";content: "red઼";}';
+
+        $expected = 'p {padding-right: .75rem;background-image: none;color: red;'
+            . 'background-color: red;background-color: red;content: "red 	\\0";content: "red઼";}';
         self::assertSame($expected, $document->render());
     }
 
