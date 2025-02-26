@@ -114,18 +114,18 @@ abstract class RuleSet implements Renderable, Commentable
         $position = \count($this->rules[$propertyName]);
 
         if ($sibling !== null) {
-            $iSiblingPos = \array_search($sibling, $this->rules[$propertyName], true);
-            if ($iSiblingPos !== false) {
-                $position = $iSiblingPos;
+            $siblingPosition = \array_search($sibling, $this->rules[$propertyName], true);
+            if ($siblingPosition !== false) {
+                $position = $siblingPosition;
                 $ruleToAdd->setPosition($sibling->getLineNo(), $sibling->getColNo() - 1);
             }
         }
         if ($ruleToAdd->getLineNo() === 0 && $ruleToAdd->getColNo() === 0) {
             //this node is added manually, give it the next best line
             $rules = $this->getRules();
-            $pos = \count($rules);
-            if ($pos > 0) {
-                $last = $rules[$pos - 1];
+            $rulesCount = \count($rules);
+            if ($rulesCount > 0) {
+                $last = $rules[$rulesCount - 1];
                 $ruleToAdd->setPosition($last->getLineNo() + 1, 0);
             }
         }
@@ -176,6 +176,7 @@ abstract class RuleSet implements Renderable, Commentable
             }
             return $first->getLineNo() - $second->getLineNo();
         });
+
         return $result;
     }
 
@@ -234,13 +235,13 @@ abstract class RuleSet implements Renderable, Commentable
     public function removeRule($searchPattern): void
     {
         if ($searchPattern instanceof Rule) {
-            $propertyName = $searchPattern->getRule();
-            if (!isset($this->rules[$propertyName])) {
+            $nameOfPropertyToRemove = $searchPattern->getRule();
+            if (!isset($this->rules[$nameOfPropertyToRemove])) {
                 return;
             }
-            foreach ($this->rules[$propertyName] as $key => $rule) {
+            foreach ($this->rules[$nameOfPropertyToRemove] as $key => $rule) {
                 if ($rule === $searchPattern) {
-                    unset($this->rules[$propertyName][$key]);
+                    unset($this->rules[$nameOfPropertyToRemove][$key]);
                 }
             }
         } else {
