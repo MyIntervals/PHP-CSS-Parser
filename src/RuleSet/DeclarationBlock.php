@@ -61,7 +61,7 @@ class DeclarationBlock extends RuleSet
                 $parserState->consume(1);
             }
         } catch (UnexpectedTokenException $e) {
-            if ($parserState->getSettings()->bLenientParsing) {
+            if ($parserState->getSettings()->lenientParsing) {
                 if (!$parserState->comes('}')) {
                     $parserState->consumeUntil('}', false, true);
                 }
