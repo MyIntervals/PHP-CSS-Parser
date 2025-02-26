@@ -38,10 +38,9 @@ class Import implements AtRule
     protected $comments = [];
 
     /**
-     * @param string $mediaQuery
      * @param int<0, max> $lineNumber
      */
-    public function __construct(URL $location, $mediaQuery, $lineNumber = 0)
+    public function __construct(URL $location, string $mediaQuery, int $lineNumber = 0)
     {
         $this->location = $location;
         $this->mediaQuery = $mediaQuery;

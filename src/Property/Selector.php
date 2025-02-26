@@ -84,11 +84,7 @@ class Selector
         return \preg_match(static::SELECTOR_VALIDATION_RX, $selector);
     }
 
-    /**
-     * @param string $selector
-     * @param bool $calculateSpecificity
-     */
-    public function __construct($selector, $calculateSpecificity = false)
+    public function __construct(string $selector, bool $calculateSpecificity = false)
     {
         $this->setSelector($selector);
         if ($calculateSpecificity) {

@@ -19,10 +19,7 @@ class Anchor
      */
     private $parserState;
 
-    /**
-     * @param int $position
-     */
-    public function __construct($position, ParserState $parserState)
+    public function __construct(int $position, ParserState $parserState)
     {
         $this->position = $position;
         $this->parserState = $parserState;
