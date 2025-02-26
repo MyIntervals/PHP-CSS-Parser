@@ -27,7 +27,7 @@ abstract class RuleSet implements Renderable, Commentable
     /**
      * @var array<string, Rule>
      */
-    private $aRules = [];
+    private $rules = [];
 
     /**
      * @var int<0, max>
@@ -69,9 +69,9 @@ abstract class RuleSet implements Renderable, Commentable
                     $rule = Rule::parse($parserState);
                 } catch (UnexpectedTokenException $e) {
                     try {
-                        $sConsume = $parserState->consumeUntil(["\n", ';', '}'], true);
+                        $consumedText = $parserState->consumeUntil(["\n", ';', '}'], true);
                         // We need to “unfind” the matches to the end of the ruleSet as this will be matched later
-                        if ($parserState->streql(\substr($sConsume, -1), '}')) {
+                        if ($parserState->streql(\substr($consumedText, -1), '}')) {
                             $parserState->backtrack(1);
                         } else {
                             while ($parserState->comes(';')) {
@@ -101,33 +101,33 @@ abstract class RuleSet implements Renderable, Commentable
         return $this->lineNumber;
     }
 
-    public function addRule(Rule $rule, ?Rule $oSibling = null): void
+    public function addRule(Rule $ruleToAdd, ?Rule $sibling = null): void
     {
-        $sRule = $rule->getRule();
-        if (!isset($this->aRules[$sRule])) {
-            $this->aRules[$sRule] = [];
+        $rule = $ruleToAdd->getRule();
+        if (!isset($this->rules[$rule])) {
+            $this->rules[$rule] = [];
         }
 
-        $position = \count($this->aRules[$sRule]);
+        $position = \count($this->rules[$rule]);
 
-        if ($oSibling !== null) {
-            $iSiblingPos = \array_search($oSibling, $this->aRules[$sRule], true);
-            if ($iSiblingPos !== false) {
-                $position = $iSiblingPos;
-                $rule->setPosition($oSibling->getLineNo(), $oSibling->getColNo() - 1);
+        if ($sibling !== null) {
+            $siblingPosition = \array_search($sibling, $this->rules[$rule], true);
+            if ($siblingPosition !== false) {
+                $position = $siblingPosition;
+                $ruleToAdd->setPosition($sibling->getLineNo(), $sibling->getColNo() - 1);
             }
         }
-        if ($rule->getLineNo() === 0 && $rule->getColNo() === 0) {
+        if ($ruleToAdd->getLineNo() === 0 && $ruleToAdd->getColNo() === 0) {
             //this node is added manually, give it the next best line
             $rules = $this->getRules();
-            $pos = \count($rules);
-            if ($pos > 0) {
-                $last = $rules[$pos - 1];
-                $rule->setPosition($last->getLineNo() + 1, 0);
+            $rulesCount = \count($rules);
+            if ($rulesCount > 0) {
+                $last = $rules[$rulesCount - 1];
+                $ruleToAdd->setPosition($last->getLineNo() + 1, 0);
             }
         }
 
-        \array_splice($this->aRules[$sRule], $position, 0, [$rule]);
+        \array_splice($this->rules[$rule], $position, 0, [$ruleToAdd]);
     }
 
     /**
@@ -138,7 +138,7 @@ abstract class RuleSet implements Renderable, Commentable
      * @example $ruleSet->getRules('font-')
      *          //returns an array of all rules either beginning with font- or matching font.
      *
-     * @param Rule|string|null $mRule
+     * @param Rule|string|null $searchPattern
      *        Pattern to search for. If null, returns all rules.
      *        If the pattern ends with a dash, all rules starting with the pattern are returned
      *        as well as one matching the pattern with the dash excluded.
@@ -146,24 +146,24 @@ abstract class RuleSet implements Renderable, Commentable
      *
      * @return array<int, Rule>
      */
-    public function getRules($mRule = null)
+    public function getRules($searchPattern = null)
     {
-        if ($mRule instanceof Rule) {
-            $mRule = $mRule->getRule();
+        if ($searchPattern instanceof Rule) {
+            $searchPattern = $searchPattern->getRule();
         }
         /** @var array<int, Rule> $result */
         $result = [];
-        foreach ($this->aRules as $sName => $aRules) {
+        foreach ($this->rules as $ruleName => $rule) {
             // Either no search rule is given or the search rule matches the found rule exactly
             // or the search rule ends in “-” and the found rule starts with the search rule.
             if (
-                !$mRule || $sName === $mRule
+                !$searchPattern || $ruleName === $searchPattern
                 || (
-                    \strrpos($mRule, '-') === \strlen($mRule) - \strlen('-')
-                    && (\strpos($sName, $mRule) === 0 || $sName === \substr($mRule, 0, -1))
+                    \strrpos($searchPattern, '-') === \strlen($searchPattern) - \strlen('-')
+                    && (\strpos($ruleName, $searchPattern) === 0 || $ruleName === \substr($searchPattern, 0, -1))
                 )
             ) {
-                $result = \array_merge($result, $aRules);
+                $result = \array_merge($result, $rule);
             }
         }
         \usort($result, static function (Rule $first, Rule $second): int {
@@ -172,18 +172,19 @@ abstract class RuleSet implements Renderable, Commentable
             }
             return $first->getLineNo() - $second->getLineNo();
         });
+
         return $result;
     }
 
     /**
      * Overrides all the rules of this set.
      *
-     * @param array<array-key, Rule> $aRules The rules to override with.
+     * @param array<array-key, Rule> $rules The rules to override with.
      */
-    public function setRules(array $aRules): void
+    public function setRules(array $rules): void
     {
-        $this->aRules = [];
-        foreach ($aRules as $rule) {
+        $this->rules = [];
+        foreach ($rules as $rule) {
             $this->addRule($rule);
         }
     }
@@ -196,18 +197,18 @@ abstract class RuleSet implements Renderable, Commentable
      * like `{ background-color: green; background-color; rgba(0, 127, 0, 0.7); }` will only yield an associative array
      * containing the rgba-valued rule while `getRules()` would yield an indexed array containing both.
      *
-     * @param Rule|string|null $mRule $mRule
+     * @param Rule|string|null $searchPattern $mRule
      *        Pattern to search for. If null, returns all rules. If the pattern ends with a dash,
      *        all rules starting with the pattern are returned as well as one matching the pattern with the dash
      *        excluded. Passing a Rule behaves like calling `getRules($mRule->getRule())`.
      *
      * @return array<string, Rule>
      */
-    public function getRulesAssoc($mRule = null)
+    public function getRulesAssoc($searchPattern = null)
     {
         /** @var array<string, Rule> $result */
         $result = [];
-        foreach ($this->getRules($mRule) as $rule) {
+        foreach ($this->getRules($searchPattern) as $rule) {
             $result[$rule->getRule()] = $rule;
         }
         return $result;
@@ -222,34 +223,34 @@ abstract class RuleSet implements Renderable, Commentable
      * Note: this is different from pre-v.2.0 behaviour of PHP-CSS-Parser, where passing a Rule instance would
      * remove all rules with the same name. To get the old behaviour, use `removeRule($rule->getRule())`.
      *
-     * @param Rule|string|null $mRule
+     * @param Rule|string|null $removalPattern
      *        pattern to remove. If $mRule is null, all rules are removed. If the pattern ends in a dash,
      *        all rules starting with the pattern are removed as well as one matching the pattern with the dash
      *        excluded. Passing a Rule behaves matches by identity.
      */
-    public function removeRule($mRule): void
+    public function removeRule($removalPattern): void
     {
-        if ($mRule instanceof Rule) {
-            $sRule = $mRule->getRule();
-            if (!isset($this->aRules[$sRule])) {
+        if ($removalPattern instanceof Rule) {
+            $removalRule = $removalPattern->getRule();
+            if (!isset($this->rules[$removalRule])) {
                 return;
             }
-            foreach ($this->aRules[$sRule] as $key => $rule) {
-                if ($rule === $mRule) {
-                    unset($this->aRules[$sRule][$key]);
+            foreach ($this->rules[$removalRule] as $key => $rule) {
+                if ($rule === $removalPattern) {
+                    unset($this->rules[$removalRule][$key]);
                 }
             }
         } else {
-            foreach ($this->aRules as $sName => $aRules) {
+            foreach ($this->rules as $ruleName => $rules) {
                 // Either no search rule is given or the search rule matches the found rule exactly
                 // or the search rule ends in “-” and the found rule starts with the search rule or equals it
                 // (without the trailing dash).
                 if (
-                    !$mRule || $sName === $mRule
-                    || (\strrpos($mRule, '-') === \strlen($mRule) - \strlen('-')
-                        && (\strpos($sName, $mRule) === 0 || $sName === \substr($mRule, 0, -1)))
+                    !$removalPattern || $ruleName === $removalPattern
+                    || (\strrpos($removalPattern, '-') === \strlen($removalPattern) - \strlen('-')
+                        && (\strpos($ruleName, $removalPattern) === 0 || $ruleName === \substr($removalPattern, 0, -1)))
                 ) {
-                    unset($this->aRules[$sName]);
+                    unset($this->rules[$ruleName]);
                 }
             }
         }
@@ -266,27 +267,27 @@ abstract class RuleSet implements Renderable, Commentable
     protected function renderRules(OutputFormat $outputFormat)
     {
         $result = '';
-        $bIsFirst = true;
-        $oNextLevel = $outputFormat->nextLevel();
-        foreach ($this->aRules as $aRules) {
-            foreach ($aRules as $rule) {
-                $sRendered = $oNextLevel->safely(static function () use ($rule, $oNextLevel): string {
-                    return $rule->render($oNextLevel);
+        $isFirst = true;
+        $nextLevelFormat = $outputFormat->nextLevel();
+        foreach ($this->rules as $rules) {
+            foreach ($rules as $rule) {
+                $renderedRule = $nextLevelFormat->safely(static function () use ($rule, $nextLevelFormat): string {
+                    return $rule->render($nextLevelFormat);
                 });
-                if ($sRendered === null) {
+                if ($renderedRule === null) {
                     continue;
                 }
-                if ($bIsFirst) {
-                    $bIsFirst = false;
-                    $result .= $oNextLevel->spaceBeforeRules();
+                if ($isFirst) {
+                    $isFirst = false;
+                    $result .= $nextLevelFormat->spaceBeforeRules();
                 } else {
-                    $result .= $oNextLevel->spaceBetweenRules();
+                    $result .= $nextLevelFormat->spaceBetweenRules();
                 }
-                $result .= $sRendered;
+                $result .= $renderedRule;
             }
         }
 
-        if (!$bIsFirst) {
+        if (!$isFirst) {
             // Had some output
             $result .= $outputFormat->spaceAfterRules();
         }
