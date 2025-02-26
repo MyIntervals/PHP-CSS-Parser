@@ -319,12 +319,6 @@ parameters:
 			path: ../src/RuleSet/DeclarationBlock.php
 
 		-
-			message: '#^Foreach overwrites \$mSelector with its value variable\.$#'
-			identifier: foreach.valueOverwrite
-			count: 1
-			path: ../src/RuleSet/DeclarationBlock.php
-
-		-
 			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
 			identifier: notEqual.notAllowed
 			count: 1
