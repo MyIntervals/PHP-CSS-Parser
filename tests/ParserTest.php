@@ -1061,6 +1061,28 @@ body {background-color: red;}';
     }
 
     /**
+     * @test
+     */
+    public function ieHacksCauseExceptionInStrictMode(): void
+    {
+        $this->expectException(UnexpectedTokenException::class);
+
+        self::parsedStructureForFile('ie-hacks', Settings::create()->beStrict());
+    }
+
+    /**
+     * @test
+     */
+    public function ieHacksArePartiallyRemovedInLenientMode(): void
+    {
+        $document = self::parsedStructureForFile('ie-hacks', Settings::create()->withLenientParsing(true));
+
+        $expected = 'p {padding-right: .75rem;background-image: none;color: red;'
+            . 'background-color: red;background-color: red;content: "red 	\\0";content: "red઼";}';
+        self::assertSame($expected, $document->render());
+    }
+
+    /**
      * @depends files
      *
      * @test
