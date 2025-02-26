@@ -86,13 +86,6 @@ class Rule implements Renderable, Commentable
         $parserState->consume(':');
         $value = Value::parseValue($parserState, self::listDelimiterForRule($rule->getRule()));
         $rule->setValue($value);
-        if ($parserState->getSettings()->usesLenientParsing()) {
-            while ($parserState->comes('\\')) {
-                $parserState->consume('\\');
-                $parserState->consume();
-                $parserState->consumeWhiteSpace();
-            }
-        }
         $parserState->consumeWhiteSpace();
         if ($parserState->comes('!')) {
             $parserState->consume('!');
