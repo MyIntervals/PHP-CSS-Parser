@@ -8,7 +8,6 @@ use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Property\Selector;
-use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\RuleSet\RuleSet;
 use Sabberworm\CSS\Value\Value;
 
@@ -28,19 +27,6 @@ class Document extends CSSBlockList
         $oDocument = new Document($parserState->currentLine());
         CSSList::parseList($parserState, $oDocument);
         return $oDocument;
-    }
-
-    /**
-     * Gets all `DeclarationBlock` objects recursively, no matter how deeply nested the selectors are.
-     *
-     * @return array<int, DeclarationBlock>
-     */
-    public function getAllDeclarationBlocks(): array
-    {
-        /** @var array<int, DeclarationBlock> $result */
-        $result = [];
-        $this->allDeclarationBlocks($result);
-        return $result;
     }
 
     /**
