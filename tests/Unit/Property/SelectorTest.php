@@ -6,12 +6,23 @@ namespace Sabberworm\CSS\Tests\Unit\Property;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Property\Selector;
+use Sabberworm\CSS\Renderable;
 
 /**
  * @covers \Sabberworm\CSS\Property\Selector
  */
 final class SelectorTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function implementsRenderable(): void
+    {
+        $subject = new Selector('a');
+
+        self::assertInstanceOf(Renderable::class, $subject);
+    }
+
     /**
      * @test
      */
