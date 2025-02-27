@@ -40,6 +40,7 @@ Please also have a look at our
 
 ### Removed
 
+- Drop greedy calculation of selector specificity (#1021)
 - Drop `getLineNo()` from the `Renderable` interface (#1038)
 - Remove `OutputFormat::level()` (#874)
 - Remove expansion of shorthand properties (#838)

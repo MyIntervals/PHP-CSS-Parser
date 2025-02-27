@@ -87,15 +87,9 @@ class Selector implements Renderable
         return \preg_match(static::SELECTOR_VALIDATION_RX, $selector);
     }
 
-    /**
-     * @param bool $calculateSpecificity @deprecated since V8.8.0, will be removed in V9.0.0
-     */
-    public function __construct(string $selector, bool $calculateSpecificity = false)
+    public function __construct(string $selector)
     {
         $this->setSelector($selector);
-        if ($calculateSpecificity) {
-            $this->getSpecificity();
-        }
     }
 
     public function getSelector(): string
