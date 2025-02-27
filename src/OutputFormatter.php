@@ -225,6 +225,6 @@ class OutputFormatter
 
     private function indent(): string
     {
-        return \str_repeat($this->outputFormat->sIndentation, $this->outputFormat->getIndentationLevel());
+        return \str_repeat($this->outputFormat->getIndentation(), $this->outputFormat->getIndentationLevel());
     }
 }
