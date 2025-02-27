@@ -26,7 +26,7 @@ class Settings
     /**
      * The default charset for the CSS if no `@charset` declaration is found. Defaults to utf-8.
      *
-     * @var string
+     * @var non-empty-string
      *
      * @internal since 8.8.0, will be made private in 9.0.0
      */
@@ -62,17 +62,21 @@ class Settings
     public function withMultibyteSupport(bool $multibyteSupport = true): self
     {
         $this->multibyteSupport = $multibyteSupport;
+
         return $this;
     }
 
     /**
      * Sets the charset to be used if the CSS does not contain an `@charset` declaration.
      *
+     * @param non-empty-string $defaultCharset
+     *
      * @return $this fluent interface
      */
     public function withDefaultCharset(string $defaultCharset): self
     {
         $this->defaultCharset = $defaultCharset;
+
         return $this;
     }
 
@@ -84,6 +88,7 @@ class Settings
     public function withLenientParsing(bool $usesLenientParsing = true): self
     {
         $this->lenientParsing = $usesLenientParsing;
+
         return $this;
     }
 
@@ -95,5 +100,31 @@ class Settings
     public function beStrict(): self
     {
         return $this->withLenientParsing(false);
+    }
+
+    /**
+     * @internal
+     */
+    public function hasMultibyteSupport(): bool
+    {
+        return $this->multibyteSupport;
+    }
+
+    /**
+     * @return non-empty-string
+     *
+     * @internal
+     */
+    public function getDefaultCharset(): string
+    {
+        return $this->defaultCharset;
+    }
+
+    /**
+     * @internal
+     */
+    public function usesLenientParsing(): bool
+    {
+        return $this->lenientParsing;
     }
 }

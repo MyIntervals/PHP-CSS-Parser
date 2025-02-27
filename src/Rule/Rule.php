@@ -91,7 +91,7 @@ class Rule implements Renderable, Commentable
         $parserState->consume(':');
         $value = Value::parseValue($parserState, self::listDelimiterForRule($rule->getRule()));
         $rule->setValue($value);
-        if ($parserState->getSettings()->lenientParsing) {
+        if ($parserState->getSettings()->usesLenientParsing()) {
             while ($parserState->comes('\\')) {
                 $parserState->consume('\\');
                 $rule->addIeHack($parserState->consume());

@@ -166,7 +166,7 @@ abstract class Value implements Renderable
             $oValue = Color::parse($parserState);
         } elseif ($parserState->comes("'") || $parserState->comes('"')) {
             $oValue = CSSString::parse($parserState);
-        } elseif ($parserState->comes('progid:') && $parserState->getSettings()->lenientParsing) {
+        } elseif ($parserState->comes('progid:') && $parserState->getSettings()->usesLenientParsing()) {
             $oValue = self::parseMicrosoftFilter($parserState);
         } elseif ($parserState->comes('[')) {
             $oValue = LineName::parse($parserState);

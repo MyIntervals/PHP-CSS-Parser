@@ -48,7 +48,7 @@ final class SettingsTest extends TestCase
      */
     public function multibyteSupportByDefaultStateOfMbStringExtension(): void
     {
-        self::assertSame(\extension_loaded('mbstring'), $this->subject->multibyteSupport);
+        self::assertSame(\extension_loaded('mbstring'), $this->subject->hasMultibyteSupport());
     }
 
     /**
@@ -78,7 +78,7 @@ final class SettingsTest extends TestCase
     {
         $this->subject->withMultibyteSupport($value);
 
-        self::assertSame($value, $this->subject->multibyteSupport);
+        self::assertSame($value, $this->subject->hasMultibyteSupport());
     }
 
     /**
@@ -86,7 +86,7 @@ final class SettingsTest extends TestCase
      */
     public function defaultCharsetByDefaultIsUtf8(): void
     {
-        self::assertSame('utf-8', $this->subject->defaultCharset);
+        self::assertSame('utf-8', $this->subject->getDefaultCharset());
     }
 
     /**
@@ -105,7 +105,7 @@ final class SettingsTest extends TestCase
         $charset = 'ISO-8859-1';
         $this->subject->withDefaultCharset($charset);
 
-        self::assertSame($charset, $this->subject->defaultCharset);
+        self::assertSame($charset, $this->subject->getDefaultCharset());
     }
 
     /**
@@ -113,7 +113,7 @@ final class SettingsTest extends TestCase
      */
     public function lenientParsingByDefaultIsTrue(): void
     {
-        self::assertTrue($this->subject->lenientParsing);
+        self::assertTrue($this->subject->usesLenientParsing());
     }
 
     /**
@@ -132,7 +132,7 @@ final class SettingsTest extends TestCase
     {
         $this->subject->withLenientParsing($value);
 
-        self::assertSame($value, $this->subject->lenientParsing);
+        self::assertSame($value, $this->subject->usesLenientParsing());
     }
 
     /**
@@ -150,6 +150,6 @@ final class SettingsTest extends TestCase
     {
         $this->subject->beStrict();
 
-        self::assertFalse($this->subject->lenientParsing);
+        self::assertFalse($this->subject->usesLenientParsing());
     }
 }
