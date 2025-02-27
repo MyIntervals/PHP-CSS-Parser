@@ -58,7 +58,7 @@ class ParserState
         $this->parserSettings = $parserSettings;
         $this->text = $text;
         $this->lineNumber = $lineNumber;
-        $this->setCharset($this->parserSettings->defaultCharset);
+        $this->setCharset($this->parserSettings->getDefaultCharset());
     }
 
     /**
@@ -151,7 +151,7 @@ class ParserState
     {
         if ($this->peek() === '\\') {
             if (
-                $isForIdentifier && $this->parserSettings->lenientParsing
+                $isForIdentifier && $this->parserSettings->usesLenientParsing()
                 && ($this->comes('\\0') || $this->comes('\\9'))
             ) {
                 // Non-strings can contain \0 or \9 which is an IE hack supported in lenient parsing.
@@ -215,7 +215,7 @@ class ParserState
             while (\preg_match('/\\s/isSu', $this->peek()) === 1) {
                 $this->consume(1);
             }
-            if ($this->parserSettings->lenientParsing) {
+            if ($this->parserSettings->usesLenientParsing()) {
                 try {
                     $comment = $this->consumeComment();
                 } catch (UnexpectedEOFException $e) {
@@ -416,7 +416,7 @@ class ParserState
      */
     public function strlen($string): int
     {
-        if ($this->parserSettings->multibyteSupport) {
+        if ($this->parserSettings->hasMultibyteSupport()) {
             return \mb_strlen($string, $this->charset);
         } else {
             return \strlen($string);
@@ -449,7 +449,7 @@ class ParserState
      */
     private function strtolower($string): string
     {
-        if ($this->parserSettings->multibyteSupport) {
+        if ($this->parserSettings->hasMultibyteSupport()) {
             return \mb_strtolower($string, $this->charset);
         } else {
             return \strtolower($string);
@@ -465,7 +465,7 @@ class ParserState
      */
     private function strsplit($string)
     {
-        if ($this->parserSettings->multibyteSupport) {
+        if ($this->parserSettings->hasMultibyteSupport()) {
             if ($this->streql($this->charset, 'utf-8')) {
                 $result = \preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY);
                 if (!\is_array($result)) {
@@ -498,7 +498,7 @@ class ParserState
      */
     private function strpos($haystack, $needle, $offset)
     {
-        if ($this->parserSettings->multibyteSupport) {
+        if ($this->parserSettings->hasMultibyteSupport()) {
             return \mb_strpos($haystack, $needle, $offset, $this->charset);
         } else {
             return \strpos($haystack, $needle, $offset);

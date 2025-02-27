@@ -74,7 +74,7 @@ abstract class CSSList implements Renderable, Commentable
         if (\is_string($parserState)) {
             $parserState = new ParserState($parserState, Settings::create());
         }
-        $usesLenientParsing = $parserState->getSettings()->lenientParsing;
+        $usesLenientParsing = $parserState->getSettings()->usesLenientParsing();
         $comments = [];
         while (!$parserState->isEnd()) {
             $comments = \array_merge($comments, $parserState->consumeWhiteSpace());
@@ -138,7 +138,7 @@ abstract class CSSList implements Renderable, Commentable
             return $atRule;
         } elseif ($parserState->comes('}')) {
             if ($isRoot) {
-                if ($parserState->getSettings()->lenientParsing) {
+                if ($parserState->getSettings()->usesLenientParsing()) {
                     return DeclarationBlock::parse($parserState);
                 } else {
                     throw new SourceException('Unopened {', $parserState->currentLine());
@@ -215,7 +215,7 @@ abstract class CSSList implements Renderable, Commentable
             // Unknown other at rule (font-face or such)
             $arguments = \trim($parserState->consumeUntil('{', false, true));
             if (\substr_count($arguments, '(') != \substr_count($arguments, ')')) {
-                if ($parserState->getSettings()->lenientParsing) {
+                if ($parserState->getSettings()->usesLenientParsing()) {
                     return null;
                 } else {
                     throw new SourceException('Unmatched brace count in media query', $parserState->currentLine());
