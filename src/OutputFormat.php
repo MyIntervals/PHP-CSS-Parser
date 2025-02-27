@@ -10,19 +10,15 @@ class OutputFormat
      * Value format: `"` means double-quote, `'` means single-quote
      *
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $stringQuotingType = '"';
+    private $stringQuotingType = '"';
 
     /**
      * Output RGB colors in hash notation if possible
      *
      * @var bool
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $bRGBHashNotation = true;
+    private $bRGBHashNotation = true;
 
     /**
      * Declaration format
@@ -30,10 +26,8 @@ class OutputFormat
      * Semicolon after the last rule of a declaration block can be omitted. To do that, set this false.
      *
      * @var bool
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $bSemicolonAfterLastRule = true;
+    private $bSemicolonAfterLastRule = true;
 
     /**
      * Spacing
@@ -43,177 +37,133 @@ class OutputFormat
      * (e.g. `$outputFormat->set('Space*Rules', "\n");`)
      *
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sSpaceAfterRuleName = ' ';
+    private $sSpaceAfterRuleName = ' ';
 
     /**
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sSpaceBeforeRules = '';
+    private $sSpaceBeforeRules = '';
 
     /**
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sSpaceAfterRules = '';
+    private $sSpaceAfterRules = '';
 
     /**
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sSpaceBetweenRules = '';
+    private $sSpaceBetweenRules = '';
 
     /**
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sSpaceBeforeBlocks = '';
+    private $sSpaceBeforeBlocks = '';
 
     /**
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sSpaceAfterBlocks = '';
+    private $sSpaceAfterBlocks = '';
 
     /**
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sSpaceBetweenBlocks = "\n";
+    private $sSpaceBetweenBlocks = "\n";
 
     /**
      * Content injected in and around at-rule blocks.
      *
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sBeforeAtRuleBlock = '';
+    private $sBeforeAtRuleBlock = '';
 
     /**
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sAfterAtRuleBlock = '';
+    private $sAfterAtRuleBlock = '';
 
     /**
      * This is what’s printed before and after the comma if a declaration block contains multiple selectors.
      *
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sSpaceBeforeSelectorSeparator = '';
+    private $sSpaceBeforeSelectorSeparator = '';
 
     /**
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sSpaceAfterSelectorSeparator = ' ';
+    private $sSpaceAfterSelectorSeparator = ' ';
 
     /**
      * This is what’s inserted before the separator in value lists, by default.
      *
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sSpaceBeforeListArgumentSeparator = '';
+    private $sSpaceBeforeListArgumentSeparator = '';
 
     /**
      * Keys are separators (e.g. `,`).  Values are the space sequence to insert, or an empty string.
      *
      * @var array<non-empty-string, string>
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $aSpaceBeforeListArgumentSeparators = [];
+    private $aSpaceBeforeListArgumentSeparators = [];
 
     /**
      * This is what’s inserted after the separator in value lists, by default.
      *
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sSpaceAfterListArgumentSeparator = '';
+    private $sSpaceAfterListArgumentSeparator = '';
 
     /**
      * Keys are separators (e.g. `,`).  Values are the space sequence to insert, or an empty string.
      *
      * @var array<non-empty-string, string>
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $aSpaceAfterListArgumentSeparators = [];
+    private $aSpaceAfterListArgumentSeparators = [];
 
     /**
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sSpaceBeforeOpeningBrace = ' ';
+    private $sSpaceBeforeOpeningBrace = ' ';
 
     /**
      * Content injected in and around declaration blocks.
      *
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sBeforeDeclarationBlock = '';
+    private $sBeforeDeclarationBlock = '';
 
     /**
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sAfterDeclarationBlockSelectors = '';
+    private $sAfterDeclarationBlockSelectors = '';
 
     /**
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sAfterDeclarationBlock = '';
+    private $sAfterDeclarationBlock = '';
 
     /**
      * Indentation character(s) per level. Only applicable if newlines are used in any of the spacing settings.
      *
      * @var string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sIndentation = "\t";
+    private $sIndentation = "\t";
 
     /**
      * Output exceptions.
      *
      * @var bool
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $bIgnoreExceptions = false;
+    private $bIgnoreExceptions = false;
 
     /**
      * Render comments for lists and RuleSets
      *
      * @var bool
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $bRenderComments = false;
+    private $bRenderComments = false;
 
     /**
      * @var OutputFormatter|null

@@ -160,16 +160,16 @@ class DeclarationBlock extends RuleSet
             // If all the selectors have been removed, this declaration block becomes invalid
             throw new OutputException('Attempt to print declaration block with missing selector', $this->lineNumber);
         }
-        $result .= $outputFormat->sBeforeDeclarationBlock;
+        $result .= $outputFormat->getBeforeDeclarationBlock();
         $result .= $outputFormat->implode(
             $outputFormat->spaceBeforeSelectorSeparator() . ',' . $outputFormat->spaceAfterSelectorSeparator(),
             $this->selectors
         );
-        $result .= $outputFormat->sAfterDeclarationBlockSelectors;
+        $result .= $outputFormat->getAfterDeclarationBlockSelectors();
         $result .= $outputFormat->spaceBeforeOpeningBrace() . '{';
         $result .= $this->renderRules($outputFormat);
         $result .= '}';
-        $result .= $outputFormat->sAfterDeclarationBlock;
+        $result .= $outputFormat->getAfterDeclarationBlock();
         return $result;
     }
 }
