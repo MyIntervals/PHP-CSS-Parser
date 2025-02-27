@@ -173,7 +173,7 @@ class OutputFormat
     /**
      * @var OutputFormat|null
      */
-    private $oNextLevelFormat;
+    private $nextLevelFormat;
 
     /**
      * @var int
@@ -737,12 +737,12 @@ class OutputFormat
      */
     public function nextLevel(): self
     {
-        if ($this->oNextLevelFormat === null) {
-            $this->oNextLevelFormat = clone $this;
-            $this->oNextLevelFormat->iIndentationLevel++;
-            $this->oNextLevelFormat->outputFormatter = null;
+        if ($this->nextLevelFormat === null) {
+            $this->nextLevelFormat = clone $this;
+            $this->nextLevelFormat->iIndentationLevel++;
+            $this->nextLevelFormat->outputFormatter = null;
         }
-        return $this->oNextLevelFormat;
+        return $this->nextLevelFormat;
     }
 
     public function beLenient(): void
