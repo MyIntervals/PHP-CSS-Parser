@@ -73,11 +73,6 @@ class Selector implements Renderable
     private $selector;
 
     /**
-     * @var int|null
-     */
-    private $specificity;
-
-    /**
      * @return bool
      *
      * @internal since V8.8.0
@@ -87,15 +82,9 @@ class Selector implements Renderable
         return \preg_match(static::SELECTOR_VALIDATION_RX, $selector);
     }
 
-    /**
-     * @param bool $calculateSpecificity @deprecated since V8.8.0, will be removed in V9.0.0
-     */
-    public function __construct(string $selector, bool $calculateSpecificity = false)
+    public function __construct(string $selector)
     {
         $this->setSelector($selector);
-        if ($calculateSpecificity) {
-            $this->getSpecificity();
-        }
     }
 
     public function getSelector(): string
@@ -106,7 +95,6 @@ class Selector implements Renderable
     public function setSelector(string $selector): void
     {
         $this->selector = \trim($selector);
-        $this->specificity = null;
     }
 
     /**
@@ -122,16 +110,14 @@ class Selector implements Renderable
      */
     public function getSpecificity(): int
     {
-        if ($this->specificity === null) {
-            $a = 0;
-            /// @todo should exclude \# as well as "#"
-            $aMatches = null;
-            $b = \substr_count($this->selector, '#');
-            $c = \preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $this->selector, $aMatches);
-            $d = \preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $this->selector, $aMatches);
-            $this->specificity = ($a * 1000) + ($b * 100) + ($c * 10) + $d;
-        }
-        return $this->specificity;
+        $a = 0;
+        // @todo should exclude \# as well as "#"
+        $aMatches = null;
+        $b = \substr_count($this->selector, '#');
+        $c = \preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $this->selector, $aMatches);
+        $d = \preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $this->selector, $aMatches);
+
+        return ($a * 1000) + ($b * 100) + ($c * 10) + $d;
     }
 
     public function render(OutputFormat $outputFormat): string
