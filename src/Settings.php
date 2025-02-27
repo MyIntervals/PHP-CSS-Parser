@@ -21,7 +21,7 @@ class Settings
      *
      * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $bMultibyteSupport;
+    public $multibyteSupport;
 
     /**
      * The default charset for the CSS if no `@charset` declaration is found. Defaults to utf-8.
@@ -30,7 +30,7 @@ class Settings
      *
      * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $sDefaultCharset = 'utf-8';
+    public $defaultCharset = 'utf-8';
 
     /**
      * Whether the parser silently ignore invalid rules instead of choking on them.
@@ -39,11 +39,11 @@ class Settings
      *
      * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $bLenientParsing = true;
+    public $lenientParsing = true;
 
     private function __construct()
     {
-        $this->bMultibyteSupport = \extension_loaded('mbstring');
+        $this->multibyteSupport = \extension_loaded('mbstring');
     }
 
     public static function create(): self
@@ -59,9 +59,9 @@ class Settings
      *
      * @return $this fluent interface
      */
-    public function withMultibyteSupport(bool $bMultibyteSupport = true): self
+    public function withMultibyteSupport(bool $multibyteSupport = true): self
     {
-        $this->bMultibyteSupport = $bMultibyteSupport;
+        $this->multibyteSupport = $multibyteSupport;
         return $this;
     }
 
@@ -70,9 +70,9 @@ class Settings
      *
      * @return $this fluent interface
      */
-    public function withDefaultCharset(string $sDefaultCharset): self
+    public function withDefaultCharset(string $defaultCharset): self
     {
-        $this->sDefaultCharset = $sDefaultCharset;
+        $this->defaultCharset = $defaultCharset;
         return $this;
     }
 
@@ -83,7 +83,7 @@ class Settings
      */
     public function withLenientParsing(bool $usesLenientParsing = true): self
     {
-        $this->bLenientParsing = $usesLenientParsing;
+        $this->lenientParsing = $usesLenientParsing;
         return $this;
     }
 

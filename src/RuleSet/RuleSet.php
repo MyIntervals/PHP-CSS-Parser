@@ -64,7 +64,7 @@ abstract class RuleSet implements Renderable, Commentable
         }
         while (!$parserState->comes('}')) {
             $rule = null;
-            if ($parserState->getSettings()->bLenientParsing) {
+            if ($parserState->getSettings()->lenientParsing) {
                 try {
                     $rule = Rule::parse($parserState);
                 } catch (UnexpectedTokenException $e) {

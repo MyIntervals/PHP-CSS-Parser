@@ -32,7 +32,7 @@ class LineName extends ValueList
         $parserState->consumeWhiteSpace();
         $aNames = [];
         do {
-            if ($parserState->getSettings()->bLenientParsing) {
+            if ($parserState->getSettings()->lenientParsing) {
                 try {
                     $aNames[] = $parserState->parseIdentifier();
                 } catch (UnexpectedTokenException $e) {
