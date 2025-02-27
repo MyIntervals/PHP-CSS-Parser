@@ -63,14 +63,6 @@ class Selector implements Renderable
     }
 
     /**
-     * @deprecated in V8.8.0, will be removed in V9.0.0. Use `render` instead.
-     */
-    public function __toString(): string
-    {
-        return $this->getSelector();
-    }
-
-    /**
      * @return int<0, max>
      */
     public function getSpecificity(): int

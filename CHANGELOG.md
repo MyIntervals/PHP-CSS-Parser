@@ -48,6 +48,7 @@ Please also have a look at our
 
 ### Removed
 
+- Remove `__toString()` (#1046)
 - Drop magic method forwarding in `OutputFormat` (#898)
 - Drop `atRuleArgs()` from the `AtRule` interface (#1141)
 - Remove `OutputFormat::get()` and `::set()` (#1108, #1110)
