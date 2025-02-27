@@ -27,16 +27,13 @@ abstract class CSSBlockList extends CSSList
      */
     public function getAllDeclarationBlocks(): array
     {
-        /** @var list<DeclarationBlock> $result */
         $result = [];
 
-        foreach ($this->contents as $directSibling) {
-            if ($directSibling instanceof DeclarationBlock) {
-                $result[] = $directSibling;
-            } elseif ($directSibling instanceof CSSBlockList) {
-                foreach ($directSibling->getAllDeclarationBlocks() as $grandchild) {
-                    $result[] = $grandchild;
-                }
+        foreach ($this->contents as $item) {
+            if ($item instanceof DeclarationBlock) {
+                $result[] = $item;
+            } elseif ($item instanceof CSSBlockList) {
+                $result = \array_merge($result, $item->getAllDeclarationBlocks());
             }
         }
 
