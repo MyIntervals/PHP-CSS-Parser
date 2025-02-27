@@ -27,7 +27,7 @@ abstract class RuleSet implements Renderable, Commentable
     /**
      * @var array<string, Rule>
      */
-    private $aRules = [];
+    private $rules = [];
 
     /**
      * @var int<0, max>
@@ -104,14 +104,14 @@ abstract class RuleSet implements Renderable, Commentable
     public function addRule(Rule $rule, ?Rule $oSibling = null): void
     {
         $sRule = $rule->getRule();
-        if (!isset($this->aRules[$sRule])) {
-            $this->aRules[$sRule] = [];
+        if (!isset($this->rules[$sRule])) {
+            $this->rules[$sRule] = [];
         }
 
-        $position = \count($this->aRules[$sRule]);
+        $position = \count($this->rules[$sRule]);
 
         if ($oSibling !== null) {
-            $iSiblingPos = \array_search($oSibling, $this->aRules[$sRule], true);
+            $iSiblingPos = \array_search($oSibling, $this->rules[$sRule], true);
             if ($iSiblingPos !== false) {
                 $position = $iSiblingPos;
                 $rule->setPosition($oSibling->getLineNo(), $oSibling->getColNo() - 1);
@@ -127,7 +127,7 @@ abstract class RuleSet implements Renderable, Commentable
             }
         }
 
-        \array_splice($this->aRules[$sRule], $position, 0, [$rule]);
+        \array_splice($this->rules[$sRule], $position, 0, [$rule]);
     }
 
     /**
@@ -153,7 +153,7 @@ abstract class RuleSet implements Renderable, Commentable
         }
         /** @var array<int, Rule> $result */
         $result = [];
-        foreach ($this->aRules as $sName => $aRules) {
+        foreach ($this->rules as $sName => $rules) {
             // Either no search rule is given or the search rule matches the found rule exactly
             // or the search rule ends in “-” and the found rule starts with the search rule.
             if (
@@ -163,7 +163,7 @@ abstract class RuleSet implements Renderable, Commentable
                     && (\strpos($sName, $mRule) === 0 || $sName === \substr($mRule, 0, -1))
                 )
             ) {
-                $result = \array_merge($result, $aRules);
+                $result = \array_merge($result, $rules);
             }
         }
         \usort($result, static function (Rule $first, Rule $second): int {
@@ -178,12 +178,12 @@ abstract class RuleSet implements Renderable, Commentable
     /**
      * Overrides all the rules of this set.
      *
-     * @param array<array-key, Rule> $aRules The rules to override with.
+     * @param array<array-key, Rule> $rules The rules to override with.
      */
-    public function setRules(array $aRules): void
+    public function setRules(array $rules): void
     {
-        $this->aRules = [];
-        foreach ($aRules as $rule) {
+        $this->rules = [];
+        foreach ($rules as $rule) {
             $this->addRule($rule);
         }
     }
@@ -231,16 +231,16 @@ abstract class RuleSet implements Renderable, Commentable
     {
         if ($mRule instanceof Rule) {
             $sRule = $mRule->getRule();
-            if (!isset($this->aRules[$sRule])) {
+            if (!isset($this->rules[$sRule])) {
                 return;
             }
-            foreach ($this->aRules[$sRule] as $key => $rule) {
+            foreach ($this->rules[$sRule] as $key => $rule) {
                 if ($rule === $mRule) {
-                    unset($this->aRules[$sRule][$key]);
+                    unset($this->rules[$sRule][$key]);
                 }
             }
         } else {
-            foreach ($this->aRules as $sName => $aRules) {
+            foreach ($this->rules as $sName => $rules) {
                 // Either no search rule is given or the search rule matches the found rule exactly
                 // or the search rule ends in “-” and the found rule starts with the search rule or equals it
                 // (without the trailing dash).
@@ -249,7 +249,7 @@ abstract class RuleSet implements Renderable, Commentable
                     || (\strrpos($mRule, '-') === \strlen($mRule) - \strlen('-')
                         && (\strpos($sName, $mRule) === 0 || $sName === \substr($mRule, 0, -1)))
                 ) {
-                    unset($this->aRules[$sName]);
+                    unset($this->rules[$sName]);
                 }
             }
         }
@@ -271,8 +271,8 @@ abstract class RuleSet implements Renderable, Commentable
         $result = '';
         $isFirst = true;
         $oNextLevel = $outputFormat->nextLevel();
-        foreach ($this->aRules as $aRules) {
-            foreach ($aRules as $rule) {
+        foreach ($this->rules as $rules) {
+            foreach ($rules as $rule) {
                 $sRendered = $oNextLevel->safely(static function () use ($rule, $oNextLevel): string {
                     return $rule->render($oNextLevel);
                 });
