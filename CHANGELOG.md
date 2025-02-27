@@ -32,6 +32,7 @@ Please also have a look at our
 
 ### Deprecated
 
+- Deprecate greedy calculation of selector specificity (#1018)
 - Deprecate `__toString()` (#1006)
 - `OutputFormat` properties for space around list separators as an array (#880)
 
