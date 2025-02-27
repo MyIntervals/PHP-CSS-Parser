@@ -18,28 +18,22 @@ class Settings
      * and `mb_strpos` functions. Otherwise, the normal (ASCII-Only) functions will be used.
      *
      * @var bool
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $multibyteSupport;
+    private $multibyteSupport;
 
     /**
      * The default charset for the CSS if no `@charset` declaration is found. Defaults to utf-8.
      *
      * @var non-empty-string
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $defaultCharset = 'utf-8';
+    private $defaultCharset = 'utf-8';
 
     /**
      * Whether the parser silently ignore invalid rules instead of choking on them.
      *
      * @var bool
-     *
-     * @internal since 8.8.0, will be made private in 9.0.0
      */
-    public $lenientParsing = true;
+    private $lenientParsing = true;
 
     private function __construct()
     {
