@@ -269,7 +269,7 @@ abstract class RuleSet implements Renderable, Commentable
     protected function renderRules(OutputFormat $outputFormat)
     {
         $result = '';
-        $bIsFirst = true;
+        $isFirst = true;
         $oNextLevel = $outputFormat->nextLevel();
         foreach ($this->aRules as $aRules) {
             foreach ($aRules as $rule) {
@@ -279,8 +279,8 @@ abstract class RuleSet implements Renderable, Commentable
                 if ($sRendered === null) {
                     continue;
                 }
-                if ($bIsFirst) {
-                    $bIsFirst = false;
+                if ($isFirst) {
+                    $isFirst = false;
                     $result .= $oNextLevel->spaceBeforeRules();
                 } else {
                     $result .= $oNextLevel->spaceBetweenRules();
@@ -289,7 +289,7 @@ abstract class RuleSet implements Renderable, Commentable
             }
         }
 
-        if (!$bIsFirst) {
+        if (!$isFirst) {
             // Had some output
             $result .= $outputFormat->spaceAfterRules();
         }
