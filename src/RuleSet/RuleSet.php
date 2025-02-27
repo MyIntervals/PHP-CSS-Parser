@@ -101,7 +101,7 @@ abstract class RuleSet implements Renderable, Commentable
         return $this->lineNumber;
     }
 
-    public function addRule(Rule $rule, ?Rule $oSibling = null): void
+    public function addRule(Rule $rule, ?Rule $sibling = null): void
     {
         $sRule = $rule->getRule();
         if (!isset($this->rules[$sRule])) {
@@ -110,11 +110,11 @@ abstract class RuleSet implements Renderable, Commentable
 
         $position = \count($this->rules[$sRule]);
 
-        if ($oSibling !== null) {
-            $iSiblingPos = \array_search($oSibling, $this->rules[$sRule], true);
+        if ($sibling !== null) {
+            $iSiblingPos = \array_search($sibling, $this->rules[$sRule], true);
             if ($iSiblingPos !== false) {
                 $position = $iSiblingPos;
-                $rule->setPosition($oSibling->getLineNo(), $oSibling->getColNo() - 1);
+                $rule->setPosition($sibling->getLineNo(), $sibling->getColNo() - 1);
             }
         }
         if ($rule->getLineNo() === 0 && $rule->getColNo() === 0) {
