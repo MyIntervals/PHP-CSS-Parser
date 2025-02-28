@@ -38,6 +38,7 @@ Please also have a look at our
 
 ### Removed
 
+- Drop `getLineNo()` from the `Renderable` interface (#1038)
 - Remove `OutputFormat::level()` (#874)
 - Remove expansion of shorthand properties (#838)
 - Remove `Parser::setCharset/getCharset` (#808)
