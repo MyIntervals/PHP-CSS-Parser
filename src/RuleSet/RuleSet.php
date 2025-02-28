@@ -138,7 +138,7 @@ abstract class RuleSet implements Renderable, Commentable
      * @example $ruleSet->getRules('font-')
      *          //returns an array of all rules either beginning with font- or matching font.
      *
-     * @param Rule|string|null $mRule
+     * @param Rule|string|null $searchPattern
      *        Pattern to search for. If null, returns all rules.
      *        If the pattern ends with a dash, all rules starting with the pattern are returned
      *        as well as one matching the pattern with the dash excluded.
@@ -146,10 +146,10 @@ abstract class RuleSet implements Renderable, Commentable
      *
      * @return array<int, Rule>
      */
-    public function getRules($mRule = null)
+    public function getRules($searchPattern = null)
     {
-        if ($mRule instanceof Rule) {
-            $mRule = $mRule->getRule();
+        if ($searchPattern instanceof Rule) {
+            $searchPattern = $searchPattern->getRule();
         }
         /** @var array<int, Rule> $result */
         $result = [];
@@ -157,10 +157,10 @@ abstract class RuleSet implements Renderable, Commentable
             // Either no search rule is given or the search rule matches the found rule exactly
             // or the search rule ends in “-” and the found rule starts with the search rule.
             if (
-                !$mRule || $sName === $mRule
+                !$searchPattern || $sName === $searchPattern
                 || (
-                    \strrpos($mRule, '-') === \strlen($mRule) - \strlen('-')
-                    && (\strpos($sName, $mRule) === 0 || $sName === \substr($mRule, 0, -1))
+                    \strrpos($searchPattern, '-') === \strlen($searchPattern) - \strlen('-')
+                    && (\strpos($sName, $searchPattern) === 0 || $sName === \substr($searchPattern, 0, -1))
                 )
             ) {
                 $result = \array_merge($result, $rules);
@@ -196,18 +196,18 @@ abstract class RuleSet implements Renderable, Commentable
      * like `{ background-color: green; background-color; rgba(0, 127, 0, 0.7); }` will only yield an associative array
      * containing the rgba-valued rule while `getRules()` would yield an indexed array containing both.
      *
-     * @param Rule|string|null $mRule $mRule
+     * @param Rule|string|null $searchPattern
      *        Pattern to search for. If null, returns all rules. If the pattern ends with a dash,
      *        all rules starting with the pattern are returned as well as one matching the pattern with the dash
      *        excluded. Passing a Rule behaves like calling `getRules($mRule->getRule())`.
      *
      * @return array<string, Rule>
      */
-    public function getRulesAssoc($mRule = null)
+    public function getRulesAssoc($searchPattern = null)
     {
         /** @var array<string, Rule> $result */
         $result = [];
-        foreach ($this->getRules($mRule) as $rule) {
+        foreach ($this->getRules($searchPattern) as $rule) {
             $result[$rule->getRule()] = $rule;
         }
         return $result;
@@ -222,20 +222,20 @@ abstract class RuleSet implements Renderable, Commentable
      * Note: this is different from pre-v.2.0 behaviour of PHP-CSS-Parser, where passing a Rule instance would
      * remove all rules with the same name. To get the old behaviour, use `removeRule($rule->getRule())`.
      *
-     * @param Rule|string|null $mRule
-     *        pattern to remove. If $mRule is null, all rules are removed. If the pattern ends in a dash,
+     * @param Rule|string|null $searchPattern
+     *        pattern to remove. If null, all rules are removed. If the pattern ends in a dash,
      *        all rules starting with the pattern are removed as well as one matching the pattern with the dash
      *        excluded. Passing a Rule behaves matches by identity.
      */
-    public function removeRule($mRule): void
+    public function removeRule($searchPattern): void
     {
-        if ($mRule instanceof Rule) {
-            $sRule = $mRule->getRule();
+        if ($searchPattern instanceof Rule) {
+            $sRule = $searchPattern->getRule();
             if (!isset($this->rules[$sRule])) {
                 return;
             }
             foreach ($this->rules[$sRule] as $key => $rule) {
-                if ($rule === $mRule) {
+                if ($rule === $searchPattern) {
                     unset($this->rules[$sRule][$key]);
                 }
             }
@@ -245,9 +245,9 @@ abstract class RuleSet implements Renderable, Commentable
                 // or the search rule ends in “-” and the found rule starts with the search rule or equals it
                 // (without the trailing dash).
                 if (
-                    !$mRule || $sName === $mRule
-                    || (\strrpos($mRule, '-') === \strlen($mRule) - \strlen('-')
-                        && (\strpos($sName, $mRule) === 0 || $sName === \substr($mRule, 0, -1)))
+                    !$searchPattern || $sName === $searchPattern
+                    || (\strrpos($searchPattern, '-') === \strlen($searchPattern) - \strlen('-')
+                        && (\strpos($sName, $searchPattern) === 0 || $sName === \substr($searchPattern, 0, -1)))
                 ) {
                     unset($this->rules[$sName]);
                 }
