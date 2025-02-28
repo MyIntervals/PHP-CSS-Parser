@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Mark `Selector::isValid()` as `@internal` (#1037)
 - Mark parsing-related methods of most CSS elements as `@internal` (#908)
 - Mark `OutputFormat::nextLevel()` as `@internal` (#901)
 - Make all non-private properties `@internal` (#886)
