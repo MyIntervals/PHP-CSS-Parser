@@ -270,20 +270,20 @@ abstract class RuleSet implements Renderable, Commentable
     {
         $result = '';
         $isFirst = true;
-        $oNextLevel = $outputFormat->nextLevel();
+        $nextLevelFormat = $outputFormat->nextLevel();
         foreach ($this->rules as $rules) {
             foreach ($rules as $rule) {
-                $sRendered = $oNextLevel->safely(static function () use ($rule, $oNextLevel): string {
-                    return $rule->render($oNextLevel);
+                $sRendered = $nextLevelFormat->safely(static function () use ($rule, $nextLevelFormat): string {
+                    return $rule->render($nextLevelFormat);
                 });
                 if ($sRendered === null) {
                     continue;
                 }
                 if ($isFirst) {
                     $isFirst = false;
-                    $result .= $oNextLevel->spaceBeforeRules();
+                    $result .= $nextLevelFormat->spaceBeforeRules();
                 } else {
-                    $result .= $oNextLevel->spaceBetweenRules();
+                    $result .= $nextLevelFormat->spaceBetweenRules();
                 }
                 $result .= $sRendered;
             }
