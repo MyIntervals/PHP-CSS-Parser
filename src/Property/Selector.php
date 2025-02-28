@@ -78,6 +78,8 @@ class Selector
      * @param string $selector
      *
      * @return bool
+     *
+     * @internal since V8.8.0
      */
     public static function isValid($selector)
     {
