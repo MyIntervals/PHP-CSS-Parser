@@ -12,9 +12,4 @@ interface Renderable
     public function __toString(): string;
 
     public function render(OutputFormat $outputFormat): string;
-
-    /**
-     * @return int<0, max>
-     */
-    public function getLineNo(): int;
 }
