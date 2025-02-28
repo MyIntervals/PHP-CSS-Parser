@@ -101,9 +101,9 @@ abstract class RuleSet implements Renderable, Commentable
         return $this->lineNumber;
     }
 
-    public function addRule(Rule $rule, ?Rule $sibling = null): void
+    public function addRule(Rule $ruleToAdd, ?Rule $sibling = null): void
     {
-        $sRule = $rule->getRule();
+        $sRule = $ruleToAdd->getRule();
         if (!isset($this->rules[$sRule])) {
             $this->rules[$sRule] = [];
         }
@@ -114,20 +114,20 @@ abstract class RuleSet implements Renderable, Commentable
             $iSiblingPos = \array_search($sibling, $this->rules[$sRule], true);
             if ($iSiblingPos !== false) {
                 $position = $iSiblingPos;
-                $rule->setPosition($sibling->getLineNo(), $sibling->getColNo() - 1);
+                $ruleToAdd->setPosition($sibling->getLineNo(), $sibling->getColNo() - 1);
             }
         }
-        if ($rule->getLineNo() === 0 && $rule->getColNo() === 0) {
+        if ($ruleToAdd->getLineNo() === 0 && $ruleToAdd->getColNo() === 0) {
             //this node is added manually, give it the next best line
             $rules = $this->getRules();
             $pos = \count($rules);
             if ($pos > 0) {
                 $last = $rules[$pos - 1];
-                $rule->setPosition($last->getLineNo() + 1, 0);
+                $ruleToAdd->setPosition($last->getLineNo() + 1, 0);
             }
         }
 
-        \array_splice($this->rules[$sRule], $position, 0, [$rule]);
+        \array_splice($this->rules[$sRule], $position, 0, [$ruleToAdd]);
     }
 
     /**
