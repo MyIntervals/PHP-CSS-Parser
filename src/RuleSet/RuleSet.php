@@ -103,15 +103,15 @@ abstract class RuleSet implements Renderable, Commentable
 
     public function addRule(Rule $ruleToAdd, ?Rule $sibling = null): void
     {
-        $sRule = $ruleToAdd->getRule();
-        if (!isset($this->rules[$sRule])) {
-            $this->rules[$sRule] = [];
+        $propertyName = $ruleToAdd->getRule();
+        if (!isset($this->rules[$propertyName])) {
+            $this->rules[$propertyName] = [];
         }
 
-        $position = \count($this->rules[$sRule]);
+        $position = \count($this->rules[$propertyName]);
 
         if ($sibling !== null) {
-            $iSiblingPos = \array_search($sibling, $this->rules[$sRule], true);
+            $iSiblingPos = \array_search($sibling, $this->rules[$propertyName], true);
             if ($iSiblingPos !== false) {
                 $position = $iSiblingPos;
                 $ruleToAdd->setPosition($sibling->getLineNo(), $sibling->getColNo() - 1);
@@ -127,7 +127,7 @@ abstract class RuleSet implements Renderable, Commentable
             }
         }
 
-        \array_splice($this->rules[$sRule], $position, 0, [$ruleToAdd]);
+        \array_splice($this->rules[$propertyName], $position, 0, [$ruleToAdd]);
     }
 
     /**
@@ -153,14 +153,15 @@ abstract class RuleSet implements Renderable, Commentable
         }
         /** @var array<int, Rule> $result */
         $result = [];
-        foreach ($this->rules as $sName => $rules) {
+        foreach ($this->rules as $propertyName => $rules) {
             // Either no search rule is given or the search rule matches the found rule exactly
             // or the search rule ends in “-” and the found rule starts with the search rule.
             if (
-                !$searchPattern || $sName === $searchPattern
+                !$searchPattern || $propertyName === $searchPattern
                 || (
                     \strrpos($searchPattern, '-') === \strlen($searchPattern) - \strlen('-')
-                    && (\strpos($sName, $searchPattern) === 0 || $sName === \substr($searchPattern, 0, -1))
+                    && (\strpos($propertyName, $searchPattern) === 0
+                        || $propertyName === \substr($searchPattern, 0, -1))
                 )
             ) {
                 $result = \array_merge($result, $rules);
@@ -230,26 +231,27 @@ abstract class RuleSet implements Renderable, Commentable
     public function removeRule($searchPattern): void
     {
         if ($searchPattern instanceof Rule) {
-            $sRule = $searchPattern->getRule();
-            if (!isset($this->rules[$sRule])) {
+            $propertyName = $searchPattern->getRule();
+            if (!isset($this->rules[$propertyName])) {
                 return;
             }
-            foreach ($this->rules[$sRule] as $key => $rule) {
+            foreach ($this->rules[$propertyName] as $key => $rule) {
                 if ($rule === $searchPattern) {
-                    unset($this->rules[$sRule][$key]);
+                    unset($this->rules[$propertyName][$key]);
                 }
             }
         } else {
-            foreach ($this->rules as $sName => $rules) {
+            foreach ($this->rules as $propertyName => $rules) {
                 // Either no search rule is given or the search rule matches the found rule exactly
                 // or the search rule ends in “-” and the found rule starts with the search rule or equals it
                 // (without the trailing dash).
                 if (
-                    !$searchPattern || $sName === $searchPattern
+                    !$searchPattern || $propertyName === $searchPattern
                     || (\strrpos($searchPattern, '-') === \strlen($searchPattern) - \strlen('-')
-                        && (\strpos($sName, $searchPattern) === 0 || $sName === \substr($searchPattern, 0, -1)))
+                        && (\strpos($propertyName, $searchPattern) === 0
+                            || $propertyName === \substr($searchPattern, 0, -1)))
                 ) {
-                    unset($this->rules[$sName]);
+                    unset($this->rules[$propertyName]);
                 }
             }
         }
