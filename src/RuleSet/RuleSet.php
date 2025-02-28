@@ -69,9 +69,9 @@ abstract class RuleSet implements Renderable, Commentable
                     $rule = Rule::parse($parserState);
                 } catch (UnexpectedTokenException $e) {
                     try {
-                        $sConsume = $parserState->consumeUntil(["\n", ';', '}'], true);
+                        $consumedText = $parserState->consumeUntil(["\n", ';', '}'], true);
                         // We need to “unfind” the matches to the end of the ruleSet as this will be matched later
-                        if ($parserState->streql(\substr($sConsume, -1), '}')) {
+                        if ($parserState->streql(\substr($consumedText, -1), '}')) {
                             $parserState->backtrack(1);
                         } else {
                             while ($parserState->comes(';')) {
