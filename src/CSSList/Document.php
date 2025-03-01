@@ -30,19 +30,6 @@ class Document extends CSSBlockList
     }
 
     /**
-     * Returns all `RuleSet` objects recursively found in the tree, no matter how deeply nested the rule sets are.
-     *
-     * @return array<int, RuleSet>
-     */
-    public function getAllRuleSets(): array
-    {
-        /** @var array<int, RuleSet> $result */
-        $result = [];
-        $this->allRuleSets($result);
-        return $result;
-    }
-
-    /**
      * Returns all `Value` objects found recursively in `Rule`s in the tree.
      *
      * @param CSSList|RuleSet|string $element
