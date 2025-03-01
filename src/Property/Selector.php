@@ -78,22 +78,19 @@ class Selector implements Renderable
     private $specificity;
 
     /**
-     * @param string $selector
-     *
      * @return bool
      *
      * @internal since V8.8.0
      */
-    public static function isValid($selector)
+    public static function isValid(string $selector)
     {
         return \preg_match(static::SELECTOR_VALIDATION_RX, $selector);
     }
 
     /**
-     * @param string $selector
      * @param bool $calculateSpecificity @deprecated since V8.8.0, will be removed in V9.0.0
      */
-    public function __construct($selector, $calculateSpecificity = false)
+    public function __construct(string $selector, bool $calculateSpecificity = false)
     {
         $this->setSelector($selector);
         if ($calculateSpecificity) {
@@ -101,18 +98,12 @@ class Selector implements Renderable
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getSelector()
+    public function getSelector(): string
     {
         return $this->selector;
     }
 
-    /**
-     * @param string $selector
-     */
-    public function setSelector($selector): void
+    public function setSelector(string $selector): void
     {
         $this->selector = \trim($selector);
         $this->specificity = null;
@@ -127,9 +118,9 @@ class Selector implements Renderable
     }
 
     /**
-     * @return int
+     * @return int<0, max>
      */
-    public function getSpecificity()
+    public function getSpecificity(): int
     {
         if ($this->specificity === null) {
             $a = 0;

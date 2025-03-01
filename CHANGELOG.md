@@ -29,7 +29,7 @@ Please also have a look at our
 - Make all non-private properties `@internal` (#886)
 - Use more native type declarations and strict mode
   (#641, #772, #774, #778, #804, #841, #873, #875, #891, #922, #923, #933, #958,
-  #964, #967, #1000)
+  #964, #967, #1000, #1044)
 - Add visibility to all class/interface constants (#469)
 
 ### Deprecated
