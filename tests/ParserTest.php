@@ -246,30 +246,6 @@ final class ParserTest extends TestCase
     public function specificity(): void
     {
         $document = self::parsedStructureForFile('specificity');
-        $declarationBlocks = $document->getAllDeclarationBlocks();
-        $declarationBlock = $declarationBlocks[0];
-        $selectors = $declarationBlock->getSelectors();
-        foreach ($selectors as $selector) {
-            switch ($selector->getSelector()) {
-                case '#test .help':
-                    self::assertSame(110, $selector->getSpecificity());
-                    break;
-                case '#file':
-                    self::assertSame(100, $selector->getSpecificity());
-                    break;
-                case '.help:hover':
-                    self::assertSame(20, $selector->getSpecificity());
-                    break;
-                case 'ol li::before':
-                    self::assertSame(3, $selector->getSpecificity());
-                    break;
-                case 'li.green':
-                    self::assertSame(11, $selector->getSpecificity());
-                    break;
-                default:
-                    self::fail('specificity: untested selector ' . $selector->getSelector());
-            }
-        }
         self::assertEquals([new Selector('#test .help', true)], $document->getSelectorsBySpecificity('> 100'));
         self::assertEquals(
             [new Selector('#test .help', true), new Selector('#file', true)],

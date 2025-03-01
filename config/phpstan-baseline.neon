@@ -223,12 +223,6 @@ parameters:
 			path: ../src/Property/Import.php
 
 		-
-			message: '#^Parameters should have "string" types as the only types passed to this method$#'
-			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 1
-			path: ../src/Property/Selector.php
-
-		-
 			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
 			identifier: method.notFound
 			count: 1
