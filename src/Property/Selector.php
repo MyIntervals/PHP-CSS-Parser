@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\Property;
 
+use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Renderable;
+
 /**
  * Class representing a single CSS selector. Selectors have to be split by the comma prior to being passed into this
  * class.
  */
-class Selector
+class Selector implements Renderable
 {
     /**
      * regexp for specificity calculations
@@ -138,5 +141,10 @@ class Selector
             $this->specificity = ($a * 1000) + ($b * 100) + ($c * 10) + $d;
         }
         return $this->specificity;
+    }
+
+    public function render(OutputFormat $outputFormat): string
+    {
+        return $this->getSelector();
     }
 }

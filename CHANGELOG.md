@@ -21,6 +21,7 @@ Please also have a look at our
 
 ### Changed
 
+- Make `Selector` a `Renderable` (#1017)
 - Mark `Selector::isValid()` as `@internal` (#1037)
 - Mark parsing-related methods of most CSS elements as `@internal` (#908)
 - Mark `OutputFormat::nextLevel()` as `@internal` (#901)
