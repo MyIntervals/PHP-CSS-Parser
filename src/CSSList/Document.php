@@ -24,9 +24,10 @@ class Document extends CSSBlockList
      */
     public static function parse(ParserState $parserState): Document
     {
-        $oDocument = new Document($parserState->currentLine());
-        CSSList::parseList($parserState, $oDocument);
-        return $oDocument;
+        $document = new Document($parserState->currentLine());
+        CSSList::parseList($parserState, $document);
+
+        return $document;
     }
 
     /**
