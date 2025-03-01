@@ -33,7 +33,7 @@ abstract class CSSBlockList extends CSSList
             if ($item instanceof DeclarationBlock) {
                 $result[] = $item;
             } elseif ($item instanceof CSSBlockList) {
-                $result = \array_merge($result, $item->getAllDeclarationBlocks());
+                \array_push($result, ...$item->getAllDeclarationBlocks());
             }
         }
 
