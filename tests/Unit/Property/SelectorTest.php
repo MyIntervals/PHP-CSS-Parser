@@ -77,7 +77,7 @@ final class SelectorTest extends TestCase
      *
      * @dataProvider provideSelectorsAndSpecificities
      */
-    public function getSpecificityByReturnsSpecificityOfSelectorLastProvidedViaSetSelector(
+    public function getSpecificityReturnsSpecificityOfSelectorLastProvidedViaSetSelector(
         string $selector,
         int $expectedSpecificity
     ): void {
