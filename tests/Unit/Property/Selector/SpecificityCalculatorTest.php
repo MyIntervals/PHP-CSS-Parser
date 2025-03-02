@@ -36,10 +36,10 @@ final class SpecificityCalculatorTest extends TestCase
      *
      * @dataProvider provideSelectorsAndSpecificities
      */
-    public function calculateSpecificityReturnsSpecificityForProvidedSelector(
+    public function calculateReturnsSpecificityForProvidedSelector(
         string $selector,
         int $expectedSpecificity
     ): void {
-        self::assertSame($expectedSpecificity, SpecificityCalculator::calculateSpecificity($selector));
+        self::assertSame($expectedSpecificity, SpecificityCalculator::calculate($selector));
     }
 }

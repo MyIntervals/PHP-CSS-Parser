@@ -53,23 +53,23 @@ final class SpecificityCalculator
     /**
      * @var array<string, int<0, max>>
      */
-    private static $specificityCache = [];
+    private static $cache = [];
 
     /**
      * @return int<0, max>
      */
-    public static function calculateSpecificity(string $selector): int
+    public static function calculate(string $selector): int
     {
-        if (!isset(self::$specificityCache[$selector])) {
+        if (!isset(self::$cache[$selector])) {
             $a = 0;
             /// @todo should exclude \# as well as "#"
             $aMatches = null;
             $b = \substr_count($selector, '#');
             $c = \preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $selector, $aMatches);
             $d = \preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $selector, $aMatches);
-            self::$specificityCache[$selector] = ($a * 1000) + ($b * 100) + ($c * 10) + $d;
+            self::$cache[$selector] = ($a * 1000) + ($b * 100) + ($c * 10) + $d;
         }
 
-        return self::$specificityCache[$selector];
+        return self::$cache[$selector];
     }
 }
