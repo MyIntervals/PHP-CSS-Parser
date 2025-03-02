@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Sabberworm\CSS\Tests\Unit\Property;
+namespace Sabberworm\CSS\Tests\Unit\Property\Selector;
 
 use PHPUnit\Framework\TestCase;
-use Sabberworm\CSS\Property\DependencyCalculator;
+use Sabberworm\CSS\Property\Selector\SpecificityCalculator;
 
 /**
- * @covers \Sabberworm\CSS\Property\DependencyCalculator
+ * @covers \Sabberworm\CSS\Property\Selector\SpecificityCalculator
  */
-final class DependencyCalculatorTest extends TestCase
+final class SpecificityCalculatorTest extends TestCase
 {
     /**
      * @return array<string, array{0: non-empty-string, 1: int<0, max>}>
@@ -40,6 +40,6 @@ final class DependencyCalculatorTest extends TestCase
         string $selector,
         int $expectedSpecificity
     ): void {
-        self::assertSame($expectedSpecificity, DependencyCalculator::calculateSpecificity($selector));
+        self::assertSame($expectedSpecificity, SpecificityCalculator::calculateSpecificity($selector));
     }
 }

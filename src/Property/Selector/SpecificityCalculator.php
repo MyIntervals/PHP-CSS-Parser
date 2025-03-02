@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sabberworm\CSS\Property;
+namespace Sabberworm\CSS\Property\Selector;
 
 /**
  * Utility class to calculate the specificity of a CSS selector.
@@ -11,7 +11,7 @@ namespace Sabberworm\CSS\Property;
  *
  * @internal
  */
-final class DependencyCalculator
+final class SpecificityCalculator
 {
     /**
      * regexp for specificity calculations
