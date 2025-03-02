@@ -150,13 +150,6 @@ class ParserState
     public function parseCharacter($isForIdentifier)
     {
         if ($this->peek() === '\\') {
-            if (
-                $isForIdentifier && $this->parserSettings->usesLenientParsing()
-                && ($this->comes('\\0') || $this->comes('\\9'))
-            ) {
-                // Non-strings can contain \0 or \9 which is an IE hack supported in lenient parsing.
-                return null;
-            }
             $this->consume('\\');
             if ($this->comes('\\n') || $this->comes('\\r')) {
                 return '';

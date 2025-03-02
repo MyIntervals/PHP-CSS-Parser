@@ -50,7 +50,6 @@ abstract class Value implements Renderable
         while (
         !($parserState->comes('}') || $parserState->comes(';') || $parserState->comes('!')
             || $parserState->comes(')')
-            || $parserState->comes('\\')
             || $parserState->isEnd())
         ) {
             if (\count($aStack) > 0) {

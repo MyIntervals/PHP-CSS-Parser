@@ -37,11 +37,6 @@ class Rule implements Renderable, Commentable
     private $isImportant = false;
 
     /**
-     * @var array<int, int>
-     */
-    private $ieHack = [];
-
-    /**
      * @var int
      */
     protected $lineNumber;
@@ -91,13 +86,6 @@ class Rule implements Renderable, Commentable
         $parserState->consume(':');
         $value = Value::parseValue($parserState, self::listDelimiterForRule($rule->getRule()));
         $rule->setValue($value);
-        if ($parserState->getSettings()->usesLenientParsing()) {
-            while ($parserState->comes('\\')) {
-                $parserState->consume('\\');
-                $rule->addIeHack($parserState->consume());
-                $parserState->consumeWhiteSpace();
-            }
-        }
         $parserState->consumeWhiteSpace();
         if ($parserState->comes('!')) {
             $parserState->consume('!');
@@ -221,30 +209,6 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param int $modifier
-     */
-    public function addIeHack($modifier): void
-    {
-        $this->ieHack[] = $modifier;
-    }
-
-    /**
-     * @param array<int, int> $modifiers
-     */
-    public function setIeHack(array $modifiers): void
-    {
-        $this->ieHack = $modifiers;
-    }
-
-    /**
-     * @return array<int, int>
-     */
-    public function getIeHack()
-    {
-        return $this->ieHack;
-    }
-
-    /**
      * @param bool $isImportant
      */
     public function setIsImportant($isImportant): void
@@ -275,9 +239,6 @@ class Rule implements Renderable, Commentable
             $result .= $this->value->render($outputFormat);
         } else {
             $result .= $this->value;
-        }
-        if (!empty($this->ieHack)) {
-            $result .= ' \\' . \implode('\\', $this->ieHack);
         }
         if ($this->isImportant) {
             $result .= ' !important';

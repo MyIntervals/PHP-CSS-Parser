@@ -235,12 +235,6 @@ parameters:
 			path: ../src/Rule/Rule.php
 
 		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 1
-			path: ../src/Rule/Rule.php
-
-		-
 			message: '#^Only booleans are allowed in an if condition, Sabberworm\\CSS\\Value\\RuleValueList\|string\|null given\.$#'
 			identifier: if.condNotBoolean
 			count: 1
@@ -254,12 +248,6 @@ parameters:
 
 		-
 			message: '#^Parameters should have "int\|int" types as the only types passed to this method$#'
-			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 1
-			path: ../src/Rule/Rule.php
-
-		-
-			message: '#^Parameters should have "string" types as the only types passed to this method$#'
 			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
 			path: ../src/Rule/Rule.php
