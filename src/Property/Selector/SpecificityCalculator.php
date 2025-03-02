@@ -8,8 +8,6 @@ namespace Sabberworm\CSS\Property\Selector;
  * Utility class to calculate the specificity of a CSS selector.
  *
  * The results are cached to avoid recalculating the specificity of the same selector multiple times.
- *
- * @internal
  */
 final class SpecificityCalculator
 {
@@ -56,7 +54,11 @@ final class SpecificityCalculator
     private static $cache = [];
 
     /**
+     * Calculates the specificity of the given CSS selector.
+     *
      * @return int<0, max>
+     *
+     * @internal
      */
     public static function calculate(string $selector): int
     {
@@ -71,5 +73,13 @@ final class SpecificityCalculator
         }
 
         return self::$cache[$selector];
+    }
+
+    /**
+     * Clears the cache in order to lower memory usage.
+     */
+    public static function clearCache(): void
+    {
+        self::$cache = [];
     }
 }
