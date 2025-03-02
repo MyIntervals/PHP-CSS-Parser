@@ -55,6 +55,19 @@ abstract class CSSBlockList extends CSSList
     }
 
     /**
+     * Returns all `RuleSet` objects recursively found in the tree, no matter how deeply nested the rule sets are.
+     *
+     * @return array<int, RuleSet>
+     */
+    public function getAllRuleSets(): array
+    {
+        /** @var array<int, RuleSet> $result */
+        $result = [];
+        $this->allRuleSets($result);
+        return $result;
+    }
+
+    /**
      * @param array<int, RuleSet> $result
      */
     protected function allRuleSets(array &$result): void
