@@ -19,7 +19,7 @@ final class ValueTest extends TestCase
      *
      * @see \Sabberworm\CSS\Rule\Rule::listDelimiterForRule
      *
-     * @var array<int, string>
+     * @var list<non-empty-string>
      */
     private const DEFAULT_DELIMITERS = [',', ' ', '/'];
 
