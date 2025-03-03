@@ -278,28 +278,30 @@ abstract class RuleSet implements Renderable, Commentable
         $nextLevelFormat = $outputFormat->nextLevel();
         foreach ($this->rules as $rules) {
             foreach ($rules as $rule) {
-                $renderedRule = $nextLevelFormat->safely(static function () use ($rule, $nextLevelFormat): string {
-                    return $rule->render($nextLevelFormat);
-                });
+                $renderedRule = $nextLevelFormat->getFormatter()
+                    ->safely(static function () use ($rule, $nextLevelFormat): string {
+                        return $rule->render($nextLevelFormat);
+                    });
                 if ($renderedRule === null) {
                     continue;
                 }
                 if ($isFirst) {
                     $isFirst = false;
-                    $result .= $nextLevelFormat->spaceBeforeRules();
+                    $result .= $nextLevelFormat->getFormatter()->spaceBeforeRules();
                 } else {
-                    $result .= $nextLevelFormat->spaceBetweenRules();
+                    $result .= $nextLevelFormat->getFormatter()->spaceBetweenRules();
                 }
                 $result .= $renderedRule;
             }
         }
 
+        $formatter = $outputFormat->getFormatter();
         if (!$isFirst) {
             // Had some output
-            $result .= $outputFormat->spaceAfterRules();
+            $result .= $formatter->spaceAfterRules();
         }
 
-        return $outputFormat->removeLastSemicolon($result);
+        return $formatter->removeLastSemicolon($result);
     }
 
     /**
