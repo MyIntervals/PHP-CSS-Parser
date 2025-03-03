@@ -6,6 +6,8 @@ interface Renderable
 {
     /**
      * @return string
+     *
+     * @deprecated in V8.8.0, will be removed in V9.0.0. Use `render` instead.
      */
     public function __toString();
 
