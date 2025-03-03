@@ -21,6 +21,7 @@ Please also have a look at our
 
 ### Changed
 
+- Mark `OutputFormatter` as `@internal` (#896)
 - Make `Selector` a `Renderable` (#1017)
 - Mark `Selector::isValid()` as `@internal` (#1037)
 - Mark parsing-related methods of most CSS elements as `@internal` (#908)
