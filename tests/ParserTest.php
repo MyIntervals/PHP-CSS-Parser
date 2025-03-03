@@ -246,26 +246,26 @@ final class ParserTest extends TestCase
     public function specificity(): void
     {
         $document = self::parsedStructureForFile('specificity');
-        self::assertEquals([new Selector('#test .help', true)], $document->getSelectorsBySpecificity('> 100'));
+        self::assertEquals([new Selector('#test .help')], $document->getSelectorsBySpecificity('> 100'));
         self::assertEquals(
-            [new Selector('#test .help', true), new Selector('#file', true)],
+            [new Selector('#test .help'), new Selector('#file')],
             $document->getSelectorsBySpecificity('>= 100')
         );
-        self::assertEquals([new Selector('#file', true)], $document->getSelectorsBySpecificity('=== 100'));
-        self::assertEquals([new Selector('#file', true)], $document->getSelectorsBySpecificity('== 100'));
+        self::assertEquals([new Selector('#file')], $document->getSelectorsBySpecificity('=== 100'));
+        self::assertEquals([new Selector('#file')], $document->getSelectorsBySpecificity('== 100'));
         self::assertEquals([
-            new Selector('#file', true),
-            new Selector('.help:hover', true),
-            new Selector('li.green', true),
-            new Selector('ol li::before', true),
+            new Selector('#file'),
+            new Selector('.help:hover'),
+            new Selector('li.green'),
+            new Selector('ol li::before'),
         ], $document->getSelectorsBySpecificity('<= 100'));
         self::assertEquals([
-            new Selector('.help:hover', true),
-            new Selector('li.green', true),
-            new Selector('ol li::before', true),
+            new Selector('.help:hover'),
+            new Selector('li.green'),
+            new Selector('ol li::before'),
         ], $document->getSelectorsBySpecificity('< 100'));
-        self::assertEquals([new Selector('li.green', true)], $document->getSelectorsBySpecificity('11'));
-        self::assertEquals([new Selector('ol li::before', true)], $document->getSelectorsBySpecificity('3'));
+        self::assertEquals([new Selector('li.green')], $document->getSelectorsBySpecificity('11'));
+        self::assertEquals([new Selector('ol li::before')], $document->getSelectorsBySpecificity('3'));
     }
 
     /**

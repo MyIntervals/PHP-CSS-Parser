@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Property;
 
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Property\Selector\SpecificityCalculator;
 use Sabberworm\CSS\Renderable;
 
 /**
@@ -13,43 +14,6 @@ use Sabberworm\CSS\Renderable;
  */
 class Selector implements Renderable
 {
-    /**
-     * regexp for specificity calculations
-     *
-     * @var string
-     */
-    private const NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX = '/
-        (\\.[\\w]+)                   # classes
-        |
-        \\[(\\w+)                     # attributes
-        |
-        (\\:(                         # pseudo classes
-            link|visited|active
-            |hover|focus
-            |lang
-            |target
-            |enabled|disabled|checked|indeterminate
-            |root
-            |nth-child|nth-last-child|nth-of-type|nth-last-of-type
-            |first-child|last-child|first-of-type|last-of-type
-            |only-child|only-of-type
-            |empty|contains
-        ))
-        /ix';
-
-    /**
-     * regexp for specificity calculations
-     *
-     * @var string
-     */
-    private const ELEMENTS_AND_PSEUDO_ELEMENTS_RX = '/
-        ((^|[\\s\\+\\>\\~]+)[\\w]+   # elements
-        |
-        \\:{1,2}(                    # pseudo-elements
-            after|before|first-letter|first-line|selection
-        ))
-        /ix';
-
     /**
      * regexp for specificity calculations
      *
@@ -73,11 +37,6 @@ class Selector implements Renderable
     private $selector;
 
     /**
-     * @var int|null
-     */
-    private $specificity;
-
-    /**
      * @return bool
      *
      * @internal since V8.8.0
@@ -87,15 +46,9 @@ class Selector implements Renderable
         return \preg_match(static::SELECTOR_VALIDATION_RX, $selector);
     }
 
-    /**
-     * @param bool $calculateSpecificity @deprecated since V8.8.0, will be removed in V9.0.0
-     */
-    public function __construct(string $selector, bool $calculateSpecificity = false)
+    public function __construct(string $selector)
     {
         $this->setSelector($selector);
-        if ($calculateSpecificity) {
-            $this->getSpecificity();
-        }
     }
 
     public function getSelector(): string
@@ -106,7 +59,6 @@ class Selector implements Renderable
     public function setSelector(string $selector): void
     {
         $this->selector = \trim($selector);
-        $this->specificity = null;
     }
 
     /**
@@ -122,16 +74,7 @@ class Selector implements Renderable
      */
     public function getSpecificity(): int
     {
-        if ($this->specificity === null) {
-            $a = 0;
-            /// @todo should exclude \# as well as "#"
-            $aMatches = null;
-            $b = \substr_count($this->selector, '#');
-            $c = \preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $this->selector, $aMatches);
-            $d = \preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $this->selector, $aMatches);
-            $this->specificity = ($a * 1000) + ($b * 100) + ($c * 10) + $d;
-        }
-        return $this->specificity;
+        return SpecificityCalculator::calculate($this->selector);
     }
 
     public function render(OutputFormat $outputFormat): string
