@@ -28,17 +28,12 @@ final class ValueTest extends TestCase
      */
     public static function provideArithmeticOperator(): array
     {
-        $units = ['+', '-', '*', '/'];
-
-        return \array_combine(
-            $units,
-            \array_map(
-                static function (string $unit): array {
-                    return [$unit];
-                },
-                $units
-            )
-        );
+        return [
+            '+' => ['+'],
+            '-' => ['-'],
+            '*' => ['*'],
+            '/' => ['/'],
+        ];
     }
 
     /**
