@@ -35,7 +35,7 @@ final class DeclarationBlockTest extends TestCase
         $rule3->setValue('#fff');
         $declarationBlock->addRule($rule3);
 
-        $expectedRendering = 'background-color: transparent;background: #222';
+        $expectedRendering = 'background-color: transparent;background: #222;background-color: #fff';
         self::assertStringContainsString($expectedRendering, $declarationBlock->render(new OutputFormat()));
     }
 }

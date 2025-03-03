@@ -54,7 +54,7 @@ Please also have a look at our
 
 ### Fixed
 
-- Render rules in line and column number order (#1058)
+- Render rules in line and column number order (#1059)
 - Don't render `rgb` colors with percentage values using hex notation (#803)
 - Parse `@font-face` `src` property as comma-delimited list (#790)
 
