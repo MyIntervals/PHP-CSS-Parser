@@ -25,7 +25,10 @@ use Sabberworm\CSS\Rule\Rule;
 abstract class RuleSet implements Renderable, Commentable
 {
     /**
-     * @var array<string, Rule>
+     * the rules in this rule set, using the property name as the key,
+     * with potentially multiple rules per property name.
+     *
+     * @var array<string, array<int<0, max>, Rule>>
      */
     private $rules = [];
 

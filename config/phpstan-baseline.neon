@@ -319,12 +319,6 @@ parameters:
 			path: ../src/RuleSet/DeclarationBlock.php
 
 		-
-			message: '#^Argument of an invalid type Sabberworm\\CSS\\Rule\\Rule supplied for foreach, only iterables are supported\.$#'
-			identifier: foreach.nonIterable
-			count: 2
-			path: ../src/RuleSet/RuleSet.php
-
-		-
 			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:removeLastSemicolon\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -381,12 +375,6 @@ parameters:
 		-
 			message: '#^Parameters should have "string" types as the only types passed to this method$#'
 			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 1
-			path: ../src/RuleSet/RuleSet.php
-
-		-
-			message: '#^Use explicit methods over array access on object$#'
-			identifier: typePerfect.noArrayAccessOnObject
 			count: 1
 			path: ../src/RuleSet/RuleSet.php
 
