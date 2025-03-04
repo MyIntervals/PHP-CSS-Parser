@@ -120,11 +120,11 @@ abstract class Value implements Renderable
      */
     public static function parseIdentifierOrFunction(ParserState $parserState, $ignoreCase = false)
     {
-        $oAnchor = $parserState->anchor();
+        $anchor = $parserState->anchor();
         $result = $parserState->parseIdentifier($ignoreCase);
 
         if ($parserState->comes('(')) {
-            $oAnchor->backtrack();
+            $anchor->backtrack();
             if ($parserState->streql('url', $result)) {
                 $result = URL::parse($parserState);
             } elseif (
