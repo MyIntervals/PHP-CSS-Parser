@@ -19,6 +19,7 @@ use Sabberworm\CSS\RuleSet\AtRuleSet;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\RuleSet\RuleSet;
 use Sabberworm\CSS\Settings;
+use Sabberworm\CSS\Tests\RuleSet\DeclarationBlockTest;
 use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\URL;
@@ -511,7 +512,7 @@ body {color: green;}',
             . 'font-family: "Trebuchet MS",Georgia,serif;background-color: #ccc;'
             . 'background-image: url("/images/foo.png");background-repeat: no-repeat;background-attachment: scroll;'
             . 'background-position: left top;}';
-        self::assertSame($sExpected, $oDoc->render());
+        DeclarationBlockTest::assertDeclarationBlockEquals($sExpected, $oDoc->render());
     }
 
     /**
@@ -528,7 +529,7 @@ body {color: green;}',
         $oDoc->createShorthands();
         $sExpected = 'body {background: #fff url("foobar.png") repeat-y;margin: 2px 5px 4px 3px;'
             . 'border: 2px dotted #999;font: bold 2em Helvetica,Arial,sans-serif;}';
-        self::assertSame($sExpected, $oDoc->render());
+        DeclarationBlockTest::assertDeclarationBlockEquals($sExpected, $oDoc->render());
     }
 
     /**
