@@ -28,6 +28,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- Render rules in line and column number order (#1059)
 - Create `Size` with correct types in `expandBackgroundShorthand` (#814)
 - Parse `@font-face` `src` property as comma-delimited list (#794)
 
