@@ -172,11 +172,11 @@ abstract class Value implements Renderable
         } elseif ($parserState->comes('U+')) {
             $value = self::parseUnicodeRangeValue($parserState);
         } else {
-            $sNextChar = $parserState->peek(1);
+            $nextCharacter = $parserState->peek(1);
             try {
                 $value = self::parseIdentifierOrFunction($parserState);
             } catch (UnexpectedTokenException $e) {
-                if (\in_array($sNextChar, ['+', '-', '*', '/'], true)) {
+                if (\in_array($nextCharacter, ['+', '-', '*', '/'], true)) {
                     $value = $parserState->consume(1);
                 } else {
                     throw $e;
@@ -184,6 +184,7 @@ abstract class Value implements Renderable
             }
         }
         $parserState->consumeWhiteSpace();
+
         return $value;
     }
 
@@ -204,16 +205,17 @@ abstract class Value implements Renderable
      */
     private static function parseUnicodeRangeValue(ParserState $parserState): string
     {
-        $iCodepointMaxLength = 6; // Code points outside BMP can use up to six digits
-        $sRange = '';
+        $codepointMaxLength = 6; // Code points outside BMP can use up to six digits
+        $range = '';
         $parserState->consume('U+');
         do {
             if ($parserState->comes('-')) {
-                $iCodepointMaxLength = 13; // Max length is 2 six-digit code points + the dash(-) between them
+                $codepointMaxLength = 13; // Max length is 2 six-digit code points + the dash(-) between them
             }
-            $sRange .= $parserState->consume(1);
-        } while (\strlen($sRange) < $iCodepointMaxLength && \preg_match('/[A-Fa-f0-9\\?-]/', $parserState->peek()));
-        return "U+{$sRange}";
+            $range .= $parserState->consume(1);
+        } while (\strlen($range) < $codepointMaxLength && \preg_match('/[A-Fa-f0-9\\?-]/', $parserState->peek()));
+
+        return "U+{$range}";
     }
 
     /**
