@@ -26,18 +26,18 @@ class CSSFunction extends ValueList
     /**
      * @param string $sName
      * @param RuleValueList|array<array-key, Value|string> $arguments
-     * @param string $sSeparator
+     * @param string $separator
      * @param int<0, max> $lineNumber
      */
-    public function __construct($sName, $arguments, $sSeparator = ',', $lineNumber = 0)
+    public function __construct($sName, $arguments, $separator = ',', $lineNumber = 0)
     {
         if ($arguments instanceof RuleValueList) {
-            $sSeparator = $arguments->getListSeparator();
+            $separator = $arguments->getListSeparator();
             $arguments = $arguments->getListComponents();
         }
         $this->sName = $sName;
         $this->lineNumber = $lineNumber;
-        parent::__construct($arguments, $sSeparator, $lineNumber);
+        parent::__construct($arguments, $separator, $lineNumber);
     }
 
     /**
