@@ -60,8 +60,8 @@ class CalcFunction extends CSSFunction
                 continue;
             }
             if ($lastComponentType != CalcFunction::T_OPERAND) {
-                $oVal = Value::parsePrimitiveValue($parserState);
-                $calcRuleValueList->addListComponent($oVal);
+                $value = Value::parsePrimitiveValue($parserState);
+                $calcRuleValueList->addListComponent($value);
                 $lastComponentType = CalcFunction::T_OPERAND;
             } else {
                 if (\in_array($parserState->peek(), $operators, true)) {

@@ -251,35 +251,35 @@ class ParserState
     }
 
     /**
-     * @param int $mValue
+     * @param int $value
      *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public function consume($mValue = 1): string
+    public function consume($value = 1): string
     {
-        if (\is_string($mValue)) {
-            $iLineCount = \substr_count($mValue, "\n");
-            $length = $this->strlen($mValue);
-            if (!$this->streql($this->substr($this->currentPosition, $length), $mValue)) {
+        if (\is_string($value)) {
+            $iLineCount = \substr_count($value, "\n");
+            $length = $this->strlen($value);
+            if (!$this->streql($this->substr($this->currentPosition, $length), $value)) {
                 throw new UnexpectedTokenException(
-                    $mValue,
+                    $value,
                     $this->peek(\max($length, 5)),
                     'literal',
                     $this->lineNumber
                 );
             }
             $this->lineNumber += $iLineCount;
-            $this->currentPosition += $this->strlen($mValue);
-            return $mValue;
+            $this->currentPosition += $this->strlen($value);
+            return $value;
         } else {
-            if ($this->currentPosition + $mValue > \count($this->characters)) {
-                throw new UnexpectedEOFException((string) $mValue, $this->peek(5), 'count', $this->lineNumber);
+            if ($this->currentPosition + $value > \count($this->characters)) {
+                throw new UnexpectedEOFException((string) $value, $this->peek(5), 'count', $this->lineNumber);
             }
-            $result = $this->substr($this->currentPosition, $mValue);
+            $result = $this->substr($this->currentPosition, $value);
             $iLineCount = \substr_count($result, "\n");
             $this->lineNumber += $iLineCount;
-            $this->currentPosition += $mValue;
+            $this->currentPosition += $value;
             return $result;
         }
     }
