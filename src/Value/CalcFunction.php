@@ -28,7 +28,7 @@ class CalcFunction extends CSSFunction
      */
     public static function parse(ParserState $parserState, bool $ignoreCase = false): CSSFunction
     {
-        $aOperators = ['+', '-', '*', '/'];
+        $operators = ['+', '-', '*', '/'];
         $function = $parserState->parseIdentifier();
         if ($parserState->peek() != '(') {
             // Found ; or end of line before an opening bracket
@@ -64,7 +64,7 @@ class CalcFunction extends CSSFunction
                 $calcRuleValueList->addListComponent($oVal);
                 $iLastComponentType = CalcFunction::T_OPERAND;
             } else {
-                if (\in_array($parserState->peek(), $aOperators, true)) {
+                if (\in_array($parserState->peek(), $operators, true)) {
                     if (($parserState->comes('-') || $parserState->comes('+'))) {
                         if (
                             $parserState->peek(1, -1) != ' '
@@ -85,7 +85,7 @@ class CalcFunction extends CSSFunction
                     throw new UnexpectedTokenException(
                         \sprintf(
                             'Next token was expected to be an operand of type %s. Instead "%s" was found.',
-                            \implode(', ', $aOperators),
+                            \implode(', ', $operators),
                             $parserState->peek()
                         ),
                         '',
