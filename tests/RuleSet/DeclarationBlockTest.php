@@ -29,7 +29,7 @@ final class DeclarationBlockTest extends TestCase
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->expandBorderShorthand();
         }
-        self::assertSame(trim((string)$oDoc), $sExpected);
+        self::assertDeclarationBlockEquals(trim((string)$oDoc), $sExpected);
     }
 
     /**
@@ -62,7 +62,7 @@ final class DeclarationBlockTest extends TestCase
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->expandFontShorthand();
         }
-        self::assertSame(trim((string)$oDoc), $sExpected);
+        self::assertDeclarationBlockEquals(trim((string)$oDoc), $sExpected);
     }
 
     /**
@@ -118,7 +118,7 @@ final class DeclarationBlockTest extends TestCase
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->expandBackgroundShorthand();
         }
-        self::assertSame(trim((string)$oDoc), $sExpected);
+        self::assertDeclarationBlockEquals(trim((string)$oDoc), $sExpected);
     }
 
     /**
@@ -171,7 +171,7 @@ final class DeclarationBlockTest extends TestCase
         foreach ($oDoc->getAllDeclarationBlocks() as $oDeclaration) {
             $oDeclaration->expandDimensionsShorthand();
         }
-        self::assertSame(trim((string)$oDoc), $sExpected);
+        self::assertDeclarationBlockEquals(trim((string)$oDoc), $sExpected);
     }
 
     /**
@@ -504,5 +504,51 @@ final class DeclarationBlockTest extends TestCase
         $renderedDocument = $document->render($outputFormat);
 
         self::assertSame($cssWithoutComments, $renderedDocument);
+    }
+
+    /**
+     * Asserts two declaration blocks are equivalent, allowing the rules to be in any order.
+     *
+     * @param string $expected
+     * @param string $actual
+     */
+    public static function assertDeclarationBlockEquals($expected, $actual)
+    {
+        $normalizedExpected = self::sortRulesInDeclarationBlock($expected);
+        $normalizedActual = self::sortRulesInDeclarationBlock($actual);
+
+        self::assertSame($normalizedExpected, $normalizedActual);
+    }
+
+    /**
+     * Sorts the rules within a declaration block by property name.
+     *
+     * @param string $declarationBlock
+     *
+     * @return string
+     */
+    private static function sortRulesInDeclarationBlock($declarationBlock)
+    {
+        // Match everything between `{` and `}`.
+        return \preg_replace_callback(
+            '/(?<=\\{)[^\\}]*+(?=\\})/',
+            [self::class, 'sortDeclarationBlockRules'],
+            $declarationBlock
+        );
+    }
+
+    /**
+     * Sorts rules from within a declaration block by property name.
+     *
+     * @param array{0: string} $rulesMatches
+     *        This method is intended as a callback for `preg_replace_callback`.
+     *
+     * @return string
+     */
+    private static function sortDeclarationBlockRules($rulesMatches)
+    {
+        $rules = \explode(';', $rulesMatches[0]);
+        \sort($rules);
+        return \implode(';', $rules);
     }
 }
