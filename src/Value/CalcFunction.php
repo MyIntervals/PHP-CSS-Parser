@@ -41,7 +41,7 @@ class CalcFunction extends CSSFunction
         $calcRuleValueList = new CalcRuleValueList($parserState->currentLine());
         $list = new RuleValueList(',', $parserState->currentLine());
         $nestingLevel = 0;
-        $iLastComponentType = null;
+        $lastComponentType = null;
         while (!$parserState->comes(')') || $nestingLevel > 0) {
             if ($parserState->isEnd() && $nestingLevel === 0) {
                 break;
@@ -59,10 +59,10 @@ class CalcFunction extends CSSFunction
                 $parserState->consumeWhiteSpace();
                 continue;
             }
-            if ($iLastComponentType != CalcFunction::T_OPERAND) {
+            if ($lastComponentType != CalcFunction::T_OPERAND) {
                 $oVal = Value::parsePrimitiveValue($parserState);
                 $calcRuleValueList->addListComponent($oVal);
-                $iLastComponentType = CalcFunction::T_OPERAND;
+                $lastComponentType = CalcFunction::T_OPERAND;
             } else {
                 if (\in_array($parserState->peek(), $aOperators, true)) {
                     if (($parserState->comes('-') || $parserState->comes('+'))) {
@@ -80,7 +80,7 @@ class CalcFunction extends CSSFunction
                         }
                     }
                     $calcRuleValueList->addListComponent($parserState->consume(1));
-                    $iLastComponentType = CalcFunction::T_OPERATOR;
+                    $lastComponentType = CalcFunction::T_OPERATOR;
                 } else {
                     throw new UnexpectedTokenException(
                         \sprintf(
