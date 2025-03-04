@@ -235,17 +235,17 @@ class OutputFormat
 
     /**
      * @param non-empty-string $sMethodName
-     * @param array<array-key, mixed> $aArguments
+     * @param array<array-key, mixed> $arguments
      *
      * @return mixed
      *
      * @throws \Exception
      */
-    public function __call(string $sMethodName, array $aArguments)
+    public function __call(string $sMethodName, array $arguments)
     {
         if (\method_exists(OutputFormatter::class, $sMethodName)) {
             // @deprecated since 8.8.0, will be removed in 9.0.0. Call the method on the formatter directly instead.
-            return \call_user_func_array([$this->getFormatter(), $sMethodName], $aArguments);
+            return \call_user_func_array([$this->getFormatter(), $sMethodName], $arguments);
         } else {
             throw new \Exception('Unknown OutputFormat method called: ' . $sMethodName);
         }
