@@ -287,22 +287,20 @@ abstract class RuleSet implements Renderable, Commentable
         $sResult = '';
         $bIsFirst = true;
         $oNextLevel = $oOutputFormat->nextLevel();
-        foreach ($this->aRules as $aRules) {
-            foreach ($aRules as $oRule) {
-                $sRendered = $oNextLevel->safely(function () use ($oRule, $oNextLevel) {
-                    return $oRule->render($oNextLevel);
-                });
-                if ($sRendered === null) {
-                    continue;
-                }
-                if ($bIsFirst) {
-                    $bIsFirst = false;
-                    $sResult .= $oNextLevel->spaceBeforeRules();
-                } else {
-                    $sResult .= $oNextLevel->spaceBetweenRules();
-                }
-                $sResult .= $sRendered;
+        foreach ($this->getRules() as $oRule) {
+            $sRendered = $oNextLevel->safely(function () use ($oRule, $oNextLevel) {
+                return $oRule->render($oNextLevel);
+            });
+            if ($sRendered === null) {
+                continue;
             }
+            if ($bIsFirst) {
+                $bIsFirst = false;
+                $sResult .= $oNextLevel->spaceBeforeRules();
+            } else {
+                $sResult .= $oNextLevel->spaceBetweenRules();
+            }
+            $sResult .= $sRendered;
         }
 
         if (!$bIsFirst) {
