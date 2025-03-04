@@ -21,21 +21,21 @@ class CSSFunction extends ValueList
      *
      * @internal since 8.8.0
      */
-    protected $sName;
+    protected $name;
 
     /**
-     * @param string $sName
+     * @param string $name
      * @param RuleValueList|array<array-key, Value|string> $arguments
      * @param string $separator
      * @param int<0, max> $lineNumber
      */
-    public function __construct($sName, $arguments, $separator = ',', $lineNumber = 0)
+    public function __construct($name, $arguments, $separator = ',', $lineNumber = 0)
     {
         if ($arguments instanceof RuleValueList) {
             $separator = $arguments->getListSeparator();
             $arguments = $arguments->getListComponents();
         }
-        $this->sName = $sName;
+        $this->name = $name;
         $this->lineNumber = $lineNumber;
         parent::__construct($arguments, $separator, $lineNumber);
     }
@@ -49,11 +49,11 @@ class CSSFunction extends ValueList
      */
     public static function parse(ParserState $parserState, bool $ignoreCase = false): CSSFunction
     {
-        $sName = self::parseName($parserState, $ignoreCase);
+        $name = self::parseName($parserState, $ignoreCase);
         $parserState->consume('(');
         $arguments = self::parseArguments($parserState);
 
-        $result = new CSSFunction($sName, $arguments, ',', $parserState->currentLine());
+        $result = new CSSFunction($name, $arguments, ',', $parserState->currentLine());
         $parserState->consume(')');
 
         return $result;
@@ -86,15 +86,15 @@ class CSSFunction extends ValueList
      */
     public function getName()
     {
-        return $this->sName;
+        return $this->name;
     }
 
     /**
-     * @param string $sName
+     * @param string $name
      */
-    public function setName($sName): void
+    public function setName($name): void
     {
-        $this->sName = $sName;
+        $this->name = $name;
     }
 
     /**
@@ -116,6 +116,6 @@ class CSSFunction extends ValueList
     public function render(OutputFormat $outputFormat): string
     {
         $arguments = parent::render($outputFormat);
-        return "{$this->sName}({$arguments})";
+        return "{$this->name}({$arguments})";
     }
 }

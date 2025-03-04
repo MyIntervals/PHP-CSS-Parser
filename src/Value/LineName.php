@@ -30,23 +30,23 @@ class LineName extends ValueList
     {
         $parserState->consume('[');
         $parserState->consumeWhiteSpace();
-        $aNames = [];
+        $names = [];
         do {
             if ($parserState->getSettings()->usesLenientParsing()) {
                 try {
-                    $aNames[] = $parserState->parseIdentifier();
+                    $names[] = $parserState->parseIdentifier();
                 } catch (UnexpectedTokenException $e) {
                     if (!$parserState->comes(']')) {
                         throw $e;
                     }
                 }
             } else {
-                $aNames[] = $parserState->parseIdentifier();
+                $names[] = $parserState->parseIdentifier();
             }
             $parserState->consumeWhiteSpace();
         } while (!$parserState->comes(']'));
         $parserState->consume(']');
-        return new LineName($aNames, $parserState->currentLine());
+        return new LineName($names, $parserState->currentLine());
     }
 
     /**

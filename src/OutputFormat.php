@@ -185,11 +185,11 @@ class OutputFormat
     /**
      * @return string|int|bool|null
      */
-    public function get(string $sName)
+    public function get(string $name)
     {
         $aVarPrefixes = ['a', 's', 'm', 'b', 'f', 'o', 'c', 'i'];
         foreach ($aVarPrefixes as $prefix) {
-            $sFieldName = $prefix . \ucfirst($sName);
+            $sFieldName = $prefix . \ucfirst($name);
             if (isset($this->$sFieldName)) {
                 return $this->$sFieldName;
             }
@@ -198,28 +198,28 @@ class OutputFormat
     }
 
     /**
-     * @param array<array-key, string>|string $aNames
+     * @param array<array-key, string>|string $names
      * @param mixed $value
      *
      * @return self|false
      */
-    public function set($aNames, $value)
+    public function set($names, $value)
     {
         $aVarPrefixes = ['a', 's', 'm', 'b', 'f', 'o', 'c', 'i'];
-        if (\is_string($aNames) && \strpos($aNames, '*') !== false) {
-            $aNames =
+        if (\is_string($names) && \strpos($names, '*') !== false) {
+            $names =
                 [
-                    \str_replace('*', 'Before', $aNames),
-                    \str_replace('*', 'Between', $aNames),
-                    \str_replace('*', 'After', $aNames),
+                    \str_replace('*', 'Before', $names),
+                    \str_replace('*', 'Between', $names),
+                    \str_replace('*', 'After', $names),
                 ];
-        } elseif (!\is_array($aNames)) {
-            $aNames = [$aNames];
+        } elseif (!\is_array($names)) {
+            $names = [$names];
         }
         foreach ($aVarPrefixes as $prefix) {
             $bDidReplace = false;
-            foreach ($aNames as $sName) {
-                $sFieldName = $prefix . \ucfirst($sName);
+            foreach ($names as $name) {
+                $sFieldName = $prefix . \ucfirst($name);
                 if (isset($this->$sFieldName)) {
                     $this->$sFieldName = $value;
                     $bDidReplace = true;
