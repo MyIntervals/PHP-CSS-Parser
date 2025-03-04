@@ -244,6 +244,7 @@ class OutputFormat
     public function __call(string $sMethodName, array $aArguments)
     {
         if (\method_exists(OutputFormatter::class, $sMethodName)) {
+            // @deprecated since 8.8.0, will be removed in 9.0.0. Call the method on the formatter directly instead.
             return \call_user_func_array([$this->getFormatter(), $sMethodName], $aArguments);
         } else {
             throw new \Exception('Unknown OutputFormat method called: ' . $sMethodName);
