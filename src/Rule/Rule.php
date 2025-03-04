@@ -177,11 +177,11 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param RuleValueList|string|null $mValue
+     * @param RuleValueList|string|null $value
      */
-    public function setValue($mValue): void
+    public function setValue($value): void
     {
-        $this->value = $mValue;
+        $this->value = $value;
     }
 
     /**

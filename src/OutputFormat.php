@@ -199,11 +199,11 @@ class OutputFormat
 
     /**
      * @param array<array-key, string>|string $aNames
-     * @param mixed $mValue
+     * @param mixed $value
      *
      * @return self|false
      */
-    public function set($aNames, $mValue)
+    public function set($aNames, $value)
     {
         $aVarPrefixes = ['a', 's', 'm', 'b', 'f', 'o', 'c', 'i'];
         if (\is_string($aNames) && \strpos($aNames, '*') !== false) {
@@ -221,7 +221,7 @@ class OutputFormat
             foreach ($aNames as $sName) {
                 $sFieldName = $prefix . \ucfirst($sName);
                 if (isset($this->$sFieldName)) {
-                    $this->$sFieldName = $mValue;
+                    $this->$sFieldName = $value;
                     $bDidReplace = true;
                 }
             }
