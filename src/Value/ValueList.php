@@ -19,7 +19,7 @@ abstract class ValueList extends Value
      *
      * @internal since 8.8.0
      */
-    protected $aComponents;
+    protected $components;
 
     /**
      * @var string
@@ -29,17 +29,17 @@ abstract class ValueList extends Value
     protected $sSeparator;
 
     /**
-     * @param array<array-key, Value|string>|Value|string $aComponents
+     * @param array<array-key, Value|string>|Value|string $components
      * @param string $sSeparator
      * @param int<0, max> $lineNumber
      */
-    public function __construct($aComponents = [], $sSeparator = ',', $lineNumber = 0)
+    public function __construct($components = [], $sSeparator = ',', $lineNumber = 0)
     {
         parent::__construct($lineNumber);
-        if (!\is_array($aComponents)) {
-            $aComponents = [$aComponents];
+        if (!\is_array($components)) {
+            $components = [$components];
         }
-        $this->aComponents = $aComponents;
+        $this->components = $components;
         $this->sSeparator = $sSeparator;
     }
 
@@ -48,7 +48,7 @@ abstract class ValueList extends Value
      */
     public function addListComponent($component): void
     {
-        $this->aComponents[] = $component;
+        $this->components[] = $component;
     }
 
     /**
@@ -56,15 +56,15 @@ abstract class ValueList extends Value
      */
     public function getListComponents()
     {
-        return $this->aComponents;
+        return $this->components;
     }
 
     /**
-     * @param array<array-key, Value|string> $aComponents
+     * @param array<array-key, Value|string> $components
      */
-    public function setListComponents(array $aComponents): void
+    public function setListComponents(array $components): void
     {
-        $this->aComponents = $aComponents;
+        $this->components = $components;
     }
 
     /**
@@ -96,7 +96,7 @@ abstract class ValueList extends Value
         return $outputFormat->implode(
             $outputFormat->spaceBeforeListArgumentSeparator($this->sSeparator) . $this->sSeparator
             . $outputFormat->spaceAfterListArgumentSeparator($this->sSeparator),
-            $this->aComponents
+            $this->components
         );
     }
 }

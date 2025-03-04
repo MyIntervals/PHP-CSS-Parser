@@ -102,7 +102,7 @@ class CSSFunction extends ValueList
      */
     public function getArguments()
     {
-        return $this->aComponents;
+        return $this->components;
     }
 
     /**

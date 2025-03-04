@@ -204,7 +204,7 @@ class Color extends CSSFunction
      */
     public function getColor()
     {
-        return $this->aComponents;
+        return $this->components;
     }
 
     /**
@@ -213,7 +213,7 @@ class Color extends CSSFunction
     public function setColor(array $colorValues): void
     {
         $this->setName(\implode('', \array_keys($colorValues)));
-        $this->aComponents = $colorValues;
+        $this->components = $colorValues;
     }
 
     /**
@@ -260,7 +260,7 @@ class Color extends CSSFunction
      */
     private function getRealName(): string
     {
-        return \implode('', \array_keys($this->aComponents));
+        return \implode('', \array_keys($this->components));
     }
 
     /**
@@ -269,7 +269,7 @@ class Color extends CSSFunction
      */
     private function allComponentsAreNumbers(): bool
     {
-        foreach ($this->aComponents as $component) {
+        foreach ($this->components as $component) {
             if (!($component instanceof Size) || $component->getUnit() !== null) {
                 return false;
             }
@@ -280,7 +280,7 @@ class Color extends CSSFunction
 
     /**
      * Note that this method assumes the following:
-     * - The `aComponents` array has keys for `r`, `g` and `b`;
+     * - The `components` array has keys for `r`, `g` and `b`;
      * - The values in the array are all instances of `Size`.
      *
      * Errors will be triggered or thrown if this is not the case.
@@ -291,9 +291,9 @@ class Color extends CSSFunction
     {
         $result = \sprintf(
             '%02x%02x%02x',
-            $this->aComponents['r']->getSize(),
-            $this->aComponents['g']->getSize(),
-            $this->aComponents['b']->getSize()
+            $this->components['r']->getSize(),
+            $this->components['g']->getSize(),
+            $this->components['b']->getSize()
         );
         $canUseShortVariant = ($result[0] == $result[1]) && ($result[2] == $result[3]) && ($result[4] == $result[5]);
 
@@ -327,7 +327,7 @@ class Color extends CSSFunction
 
         $hasPercentage = false;
         $hasNumber = false;
-        foreach ($this->aComponents as $key => $value) {
+        foreach ($this->components as $key => $value) {
             if ($key === 'a') {
                 // Alpha can have units that don't match those of the RGB components in the "legacy" syntax.
                 // So it is not necessary to check it.  It's also always last, hence `break` rather than `continue`.
@@ -354,7 +354,7 @@ class Color extends CSSFunction
 
     private function hasNoneAsComponentValue(): bool
     {
-        return \in_array('none', $this->aComponents, true);
+        return \in_array('none', $this->components, true);
     }
 
     /**
@@ -376,10 +376,10 @@ class Color extends CSSFunction
     private function renderInModernSyntax(OutputFormat $outputFormat): string
     {
         // Maybe not yet without alpha, but will be...
-        $componentsWithoutAlpha = $this->aComponents;
+        $componentsWithoutAlpha = $this->components;
         \end($componentsWithoutAlpha);
         if (\key($componentsWithoutAlpha) === 'a') {
-            $alpha = $this->aComponents['a'];
+            $alpha = $this->components['a'];
             unset($componentsWithoutAlpha['a']);
         }
 
