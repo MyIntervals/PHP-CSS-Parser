@@ -531,7 +531,7 @@ final class DeclarationBlockTest extends TestCase
     {
         // Match everything between `{` and `}`.
         return \preg_replace_callback(
-            '/(?<=\{)[^\}]*+(?=\})/',
+            '/(?<=\\{)[^\\}]*+(?=\\})/',
             [self::class, 'sortDeclarationBlockRules'],
             $declarationBlock
         );
