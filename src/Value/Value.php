@@ -193,9 +193,9 @@ abstract class Value implements Renderable
      */
     private static function parseMicrosoftFilter(ParserState $parserState): CSSFunction
     {
-        $sFunction = $parserState->consumeUntil('(', false, true);
+        $function = $parserState->consumeUntil('(', false, true);
         $arguments = Value::parseValue($parserState, [',', '=']);
-        return new CSSFunction($sFunction, $arguments, ',', $parserState->currentLine());
+        return new CSSFunction($function, $arguments, ',', $parserState->currentLine());
     }
 
     /**
