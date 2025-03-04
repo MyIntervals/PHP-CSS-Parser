@@ -41,11 +41,11 @@ class CSSString extends PrimitiveValue
      */
     public static function parse(ParserState $parserState): CSSString
     {
-        $sBegin = $parserState->peek();
+        $begin = $parserState->peek();
         $sQuote = null;
-        if ($sBegin === "'") {
+        if ($begin === "'") {
             $sQuote = "'";
-        } elseif ($sBegin === '"') {
+        } elseif ($begin === '"') {
             $sQuote = '"';
         }
         if ($sQuote !== null) {
