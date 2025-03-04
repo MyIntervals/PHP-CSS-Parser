@@ -44,6 +44,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Deprecated
 
+- Deprecate magic method forwarding from `OutputFormat` to `OutputFormatter`
+  (#894)
 - Deprecate the expansion of shorthand properties (#719)
 - Deprecate `Parser::setCharset()` and `Parser::getCharset()` (#703)
 
