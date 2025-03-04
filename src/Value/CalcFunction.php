@@ -40,21 +40,21 @@ class CalcFunction extends CSSFunction
         $parserState->consume('(');
         $oCalcList = new CalcRuleValueList($parserState->currentLine());
         $list = new RuleValueList(',', $parserState->currentLine());
-        $iNestingLevel = 0;
+        $nestingLevel = 0;
         $iLastComponentType = null;
-        while (!$parserState->comes(')') || $iNestingLevel > 0) {
-            if ($parserState->isEnd() && $iNestingLevel === 0) {
+        while (!$parserState->comes(')') || $nestingLevel > 0) {
+            if ($parserState->isEnd() && $nestingLevel === 0) {
                 break;
             }
 
             $parserState->consumeWhiteSpace();
             if ($parserState->comes('(')) {
-                $iNestingLevel++;
+                $nestingLevel++;
                 $oCalcList->addListComponent($parserState->consume(1));
                 $parserState->consumeWhiteSpace();
                 continue;
             } elseif ($parserState->comes(')')) {
-                $iNestingLevel--;
+                $nestingLevel--;
                 $oCalcList->addListComponent($parserState->consume(1));
                 $parserState->consumeWhiteSpace();
                 continue;
