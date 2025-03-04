@@ -42,24 +42,24 @@ class CSSString extends PrimitiveValue
     public static function parse(ParserState $parserState): CSSString
     {
         $begin = $parserState->peek();
-        $sQuote = null;
+        $quote = null;
         if ($begin === "'") {
-            $sQuote = "'";
+            $quote = "'";
         } elseif ($begin === '"') {
-            $sQuote = '"';
+            $quote = '"';
         }
-        if ($sQuote !== null) {
-            $parserState->consume($sQuote);
+        if ($quote !== null) {
+            $parserState->consume($quote);
         }
         $result = '';
         $sContent = null;
-        if ($sQuote === null) {
+        if ($quote === null) {
             // Unquoted strings end in whitespace or with braces, brackets, parentheses
             while (\preg_match('/[\\s{}()<>\\[\\]]/isu', $parserState->peek()) !== 1) {
                 $result .= $parserState->parseCharacter(false);
             }
         } else {
-            while (!$parserState->comes($sQuote)) {
+            while (!$parserState->comes($quote)) {
                 $sContent = $parserState->parseCharacter(false);
                 if ($sContent === null) {
                     throw new SourceException(
@@ -69,7 +69,7 @@ class CSSString extends PrimitiveValue
                 }
                 $result .= $sContent;
             }
-            $parserState->consume($sQuote);
+            $parserState->consume($quote);
         }
         return new CSSString($result, $parserState->currentLine());
     }
