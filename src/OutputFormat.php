@@ -363,12 +363,15 @@ class OutputFormat
 
     /**
      * @return OutputFormatter
+     *
+     * @internal since 8.8.0
      */
     public function getFormatter()
     {
         if ($this->oFormatter === null) {
             $this->oFormatter = new OutputFormatter($this);
         }
+
         return $this->oFormatter;
     }
 
