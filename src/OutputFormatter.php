@@ -119,23 +119,23 @@ class OutputFormatter
     }
 
     /**
-     * @param non-empty-string $sSeparator
+     * @param non-empty-string $separator
      */
-    public function spaceBeforeListArgumentSeparator(string $sSeparator): string
+    public function spaceBeforeListArgumentSeparator(string $separator): string
     {
         $spaceForSeparator = $this->outputFormat->getSpaceBeforeListArgumentSeparators();
 
-        return $spaceForSeparator[$sSeparator] ?? $this->space('BeforeListArgumentSeparator');
+        return $spaceForSeparator[$separator] ?? $this->space('BeforeListArgumentSeparator');
     }
 
     /**
-     * @param non-empty-string $sSeparator
+     * @param non-empty-string $separator
      */
-    public function spaceAfterListArgumentSeparator(string $sSeparator): string
+    public function spaceAfterListArgumentSeparator(string $separator): string
     {
         $spaceForSeparator = $this->outputFormat->getSpaceAfterListArgumentSeparators();
 
-        return $spaceForSeparator[$sSeparator] ?? $this->space('AfterListArgumentSeparator');
+        return $spaceForSeparator[$separator] ?? $this->space('AfterListArgumentSeparator');
     }
 
     public function spaceBeforeOpeningBrace(): string

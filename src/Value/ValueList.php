@@ -26,21 +26,21 @@ abstract class ValueList extends Value
      *
      * @internal since 8.8.0
      */
-    protected $sSeparator;
+    protected $separator;
 
     /**
      * @param array<array-key, Value|string>|Value|string $components
-     * @param string $sSeparator
+     * @param string $separator
      * @param int<0, max> $lineNumber
      */
-    public function __construct($components = [], $sSeparator = ',', $lineNumber = 0)
+    public function __construct($components = [], $separator = ',', $lineNumber = 0)
     {
         parent::__construct($lineNumber);
         if (!\is_array($components)) {
             $components = [$components];
         }
         $this->components = $components;
-        $this->sSeparator = $sSeparator;
+        $this->separator = $separator;
     }
 
     /**
@@ -72,15 +72,15 @@ abstract class ValueList extends Value
      */
     public function getListSeparator()
     {
-        return $this->sSeparator;
+        return $this->separator;
     }
 
     /**
-     * @param string $sSeparator
+     * @param string $separator
      */
-    public function setListSeparator($sSeparator): void
+    public function setListSeparator($separator): void
     {
-        $this->sSeparator = $sSeparator;
+        $this->separator = $separator;
     }
 
     /**
@@ -94,8 +94,8 @@ abstract class ValueList extends Value
     public function render(OutputFormat $outputFormat): string
     {
         return $outputFormat->implode(
-            $outputFormat->spaceBeforeListArgumentSeparator($this->sSeparator) . $this->sSeparator
-            . $outputFormat->spaceAfterListArgumentSeparator($this->sSeparator),
+            $outputFormat->spaceBeforeListArgumentSeparator($this->separator) . $this->separator
+            . $outputFormat->spaceAfterListArgumentSeparator($this->separator),
             $this->components
         );
     }
