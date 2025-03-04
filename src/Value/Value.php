@@ -152,7 +152,7 @@ abstract class Value implements Renderable
      */
     public static function parsePrimitiveValue(ParserState $parserState)
     {
-        $oValue = null;
+        $value = null;
         $parserState->consumeWhiteSpace();
         if (
             \is_numeric($parserState->peek())
@@ -160,31 +160,31 @@ abstract class Value implements Renderable
                 && \is_numeric($parserState->peek(1, 2)))
             || (($parserState->comes('-') || $parserState->comes('.')) && \is_numeric($parserState->peek(1, 1)))
         ) {
-            $oValue = Size::parse($parserState);
+            $value = Size::parse($parserState);
         } elseif ($parserState->comes('#') || $parserState->comes('rgb', true) || $parserState->comes('hsl', true)) {
-            $oValue = Color::parse($parserState);
+            $value = Color::parse($parserState);
         } elseif ($parserState->comes("'") || $parserState->comes('"')) {
-            $oValue = CSSString::parse($parserState);
+            $value = CSSString::parse($parserState);
         } elseif ($parserState->comes('progid:') && $parserState->getSettings()->usesLenientParsing()) {
-            $oValue = self::parseMicrosoftFilter($parserState);
+            $value = self::parseMicrosoftFilter($parserState);
         } elseif ($parserState->comes('[')) {
-            $oValue = LineName::parse($parserState);
+            $value = LineName::parse($parserState);
         } elseif ($parserState->comes('U+')) {
-            $oValue = self::parseUnicodeRangeValue($parserState);
+            $value = self::parseUnicodeRangeValue($parserState);
         } else {
             $sNextChar = $parserState->peek(1);
             try {
-                $oValue = self::parseIdentifierOrFunction($parserState);
+                $value = self::parseIdentifierOrFunction($parserState);
             } catch (UnexpectedTokenException $e) {
                 if (\in_array($sNextChar, ['+', '-', '*', '/'], true)) {
-                    $oValue = $parserState->consume(1);
+                    $value = $parserState->consume(1);
                 } else {
                     throw $e;
                 }
             }
         }
         $parserState->consumeWhiteSpace();
-        return $oValue;
+        return $value;
     }
 
     /**
