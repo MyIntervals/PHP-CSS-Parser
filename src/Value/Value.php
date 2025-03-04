@@ -43,8 +43,8 @@ abstract class Value implements Renderable
      */
     public static function parseValue(ParserState $parserState, array $aListDelimiters = [])
     {
-        /** @var array<int, Value|string> $aStack */
-        $aStack = [];
+        /** @var array<int, Value|string> $stack */
+        $stack = [];
         $parserState->consumeWhiteSpace();
         //Build a list of delimiters and parsed values
         while (
@@ -52,11 +52,11 @@ abstract class Value implements Renderable
             || $parserState->comes(')')
             || $parserState->isEnd())
         ) {
-            if (\count($aStack) > 0) {
+            if (\count($stack) > 0) {
                 $bFoundDelimiter = false;
                 foreach ($aListDelimiters as $sDelimiter) {
                     if ($parserState->comes($sDelimiter)) {
-                        \array_push($aStack, $parserState->consume($sDelimiter));
+                        \array_push($stack, $parserState->consume($sDelimiter));
                         $parserState->consumeWhiteSpace();
                         $bFoundDelimiter = true;
                         break;
@@ -64,40 +64,40 @@ abstract class Value implements Renderable
                 }
                 if (!$bFoundDelimiter) {
                     //Whitespace was the list delimiter
-                    \array_push($aStack, ' ');
+                    \array_push($stack, ' ');
                 }
             }
-            \array_push($aStack, self::parsePrimitiveValue($parserState));
+            \array_push($stack, self::parsePrimitiveValue($parserState));
             $parserState->consumeWhiteSpace();
         }
         // Convert the list to list objects
         foreach ($aListDelimiters as $sDelimiter) {
-            $iStackLength = \count($aStack);
-            if ($iStackLength === 1) {
-                return $aStack[0];
+            $stackSize = \count($stack);
+            if ($stackSize === 1) {
+                return $stack[0];
             }
-            $aNewStack = [];
-            for ($offset = 0; $offset < $iStackLength; ++$offset) {
-                if ($offset === ($iStackLength - 1) || $sDelimiter !== $aStack[$offset + 1]) {
-                    $aNewStack[] = $aStack[$offset];
+            $newStack = [];
+            for ($offset = 0; $offset < $stackSize; ++$offset) {
+                if ($offset === ($stackSize - 1) || $sDelimiter !== $stack[$offset + 1]) {
+                    $newStack[] = $stack[$offset];
                     continue;
                 }
                 $length = 2; //Number of elements to be joined
-                for ($i = $offset + 3; $i < $iStackLength; $i += 2, ++$length) {
-                    if ($sDelimiter !== $aStack[$i]) {
+                for ($i = $offset + 3; $i < $stackSize; $i += 2, ++$length) {
+                    if ($sDelimiter !== $stack[$i]) {
                         break;
                     }
                 }
                 $list = new RuleValueList($sDelimiter, $parserState->currentLine());
                 for ($i = $offset; $i - $offset < $length * 2; $i += 2) {
-                    $list->addListComponent($aStack[$i]);
+                    $list->addListComponent($stack[$i]);
                 }
-                $aNewStack[] = $list;
+                $newStack[] = $list;
                 $offset += $length * 2 - 2;
             }
-            $aStack = $aNewStack;
+            $stack = $newStack;
         }
-        if (!isset($aStack[0])) {
+        if (!isset($stack[0])) {
             throw new UnexpectedTokenException(
                 " {$parserState->peek()} ",
                 $parserState->peek(1, -1) . $parserState->peek(2),
@@ -105,7 +105,7 @@ abstract class Value implements Renderable
                 $parserState->currentLine()
             );
         }
-        return $aStack[0];
+        return $stack[0];
     }
 
     /**
