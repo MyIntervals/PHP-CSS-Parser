@@ -25,19 +25,19 @@ class CSSFunction extends ValueList
 
     /**
      * @param string $sName
-     * @param RuleValueList|array<array-key, Value|string> $aArguments
+     * @param RuleValueList|array<array-key, Value|string> $arguments
      * @param string $sSeparator
      * @param int<0, max> $lineNumber
      */
-    public function __construct($sName, $aArguments, $sSeparator = ',', $lineNumber = 0)
+    public function __construct($sName, $arguments, $sSeparator = ',', $lineNumber = 0)
     {
-        if ($aArguments instanceof RuleValueList) {
-            $sSeparator = $aArguments->getListSeparator();
-            $aArguments = $aArguments->getListComponents();
+        if ($arguments instanceof RuleValueList) {
+            $sSeparator = $arguments->getListSeparator();
+            $arguments = $arguments->getListComponents();
         }
         $this->sName = $sName;
         $this->lineNumber = $lineNumber;
-        parent::__construct($aArguments, $sSeparator, $lineNumber);
+        parent::__construct($arguments, $sSeparator, $lineNumber);
     }
 
     /**
@@ -51,9 +51,9 @@ class CSSFunction extends ValueList
     {
         $sName = self::parseName($parserState, $ignoreCase);
         $parserState->consume('(');
-        $mArguments = self::parseArguments($parserState);
+        $arguments = self::parseArguments($parserState);
 
-        $result = new CSSFunction($sName, $mArguments, ',', $parserState->currentLine());
+        $result = new CSSFunction($sName, $arguments, ',', $parserState->currentLine());
         $parserState->consume(')');
 
         return $result;
@@ -115,7 +115,7 @@ class CSSFunction extends ValueList
 
     public function render(OutputFormat $outputFormat): string
     {
-        $aArguments = parent::render($outputFormat);
-        return "{$this->sName}({$aArguments})";
+        $arguments = parent::render($outputFormat);
+        return "{$this->sName}({$arguments})";
     }
 }
