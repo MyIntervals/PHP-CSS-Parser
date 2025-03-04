@@ -29,13 +29,13 @@ class CalcFunction extends CSSFunction
     public static function parse(ParserState $parserState, bool $ignoreCase = false): CSSFunction
     {
         $aOperators = ['+', '-', '*', '/'];
-        $sFunction = $parserState->parseIdentifier();
+        $function = $parserState->parseIdentifier();
         if ($parserState->peek() != '(') {
             // Found ; or end of line before an opening bracket
             throw new UnexpectedTokenException('(', $parserState->peek(), 'literal', $parserState->currentLine());
-        } elseif (!\in_array($sFunction, ['calc', '-moz-calc', '-webkit-calc'], true)) {
+        } elseif (!\in_array($function, ['calc', '-moz-calc', '-webkit-calc'], true)) {
             // Found invalid calc definition. Example calc (...
-            throw new UnexpectedTokenException('calc', $sFunction, 'literal', $parserState->currentLine());
+            throw new UnexpectedTokenException('calc', $function, 'literal', $parserState->currentLine());
         }
         $parserState->consume('(');
         $oCalcList = new CalcRuleValueList($parserState->currentLine());
@@ -100,6 +100,6 @@ class CalcFunction extends CSSFunction
         if (!$parserState->isEnd()) {
             $parserState->consume(')');
         }
-        return new CalcFunction($sFunction, $list, ',', $parserState->currentLine());
+        return new CalcFunction($function, $list, ',', $parserState->currentLine());
     }
 }
