@@ -55,7 +55,7 @@ class Size extends PrimitiveValue
     /**
      * @var float
      */
-    private $fSize;
+    private $size;
 
     /**
      * @var string|null
@@ -68,15 +68,15 @@ class Size extends PrimitiveValue
     private $bIsColorComponent;
 
     /**
-     * @param float|int|string $fSize
+     * @param float|int|string $size
      * @param string|null $sUnit
      * @param bool $bIsColorComponent
      * @param int<0, max> $lineNumber
      */
-    public function __construct($fSize, $sUnit = null, $bIsColorComponent = false, $lineNumber = 0)
+    public function __construct($size, $sUnit = null, $bIsColorComponent = false, $lineNumber = 0)
     {
         parent::__construct($lineNumber);
-        $this->fSize = (float) $fSize;
+        $this->size = (float) $size;
         $this->sUnit = $sUnit;
         $this->bIsColorComponent = $bIsColorComponent;
     }
@@ -91,22 +91,22 @@ class Size extends PrimitiveValue
      */
     public static function parse(ParserState $parserState, $bIsColorComponent = false): Size
     {
-        $sSize = '';
+        $size = '';
         if ($parserState->comes('-')) {
-            $sSize .= $parserState->consume('-');
+            $size .= $parserState->consume('-');
         }
         while (\is_numeric($parserState->peek()) || $parserState->comes('.') || $parserState->comes('e', true)) {
             if ($parserState->comes('.')) {
-                $sSize .= $parserState->consume('.');
+                $size .= $parserState->consume('.');
             } elseif ($parserState->comes('e', true)) {
                 $sLookahead = $parserState->peek(1, 1);
                 if (\is_numeric($sLookahead) || $sLookahead === '+' || $sLookahead === '-') {
-                    $sSize .= $parserState->consume(2);
+                    $size .= $parserState->consume(2);
                 } else {
                     break; // Reached the unit part of the number like "em" or "ex"
                 }
             } else {
-                $sSize .= $parserState->consume(1);
+                $size .= $parserState->consume(1);
             }
         }
 
@@ -121,7 +121,7 @@ class Size extends PrimitiveValue
                 }
             }
         }
-        return new Size((float) $sSize, $sUnit, $bIsColorComponent, $parserState->currentLine());
+        return new Size((float) $size, $sUnit, $bIsColorComponent, $parserState->currentLine());
     }
 
     /**
@@ -162,11 +162,11 @@ class Size extends PrimitiveValue
     }
 
     /**
-     * @param float|int|string $fSize
+     * @param float|int|string $size
      */
-    public function setSize($fSize): void
+    public function setSize($size): void
     {
-        $this->fSize = (float) $fSize;
+        $this->size = (float) $size;
     }
 
     /**
@@ -174,7 +174,7 @@ class Size extends PrimitiveValue
      */
     public function getSize()
     {
-        return $this->fSize;
+        return $this->size;
     }
 
     /**
@@ -204,7 +204,7 @@ class Size extends PrimitiveValue
         if (\in_array($this->sUnit, self::RELATIVE_SIZE_UNITS, true)) {
             return true;
         }
-        if ($this->sUnit === null && $this->fSize != 0) {
+        if ($this->sUnit === null && $this->size != 0) {
             return true;
         }
         return false;
@@ -222,9 +222,9 @@ class Size extends PrimitiveValue
     {
         $l = \localeconv();
         $sPoint = \preg_quote($l['decimal_point'], '/');
-        $sSize = \preg_match('/[\\d\\.]+e[+-]?\\d+/i', (string) $this->fSize)
-            ? \preg_replace("/$sPoint?0+$/", '', \sprintf('%f', $this->fSize)) : (string) $this->fSize;
-        return \preg_replace(["/$sPoint/", '/^(-?)0\\./'], ['.', '$1.'], $sSize)
+        $size = \preg_match('/[\\d\\.]+e[+-]?\\d+/i', (string) $this->size)
+            ? \preg_replace("/$sPoint?0+$/", '', \sprintf('%f', $this->size)) : (string) $this->size;
+        return \preg_replace(["/$sPoint/", '/^(-?)0\\./'], ['.', '$1.'], $size)
             . ($this->sUnit ?? '');
     }
 }
