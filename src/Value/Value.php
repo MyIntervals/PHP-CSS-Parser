@@ -127,11 +127,7 @@ abstract class Value implements Renderable
             $anchor->backtrack();
             if ($parserState->streql('url', $result)) {
                 $result = URL::parse($parserState);
-            } elseif (
-                $parserState->streql('calc', $result)
-                || $parserState->streql('-webkit-calc', $result)
-                || $parserState->streql('-moz-calc', $result)
-            ) {
+            } elseif ($parserState->streql('calc', $result)) {
                 $result = CalcFunction::parse($parserState);
             } else {
                 $result = CSSFunction::parse($parserState, $ignoreCase);

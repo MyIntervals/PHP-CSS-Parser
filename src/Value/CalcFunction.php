@@ -33,7 +33,7 @@ class CalcFunction extends CSSFunction
         if ($parserState->peek() != '(') {
             // Found ; or end of line before an opening bracket
             throw new UnexpectedTokenException('(', $parserState->peek(), 'literal', $parserState->currentLine());
-        } elseif (!\in_array($function, ['calc', '-moz-calc', '-webkit-calc'], true)) {
+        } elseif ($function !== 'calc') {
             // Found invalid calc definition. Example calc (...
             throw new UnexpectedTokenException('calc', $function, 'literal', $parserState->currentLine());
         }
