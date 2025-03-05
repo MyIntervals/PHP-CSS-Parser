@@ -60,7 +60,7 @@ class Size extends PrimitiveValue
     /**
      * @var string|null
      */
-    private $sUnit;
+    private $unit;
 
     /**
      * @var bool
@@ -69,15 +69,15 @@ class Size extends PrimitiveValue
 
     /**
      * @param float|int|string $size
-     * @param string|null $sUnit
+     * @param string|null $unit
      * @param bool $bIsColorComponent
      * @param int<0, max> $lineNumber
      */
-    public function __construct($size, $sUnit = null, $bIsColorComponent = false, $lineNumber = 0)
+    public function __construct($size, $unit = null, $bIsColorComponent = false, $lineNumber = 0)
     {
         parent::__construct($lineNumber);
         $this->size = (float) $size;
-        $this->sUnit = $sUnit;
+        $this->unit = $unit;
         $this->bIsColorComponent = $bIsColorComponent;
     }
 
@@ -110,18 +110,18 @@ class Size extends PrimitiveValue
             }
         }
 
-        $sUnit = null;
-        $aSizeUnits = self::getSizeUnits();
-        foreach ($aSizeUnits as $length => &$aValues) {
+        $unit = null;
+        $sizeUnits = self::getSizeUnits();
+        foreach ($sizeUnits as $length => &$aValues) {
             $sKey = \strtolower($parserState->peek($length));
             if (\array_key_exists($sKey, $aValues)) {
-                if (($sUnit = $aValues[$sKey]) !== null) {
+                if (($unit = $aValues[$sKey]) !== null) {
                     $parserState->consume($length);
                     break;
                 }
             }
         }
-        return new Size((float) $size, $sUnit, $bIsColorComponent, $parserState->currentLine());
+        return new Size((float) $size, $unit, $bIsColorComponent, $parserState->currentLine());
     }
 
     /**
@@ -146,11 +146,11 @@ class Size extends PrimitiveValue
     }
 
     /**
-     * @param string $sUnit
+     * @param string $unit
      */
-    public function setUnit($sUnit): void
+    public function setUnit($unit): void
     {
-        $this->sUnit = $sUnit;
+        $this->unit = $unit;
     }
 
     /**
@@ -158,7 +158,7 @@ class Size extends PrimitiveValue
      */
     public function getUnit()
     {
-        return $this->sUnit;
+        return $this->unit;
     }
 
     /**
@@ -193,7 +193,7 @@ class Size extends PrimitiveValue
      */
     public function isSize(): bool
     {
-        if (\in_array($this->sUnit, self::NON_SIZE_UNITS, true)) {
+        if (\in_array($this->unit, self::NON_SIZE_UNITS, true)) {
             return false;
         }
         return !$this->isColorComponent();
@@ -201,10 +201,10 @@ class Size extends PrimitiveValue
 
     public function isRelative(): bool
     {
-        if (\in_array($this->sUnit, self::RELATIVE_SIZE_UNITS, true)) {
+        if (\in_array($this->unit, self::RELATIVE_SIZE_UNITS, true)) {
             return true;
         }
-        if ($this->sUnit === null && $this->size != 0) {
+        if ($this->unit === null && $this->size != 0) {
             return true;
         }
         return false;
@@ -225,6 +225,6 @@ class Size extends PrimitiveValue
         $size = \preg_match('/[\\d\\.]+e[+-]?\\d+/i', (string) $this->size)
             ? \preg_replace("/$sPoint?0+$/", '', \sprintf('%f', $this->size)) : (string) $this->size;
         return \preg_replace(["/$sPoint/", '/^(-?)0\\./'], ['.', '$1.'], $size)
-            . ($this->sUnit ?? '');
+            . ($this->unit ?? '');
     }
 }
