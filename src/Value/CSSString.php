@@ -52,7 +52,7 @@ class CSSString extends PrimitiveValue
             $parserState->consume($quote);
         }
         $result = '';
-        $sContent = null;
+        $content = null;
         if ($quote === null) {
             // Unquoted strings end in whitespace or with braces, brackets, parentheses
             while (\preg_match('/[\\s{}()<>\\[\\]]/isu', $parserState->peek()) !== 1) {
@@ -60,14 +60,14 @@ class CSSString extends PrimitiveValue
             }
         } else {
             while (!$parserState->comes($quote)) {
-                $sContent = $parserState->parseCharacter(false);
-                if ($sContent === null) {
+                $content = $parserState->parseCharacter(false);
+                if ($content === null) {
                     throw new SourceException(
                         "Non-well-formed quoted string {$parserState->peek(3)}",
                         $parserState->currentLine()
                     );
                 }
-                $result .= $sContent;
+                $result .= $content;
             }
             $parserState->consume($quote);
         }
