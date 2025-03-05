@@ -65,31 +65,31 @@ class Size extends PrimitiveValue
     /**
      * @var bool
      */
-    private $bIsColorComponent;
+    private $isColorComponent;
 
     /**
      * @param float|int|string $size
      * @param string|null $unit
-     * @param bool $bIsColorComponent
+     * @param bool $isColorComponent
      * @param int<0, max> $lineNumber
      */
-    public function __construct($size, $unit = null, $bIsColorComponent = false, $lineNumber = 0)
+    public function __construct($size, $unit = null, $isColorComponent = false, $lineNumber = 0)
     {
         parent::__construct($lineNumber);
         $this->size = (float) $size;
         $this->unit = $unit;
-        $this->bIsColorComponent = $bIsColorComponent;
+        $this->isColorComponent = $isColorComponent;
     }
 
     /**
-     * @param bool $bIsColorComponent
+     * @param bool $isColorComponent
      *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      *
      * @internal since V8.8.0
      */
-    public static function parse(ParserState $parserState, $bIsColorComponent = false): Size
+    public static function parse(ParserState $parserState, $isColorComponent = false): Size
     {
         $size = '';
         if ($parserState->comes('-')) {
@@ -121,7 +121,7 @@ class Size extends PrimitiveValue
                 }
             }
         }
-        return new Size((float) $size, $unit, $bIsColorComponent, $parserState->currentLine());
+        return new Size((float) $size, $unit, $isColorComponent, $parserState->currentLine());
     }
 
     /**
@@ -182,7 +182,7 @@ class Size extends PrimitiveValue
      */
     public function isColorComponent()
     {
-        return $this->bIsColorComponent;
+        return $this->isColorComponent;
     }
 
     /**
