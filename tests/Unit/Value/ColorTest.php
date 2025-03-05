@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit\Value;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Settings;
@@ -346,7 +347,7 @@ final class ColorTest extends TestCase
     {
         $subject = Color::parse(new ParserState($color, Settings::create()));
 
-        $renderedResult = (string) $subject;
+        $renderedResult = $subject->render(OutputFormat::create());
 
         self::assertSame($expectedRendering, $renderedResult);
     }
