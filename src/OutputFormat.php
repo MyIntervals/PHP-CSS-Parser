@@ -18,7 +18,7 @@ class OutputFormat
      *
      * @var bool
      */
-    private $rgbHashNotation = true;
+    private $usesRgbHashNotation = true;
 
     /**
      * Declaration format
@@ -27,7 +27,7 @@ class OutputFormat
      *
      * @var bool
      */
-    private $semicolonAfterLastRule = true;
+    private $renderSemicolonAfterLastRule = true;
 
     /**
      * Spacing
@@ -272,17 +272,17 @@ class OutputFormat
     /**
      * @internal
      */
-    public function getRGBHashNotation(): bool
+    public function usesRgbHashNotation(): bool
     {
-        return $this->rgbHashNotation;
+        return $this->usesRgbHashNotation;
     }
 
     /**
      * @return $this fluent interface
      */
-    public function setRGBHashNotation(bool $rgbHashNotation): self
+    public function setRGBHashNotation(bool $usesRgbHashNotation): self
     {
-        $this->rgbHashNotation = $rgbHashNotation;
+        $this->usesRgbHashNotation = $usesRgbHashNotation;
 
         return $this;
     }
@@ -290,17 +290,17 @@ class OutputFormat
     /**
      * @internal
      */
-    public function getSemicolonAfterLastRule(): bool
+    public function shouldRenderSemicolonAfterLastRule(): bool
     {
-        return $this->semicolonAfterLastRule;
+        return $this->renderSemicolonAfterLastRule;
     }
 
     /**
      * @return $this fluent interface
      */
-    public function setSemicolonAfterLastRule(bool $semicolonAfterLastRule): self
+    public function setSemicolonAfterLastRule(bool $renderSemicolonAfterLastRule): self
     {
-        $this->semicolonAfterLastRule = $semicolonAfterLastRule;
+        $this->renderSemicolonAfterLastRule = $renderSemicolonAfterLastRule;
 
         return $this;
     }
