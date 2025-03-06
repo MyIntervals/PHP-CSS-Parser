@@ -65,10 +65,10 @@ final class SpecificityCalculator
         if (!isset(self::$cache[$selector])) {
             $a = 0;
             /// @todo should exclude \# as well as "#"
-            $aMatches = null;
+            $matches = null;
             $b = \substr_count($selector, '#');
-            $c = \preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $selector, $aMatches);
-            $d = \preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $selector, $aMatches);
+            $c = \preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $selector, $matches);
+            $d = \preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $selector, $matches);
             self::$cache[$selector] = ($a * 1000) + ($b * 100) + ($c * 10) + $d;
         }
 
