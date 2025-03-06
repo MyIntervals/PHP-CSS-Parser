@@ -43,17 +43,17 @@ class OutputFormat
     /**
      * @var string
      */
-    private $sSpaceBeforeRules = '';
+    private $spaceBeforeRules = '';
 
     /**
      * @var string
      */
-    private $sSpaceAfterRules = '';
+    private $spaceAfterRules = '';
 
     /**
      * @var string
      */
-    private $sSpaceBetweenRules = '';
+    private $spaceBetweenRules = '';
 
     /**
      * @var string
@@ -313,7 +313,7 @@ class OutputFormat
      */
     public function getSpaceBeforeRules(): string
     {
-        return $this->sSpaceBeforeRules;
+        return $this->spaceBeforeRules;
     }
 
     /**
@@ -321,7 +321,7 @@ class OutputFormat
      */
     public function setSpaceBeforeRules(string $whitespace): self
     {
-        $this->sSpaceBeforeRules = $whitespace;
+        $this->spaceBeforeRules = $whitespace;
 
         return $this;
     }
@@ -331,7 +331,7 @@ class OutputFormat
      */
     public function getSpaceAfterRules(): string
     {
-        return $this->sSpaceAfterRules;
+        return $this->spaceAfterRules;
     }
 
     /**
@@ -339,7 +339,7 @@ class OutputFormat
      */
     public function setSpaceAfterRules(string $whitespace): self
     {
-        $this->sSpaceAfterRules = $whitespace;
+        $this->spaceAfterRules = $whitespace;
 
         return $this;
     }
@@ -349,7 +349,7 @@ class OutputFormat
      */
     public function getSpaceBetweenRules(): string
     {
-        return $this->sSpaceBetweenRules;
+        return $this->spaceBetweenRules;
     }
 
     /**
@@ -357,7 +357,7 @@ class OutputFormat
      */
     public function setSpaceBetweenRules(string $whitespace): self
     {
-        $this->sSpaceBetweenRules = $whitespace;
+        $this->spaceBetweenRules = $whitespace;
 
         return $this;
     }
