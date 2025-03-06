@@ -18,15 +18,15 @@ class URL extends PrimitiveValue
     /**
      * @var CSSString
      */
-    private $oURL;
+    private $url;
 
     /**
      * @param int<0, max> $lineNumber
      */
-    public function __construct(CSSString $oURL, $lineNumber = 0)
+    public function __construct(CSSString $url, $lineNumber = 0)
     {
         parent::__construct($lineNumber);
-        $this->oURL = $oURL;
+        $this->url = $url;
     }
 
     /**
@@ -63,9 +63,9 @@ class URL extends PrimitiveValue
         return $result;
     }
 
-    public function setURL(CSSString $oURL): void
+    public function setURL(CSSString $url): void
     {
-        $this->oURL = $oURL;
+        $this->url = $url;
     }
 
     /**
@@ -73,7 +73,7 @@ class URL extends PrimitiveValue
      */
     public function getURL()
     {
-        return $this->oURL;
+        return $this->url;
     }
 
     /**
@@ -86,6 +86,6 @@ class URL extends PrimitiveValue
 
     public function render(OutputFormat $outputFormat): string
     {
-        return "url({$this->oURL->render($outputFormat)})";
+        return "url({$this->url->render($outputFormat)})";
     }
 }
