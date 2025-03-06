@@ -194,13 +194,15 @@ class OutputFormatter
         if ($this->outputFormat->getSemicolonAfterLastRule()) {
             return $string;
         }
+
         $parts = \explode(';', $string);
         if (\count($parts) < 2) {
             return $parts[0];
         }
-        $sLast = \array_pop($parts);
-        $sNextToLast = \array_pop($parts);
-        \array_push($parts, $sNextToLast . $sLast);
+        $lastPart = \array_pop($parts);
+        $nextToLastPart = \array_pop($parts);
+        \array_push($parts, $nextToLastPart . $lastPart);
+
         return \implode(';', $parts);
     }
 
