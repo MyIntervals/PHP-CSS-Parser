@@ -18,7 +18,7 @@ class OutputFormat
      *
      * @var bool
      */
-    private $bRGBHashNotation = true;
+    private $rgbHashNotation = true;
 
     /**
      * Declaration format
@@ -27,7 +27,7 @@ class OutputFormat
      *
      * @var bool
      */
-    private $bSemicolonAfterLastRule = true;
+    private $semicolonAfterLastRule = true;
 
     /**
      * Spacing
@@ -38,7 +38,7 @@ class OutputFormat
      *
      * @var string
      */
-    private $sSpaceAfterRuleName = ' ';
+    private $spaceAfterRuleName = ' ';
 
     /**
      * @var string
@@ -274,7 +274,7 @@ class OutputFormat
      */
     public function getRGBHashNotation(): bool
     {
-        return $this->bRGBHashNotation;
+        return $this->rgbHashNotation;
     }
 
     /**
@@ -282,7 +282,7 @@ class OutputFormat
      */
     public function setRGBHashNotation(bool $rgbHashNotation): self
     {
-        $this->bRGBHashNotation = $rgbHashNotation;
+        $this->rgbHashNotation = $rgbHashNotation;
 
         return $this;
     }
@@ -292,7 +292,7 @@ class OutputFormat
      */
     public function getSemicolonAfterLastRule(): bool
     {
-        return $this->bSemicolonAfterLastRule;
+        return $this->semicolonAfterLastRule;
     }
 
     /**
@@ -300,7 +300,7 @@ class OutputFormat
      */
     public function setSemicolonAfterLastRule(bool $semicolonAfterLastRule): self
     {
-        $this->bSemicolonAfterLastRule = $semicolonAfterLastRule;
+        $this->semicolonAfterLastRule = $semicolonAfterLastRule;
 
         return $this;
     }
@@ -310,7 +310,7 @@ class OutputFormat
      */
     public function getSpaceAfterRuleName(): string
     {
-        return $this->sSpaceAfterRuleName;
+        return $this->spaceAfterRuleName;
     }
 
     /**
@@ -318,7 +318,7 @@ class OutputFormat
      */
     public function setSpaceAfterRuleName(string $whitespace): self
     {
-        $this->sSpaceAfterRuleName = $whitespace;
+        $this->spaceAfterRuleName = $whitespace;
 
         return $this;
     }
