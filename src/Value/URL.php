@@ -47,8 +47,8 @@ class URL extends PrimitiveValue
             }
             $identifier .= $character;
         }
-        $bUseUrl = $parserState->streql($identifier, 'url');
-        if ($bUseUrl) {
+        $useUrl = $parserState->streql($identifier, 'url');
+        if ($useUrl) {
             $parserState->consumeWhiteSpace();
             $parserState->consume('(');
         } else {
@@ -56,7 +56,7 @@ class URL extends PrimitiveValue
         }
         $parserState->consumeWhiteSpace();
         $result = new URL(CSSString::parse($parserState), $parserState->currentLine());
-        if ($bUseUrl) {
+        if ($useUrl) {
             $parserState->consumeWhiteSpace();
             $parserState->consume(')');
         }
