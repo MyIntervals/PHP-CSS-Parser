@@ -41,11 +41,11 @@ class URL extends PrimitiveValue
         $anchor = $parserState->anchor();
         $identifier = '';
         for ($i = 0; $i < 3; $i++) {
-            $sChar = $parserState->parseCharacter(true);
-            if ($sChar === null) {
+            $character = $parserState->parseCharacter(true);
+            if ($character === null) {
                 break;
             }
-            $identifier .= $sChar;
+            $identifier .= $character;
         }
         $bUseUrl = $parserState->streql($identifier, 'url');
         if ($bUseUrl) {
