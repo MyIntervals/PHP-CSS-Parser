@@ -1011,8 +1011,8 @@ body {background-color: red;}';
         self::assertSame(27, $rules[1]->getLineNo());
 
         $actualColorLineNumbers = [];
-        foreach ($valueOfSecondRule->getColor() as $color) {
-            $actualColorLineNumbers[] = $color->getLineNo();
+        foreach ($valueOfSecondRule->getColor() as $size) {
+            $actualColorLineNumbers[] = $size->getLineNo();
         }
 
         self::assertSame($expectedColorLineNumbers, $actualColorLineNumbers);
