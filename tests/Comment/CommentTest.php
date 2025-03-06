@@ -20,7 +20,7 @@ final class CommentTest extends TestCase
      */
     public function keepCommentsInOutput(): void
     {
-        $oCss = TestsParserTest::parsedStructureForFile('comments');
+        $cssDocument = TestsParserTest::parsedStructureForFile('comments');
         self::assertSame('/** Number 11 **/
 
 /**
@@ -45,7 +45,7 @@ final class CommentTest extends TestCase
 		position: absolute;
 	}
 }
-', $oCss->render(OutputFormat::createPretty()));
+', $cssDocument->render(OutputFormat::createPretty()));
         self::assertSame(
             '/** Number 11 **//**' . "\n"
             . ' * Comments' . "\n"
@@ -53,7 +53,7 @@ final class CommentTest extends TestCase
             . '/* Number 4 *//* Number 5 */.foo,#bar{'
             . '/* Number 6 */background-color:#000;}@media screen{'
             . '/** Number 10 **/#foo.bar{/** Number 10b **/position:absolute;}}',
-            $oCss->render(OutputFormat::createCompact()->setRenderComments(true))
+            $cssDocument->render(OutputFormat::createCompact()->setRenderComments(true))
         );
     }
 

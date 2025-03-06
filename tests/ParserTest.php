@@ -161,8 +161,8 @@ final class ParserTest extends TestCase
                 self::assertEmpty($colorRules);
             }
         }
-        foreach ($document->getAllValues('color') as $sColor) {
-            self::assertSame('red', $sColor);
+        foreach ($document->getAllValues('color') as $colorValue) {
+            self::assertSame('red', $colorValue);
         }
         self::assertSame(
             '#mine {color: red;border-color: #0a64e6;border-color: rgba(10,100,231,.3);outline-color: #222;'
@@ -463,9 +463,9 @@ body {color: green;}',
             . '.collapser.expanded + * {height: auto;}';
         self::assertSame($expected, $document->render());
 
-        foreach ($document->getAllValues(null, true) as $mValue) {
-            if ($mValue instanceof Size && $mValue->isSize()) {
-                $mValue->setSize($mValue->getSize() * 3);
+        foreach ($document->getAllValues(null, true) as $value) {
+            if ($value instanceof Size && $value->isSize()) {
+                $value->setSize($value->getSize() * 3);
             }
         }
         $expected = \str_replace(['1.2em', '.2em', '60%'], ['3.6em', '.6em', '180%'], $expected);
@@ -952,12 +952,12 @@ body {background-color: red;}';
      * Parses structure for file.
      *
      * @param string $filename
-     * @param Settings|null $oSettings
+     * @param Settings|null $settings
      */
-    public static function parsedStructureForFile($filename, $oSettings = null): Document
+    public static function parsedStructureForFile($filename, $settings = null): Document
     {
         $filename = __DIR__ . "/fixtures/$filename.css";
-        $parser = new Parser(\file_get_contents($filename), $oSettings);
+        $parser = new Parser(\file_get_contents($filename), $settings);
         return $parser->parse();
     }
 
@@ -1011,8 +1011,8 @@ body {background-color: red;}';
         self::assertSame(27, $rules[1]->getLineNo());
 
         $actualColorLineNumbers = [];
-        foreach ($valueOfSecondRule->getColor() as $oSize) {
-            $actualColorLineNumbers[] = $oSize->getLineNo();
+        foreach ($valueOfSecondRule->getColor() as $size) {
+            $actualColorLineNumbers[] = $size->getLineNo();
         }
 
         self::assertSame($expectedColorLineNumbers, $actualColorLineNumbers);
@@ -1044,16 +1044,16 @@ body {background-color: red;}';
     public function commentExtracting(): void
     {
         $document = self::parsedStructureForFile('comments');
-        $aNodes = $document->getContents();
+        $nodes = $document->getContents();
 
         // Import property.
-        $importComments = $aNodes[0]->getComments();
+        $importComments = $nodes[0]->getComments();
         self::assertCount(2, $importComments);
         self::assertSame("*\n * Comments\n ", $importComments[0]->getComment());
         self::assertSame(' Hell ', $importComments[1]->getComment());
 
         // Declaration block.
-        $fooBarBlock = $aNodes[1];
+        $fooBarBlock = $nodes[1];
         $fooBarBlockComments = $fooBarBlock->getComments();
         // TODO Support comments in selectors.
         // $this->assertCount(2, $fooBarBlockComments);
@@ -1068,11 +1068,11 @@ body {background-color: red;}';
         self::assertSame(' Number 6 ', $fooBarRuleComments[0]->getComment());
 
         // Media property.
-        $mediaComments = $aNodes[2]->getComments();
+        $mediaComments = $nodes[2]->getComments();
         self::assertCount(0, $mediaComments);
 
         // Media children.
-        $mediaRules = $aNodes[2]->getContents();
+        $mediaRules = $nodes[2]->getContents();
         $fooBarComments = $mediaRules[0]->getComments();
         self::assertCount(1, $fooBarComments);
         self::assertSame('* Number 10 *', $fooBarComments[0]->getComment());
