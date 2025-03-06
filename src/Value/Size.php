@@ -220,11 +220,11 @@ class Size extends PrimitiveValue
 
     public function render(OutputFormat $outputFormat): string
     {
-        $l = \localeconv();
-        $sPoint = \preg_quote($l['decimal_point'], '/');
+        $locale = \localeconv();
+        $decimalPoint = \preg_quote($locale['decimal_point'], '/');
         $size = \preg_match('/[\\d\\.]+e[+-]?\\d+/i', (string) $this->size)
-            ? \preg_replace("/$sPoint?0+$/", '', \sprintf('%f', $this->size)) : (string) $this->size;
-        return \preg_replace(["/$sPoint/", '/^(-?)0\\./'], ['.', '$1.'], $size)
-            . ($this->unit ?? '');
+            ? \preg_replace("/$decimalPoint?0+$/", '', \sprintf('%f', $this->size)) : (string) $this->size;
+
+        return \preg_replace(["/$decimalPoint/", '/^(-?)0\\./'], ['.', '$1.'], $size) . ($this->unit ?? '');
     }
 }
