@@ -191,7 +191,7 @@ class OutputFormatter
 
     public function removeLastSemicolon(string $string): string
     {
-        if ($this->outputFormat->getSemicolonAfterLastRule()) {
+        if ($this->outputFormat->shouldRenderSemicolonAfterLastRule()) {
             return $string;
         }
 

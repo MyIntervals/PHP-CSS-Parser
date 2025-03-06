@@ -53,9 +53,9 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function getRGBHashNotationInitiallyReturnsTrue(): void
+    public function usesRgbHashNotationInitiallyReturnsTrue(): void
     {
-        self::assertTrue($this->subject->getRGBHashNotation());
+        self::assertTrue($this->subject->usesRgbHashNotation());
     }
 
     /**
@@ -78,7 +78,7 @@ final class OutputFormatTest extends TestCase
     {
         $this->subject->setRGBHashNotation($value);
 
-        self::assertSame($value, $this->subject->getRGBHashNotation());
+        self::assertSame($value, $this->subject->usesRgbHashNotation());
     }
 
     /**
@@ -92,9 +92,9 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function getSemicolonAfterLastRuleInitiallyReturnsTrue(): void
+    public function shouldRenderSemicolonAfterLastRuleInitiallyReturnsTrue(): void
     {
-        self::assertTrue($this->subject->getSemicolonAfterLastRule());
+        self::assertTrue($this->subject->shouldRenderSemicolonAfterLastRule());
     }
 
     /**
@@ -106,7 +106,7 @@ final class OutputFormatTest extends TestCase
     {
         $this->subject->setSemicolonAfterLastRule($value);
 
-        self::assertSame($value, $this->subject->getSemicolonAfterLastRule());
+        self::assertSame($value, $this->subject->shouldRenderSemicolonAfterLastRule());
     }
 
     /**

@@ -248,7 +248,7 @@ class Color extends CSSFunction
     private function shouldRenderAsHex(OutputFormat $outputFormat): bool
     {
         return
-            $outputFormat->getRGBHashNotation()
+            $outputFormat->usesRgbHashNotation()
             && $this->getRealName() === 'rgb'
             && $this->allComponentsAreNumbers();
     }
