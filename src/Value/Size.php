@@ -131,12 +131,13 @@ class Size extends PrimitiveValue
     {
         if (!\is_array(self::$SIZE_UNITS)) {
             self::$SIZE_UNITS = [];
-            foreach (\array_merge(self::ABSOLUTE_SIZE_UNITS, self::RELATIVE_SIZE_UNITS, self::NON_SIZE_UNITS) as $val) {
-                $tokenLength = \strlen($val);
+            $sizeUnits = \array_merge(self::ABSOLUTE_SIZE_UNITS, self::RELATIVE_SIZE_UNITS, self::NON_SIZE_UNITS);
+            foreach ($sizeUnits as $sizeUnit) {
+                $tokenLength = \strlen($sizeUnit);
                 if (!isset(self::$SIZE_UNITS[$tokenLength])) {
                     self::$SIZE_UNITS[$tokenLength] = [];
                 }
-                self::$SIZE_UNITS[$tokenLength][\strtolower($val)] = $val;
+                self::$SIZE_UNITS[$tokenLength][\strtolower($sizeUnit)] = $sizeUnit;
             }
 
             \krsort(self::$SIZE_UNITS, SORT_NUMERIC);
