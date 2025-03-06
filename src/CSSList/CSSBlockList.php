@@ -87,8 +87,8 @@ abstract class CSSBlockList extends CSSList
         $searchInFunctionArguments = false
     ): void {
         if ($element instanceof CSSBlockList) {
-            foreach ($element->getContents() as $oContent) {
-                $this->allValues($oContent, $result, $searchString, $searchInFunctionArguments);
+            foreach ($element->getContents() as $content) {
+                $this->allValues($content, $result, $searchString, $searchInFunctionArguments);
             }
         } elseif ($element instanceof RuleSet) {
             foreach ($element->getRules($searchString) as $rule) {
@@ -117,8 +117,8 @@ abstract class CSSBlockList extends CSSList
         /** @var array<int, DeclarationBlock> $declarationBlocks */
         $declarationBlocks = [];
         $this->allDeclarationBlocks($declarationBlocks);
-        foreach ($declarationBlocks as $oBlock) {
-            foreach ($oBlock->getSelectors() as $selector) {
+        foreach ($declarationBlocks as $declarationBlock) {
+            foreach ($declarationBlock->getSelectors() as $selector) {
                 if ($specificitySearch === null) {
                     $result[] = $selector;
                 } else {
