@@ -21,8 +21,8 @@ final class DeclarationBlockTest extends TestCase
      */
     public function overrideRules(): void
     {
-        $sCss = '.wrapper { left: 10px; text-align: left; }';
-        $parser = new Parser($sCss);
+        $css = '.wrapper { left: 10px; text-align: left; }';
+        $parser = new Parser($css);
         $document = $parser->parse();
         $rule = new Rule('right');
         $rule->setValue('-10px');
@@ -43,8 +43,8 @@ final class DeclarationBlockTest extends TestCase
      */
     public function ruleInsertion(): void
     {
-        $sCss = '.wrapper { left: 10px; text-align: left; }';
-        $parser = new Parser($sCss);
+        $css = '.wrapper { left: 10px; text-align: left; }';
+        $parser = new Parser($css);
         $document = $parser->parse();
         $contents = $document->getContents();
         $wrapper = $contents[0];
