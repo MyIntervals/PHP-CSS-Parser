@@ -268,7 +268,7 @@ class OutputFormat
      *
      * @return self|false
      *
-     * @deprecated since 8.8.0, will be removed in 9.0.0. Use specific magic setters instead.
+     * @deprecated since 8.8.0, will be removed in 9.0.0. Use specific setters instead.
      */
     public function set($aNames, $mValue)
     {
