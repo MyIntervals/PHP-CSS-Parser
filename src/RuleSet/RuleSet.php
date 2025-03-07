@@ -145,7 +145,7 @@ abstract class RuleSet implements Renderable, Commentable
      *        Pattern to search for. If null, returns all rules.
      *        If the pattern ends with a dash, all rules starting with the pattern are returned
      *        as well as one matching the pattern with the dash excluded.
-     *        Passing a Rule behaves like calling `getRules($mRule->getRule())`.
+     *        Passing a `Rule` behaves like calling `getRules($rule->getRule())`.
      *
      * @return array<int, Rule>
      */
@@ -204,7 +204,7 @@ abstract class RuleSet implements Renderable, Commentable
      * @param Rule|string|null $searchPattern
      *        Pattern to search for. If null, returns all rules. If the pattern ends with a dash,
      *        all rules starting with the pattern are returned as well as one matching the pattern with the dash
-     *        excluded. Passing a Rule behaves like calling `getRules($mRule->getRule())`.
+     *        excluded. Passing a `Rule` behaves like calling `getRules($rule->getRule())`.
      *
      * @return array<string, Rule>
      */
