@@ -103,12 +103,6 @@ parameters:
 			path: ../src/CSSList/KeyFrame.php
 
 		-
-			message: '#^Parameters should have "string\|string" types as the only types passed to this method$#'
-			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 1
-			path: ../src/OutputFormat.php
-
-		-
 			message: '#^Returning false in non return bool class method\. Use null with type\|null instead or add bool return type$#'
 			identifier: typePerfect.nullOverFalse
 			count: 1
