@@ -43,7 +43,7 @@ Please also have a look at our
 
 ### Removed
 
-- Remove `OutputFormat::get()` (#1108)
+- Remove `OutputFormat::get()` and `::set()` (#1108, #1110)
 - Drop special support for vendor prefixes (#1083)
 - Remove the IE hack in `Rule` (#995)
 - Drop `getLineNo()` from the `Renderable` interface (#1038)
