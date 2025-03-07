@@ -183,42 +183,6 @@ class OutputFormat
     public function __construct() {}
 
     /**
-     * @param array<array-key, string>|string $names
-     * @param mixed $value
-     *
-     * @return self|false
-     */
-    public function set($names, $value)
-    {
-        $aVarPrefixes = ['a', 's', 'm', 'b', 'f', 'o', 'c', 'i'];
-        if (\is_string($names) && \strpos($names, '*') !== false) {
-            $names =
-                [
-                    \str_replace('*', 'Before', $names),
-                    \str_replace('*', 'Between', $names),
-                    \str_replace('*', 'After', $names),
-                ];
-        } elseif (!\is_array($names)) {
-            $names = [$names];
-        }
-        foreach ($aVarPrefixes as $prefix) {
-            $bDidReplace = false;
-            foreach ($names as $name) {
-                $sFieldName = $prefix . \ucfirst($name);
-                if (isset($this->$sFieldName)) {
-                    $this->$sFieldName = $value;
-                    $bDidReplace = true;
-                }
-            }
-            if ($bDidReplace) {
-                return $this;
-            }
-        }
-        // Break the chain so the user knows this option is invalid
-        return false;
-    }
-
-    /**
      * @param non-empty-string $sMethodName
      * @param array<array-key, mixed> $arguments
      *
