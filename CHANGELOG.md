@@ -19,6 +19,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Deprecated
 
+- Deprecate `OutputFormat::get()` and `::set()` (#1107)
 - Deprecate support for `-webkit-calc` and `-moz-calc` (#1086)
 - Deprecate `__toString()` (#1006)
 - Deprecate greedy calculation of selector specificity (#1018)

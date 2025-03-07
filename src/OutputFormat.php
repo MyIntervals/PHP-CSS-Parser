@@ -247,6 +247,8 @@ class OutputFormat
      * @param string $sName
      *
      * @return string|null
+     *
+     * @deprecated since 8.8.0, will be removed in 9.0.0. Use specific magic getters instead.
      */
     public function get($sName)
     {
@@ -265,6 +267,8 @@ class OutputFormat
      * @param mixed $mValue
      *
      * @return self|false
+     *
+     * @deprecated since 8.8.0, will be removed in 9.0.0. Use specific magic setters instead.
      */
     public function set($aNames, $mValue)
     {
