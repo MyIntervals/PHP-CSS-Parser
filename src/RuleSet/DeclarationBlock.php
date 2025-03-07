@@ -44,11 +44,11 @@ class DeclarationBlock extends RuleSet
         $comments = [];
         $result = new DeclarationBlock($parserState->currentLine());
         try {
-            $aSelectorParts = [];
+            $selectorParts = [];
             do {
-                $aSelectorParts[] = $parserState->consume(1)
+                $selectorParts[] = $parserState->consume(1)
                     . $parserState->consumeUntil(['{', '}', '\'', '"'], false, false, $comments);
-                if (\in_array($parserState->peek(), ['\'', '"'], true) && \substr(\end($aSelectorParts), -1) != '\\') {
+                if (\in_array($parserState->peek(), ['\'', '"'], true) && \substr(\end($selectorParts), -1) != '\\') {
                     if (!isset($stringWrapperCharacter)) {
                         $stringWrapperCharacter = $parserState->peek();
                     } elseif ($stringWrapperCharacter === $parserState->peek()) {
@@ -56,7 +56,7 @@ class DeclarationBlock extends RuleSet
                     }
                 }
             } while (!\in_array($parserState->peek(), ['{', '}'], true) || isset($stringWrapperCharacter));
-            $result->setSelectors(\implode('', $aSelectorParts), $list);
+            $result->setSelectors(\implode('', $selectorParts), $list);
             if ($parserState->comes('{')) {
                 $parserState->consume(1);
             }
