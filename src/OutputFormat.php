@@ -183,21 +183,6 @@ class OutputFormat
     public function __construct() {}
 
     /**
-     * @return string|int|bool|null
-     */
-    public function get(string $name)
-    {
-        $aVarPrefixes = ['a', 's', 'm', 'b', 'f', 'o', 'c', 'i'];
-        foreach ($aVarPrefixes as $prefix) {
-            $sFieldName = $prefix . \ucfirst($name);
-            if (isset($this->$sFieldName)) {
-                return $this->$sFieldName;
-            }
-        }
-        return null;
-    }
-
-    /**
      * @param array<array-key, string>|string $names
      * @param mixed $value
      *
