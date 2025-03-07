@@ -318,7 +318,7 @@ background-color: #fff;
         self::assertSame(
             '.test {font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white;}
 @media screen {.main {background-size: 100% 100%;font-size: 1.3em;background-color: #fff;}}',
-            $this->document->render(OutputFormat::create()->setIgnoreExceptions(false))
+            $this->document->render($outputFormat)
         );
         $firstDeclarationBlock->removeSelector('.test');
         $this->document->render($outputFormat);
