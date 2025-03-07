@@ -99,8 +99,8 @@ class Size extends PrimitiveValue
             if ($parserState->comes('.')) {
                 $size .= $parserState->consume('.');
             } elseif ($parserState->comes('e', true)) {
-                $sLookahead = $parserState->peek(1, 1);
-                if (\is_numeric($sLookahead) || $sLookahead === '+' || $sLookahead === '-') {
+                $lookahead = $parserState->peek(1, 1);
+                if (\is_numeric($lookahead) || $lookahead === '+' || $lookahead === '-') {
                     $size .= $parserState->consume(2);
                 } else {
                     break; // Reached the unit part of the number like "em" or "ex"
@@ -112,10 +112,10 @@ class Size extends PrimitiveValue
 
         $unit = null;
         $sizeUnits = self::getSizeUnits();
-        foreach ($sizeUnits as $length => &$aValues) {
-            $sKey = \strtolower($parserState->peek($length));
-            if (\array_key_exists($sKey, $aValues)) {
-                if (($unit = $aValues[$sKey]) !== null) {
+        foreach ($sizeUnits as $length => &$values) {
+            $key = \strtolower($parserState->peek($length));
+            if (\array_key_exists($key, $values)) {
+                if (($unit = $values[$key]) !== null) {
                     $parserState->consume($length);
                     break;
                 }
