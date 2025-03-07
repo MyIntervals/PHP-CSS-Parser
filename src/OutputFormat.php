@@ -248,7 +248,7 @@ class OutputFormat
      *
      * @return string|null
      *
-     * @deprecated since 8.8.0, will be removed in 9.0.0. Use specific magic getters instead.
+     * @deprecated since 8.8.0, will be removed in 9.0.0. Use specific getters instead.
      */
     public function get($sName)
     {
