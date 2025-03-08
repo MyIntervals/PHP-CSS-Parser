@@ -87,12 +87,12 @@ class OutputFormat
      *
      * @var string
      */
-    private $sSpaceBeforeSelectorSeparator = '';
+    private $spaceBeforeSelectorSeparator = '';
 
     /**
      * @var string
      */
-    private $sSpaceAfterSelectorSeparator = ' ';
+    private $spaceAfterSelectorSeparator = ' ';
 
     /**
      * This is what’s inserted before the separator in value lists, by default.
@@ -421,7 +421,7 @@ class OutputFormat
      */
     public function getSpaceBeforeSelectorSeparator(): string
     {
-        return $this->sSpaceBeforeSelectorSeparator;
+        return $this->spaceBeforeSelectorSeparator;
     }
 
     /**
@@ -429,7 +429,7 @@ class OutputFormat
      */
     public function setSpaceBeforeSelectorSeparator(string $whitespace): self
     {
-        $this->sSpaceBeforeSelectorSeparator = $whitespace;
+        $this->spaceBeforeSelectorSeparator = $whitespace;
 
         return $this;
     }
@@ -439,7 +439,7 @@ class OutputFormat
      */
     public function getSpaceAfterSelectorSeparator(): string
     {
-        return $this->sSpaceAfterSelectorSeparator;
+        return $this->spaceAfterSelectorSeparator;
     }
 
     /**
@@ -447,7 +447,7 @@ class OutputFormat
      */
     public function setSpaceAfterSelectorSeparator(string $whitespace): self
     {
-        $this->sSpaceAfterSelectorSeparator = $whitespace;
+        $this->spaceAfterSelectorSeparator = $whitespace;
 
         return $this;
     }
