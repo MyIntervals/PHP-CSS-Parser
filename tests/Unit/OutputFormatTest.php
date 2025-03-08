@@ -552,9 +552,9 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function getBeforeDeclarationBlockInitiallyReturnsEmptyString(): void
+    public function getContentBeforeDeclarationBlockInitiallyReturnsEmptyString(): void
     {
-        self::assertSame('', $this->subject->getBeforeDeclarationBlock());
+        self::assertSame('', $this->subject->getContentBeforeDeclarationBlock());
     }
 
     /**
@@ -565,7 +565,7 @@ final class OutputFormatTest extends TestCase
         $value = ' ';
         $this->subject->setBeforeDeclarationBlock($value);
 
-        self::assertSame($value, $this->subject->getBeforeDeclarationBlock());
+        self::assertSame($value, $this->subject->getContentBeforeDeclarationBlock());
     }
 
     /**
@@ -579,9 +579,9 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function getAfterDeclarationBlockSelectorsInitiallyReturnsEmptyString(): void
+    public function getContentAfterDeclarationBlockSelectorsInitiallyReturnsEmptyString(): void
     {
-        self::assertSame('', $this->subject->getAfterDeclarationBlockSelectors());
+        self::assertSame('', $this->subject->getContentAfterDeclarationBlockSelectors());
     }
 
     /**
@@ -592,7 +592,7 @@ final class OutputFormatTest extends TestCase
         $value = ' ';
         $this->subject->setAfterDeclarationBlockSelectors($value);
 
-        self::assertSame($value, $this->subject->getAfterDeclarationBlockSelectors());
+        self::assertSame($value, $this->subject->getContentAfterDeclarationBlockSelectors());
     }
 
     /**
@@ -606,9 +606,9 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function getAfterDeclarationBlockInitiallyReturnsEmptyString(): void
+    public function getContentAfterDeclarationBlockInitiallyReturnsEmptyString(): void
     {
-        self::assertSame('', $this->subject->getAfterDeclarationBlock());
+        self::assertSame('', $this->subject->getContentAfterDeclarationBlock());
     }
 
     /**
@@ -619,7 +619,7 @@ final class OutputFormatTest extends TestCase
         $value = ' ';
         $this->subject->setAfterDeclarationBlock($value);
 
-        self::assertSame($value, $this->subject->getAfterDeclarationBlock());
+        self::assertSame($value, $this->subject->getContentAfterDeclarationBlock());
     }
 
     /**

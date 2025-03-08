@@ -125,24 +125,24 @@ class OutputFormat
     /**
      * @var string
      */
-    private $sSpaceBeforeOpeningBrace = ' ';
+    private $spaceBeforeOpeningBrace = ' ';
 
     /**
      * Content injected in and around declaration blocks.
      *
      * @var string
      */
-    private $sBeforeDeclarationBlock = '';
+    private $contentBeforeDeclarationBlock = '';
 
     /**
      * @var string
      */
-    private $sAfterDeclarationBlockSelectors = '';
+    private $contentAfterDeclarationBlockSelectors = '';
 
     /**
      * @var string
      */
-    private $sAfterDeclarationBlock = '';
+    private $contentAfterDeclarationBlock = '';
 
     /**
      * Indentation character(s) per level. Only applicable if newlines are used in any of the spacing settings.
@@ -537,7 +537,7 @@ class OutputFormat
      */
     public function getSpaceBeforeOpeningBrace(): string
     {
-        return $this->sSpaceBeforeOpeningBrace;
+        return $this->spaceBeforeOpeningBrace;
     }
 
     /**
@@ -545,7 +545,7 @@ class OutputFormat
      */
     public function setSpaceBeforeOpeningBrace(string $whitespace): self
     {
-        $this->sSpaceBeforeOpeningBrace = $whitespace;
+        $this->spaceBeforeOpeningBrace = $whitespace;
 
         return $this;
     }
@@ -553,9 +553,9 @@ class OutputFormat
     /**
      * @internal
      */
-    public function getBeforeDeclarationBlock(): string
+    public function getContentBeforeDeclarationBlock(): string
     {
-        return $this->sBeforeDeclarationBlock;
+        return $this->contentBeforeDeclarationBlock;
     }
 
     /**
@@ -563,7 +563,7 @@ class OutputFormat
      */
     public function setBeforeDeclarationBlock(string $content): self
     {
-        $this->sBeforeDeclarationBlock = $content;
+        $this->contentBeforeDeclarationBlock = $content;
 
         return $this;
     }
@@ -571,9 +571,9 @@ class OutputFormat
     /**
      * @internal
      */
-    public function getAfterDeclarationBlockSelectors(): string
+    public function getContentAfterDeclarationBlockSelectors(): string
     {
-        return $this->sAfterDeclarationBlockSelectors;
+        return $this->contentAfterDeclarationBlockSelectors;
     }
 
     /**
@@ -581,7 +581,7 @@ class OutputFormat
      */
     public function setAfterDeclarationBlockSelectors(string $content): self
     {
-        $this->sAfterDeclarationBlockSelectors = $content;
+        $this->contentAfterDeclarationBlockSelectors = $content;
 
         return $this;
     }
@@ -589,9 +589,9 @@ class OutputFormat
     /**
      * @internal
      */
-    public function getAfterDeclarationBlock(): string
+    public function getContentAfterDeclarationBlock(): string
     {
-        return $this->sAfterDeclarationBlock;
+        return $this->contentAfterDeclarationBlock;
     }
 
     /**
@@ -599,7 +599,7 @@ class OutputFormat
      */
     public function setAfterDeclarationBlock(string $content): self
     {
-        $this->sAfterDeclarationBlock = $content;
+        $this->contentAfterDeclarationBlock = $content;
 
         return $this;
     }
