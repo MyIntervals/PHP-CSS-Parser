@@ -306,13 +306,13 @@ class ParserState
      */
     public function consumeComment()
     {
-        $mComment = false;
+        $comment = false;
         if ($this->comes('/*')) {
             $lineNumber = $this->lineNumber;
             $this->consume(1);
-            $mComment = '';
+            $comment = '';
             while (($char = $this->consume(1)) !== '') {
-                $mComment .= $char;
+                $comment .= $char;
                 if ($this->comes('*/')) {
                     $this->consume(2);
                     break;
@@ -320,12 +320,12 @@ class ParserState
             }
         }
 
-        if ($mComment !== false) {
+        if ($comment !== false) {
             // We skip the * which was included in the comment.
-            return new Comment(\substr($mComment, 1), $lineNumber);
+            return new Comment(\substr($comment, 1), $lineNumber);
         }
 
-        return $mComment;
+        return $comment;
     }
 
     public function isEnd(): bool
