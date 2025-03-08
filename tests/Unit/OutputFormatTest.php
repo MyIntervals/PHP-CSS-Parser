@@ -660,9 +660,9 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function getIgnoreExceptionsInitiallyReturnsFalse(): void
+    public function shouldIgnoreExceptionsInitiallyReturnsFalse(): void
     {
-        self::assertFalse($this->subject->getIgnoreExceptions());
+        self::assertFalse($this->subject->shouldIgnoreExceptions());
     }
 
     /**
@@ -674,7 +674,7 @@ final class OutputFormatTest extends TestCase
     {
         $this->subject->setIgnoreExceptions($value);
 
-        self::assertSame($value, $this->subject->getIgnoreExceptions());
+        self::assertSame($value, $this->subject->shouldIgnoreExceptions());
     }
 
     /**
@@ -866,7 +866,7 @@ final class OutputFormatTest extends TestCase
 
         $this->subject->beLenient();
 
-        self::assertTrue($this->subject->getIgnoreExceptions());
+        self::assertTrue($this->subject->shouldIgnoreExceptions());
     }
 
     /**

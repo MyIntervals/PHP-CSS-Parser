@@ -148,7 +148,7 @@ class OutputFormatter
      */
     public function safely(callable $callable): ?string
     {
-        if ($this->outputFormat->getIgnoreExceptions()) {
+        if ($this->outputFormat->shouldIgnoreExceptions()) {
             // If output exceptions are ignored, run the code with exception guards
             try {
                 return $callable();

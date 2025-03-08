@@ -149,14 +149,14 @@ class OutputFormat
      *
      * @var string
      */
-    private $sIndentation = "\t";
+    private $indentation = "\t";
 
     /**
      * Output exceptions.
      *
      * @var bool
      */
-    private $bIgnoreExceptions = false;
+    private $shouldIgnoreExceptions = false;
 
     /**
      * Render comments for lists and RuleSets
@@ -609,7 +609,7 @@ class OutputFormat
      */
     public function getIndentation(): string
     {
-        return $this->sIndentation;
+        return $this->indentation;
     }
 
     /**
@@ -617,7 +617,7 @@ class OutputFormat
      */
     public function setIndentation(string $indentation): self
     {
-        $this->sIndentation = $indentation;
+        $this->indentation = $indentation;
 
         return $this;
     }
@@ -625,9 +625,9 @@ class OutputFormat
     /**
      * @internal
      */
-    public function getIgnoreExceptions(): bool
+    public function shouldIgnoreExceptions(): bool
     {
-        return $this->bIgnoreExceptions;
+        return $this->shouldIgnoreExceptions;
     }
 
     /**
@@ -635,7 +635,7 @@ class OutputFormat
      */
     public function setIgnoreExceptions(bool $ignoreExceptions): self
     {
-        $this->bIgnoreExceptions = $ignoreExceptions;
+        $this->shouldIgnoreExceptions = $ignoreExceptions;
 
         return $this;
     }
@@ -697,7 +697,7 @@ class OutputFormat
 
     public function beLenient(): void
     {
-        $this->bIgnoreExceptions = true;
+        $this->shouldIgnoreExceptions = true;
     }
 
     /**
