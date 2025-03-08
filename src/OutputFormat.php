@@ -99,28 +99,28 @@ class OutputFormat
      *
      * @var string
      */
-    private $sSpaceBeforeListArgumentSeparator = '';
+    private $spaceBeforeListArgumentSeparator = '';
 
     /**
      * Keys are separators (e.g. `,`).  Values are the space sequence to insert, or an empty string.
      *
      * @var array<non-empty-string, string>
      */
-    private $aSpaceBeforeListArgumentSeparators = [];
+    private $spaceBeforeListArgumentSeparators = [];
 
     /**
      * This is what’s inserted after the separator in value lists, by default.
      *
      * @var string
      */
-    private $sSpaceAfterListArgumentSeparator = '';
+    private $spaceAfterListArgumentSeparator = '';
 
     /**
      * Keys are separators (e.g. `,`).  Values are the space sequence to insert, or an empty string.
      *
      * @var array<non-empty-string, string>
      */
-    private $aSpaceAfterListArgumentSeparators = [];
+    private $spaceAfterListArgumentSeparators = [];
 
     /**
      * @var string
@@ -457,7 +457,7 @@ class OutputFormat
      */
     public function getSpaceBeforeListArgumentSeparator(): string
     {
-        return $this->sSpaceBeforeListArgumentSeparator;
+        return $this->spaceBeforeListArgumentSeparator;
     }
 
     /**
@@ -465,7 +465,7 @@ class OutputFormat
      */
     public function setSpaceBeforeListArgumentSeparator(string $whitespace): self
     {
-        $this->sSpaceBeforeListArgumentSeparator = $whitespace;
+        $this->spaceBeforeListArgumentSeparator = $whitespace;
 
         return $this;
     }
@@ -477,7 +477,7 @@ class OutputFormat
      */
     public function getSpaceBeforeListArgumentSeparators(): array
     {
-        return $this->aSpaceBeforeListArgumentSeparators;
+        return $this->spaceBeforeListArgumentSeparators;
     }
 
     /**
@@ -487,7 +487,7 @@ class OutputFormat
      */
     public function setSpaceBeforeListArgumentSeparators(array $separatorSpaces): self
     {
-        $this->aSpaceBeforeListArgumentSeparators = $separatorSpaces;
+        $this->spaceBeforeListArgumentSeparators = $separatorSpaces;
 
         return $this;
     }
@@ -497,7 +497,7 @@ class OutputFormat
      */
     public function getSpaceAfterListArgumentSeparator(): string
     {
-        return $this->sSpaceAfterListArgumentSeparator;
+        return $this->spaceAfterListArgumentSeparator;
     }
 
     /**
@@ -505,7 +505,7 @@ class OutputFormat
      */
     public function setSpaceAfterListArgumentSeparator(string $whitespace): self
     {
-        $this->sSpaceAfterListArgumentSeparator = $whitespace;
+        $this->spaceAfterListArgumentSeparator = $whitespace;
 
         return $this;
     }
@@ -517,7 +517,7 @@ class OutputFormat
      */
     public function getSpaceAfterListArgumentSeparators(): array
     {
-        return $this->aSpaceAfterListArgumentSeparators;
+        return $this->spaceAfterListArgumentSeparators;
     }
 
     /**
@@ -527,7 +527,7 @@ class OutputFormat
      */
     public function setSpaceAfterListArgumentSeparators(array $separatorSpaces): self
     {
-        $this->aSpaceAfterListArgumentSeparators = $separatorSpaces;
+        $this->spaceAfterListArgumentSeparators = $separatorSpaces;
 
         return $this;
     }
