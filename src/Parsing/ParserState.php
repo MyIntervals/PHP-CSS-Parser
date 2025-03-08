@@ -334,7 +334,7 @@ class ParserState
     }
 
     /**
-     * @param array<array-key, string>|string $aEnd
+     * @param array<array-key, string>|string $stopCharacters
      * @param string $bIncludeEnd
      * @param string $consumeEnd
      * @param array<int, Comment> $comments
@@ -342,15 +342,19 @@ class ParserState
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public function consumeUntil($aEnd, $bIncludeEnd = false, $consumeEnd = false, array &$comments = []): string
-    {
-        $aEnd = \is_array($aEnd) ? $aEnd : [$aEnd];
+    public function consumeUntil(
+        $stopCharacters,
+        $bIncludeEnd = false,
+        $consumeEnd = false,
+        array &$comments = []
+    ): string {
+        $stopCharacters = \is_array($stopCharacters) ? $stopCharacters : [$stopCharacters];
         $out = '';
         $start = $this->currentPosition;
 
         while (!$this->isEnd()) {
             $char = $this->consume(1);
-            if (\in_array($char, $aEnd, true)) {
+            if (\in_array($char, $stopCharacters, true)) {
                 if ($bIncludeEnd) {
                     $out .= $char;
                 } elseif (!$consumeEnd) {
@@ -364,13 +368,13 @@ class ParserState
             }
         }
 
-        if (\in_array(self::EOF, $aEnd, true)) {
+        if (\in_array(self::EOF, $stopCharacters, true)) {
             return $out;
         }
 
         $this->currentPosition = $start;
         throw new UnexpectedEOFException(
-            'One of ("' . \implode('","', $aEnd) . '")',
+            'One of ("' . \implode('","', $stopCharacters) . '")',
             $this->peek(5),
             'search',
             $this->lineNumber
