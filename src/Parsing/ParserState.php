@@ -259,7 +259,7 @@ class ParserState
     public function consume($value = 1): string
     {
         if (\is_string($value)) {
-            $iLineCount = \substr_count($value, "\n");
+            $numberOfLines = \substr_count($value, "\n");
             $length = $this->strlen($value);
             if (!$this->streql($this->substr($this->currentPosition, $length), $value)) {
                 throw new UnexpectedTokenException(
@@ -269,7 +269,7 @@ class ParserState
                     $this->lineNumber
                 );
             }
-            $this->lineNumber += $iLineCount;
+            $this->lineNumber += $numberOfLines;
             $this->currentPosition += $this->strlen($value);
             return $value;
         } else {
@@ -277,8 +277,8 @@ class ParserState
                 throw new UnexpectedEOFException((string) $value, $this->peek(5), 'count', $this->lineNumber);
             }
             $result = $this->substr($this->currentPosition, $value);
-            $iLineCount = \substr_count($result, "\n");
-            $this->lineNumber += $iLineCount;
+            $numberOfLines = \substr_count($result, "\n");
+            $this->lineNumber += $numberOfLines;
             $this->currentPosition += $value;
             return $result;
         }
