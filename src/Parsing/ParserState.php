@@ -231,10 +231,10 @@ class ParserState
      */
     public function comes($string, $caseInsensitive = false): bool
     {
-        $sPeek = $this->peek(\strlen($string));
-        return ($sPeek == '')
+        $peek = $this->peek(\strlen($string));
+        return ($peek == '')
             ? false
-            : $this->streql($sPeek, $string, $caseInsensitive);
+            : $this->streql($peek, $string, $caseInsensitive);
     }
 
     /**
