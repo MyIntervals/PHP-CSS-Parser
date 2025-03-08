@@ -58,17 +58,17 @@ class OutputFormat
     /**
      * @var string
      */
-    private $sSpaceBeforeBlocks = '';
+    private $spaceBeforeBlocks = '';
 
     /**
      * @var string
      */
-    private $sSpaceAfterBlocks = '';
+    private $spaceAfterBlocks = '';
 
     /**
      * @var string
      */
-    private $sSpaceBetweenBlocks = "\n";
+    private $spaceBetweenBlocks = "\n";
 
     /**
      * Content injected in and around at-rule blocks.
@@ -331,7 +331,7 @@ class OutputFormat
      */
     public function getSpaceBeforeBlocks(): string
     {
-        return $this->sSpaceBeforeBlocks;
+        return $this->spaceBeforeBlocks;
     }
 
     /**
@@ -339,7 +339,7 @@ class OutputFormat
      */
     public function setSpaceBeforeBlocks(string $whitespace): self
     {
-        $this->sSpaceBeforeBlocks = $whitespace;
+        $this->spaceBeforeBlocks = $whitespace;
 
         return $this;
     }
@@ -349,7 +349,7 @@ class OutputFormat
      */
     public function getSpaceAfterBlocks(): string
     {
-        return $this->sSpaceAfterBlocks;
+        return $this->spaceAfterBlocks;
     }
 
     /**
@@ -357,7 +357,7 @@ class OutputFormat
      */
     public function setSpaceAfterBlocks(string $whitespace): self
     {
-        $this->sSpaceAfterBlocks = $whitespace;
+        $this->spaceAfterBlocks = $whitespace;
 
         return $this;
     }
@@ -367,7 +367,7 @@ class OutputFormat
      */
     public function getSpaceBetweenBlocks(): string
     {
-        return $this->sSpaceBetweenBlocks;
+        return $this->spaceBetweenBlocks;
     }
 
     /**
@@ -375,7 +375,7 @@ class OutputFormat
      */
     public function setSpaceBetweenBlocks(string $whitespace): self
     {
-        $this->sSpaceBetweenBlocks = $whitespace;
+        $this->spaceBetweenBlocks = $whitespace;
 
         return $this;
     }
