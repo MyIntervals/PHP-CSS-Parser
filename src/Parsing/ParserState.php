@@ -294,8 +294,8 @@ class ParserState
     public function consumeExpression($mExpression, $iMaxLength = null): string
     {
         $matches = null;
-        $sInput = $iMaxLength !== null ? $this->peek($iMaxLength) : $this->inputLeft();
-        if (\preg_match($mExpression, $sInput, $matches, PREG_OFFSET_CAPTURE) === 1) {
+        $input = $iMaxLength !== null ? $this->peek($iMaxLength) : $this->inputLeft();
+        if (\preg_match($mExpression, $input, $matches, PREG_OFFSET_CAPTURE) === 1) {
             return $this->consume($matches[0][0]);
         }
         throw new UnexpectedTokenException($mExpression, $this->peek(5), 'expression', $this->lineNumber);
