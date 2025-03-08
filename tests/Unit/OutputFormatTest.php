@@ -309,9 +309,9 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function getBeforeAtRuleBlockInitiallyReturnsEmptyString(): void
+    public function getContentBeforeAtRuleBlockInitiallyReturnsEmptyString(): void
     {
-        self::assertSame('', $this->subject->getBeforeAtRuleBlock());
+        self::assertSame('', $this->subject->getContentBeforeAtRuleBlock());
     }
 
     /**
@@ -322,7 +322,7 @@ final class OutputFormatTest extends TestCase
         $value = ' ';
         $this->subject->setBeforeAtRuleBlock($value);
 
-        self::assertSame($value, $this->subject->getBeforeAtRuleBlock());
+        self::assertSame($value, $this->subject->getContentBeforeAtRuleBlock());
     }
 
     /**
@@ -336,9 +336,9 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function getAfterAtRuleBlockInitiallyReturnsEmptyString(): void
+    public function getContentAfterAtRuleBlockInitiallyReturnsEmptyString(): void
     {
-        self::assertSame('', $this->subject->getAfterAtRuleBlock());
+        self::assertSame('', $this->subject->getContentAfterAtRuleBlock());
     }
 
     /**
@@ -349,7 +349,7 @@ final class OutputFormatTest extends TestCase
         $value = ' ';
         $this->subject->setAfterAtRuleBlock($value);
 
-        self::assertSame($value, $this->subject->getAfterAtRuleBlock());
+        self::assertSame($value, $this->subject->getContentAfterAtRuleBlock());
     }
 
     /**

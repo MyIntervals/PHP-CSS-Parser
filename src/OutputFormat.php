@@ -75,12 +75,12 @@ class OutputFormat
      *
      * @var string
      */
-    private $sBeforeAtRuleBlock = '';
+    private $contentBeforeAtRuleBlock = '';
 
     /**
      * @var string
      */
-    private $sAfterAtRuleBlock = '';
+    private $contentAfterAtRuleBlock = '';
 
     /**
      * This is what’s printed before and after the comma if a declaration block contains multiple selectors.
@@ -383,9 +383,9 @@ class OutputFormat
     /**
      * @internal
      */
-    public function getBeforeAtRuleBlock(): string
+    public function getContentBeforeAtRuleBlock(): string
     {
-        return $this->sBeforeAtRuleBlock;
+        return $this->contentBeforeAtRuleBlock;
     }
 
     /**
@@ -393,7 +393,7 @@ class OutputFormat
      */
     public function setBeforeAtRuleBlock(string $content): self
     {
-        $this->sBeforeAtRuleBlock = $content;
+        $this->contentBeforeAtRuleBlock = $content;
 
         return $this;
     }
@@ -401,9 +401,9 @@ class OutputFormat
     /**
      * @internal
      */
-    public function getAfterAtRuleBlock(): string
+    public function getContentAfterAtRuleBlock(): string
     {
-        return $this->sAfterAtRuleBlock;
+        return $this->contentAfterAtRuleBlock;
     }
 
     /**
@@ -411,7 +411,7 @@ class OutputFormat
      */
     public function setAfterAtRuleBlock(string $content): self
     {
-        $this->sAfterAtRuleBlock = $content;
+        $this->contentAfterAtRuleBlock = $content;
 
         return $this;
     }
