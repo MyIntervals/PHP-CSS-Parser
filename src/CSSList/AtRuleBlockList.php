@@ -53,7 +53,7 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
     public function render(OutputFormat $outputFormat): string
     {
         $result = $outputFormat->comments($this);
-        $result .= $outputFormat->getBeforeAtRuleBlock();
+        $result .= $outputFormat->getContentBeforeAtRuleBlock();
         $arguments = $this->arguments;
         if ($arguments) {
             $arguments = ' ' . $arguments;
@@ -61,7 +61,7 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
         $result .= "@{$this->type}$arguments{$outputFormat->spaceBeforeOpeningBrace()}{";
         $result .= $this->renderListContents($outputFormat);
         $result .= '}';
-        $result .= $outputFormat->getAfterAtRuleBlock();
+        $result .= $outputFormat->getContentAfterAtRuleBlock();
         return $result;
     }
 
