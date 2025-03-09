@@ -688,9 +688,9 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function getRenderCommentsInitiallyReturnsFalse(): void
+    public function shouldRenderCommentsInitiallyReturnsFalse(): void
     {
-        self::assertFalse($this->subject->getRenderComments());
+        self::assertFalse($this->subject->shouldRenderComments());
     }
 
     /**
@@ -702,7 +702,7 @@ final class OutputFormatTest extends TestCase
     {
         $this->subject->setRenderComments($value);
 
-        self::assertSame($value, $this->subject->getRenderComments());
+        self::assertSame($value, $this->subject->shouldRenderComments());
     }
 
     /**
@@ -1041,7 +1041,7 @@ final class OutputFormatTest extends TestCase
     {
         $newInstance = OutputFormat::createCompact();
 
-        self::assertFalse($newInstance->getRenderComments());
+        self::assertFalse($newInstance->shouldRenderComments());
     }
 
     /**
@@ -1170,6 +1170,6 @@ final class OutputFormatTest extends TestCase
     {
         $newInstance = OutputFormat::createPretty();
 
-        self::assertTrue($newInstance->getRenderComments());
+        self::assertTrue($newInstance->shouldRenderComments());
     }
 }

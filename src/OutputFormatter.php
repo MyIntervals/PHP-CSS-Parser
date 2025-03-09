@@ -208,7 +208,7 @@ class OutputFormatter
 
     public function comments(Commentable $commentable): string
     {
-        if (!$this->outputFormat->getRenderComments()) {
+        if (!$this->outputFormat->shouldRenderComments()) {
             return '';
         }
 

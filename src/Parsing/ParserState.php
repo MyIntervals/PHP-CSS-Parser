@@ -349,27 +349,27 @@ class ParserState
         array &$comments = []
     ): string {
         $stopCharacters = \is_array($stopCharacters) ? $stopCharacters : [$stopCharacters];
-        $out = '';
+        $consumedCharacters = '';
         $start = $this->currentPosition;
 
         while (!$this->isEnd()) {
-            $char = $this->consume(1);
-            if (\in_array($char, $stopCharacters, true)) {
+            $character = $this->consume(1);
+            if (\in_array($character, $stopCharacters, true)) {
                 if ($includeEnd) {
-                    $out .= $char;
+                    $consumedCharacters .= $character;
                 } elseif (!$consumeEnd) {
-                    $this->currentPosition -= $this->strlen($char);
+                    $this->currentPosition -= $this->strlen($character);
                 }
-                return $out;
+                return $consumedCharacters;
             }
-            $out .= $char;
+            $consumedCharacters .= $character;
             if ($comment = $this->consumeComment()) {
                 $comments[] = $comment;
             }
         }
 
         if (\in_array(self::EOF, $stopCharacters, true)) {
-            return $out;
+            return $consumedCharacters;
         }
 
         $this->currentPosition = $start;

@@ -163,7 +163,7 @@ class OutputFormat
      *
      * @var bool
      */
-    private $bRenderComments = false;
+    private $shouldRenderComments = false;
 
     /**
      * @var OutputFormatter|null
@@ -178,25 +178,25 @@ class OutputFormat
     /**
      * @var int
      */
-    private $iIndentationLevel = 0;
+    private $indendationLevel = 0;
 
     public function __construct() {}
 
     /**
-     * @param non-empty-string $sMethodName
+     * @param non-empty-string $methodName
      * @param array<array-key, mixed> $arguments
      *
      * @return mixed
      *
      * @throws \Exception
      */
-    public function __call(string $sMethodName, array $arguments)
+    public function __call(string $methodName, array $arguments)
     {
-        if (\method_exists(OutputFormatter::class, $sMethodName)) {
+        if (\method_exists(OutputFormatter::class, $methodName)) {
             // @deprecated since 8.8.0, will be removed in 9.0.0. Call the method on the formatter directly instead.
-            return \call_user_func_array([$this->getFormatter(), $sMethodName], $arguments);
+            return \call_user_func_array([$this->getFormatter(), $methodName], $arguments);
         } else {
-            throw new \Exception('Unknown OutputFormat method called: ' . $sMethodName);
+            throw new \Exception('Unknown OutputFormat method called: ' . $methodName);
         }
     }
 
@@ -643,9 +643,9 @@ class OutputFormat
     /**
      * @internal
      */
-    public function getRenderComments(): bool
+    public function shouldRenderComments(): bool
     {
-        return $this->bRenderComments;
+        return $this->shouldRenderComments;
     }
 
     /**
@@ -653,7 +653,7 @@ class OutputFormat
      */
     public function setRenderComments(bool $renderComments): self
     {
-        $this->bRenderComments = $renderComments;
+        $this->shouldRenderComments = $renderComments;
 
         return $this;
     }
@@ -663,7 +663,7 @@ class OutputFormat
      */
     public function getIndentationLevel(): int
     {
-        return $this->iIndentationLevel;
+        return $this->indendationLevel;
     }
 
     /**
@@ -689,7 +689,7 @@ class OutputFormat
     {
         if ($this->nextLevelFormat === null) {
             $this->nextLevelFormat = clone $this;
-            $this->nextLevelFormat->iIndentationLevel++;
+            $this->nextLevelFormat->indendationLevel++;
             $this->nextLevelFormat->outputFormatter = null;
         }
         return $this->nextLevelFormat;
