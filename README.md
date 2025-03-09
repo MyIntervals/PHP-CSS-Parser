@@ -189,8 +189,6 @@ print $cssDocument->render(Sabberworm\CSS\OutputFormat::createPretty());
 print $cssDocument->render(Sabberworm\CSS\OutputFormat::createCompact());
 ```
 
-To see what you can do with output formatting, look at the tests in `tests/OutputFormatTest.php`.
-
 ## Examples
 
 ### Example 1 (At-Rules)
