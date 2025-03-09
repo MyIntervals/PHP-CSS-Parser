@@ -21,6 +21,8 @@ Please also have a look at our
 
 ### Changed
 
+- Mark `OutputFormat` as not extendable and the constructor as `@internal`
+  (#1131) 
 - Mark `OutputFormatter` as `@internal` (#896)
 - Make `Selector` a `Renderable` (#1017)
 - Mark `Selector::isValid()` as `@internal` (#1037)
