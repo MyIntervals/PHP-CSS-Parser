@@ -23,7 +23,7 @@ class URL extends PrimitiveValue
     /**
      * @param int<0, max> $lineNumber
      */
-    public function __construct(CSSString $url, $lineNumber = 0)
+    public function __construct(CSSString $url, int $lineNumber = 0)
     {
         parent::__construct($lineNumber);
         $this->url = $url;

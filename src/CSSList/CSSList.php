@@ -57,7 +57,7 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * @param int<0, max> $lineNumber
      */
-    public function __construct($lineNumber = 0)
+    public function __construct(int $lineNumber = 0)
     {
         $this->lineNumber = $lineNumber;
     }
@@ -176,7 +176,7 @@ abstract class CSSList implements Renderable, Commentable
                 }
             }
             $parserState->consumeUntil([';', ParserState::EOF], true, true);
-            return new Import($location, $mediaQuery, $identifierLineNumber);
+            return new Import($location, $mediaQuery ?? '', $identifierLineNumber);
         } elseif ($identifier === 'charset') {
             $charsetString = CSSString::parse($parserState);
             $parserState->consumeWhiteSpace();
