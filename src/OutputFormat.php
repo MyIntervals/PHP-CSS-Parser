@@ -184,11 +184,6 @@ class OutputFormat
     private $indentationLevel = 0;
 
     /**
-     * @internal since V8.8.0. Use the factory methods `create()`, `createCompact()`, or `createPretty()` instead.
-     */
-    public function __construct() {}
-
-    /**
      * @param non-empty-string $methodName
      * @param array<array-key, mixed> $arguments
      *
