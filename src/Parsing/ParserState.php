@@ -335,8 +335,8 @@ class ParserState
 
     /**
      * @param array<array-key, string>|string $stopCharacters
-     * @param string $bIncludeEnd
-     * @param string $consumeEnd
+     * @param bool $includeEnd
+     * @param bool $consumeEnd
      * @param array<int, Comment> $comments
      *
      * @throws UnexpectedEOFException
@@ -344,7 +344,7 @@ class ParserState
      */
     public function consumeUntil(
         $stopCharacters,
-        $bIncludeEnd = false,
+        $includeEnd = false,
         $consumeEnd = false,
         array &$comments = []
     ): string {
@@ -355,7 +355,7 @@ class ParserState
         while (!$this->isEnd()) {
             $character = $this->consume(1);
             if (\in_array($character, $stopCharacters, true)) {
-                if ($bIncludeEnd) {
+                if ($includeEnd) {
                     $consumedCharacters .= $character;
                 } elseif (!$consumeEnd) {
                     $this->currentPosition -= $this->strlen($character);
