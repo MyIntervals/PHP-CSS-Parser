@@ -103,32 +103,8 @@ parameters:
 			path: ../src/CSSList/KeyFrame.php
 
 		-
-			message: '#^Default value of the parameter \#2 \$bIncludeEnd \(false\) of method Sabberworm\\CSS\\Parsing\\ParserState\:\:consumeUntil\(\) is incompatible with type string\.$#'
-			identifier: parameter.defaultValue
-			count: 1
-			path: ../src/Parsing/ParserState.php
-
-		-
-			message: '#^Default value of the parameter \#3 \$consumeEnd \(false\) of method Sabberworm\\CSS\\Parsing\\ParserState\:\:consumeUntil\(\) is incompatible with type string\.$#'
-			identifier: parameter.defaultValue
-			count: 1
-			path: ../src/Parsing/ParserState.php
-
-		-
 			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
 			identifier: equal.notAllowed
-			count: 1
-			path: ../src/Parsing/ParserState.php
-
-		-
-			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
-			identifier: booleanNot.exprNotBoolean
-			count: 1
-			path: ../src/Parsing/ParserState.php
-
-		-
-			message: '#^Only booleans are allowed in an if condition, string given\.$#'
-			identifier: if.condNotBoolean
 			count: 1
 			path: ../src/Parsing/ParserState.php
 
