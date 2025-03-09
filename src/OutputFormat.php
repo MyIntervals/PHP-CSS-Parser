@@ -178,7 +178,7 @@ class OutputFormat
     /**
      * @var int
      */
-    private $indendationLevel = 0;
+    private $indentationLevel = 0;
 
     public function __construct() {}
 
@@ -663,7 +663,7 @@ class OutputFormat
      */
     public function getIndentationLevel(): int
     {
-        return $this->indendationLevel;
+        return $this->indentationLevel;
     }
 
     /**
@@ -689,7 +689,7 @@ class OutputFormat
     {
         if ($this->nextLevelFormat === null) {
             $this->nextLevelFormat = clone $this;
-            $this->nextLevelFormat->indendationLevel++;
+            $this->nextLevelFormat->indentationLevel++;
             $this->nextLevelFormat->outputFormatter = null;
         }
         return $this->nextLevelFormat;
