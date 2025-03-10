@@ -23,7 +23,7 @@ class CSSNamespace implements AtRule
     private $prefix;
 
     /**
-     * @var int
+     * @var int<0, max> $lineNumber
      */
     private $lineNumber;
 
@@ -39,7 +39,7 @@ class CSSNamespace implements AtRule
      * @param string|null $prefix
      * @param int<0, max> $lineNumber
      */
-    public function __construct($url, $prefix = null, $lineNumber = 0)
+    public function __construct($url, $prefix = null, int $lineNumber = 0)
     {
         $this->url = $url;
         $this->prefix = $prefix;

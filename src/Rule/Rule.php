@@ -37,7 +37,7 @@ class Rule implements Renderable, Commentable
     private $isImportant = false;
 
     /**
-     * @var int
+     * @var int<0, max> $lineNumber
      */
     protected $lineNumber;
 
@@ -60,7 +60,7 @@ class Rule implements Renderable, Commentable
      * @param int<0, max> $lineNumber
      * @param int $columnNumber
      */
-    public function __construct($rule, $lineNumber = 0, $columnNumber = 0)
+    public function __construct($rule, int $lineNumber = 0, $columnNumber = 0)
     {
         $this->rule = $rule;
         $this->lineNumber = $lineNumber;
@@ -143,10 +143,10 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param int $lineNumber
+     * @param int<0, max> $lineNumber $lineNumber
      * @param int $columnNumber
      */
-    public function setPosition($lineNumber, $columnNumber): void
+    public function setPosition(int $lineNumber, $columnNumber): void
     {
         $this->columnNumber = $columnNumber;
         $this->lineNumber = $lineNumber;
