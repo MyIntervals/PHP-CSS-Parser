@@ -3,7 +3,7 @@
 namespace Sabberworm\CSS;
 
 /**
- * Class OutputFormat
+ * Extending this class is deprecated in version 8.8.0; it will be made `final` in version 9.0.0.
  *
  * @method OutputFormat setSemicolonAfterLastRule(bool $bSemicolonAfterLastRule) Set whether semicolons are added after
  *     last rule.
@@ -239,6 +239,9 @@ class OutputFormat
      */
     private $iIndentationLevel = 0;
 
+    /**
+     * @internal since V8.8.0. Use the factory methods `create()`, `createCompact()`, or `createPretty()` instead.
+     */
     public function __construct()
     {
     }

@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Mark the `OutputFormat` the constructor as `@internal` (#1131)
 - Mark `OutputFormatter` as `@internal` (#896)
 - Mark `Selector::isValid()` as `@internal` (#1037)
 - Mark parsing-related methods of most CSS elements as `@internal` (#908)
@@ -19,6 +20,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Deprecated
 
+- Deprecate extending `OutputFormat` (#1131)
 - Deprecate `OutputFormat::get()` and `::set()` (#1107)
 - Deprecate support for `-webkit-calc` and `-moz-calc` (#1086)
 - Deprecate `__toString()` (#1006)
