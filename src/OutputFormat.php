@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS;
 
+/**
+ * Extending this class is deprecated in version 8.8.0; it will be made `final` in version 9.0.0.
+ */
 class OutputFormat
 {
     /**
@@ -180,6 +183,9 @@ class OutputFormat
      */
     private $indentationLevel = 0;
 
+    /**
+     * @internal since V8.8.0. Use the factory methods `create()`, `createCompact()`, or `createPretty()` instead.
+     */
     public function __construct() {}
 
     /**
