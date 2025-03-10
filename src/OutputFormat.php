@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Sabberworm\CSS;
 
 /**
- * Please note that this class is not intended to be subclassed.
+ * Extending this class is deprecated in version 8.8.0; it will be made `final` in version 9.0.0.
  */
 class OutputFormat
 {
