@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS;
 
-/**
- * Extending this class is deprecated in version 8.8.0; it will be made `final` in version 9.0.0.
- */
-class OutputFormat
+final class OutputFormat
 {
     /**
      * Value format: `"` means double-quote, `'` means single-quote

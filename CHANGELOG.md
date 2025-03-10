@@ -21,6 +21,7 @@ Please also have a look at our
 
 ### Changed
 
+- Make `OutputFormat` `final` (#1128)
 - Mark the `OutputFormat` constructor as `@internal` (#1131) 
 - Mark `OutputFormatter` as `@internal` (#896)
 - Make `Selector` a `Renderable` (#1017)
