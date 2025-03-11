@@ -109,8 +109,6 @@ abstract class Value implements Renderable
     }
 
     /**
-     * @param bool $ignoreCase
-     *
      * @return CSSFunction|string
      *
      * @throws UnexpectedEOFException
@@ -118,7 +116,7 @@ abstract class Value implements Renderable
      *
      * @internal since V8.8.0
      */
-    public static function parseIdentifierOrFunction(ParserState $parserState, $ignoreCase = false)
+    public static function parseIdentifierOrFunction(ParserState $parserState, bool $ignoreCase = false)
     {
         $anchor = $parserState->anchor();
         $result = $parserState->parseIdentifier($ignoreCase);
