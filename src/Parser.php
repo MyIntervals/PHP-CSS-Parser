@@ -22,7 +22,7 @@ class Parser
      * @param string $text the complete CSS as text (i.e., usually the contents of a CSS file)
      * @param int<1, max> $lineNumber the line number (starting from 1, not from 0)
      */
-    public function __construct($text, ?Settings $parserSettings = null, int $lineNumber = 1)
+    public function __construct(string $text, ?Settings $parserSettings = null, int $lineNumber = 1)
     {
         if ($parserSettings === null) {
             $parserSettings = Settings::create();
