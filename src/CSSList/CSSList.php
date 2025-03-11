@@ -245,10 +245,8 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Tests an identifier for a given value. Since identifiers are all keywords, they can be vendor-prefixed.
      * We need to check for these versions too.
-     *
-     * @param string $identifier
      */
-    private static function identifierIs($identifier, string $match): bool
+    private static function identifierIs(string $identifier, string $match): bool
     {
         return (\strcasecmp($identifier, $match) === 0)
             ?: \preg_match("/^(-\\w+-)?$match$/i", $identifier) === 1;
