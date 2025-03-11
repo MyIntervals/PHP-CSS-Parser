@@ -143,7 +143,7 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param int<0, max> $lineNumber $lineNumber
+     * @param int<0, max> $lineNumber
      * @param int $columnNumber
      */
     public function setPosition(int $lineNumber, $columnNumber): void
