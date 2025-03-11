@@ -115,24 +115,6 @@ parameters:
 			path: ../src/Parsing/ParserState.php
 
 		-
-			message: '#^Parameters should have "bool" types as the only types passed to this method$#'
-			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 2
-			path: ../src/Parsing/ParserState.php
-
-		-
-			message: '#^Parameters should have "int" types as the only types passed to this method$#'
-			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 2
-			path: ../src/Parsing/ParserState.php
-
-		-
-			message: '#^Parameters should have "string\|int\|null" types as the only types passed to this method$#'
-			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 1
-			path: ../src/Parsing/ParserState.php
-
-		-
 			message: '#^Cannot call method render\(\) on string\.$#'
 			identifier: method.nonObject
 			count: 1
