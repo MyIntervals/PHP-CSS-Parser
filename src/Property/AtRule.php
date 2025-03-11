@@ -13,7 +13,7 @@ interface AtRule extends Renderable, Commentable
      * Since there are more set rules than block rules,
      * we’re whitelisting the block rules and have anything else be treated as a set rule.
      *
-     * @var string
+     * @var non-empty-string
      *
      * @internal since 8.5.2
      */
