@@ -40,7 +40,7 @@ class Charset implements AtRule
     /**
      * @param int<0, max> $lineNumber
      */
-    public function __construct(CSSString $charset, $lineNumber = 0)
+    public function __construct(CSSString $charset, int $lineNumber = 0)
     {
         $this->charset = $charset;
         $this->lineNumber = $lineNumber;

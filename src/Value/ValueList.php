@@ -33,7 +33,7 @@ abstract class ValueList extends Value
      * @param string $separator
      * @param int<0, max> $lineNumber
      */
-    public function __construct($components = [], $separator = ',', $lineNumber = 0)
+    public function __construct($components = [], $separator = ',', int $lineNumber = 0)
     {
         parent::__construct($lineNumber);
         if (!\is_array($components)) {

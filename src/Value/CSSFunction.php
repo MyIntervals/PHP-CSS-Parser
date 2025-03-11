@@ -29,7 +29,7 @@ class CSSFunction extends ValueList
      * @param string $separator
      * @param int<0, max> $lineNumber
      */
-    public function __construct($name, $arguments, $separator = ',', $lineNumber = 0)
+    public function __construct($name, $arguments, $separator = ',', int $lineNumber = 0)
     {
         if ($arguments instanceof RuleValueList) {
             $separator = $arguments->getListSeparator();

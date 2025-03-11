@@ -30,7 +30,7 @@ class AtRuleSet extends RuleSet implements AtRule
      * @param string $arguments
      * @param int<0, max> $lineNumber
      */
-    public function __construct($type, $arguments = '', $lineNumber = 0)
+    public function __construct($type, $arguments = '', int $lineNumber = 0)
     {
         parent::__construct($lineNumber);
         $this->type = $type;
