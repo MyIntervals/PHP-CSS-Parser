@@ -45,13 +45,13 @@ class ParserState
     private $charset;
 
     /**
-     * @var int<0, max> $lineNumber
+     * @var int<1, max> $lineNumber
      */
     private $lineNumber;
 
     /**
      * @param string $text the complete CSS as text (i.e., usually the contents of a CSS file)
-     * @param int<0, max> $lineNumber
+     * @param int<1, max> $lineNumber
      */
     public function __construct($text, Settings $parserSettings, int $lineNumber = 1)
     {
@@ -73,7 +73,7 @@ class ParserState
     }
 
     /**
-     * @return int
+     * @return int<1, max>
      */
     public function currentLine()
     {
