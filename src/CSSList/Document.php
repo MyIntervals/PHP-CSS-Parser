@@ -42,7 +42,7 @@ class Document extends CSSBlockList
      *
      * @see RuleSet->getRules()
      */
-    public function getAllValues($element = null, $searchInFunctionArguments = false): array
+    public function getAllValues($element = null, bool $searchInFunctionArguments = false): array
     {
         $searchString = null;
         if ($element === null) {
@@ -70,7 +70,7 @@ class Document extends CSSBlockList
      * @return array<int, Selector>
      * @example `getSelectorsBySpecificity('>= 100')`
      */
-    public function getSelectorsBySpecificity($specificitySearch = null): array
+    public function getSelectorsBySpecificity(?string $specificitySearch = null): array
     {
         /** @var array<int, Selector> $result */
         $result = [];
