@@ -6,6 +6,8 @@ namespace Sabberworm\CSS\RuleSet;
 
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Property\AtRule;
+use Sabberworm\CSS\Value\CSSString;
+use Sabberworm\CSS\Value\URL;
 
 /**
  * This class represents rule sets for generic at-rules which are not covered by specific classes, i.e., not
@@ -46,7 +48,7 @@ class AtRuleSet extends RuleSet implements AtRule
     }
 
     /**
-     * @return string
+     * @return array<string|URL>|string|CSSString|null
      */
     public function atRuleArgs()
     {

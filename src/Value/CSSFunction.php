@@ -81,10 +81,7 @@ class CSSFunction extends ValueList
         return Value::parseValue($parserState, ['=', ' ', ',']);
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
