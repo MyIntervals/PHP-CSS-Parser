@@ -459,8 +459,6 @@ class ParserState
     }
 
     /**
-     * @param int $offset
-     *
      * @return int|false
      */
     private function strpos(string $haystack, string $needle, int $offset)
