@@ -49,8 +49,14 @@ parameters:
 			path: ../src/Property/CSSNamespace.php
 
 		-
-			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			message: '#^Only booleans are allowed in an if condition, string\|null given\.$#'
 			identifier: if.condNotBoolean
+			count: 1
+			path: ../src/Property/CSSNamespace.php
+
+		-
+			message: '#^PHPDoc tag @return with type array\<Sabberworm\\CSS\\Value\\URL\|string\>\|Sabberworm\\CSS\\Value\\CSSString\|string\|null is not subtype of native type array\.$#'
+			identifier: return.phpDocType
 			count: 1
 			path: ../src/Property/CSSNamespace.php
 

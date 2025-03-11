@@ -6,6 +6,8 @@ namespace Sabberworm\CSS\CSSList;
 
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Property\AtRule;
+use Sabberworm\CSS\Value\CSSString;
+use Sabberworm\CSS\Value\URL;
 
 /**
  * A `BlockList` constructed by an unknown at-rule. `@media` rules are rendered into `AtRuleBlockList` objects.
@@ -41,7 +43,10 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
         return $this->type;
     }
 
-    public function atRuleArgs(): string
+    /**
+     * @return array<string|URL>|string|CSSString|null
+     */
+    public function atRuleArgs()
     {
         return $this->arguments;
     }

@@ -216,10 +216,7 @@ class Color extends CSSFunction
         $this->components = $colorValues;
     }
 
-    /**
-     * @return string
-     */
-    public function getColorDescription()
+    public function getColorDescription(): string
     {
         return $this->getName();
     }

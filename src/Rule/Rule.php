@@ -112,7 +112,7 @@ class Rule implements Renderable, Commentable
      *
      * @return list<non-empty-string>
      */
-    private static function listDelimiterForRule($rule): array
+    private static function listDelimiterForRule(string $rule): array
     {
         if (\preg_match('/^font($|-)/', $rule)) {
             return [',', '/', ' '];
@@ -160,10 +160,7 @@ class Rule implements Renderable, Commentable
         $this->rule = $rule;
     }
 
-    /**
-     * @return string
-     */
-    public function getRule()
+    public function getRule(): string
     {
         return $this->rule;
     }

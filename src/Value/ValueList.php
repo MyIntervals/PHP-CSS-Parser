@@ -67,10 +67,7 @@ abstract class ValueList extends Value
         $this->components = $components;
     }
 
-    /**
-     * @return string
-     */
-    public function getListSeparator()
+    public function getListSeparator(): string
     {
         return $this->separator;
     }

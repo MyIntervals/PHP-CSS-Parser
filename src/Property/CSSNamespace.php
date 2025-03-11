@@ -6,6 +6,8 @@ namespace Sabberworm\CSS\Property;
 
 use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Value\CSSString;
+use Sabberworm\CSS\Value\URL;
 
 /**
  * `CSSNamespace` represents an `@namespace` rule.
@@ -18,7 +20,7 @@ class CSSNamespace implements AtRule
     private $url;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $prefix;
 
@@ -68,18 +70,12 @@ class CSSNamespace implements AtRule
             . $this->url->render($outputFormat) . ';';
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPrefix()
+    public function getPrefix(): ?string
     {
         return $this->prefix;
     }
@@ -109,7 +105,7 @@ class CSSNamespace implements AtRule
     }
 
     /**
-     * @return array<int, string>
+     * @return array<string|URL>|string|CSSString|null
      */
     public function atRuleArgs(): array
     {
