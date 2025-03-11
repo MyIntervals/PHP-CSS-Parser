@@ -16,7 +16,7 @@ use Sabberworm\CSS\Property\AtRule;
 class AtRuleSet extends RuleSet implements AtRule
 {
     /**
-     * @var string
+     * @var non-empty-string
      */
     private $type;
 
@@ -26,7 +26,7 @@ class AtRuleSet extends RuleSet implements AtRule
     private $arguments;
 
     /**
-     * @param string $type
+     * @param non-empty-string $type
      * @param string $arguments
      * @param int<0, max> $lineNumber
      */
@@ -38,9 +38,9 @@ class AtRuleSet extends RuleSet implements AtRule
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
-    public function atRuleName()
+    public function atRuleName(): string
     {
         return $this->type;
     }

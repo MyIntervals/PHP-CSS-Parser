@@ -84,6 +84,9 @@ class Charset implements AtRule
         return "{$outputFormat->comments($this)}@charset {$this->charset->render($outputFormat)};";
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function atRuleName(): string
     {
         return 'charset';

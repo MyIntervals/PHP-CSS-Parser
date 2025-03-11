@@ -86,6 +86,9 @@ class Import implements AtRule
             . ($this->mediaQuery === null ? '' : ' ' . $this->mediaQuery) . ';';
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function atRuleName(): string
     {
         return 'import';

@@ -20,9 +20,9 @@ interface AtRule extends Renderable, Commentable
     public const BLOCK_RULES = 'media/document/supports/region-style/font-feature-values';
 
     /**
-     * @return string|null
+     * @return non-empty-string
      */
-    public function atRuleName();
+    public function atRuleName(): string;
 
     /**
      * @return string|null

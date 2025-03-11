@@ -13,7 +13,7 @@ use Sabberworm\CSS\Property\AtRule;
 class AtRuleBlockList extends CSSBlockList implements AtRule
 {
     /**
-     * @var string
+     * @var non-empty-string
      */
     private $type;
 
@@ -23,6 +23,7 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
     private $arguments;
 
     /**
+     * @param non-empty-string $type
      * @param int<0, max> $lineNumber
      */
     public function __construct(string $type, string $arguments = '', int $lineNumber = 0)
@@ -32,6 +33,9 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
         $this->arguments = $arguments;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function atRuleName(): string
     {
         return $this->type;

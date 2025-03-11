@@ -7,6 +7,10 @@ namespace Sabberworm\CSS\CSSList;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Property\AtRule;
 
+/**
+ * Note: When constructing an instance of this class, `setVendorKeyFrame()` must be called directly after construction
+ * for the instance to be valid.
+ */
 class KeyFrame extends CSSList implements AtRule
 {
     /**
