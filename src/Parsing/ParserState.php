@@ -459,7 +459,7 @@ class ParserState
     }
 
     /**
-     * @param int<0, max> $offset
+     * @param int $offset
      *
      * @return int|false
      */
