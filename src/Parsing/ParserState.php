@@ -33,7 +33,7 @@ class ParserState
     private $characters;
 
     /**
-     * @var int
+     * @var int<0, max>
      */
     private $currentPosition = 0;
 
@@ -53,7 +53,7 @@ class ParserState
      * @param string $text the complete CSS as text (i.e., usually the contents of a CSS file)
      * @param int<1, max> $lineNumber
      */
-    public function __construct($text, Settings $parserSettings, int $lineNumber = 1)
+    public function __construct(string $text, Settings $parserSettings, int $lineNumber = 1)
     {
         $this->parserSettings = $parserSettings;
         $this->text = $text;
@@ -75,23 +75,20 @@ class ParserState
     /**
      * @return int<1, max>
      */
-    public function currentLine()
+    public function currentLine(): int
     {
         return $this->lineNumber;
     }
 
     /**
-     * @return int
+     * @return int<0, max>
      */
-    public function currentColumn()
+    public function currentColumn(): int
     {
         return $this->currentPosition;
     }
 
-    /**
-     * @return Settings
-     */
-    public function getSettings()
+    public function getSettings(): Settings
     {
         return $this->parserSettings;
     }
@@ -102,21 +99,17 @@ class ParserState
     }
 
     /**
-     * @param int $position
+     * @param int<0, max> $position
      */
-    public function setPosition($position): void
+    public function setPosition(int $position): void
     {
         $this->currentPosition = $position;
     }
 
     /**
-     * @param bool $ignoreCase
-     *
-     * @return string
-     *
      * @throws UnexpectedTokenException
      */
-    public function parseIdentifier($ignoreCase = true)
+    public function parseIdentifier(bool $ignoreCase = true): string
     {
         if ($this->isEnd()) {
             throw new UnexpectedEOFException('', '', 'identifier', $this->lineNumber);
@@ -140,14 +133,10 @@ class ParserState
     }
 
     /**
-     * @param bool $isForIdentifier
-     *
-     * @return string|null
-     *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public function parseCharacter($isForIdentifier)
+    public function parseCharacter(bool $isForIdentifier): ?string
     {
         if ($this->peek() === '\\') {
             $this->consume('\\');
@@ -225,11 +214,7 @@ class ParserState
         return $comments;
     }
 
-    /**
-     * @param string $string
-     * @param bool $caseInsensitive
-     */
-    public function comes($string, $caseInsensitive = false): bool
+    public function comes(string $string, bool $caseInsensitive = false): bool
     {
         $peek = $this->peek(\strlen($string));
         return ($peek == '')
@@ -238,10 +223,10 @@ class ParserState
     }
 
     /**
-     * @param int $length
-     * @param int $offset
+     * @param int<1, max> $length
+     * @param int<0, max> $offset
      */
-    public function peek($length = 1, $offset = 0): string
+    public function peek(int $length = 1, int $offset = 0): string
     {
         $offset += $this->currentPosition;
         if ($offset >= \count($this->characters)) {
@@ -251,7 +236,7 @@ class ParserState
     }
 
     /**
-     * @param int $value
+     * @param string|int<1, max> $value
      *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
@@ -286,12 +271,12 @@ class ParserState
 
     /**
      * @param string $expression
-     * @param int|null $maximumLength
+     * @param int<1, max>|null $maximumLength
      *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    public function consumeExpression($expression, $maximumLength = null): string
+    public function consumeExpression(string $expression, ?int $maximumLength = null): string
     {
         $matches = null;
         $input = $maximumLength !== null ? $this->peek($maximumLength) : $this->inputLeft();
@@ -335,8 +320,6 @@ class ParserState
 
     /**
      * @param array<array-key, string>|string $stopCharacters
-     * @param bool $includeEnd
-     * @param bool $consumeEnd
      * @param array<int, Comment> $comments
      *
      * @throws UnexpectedEOFException
@@ -344,8 +327,8 @@ class ParserState
      */
     public function consumeUntil(
         $stopCharacters,
-        $includeEnd = false,
-        $consumeEnd = false,
+        bool $includeEnd = false,
+        bool $consumeEnd = false,
         array &$comments = []
     ): string {
         $stopCharacters = \is_array($stopCharacters) ? $stopCharacters : [$stopCharacters];
@@ -386,12 +369,7 @@ class ParserState
         return $this->substr($this->currentPosition, -1);
     }
 
-    /**
-     * @param string $string1
-     * @param string $string2
-     * @param bool $caseInsensitive
-     */
-    public function streql($string1, $string2, $caseInsensitive = true): bool
+    public function streql(string $string1, string $string2, bool $caseInsensitive = true): bool
     {
         if ($caseInsensitive) {
             return $this->strtolower($string1) === $this->strtolower($string2);
@@ -401,17 +379,17 @@ class ParserState
     }
 
     /**
-     * @param int $numberOfCharacters
+     * @param int<1, max> $numberOfCharacters
      */
-    public function backtrack($numberOfCharacters): void
+    public function backtrack(int $numberOfCharacters): void
     {
         $this->currentPosition -= $numberOfCharacters;
     }
 
     /**
-     * @param string $string
+     * @return int<0, max>
      */
-    public function strlen($string): int
+    public function strlen(string $string): int
     {
         if ($this->parserSettings->hasMultibyteSupport()) {
             return \mb_strlen($string, $this->charset);
@@ -421,10 +399,9 @@ class ParserState
     }
 
     /**
-     * @param int $offset
-     * @param int $length
+     * @param int<0, max> $offset
      */
-    private function substr($offset, $length): string
+    private function substr(int $offset, int $length): string
     {
         if ($length < 0) {
             $length = \count($this->characters) - $offset + $length;
@@ -441,10 +418,7 @@ class ParserState
         return $result;
     }
 
-    /**
-     * @param string $string
-     */
-    private function strtolower($string): string
+    private function strtolower(string $string): string
     {
         if ($this->parserSettings->hasMultibyteSupport()) {
             return \mb_strtolower($string, $this->charset);
@@ -454,13 +428,11 @@ class ParserState
     }
 
     /**
-     * @param string $string
-     *
      * @return array<int, string>
      *
      * @throws SourceException if the charset is UTF-8 and the string contains invalid byte sequences
      */
-    private function strsplit($string)
+    private function strsplit(string $string): array
     {
         if ($this->parserSettings->hasMultibyteSupport()) {
             if ($this->streql($this->charset, 'utf-8')) {
@@ -487,13 +459,11 @@ class ParserState
     }
 
     /**
-     * @param string $haystack
-     * @param string $needle
-     * @param int $offset
+     * @param int<0, max> $offset
      *
      * @return int|false
      */
-    private function strpos($haystack, $needle, $offset)
+    private function strpos(string $haystack, string $needle, int $offset)
     {
         if ($this->parserSettings->hasMultibyteSupport()) {
             return \mb_strpos($haystack, $needle, $offset, $this->charset);
