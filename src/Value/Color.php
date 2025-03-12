@@ -383,11 +383,12 @@ class Color extends CSSFunction
             unset($componentsWithoutAlpha['a']);
         }
 
-        $arguments = $outputFormat->implode(' ', $componentsWithoutAlpha);
+        $formatter = $outputFormat->getFormatter();
+        $arguments = $formatter->implode(' ', $componentsWithoutAlpha);
         if (isset($alpha)) {
-            $separator = $outputFormat->spaceBeforeListArgumentSeparator('/')
-                . '/' . $outputFormat->spaceAfterListArgumentSeparator('/');
-            $arguments = $outputFormat->implode($separator, [$arguments, $alpha]);
+            $separator = $formatter->spaceBeforeListArgumentSeparator('/')
+                . '/' . $formatter->spaceAfterListArgumentSeparator('/');
+            $arguments = $formatter->implode($separator, [$arguments, $alpha]);
         }
 
         return $this->getName() . '(' . $arguments . ')';
