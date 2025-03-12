@@ -157,36 +157,6 @@ parameters:
 			path: ../src/RuleSet/DeclarationBlock.php
 
 		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:removeLastSemicolon\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/RuleSet/RuleSet.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:safely\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/RuleSet/RuleSet.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceAfterRules\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/RuleSet/RuleSet.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeRules\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/RuleSet/RuleSet.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBetweenRules\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/RuleSet/RuleSet.php
-
-		-
 			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
 			identifier: booleanNot.exprNotBoolean
 			count: 2
