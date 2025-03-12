@@ -278,18 +278,18 @@ abstract class RuleSet implements Renderable, Commentable
         $isFirst = true;
         $nextLevelFormat = $outputFormat->nextLevel();
         foreach ($this->getRules() as $rule) {
-            $renderedRule = $nextLevelFormat->getFormatter()
-                ->safely(static function () use ($rule, $nextLevelFormat): string {
-                    return $rule->render($nextLevelFormat);
-                });
+            $nextLevelFormatter = $nextLevelFormat->getFormatter();
+            $renderedRule = $nextLevelFormatter->safely(static function () use ($rule, $nextLevelFormat): string {
+                return $rule->render($nextLevelFormat);
+            });
             if ($renderedRule === null) {
                 continue;
             }
             if ($isFirst) {
                 $isFirst = false;
-                $result .= $nextLevelFormat->getFormatter()->spaceBeforeRules();
+                $result .= $nextLevelFormatter->spaceBeforeRules();
             } else {
-                $result .= $nextLevelFormat->getFormatter()->spaceBetweenRules();
+                $result .= $nextLevelFormatter->spaceBetweenRules();
             }
             $result .= $renderedRule;
         }
