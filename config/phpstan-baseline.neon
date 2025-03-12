@@ -371,21 +371,3 @@ parameters:
 			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
 			path: ../src/Value/Size.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:implode\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/Value/ValueList.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceAfterListArgumentSeparator\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/Value/ValueList.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeListArgumentSeparator\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/Value/ValueList.php
