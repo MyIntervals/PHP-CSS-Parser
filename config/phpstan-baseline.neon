@@ -97,12 +97,6 @@ parameters:
 			path: ../src/CSSList/KeyFrame.php
 
 		-
-			message: '#^Parameters should have "string" types as the only types passed to this method$#'
-			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 2
-			path: ../src/CSSList/KeyFrame.php
-
-		-
 			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
 			identifier: equal.notAllowed
 			count: 1

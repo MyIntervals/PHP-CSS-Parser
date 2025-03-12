@@ -68,4 +68,24 @@ final class KeyFrameTest extends TestCase
 
         self::assertSame($lineNumber, $subject->getLineNo());
     }
+
+    /**
+     * @test
+     */
+    public function getAnimationNameByDefaultReturnsNone(): void
+    {
+        $subject = new KeyFrame();
+
+        self::assertSame('none', $subject->getAnimationName());
+    }
+
+    /**
+     * @test
+     */
+    public function getVendorKeyFrameByDefaultReturnsKeyframes(): void
+    {
+        $subject = new KeyFrame();
+
+        self::assertSame('keyframes', $subject->getVendorKeyFrame());
+    }
 }

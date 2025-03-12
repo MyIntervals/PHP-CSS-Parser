@@ -10,43 +10,43 @@ use Sabberworm\CSS\Property\AtRule;
 class KeyFrame extends CSSList implements AtRule
 {
     /**
-     * @var string|null
+     * @var non-empty-string
      */
-    private $vendorKeyFrame;
+    private $vendorKeyFrame = 'keyframes';
 
     /**
-     * @var string|null
+     * @var non-empty-string
      */
-    private $animationName;
+    private $animationName = 'none';
 
     /**
-     * @param string $vendorKeyFrame
+     * @param non-empty-string $vendorKeyFrame
      */
-    public function setVendorKeyFrame($vendorKeyFrame): void
+    public function setVendorKeyFrame(string $vendorKeyFrame): void
     {
         $this->vendorKeyFrame = $vendorKeyFrame;
     }
 
     /**
-     * @return string|null
+     * @return non-empty-string
      */
-    public function getVendorKeyFrame()
+    public function getVendorKeyFrame(): string
     {
         return $this->vendorKeyFrame;
     }
 
     /**
-     * @param string $animationName
+     * @param non-empty-string $animationName
      */
-    public function setAnimationName($animationName): void
+    public function setAnimationName(string $animationName): void
     {
         $this->animationName = $animationName;
     }
 
     /**
-     * @return string|null
+     * @return non-empty-string
      */
-    public function getAnimationName()
+    public function getAnimationName(): string
     {
         return $this->animationName;
     }
@@ -74,17 +74,17 @@ class KeyFrame extends CSSList implements AtRule
     }
 
     /**
-     * @return string|null
+     * @return non-empty-string
      */
-    public function atRuleName()
+    public function atRuleName(): string
     {
         return $this->vendorKeyFrame;
     }
 
     /**
-     * @return string|null
+     * @return non-empty-string
      */
-    public function atRuleArgs()
+    public function atRuleArgs(): string
     {
         return $this->animationName;
     }
