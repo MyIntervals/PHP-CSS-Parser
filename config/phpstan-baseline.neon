@@ -103,36 +103,6 @@ parameters:
 			path: ../src/RuleSet/AtRuleSet.php
 
 		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/RuleSet/DeclarationBlock.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:implode\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/RuleSet/DeclarationBlock.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceAfterSelectorSeparator\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/RuleSet/DeclarationBlock.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeOpeningBrace\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/RuleSet/DeclarationBlock.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeSelectorSeparator\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/RuleSet/DeclarationBlock.php
-
-		-
 			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
 			identifier: notEqual.notAllowed
 			count: 1
