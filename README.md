@@ -221,44 +221,44 @@ html, body {
 
 ```php
 class Sabberworm\CSS\CSSList\Document#4 (2) {
-  protected $aContents =>
+  protected $contents =>
   array(4) {
     [0] =>
     class Sabberworm\CSS\Property\Charset#6 (2) {
       private $sCharset =>
       class Sabberworm\CSS\Value\CSSString#5 (2) {
-        private $sString =>
+        private $string =>
         string(5) "utf-8"
-        protected $iLineNo =>
+        protected $lineNumber =>
         int(1)
       }
-      protected $iLineNo =>
+      protected $lineNumber =>
       int(1)
     }
     [1] =>
     class Sabberworm\CSS\RuleSet\AtRuleSet#7 (4) {
-      private $sType =>
+      private $type =>
       string(9) "font-face"
-      private $sArgs =>
+      private $arguments =>
       string(0) ""
-      private $aRules =>
+      private $rules =>
       array(2) {
         'font-family' =>
         array(1) {
           [0] =>
           class Sabberworm\CSS\Rule\Rule#8 (4) {
-            private $sRule =>
+            private $rule =>
             string(11) "font-family"
-            private $mValue =>
+            private $value =>
             class Sabberworm\CSS\Value\CSSString#9 (2) {
-              private $sString =>
+              private $string =>
               string(10) "CrassRoots"
-              protected $iLineNo =>
+              protected $lineNumber =>
               int(4)
             }
-            private $bIsImportant =>
+            private $isImportant =>
             bool(false)
-            protected $iLineNo =>
+            protected $lineNumber =>
             int(4)
           }
         }
@@ -266,76 +266,76 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
         array(1) {
           [0] =>
           class Sabberworm\CSS\Rule\Rule#10 (4) {
-            private $sRule =>
+            private $rule =>
             string(3) "src"
-            private $mValue =>
+            private $value =>
             class Sabberworm\CSS\Value\URL#11 (2) {
-              private $oURL =>
+              private $url =>
               class Sabberworm\CSS\Value\CSSString#12 (2) {
-                private $sString =>
+                private $string =>
                 string(15) "../media/cr.ttf"
-                protected $iLineNo =>
+                protected $lineNumber =>
                 int(5)
               }
-              protected $iLineNo =>
+              protected $lineNumber =>
               int(5)
             }
-            private $bIsImportant =>
+            private $isImportant =>
             bool(false)
-            protected $iLineNo =>
+            protected $lineNumber =>
             int(5)
           }
         }
       }
-      protected $iLineNo =>
+      protected $lineNumber =>
       int(3)
     }
     [2] =>
     class Sabberworm\CSS\RuleSet\DeclarationBlock#13 (3) {
-      private $aSelectors =>
+      private $selectors =>
       array(2) {
         [0] =>
         class Sabberworm\CSS\Property\Selector#14 (2) {
-          private $sSelector =>
+          private $selector =>
           string(4) "html"
-          private $iSpecificity =>
+          private $specificity =>
           NULL
         }
         [1] =>
         class Sabberworm\CSS\Property\Selector#15 (2) {
-          private $sSelector =>
+          private $selector =>
           string(4) "body"
-          private $iSpecificity =>
+          private $specificity =>
           NULL
         }
       }
-      private $aRules =>
+      private $rules =>
       array(1) {
         'font-size' =>
         array(1) {
           [0] =>
           class Sabberworm\CSS\Rule\Rule#16 (4) {
-            private $sRule =>
+            private $rule =>
             string(9) "font-size"
-            private $mValue =>
+            private $value =>
             class Sabberworm\CSS\Value\Size#17 (4) {
-              private $fSize =>
+              private $size =>
               double(1.6)
-              private $sUnit =>
+              private $unit =>
               string(2) "em"
-              private $bIsColorComponent =>
+              private $isColorComponent =>
               bool(false)
-              protected $iLineNo =>
+              protected $lineNumber =>
               int(9)
             }
-            private $bIsImportant =>
+            private $isImportant =>
             bool(false)
-            protected $iLineNo =>
+            protected $lineNumber =>
             int(9)
           }
         }
       }
-      protected $iLineNo =>
+      protected $lineNumber =>
       int(8)
     }
     [3] =>
@@ -344,96 +344,96 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
       string(9) "keyframes"
       private $animationName =>
       string(6) "mymove"
-      protected $aContents =>
+      protected $contents =>
       array(2) {
         [0] =>
         class Sabberworm\CSS\RuleSet\DeclarationBlock#19 (3) {
-          private $aSelectors =>
+          private $selectors =>
           array(1) {
             [0] =>
             class Sabberworm\CSS\Property\Selector#20 (2) {
-              private $sSelector =>
+              private $selector =>
               string(4) "from"
-              private $iSpecificity =>
+              private $specificity =>
               NULL
             }
           }
-          private $aRules =>
+          private $rules =>
           array(1) {
             'top' =>
             array(1) {
               [0] =>
               class Sabberworm\CSS\Rule\Rule#21 (4) {
-                private $sRule =>
+                private $rule =>
                 string(3) "top"
-                private $mValue =>
+                private $value =>
                 class Sabberworm\CSS\Value\Size#22 (4) {
-                  private $fSize =>
+                  private $size =>
                   double(0)
-                  private $sUnit =>
+                  private $unit =>
                   string(2) "px"
-                  private $bIsColorComponent =>
+                  private $isColorComponent =>
                   bool(false)
-                  protected $iLineNo =>
+                  protected $lineNumber =>
                   int(13)
                 }
-                private $bIsImportant =>
+                private $isImportant =>
                 bool(false)
-                protected $iLineNo =>
+                protected $lineNumber =>
                 int(13)
               }
             }
           }
-          protected $iLineNo =>
+          protected $lineNumber =>
           int(13)
         }
         [1] =>
         class Sabberworm\CSS\RuleSet\DeclarationBlock#23 (3) {
-          private $aSelectors =>
+          private $selectors =>
           array(1) {
             [0] =>
             class Sabberworm\CSS\Property\Selector#24 (2) {
-              private $sSelector =>
+              private $selector =>
               string(2) "to"
-              private $iSpecificity =>
+              private $specificity =>
               NULL
             }
           }
-          private $aRules =>
+          private $rules =>
           array(1) {
             'top' =>
             array(1) {
               [0] =>
               class Sabberworm\CSS\Rule\Rule#25 (4) {
-                private $sRule =>
+                private $rule =>
                 string(3) "top"
-                private $mValue =>
+                private $value =>
                 class Sabberworm\CSS\Value\Size#26 (4) {
-                  private $fSize =>
+                  private $size =>
                   double(200)
-                  private $sUnit =>
+                  private $unit =>
                   string(2) "px"
-                  private $bIsColorComponent =>
+                  private $isColorComponent =>
                   bool(false)
-                  protected $iLineNo =>
+                  protected $lineNumber =>
                   int(14)
                 }
-                private $bIsImportant =>
+                private $isImportant =>
                 bool(false)
-                protected $iLineNo =>
+                protected $lineNumber =>
                 int(14)
               }
             }
           }
-          protected $iLineNo =>
+          protected $lineNumber =>
           int(14)
         }
       }
-      protected $iLineNo =>
+      protected $lineNumber =>
       int(12)
     }
   }
-  protected $iLineNo =>
+  protected $lineNumber =>
   int(1)
 }
 
@@ -467,85 +467,85 @@ html, body {font-size: 1.6em;}
 
 ```php
 class Sabberworm\CSS\CSSList\Document#4 (2) {
-  protected $aContents =>
+  protected $contents =>
   array(1) {
     [0] =>
     class Sabberworm\CSS\RuleSet\DeclarationBlock#5 (3) {
-      private $aSelectors =>
+      private $selectors =>
       array(1) {
         [0] =>
         class Sabberworm\CSS\Property\Selector#6 (2) {
-          private $sSelector =>
+          private $selector =>
           string(7) "#header"
-          private $iSpecificity =>
+          private $specificity =>
           NULL
         }
       }
-      private $aRules =>
+      private $rules =>
       array(3) {
         'margin' =>
         array(1) {
           [0] =>
           class Sabberworm\CSS\Rule\Rule#7 (4) {
-            private $sRule =>
+            private $rule =>
             string(6) "margin"
-            private $mValue =>
+            private $value =>
             class Sabberworm\CSS\Value\RuleValueList#12 (3) {
-              protected $aComponents =>
+              protected $components =>
               array(4) {
                 [0] =>
                 class Sabberworm\CSS\Value\Size#8 (4) {
-                  private $fSize =>
+                  private $size =>
                   double(10)
-                  private $sUnit =>
+                  private $unit =>
                   string(2) "px"
-                  private $bIsColorComponent =>
+                  private $isColorComponent =>
                   bool(false)
-                  protected $iLineNo =>
+                  protected $lineNumber =>
                   int(2)
                 }
                 [1] =>
                 class Sabberworm\CSS\Value\Size#9 (4) {
-                  private $fSize =>
+                  private $size =>
                   double(2)
-                  private $sUnit =>
+                  private $unit =>
                   string(2) "em"
-                  private $bIsColorComponent =>
+                  private $isColorComponent =>
                   bool(false)
-                  protected $iLineNo =>
+                  protected $lineNumber =>
                   int(2)
                 }
                 [2] =>
                 class Sabberworm\CSS\Value\Size#10 (4) {
-                  private $fSize =>
+                  private $size =>
                   double(1)
-                  private $sUnit =>
+                  private $unit =>
                   string(2) "cm"
-                  private $bIsColorComponent =>
+                  private $isColorComponent =>
                   bool(false)
-                  protected $iLineNo =>
+                  protected $lineNumber =>
                   int(2)
                 }
                 [3] =>
                 class Sabberworm\CSS\Value\Size#11 (4) {
-                  private $fSize =>
+                  private $size =>
                   double(2)
-                  private $sUnit =>
+                  private $unit =>
                   string(1) "%"
-                  private $bIsColorComponent =>
+                  private $isColorComponent =>
                   bool(false)
-                  protected $iLineNo =>
+                  protected $lineNumber =>
                   int(2)
                 }
               }
               protected $sSeparator =>
               string(1) " "
-              protected $iLineNo =>
+              protected $lineNumber =>
               int(2)
             }
-            private $bIsImportant =>
+            private $isImportant =>
             bool(false)
-            protected $iLineNo =>
+            protected $lineNumber =>
             int(2)
           }
         }
@@ -553,11 +553,11 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
         array(1) {
           [0] =>
           class Sabberworm\CSS\Rule\Rule#13 (4) {
-            private $sRule =>
+            private $rule =>
             string(11) "font-family"
-            private $mValue =>
+            private $value =>
             class Sabberworm\CSS\Value\RuleValueList#15 (3) {
-              protected $aComponents =>
+              protected $components =>
               array(4) {
                 [0] =>
                 string(7) "Verdana"
@@ -565,9 +565,9 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
                 string(9) "Helvetica"
                 [2] =>
                 class Sabberworm\CSS\Value\CSSString#14 (2) {
-                  private $sString =>
+                  private $string =>
                   string(9) "Gill Sans"
-                  protected $iLineNo =>
+                  protected $lineNumber =>
                   int(3)
                 }
                 [3] =>
@@ -575,12 +575,12 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
               }
               protected $sSeparator =>
               string(1) ","
-              protected $iLineNo =>
+              protected $lineNumber =>
               int(3)
             }
-            private $bIsImportant =>
+            private $isImportant =>
             bool(false)
-            protected $iLineNo =>
+            protected $lineNumber =>
             int(3)
           }
         }
@@ -588,22 +588,22 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
         array(1) {
           [0] =>
           class Sabberworm\CSS\Rule\Rule#16 (4) {
-            private $sRule =>
+            private $rule =>
             string(5) "color"
-            private $mValue =>
+            private $value =>
             string(3) "red"
-            private $bIsImportant =>
+            private $isImportant =>
             bool(true)
-            protected $iLineNo =>
+            protected $lineNumber =>
             int(4)
           }
         }
       }
-      protected $iLineNo =>
+      protected $lineNumber =>
       int(1)
     }
   }
-  protected $iLineNo =>
+  protected $lineNumber =>
   int(1)
 }
 
@@ -756,28 +756,28 @@ classDiagram
     %% end of the generated part
 
 
-    Anchor --> "1" ParserState : oParserState
-    CSSList --> "*" CSSList : aContents
-    CSSList --> "*" Charset : aContents
-    CSSList --> "*" Comment : aComments
-    CSSList --> "*" Import : aContents
-    CSSList --> "*" RuleSet : aContents
-    CSSNamespace --> "*" Comment : aComments
-    Charset --> "*" Comment : aComments
-    Charset --> "1" CSSString : oCharset
-    DeclarationBlock --> "*" Selector : aSelectors
-    Import --> "*" Comment : aComments
-    OutputFormat --> "1" OutputFormat : oNextLevelFormat
-    OutputFormat --> "1" OutputFormatter : oFormatter
-    OutputFormatter --> "1" OutputFormat : oFormat
-    Parser --> "1" ParserState : oParserState
-    ParserState --> "1" Settings : oParserSettings
-    Rule --> "*" Comment : aComments
-    Rule --> "1" RuleValueList : mValue
-    RuleSet --> "*" Comment : aComments
-    RuleSet --> "*" Rule : aRules
-    URL --> "1" CSSString : oURL
-    ValueList --> "*" Value : aComponents
+    Anchor --> "1" ParserState : parserState
+    CSSList --> "*" CSSList : contents
+    CSSList --> "*" Charset : contents
+    CSSList --> "*" Comment : comments
+    CSSList --> "*" Import : contents
+    CSSList --> "*" RuleSet : contents
+    CSSNamespace --> "*" Comment : comments
+    Charset --> "*" Comment : comments
+    Charset --> "1" CSSString : charset
+    DeclarationBlock --> "*" Selector : selectors
+    Import --> "*" Comment : comments
+    OutputFormat --> "1" OutputFormat : nextLevelFormat
+    OutputFormat --> "1" OutputFormatter : outputFormatter
+    OutputFormatter --> "1" OutputFormat : outputFormat
+    Parser --> "1" ParserState : parserState
+    ParserState --> "1" Settings : parserSettings
+    Rule --> "*" Comment : comments
+    Rule --> "1" RuleValueList : value
+    RuleSet --> "*" Comment : comments
+    RuleSet --> "*" Rule : rules
+    URL --> "1" CSSString : url
+    ValueList --> "*" Value : components
 ```
 
 ## API and deprecation policy
