@@ -43,18 +43,6 @@ parameters:
 			path: ../src/CSSList/Document.php
 
 		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/CSSList/KeyFrame.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeOpeningBrace\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/CSSList/KeyFrame.php
-
-		-
 			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
 			identifier: equal.notAllowed
 			count: 1
