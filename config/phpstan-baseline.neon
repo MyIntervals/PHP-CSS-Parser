@@ -109,12 +109,6 @@ parameters:
 			path: ../src/Property/CSSNamespace.php
 
 		-
-			message: '#^Return type \(array\<int, string\>\) of method Sabberworm\\CSS\\Property\\CSSNamespace\:\:atRuleArgs\(\) should be compatible with return type \(string\|null\) of method Sabberworm\\CSS\\Property\\AtRule\:\:atRuleArgs\(\)$#'
-			identifier: method.childReturnType
-			count: 1
-			path: ../src/Property/CSSNamespace.php
-
-		-
 			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -135,12 +129,6 @@ parameters:
 		-
 			message: '#^Only booleans are allowed in an if condition, string given\.$#'
 			identifier: if.condNotBoolean
-			count: 1
-			path: ../src/Property/Import.php
-
-		-
-			message: '#^Return type \(array\<int, Sabberworm\\CSS\\Value\\URL\|string\>\) of method Sabberworm\\CSS\\Property\\Import\:\:atRuleArgs\(\) should be compatible with return type \(string\|null\) of method Sabberworm\\CSS\\Property\\AtRule\:\:atRuleArgs\(\)$#'
-			identifier: method.childReturnType
 			count: 1
 			path: ../src/Property/Import.php
 

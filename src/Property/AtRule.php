@@ -23,9 +23,4 @@ interface AtRule extends Renderable, Commentable
      * @return non-empty-string
      */
     public function atRuleName(): string;
-
-    /**
-     * @return string|null
-     */
-    public function atRuleArgs();
 }
