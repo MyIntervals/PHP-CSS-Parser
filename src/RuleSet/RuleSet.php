@@ -278,7 +278,8 @@ abstract class RuleSet implements Renderable, Commentable
         $isFirst = true;
         $nextLevelFormat = $outputFormat->nextLevel();
         foreach ($this->getRules() as $rule) {
-            $renderedRule = $nextLevelFormat->safely(static function () use ($rule, $nextLevelFormat): string {
+            $nextLevelFormatter = $nextLevelFormat->getFormatter();
+            $renderedRule = $nextLevelFormatter->safely(static function () use ($rule, $nextLevelFormat): string {
                 return $rule->render($nextLevelFormat);
             });
             if ($renderedRule === null) {
@@ -286,19 +287,20 @@ abstract class RuleSet implements Renderable, Commentable
             }
             if ($isFirst) {
                 $isFirst = false;
-                $result .= $nextLevelFormat->spaceBeforeRules();
+                $result .= $nextLevelFormatter->spaceBeforeRules();
             } else {
-                $result .= $nextLevelFormat->spaceBetweenRules();
+                $result .= $nextLevelFormatter->spaceBetweenRules();
             }
             $result .= $renderedRule;
         }
 
+        $formatter = $outputFormat->getFormatter();
         if (!$isFirst) {
             // Had some output
-            $result .= $outputFormat->spaceAfterRules();
+            $result .= $formatter->spaceAfterRules();
         }
 
-        return $outputFormat->removeLastSemicolon($result);
+        return $formatter->removeLastSemicolon($result);
     }
 
     /**
