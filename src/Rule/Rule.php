@@ -234,7 +234,8 @@ class Rule implements Renderable, Commentable
 
     public function render(OutputFormat $outputFormat): string
     {
-        $result = "{$outputFormat->comments($this)}{$this->rule}:{$outputFormat->spaceAfterRuleName()}";
+        $formatter = $outputFormat->getFormatter();
+        $result = "{$formatter->comments($this)}{$this->rule}:{$formatter->spaceAfterRuleName()}";
         if ($this->value instanceof Value) { // Can also be a ValueList
             $result .= $this->value->render($outputFormat);
         } else {
