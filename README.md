@@ -538,7 +538,7 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
                   int(2)
                 }
               }
-              protected $sSeparator =>
+              protected $separator =>
               string(1) " "
               protected $lineNumber =>
               int(2)
