@@ -1,18 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/CSSList/AtRuleBlockList.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeOpeningBrace\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/CSSList/AtRuleBlockList.php
-
-		-
 			message: '#^Only booleans are allowed in an if condition, string given\.$#'
 			identifier: if.condNotBoolean
 			count: 1
@@ -143,18 +131,6 @@ parameters:
 			identifier: if.condNotBoolean
 			count: 1
 			path: ../src/Property/Import.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:comments\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/Rule/Rule.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceAfterRuleName\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/Rule/Rule.php
 
 		-
 			message: '#^Only booleans are allowed in an if condition, Sabberworm\\CSS\\Value\\RuleValueList\|string\|null given\.$#'
@@ -371,21 +347,3 @@ parameters:
 			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
 			path: ../src/Value/Size.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:implode\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/Value/ValueList.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceAfterListArgumentSeparator\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/Value/ValueList.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeListArgumentSeparator\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/Value/ValueList.php

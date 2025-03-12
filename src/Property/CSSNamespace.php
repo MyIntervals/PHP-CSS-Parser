@@ -101,7 +101,7 @@ class CSSNamespace implements AtRule
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
     public function atRuleName(): string
     {
