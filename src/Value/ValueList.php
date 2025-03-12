@@ -93,9 +93,11 @@ abstract class ValueList extends Value
 
     public function render(OutputFormat $outputFormat): string
     {
-        return $outputFormat->implode(
-            $outputFormat->spaceBeforeListArgumentSeparator($this->separator) . $this->separator
-            . $outputFormat->spaceAfterListArgumentSeparator($this->separator),
+        $formatter = $outputFormat->getFormatter();
+
+        return $formatter->implode(
+            $formatter->spaceBeforeListArgumentSeparator($this->separator) . $this->separator
+            . $formatter->spaceAfterListArgumentSeparator($this->separator),
             $this->components
         );
     }
