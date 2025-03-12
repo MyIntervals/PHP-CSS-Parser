@@ -225,7 +225,7 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
   array(4) {
     [0] =>
     class Sabberworm\CSS\Property\Charset#6 (2) {
-      private $sCharset =>
+      private $charset =>
       class Sabberworm\CSS\Value\CSSString#5 (2) {
         private $string =>
         string(5) "utf-8"
