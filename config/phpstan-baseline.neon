@@ -19,30 +19,6 @@ parameters:
 			path: ../src/CSSList/CSSBlockList.php
 
 		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:safely\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/CSSList/CSSList.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceAfterBlocks\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/CSSList/CSSList.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBeforeBlocks\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/CSSList/CSSList.php
-
-		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:spaceBetweenBlocks\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/CSSList/CSSList.php
-
-		-
 			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
 			identifier: notEqual.notAllowed
 			count: 1
