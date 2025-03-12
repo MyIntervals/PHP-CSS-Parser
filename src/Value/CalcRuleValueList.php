@@ -18,6 +18,6 @@ class CalcRuleValueList extends RuleValueList
 
     public function render(OutputFormat $outputFormat): string
     {
-        return $outputFormat->implode(' ', $this->components);
+        return $outputFormat->getFormatter()->implode(' ', $this->components);
     }
 }
