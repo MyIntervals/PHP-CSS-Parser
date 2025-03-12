@@ -82,7 +82,7 @@ class Import implements AtRule
 
     public function render(OutputFormat $outputFormat): string
     {
-        return $outputFormat->comments($this) . '@import ' . $this->location->render($outputFormat)
+        return $outputFormat->getFormatter()->comments($this) . '@import ' . $this->location->render($outputFormat)
             . ($this->mediaQuery === null ? '' : ' ' . $this->mediaQuery) . ';';
     }
 
