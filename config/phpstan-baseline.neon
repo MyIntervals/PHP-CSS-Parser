@@ -253,12 +253,6 @@ parameters:
 			path: ../src/Value/CalcFunction.php
 
 		-
-			message: '#^Call to an undefined method Sabberworm\\CSS\\OutputFormat\:\:implode\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../src/Value/CalcRuleValueList.php
-
-		-
 			message: '#^Call to method Sabberworm\\CSS\\Value\\Color\:\:hasNoneAsComponentValue\(\) with incorrect case\: HasNoneAsComponentValue$#'
 			identifier: method.nameCase
 			count: 1
