@@ -6,6 +6,7 @@ namespace Sabberworm\CSS\Property;
 
 use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Value\CSSString;
 use Sabberworm\CSS\Value\URL;
 
 /**
@@ -95,7 +96,7 @@ class Import implements AtRule
     }
 
     /**
-     * @return array<int, URL|string>
+     * @return array<string|URL>|string|CSSString|null
      */
     public function atRuleArgs(): array
     {
@@ -130,10 +131,7 @@ class Import implements AtRule
         $this->comments = $comments;
     }
 
-    /**
-     * @return string
-     */
-    public function getMediaQuery()
+    public function getMediaQuery(): string
     {
         return $this->mediaQuery;
     }

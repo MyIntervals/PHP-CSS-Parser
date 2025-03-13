@@ -82,10 +82,7 @@ class CSSString extends PrimitiveValue
         $this->string = $string;
     }
 
-    /**
-     * @return string
-     */
-    public function getString()
+    public function getString(): string
     {
         return $this->string;
     }
