@@ -317,7 +317,7 @@ class Color extends CSSFunction
      */
     private function shouldRenderInModernSyntax(): bool
     {
-        if ($this->HasNoneAsComponentValue()) {
+        if ($this->hasNoneAsComponentValue()) {
             return true;
         }
 

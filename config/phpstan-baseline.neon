@@ -163,12 +163,6 @@ parameters:
 			path: ../src/Value/CalcFunction.php
 
 		-
-			message: '#^Call to method Sabberworm\\CSS\\Value\\Color\:\:hasNoneAsComponentValue\(\) with incorrect case\: HasNoneAsComponentValue$#'
-			identifier: method.nameCase
-			count: 1
-			path: ../src/Value/Color.php
-
-		-
 			message: '#^Cannot call method getSize\(\) on Sabberworm\\CSS\\Value\\Value\|string\.$#'
 			identifier: method.nonObject
 			count: 3
