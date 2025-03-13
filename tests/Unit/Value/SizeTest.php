@@ -7,15 +7,39 @@ namespace Sabberworm\CSS\Tests\Unit\Value;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Settings;
+use Sabberworm\CSS\Value\PrimitiveValue;
 use Sabberworm\CSS\Value\Size;
+use Sabberworm\CSS\Value\Value;
 
 /**
+ * @covers \Sabberworm\CSS\Value\PrimitiveValue
  * @covers \Sabberworm\CSS\Value\Size
+ * @covers \Sabberworm\CSS\Value\Value
  */
 final class SizeTest extends TestCase
 {
     /**
-     * @return array<string, array{0: string}>
+     * @test
+     */
+    public function isPrimitiveValue(): void
+    {
+        $subject = new Size(1);
+
+        self::assertInstanceOf(PrimitiveValue::class, $subject);
+    }
+
+    /**
+     * @test
+     */
+    public function isValue(): void
+    {
+        $subject = new Size(1);
+
+        self::assertInstanceOf(Value::class, $subject);
+    }
+
+    /**
+     * @return array<string, array{0: non-empty-string}>
      */
     public static function provideUnit(): array
     {
@@ -64,12 +88,14 @@ final class SizeTest extends TestCase
     /**
      * @test
      *
+     * @param non-empty-string $unit
+     *
      * @dataProvider provideUnit
      */
     public function parsesUnit(string $unit): void
     {
-        $subject = Size::parse(new ParserState('1' . $unit, Settings::create()));
+        $parsedSize = Size::parse(new ParserState('1' . $unit, Settings::create()));
 
-        self::assertSame($unit, $subject->getUnit());
+        self::assertSame($unit, $parsedSize->getUnit());
     }
 }
