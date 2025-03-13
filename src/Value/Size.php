@@ -17,7 +17,7 @@ class Size extends PrimitiveValue
     /**
      * vh/vw/vm(ax)/vmin/rem are absolute insofar as they don’t scale to the immediate parent (only the viewport)
      *
-     * @var array<int, string>
+     * @var list<non-empty-string>
      */
     private const ABSOLUTE_SIZE_UNITS = [
         'px',
@@ -38,17 +38,17 @@ class Size extends PrimitiveValue
     ];
 
     /**
-     * @var array<int, string>
+     * @var list<non-empty-string>
      */
     private const RELATIVE_SIZE_UNITS = ['%', 'em', 'ex', 'ch', 'fr'];
 
     /**
-     * @var array<int, string>
+     * @var list<non-empty-string>
      */
     private const NON_SIZE_UNITS = ['deg', 'grad', 'rad', 's', 'ms', 'turn', 'Hz', 'kHz'];
 
     /**
-     * @var array<int, array<string, string>>|null
+     * @var array<int<1, max>, array<lowercase-string, non-empty-string>>|null
      */
     private static $SIZE_UNITS = null;
 
@@ -69,11 +69,9 @@ class Size extends PrimitiveValue
 
     /**
      * @param float|int|string $size
-     * @param string|null $unit
-     * @param bool $isColorComponent
      * @param int<0, max> $lineNumber
      */
-    public function __construct($size, $unit = null, $isColorComponent = false, int $lineNumber = 0)
+    public function __construct($size, ?string $unit = null, bool $isColorComponent = false, int $lineNumber = 0)
     {
         parent::__construct($lineNumber);
         $this->size = (float) $size;
@@ -82,14 +80,12 @@ class Size extends PrimitiveValue
     }
 
     /**
-     * @param bool $isColorComponent
-     *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      *
      * @internal since V8.8.0
      */
-    public static function parse(ParserState $parserState, $isColorComponent = false): Size
+    public static function parse(ParserState $parserState, bool $isColorComponent = false): Size
     {
         $size = '';
         if ($parserState->comes('-')) {
@@ -125,9 +121,9 @@ class Size extends PrimitiveValue
     }
 
     /**
-     * @return array<int, array<string, string>>
+     * @return array<int<1, max>, array<lowercase-string, non-empty-string>>
      */
-    private static function getSizeUnits()
+    private static function getSizeUnits(): array
     {
         if (!\is_array(self::$SIZE_UNITS)) {
             self::$SIZE_UNITS = [];
@@ -146,18 +142,12 @@ class Size extends PrimitiveValue
         return self::$SIZE_UNITS;
     }
 
-    /**
-     * @param string $unit
-     */
-    public function setUnit($unit): void
+    public function setUnit(string $unit): void
     {
         $this->unit = $unit;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getUnit()
+    public function getUnit(): ?string
     {
         return $this->unit;
     }
@@ -170,18 +160,12 @@ class Size extends PrimitiveValue
         $this->size = (float) $size;
     }
 
-    /**
-     * @return float
-     */
-    public function getSize()
+    public function getSize(): float
     {
         return $this->size;
     }
 
-    /**
-     * @return bool
-     */
-    public function isColorComponent()
+    public function isColorComponent(): bool
     {
         return $this->isColorComponent;
     }
