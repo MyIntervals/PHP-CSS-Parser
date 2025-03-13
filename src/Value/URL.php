@@ -68,10 +68,7 @@ class URL extends PrimitiveValue
         $this->url = $url;
     }
 
-    /**
-     * @return CSSString
-     */
-    public function getURL()
+    public function getURL(): CSSString
     {
         return $this->url;
     }
