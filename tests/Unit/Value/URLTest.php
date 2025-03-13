@@ -73,7 +73,7 @@ final class URLTest extends TestCase
     /**
      * @test
      */
-    public function getLineReturnsLineNumberProvidedToConstructor(): void
+    public function getLineNoReturnsLineNumberProvidedToConstructor(): void
     {
         $lineNumber = 17;
 
