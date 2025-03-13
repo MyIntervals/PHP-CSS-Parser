@@ -408,10 +408,7 @@ abstract class CSSList implements Renderable, Commentable
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    protected function renderListContents(OutputFormat $outputFormat)
+    protected function renderListContents(OutputFormat $outputFormat): string
     {
         $result = '';
         $isFirst = true;
