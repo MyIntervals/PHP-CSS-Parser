@@ -269,10 +269,7 @@ abstract class RuleSet implements Renderable, Commentable
         return $this->render(new OutputFormat());
     }
 
-    /**
-     * @return string
-     */
-    protected function renderRules(OutputFormat $outputFormat)
+    protected function renderRules(OutputFormat $outputFormat): string
     {
         $result = '';
         $isFirst = true;
