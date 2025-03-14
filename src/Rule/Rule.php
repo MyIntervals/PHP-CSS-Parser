@@ -68,14 +68,16 @@ class Rule implements Renderable, Commentable
     }
 
     /**
+     * @param list<Comment> $commentsBeforeRule
+     *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      *
      * @internal since V8.8.0
      */
-    public static function parse(ParserState $parserState): Rule
+    public static function parse(ParserState $parserState, array $commentsBeforeRule = []): Rule
     {
-        $comments = $parserState->consumeWhiteSpace();
+        $comments = \array_merge($commentsBeforeRule, $parserState->consumeWhiteSpace());
         $rule = new Rule(
             $parserState->parseIdentifier(!$parserState->comes('--')),
             $parserState->currentLine(),
@@ -97,8 +99,6 @@ class Rule implements Renderable, Commentable
         while ($parserState->comes(';')) {
             $parserState->consume(';');
         }
-
-        $parserState->consumeWhiteSpace();
 
         return $rule;
     }
