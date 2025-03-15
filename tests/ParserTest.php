@@ -1103,8 +1103,6 @@ body {background-color: red;}';
      */
     public function flatCommentExtractingTwoComments(): void
     {
-        self::markTestSkipped('This is currently broken.');
-
         $parser = new Parser('div {/*Find Me!*/left:10px; /*Find Me Too!*/text-align:left;}');
         $document = $parser->parse();
         $contents = $document->getContents();
