@@ -43,18 +43,6 @@ parameters:
 			path: ../src/CSSList/Document.php
 
 		-
-			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
-			identifier: equal.notAllowed
-			count: 1
-			path: ../src/Parsing/ParserState.php
-
-		-
-			message: '#^PHPDoc tag @return with type array\<int, Sabberworm\\CSS\\Comment\\Comment\>\|void is not subtype of native type array\.$#'
-			identifier: return.phpDocType
-			count: 1
-			path: ../src/Parsing/ParserState.php
-
-		-
 			message: '#^Cannot call method render\(\) on string\.$#'
 			identifier: method.nonObject
 			count: 1
