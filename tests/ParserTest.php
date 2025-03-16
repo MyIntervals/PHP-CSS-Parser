@@ -1167,9 +1167,11 @@ body {background-color: red;}';
     {
         $parser = new Parser('div {/*Find Me!*/left:10px; text-align:left;}');
         $doc = $parser->parse();
+
         $contents = $doc->getContents();
         $divRules = $contents[0]->getRules();
         $comments = $divRules[0]->getComments();
+
         self::assertCount(1, $comments);
         self::assertSame("Find Me!", $comments[0]->getComment());
     }
@@ -1177,16 +1179,50 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function flatCommentExtractingTwoComments()
+    public function flatCommentExtractingTwoConjoinedCommentsForOneRule()
     {
-        self::markTestSkipped('This is currently broken.');
+        $parser = new Parser('div {/*Find Me!*//*Find Me Too!*/left:10px; text-align:left;}');
+        $document = $parser->parse();
 
+        $contents = $document->getContents();
+        $divRules = $contents[0]->getRules();
+        $comments = $divRules[0]->getComments();
+
+        self::assertCount(2, $comments);
+        self::assertSame('Find Me!', $comments[0]->getComment());
+        self::assertSame('Find Me Too!', $comments[1]->getComment());
+    }
+
+    /**
+     * @test
+     */
+    public function flatCommentExtractingTwoSpaceSeparatedCommentsForOneRule()
+    {
+        $parser = new Parser('div { /*Find Me!*/ /*Find Me Too!*/ left:10px; text-align:left;}');
+        $document = $parser->parse();
+
+        $contents = $document->getContents();
+        $divRules = $contents[0]->getRules();
+        $comments = $divRules[0]->getComments();
+
+        self::assertCount(2, $comments);
+        self::assertSame('Find Me!', $comments[0]->getComment());
+        self::assertSame('Find Me Too!', $comments[1]->getComment());
+    }
+
+    /**
+     * @test
+     */
+    public function flatCommentExtractingCommentsForTwoRules()
+    {
         $parser = new Parser('div {/*Find Me!*/left:10px; /*Find Me Too!*/text-align:left;}');
         $doc = $parser->parse();
+
         $contents = $doc->getContents();
         $divRules = $contents[0]->getRules();
         $rule1Comments = $divRules[0]->getComments();
         $rule2Comments = $divRules[1]->getComments();
+
         self::assertCount(1, $rule1Comments);
         self::assertCount(1, $rule2Comments);
         self::assertEquals('Find Me!', $rule1Comments[0]->getComment());
