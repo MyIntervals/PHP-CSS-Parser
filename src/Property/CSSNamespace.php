@@ -28,7 +28,7 @@ class CSSNamespace implements AtRule
     private $lineNumber;
 
     /**
-     * @var array<array-key, Comment>
+     * @var list<Comment>
      *
      * @internal since 8.8.0
      */
@@ -121,7 +121,7 @@ class CSSNamespace implements AtRule
     }
 
     /**
-     * @param array<array-key, Comment> $comments
+     * @param list<Comment> $comments
      */
     public function addComments(array $comments): void
     {
@@ -129,7 +129,7 @@ class CSSNamespace implements AtRule
     }
 
     /**
-     * @return array<array-key, Comment>
+     * @return list<Comment>
      */
     public function getComments(): array
     {
@@ -137,7 +137,7 @@ class CSSNamespace implements AtRule
     }
 
     /**
-     * @param array<array-key, Comment> $comments
+     * @param list<Comment> $comments
      */
     public function setComments(array $comments): void
     {

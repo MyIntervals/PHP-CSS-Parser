@@ -34,7 +34,7 @@ use Sabberworm\CSS\Value\Value;
 abstract class CSSList implements Renderable, Commentable
 {
     /**
-     * @var array<array-key, Comment>
+     * @var list<Comment>
      *
      * @internal since 8.8.0
      */
@@ -460,7 +460,7 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * @param array<array-key, Comment> $comments
+     * @param list<Comment> $comments
      */
     public function addComments(array $comments): void
     {
@@ -468,7 +468,7 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * @return array<array-key, Comment>
+     * @return list<Comment>
      */
     public function getComments(): array
     {
@@ -476,7 +476,7 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * @param array<array-key, Comment> $comments
+     * @param list<Comment> $comments
      */
     public function setComments(array $comments): void
     {

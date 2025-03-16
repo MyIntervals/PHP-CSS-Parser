@@ -49,7 +49,7 @@ class Rule implements Renderable, Commentable
     protected $columnNumber;
 
     /**
-     * @var array<array-key, Comment>
+     * @var list<Comment>
      *
      * @internal since 8.8.0
      */
@@ -249,7 +249,7 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param array<array-key, Comment> $comments
+     * @param list<Comment> $comments
      */
     public function addComments(array $comments): void
     {
@@ -257,7 +257,7 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @return array<array-key, Comment>
+     * @return list<Comment>
      */
     public function getComments(): array
     {
@@ -265,7 +265,7 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param array<array-key, Comment> $comments
+     * @param list<Comment> $comments
      */
     public function setComments(array $comments): void
     {
