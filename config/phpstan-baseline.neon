@@ -73,12 +73,6 @@ parameters:
 			path: ../src/Property/Charset.php
 
 		-
-			message: '#^Only booleans are allowed in an if condition, string given\.$#'
-			identifier: if.condNotBoolean
-			count: 1
-			path: ../src/Property/Import.php
-
-		-
 			message: '#^Only booleans are allowed in an if condition, Sabberworm\\CSS\\Value\\RuleValueList\|string\|null given\.$#'
 			identifier: if.condNotBoolean
 			count: 1

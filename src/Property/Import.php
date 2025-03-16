@@ -19,7 +19,7 @@ class Import implements AtRule
     private $location;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $mediaQuery;
 
@@ -38,10 +38,9 @@ class Import implements AtRule
     protected $comments = [];
 
     /**
-     * @param string $mediaQuery
      * @param int<0, max> $lineNumber
      */
-    public function __construct(URL $location, $mediaQuery, int $lineNumber = 0)
+    public function __construct(URL $location, ?string $mediaQuery, int $lineNumber = 0)
     {
         $this->location = $location;
         $this->mediaQuery = $mediaQuery;
@@ -56,18 +55,12 @@ class Import implements AtRule
         return $this->lineNumber;
     }
 
-    /**
-     * @param URL $location
-     */
-    public function setLocation($location): void
+    public function setLocation(URL $location): void
     {
         $this->location = $location;
     }
 
-    /**
-     * @return URL
-     */
-    public function getLocation()
+    public function getLocation(): URL
     {
         return $this->location;
     }
@@ -95,14 +88,15 @@ class Import implements AtRule
     }
 
     /**
-     * @return array<int, URL|string>
+     * @return array{0: URL, 1?: non-empty-string}
      */
     public function atRuleArgs(): array
     {
         $result = [$this->location];
-        if ($this->mediaQuery) {
-            \array_push($result, $this->mediaQuery);
+        if (\is_string($this->mediaQuery) && $this->mediaQuery !== '') {
+            $result[] = $this->mediaQuery;
         }
+
         return $result;
     }
 
@@ -130,10 +124,7 @@ class Import implements AtRule
         $this->comments = $comments;
     }
 
-    /**
-     * @return string
-     */
-    public function getMediaQuery()
+    public function getMediaQuery(): ?string
     {
         return $this->mediaQuery;
     }
