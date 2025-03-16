@@ -65,7 +65,7 @@ abstract class RuleSet implements Renderable, Commentable
         while ($parserState->comes(';')) {
             $parserState->consume(';');
         }
-        for (;;) {
+        while (true) {
             $commentsBeforeRule = $parserState->consumeWhiteSpace();
             if ($parserState->comes('}')) {
                 break;
