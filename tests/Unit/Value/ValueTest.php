@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit\Value;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Settings;
+use Sabberworm\CSS\Value\CSSFunction;
 use Sabberworm\CSS\Value\Value;
 
 /**
@@ -48,7 +50,8 @@ final class ValueTest extends TestCase
             self::DEFAULT_DELIMITERS
         );
 
-        self::assertSame('max(300px,50vh ' . $operator . ' 10px)', (string) $subject);
+        self::assertInstanceOf(CSSFunction::class, $subject);
+        self::assertSame('max(300px,50vh ' . $operator . ' 10px)', $subject->render(OutputFormat::createCompact()));
     }
 
     /**
@@ -90,7 +93,11 @@ final class ValueTest extends TestCase
             self::DEFAULT_DELIMITERS
         );
 
-        self::assertSame(\sprintf($expectedResultTemplate, $expression), (string) $subject);
+        self::assertInstanceOf(CSSFunction::class, $subject);
+        self::assertSame(
+            \sprintf($expectedResultTemplate, $expression),
+            $subject->render(OutputFormat::createCompact())
+        );
     }
 
     /**
@@ -118,6 +125,10 @@ final class ValueTest extends TestCase
             self::DEFAULT_DELIMITERS
         );
 
-        self::assertSame('max(300px,' . $leftOperand . ' + ' . $rightOperand . ')', (string) $subject);
+        self::assertInstanceOf(CSSFunction::class, $subject);
+        self::assertSame(
+            'max(300px,' . $leftOperand . ' + ' . $rightOperand . ')',
+            $subject->render(OutputFormat::createCompact())
+        );
     }
 }
