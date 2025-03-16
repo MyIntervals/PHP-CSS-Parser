@@ -65,11 +65,15 @@ abstract class RuleSet implements Renderable, Commentable
         while ($parserState->comes(';')) {
             $parserState->consume(';');
         }
-        while (!$parserState->comes('}')) {
+        while (true) {
+            $commentsBeforeRule = $parserState->consumeWhiteSpace();
+            if ($parserState->comes('}')) {
+                break;
+            }
             $rule = null;
             if ($parserState->getSettings()->usesLenientParsing()) {
                 try {
-                    $rule = Rule::parse($parserState);
+                    $rule = Rule::parse($parserState, $commentsBeforeRule);
                 } catch (UnexpectedTokenException $e) {
                     try {
                         $consumedText = $parserState->consumeUntil(["\n", ';', '}'], true);
@@ -87,7 +91,7 @@ abstract class RuleSet implements Renderable, Commentable
                     }
                 }
             } else {
-                $rule = Rule::parse($parserState);
+                $rule = Rule::parse($parserState, $commentsBeforeRule);
             }
             if ($rule instanceof Rule) {
                 $ruleSet->addRule($rule);
