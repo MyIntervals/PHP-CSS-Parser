@@ -109,18 +109,6 @@ parameters:
 			path: ../src/RuleSet/RuleSet.php
 
 		-
-			message: '#^Parameter \#1 \$comments \(array\<string, Sabberworm\\CSS\\Comment\\Comment\>\) of method Sabberworm\\CSS\\RuleSet\\RuleSet\:\:addComments\(\) should be contravariant with parameter \$comments \(array\<Sabberworm\\CSS\\Comment\\Comment\>\) of method Sabberworm\\CSS\\Comment\\Commentable\:\:addComments\(\)$#'
-			identifier: method.childParameterType
-			count: 1
-			path: ../src/RuleSet/RuleSet.php
-
-		-
-			message: '#^Parameter \#1 \$comments \(array\<string, Sabberworm\\CSS\\Comment\\Comment\>\) of method Sabberworm\\CSS\\RuleSet\\RuleSet\:\:setComments\(\) should be contravariant with parameter \$comments \(array\<Sabberworm\\CSS\\Comment\\Comment\>\) of method Sabberworm\\CSS\\Comment\\Commentable\:\:setComments\(\)$#'
-			identifier: method.childParameterType
-			count: 1
-			path: ../src/RuleSet/RuleSet.php
-
-		-
 			message: '#^Parameters should have "Sabberworm\\CSS\\Rule\\Rule" types as the only types passed to this method$#'
 			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
