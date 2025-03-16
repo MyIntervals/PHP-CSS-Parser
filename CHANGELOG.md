@@ -51,7 +51,7 @@ Please also have a look at our
 - Drop magic method forwarding in `OutputFormat` (#898)
 - Drop `atRuleArgs()` from the `AtRule` interface (#1141)
 - Remove `OutputFormat::get()` and `::set()` (#1108, #1110)
-- Drop special support for vendor prefixes (#1083)
+- Drop special support for vendor prefixes (#1083, #1175)
 - Remove the IE hack in `Rule` (#995)
 - Drop `getLineNo()` from the `Renderable` interface (#1038)
 - Remove `OutputFormat::level()` (#874)

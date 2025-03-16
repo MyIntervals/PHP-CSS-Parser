@@ -790,23 +790,6 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function keyframeSelectors(): void
-    {
-        $document = self::parsedStructureForFile(
-            'keyframe-selector-validation',
-            Settings::create()->withMultibyteSupport(true)
-        );
-        $expected = '@-webkit-keyframes zoom {0% {-webkit-transform: scale(1,1);}'
-            . "\n\t"
-            . '50% {-webkit-transform: scale(1.2,1.2);}'
-            . "\n\t"
-            . '100% {-webkit-transform: scale(1,1);}}';
-        self::assertSame($expected, $document->render());
-    }
-
-    /**
-     * @test
-     */
     public function lineNameFailure(): void
     {
         $this->expectException(UnexpectedTokenException::class);
