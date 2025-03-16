@@ -249,7 +249,7 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @param array<int<0, max>, Comment> $comments
+     * @param list<Comment> $comments
      */
     public function addComments(array $comments): void
     {
