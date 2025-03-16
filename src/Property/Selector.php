@@ -37,13 +37,13 @@ class Selector implements Renderable
     private $selector;
 
     /**
-     * @return bool
-     *
      * @internal since V8.8.0
      */
-    public static function isValid(string $selector)
+    public static function isValid(string $selector): bool
     {
-        return \preg_match(static::SELECTOR_VALIDATION_RX, $selector);
+        $numberOfMatches = \preg_match(self::SELECTOR_VALIDATION_RX, $selector);
+
+        return $numberOfMatches === 1;
     }
 
     public function __construct(string $selector)
