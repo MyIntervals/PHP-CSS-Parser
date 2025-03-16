@@ -63,10 +63,7 @@ class Charset implements AtRule
         $this->charset = $charset;
     }
 
-    /**
-     * @return string
-     */
-    public function getCharset()
+    public function getCharset(): string
     {
         return $this->charset->getString();
     }
@@ -92,10 +89,7 @@ class Charset implements AtRule
         return 'charset';
     }
 
-    /**
-     * @return string
-     */
-    public function atRuleArgs()
+    public function atRuleArgs(): CSSString
     {
         return $this->charset;
     }

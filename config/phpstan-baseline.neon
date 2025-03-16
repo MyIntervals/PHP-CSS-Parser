@@ -55,12 +55,6 @@ parameters:
 			path: ../src/Property/CSSNamespace.php
 
 		-
-			message: '#^Method Sabberworm\\CSS\\Property\\Charset\:\:atRuleArgs\(\) should return string but returns Sabberworm\\CSS\\Value\\CSSString\.$#'
-			identifier: return.type
-			count: 1
-			path: ../src/Property/Charset.php
-
-		-
 			message: '#^Only booleans are allowed in an if condition, Sabberworm\\CSS\\Value\\RuleValueList\|string\|null given\.$#'
 			identifier: if.condNotBoolean
 			count: 1
