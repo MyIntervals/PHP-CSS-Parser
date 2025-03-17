@@ -41,7 +41,7 @@ abstract class CSSList implements Renderable, Commentable
     protected $comments = [];
 
     /**
-     * @var array<int, RuleSet|CSSList|Import|Charset>
+     * @var array<int<0, max>, RuleSet|CSSList|Import|Charset>
      *
      * @internal since 8.8.0
      */
@@ -283,11 +283,9 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Splices the list of contents.
      *
-     * @param int $offset
-     * @param int $length
      * @param array<int, RuleSet|CSSList|Import|Charset> $replacement
      */
-    public function splice($offset, $length = null, $replacement = null): void
+    public function splice(int $offset, ?int $length = null, ?array $replacement = null): void
     {
         \array_splice($this->contents, $offset, $length, $replacement);
     }
@@ -317,13 +315,14 @@ abstract class CSSList implements Renderable, Commentable
      *
      * @return bool whether the item was removed
      */
-    public function remove($itemToRemove)
+    public function remove($itemToRemove): bool
     {
         $key = \array_search($itemToRemove, $this->contents, true);
         if ($key !== false) {
             unset($this->contents[$key]);
             return true;
         }
+
         return false;
     }
 
@@ -333,10 +332,9 @@ abstract class CSSList implements Renderable, Commentable
      * @param RuleSet|Import|Charset|CSSList $oldItem
      *        May be a `RuleSet` (most likely a `DeclarationBlock`), an `Import`, a `Charset`
      *        or another `CSSList` (most likely a `MediaQuery`)
-     *
-     * @return bool
+     * @param RuleSet|Import|Charset|CSSList|array<RuleSet|Import|Charset|CSSList> $newItem
      */
-    public function replace($oldItem, $newItem)
+    public function replace($oldItem, $newItem): bool
     {
         $key = \array_search($oldItem, $this->contents, true);
         if ($key !== false) {
@@ -347,6 +345,7 @@ abstract class CSSList implements Renderable, Commentable
             }
             return true;
         }
+
         return false;
     }
 
@@ -364,10 +363,10 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Removes a declaration block from the CSS list if it matches all given selectors.
      *
-     * @param DeclarationBlock|array<array-key, Selector>|string $selectors the selectors to match
+     * @param DeclarationBlock|array<Selector>|string $selectors the selectors to match
      * @param bool $removeAll whether to stop at the first declaration block found or remove all blocks
      */
-    public function removeDeclarationBlockBySelector($selectors, $removeAll = false): void
+    public function removeDeclarationBlockBySelector($selectors, bool $removeAll = false): void
     {
         if ($selectors instanceof DeclarationBlock) {
             $selectors = $selectors->getSelectors();
@@ -436,17 +435,15 @@ abstract class CSSList implements Renderable, Commentable
 
     /**
      * Return true if the list can not be further outdented. Only important when rendering.
-     *
-     * @return bool
      */
-    abstract public function isRootList();
+    abstract public function isRootList(): bool;
 
     /**
      * Returns the stored items.
      *
-     * @return array<int, RuleSet|Import|Charset|CSSList>
+     * @return array<int<0, max>, RuleSet|Import|Charset|CSSList>
      */
-    public function getContents()
+    public function getContents(): array
     {
         return $this->contents;
     }
