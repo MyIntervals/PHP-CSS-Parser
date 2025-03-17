@@ -151,14 +151,13 @@ abstract class RuleSet implements Renderable, Commentable
      *        as well as one matching the pattern with the dash excluded.
      *        Passing a `Rule` behaves like calling `getRules($rule->getRule())`.
      *
-     * @return array<int, Rule>
+     * @return array<int<0, max>, Rule>
      */
-    public function getRules($searchPattern = null)
+    public function getRules($searchPattern = null): array
     {
         if ($searchPattern instanceof Rule) {
             $searchPattern = $searchPattern->getRule();
         }
-        /** @var array<int, Rule> $result */
         $result = [];
         foreach ($this->rules as $propertyName => $rules) {
             // Either no search rule is given or the search rule matches the found rule exactly
@@ -187,7 +186,7 @@ abstract class RuleSet implements Renderable, Commentable
     /**
      * Overrides all the rules of this set.
      *
-     * @param array<array-key, Rule> $rules The rules to override with.
+     * @param array<Rule> $rules The rules to override with.
      */
     public function setRules(array $rules): void
     {
@@ -212,13 +211,14 @@ abstract class RuleSet implements Renderable, Commentable
      *
      * @return array<string, Rule>
      */
-    public function getRulesAssoc($searchPattern = null)
+    public function getRulesAssoc($searchPattern = null): array
     {
         /** @var array<string, Rule> $result */
         $result = [];
         foreach ($this->getRules($searchPattern) as $rule) {
             $result[$rule->getRule()] = $rule;
         }
+
         return $result;
     }
 
