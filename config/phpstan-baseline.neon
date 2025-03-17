@@ -7,12 +7,6 @@ parameters:
 			path: ../src/CSSList/AtRuleBlockList.php
 
 		-
-			message: '#^Parameter &\$result by\-ref type of method Sabberworm\\CSS\\CSSList\\CSSBlockList\:\:allValues\(\) expects array\<int, Sabberworm\\CSS\\Value\\Value\>, array\<int, Sabberworm\\CSS\\CSSList\\CSSList\|Sabberworm\\CSS\\Value\\Value\> given\.$#'
-			identifier: parameterByRef.type
-			count: 1
-			path: ../src/CSSList/CSSBlockList.php
-
-		-
 			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
 			identifier: notEqual.notAllowed
 			count: 1

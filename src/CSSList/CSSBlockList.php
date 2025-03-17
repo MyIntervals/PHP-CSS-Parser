@@ -41,7 +41,7 @@ abstract class CSSBlockList extends CSSList
     }
 
     /**
-     * @param array<int, DeclarationBlock> $result
+     * @param list<DeclarationBlock> $result
      */
     protected function allDeclarationBlocks(array &$result): void
     {
@@ -76,15 +76,13 @@ abstract class CSSBlockList extends CSSList
 
     /**
      * @param CSSList|Rule|RuleSet|Value $element
-     * @param array<int, Value> $result
-     * @param string|null $searchString
-     * @param bool $searchInFunctionArguments
+     * @param list<Value> $result
      */
     protected function allValues(
         $element,
         array &$result,
-        $searchString = null,
-        $searchInFunctionArguments = false
+        ?string $searchString = null,
+        bool $searchInFunctionArguments = false
     ): void {
         if ($element instanceof CSSBlockList) {
             foreach ($element->getContents() as $content) {
@@ -102,19 +100,16 @@ abstract class CSSBlockList extends CSSList
                     $this->allValues($component, $result, $searchString, $searchInFunctionArguments);
                 }
             }
-        } else {
-            // Non-List `Value` or `CSSString` (CSS identifier)
+        } elseif ($element instanceof Value) {
             $result[] = $element;
         }
     }
 
     /**
-     * @param array<int, Selector> $result
-     * @param string|null $specificitySearch
+     * @param list<Selector> $result
      */
-    protected function allSelectors(array &$result, $specificitySearch = null): void
+    protected function allSelectors(array &$result, ?string $specificitySearch = null): void
     {
-        /** @var array<int, DeclarationBlock> $declarationBlocks */
         $declarationBlocks = [];
         $this->allDeclarationBlocks($declarationBlocks);
         foreach ($declarationBlocks as $declarationBlock) {
