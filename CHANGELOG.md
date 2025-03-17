@@ -34,7 +34,7 @@ Please also have a look at our
 - Use more native type declarations and strict mode
   (#641, #772, #774, #778, #804, #841, #873, #875, #891, #922, #923, #933, #958,
   #964, #967, #1000, #1044, #1134, #1136, #1137, #1139, #1140, #1141, #1145,
-  #1162, #1163, #1166, #1172, #1174, #1178, #1179, #1181)
+  #1162, #1163, #1166, #1172, #1174, #1178, #1179, #1181, #1184)
 - Add visibility to all class/interface constants (#469)
 
 ### Deprecated
