@@ -100,10 +100,8 @@ abstract class CSSBlockList extends CSSList
                     $this->allValues($component, $result, $searchString, $searchInFunctionArguments);
                 }
             }
-        } else {
-            if ($element instanceof Value) {
-                $result[] = $element;
-            }
+        } elseif ($element instanceof Value) {
+            $result[] = $element;
         }
     }
 
@@ -146,7 +144,7 @@ abstract class CSSBlockList extends CSSList
                             $comparatorMatched = $selectorSpecificity === $targetSpecificity;
                             break;
                     }
-                    if ($comparatorMatched && $selector instanceof Selector) {
+                    if ($comparatorMatched) {
                         $result[] = $selector;
                     }
                 }
