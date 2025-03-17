@@ -25,7 +25,7 @@ use Sabberworm\CSS\Property\Selector;
 class DeclarationBlock extends RuleSet
 {
     /**
-     * @var array<int, Selector|string>
+     * @var array<Selector|string>
      */
     private $selectors = [];
 
@@ -76,7 +76,7 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * @param array<int, Selector|string>|string $selectors
+     * @param array<Selector|string>|string $selectors
      * @param CSSList|null $list
      *
      * @throws UnexpectedTokenException
@@ -133,9 +133,9 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
-     * @return array<int, Selector|string>
+     * @return array<Selector>
      */
-    public function getSelectors()
+    public function getSelectors(): array
     {
         return $this->selectors;
     }
