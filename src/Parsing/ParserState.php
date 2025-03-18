@@ -107,6 +107,8 @@ class ParserState
     }
 
     /**
+     * @return non-empty-string
+     *
      * @throws UnexpectedTokenException
      */
     public function parseIdentifier(bool $ignoreCase = true): string
