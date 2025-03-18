@@ -11,16 +11,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Settings;
 
 /**
- * @covers \Sabberworm\CSS\CSSList\Document
- * @covers \Sabberworm\CSS\Parser
- * @covers \Sabberworm\CSS\RuleSet\DeclarationBlock
- * @covers \Sabberworm\CSS\Rule\Rule
- * @covers \Sabberworm\CSS\Value\CSSString
- * @covers \Sabberworm\CSS\Value\CalcFunction
- * @covers \Sabberworm\CSS\Value\Color
- * @covers \Sabberworm\CSS\Value\LineName
- * @covers \Sabberworm\CSS\Value\Size
- * @covers \Sabberworm\CSS\Value\URL
+ * @coversNothing
  */
 final class LenientParsingTest extends TestCase
 {

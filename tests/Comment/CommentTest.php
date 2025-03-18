@@ -9,9 +9,7 @@ use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Tests\ParserTest as TestsParserTest;
 
 /**
- * @covers \Sabberworm\CSS\Comment\Comment
- * @covers \Sabberworm\CSS\OutputFormat
- * @covers \Sabberworm\CSS\OutputFormatter
+ * @coversNothing
  */
 final class CommentTest extends TestCase
 {

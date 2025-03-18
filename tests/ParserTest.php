@@ -28,17 +28,7 @@ use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\ValueList;
 
 /**
- * @covers \Sabberworm\CSS\CSSList\Document
  * @covers \Sabberworm\CSS\Parser
- * @covers \Sabberworm\CSS\RuleSet\DeclarationBlock
- * @covers \Sabberworm\CSS\Rule\Rule
- * @covers \Sabberworm\CSS\Value\CSSString
- * @covers \Sabberworm\CSS\Value\CalcFunction
- * @covers \Sabberworm\CSS\Value\Color
- * @covers \Sabberworm\CSS\Value\LineName
- * @covers \Sabberworm\CSS\Value\Size
- * @covers \Sabberworm\CSS\Value\URL
- * @covers \Sabberworm\CSS\Value\Value
  */
 final class ParserTest extends TestCase
 {

@@ -10,6 +10,8 @@ use Sabberworm\CSS\Settings;
 
 /**
  * @covers \Sabberworm\CSS\CSSList\AtRuleBlockList
+ * @covers \Sabberworm\CSS\CSSList\CSSBlockList
+ * @covers \Sabberworm\CSS\CSSList\CSSList
  */
 final class AtRuleBlockListTest extends TestCase
 {
