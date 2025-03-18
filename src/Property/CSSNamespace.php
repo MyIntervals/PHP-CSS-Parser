@@ -20,7 +20,7 @@ class CSSNamespace implements AtRule
     private $url;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $prefix;
 
@@ -96,12 +96,12 @@ class CSSNamespace implements AtRule
     }
 
     /**
-     * @return array{0: CSSString|URL|string, 1?: CSSString|URL}
+     * @return array{0: CSSString|URL|non-empty-string, 1?: CSSString|URL}
      */
     public function atRuleArgs(): array
     {
         $result = [$this->url];
-        if ($this->prefix !== '') {
+        if (\is_string($this->prefix) && $this->prefix !== '') {
             \array_unshift($result, $this->prefix);
         }
         return $result;
