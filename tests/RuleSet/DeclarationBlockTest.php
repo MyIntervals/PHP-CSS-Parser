@@ -13,6 +13,7 @@ use Sabberworm\CSS\Value\Size;
 
 /**
  * @covers \Sabberworm\CSS\RuleSet\DeclarationBlock
+ * @covers \Sabberworm\CSS\RuleSet\RuleSet
  */
 final class DeclarationBlockTest extends TestCase
 {

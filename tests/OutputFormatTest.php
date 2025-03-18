@@ -11,7 +11,7 @@ use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Parsing\OutputException;
 
 /**
- * @covers \Sabberworm\CSS\OutputFormat
+ * @coversNothing
  */
 final class OutputFormatTest extends TestCase
 {
