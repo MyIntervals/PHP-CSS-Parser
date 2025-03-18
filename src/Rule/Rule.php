@@ -22,7 +22,7 @@ use Sabberworm\CSS\Value\Value;
 class Rule implements Renderable, Commentable
 {
     /**
-     * @var string
+     * @var non-empty-string
      */
     private $rule;
 
@@ -42,7 +42,7 @@ class Rule implements Renderable, Commentable
     protected $lineNumber;
 
     /**
-     * @var int
+     * @var int<0, max>
      *
      * @internal since 8.8.0
      */
@@ -56,11 +56,11 @@ class Rule implements Renderable, Commentable
     protected $comments = [];
 
     /**
-     * @param string $rule
+     * @param non-empty-string $rule
      * @param int<0, max> $lineNumber
-     * @param int $columnNumber
+     * @param int<0, max> $columnNumber
      */
-    public function __construct($rule, int $lineNumber = 0, $columnNumber = 0)
+    public function __construct(string $rule, int $lineNumber = 0, int $columnNumber = 0)
     {
         $this->rule = $rule;
         $this->lineNumber = $lineNumber;
@@ -108,11 +108,11 @@ class Rule implements Renderable, Commentable
      * The first item is the innermost separator (or, put another way, the highest-precedence operator).
      * The sequence continues to the outermost separator (or lowest-precedence operator).
      *
-     * @param string $rule
+     * @param non-empty-string $rule
      *
      * @return list<non-empty-string>
      */
-    private static function listDelimiterForRule($rule): array
+    private static function listDelimiterForRule(string $rule): array
     {
         if (\preg_match('/^font($|-)/', $rule)) {
             return [',', '/', ' '];
@@ -135,35 +135,35 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @return int
+     * @return int<0, max>
      */
-    public function getColNo()
+    public function getColNo(): int
     {
         return $this->columnNumber;
     }
 
     /**
      * @param int<0, max> $lineNumber
-     * @param int $columnNumber
+     * @param int<0, max> $columnNumber
      */
-    public function setPosition(int $lineNumber, $columnNumber): void
+    public function setPosition(int $lineNumber, int $columnNumber): void
     {
         $this->columnNumber = $columnNumber;
         $this->lineNumber = $lineNumber;
     }
 
     /**
-     * @param string $rule
+     * @param non-empty-string $rule
      */
-    public function setRule($rule): void
+    public function setRule(string $rule): void
     {
         $this->rule = $rule;
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
-    public function getRule()
+    public function getRule(): string
     {
         return $this->rule;
     }
@@ -189,9 +189,8 @@ class Rule implements Renderable, Commentable
      * Otherwise, the existing value will be wrapped by one.
      *
      * @param RuleValueList|array<int, RuleValueList> $value
-     * @param string $type
      */
-    public function addValue($value, $type = ' '): void
+    public function addValue($value, string $type = ' '): void
     {
         if (!\is_array($value)) {
             $value = [$value];
@@ -208,22 +207,19 @@ class Rule implements Renderable, Commentable
         }
     }
 
-    /**
-     * @param bool $isImportant
-     */
-    public function setIsImportant($isImportant): void
+    public function setIsImportant(bool $isImportant): void
     {
         $this->isImportant = $isImportant;
     }
 
-    /**
-     * @return bool
-     */
-    public function getIsImportant()
+    public function getIsImportant(): bool
     {
         return $this->isImportant;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function render(OutputFormat $outputFormat): string
     {
         $formatter = $outputFormat->getFormatter();
