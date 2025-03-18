@@ -120,6 +120,8 @@ class CSSNamespace implements AtRule
 
     /**
      * @return array<int, string>
+     *
+     * @deprecated since V8.8.0, will be removed in version 9.0.0. Use the specific getters instead.
      */
     public function atRuleArgs()
     {

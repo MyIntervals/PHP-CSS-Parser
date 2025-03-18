@@ -103,6 +103,8 @@ class Charset implements AtRule
 
     /**
      * @return string
+     *
+     * @deprecated since V8.8.0, will be removed in version 9.0.0. Use the specific getter instead.
      */
     public function atRuleArgs()
     {

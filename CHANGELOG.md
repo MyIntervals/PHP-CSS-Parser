@@ -20,6 +20,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Deprecated
 
+- Deprecate `::atRuleArgs()` (#1191)
 - Deprecate extending `OutputFormat` (#1131)
 - Deprecate `OutputFormat::get()` and `::set()` (#1107)
 - Deprecate support for `-webkit-calc` and `-moz-calc` (#1086)
