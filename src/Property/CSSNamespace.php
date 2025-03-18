@@ -6,6 +6,8 @@ namespace Sabberworm\CSS\Property;
 
 use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Value\CSSString;
+use Sabberworm\CSS\Value\URL;
 
 /**
  * `CSSNamespace` represents an `@namespace` rule.
@@ -13,7 +15,7 @@ use Sabberworm\CSS\OutputFormat;
 class CSSNamespace implements AtRule
 {
     /**
-     * @var string
+     * @var CSSString|URL
      */
     private $url;
 
@@ -35,11 +37,10 @@ class CSSNamespace implements AtRule
     protected $comments = [];
 
     /**
-     * @param string $url
-     * @param string|null $prefix
+     * @param CSSString|URL $url
      * @param int<0, max> $lineNumber
      */
-    public function __construct($url, $prefix = null, int $lineNumber = 0)
+    public function __construct($url, ?string $prefix = null, int $lineNumber = 0)
     {
         $this->url = $url;
         $this->prefix = $prefix;
@@ -61,33 +62,27 @@ class CSSNamespace implements AtRule
     }
 
     /**
-     * @return string
+     * @return CSSString|URL
      */
     public function getUrl()
     {
         return $this->url;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPrefix()
+    public function getPrefix(): ?string
     {
         return $this->prefix;
     }
 
     /**
-     * @param string $url
+     * @param CSSString|URL $url
      */
     public function setUrl($url): void
     {
         $this->url = $url;
     }
 
-    /**
-     * @param string $prefix
-     */
-    public function setPrefix($prefix): void
+    public function setPrefix(string $prefix): void
     {
         $this->prefix = $prefix;
     }
@@ -101,12 +96,12 @@ class CSSNamespace implements AtRule
     }
 
     /**
-     * @return array<int, string>
+     * @return array{0: CSSString|URL|string, 1?: CSSString|URL}
      */
     public function atRuleArgs(): array
     {
         $result = [$this->url];
-        if ($this->prefix) {
+        if ($this->prefix !== '') {
             \array_unshift($result, $this->prefix);
         }
         return $result;

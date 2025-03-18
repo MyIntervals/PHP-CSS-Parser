@@ -31,18 +31,6 @@ parameters:
 			path: ../src/CSSList/Document.php
 
 		-
-			message: '#^Cannot call method render\(\) on string\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: ../src/Property/CSSNamespace.php
-
-		-
-			message: '#^Only booleans are allowed in an if condition, string given\.$#'
-			identifier: if.condNotBoolean
-			count: 1
-			path: ../src/Property/CSSNamespace.php
-
-		-
 			message: '#^Only booleans are allowed in an if condition, Sabberworm\\CSS\\Value\\RuleValueList\|string\|null given\.$#'
 			identifier: if.condNotBoolean
 			count: 1
