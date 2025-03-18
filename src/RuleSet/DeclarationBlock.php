@@ -30,8 +30,6 @@ class DeclarationBlock extends RuleSet
     private $selectors = [];
 
     /**
-     * @param CSSList|null $list
-     *
      * @return DeclarationBlock|false
      *
      * @throws UnexpectedTokenException
@@ -39,7 +37,7 @@ class DeclarationBlock extends RuleSet
      *
      * @internal since V8.8.0
      */
-    public static function parse(ParserState $parserState, $list = null)
+    public static function parse(ParserState $parserState, ?CSSList $list = null)
     {
         $comments = [];
         $result = new DeclarationBlock($parserState->currentLine());
@@ -77,11 +75,10 @@ class DeclarationBlock extends RuleSet
 
     /**
      * @param array<Selector|string>|string $selectors
-     * @param CSSList|null $list
      *
      * @throws UnexpectedTokenException
      */
-    public function setSelectors($selectors, $list = null): void
+    public function setSelectors($selectors, ?CSSList $list = null): void
     {
         if (\is_array($selectors)) {
             $this->selectors = $selectors;
