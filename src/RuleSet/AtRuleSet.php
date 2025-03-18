@@ -27,10 +27,9 @@ class AtRuleSet extends RuleSet implements AtRule
 
     /**
      * @param non-empty-string $type
-     * @param string $arguments
      * @param int<0, max> $lineNumber
      */
-    public function __construct($type, $arguments = '', int $lineNumber = 0)
+    public function __construct(string $type, string $arguments = '', int $lineNumber = 0)
     {
         parent::__construct($lineNumber);
         $this->type = $type;
@@ -45,10 +44,7 @@ class AtRuleSet extends RuleSet implements AtRule
         return $this->type;
     }
 
-    /**
-     * @return string
-     */
-    public function atRuleArgs()
+    public function atRuleArgs(): string
     {
         return $this->arguments;
     }
@@ -58,7 +54,7 @@ class AtRuleSet extends RuleSet implements AtRule
         $formatter = $outputFormat->getFormatter();
         $result = $formatter->comments($this);
         $arguments = $this->arguments;
-        if ($arguments) {
+        if ($arguments !== '') {
             $arguments = ' ' . $arguments;
         }
         $result .= "@{$this->type}$arguments{$formatter->spaceBeforeOpeningBrace()}{";
