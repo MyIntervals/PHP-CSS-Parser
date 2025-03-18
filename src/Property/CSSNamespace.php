@@ -116,6 +116,8 @@ class CSSNamespace implements AtRule, Positionable
 
     /**
      * @return array<int, string>
+     *
+     * @deprecated since V8.9.0, will be removed in version 9.0.0. Use the specific getters instead.
      */
     public function atRuleArgs()
     {
