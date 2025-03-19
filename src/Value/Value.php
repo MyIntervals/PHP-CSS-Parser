@@ -32,7 +32,7 @@ abstract class Value implements Renderable
     }
 
     /**
-     * @param array<array-key, string> $listDelimiters
+     * @param array<non-empty-string> $listDelimiters
      *
      * @return Value|string
      *
@@ -43,7 +43,7 @@ abstract class Value implements Renderable
      */
     public static function parseValue(ParserState $parserState, array $listDelimiters = [])
     {
-        /** @var array<int, Value|string> $stack */
+        /** @var list<Value|string> $stack */
         $stack = [];
         $parserState->consumeWhiteSpace();
         //Build a list of delimiters and parsed values

@@ -17,19 +17,19 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 class CSSFunction extends ValueList
 {
     /**
-     * @var string
+     * @var non-empty-string
      *
      * @internal since 8.8.0
      */
     protected $name;
 
     /**
-     * @param string $name
-     * @param RuleValueList|array<array-key, Value|string> $arguments
-     * @param string $separator
+     * @param non-empty-string $name
+     * @param RuleValueList|array<Value|string> $arguments
+     * @param non-empty-string $separator
      * @param int<0, max> $lineNumber
      */
-    public function __construct($name, $arguments, $separator = ',', int $lineNumber = 0)
+    public function __construct(string $name, $arguments, string $separator = ',', int $lineNumber = 0)
     {
         if ($arguments instanceof RuleValueList) {
             $separator = $arguments->getListSeparator();
@@ -82,25 +82,25 @@ class CSSFunction extends ValueList
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param non-empty-string $name
      */
-    public function setName($name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * @return array<array-key, Value|string>
+     * @return array<Value|string>
      */
-    public function getArguments()
+    public function getArguments(): array
     {
         return $this->components;
     }
