@@ -8,7 +8,7 @@ parameters:
 
   phpVersion: 70200
 
-  level: 3
+  level: 4
 
   paths:
     - %currentWorkingDirectory%/bin/
@@ -21,3 +21,8 @@ parameters:
     null_over_false: true
     narrow_param: true
     narrow_return: true
+
+  ignoreErrors:
+    -
+      message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) .* will always evaluate to#'
+      path: '../tests/'
