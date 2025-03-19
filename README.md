@@ -720,7 +720,6 @@ classDiagram
     class Comment {
     }
 
-    RuleSet <|-- DeclarationBlock: inheritance
     Renderable <|-- CSSListItem: inheritance
     Commentable <|-- CSSListItem: inheritance
     Positionable <|.. RuleSet: realization
@@ -752,6 +751,8 @@ classDiagram
     AtRule <|.. KeyFrame: realization
     CSSBlockList <|-- AtRuleBlockList: inheritance
     AtRule <|.. AtRuleBlockList: realization
+    Positionable <|.. DeclarationBlock: realization
+    CSSListItem <|.. DeclarationBlock: realization
     CSSFunction <|-- Color: inheritance
     PrimitiveValue <|-- URL: inheritance
     RuleValueList <|-- CalcRuleValueList: inheritance
@@ -781,6 +782,7 @@ classDiagram
     Charset --> "*" Comment : comments
     Charset --> "1" CSSString : charset
     DeclarationBlock --> "*" Selector : selectors
+    DeclarationBlock --> "*" RuleSet : ruleSet
     Import --> "*" Comment : comments
     OutputFormat --> "1" OutputFormat : nextLevelFormat
     OutputFormat --> "1" OutputFormatter : outputFormatter
