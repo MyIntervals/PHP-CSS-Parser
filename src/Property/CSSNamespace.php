@@ -55,6 +55,9 @@ class CSSNamespace implements AtRule
         return $this->lineNumber;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function render(OutputFormat $outputFormat): string
     {
         return '@namespace ' . ($this->prefix === null ? '' : $this->prefix . ' ')

@@ -46,6 +46,9 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
         return $this->arguments;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function render(OutputFormat $outputFormat): string
     {
         $formatter = $outputFormat->getFormatter();

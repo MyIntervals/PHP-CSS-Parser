@@ -50,6 +50,9 @@ class Comment implements Renderable
         $this->commentText = $commentText;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function render(OutputFormat $outputFormat): string
     {
         return '/*' . $this->commentText . '*/';

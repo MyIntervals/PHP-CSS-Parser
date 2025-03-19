@@ -195,6 +195,9 @@ class Size extends PrimitiveValue
         return false;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function render(OutputFormat $outputFormat): string
     {
         $locale = \localeconv();

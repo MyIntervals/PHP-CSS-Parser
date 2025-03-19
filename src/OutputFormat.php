@@ -9,7 +9,7 @@ final class OutputFormat
     /**
      * Value format: `"` means double-quote, `'` means single-quote
      *
-     * @var string
+     * @var non-empty-string
      */
     private $stringQuotingType = '"';
 
@@ -181,6 +181,8 @@ final class OutputFormat
     private $indentationLevel = 0;
 
     /**
+     * @return non-empty-string
+     *
      * @internal
      */
     public function getStringQuotingType(): string
@@ -189,6 +191,8 @@ final class OutputFormat
     }
 
     /**
+     * @param non-empty-string $quotingType
+     *
      * @return $this fluent interface
      */
     public function setStringQuotingType(string $quotingType): self

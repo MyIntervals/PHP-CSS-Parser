@@ -73,6 +73,9 @@ class URL extends PrimitiveValue
         return $this->url;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function render(OutputFormat $outputFormat): string
     {
         return "url({$this->url->render($outputFormat)})";

@@ -105,6 +105,9 @@ class CSSFunction extends ValueList
         return $this->components;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function render(OutputFormat $outputFormat): string
     {
         $arguments = parent::render($outputFormat);
