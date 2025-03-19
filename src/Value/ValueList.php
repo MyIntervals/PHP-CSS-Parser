@@ -22,7 +22,7 @@ abstract class ValueList extends Value
     protected $components;
 
     /**
-     * @var string
+     * @var non-empty-string
      *
      * @internal since 8.8.0
      */
@@ -30,7 +30,7 @@ abstract class ValueList extends Value
 
     /**
      * @param array<Value|string>|Value|string $components
-     * @param string $separator
+     * @param non-empty-string $separator
      * @param int<0, max> $lineNumber
      */
     public function __construct($components = [], $separator = ',', int $lineNumber = 0)
@@ -67,11 +67,17 @@ abstract class ValueList extends Value
         $this->components = $components;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getListSeparator(): string
     {
         return $this->separator;
     }
 
+    /**
+     * @param non-empty-string $separator
+     */
     public function setListSeparator(string $separator): void
     {
         $this->separator = $separator;
