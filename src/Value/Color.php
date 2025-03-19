@@ -16,7 +16,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 class Color extends CSSFunction
 {
     /**
-     * @param array<array-key, Value|string> $colorValues
+     * @param array<non-empty-string, Value|string> $colorValues
      * @param int<0, max> $lineNumber
      */
     public function __construct(array $colorValues, int $lineNumber = 0)
@@ -32,17 +32,16 @@ class Color extends CSSFunction
      */
     public static function parse(ParserState $parserState, bool $ignoreCase = false): CSSFunction
     {
-        return
-            $parserState->comes('#')
-                ? self::parseHexColor($parserState)
-                : self::parseColorFunction($parserState);
+        return $parserState->comes('#')
+            ? self::parseHexColor($parserState)
+            : self::parseColorFunction($parserState);
     }
 
     /**
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    private static function parseHexColor(ParserState $parserState): CSSFunction
+    private static function parseHexColor(ParserState $parserState): Color
     {
         $parserState->consume('#');
         $hexValue = $parserState->parseIdentifier(false);
@@ -183,10 +182,9 @@ class Color extends CSSFunction
         }
         $parserState->consume(')');
 
-        return
-            $containsVar
-                ? new CSSFunction($colorMode, \array_values($colorValues), ',', $parserState->currentLine())
-                : new Color($colorValues, $parserState->currentLine());
+        return $containsVar
+            ? new CSSFunction($colorMode, \array_values($colorValues), ',', $parserState->currentLine())
+            : new Color($colorValues, $parserState->currentLine());
     }
 
     private static function mapRange(float $value, float $fromMin, float $fromMax, float $toMin, float $toMax): float
@@ -196,19 +194,20 @@ class Color extends CSSFunction
         $multiplier = $toRange / $fromRange;
         $newValue = $value - $fromMin;
         $newValue *= $multiplier;
+
         return $newValue + $toMin;
     }
 
     /**
-     * @return array<array-key, Value|string>
+     * @return array<non-empty-string, Value|string>
      */
-    public function getColor()
+    public function getColor(): array
     {
         return $this->components;
     }
 
     /**
-     * @param array<array-key, Value|string> $colorValues
+     * @param array<non-empty-string, Value|string> $colorValues
      */
     public function setColor(array $colorValues): void
     {

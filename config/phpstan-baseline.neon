@@ -91,12 +91,6 @@ parameters:
 			path: ../src/Value/Color.php
 
 		-
-			message: '#^Provide more specific return type "Sabberworm\\CSS\\Value\\Color" over abstract one$#'
-			identifier: typePerfect.narrowReturnObjectType
-			count: 1
-			path: ../src/Value/Color.php
-
-		-
 			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
 			identifier: notEqual.notAllowed
 			count: 1
