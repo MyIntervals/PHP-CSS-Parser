@@ -65,6 +65,9 @@ class Import implements AtRule
         return $this->location;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function render(OutputFormat $outputFormat): string
     {
         return $outputFormat->getFormatter()->comments($this) . '@import ' . $this->location->render($outputFormat)

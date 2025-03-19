@@ -224,6 +224,9 @@ class Color extends CSSFunction
         return $this->getName();
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function render(OutputFormat $outputFormat): string
     {
         if ($this->shouldRenderAsHex($outputFormat)) {

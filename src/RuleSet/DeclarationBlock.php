@@ -138,6 +138,8 @@ class DeclarationBlock extends RuleSet
     }
 
     /**
+     * @return non-empty-string
+     *
      * @throws OutputException
      */
     public function render(OutputFormat $outputFormat): string

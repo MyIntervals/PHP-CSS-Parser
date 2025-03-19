@@ -49,6 +49,9 @@ class LineName extends ValueList
         return new LineName($names, $parserState->currentLine());
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function render(OutputFormat $outputFormat): string
     {
         return '[' . parent::render(OutputFormat::createCompact()) . ']';

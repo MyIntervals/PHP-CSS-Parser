@@ -51,6 +51,9 @@ class KeyFrame extends CSSList implements AtRule
         return $this->animationName;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function render(OutputFormat $outputFormat): string
     {
         $formatter = $outputFormat->getFormatter();

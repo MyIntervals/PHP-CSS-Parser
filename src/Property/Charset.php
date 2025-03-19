@@ -68,6 +68,9 @@ class Charset implements AtRule
         return $this->charset->getString();
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function render(OutputFormat $outputFormat): string
     {
         return "{$outputFormat->getFormatter()->comments($this)}@charset {$this->charset->render($outputFormat)};";

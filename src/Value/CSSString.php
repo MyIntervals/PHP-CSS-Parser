@@ -83,6 +83,9 @@ class CSSString extends PrimitiveValue
         return $this->string;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function render(OutputFormat $outputFormat): string
     {
         $string = \addslashes($this->string);
