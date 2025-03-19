@@ -7,6 +7,12 @@ parameters:
 			path: ../src/CSSList/AtRuleBlockList.php
 
 		-
+			message: '#^Call to function is_string\(\) with Sabberworm\\CSS\\Parsing\\ParserState will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: ../src/CSSList/CSSList.php
+
+		-
 			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
 			identifier: notEqual.notAllowed
 			count: 1
@@ -35,6 +41,18 @@ parameters:
 			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
 			path: ../src/CSSList/Document.php
+
+		-
+			message: '#^Call to function in_array\(\) with arguments null, list\<string\> and true will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: ../src/Parsing/ParserState.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../src/Parsing/ParserState.php
 
 		-
 			message: '#^Only booleans are allowed in an if condition, Sabberworm\\CSS\\Value\\RuleValueList\|string\|null given\.$#'
@@ -77,3 +95,15 @@ parameters:
 			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
 			path: ../src/Value/Size.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between non\-empty\-string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: ../src/Value/Size.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with ''red'' and Sabberworm\\CSS\\Value\\Value will always evaluate to false\.$#'
+			identifier: staticMethod.impossibleType
+			count: 1
+			path: ../tests/ParserTest.php
