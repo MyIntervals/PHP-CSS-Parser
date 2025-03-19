@@ -24,10 +24,9 @@ use Sabberworm\CSS\Rule\Rule;
  * If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $rule)`, `getRules()` and `removeRule($rule)`
  * (which accepts either a `Rule` or a rule name; optionally suffixed by a dash to remove all related rules).
  *
- * Note that `CSSListItem` extends both `Commentable` and `Renderable`,
- * so those interfaces must also be implemented by concrete subclasses.
+ * Note that `CSSListItem` extends both `Commentable` and `Renderable`, so those interfaces must also be implemented.
  */
-abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
+class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
 {
     use CommentContainer;
     use Position;
@@ -291,6 +290,14 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
     public function removeAllRules(): void
     {
         $this->rules = [];
+    }
+
+    /**
+     * @internal
+     */
+    public function render(OutputFormat $outputFormat): string
+    {
+        return $this->renderRules($outputFormat);
     }
 
     protected function renderRules(OutputFormat $outputFormat): string
