@@ -12,7 +12,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 class LineName extends ValueList
 {
     /**
-     * @param array<int, Value|string> $components
+     * @param array<Value|string> $components
      * @param int<0, max> $lineNumber
      */
     public function __construct(array $components = [], int $lineNumber = 0)
@@ -49,6 +49,9 @@ class LineName extends ValueList
         return new LineName($names, $parserState->currentLine());
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function render(OutputFormat $outputFormat): string
     {
         return '[' . parent::render(OutputFormat::createCompact()) . ']';
