@@ -176,7 +176,7 @@ final class OutputFormat
     private $nextLevelFormat;
 
     /**
-     * @var int
+     * @var int<0, max>
      */
     private $indentationLevel = 0;
 
@@ -643,6 +643,8 @@ final class OutputFormat
     }
 
     /**
+     * @return int<0, max>
+     *
      * @internal
      */
     public function getIndentationLevel(): int
@@ -651,6 +653,8 @@ final class OutputFormat
     }
 
     /**
+     * @param int<1, max> $numberOfTabs
+     *
      * @return $this fluent interface
      */
     public function indentWithTabs(int $numberOfTabs = 1): self
@@ -659,6 +663,8 @@ final class OutputFormat
     }
 
     /**
+     * @param int<1, max> $numberOfSpaces
+     *
      * @return $this fluent interface
      */
     public function indentWithSpaces(int $numberOfSpaces = 2): self
