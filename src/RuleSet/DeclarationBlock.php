@@ -4,30 +4,55 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\RuleSet;
 
+use Sabberworm\CSS\Comment\CommentContainer;
+use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\CSSList\CSSList;
+use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\CSSList\KeyFrame;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\OutputException;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\Position\Position;
+use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Property\KeyframeSelector;
 use Sabberworm\CSS\Property\Selector;
+use Sabberworm\CSS\Rule\Rule;
 
 /**
- * This class represents a `RuleSet` constrained by a `Selector`.
+ * This class includes a `RuleSet` constrained by a `Selector`.
  *
  * It contains an array of selector objects (comma-separated in the CSS) as well as the rules to be applied to the
  * matching elements.
  *
  * Declaration blocks usually appear directly inside a `Document` or another `CSSList` (mostly a `MediaQuery`).
+ *
+ * Note that `CSSListItem` extends both `Commentable` and `Renderable`, so those interfaces must also be implemented.
  */
-class DeclarationBlock extends RuleSet
+class DeclarationBlock implements CSSElement, CSSListItem, Positionable
 {
+    use CommentContainer;
+    use Position;
+
     /**
      * @var array<Selector|string>
      */
     private $selectors = [];
+
+    /**
+     * @var RuleSet
+     */
+    private $ruleSet;
+
+    /**
+     * @param int<0, max> $lineNumber
+     */
+    public function __construct(int $lineNumber = 0)
+    {
+        $this->setPosition($lineNumber);
+        $this->ruleSet = new RuleSet($lineNumber);
+    }
 
     /**
      * @throws UnexpectedTokenException
@@ -67,7 +92,9 @@ class DeclarationBlock extends RuleSet
             }
         }
         $result->setComments($comments);
-        RuleSet::parseRuleSet($parserState, $result);
+
+        RuleSet::parseRuleSet($parserState, $result->ruleSet);
+
         return $result;
     }
 
@@ -135,6 +162,73 @@ class DeclarationBlock extends RuleSet
         return $this->selectors;
     }
 
+    public function getRuleSet(): RuleSet
+    {
+        return $this->ruleSet;
+    }
+
+    /**
+     * @see RuleSet::addRule()
+     */
+    public function addRule(Rule $ruleToAdd, ?Rule $sibling = null): void
+    {
+        $this->ruleSet->addRule($ruleToAdd, $sibling);
+    }
+
+    /**
+     * @see RuleSet::getRules()
+     *
+     * @return array<int<0, max>, Rule>
+     */
+    public function getRules(?string $searchPattern = null): array
+    {
+        return $this->ruleSet->getRules($searchPattern);
+    }
+
+    /**
+     * @see RuleSet::setRules()
+     *
+     * @param array<Rule> $rules
+     */
+    public function setRules(array $rules): void
+    {
+        $this->ruleSet->setRules($rules);
+    }
+
+    /**
+     * @see RuleSet::getRulesAssoc()
+     *
+     * @return array<string, Rule>
+     */
+    public function getRulesAssoc(?string $searchPattern = null): array
+    {
+        return $this->ruleSet->getRulesAssoc($searchPattern);
+    }
+
+    /**
+     * @see RuleSet::removeRule()
+     */
+    public function removeRule(Rule $ruleToRemove): void
+    {
+        $this->ruleSet->removeRule($ruleToRemove);
+    }
+
+    /**
+     * @see RuleSet::removeMatchingRules()
+     */
+    public function removeMatchingRules(string $searchPattern): void
+    {
+        $this->ruleSet->removeMatchingRules($searchPattern);
+    }
+
+    /**
+     * @see RuleSet::removeAllRules()
+     */
+    public function removeAllRules(): void
+    {
+        $this->ruleSet->removeAllRules();
+    }
+
     /**
      * @return non-empty-string
      *
@@ -158,7 +252,7 @@ class DeclarationBlock extends RuleSet
         );
         $result .= $outputFormat->getContentAfterDeclarationBlockSelectors();
         $result .= $formatter->spaceBeforeOpeningBrace() . '{';
-        $result .= $this->renderRules($outputFormat);
+        $result .= $this->ruleSet->render($outputFormat);
         $result .= '}';
         $result .= $outputFormat->getContentAfterDeclarationBlock();
 
