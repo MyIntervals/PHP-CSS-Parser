@@ -15,7 +15,7 @@ class RuleValueList extends ValueList
      * @param non-empty-string $separator
      * @param int<0, max> $lineNumber
      */
-    public function __construct($separator = ',', int $lineNumber = 0)
+    public function __construct(string $separator = ',', int $lineNumber = 0)
     {
         parent::__construct([], $separator, $lineNumber);
     }
