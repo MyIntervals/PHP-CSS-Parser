@@ -753,7 +753,11 @@ classDiagram
     CSSFunction <|-- Color: inheritance
     Positionable <|.. Comment: realization
     Renderable <|.. Comment: realization
-    RuleSet <|-- DeclarationBlock: inheritance
+    CSSElement <|.. DeclarationBlock: realization
+    CSSListItem <|.. DeclarationBlock: realization
+    Positionable <|.. DeclarationBlock: realization
+    RuleContainer <|.. DeclarationBlock: realization
+    DeclarationBlock ..> RuleSet : dependency
     DeclarationBlock ..> Selector: dependency
     CSSBlockList <|-- Document: inheritance
     AtRule <|.. Import: realization

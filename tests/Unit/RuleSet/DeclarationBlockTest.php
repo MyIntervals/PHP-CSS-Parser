@@ -10,7 +10,9 @@ use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Property\Selector;
+use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
+use Sabberworm\CSS\RuleSet\RuleSet;
 use Sabberworm\CSS\Settings;
 use TRegx\PhpUnit\DataProviders\DataProvider;
 
@@ -19,6 +21,8 @@ use TRegx\PhpUnit\DataProviders\DataProvider;
  */
 final class DeclarationBlockTest extends TestCase
 {
+    use RuleContainerTest;
+
     /**
      * @var DeclarationBlock
      */
@@ -198,5 +202,54 @@ final class DeclarationBlockTest extends TestCase
             },
             $declarationBlock->getSelectors()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function getRuleSetOnVirginReturnsARuleSet(): void
+    {
+        $result = $this->subject->getRuleSet();
+
+        self::assertInstanceOf(RuleSet::class, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getRuleSetAfterRulesSetReturnsARuleSet(): void
+    {
+        $this->subject->setRules([new Rule('color')]);
+
+        $result = $this->subject->getRuleSet();
+
+        self::assertInstanceOf(RuleSet::class, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getRuleSetOnVirginReturnsObjectWithoutRules(): void
+    {
+        $result = $this->subject->getRuleSet();
+
+        self::assertSame([], $result->getRules());
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $propertyNamesToSet
+     *
+     * @dataProvider providePropertyNames
+     */
+    public function getRuleSetReturnsObjectWithRulesSet(array $propertyNamesToSet): void
+    {
+        $rules = self::createRulesFromPropertyNames($propertyNamesToSet);
+        $this->subject->setRules($rules);
+
+        $result = $this->subject->getRuleSet();
+
+        self::assertSame($rules, $result->getRules());
     }
 }
