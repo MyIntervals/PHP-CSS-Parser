@@ -9,7 +9,7 @@ final class OutputFormat
     /**
      * Value format: `"` means double-quote, `'` means single-quote
      *
-     * @var string
+     * @var non-empty-string
      */
     private $stringQuotingType = '"';
 
@@ -176,11 +176,13 @@ final class OutputFormat
     private $nextLevelFormat;
 
     /**
-     * @var int
+     * @var int<0, max>
      */
     private $indentationLevel = 0;
 
     /**
+     * @return non-empty-string
+     *
      * @internal
      */
     public function getStringQuotingType(): string
@@ -189,6 +191,8 @@ final class OutputFormat
     }
 
     /**
+     * @param non-empty-string $quotingType
+     *
      * @return $this fluent interface
      */
     public function setStringQuotingType(string $quotingType): self
@@ -639,6 +643,8 @@ final class OutputFormat
     }
 
     /**
+     * @return int<0, max>
+     *
      * @internal
      */
     public function getIndentationLevel(): int
@@ -647,6 +653,8 @@ final class OutputFormat
     }
 
     /**
+     * @param int<1, max> $numberOfTabs
+     *
      * @return $this fluent interface
      */
     public function indentWithTabs(int $numberOfTabs = 1): self
@@ -655,6 +663,8 @@ final class OutputFormat
     }
 
     /**
+     * @param int<1, max> $numberOfSpaces
+     *
      * @return $this fluent interface
      */
     public function indentWithSpaces(int $numberOfSpaces = 2): self
