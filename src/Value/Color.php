@@ -217,9 +217,9 @@ class Color extends CSSFunction
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
-    public function getColorDescription()
+    public function getColorDescription(): string
     {
         return $this->getName();
     }

@@ -15,7 +15,7 @@ use Sabberworm\CSS\OutputFormat;
 abstract class ValueList extends Value
 {
     /**
-     * @var array<array-key, Value|string>
+     * @var array<Value|string>
      *
      * @internal since 8.8.0
      */
