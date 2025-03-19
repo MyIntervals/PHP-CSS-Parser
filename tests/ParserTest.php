@@ -19,7 +19,6 @@ use Sabberworm\CSS\Property\Import;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\RuleSet\AtRuleSet;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
-use Sabberworm\CSS\RuleSet\RuleSet;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\CalcFunction;
 use Sabberworm\CSS\Value\Color;
@@ -35,7 +34,7 @@ final class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parseForOneRuleSetReturnsDocumentWithOneRuleSet(): void
+    public function parseForOneDeclarationBlockReturnsDocumentWithOneDeclarationBlock(): void
     {
         $css = '.thing { left: 10px; }';
         $parser = new Parser($css);
@@ -46,7 +45,7 @@ final class ParserTest extends TestCase
 
         $cssList = $document->getContents();
         self::assertCount(1, $cssList);
-        self::assertInstanceOf(RuleSet::class, $cssList[0]);
+        self::assertInstanceOf(DeclarationBlock::class, $cssList[0]);
     }
 
     /**
@@ -926,9 +925,9 @@ body {background-color: red;}';
     public function missingPropertyValueLenient(): void
     {
         $parsed = self::parsedStructureForFile('missing-property-value', Settings::create()->withLenientParsing(true));
-        $rulesets = $parsed->getAllRuleSets();
-        self::assertCount(1, $rulesets);
-        $block = $rulesets[0];
+        $declarationBlocks = $parsed->getAllDeclarationBlocks();
+        self::assertCount(1, $declarationBlocks);
+        $block = $declarationBlocks[0];
         self::assertInstanceOf(DeclarationBlock::class, $block);
         self::assertEquals([new Selector('div')], $block->getSelectors());
         $rules = $block->getRules();
