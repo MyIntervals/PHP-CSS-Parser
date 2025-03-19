@@ -461,14 +461,4 @@ class ParserState
 
         return $result;
     }
-
-    /**
-     * @return int<0, max>|false
-     */
-    private function strpos(string $haystack, string $needle, int $offset)
-    {
-        return $this->parserSettings->hasMultibyteSupport()
-            ? \mb_strpos($haystack, $needle, $offset, $this->charset)
-            : \strpos($haystack, $needle, $offset);
-    }
 }
