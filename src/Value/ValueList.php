@@ -29,7 +29,7 @@ abstract class ValueList extends Value
     protected $separator;
 
     /**
-     * @param array<array-key, Value|string>|Value|string $components
+     * @param array<Value|string>|Value|string $components
      * @param string $separator
      * @param int<0, max> $lineNumber
      */
@@ -52,33 +52,27 @@ abstract class ValueList extends Value
     }
 
     /**
-     * @return array<array-key, Value|string>
+     * @return array<Value|string>
      */
-    public function getListComponents()
+    public function getListComponents(): array
     {
         return $this->components;
     }
 
     /**
-     * @param array<array-key, Value|string> $components
+     * @param array<Value|string> $components
      */
     public function setListComponents(array $components): void
     {
         $this->components = $components;
     }
 
-    /**
-     * @return string
-     */
-    public function getListSeparator()
+    public function getListSeparator(): string
     {
         return $this->separator;
     }
 
-    /**
-     * @param string $separator
-     */
-    public function setListSeparator($separator): void
+    public function setListSeparator(string $separator): void
     {
         $this->separator = $separator;
     }
