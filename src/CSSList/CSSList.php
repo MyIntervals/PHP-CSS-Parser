@@ -41,7 +41,7 @@ abstract class CSSList implements Renderable, Commentable
     protected $comments = [];
 
     /**
-     * @var array<int<0, max>, RuleSet|CSSList|Import|Charset>
+     * @var array<int<0, max>, RuleSet|CSSList|DeclarationBlock|Import|Charset>
      *
      * @internal since 8.8.0
      */

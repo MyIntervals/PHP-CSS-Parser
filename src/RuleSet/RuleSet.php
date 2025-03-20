@@ -22,7 +22,7 @@ use Sabberworm\CSS\Rule\Rule;
  * If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $rule)`, `getRules()` and `removeRule($rule)`
  * (which accepts either a `Rule` or a rule name; optionally suffixed by a dash to remove all related rules).
  */
-abstract class RuleSet implements Renderable, Commentable
+class RuleSet implements Renderable, Commentable
 {
     /**
      * the rules in this rule set, using the property name as the key,
@@ -263,6 +263,14 @@ abstract class RuleSet implements Renderable, Commentable
                 }
             }
         }
+    }
+
+    /**
+     * @internal
+     */
+    public function render(OutputFormat $outputFormat): string
+    {
+        return $this->renderRules($outputFormat);
     }
 
     protected function renderRules(OutputFormat $outputFormat): string
