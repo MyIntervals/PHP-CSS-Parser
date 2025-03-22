@@ -8,6 +8,8 @@ namespace Sabberworm\CSS\Comment;
  * Provides a standard reusable implementation of `Commentable`.
  *
  * @internal
+ *
+ * @phpstan-require-implements Commentable
  */
 trait CommentContainer
 {
