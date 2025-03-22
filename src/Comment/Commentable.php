@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\Comment;
 
+/**
+ * A standard implementation of this interface is available in the `CommentContainer` trait.
+ */
 interface Commentable
 {
     /**
