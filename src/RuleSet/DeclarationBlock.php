@@ -30,14 +30,12 @@ class DeclarationBlock extends RuleSet
     private $selectors = [];
 
     /**
-     * @return DeclarationBlock|false
-     *
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      *
      * @internal since V8.8.0
      */
-    public static function parse(ParserState $parserState, ?CSSList $list = null)
+    public static function parse(ParserState $parserState, ?CSSList $list = null): ?DeclarationBlock
     {
         $comments = [];
         $result = new DeclarationBlock($parserState->currentLine());
@@ -63,7 +61,7 @@ class DeclarationBlock extends RuleSet
                 if (!$parserState->comes('}')) {
                     $parserState->consumeUntil('}', false, true);
                 }
-                return false;
+                return null;
             } else {
                 throw $e;
             }

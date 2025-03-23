@@ -106,6 +106,9 @@ abstract class CSSList implements Renderable, Commentable
 
     /**
      * @return AtRuleBlockList|KeyFrame|Charset|CSSNamespace|Import|AtRuleSet|DeclarationBlock|false|null
+     *         If `null` is returned, it means the end of the list has been reached.
+     *         If `false` is returned, it means an invalid item has been encountered,
+     *         but parsing of the next item should proceed.
      *
      * @throws SourceException
      * @throws UnexpectedEOFException
@@ -139,7 +142,7 @@ abstract class CSSList implements Renderable, Commentable
         } elseif ($parserState->comes('}')) {
             if ($isRoot) {
                 if ($parserState->getSettings()->usesLenientParsing()) {
-                    return DeclarationBlock::parse($parserState);
+                    return DeclarationBlock::parse($parserState) ?? false;
                 } else {
                     throw new SourceException('Unopened {', $parserState->currentLine());
                 }
@@ -148,7 +151,7 @@ abstract class CSSList implements Renderable, Commentable
                 return null;
             }
         } else {
-            return DeclarationBlock::parse($parserState, $list);
+            return DeclarationBlock::parse($parserState, $list) ?? false;
         }
     }
 
