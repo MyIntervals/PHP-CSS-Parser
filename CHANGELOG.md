@@ -7,6 +7,18 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## 8.8.0: Bug fixes and deprecations
+
+### Added
+
 - `OutputFormat` properties for space around specific list separators (#880)
 
 ### Changed
@@ -28,8 +40,6 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Deprecate the IE hack in `Rule` (#993, #1003)
 - `OutputFormat` properties for space around list separators as an array (#880)
 - Deprecate `OutputFormat::level()` (#870)
-
-### Removed
 
 ### Fixed
 
