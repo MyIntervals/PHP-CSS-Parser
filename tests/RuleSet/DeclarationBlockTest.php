@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Rule\Rule;
+use Sabberworm\CSS\RuleSet\RuleSet;
 use Sabberworm\CSS\Settings as ParserSettings;
 use Sabberworm\CSS\Value\Size;
 
@@ -30,8 +31,9 @@ final class DeclarationBlockTest extends TestCase
         $contents = $document->getContents();
         $wrapper = $contents[0];
 
+        self::assertInstanceOf(RuleSet::class, $wrapper);
         self::assertCount(2, $wrapper->getRules());
-        $contents[0]->setRules([$rule]);
+        $wrapper->setRules([$rule]);
 
         $rules = $wrapper->getRules();
         self::assertCount(1, $rules);
@@ -49,6 +51,8 @@ final class DeclarationBlockTest extends TestCase
         $document = $parser->parse();
         $contents = $document->getContents();
         $wrapper = $contents[0];
+
+        self::assertInstanceOf(RuleSet::class, $wrapper);
 
         $leftRules = $wrapper->getRules('left');
         self::assertCount(1, $leftRules);

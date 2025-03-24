@@ -31,7 +31,7 @@ use Sabberworm\CSS\Value\Value;
  *
  * It can also contain `Import` and `Charset` objects stemming from at-rules.
  */
-abstract class CSSList implements Renderable, Commentable
+abstract class CSSList implements Commentable, CSSListItem, Renderable
 {
     /**
      * @var list<Comment>
@@ -41,7 +41,7 @@ abstract class CSSList implements Renderable, Commentable
     protected $comments = [];
 
     /**
-     * @var array<int<0, max>, RuleSet|CSSList|Import|Charset>
+     * @var array<int<0, max>, CSSListItem>
      *
      * @internal since 8.8.0
      */
@@ -105,7 +105,7 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * @return AtRuleBlockList|KeyFrame|Charset|CSSNamespace|Import|AtRuleSet|DeclarationBlock|false|null
+     * @return CSSListItem|false|null
      *         If `null` is returned, it means the end of the list has been reached.
      *         If `false` is returned, it means an invalid item has been encountered,
      *         but parsing of the next item should proceed.
@@ -156,13 +156,11 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * @return AtRuleBlockList|KeyFrame|Charset|CSSNamespace|Import|AtRuleSet|null
-     *
      * @throws SourceException
      * @throws UnexpectedTokenException
      * @throws UnexpectedEOFException
      */
-    private static function parseAtRule(ParserState $parserState)
+    private static function parseAtRule(ParserState $parserState): ?CSSListItem
     {
         $parserState->consume('@');
         $identifier = $parserState->parseIdentifier();
@@ -265,20 +263,16 @@ abstract class CSSList implements Renderable, Commentable
 
     /**
      * Prepends an item to the list of contents.
-     *
-     * @param RuleSet|CSSList|Import|Charset $item
      */
-    public function prepend($item): void
+    public function prepend(CSSListItem $item): void
     {
         \array_unshift($this->contents, $item);
     }
 
     /**
      * Appends an item to the list of contents.
-     *
-     * @param RuleSet|CSSList|Import|Charset $item
      */
-    public function append($item): void
+    public function append(CSSListItem $item): void
     {
         $this->contents[] = $item;
     }
@@ -286,7 +280,7 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Splices the list of contents.
      *
-     * @param array<int, RuleSet|CSSList|Import|Charset> $replacement
+     * @param array<int, CSSListItem> $replacement
      */
     public function splice(int $offset, ?int $length = null, ?array $replacement = null): void
     {
@@ -296,11 +290,8 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Inserts an item in the CSS list before its sibling. If the desired sibling cannot be found,
      * the item is appended at the end.
-     *
-     * @param RuleSet|CSSList|Import|Charset $item
-     * @param RuleSet|CSSList|Import|Charset $sibling
      */
-    public function insertBefore($item, $sibling): void
+    public function insertBefore(CSSListItem $item, CSSListItem $sibling): void
     {
         if (\in_array($sibling, $this->contents, true)) {
             $this->replace($sibling, [$item, $sibling]);
@@ -312,13 +303,13 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Removes an item from the CSS list.
      *
-     * @param RuleSet|Import|Charset|CSSList $itemToRemove
+     * @param CSSListItem $itemToRemove
      *        May be a `RuleSet` (most likely a `DeclarationBlock`), an `Import`,
      *        a `Charset` or another `CSSList` (most likely a `MediaQuery`)
      *
      * @return bool whether the item was removed
      */
-    public function remove($itemToRemove): bool
+    public function remove(CSSListItem $itemToRemove): bool
     {
         $key = \array_search($itemToRemove, $this->contents, true);
         if ($key !== false) {
@@ -332,12 +323,12 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Replaces an item from the CSS list.
      *
-     * @param RuleSet|Import|Charset|CSSList $oldItem
+     * @param CSSListItem $oldItem
      *        May be a `RuleSet` (most likely a `DeclarationBlock`), an `Import`, a `Charset`
      *        or another `CSSList` (most likely a `MediaQuery`)
-     * @param RuleSet|Import|Charset|CSSList|array<RuleSet|Import|Charset|CSSList> $newItem
+     * @param CSSListItem|array<CSSListItem> $newItem
      */
-    public function replace($oldItem, $newItem): bool
+    public function replace(CSSListItem $oldItem, $newItem): bool
     {
         $key = \array_search($oldItem, $this->contents, true);
         if ($key !== false) {
@@ -353,7 +344,7 @@ abstract class CSSList implements Renderable, Commentable
     }
 
     /**
-     * @param array<int, RuleSet|Import|Charset|CSSList> $contents
+     * @param array<int, CSSListItem> $contents
      */
     public function setContents(array $contents): void
     {
@@ -444,7 +435,7 @@ abstract class CSSList implements Renderable, Commentable
     /**
      * Returns the stored items.
      *
-     * @return array<int<0, max>, RuleSet|Import|Charset|CSSList>
+     * @return array<int<0, max>, CSSListItem>
      */
     public function getContents(): array
     {

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\Comment\Commentable;
+use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\CSSList\KeyFrame;
 use Sabberworm\CSS\OutputFormat;
@@ -973,9 +975,30 @@ body {background-color: red;}';
 
         $actual = [];
         foreach ($document->getContents() as $contentItem) {
+            // PHPStan can see what `assertInstanceOf()` does,
+            // but does not understand `LogicalOr` with multiple `IsIntanceOf` constraints.
+            // So a more explicit type check is required.
+            // TODO: tidy this up when an interface with `getLineNo()` is added.
+            if (
+                !$contentItem instanceof Charset &&
+                !$contentItem instanceof CSSList &&
+                !$contentItem instanceof CSSNamespace &&
+                !$contentItem instanceof Import &&
+                !$contentItem instanceof RuleSet
+            ) {
+                self::fail('Content item is not of an expected type.  It\'s a `' . \get_class($contentItem) . '`.');
+            }
             $actual[$contentItem->getLineNo()] = [\get_class($contentItem)];
             if ($contentItem instanceof KeyFrame) {
                 foreach ($contentItem->getContents() as $block) {
+                    if (
+                        !$block instanceof CSSList &&
+                        !$block instanceof RuleSet
+                    ) {
+                        self::fail(
+                            'KeyFrame content item is not of an expected type.  It\'s a `' . \get_class($block) . '`.'
+                        );
+                    }
                     $actual[$contentItem->getLineNo()][] = $block->getLineNo();
                 }
             }
@@ -1037,6 +1060,7 @@ body {background-color: red;}';
         $nodes = $document->getContents();
 
         // Import property.
+        self::assertInstanceOf(Commentable::class, $nodes[0]);
         $importComments = $nodes[0]->getComments();
         self::assertCount(2, $importComments);
         self::assertSame("*\n * Comments\n ", $importComments[0]->getComment());
@@ -1044,6 +1068,7 @@ body {background-color: red;}';
 
         // Declaration block.
         $fooBarBlock = $nodes[1];
+        self::assertInstanceOf(Commentable::class, $fooBarBlock);
         $fooBarBlockComments = $fooBarBlock->getComments();
         // TODO Support comments in selectors.
         // $this->assertCount(2, $fooBarBlockComments);
@@ -1051,6 +1076,7 @@ body {background-color: red;}';
         // $this->assertSame("* Number 5 *", $fooBarBlockComments[1]->getComment());
 
         // Declaration rules.
+        self::assertInstanceOf(RuleSet::class, $fooBarBlock);
         $fooBarRules = $fooBarBlock->getRules();
         $fooBarRule = $fooBarRules[0];
         $fooBarRuleComments = $fooBarRule->getComments();
@@ -1058,16 +1084,20 @@ body {background-color: red;}';
         self::assertSame(' Number 6 ', $fooBarRuleComments[0]->getComment());
 
         // Media property.
+        self::assertInstanceOf(Commentable::class, $nodes[2]);
         $mediaComments = $nodes[2]->getComments();
         self::assertCount(0, $mediaComments);
 
         // Media children.
+        self::assertInstanceOf(CSSList::class, $nodes[2]);
         $mediaRules = $nodes[2]->getContents();
+        self::assertInstanceOf(Commentable::class, $mediaRules[0]);
         $fooBarComments = $mediaRules[0]->getComments();
         self::assertCount(1, $fooBarComments);
         self::assertSame('* Number 10 *', $fooBarComments[0]->getComment());
 
         // Media -> declaration -> rule.
+        self::assertInstanceOf(RuleSet::class, $mediaRules[0]);
         $fooBarRules = $mediaRules[0]->getRules();
         $fooBarChildComments = $fooBarRules[0]->getComments();
         self::assertCount(1, $fooBarChildComments);
@@ -1083,6 +1113,7 @@ body {background-color: red;}';
         $document = $parser->parse();
 
         $contents = $document->getContents();
+        self::assertInstanceOf(RuleSet::class, $contents[0]);
         $divRules = $contents[0]->getRules();
         $comments = $divRules[0]->getComments();
 
@@ -1099,6 +1130,7 @@ body {background-color: red;}';
         $document = $parser->parse();
 
         $contents = $document->getContents();
+        self::assertInstanceOf(RuleSet::class, $contents[0]);
         $divRules = $contents[0]->getRules();
         $comments = $divRules[0]->getComments();
 
@@ -1116,6 +1148,7 @@ body {background-color: red;}';
         $document = $parser->parse();
 
         $contents = $document->getContents();
+        self::assertInstanceOf(RuleSet::class, $contents[0]);
         $divRules = $contents[0]->getRules();
         $comments = $divRules[0]->getComments();
 
@@ -1133,6 +1166,7 @@ body {background-color: red;}';
         $document = $parser->parse();
 
         $contents = $document->getContents();
+        self::assertInstanceOf(RuleSet::class, $contents[0]);
         $divRules = $contents[0]->getRules();
         $rule1Comments = $divRules[0]->getComments();
         $rule2Comments = $divRules[1]->getComments();
@@ -1151,6 +1185,7 @@ body {background-color: red;}';
         $parser = new Parser('/*Find Me!*/div {left:10px; text-align:left;}');
         $document = $parser->parse();
         $contents = $document->getContents();
+        self::assertInstanceOf(Commentable::class, $contents[0]);
         $comments = $contents[0]->getComments();
         self::assertCount(1, $comments);
         self::assertSame('Find Me!', $comments[0]->getComment());
@@ -1216,6 +1251,7 @@ body {background-color: red;}';
     {
         $document = self::parsedStructureForFile('escaped-tokens');
         $contents = $document->getContents();
+        self::assertInstanceOf(RuleSet::class, $contents[0]);
         $rules = $contents[0]->getRules();
         $urlRule = $rules[0];
         $calcRule = $rules[1];

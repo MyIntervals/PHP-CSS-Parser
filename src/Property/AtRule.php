@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Property;
 
 use Sabberworm\CSS\Comment\Commentable;
+use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\Renderable;
 
-interface AtRule extends Renderable, Commentable
+interface AtRule extends Commentable, CSSListItem, Renderable
 {
     /**
      * Since there are more set rules than block rules,

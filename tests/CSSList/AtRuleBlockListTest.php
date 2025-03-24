@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\CSSList;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\CSSList\AtRuleBlockList;
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Settings;
 
@@ -60,6 +61,7 @@ final class AtRuleBlockListTest extends TestCase
         $contents = (new Parser($css))->parse()->getContents();
         $atRuleBlockList = $contents[0];
 
+        self::assertInstanceOf(AtRuleBlockList::class, $atRuleBlockList);
         self::assertSame('media', $atRuleBlockList->atRuleName());
     }
 
@@ -73,6 +75,7 @@ final class AtRuleBlockListTest extends TestCase
         $contents = (new Parser($css))->parse()->getContents();
         $atRuleBlockList = $contents[0];
 
+        self::assertInstanceOf(AtRuleBlockList::class, $atRuleBlockList);
         self::assertSame('(min-width: 768px)', $atRuleBlockList->atRuleArgs());
     }
 
