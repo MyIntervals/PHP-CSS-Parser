@@ -6,15 +6,43 @@ namespace Sabberworm\CSS\Tests\Functional\RuleSet;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
+use Sabberworm\CSS\Settings;
 
 /**
  * @covers \Sabberworm\CSS\RuleSet\DeclarationBlock
  */
 final class DeclarationBlockTest extends TestCase
 {
+    /**
+     * @return array<string, array{0: string}>
+     */
+    public static function provideInvalidDeclarationBlock(): array
+    {
+        return [
+            'no selector' => ['{ color: red; }'],
+            'invalid selector' => ['/ { color: red; }'],
+            'no opening brace' => ['body color: red; }'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideInvalidDeclarationBlock
+     */
+    public function parseReturnsNullForInvalidDeclarationBlock(string $invalidDeclarationBlock): void
+    {
+        $parserState = new ParserState($invalidDeclarationBlock, Settings::create());
+
+        $result = DeclarationBlock::parse($parserState);
+
+        self::assertNull($result);
+    }
+
     /**
      * @test
      */
