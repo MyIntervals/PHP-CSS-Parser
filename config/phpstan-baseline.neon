@@ -49,12 +49,6 @@ parameters:
 			path: ../src/RuleSet/DeclarationBlock.php
 
 		-
-			message: '#^Returning false in non return bool class method\. Use null with type\|null instead or add bool return type$#'
-			identifier: typePerfect.nullOverFalse
-			count: 1
-			path: ../src/RuleSet/DeclarationBlock.php
-
-		-
 			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
 			identifier: booleanNot.exprNotBoolean
 			count: 2
