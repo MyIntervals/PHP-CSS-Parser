@@ -56,7 +56,7 @@ final class CommentContainerTest extends TestCase
      *
      * @dataProvider provideCommentArray
      */
-    public function getCommentsAfterCommentsAddedToVirginContainerReturnsThoseComments(array $comments): void
+    public function addCommentsOnVirginContainerAddsCommentsProvided(array $comments): void
     {
         $this->subject->addComments($comments);
 
@@ -70,7 +70,7 @@ final class CommentContainerTest extends TestCase
      *
      * @dataProvider provideCommentArray
      */
-    public function getCommentsAfterEmptyArrayOfCommentsAddedReturnsOriginalComments(array $comments): void
+    public function addCommentsWithEmptyArrayKeepsOriginalCommentsUnchanged(array $comments): void
     {
         $this->subject->setComments($comments);
 
@@ -148,10 +148,8 @@ final class CommentContainerTest extends TestCase
      *
      * @dataProvider provideTwoDistinctCommentArraysWithSecondNonempty
      */
-    public function getCommentsAfterCommentsAddedIncludesOriginalComments(
-        array $commentsToAdd,
-        array $originalComments
-    ): void {
+    public function addCommentsKeepsOriginalComments(array $commentsToAdd, array $originalComments): void
+    {
         $this->subject->setComments($originalComments);
 
         $this->subject->addComments($commentsToAdd);
@@ -170,10 +168,8 @@ final class CommentContainerTest extends TestCase
      *
      * @dataProvider provideTwoDistinctCommentArraysWithSecondNonempty
      */
-    public function getCommentsAfterCommentsAddedIncludesCommentsAdded(
-        array $originalComments,
-        array $commentsToAdd
-    ): void {
+    public function addCommentsAfterCommentsSetAddsCommentsProvided(array $originalComments, array $commentsToAdd): void
+    {
         $this->subject->setComments($originalComments);
 
         $this->subject->addComments($commentsToAdd);
@@ -210,7 +206,7 @@ final class CommentContainerTest extends TestCase
      *
      * @dataProvider provideCommentArray
      */
-    public function getCommentsAfterCommentsSetOnVirginContainerReturnsThoseComments(array $comments): void
+    public function setCommentsOnVirginContainerSetsCommentsProvided(array $comments): void
     {
         $this->subject->setComments($comments);
 
@@ -225,10 +221,8 @@ final class CommentContainerTest extends TestCase
      *
      * @dataProvider provideTwoDistinctCommentArrays
      */
-    public function getCommentsAfterCommentsSetOnContainerWithCommentsReturnsOnlyCommentsSet(
-        array $originalComments,
-        array $commentsToSet
-    ): void {
+    public function setCommentsReplacesWithCommentsProvided(array $originalComments, array $commentsToSet): void
+    {
         $this->subject->setComments($originalComments);
 
         $this->subject->setComments($commentsToSet);
