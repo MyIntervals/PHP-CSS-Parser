@@ -8,7 +8,6 @@ use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Comment;
-use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\Tests\Unit\Comment\Fixtures\ConcreteCommentContainer;
 use TRegx\DataProvider\DataProviders;
 
@@ -18,7 +17,7 @@ use TRegx\DataProvider\DataProviders;
 final class CommentContainerTest extends TestCase
 {
     /**
-     * @var Commentable
+     * @var ConcreteCommentContainer
      */
     private $subject;
 
