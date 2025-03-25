@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\Property;
 
-use Sabberworm\CSS\Comment\Comment;
+use Sabberworm\CSS\Comment\CommentContainer;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Value\CSSString;
 use Sabberworm\CSS\Value\URL;
@@ -14,6 +14,8 @@ use Sabberworm\CSS\Value\URL;
  */
 class CSSNamespace implements AtRule
 {
+    use CommentContainer;
+
     /**
      * @var CSSString|URL
      */
@@ -28,13 +30,6 @@ class CSSNamespace implements AtRule
      * @var int<0, max> $lineNumber
      */
     private $lineNumber;
-
-    /**
-     * @var list<Comment>
-     *
-     * @internal since 8.8.0
-     */
-    protected $comments = [];
 
     /**
      * @param CSSString|URL $url
@@ -108,29 +103,5 @@ class CSSNamespace implements AtRule
             \array_unshift($result, $this->prefix);
         }
         return $result;
-    }
-
-    /**
-     * @param list<Comment> $comments
-     */
-    public function addComments(array $comments): void
-    {
-        $this->comments = \array_merge($this->comments, $comments);
-    }
-
-    /**
-     * @return list<Comment>
-     */
-    public function getComments(): array
-    {
-        return $this->comments;
-    }
-
-    /**
-     * @param list<Comment> $comments
-     */
-    public function setComments(array $comments): void
-    {
-        $this->comments = $comments;
     }
 }

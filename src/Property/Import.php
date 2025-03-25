@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\Property;
 
-use Sabberworm\CSS\Comment\Comment;
+use Sabberworm\CSS\Comment\CommentContainer;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Value\URL;
 
@@ -13,6 +13,8 @@ use Sabberworm\CSS\Value\URL;
  */
 class Import implements AtRule
 {
+    use CommentContainer;
+
     /**
      * @var URL
      */
@@ -29,13 +31,6 @@ class Import implements AtRule
      * @internal since 8.8.0
      */
     protected $lineNumber;
-
-    /**
-     * @var list<Comment>
-     *
-     * @internal since 8.8.0
-     */
-    protected $comments = [];
 
     /**
      * @param int<0, max> $lineNumber
@@ -93,30 +88,6 @@ class Import implements AtRule
         }
 
         return $result;
-    }
-
-    /**
-     * @param list<Comment> $comments
-     */
-    public function addComments(array $comments): void
-    {
-        $this->comments = \array_merge($this->comments, $comments);
-    }
-
-    /**
-     * @return list<Comment>
-     */
-    public function getComments(): array
-    {
-        return $this->comments;
-    }
-
-    /**
-     * @param list<Comment> $comments
-     */
-    public function setComments(array $comments): void
-    {
-        $this->comments = $comments;
     }
 
     public function getMediaQuery(): ?string

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\RuleSet;
 
-use Sabberworm\CSS\Comment\Comment;
-use Sabberworm\CSS\Comment\Commentable;
+use Sabberworm\CSS\Comment\CommentContainer;
 use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
@@ -28,6 +27,8 @@ use Sabberworm\CSS\Rule\Rule;
  */
 abstract class RuleSet implements CSSListItem
 {
+    use CommentContainer;
+
     /**
      * the rules in this rule set, using the property name as the key,
      * with potentially multiple rules per property name.
@@ -42,13 +43,6 @@ abstract class RuleSet implements CSSListItem
      * @internal since 8.8.0
      */
     protected $lineNumber;
-
-    /**
-     * @var list<Comment>
-     *
-     * @internal since 8.8.0
-     */
-    protected $comments = [];
 
     /**
      * @param int<0, max> $lineNumber
@@ -298,29 +292,5 @@ abstract class RuleSet implements CSSListItem
         }
 
         return $formatter->removeLastSemicolon($result);
-    }
-
-    /**
-     * @param list<Comment> $comments
-     */
-    public function addComments(array $comments): void
-    {
-        $this->comments = \array_merge($this->comments, $comments);
-    }
-
-    /**
-     * @return list<Comment>
-     */
-    public function getComments(): array
-    {
-        return $this->comments;
-    }
-
-    /**
-     * @param list<Comment> $comments
-     */
-    public function setComments(array $comments): void
-    {
-        $this->comments = $comments;
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\Property;
 
-use Sabberworm\CSS\Comment\Comment;
+use Sabberworm\CSS\Comment\CommentContainer;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Value\CSSString;
 
@@ -18,6 +18,8 @@ use Sabberworm\CSS\Value\CSSString;
  */
 class Charset implements AtRule
 {
+    use CommentContainer;
+
     /**
      * @var CSSString
      */
@@ -29,13 +31,6 @@ class Charset implements AtRule
      * @internal since 8.8.0
      */
     protected $lineNumber;
-
-    /**
-     * @var list<Comment>
-     *
-     * @internal since 8.8.0
-     */
-    protected $comments = [];
 
     /**
      * @param int<0, max> $lineNumber
@@ -87,29 +82,5 @@ class Charset implements AtRule
     public function atRuleArgs(): CSSString
     {
         return $this->charset;
-    }
-
-    /**
-     * @param list<Comment> $comments
-     */
-    public function addComments(array $comments): void
-    {
-        $this->comments = \array_merge($this->comments, $comments);
-    }
-
-    /**
-     * @return list<Comment>
-     */
-    public function getComments(): array
-    {
-        return $this->comments;
-    }
-
-    /**
-     * @param list<Comment> $comments
-     */
-    public function setComments(array $comments): void
-    {
-        $this->comments = $comments;
     }
 }
