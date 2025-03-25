@@ -6,6 +6,7 @@ namespace Sabberworm\CSS\RuleSet;
 
 use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\Comment\Commentable;
+use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
@@ -21,8 +22,11 @@ use Sabberworm\CSS\Rule\Rule;
  *
  * If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $rule)`, `getRules()` and `removeRule($rule)`
  * (which accepts either a `Rule` or a rule name; optionally suffixed by a dash to remove all related rules).
+ *
+ * Note that `CSSListItem` extends both `Commentable` and `Renderable`,
+ * so those interfaces must also be implemented by concrete subclasses.
  */
-abstract class RuleSet implements Renderable, Commentable
+abstract class RuleSet implements CSSListItem
 {
     /**
      * the rules in this rule set, using the property name as the key,
