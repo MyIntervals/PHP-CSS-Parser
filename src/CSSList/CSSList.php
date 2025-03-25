@@ -30,8 +30,11 @@ use Sabberworm\CSS\Value\Value;
  * `RuleSet`s as well as other `CSSList` objects.
  *
  * It can also contain `Import` and `Charset` objects stemming from at-rules.
+ *
+ * Note that `CSSListItem` extends both `Commentable` and `Renderable`,
+ * so those interfaces must also be implemented by concrete subclasses.
  */
-abstract class CSSList implements Commentable, CSSListItem, Renderable
+abstract class CSSList implements CSSListItem
 {
     /**
      * @var list<Comment>
