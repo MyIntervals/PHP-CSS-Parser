@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\CSSList;
 
-use Sabberworm\CSS\Comment\Comment;
-use Sabberworm\CSS\Comment\Commentable;
+use Sabberworm\CSS\Comment\CommentContainer;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
@@ -36,12 +35,7 @@ use Sabberworm\CSS\Value\Value;
  */
 abstract class CSSList implements CSSListItem
 {
-    /**
-     * @var list<Comment>
-     *
-     * @internal since 8.8.0
-     */
-    protected $comments = [];
+    use CommentContainer;
 
     /**
      * @var array<int<0, max>, CSSListItem>
@@ -443,29 +437,5 @@ abstract class CSSList implements CSSListItem
     public function getContents(): array
     {
         return $this->contents;
-    }
-
-    /**
-     * @param list<Comment> $comments
-     */
-    public function addComments(array $comments): void
-    {
-        $this->comments = \array_merge($this->comments, $comments);
-    }
-
-    /**
-     * @return list<Comment>
-     */
-    public function getComments(): array
-    {
-        return $this->comments;
-    }
-
-    /**
-     * @param list<Comment> $comments
-     */
-    public function setComments(array $comments): void
-    {
-        $this->comments = $comments;
     }
 }

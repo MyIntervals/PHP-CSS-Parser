@@ -6,6 +6,7 @@ namespace Sabberworm\CSS\Rule;
 
 use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\Comment\Commentable;
+use Sabberworm\CSS\Comment\CommentContainer;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
@@ -21,6 +22,8 @@ use Sabberworm\CSS\Value\Value;
  */
 class Rule implements Renderable, Commentable
 {
+    use CommentContainer;
+
     /**
      * @var non-empty-string
      */
@@ -47,13 +50,6 @@ class Rule implements Renderable, Commentable
      * @internal since 8.8.0
      */
     protected $columnNumber;
-
-    /**
-     * @var list<Comment>
-     *
-     * @internal since 8.8.0
-     */
-    protected $comments = [];
 
     /**
      * @param non-empty-string $rule
@@ -234,29 +230,5 @@ class Rule implements Renderable, Commentable
         }
         $result .= ';';
         return $result;
-    }
-
-    /**
-     * @param list<Comment> $comments
-     */
-    public function addComments(array $comments): void
-    {
-        $this->comments = \array_merge($this->comments, $comments);
-    }
-
-    /**
-     * @return list<Comment>
-     */
-    public function getComments(): array
-    {
-        return $this->comments;
-    }
-
-    /**
-     * @param list<Comment> $comments
-     */
-    public function setComments(array $comments): void
-    {
-        $this->comments = $comments;
     }
 }
