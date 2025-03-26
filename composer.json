@@ -33,7 +33,7 @@
         "phpstan/phpstan-phpunit": "1.4.2 || 2.0.4",
         "phpstan/phpstan-strict-rules": "1.6.2 || 2.0.3",
         "phpunit/phpunit": "8.5.41",
-        "rawr/cross-data-providers": "2.4.0",
+        "rawr/cross-data-providers": "3.0.0",
         "rector/rector": "1.2.10 || 2.0.7",
         "rector/type-perfect": "1.0.0 || 2.0.2"
     },
