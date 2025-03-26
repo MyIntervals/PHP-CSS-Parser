@@ -20,6 +20,7 @@ updates:
         - dependency-name: "phpstan/*"
         - dependency-name: "phpunit/phpunit"
           versions: [ ">= 9.0.0" ]
+        - dependency-name: "rawr/cross-data-providers"
         - dependency-name: "rector/rector"
       versioning-strategy: "increase"
       commit-message:
