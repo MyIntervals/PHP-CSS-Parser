@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\RuleSet;
 
+use Sabberworm\CSS\Comment\CommentContainer;
 use Sabberworm\CSS\CSSList\CSSList;
+use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\CSSList\KeyFrame;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\OutputException;
@@ -13,21 +15,46 @@ use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\KeyframeSelector;
 use Sabberworm\CSS\Property\Selector;
+use Sabberworm\CSS\Renderable;
+use Sabberworm\CSS\Rule\Rule;
 
 /**
- * This class represents a `RuleSet` constrained by a `Selector`.
+ * This class includes a `RuleSet` constrained by a `Selector`.
  *
  * It contains an array of selector objects (comma-separated in the CSS) as well as the rules to be applied to the
  * matching elements.
  *
  * Declaration blocks usually appear directly inside a `Document` or another `CSSList` (mostly a `MediaQuery`).
+ *
+ * Note that `CSSListItem` extends both `Commentable` and `Renderable`, so those interfaces must also be implemented.
  */
-class DeclarationBlock extends RuleSet
+class DeclarationBlock implements CSSListItem
 {
+    use CommentContainer;
+
     /**
      * @var array<Selector|string>
      */
     private $selectors = [];
+
+    /**
+     * @var RuleSet
+     */
+    private $ruleSet;
+
+    /**
+     * @var int<0, max>
+     */
+    private $lineNumber;
+
+    /**
+     * @param int<0, max> $lineNumber
+     */
+    public function __construct(int $lineNumber = 0)
+    {
+        $this->lineNumber = $lineNumber;
+        $this->ruleSet = new RuleSet($lineNumber);
+    }
 
     /**
      * @throws UnexpectedTokenException
@@ -67,8 +94,18 @@ class DeclarationBlock extends RuleSet
             }
         }
         $result->setComments($comments);
-        RuleSet::parseRuleSet($parserState, $result);
+
+        RuleSet::parseRuleSet($parserState, $result->ruleSet);
+
         return $result;
+    }
+
+    /**
+     * @return int<0, max>
+     */
+    public function getLineNo(): int
+    {
+        return $this->lineNumber;
     }
 
     /**
@@ -135,6 +172,63 @@ class DeclarationBlock extends RuleSet
         return $this->selectors;
     }
 
+    public function getRuleSet(): RuleSet
+    {
+        return $this->ruleSet;
+    }
+
+    /**
+     * @see RuleSet::addRule()
+     */
+    public function addRule(Rule $ruleToAdd, ?Rule $sibling = null): void
+    {
+        $this->ruleSet->addRule($ruleToAdd, $sibling);
+    }
+
+    /**
+     * @see RuleSet::getRules()
+     *
+     * @param Rule|string|null $searchPattern
+     *
+     * @return array<int<0, max>, Rule>
+     */
+    public function getRules($searchPattern = null): array
+    {
+        return $this->ruleSet->getRules($searchPattern);
+    }
+
+    /**
+     * @see RuleSet::setRules()
+     *
+     * @param array<Rule> $rules
+     */
+    public function setRules(array $rules): void
+    {
+        $this->ruleSet->setRules($rules);
+    }
+
+    /**
+     * @see RuleSet::getRulesAssoc()
+     *
+     * @param Rule|string|null $searchPattern
+     *
+     * @return array<string, Rule>
+     */
+    public function getRulesAssoc($searchPattern = null): array
+    {
+        return $this->ruleSet->getRulesAssoc($searchPattern);
+    }
+
+    /**
+     * @see RuleSet::removeRule()
+     *
+     * @param Rule|string|null $searchPattern
+     */
+    public function removeRule($searchPattern): void
+    {
+        $this->ruleSet->removeRule($searchPattern);
+    }
+
     /**
      * @return non-empty-string
      *
@@ -155,7 +249,7 @@ class DeclarationBlock extends RuleSet
         );
         $result .= $outputFormat->getContentAfterDeclarationBlockSelectors();
         $result .= $formatter->spaceBeforeOpeningBrace() . '{';
-        $result .= $this->renderRules($outputFormat);
+        $result .= $this->ruleSet->render($outputFormat);
         $result .= '}';
         $result .= $outputFormat->getContentAfterDeclarationBlock();
 
