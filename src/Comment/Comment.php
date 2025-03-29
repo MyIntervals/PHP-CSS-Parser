@@ -6,15 +6,12 @@ namespace Sabberworm\CSS\Comment;
 
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Renderable;
+use Sabberworm\CSS\Position\Position;
+use Sabberworm\CSS\Position\Positionable;
 
-class Comment implements Renderable
+class Comment implements Positionable, Renderable
 {
-    /**
-     * @var int<0, max>
-     *
-     * @internal since 8.8.0
-     */
-    protected $lineNumber;
+    use Position;
 
     /**
      * @var string
@@ -29,20 +26,12 @@ class Comment implements Renderable
     public function __construct(string $commentText = '', int $lineNumber = 0)
     {
         $this->commentText = $commentText;
-        $this->lineNumber = $lineNumber;
+        $this->setPosition($lineNumber);
     }
 
     public function getComment(): string
     {
         return $this->commentText;
-    }
-
-    /**
-     * @return int<0, max>
-     */
-    public function getLineNo(): int
-    {
-        return $this->lineNumber;
     }
 
     public function setComment(string $commentText): void

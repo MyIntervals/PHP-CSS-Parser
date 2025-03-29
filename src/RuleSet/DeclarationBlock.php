@@ -146,7 +146,10 @@ class DeclarationBlock extends RuleSet
         $result = $formatter->comments($this);
         if (\count($this->selectors) === 0) {
             // If all the selectors have been removed, this declaration block becomes invalid
-            throw new OutputException('Attempt to print declaration block with missing selector', $this->lineNumber);
+            throw new OutputException(
+                'Attempt to print declaration block with missing selector',
+                $this->getLineNumber()
+            );
         }
         $result .= $outputFormat->getContentBeforeDeclarationBlock();
         $result .= $formatter->implode(
