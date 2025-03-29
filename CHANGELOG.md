@@ -83,6 +83,8 @@ lifting. Thanks! :heart:
 - Deprecate extending `OutputFormat` (#1131)
 - Deprecate `OutputFormat::get()` and `::set()` (#1107)
 - Deprecate support for `-webkit-calc` and `-moz-calc` (#1086)
+- Deprecate magic method forwarding from `OutputFormat` to `OutputFormatter`
+  (#894)
 - Deprecate `__toString()` (#1006)
 - Deprecate greedy calculation of selector specificity (#1018)
 - Deprecate the IE hack in `Rule` (#993, #1003)
@@ -109,8 +111,6 @@ lifting. Thanks! :heart:
 
 ### Deprecated
 
-- Deprecate magic method forwarding from `OutputFormat` to `OutputFormatter`
-  (#894)
 - Deprecate the expansion of shorthand properties
   (#578, #580, #579, #577, #576, #575, #574, #573, #572, #571, #570, #569, #566,
   #567, #558, #714)
