@@ -10,7 +10,6 @@ Please also have a look at our
 
 ### Added
 
-- `OutputFormat` properties for space around specific list separators (#880)
 - Partial support for CSS Color Module Level 4:
     - `rgb` and `rgba`, and `hsl` and `hsla` are now aliases (#797}
     - Parse color functions that use the "modern" syntax (#800)
@@ -23,14 +22,8 @@ Please also have a look at our
 
 - Initialize `KeyFrame` properties to sensible defaults (#1146)
 - Make `OutputFormat` `final` (#1128)
-- Mark the `OutputFormat` constructor as `@internal` (#1131) 
-- Mark `OutputFormatter` as `@internal` (#896)
 - Make `Selector` a `Renderable` (#1017)
-- Mark `Selector::isValid()` as `@internal` (#1037)
-- Mark parsing-related methods of most CSS elements as `@internal` (#908)
-- Mark `OutputFormat::nextLevel()` as `@internal` (#901)
 - Only allow `string` for some `OutputFormat` properties (#885)
-- Make all non-private properties `@internal` (#886)
 - Use more native type declarations and strict mode
   (#641, #772, #774, #778, #804, #841, #873, #875, #891, #922, #923, #933, #958,
   #964, #967, #1000, #1044, #1134, #1136, #1137, #1139, #1140, #1141, #1145,
@@ -39,13 +32,6 @@ Please also have a look at our
 - Add visibility to all class/interface constants (#469)
 
 ### Deprecated
-
-- Deprecate extending `OutputFormat` (#1131)
-- Deprecate magic method forwarding from `OutputFormat` to `OutputFormatter`
-  (#894)
-- Deprecate greedy calculation of selector specificity (#1018)
-- Deprecate `__toString()` (#1006)
-- `OutputFormat` properties for space around list separators as an array (#880)
 
 ### Removed
 
@@ -68,10 +54,7 @@ Please also have a look at our
 
 ### Fixed
 
-- Include comments for all rules in declaration block (#1169)
-- Render rules in line and column number order (#1059)
 - Don't render `rgb` colors with percentage values using hex notation (#803)
-- Parse `@font-face` `src` property as comma-delimited list (#790)
 
 ### Documentation
 
@@ -79,6 +62,41 @@ Please also have a look at our
 
 @ziegenberg is a new contributor to this release and did a lot of the heavy
 lifting. Thanks! :heart:
+
+## 8.8.0: Bug fixes and deprecations
+
+### Added
+
+- `OutputFormat` properties for space around specific list separators (#880)
+
+### Changed
+
+- Mark the `OutputFormat` constructor as `@internal` (#1131)
+- Mark `OutputFormatter` as `@internal` (#896)
+- Mark `Selector::isValid()` as `@internal` (#1037)
+- Mark parsing-related methods of most CSS elements as `@internal` (#908)
+- Mark `OutputFormat::nextLevel()` as `@internal` (#901)
+- Make all non-private properties `@internal` (#886)
+
+### Deprecated
+
+- Deprecate extending `OutputFormat` (#1131)
+- Deprecate `OutputFormat::get()` and `::set()` (#1107)
+- Deprecate support for `-webkit-calc` and `-moz-calc` (#1086)
+- Deprecate magic method forwarding from `OutputFormat` to `OutputFormatter`
+  (#894)
+- Deprecate `__toString()` (#1006)
+- Deprecate greedy calculation of selector specificity (#1018)
+- Deprecate the IE hack in `Rule` (#993, #1003)
+- `OutputFormat` properties for space around list separators as an array (#880)
+- Deprecate `OutputFormat::level()` (#870)
+
+### Fixed
+
+- Include comments for all rules in declaration block (#1169)
+- Render rules in line and column number order (#1059)
+- Create `Size` with correct types in `expandBackgroundShorthand` (#814)
+- Parse `@font-face` `src` property as comma-delimited list (#794)
 
 ## 8.7.0: Add support for PHP 8.4
 
