@@ -719,6 +719,7 @@ classDiagram
     Commentable <|.. RuleSet: realization
     RuleSet <|-- AtRuleSet: inheritance
     AtRule <|.. AtRuleSet: realization
+    Renderable <|.. Selector: realization
     Selector <|-- KeyframeSelector: inheritance
     Renderable <|-- AtRule: inheritance
     Commentable <|-- AtRule: inheritance
