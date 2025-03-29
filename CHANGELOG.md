@@ -10,6 +10,12 @@ Please also have a look at our
 
 ### Added
 
+- Methods `getLineNumber` and `getColumnNumber` which return a nullable `int`
+  for the following classes:
+  `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
+  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225)
+- `Positionable` interface for CSS items that may have a position
+  (line and perhaps column number) in the parsed CSS (#1221)
 - Partial support for CSS Color Module Level 4:
     - `rgb` and `rgba`, and `hsl` and `hsla` are now aliases (#797}
     - Parse color functions that use the "modern" syntax (#800)
@@ -20,6 +26,9 @@ Please also have a look at our
 
 ### Changed
 
+- Implement `Positionable` in the following CSS item classes:
+  `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
+  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225)
 - Initialize `KeyFrame` properties to sensible defaults (#1146)
 - Make `OutputFormat` `final` (#1128)
 - Make `Selector` a `Renderable` (#1017)
@@ -32,6 +41,13 @@ Please also have a look at our
 - Add visibility to all class/interface constants (#469)
 
 ### Deprecated
+
+- `getLineNo()` is deprecated in these classes (use `getLineNumber()` instead):
+  `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
+  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225)
+- `Rule::getColNo()` is deprecated (use `getColumnNumber()` instead) (#1225)
+- Providing zero as the line number argument to `Rule::setPosition()` is
+  deprecated (pass `null` instead if there is no line number) (#1225)
 
 ### Removed
 

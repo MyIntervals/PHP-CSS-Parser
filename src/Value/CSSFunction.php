@@ -36,7 +36,7 @@ class CSSFunction extends ValueList
             $arguments = $arguments->getListComponents();
         }
         $this->name = $name;
-        $this->lineNumber = $lineNumber;
+        $this->setPosition($lineNumber); // TODO: redundant?
         parent::__construct($arguments, $separator, $lineNumber);
     }
 

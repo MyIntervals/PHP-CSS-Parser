@@ -10,6 +10,8 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\Position\Position;
+use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Property\Charset;
 use Sabberworm\CSS\Property\CSSNamespace;
@@ -32,9 +34,10 @@ use Sabberworm\CSS\Value\Value;
  * Note that `CSSListItem` extends both `Commentable` and `Renderable`,
  * so those interfaces must also be implemented by concrete subclasses.
  */
-abstract class CSSList implements CSSListItem
+abstract class CSSList implements CSSListItem, Positionable
 {
     use CommentContainer;
+    use Position;
 
     /**
      * @var array<int<0, max>, CSSListItem>
@@ -44,18 +47,11 @@ abstract class CSSList implements CSSListItem
     protected $contents = [];
 
     /**
-     * @var int<0, max>
-     *
-     * @internal since 8.8.0
-     */
-    protected $lineNumber;
-
-    /**
      * @param int<0, max> $lineNumber
      */
     public function __construct(int $lineNumber = 0)
     {
-        $this->lineNumber = $lineNumber;
+        $this->setPosition($lineNumber);
     }
 
     /**
@@ -247,14 +243,6 @@ abstract class CSSList implements CSSListItem
     {
         return (\strcasecmp($identifier, $match) === 0)
             ?: \preg_match("/^(-\\w+-)?$match$/i", $identifier) === 1;
-    }
-
-    /**
-     * @return int<0, max>
-     */
-    public function getLineNo(): int
-    {
-        return $this->lineNumber;
     }
 
     /**

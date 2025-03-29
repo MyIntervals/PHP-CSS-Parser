@@ -11,6 +11,8 @@ use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\Position\Position;
+use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Value;
@@ -20,9 +22,10 @@ use Sabberworm\CSS\Value\Value;
  *
  * In CSS, `Rule`s are expressed as follows: “key: value[0][0] value[0][1], value[1][0] value[1][1];”
  */
-class Rule implements Renderable, Commentable
+class Rule implements Commentable, Positionable, Renderable
 {
     use CommentContainer;
+    use Position;
 
     /**
      * @var non-empty-string
@@ -40,18 +43,6 @@ class Rule implements Renderable, Commentable
     private $isImportant = false;
 
     /**
-     * @var int<0, max> $lineNumber
-     */
-    protected $lineNumber;
-
-    /**
-     * @var int<0, max>
-     *
-     * @internal since 8.8.0
-     */
-    protected $columnNumber;
-
-    /**
      * @param non-empty-string $rule
      * @param int<0, max> $lineNumber
      * @param int<0, max> $columnNumber
@@ -59,8 +50,7 @@ class Rule implements Renderable, Commentable
     public function __construct(string $rule, int $lineNumber = 0, int $columnNumber = 0)
     {
         $this->rule = $rule;
-        $this->lineNumber = $lineNumber;
-        $this->columnNumber = $columnNumber;
+        $this->setPosition($lineNumber, $columnNumber);
     }
 
     /**
@@ -123,32 +113,6 @@ class Rule implements Renderable, Commentable
     }
 
     /**
-     * @return int<0, max>
-     */
-    public function getLineNo(): int
-    {
-        return $this->lineNumber;
-    }
-
-    /**
-     * @return int<0, max>
-     */
-    public function getColNo(): int
-    {
-        return $this->columnNumber;
-    }
-
-    /**
-     * @param int<0, max> $lineNumber
-     * @param int<0, max> $columnNumber
-     */
-    public function setPosition(int $lineNumber, int $columnNumber): void
-    {
-        $this->columnNumber = $columnNumber;
-        $this->lineNumber = $lineNumber;
-    }
-
-    /**
      * @param non-empty-string $rule
      */
     public function setRule(string $rule): void
@@ -193,7 +157,7 @@ class Rule implements Renderable, Commentable
         }
         if (!($this->value instanceof RuleValueList) || $this->value->getListSeparator() !== $type) {
             $currentValue = $this->value;
-            $this->value = new RuleValueList($type, $this->lineNumber);
+            $this->value = new RuleValueList($type, $this->getLineNumber());
             if ($currentValue) {
                 $this->value->addListComponent($currentValue);
             }
