@@ -622,9 +622,12 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 classDiagram
     direction LR
 
-    %% Start of the part generated from the PHP code using tasuku43/mermaid-class-diagram
+    %% Start of the part originally generated from the PHP code using tasuku43/mermaid-class-diagram
 
     class Renderable {
+        <<interface>>
+    }
+    class CSSListItem {
         <<interface>>
     }
     class DeclarationBlock {
@@ -715,14 +718,14 @@ classDiagram
     }
 
     RuleSet <|-- DeclarationBlock: inheritance
-    Renderable <|.. RuleSet: realization
-    Commentable <|.. RuleSet: realization
+    Renderable <|-- CSSListItem: inheritance
+    Commentable <|-- CSSListItem: inheritance
+    CSSListItem <|.. RuleSet: realization
     RuleSet <|-- AtRuleSet: inheritance
     AtRule <|.. AtRuleSet: realization
     Renderable <|.. Selector: realization
     Selector <|-- KeyframeSelector: inheritance
-    Renderable <|-- AtRule: inheritance
-    Commentable <|-- AtRule: inheritance
+    CSSListItem <|-- AtRule: inheritance
     AtRule <|.. Charset: realization
     AtRule <|.. Import: realization
     AtRule <|.. CSSNamespace: realization
@@ -734,8 +737,7 @@ classDiagram
     SourceException <|-- UnexpectedTokenException: inheritance
     CSSList <|-- CSSBlockList: inheritance
     CSSBlockList <|-- Document: inheritance
-    Renderable <|.. CSSList: realization
-    Commentable <|.. CSSList: realization
+    CSSListItem <|.. CSSList: realization
     CSSList <|-- KeyFrame: inheritance
     AtRule <|.. KeyFrame: realization
     CSSBlockList <|-- AtRuleBlockList: inheritance
