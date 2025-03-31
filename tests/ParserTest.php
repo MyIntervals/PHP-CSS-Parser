@@ -980,11 +980,11 @@ body {background-color: red;}';
             // So a more explicit type check is required.
             // TODO: tidy this up when an interface with `getLineNo()` is added.
             if (
-                !$contentItem instanceof Charset &&
-                !$contentItem instanceof CSSList &&
-                !$contentItem instanceof CSSNamespace &&
-                !$contentItem instanceof Import &&
-                !$contentItem instanceof RuleSet
+                !$contentItem instanceof Charset
+                && !$contentItem instanceof CSSList
+                && !$contentItem instanceof CSSNamespace
+                && !$contentItem instanceof Import
+                && !$contentItem instanceof RuleSet
             ) {
                 self::fail('Content item is not of an expected type.  It\'s a `' . \get_class($contentItem) . '`.');
             }
@@ -992,8 +992,8 @@ body {background-color: red;}';
             if ($contentItem instanceof KeyFrame) {
                 foreach ($contentItem->getContents() as $block) {
                     if (
-                        !$block instanceof CSSList &&
-                        !$block instanceof RuleSet
+                        !$block instanceof CSSList
+                        && !$block instanceof RuleSet
                     ) {
                         self::fail(
                             'KeyFrame content item is not of an expected type.  It\'s a `' . \get_class($block) . '`.'

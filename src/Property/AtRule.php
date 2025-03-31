@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\Property;
 
-use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSList\CSSListItem;
-use Sabberworm\CSS\Renderable;
 
 /**
  * Note that `CSSListItem` extends both `Commentable` and `Renderable`,

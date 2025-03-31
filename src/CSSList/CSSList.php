@@ -15,7 +15,6 @@ use Sabberworm\CSS\Property\Charset;
 use Sabberworm\CSS\Property\CSSNamespace;
 use Sabberworm\CSS\Property\Import;
 use Sabberworm\CSS\Property\Selector;
-use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\RuleSet\AtRuleSet;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\RuleSet\RuleSet;
