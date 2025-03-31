@@ -9,7 +9,7 @@ use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\Tests\Unit\Comment\Fixtures\ConcreteCommentContainer;
-use TRegx\DataProvider\DataProviders;
+use TRegx\PhpUnit\DataProviders\DataProvider;
 
 /**
  * @covers \Sabberworm\CSS\Comment\CommentContainer
@@ -114,19 +114,19 @@ final class CommentContainerTest extends TestCase
      * This provider crosses two comment arrays (0, 1 or 2 comments) with different comments,
      * so that all combinations can be tested.
      *
-     * @return array<non-empty-string, array{0: list<Comment>, 1: list<Comment>}>
+     * @return DataProvider<non-empty-string, array{0: list<Comment>, 1: list<Comment>}>
      */
-    public function provideTwoDistinctCommentArrays(): array
+    public function provideTwoDistinctCommentArrays(): DataProvider
     {
-        return DataProviders::cross($this->provideCommentArray(), $this->provideAlternativeCommentArray());
+        return DataProvider::cross($this->provideCommentArray(), $this->provideAlternativeCommentArray());
     }
 
     /**
-     * @return array<non-empty-string, array{0: list<Comment>, 1: non-empty-list<Comment>}>
+     * @return DataProvider<non-empty-string, array{0: list<Comment>, 1: non-empty-list<Comment>}>
      */
-    public function provideTwoDistinctCommentArraysWithSecondNonempty(): array
+    public function provideTwoDistinctCommentArraysWithSecondNonempty(): DataProvider
     {
-        return DataProviders::cross($this->provideCommentArray(), $this->provideAlternativeNonemptyCommentArray());
+        return DataProvider::cross($this->provideCommentArray(), $this->provideAlternativeNonemptyCommentArray());
     }
 
     private static function createContainsConstraint(Comment $comment): TraversableContains

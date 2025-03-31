@@ -6,7 +6,7 @@ namespace Sabberworm\CSS\Tests\Unit\Position;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Tests\Unit\Position\Fixtures\ConcretePosition;
-use TRegx\DataProvider\DataProviders;
+use TRegx\PhpUnit\DataProviders\DataProvider;
 
 /**
  * @covers \Sabberworm\CSS\Position\Position
@@ -157,11 +157,11 @@ final class PositionTest extends TestCase
     }
 
     /**
-     * @return array<non-empty-string, array{0: int<1, max>, 1: int<0, max>}>
+     * @return DataProvider<non-empty-string, array{0: int<1, max>, 1: int<0, max>}>
      */
-    public function provideLineAndColumnNumber(): array
+    public function provideLineAndColumnNumber(): DataProvider
     {
-        return DataProviders::cross($this->provideLineNumber(), $this->provideColumnNumber());
+        return DataProvider::cross($this->provideLineNumber(), $this->provideColumnNumber());
     }
 
     /**
