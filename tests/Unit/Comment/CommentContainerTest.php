@@ -129,7 +129,7 @@ final class CommentContainerTest extends TestCase
         return DataProviders::cross($this->provideCommentArray(), $this->provideAlternativeNonemptyCommentArray());
     }
 
-    private static function createContainsContstraint(Comment $comment): TraversableContains
+    private static function createContainsConstraint(Comment $comment): TraversableContains
     {
         return new TraversableContains($comment);
     }
@@ -139,9 +139,9 @@ final class CommentContainerTest extends TestCase
      *
      * @return non-empty-list<TraversableContains>
      */
-    private static function createContainsContstraints(array $comments): array
+    private static function createContainsConstraints(array $comments): array
     {
-        return \array_map([self::class, 'createContainsContstraint'], $comments);
+        return \array_map([self::class, 'createContainsConstraint'], $comments);
     }
 
     /**
@@ -160,7 +160,7 @@ final class CommentContainerTest extends TestCase
 
         self::assertThat(
             $this->subject->getComments(),
-            LogicalAnd::fromConstraints(...self::createContainsContstraints($originalComments))
+            LogicalAnd::fromConstraints(...self::createContainsConstraints($originalComments))
         );
     }
 
@@ -180,7 +180,7 @@ final class CommentContainerTest extends TestCase
 
         self::assertThat(
             $this->subject->getComments(),
-            LogicalAnd::fromConstraints(...self::createContainsContstraints($commentsToAdd))
+            LogicalAnd::fromConstraints(...self::createContainsConstraints($commentsToAdd))
         );
     }
 
