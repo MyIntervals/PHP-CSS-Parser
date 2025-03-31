@@ -627,6 +627,9 @@ classDiagram
     class Renderable {
         <<interface>>
     }
+    class Positionable {
+        <<interface>>
+    }
     class CSSListItem {
         <<interface>>
     }
@@ -720,23 +723,30 @@ classDiagram
     RuleSet <|-- DeclarationBlock: inheritance
     Renderable <|-- CSSListItem: inheritance
     Commentable <|-- CSSListItem: inheritance
+    Positionable <|.. RuleSet: realization
     CSSListItem <|.. RuleSet: realization
     RuleSet <|-- AtRuleSet: inheritance
     AtRule <|.. AtRuleSet: realization
     Renderable <|.. Selector: realization
     Selector <|-- KeyframeSelector: inheritance
     CSSListItem <|-- AtRule: inheritance
+    Positionable <|.. Charset: realization
     AtRule <|.. Charset: realization
+    Positionable <|.. Import: realization
     AtRule <|.. Import: realization
+    Positionable <|.. CSSNamespace: realization
     AtRule <|.. CSSNamespace: realization
     Renderable <|.. Rule: realization
+    Positionable <|.. Rule: realization
     Commentable <|.. Rule: realization
     SourceException <|-- OutputException: inheritance
     UnexpectedTokenException <|-- UnexpectedEOFException: inheritance
     Exception <|-- SourceException: inheritance
+    Positionable <|.. SourceException: realization
     SourceException <|-- UnexpectedTokenException: inheritance
     CSSList <|-- CSSBlockList: inheritance
     CSSBlockList <|-- Document: inheritance
+    Positionable <|.. CSSList: realization
     CSSListItem <|.. CSSList: realization
     CSSList <|-- KeyFrame: inheritance
     AtRule <|.. KeyFrame: realization
@@ -749,12 +759,14 @@ classDiagram
     CSSFunction <|-- CalcFunction: inheritance
     ValueList <|-- LineName: inheritance
     Renderable <|.. Value: realization
+    Positionable <|.. Value: realization
     PrimitiveValue <|-- Size: inheritance
     PrimitiveValue <|-- CSSString: inheritance
     Value <|-- PrimitiveValue: inheritance
     ValueList <|-- CSSFunction: inheritance
     ValueList <|-- RuleValueList: inheritance
     Renderable <|.. Comment: realization
+    Positionable <|.. Comment: realization
 
     %% end of the generated part
 
