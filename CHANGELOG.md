@@ -7,9 +7,15 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- Add `ParserState::consumeWhiteSpaceWithComments()` method (#670)
+
 ### Changed
 
+- Redirect `ParserState::consumeWhiteSpace()` to `ParserState::consumeWhiteSpaceWithComments()` (#670)
+
 ### Deprecated
+
+- Deprecate `ParserState::consumeWhiteSpace()` in favor of `ParserState::consumeWhiteSpaceWithComments()` (#670)
 
 ### Removed
 
