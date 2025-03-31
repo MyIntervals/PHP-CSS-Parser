@@ -42,10 +42,12 @@ final class CommentContainerTest extends TestCase
         return [
             'no comment' => [[]],
             'one comment' => [[new Comment('Is this really a spoon?')]],
-            'two comments' => [[
-                new Comment('I’m a teapot.'),
-                new Comment('I’m a cafetière.'),
-            ]],
+            'two comments' => [
+                [
+                    new Comment('I’m a teapot.'),
+                    new Comment('I’m a cafetière.'),
+                ],
+            ],
         ];
     }
 
@@ -87,10 +89,12 @@ final class CommentContainerTest extends TestCase
         return [
             'no comment' => [[]],
             'one comment' => [[new Comment('Can I eat it with my hands?')]],
-            'two comments' => [[
-                new Comment('I’m a beer barrel.'),
-                new Comment('I’m a vineyard.'),
-            ]],
+            'two comments' => [
+                [
+                    new Comment('I’m a beer barrel.'),
+                    new Comment('I’m a vineyard.'),
+                ],
+            ],
         ];
     }
 

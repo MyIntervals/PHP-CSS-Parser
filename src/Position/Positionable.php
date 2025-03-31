@@ -17,9 +17,9 @@ interface Positionable
     public function getLineNumber(): ?int;
 
     /**
-     * @deprecated in version 9.0.0, will be removed in v10.0. Use `getLineNumber()` instead.
-     *
      * @return int<0, max>
+     *
+     * @deprecated in version 9.0.0, will be removed in v10.0. Use `getLineNumber()` instead.
      */
     public function getLineNo(): int;
 
@@ -29,9 +29,9 @@ interface Positionable
     public function getColumnNumber(): ?int;
 
     /**
-     * @deprecated in version 9.0.0, will be removed in v10.0. Use `getColumnNumber()` instead.
-     *
      * @return int<0, max>
+     *
+     * @deprecated in version 9.0.0, will be removed in v10.0. Use `getColumnNumber()` instead.
      */
     public function getColNo(): int;
 
