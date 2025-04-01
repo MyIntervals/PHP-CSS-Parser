@@ -8,27 +8,24 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\Position\Position;
+use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Renderable;
 
 /**
  * Abstract base class for specific classes of CSS values: `Size`, `Color`, `CSSString` and `URL`, and another
  * abstract subclass `ValueList`.
  */
-abstract class Value implements Renderable
+abstract class Value implements Positionable, Renderable
 {
-    /**
-     * @var int<0, max>
-     *
-     * @internal since 8.8.0
-     */
-    protected $lineNumber;
+    use Position;
 
     /**
      * @param int<0, max> $lineNumber
      */
     public function __construct(int $lineNumber = 0)
     {
-        $this->lineNumber = $lineNumber;
+        $this->setPosition($lineNumber);
     }
 
     /**
@@ -210,13 +207,5 @@ abstract class Value implements Renderable
         } while (\strlen($range) < $codepointMaxLength && \preg_match('/[A-Fa-f0-9\\?-]/', $parserState->peek()));
 
         return "U+{$range}";
-    }
-
-    /**
-     * @return int<0, max>
-     */
-    public function getLineNo(): int
-    {
-        return $this->lineNumber;
     }
 }

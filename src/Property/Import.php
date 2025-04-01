@@ -6,14 +6,17 @@ namespace Sabberworm\CSS\Property;
 
 use Sabberworm\CSS\Comment\CommentContainer;
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Position\Position;
+use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Value\URL;
 
 /**
  * Class representing an `@import` rule.
  */
-class Import implements AtRule
+class Import implements AtRule, Positionable
 {
     use CommentContainer;
+    use Position;
 
     /**
      * @var URL
@@ -26,28 +29,13 @@ class Import implements AtRule
     private $mediaQuery;
 
     /**
-     * @var int<0, max>
-     *
-     * @internal since 8.8.0
-     */
-    protected $lineNumber;
-
-    /**
      * @param int<0, max> $lineNumber
      */
     public function __construct(URL $location, ?string $mediaQuery, int $lineNumber = 0)
     {
         $this->location = $location;
         $this->mediaQuery = $mediaQuery;
-        $this->lineNumber = $lineNumber;
-    }
-
-    /**
-     * @return int<0, max>
-     */
-    public function getLineNo(): int
-    {
-        return $this->lineNumber;
+        $this->setPosition($lineNumber);
     }
 
     public function setLocation(URL $location): void

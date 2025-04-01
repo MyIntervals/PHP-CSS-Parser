@@ -6,15 +6,18 @@ namespace Sabberworm\CSS\Property;
 
 use Sabberworm\CSS\Comment\CommentContainer;
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Position\Position;
+use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Value\CSSString;
 use Sabberworm\CSS\Value\URL;
 
 /**
  * `CSSNamespace` represents an `@namespace` rule.
  */
-class CSSNamespace implements AtRule
+class CSSNamespace implements AtRule, Positionable
 {
     use CommentContainer;
+    use Position;
 
     /**
      * @var CSSString|URL
@@ -27,11 +30,6 @@ class CSSNamespace implements AtRule
     private $prefix;
 
     /**
-     * @var int<0, max> $lineNumber
-     */
-    private $lineNumber;
-
-    /**
      * @param CSSString|URL $url
      * @param int<0, max> $lineNumber
      */
@@ -39,15 +37,7 @@ class CSSNamespace implements AtRule
     {
         $this->url = $url;
         $this->prefix = $prefix;
-        $this->lineNumber = $lineNumber;
-    }
-
-    /**
-     * @return int<0, max>
-     */
-    public function getLineNo(): int
-    {
-        return $this->lineNumber;
+        $this->setPosition($lineNumber);
     }
 
     /**

@@ -10,6 +10,8 @@ use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\Position\Position;
+use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Rule\Rule;
 
 /**
@@ -24,9 +26,10 @@ use Sabberworm\CSS\Rule\Rule;
  * Note that `CSSListItem` extends both `Commentable` and `Renderable`,
  * so those interfaces must also be implemented by concrete subclasses.
  */
-abstract class RuleSet implements CSSListItem
+abstract class RuleSet implements CSSListItem, Positionable
 {
     use CommentContainer;
+    use Position;
 
     /**
      * the rules in this rule set, using the property name as the key,
@@ -37,18 +40,11 @@ abstract class RuleSet implements CSSListItem
     private $rules = [];
 
     /**
-     * @var int<0, max>
-     *
-     * @internal since 8.8.0
-     */
-    protected $lineNumber;
-
-    /**
      * @param int<0, max> $lineNumber
      */
     public function __construct(int $lineNumber = 0)
     {
-        $this->lineNumber = $lineNumber;
+        $this->setPosition($lineNumber);
     }
 
     /**
@@ -95,14 +91,6 @@ abstract class RuleSet implements CSSListItem
             }
         }
         $parserState->consume('}');
-    }
-
-    /**
-     * @return int<0, max>
-     */
-    public function getLineNo(): int
-    {
-        return $this->lineNumber;
     }
 
     public function addRule(Rule $ruleToAdd, ?Rule $sibling = null): void

@@ -4,30 +4,22 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\Parsing;
 
-class SourceException extends \Exception
+use Sabberworm\CSS\Position\Position;
+use Sabberworm\CSS\Position\Positionable;
+
+class SourceException extends \Exception implements Positionable
 {
-    /**
-     * @var int<0, max>
-     */
-    private $lineNumber;
+    use Position;
 
     /**
      * @param int<0, max> $lineNumber
      */
     public function __construct(string $message, int $lineNumber = 0)
     {
-        $this->lineNumber = $lineNumber;
+        $this->setPosition($lineNumber);
         if ($lineNumber !== 0) {
             $message .= " [line no: $lineNumber]";
         }
         parent::__construct($message);
-    }
-
-    /**
-     * @return int<0, max>
-     */
-    public function getLineNo(): int
-    {
-        return $this->lineNumber;
     }
 }
