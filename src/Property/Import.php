@@ -4,13 +4,17 @@ namespace Sabberworm\CSS\Property;
 
 use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Position\Position;
+use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Value\URL;
 
 /**
  * Class representing an `@import` rule.
  */
-class Import implements AtRule
+class Import implements AtRule, Positionable
 {
+    use Position;
+
     /**
      * @var URL
      */
@@ -20,13 +24,6 @@ class Import implements AtRule
      * @var string
      */
     private $sMediaQuery;
-
-    /**
-     * @var int
-     *
-     * @internal since 8.8.0
-     */
-    protected $iLineNo;
 
     /**
      * @var array<array-key, Comment>
@@ -44,16 +41,8 @@ class Import implements AtRule
     {
         $this->oLocation = $oLocation;
         $this->sMediaQuery = $sMediaQuery;
-        $this->iLineNo = $iLineNo;
+        $this->setPosition($iLineNo);
         $this->aComments = [];
-    }
-
-    /**
-     * @return int
-     */
-    public function getLineNo()
-    {
-        return $this->iLineNo;
     }
 
     /**

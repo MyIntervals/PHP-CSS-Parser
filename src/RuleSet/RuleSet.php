@@ -8,6 +8,8 @@ use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\Position\Position;
+use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Rule\Rule;
 
@@ -20,8 +22,10 @@ use Sabberworm\CSS\Rule\Rule;
  * If you want to manipulate a `RuleSet`, use the methods `addRule(Rule $rule)`, `getRules()` and `removeRule($rule)`
  * (which accepts either a `Rule` or a rule name; optionally suffixed by a dash to remove all related rules).
  */
-abstract class RuleSet implements Renderable, Commentable
+abstract class RuleSet implements Commentable, Positionable, Renderable
 {
+    use Position;
+
     /**
      * the rules in this rule set, using the property name as the key,
      * with potentially multiple rules per property name.
@@ -29,13 +33,6 @@ abstract class RuleSet implements Renderable, Commentable
      * @var array<string, array<int<0, max>, Rule>>
      */
     private $aRules;
-
-    /**
-     * @var int
-     *
-     * @internal since 8.8.0
-     */
-    protected $iLineNo;
 
     /**
      * @var array<array-key, Comment>
@@ -50,7 +47,7 @@ abstract class RuleSet implements Renderable, Commentable
     public function __construct($iLineNo = 0)
     {
         $this->aRules = [];
-        $this->iLineNo = $iLineNo;
+        $this->setPosition($iLineNo);
         $this->aComments = [];
     }
 
@@ -100,14 +97,6 @@ abstract class RuleSet implements Renderable, Commentable
             }
         }
         $oParserState->consume('}');
-    }
-
-    /**
-     * @return int
-     */
-    public function getLineNo()
-    {
-        return $this->iLineNo;
     }
 
     /**
