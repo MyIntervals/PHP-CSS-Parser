@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\CSSList;
 
 use Sabberworm\CSS\Comment\CommentContainer;
+use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
@@ -34,7 +35,7 @@ use Sabberworm\CSS\Value\Value;
  * Note that `CSSListItem` extends both `Commentable` and `Renderable`,
  * so those interfaces must also be implemented by concrete subclasses.
  */
-abstract class CSSList implements CSSListItem, Positionable
+abstract class CSSList implements CSSElement, CSSListItem, Positionable
 {
     use CommentContainer;
     use Position;
