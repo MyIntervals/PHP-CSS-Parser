@@ -10,6 +10,7 @@ Please also have a look at our
 
 ### Added
 
+- Interface `CSSElement` (#1231)
 - Methods `getLineNumber` and `getColumnNumber` which return a nullable `int`
   for the following classes:
   `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
