@@ -26,7 +26,7 @@ trait Position
     /**
      * @return int<1, max>|null
      */
-    public function getLineNumber(): ?int
+    public function getLineNumber()
     {
         return $this->lineNumber;
     }
@@ -34,15 +34,17 @@ trait Position
     /**
      * @return int<0, max>
      */
-    public function getLineNo(): int
+    public function getLineNo()
     {
-        return $this->getLineNumber() ?? 0;
+        $lineNumber = $this->getLineNumber();
+
+        return $lineNumber !== null ? $lineNumber : 0;
     }
 
     /**
      * @return int<0, max>|null
      */
-    public function getColumnNumber(): ?int
+    public function getColumnNumber()
     {
         return $this->columnNumber;
     }
@@ -50,16 +52,18 @@ trait Position
     /**
      * @return int<0, max>
      */
-    public function getColNo(): int
+    public function getColNo()
     {
-        return $this->getColumnNumber() ?? 0;
+        $columnNumber = $this->getColumnNumber();
+
+        return $columnNumber !== null ? $columnNumber : 0;
     }
 
     /**
      * @param int<0, max>|null $lineNumber
      * @param int<0, max>|null $columnNumber
      */
-    public function setPosition(?int $lineNumber, ?int $columnNumber = null): void
+    public function setPosition($lineNumber, $columnNumber = null)
     {
         // The conditional is for backwards compatibility (backcompat); `0` will not be allowed in future.
         $this->lineNumber = $lineNumber !== 0 ? $lineNumber : null;

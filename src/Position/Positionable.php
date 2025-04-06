@@ -14,26 +14,26 @@ interface Positionable
     /**
      * @return int<1, max>|null
      */
-    public function getLineNumber(): ?int;
+    public function getLineNumber();
 
     /**
      * @deprecated in version 9.0.0, will be removed in v10.0. Use `getLineNumber()` instead.
      *
      * @return int<0, max>
      */
-    public function getLineNo(): int;
+    public function getLineNo();
 
     /**
      * @return int<0, max>|null
      */
-    public function getColumnNumber(): ?int;
+    public function getColumnNumber();
 
     /**
      * @deprecated in version 9.0.0, will be removed in v10.0. Use `getColumnNumber()` instead.
      *
      * @return int<0, max>
      */
-    public function getColNo(): int;
+    public function getColNo();
 
     /**
      * @param int<0, max>|null $lineNumber
@@ -41,5 +41,5 @@ interface Positionable
      *        Use `null` instead when no line number is available.
      * @param int<0, max>|null $columnNumber
      */
-    public function setPosition(?int $lineNumber, ?int $columnNumber = null): void;
+    public function setPosition($lineNumber, $columnNumber = null);
 }

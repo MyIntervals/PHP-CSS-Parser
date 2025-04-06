@@ -18,7 +18,10 @@ final class PositionTest extends TestCase
      */
     private $subject;
 
-    protected function setUp(): void
+    /**
+     * The method signature of `setUp()` is not compatible with all PHP and PHPUnit versions supported.
+     */
+    protected function doSetUp()
     {
         $this->subject = new ConcretePosition();
     }
@@ -26,23 +29,27 @@ final class PositionTest extends TestCase
     /**
      * @test
      */
-    public function getLineNumberInitiallyReturnsNull(): void
+    public function getLineNumberInitiallyReturnsNull()
     {
+        $this->doSetUp();
+
         self::assertNull($this->subject->getLineNumber());
     }
 
     /**
      * @test
      */
-    public function getColumnNumberInitiallyReturnsNull(): void
+    public function getColumnNumberInitiallyReturnsNull()
     {
+        $this->doSetUp();
+
         self::assertNull($this->subject->getColumnNumber());
     }
 
     /**
      * @return array<non-empty-string, array{0: int<1, max>}>
      */
-    public function provideLineNumber(): array
+    public function provideLineNumber()
     {
         return [
             'line 1' => [1],
@@ -57,8 +64,10 @@ final class PositionTest extends TestCase
      *
      * @dataProvider provideLineNumber
      */
-    public function setPositionOnVirginSetsLineNumber(int $lineNumber): void
+    public function setPositionOnVirginSetsLineNumber($lineNumber)
     {
+        $this->doSetUp();
+
         $this->subject->setPosition($lineNumber);
 
         self::assertSame($lineNumber, $this->subject->getLineNumber());
@@ -71,8 +80,10 @@ final class PositionTest extends TestCase
      *
      * @dataProvider provideLineNumber
      */
-    public function setPositionSetsNewLineNumber(int $lineNumber): void
+    public function setPositionSetsNewLineNumber($lineNumber)
     {
+        $this->doSetUp();
+
         $this->subject->setPosition(99);
 
         $this->subject->setPosition($lineNumber);
@@ -83,8 +94,10 @@ final class PositionTest extends TestCase
     /**
      * @test
      */
-    public function setPositionWithNullClearsLineNumber(): void
+    public function setPositionWithNullClearsLineNumber()
     {
+        $this->doSetUp();
+
         $this->subject->setPosition(99);
 
         $this->subject->setPosition(null);
@@ -95,7 +108,7 @@ final class PositionTest extends TestCase
     /**
      * @return array<non-empty-string, array{0: int<0, max>}>
      */
-    public function provideColumnNumber(): array
+    public function provideColumnNumber()
     {
         return [
             'column 0' => [0],
@@ -111,8 +124,10 @@ final class PositionTest extends TestCase
      *
      * @dataProvider provideColumnNumber
      */
-    public function setPositionOnVirginSetsColumnNumber(int $columnNumber): void
+    public function setPositionOnVirginSetsColumnNumber($columnNumber)
     {
+        $this->doSetUp();
+
         $this->subject->setPosition(1, $columnNumber);
 
         self::assertSame($columnNumber, $this->subject->getColumnNumber());
@@ -121,10 +136,14 @@ final class PositionTest extends TestCase
     /**
      * @test
      *
+     * @param int $columnNumber
+     *
      * @dataProvider provideColumnNumber
      */
-    public function setPositionSetsNewColumnNumber(int $columnNumber): void
+    public function setPositionSetsNewColumnNumber($columnNumber)
     {
+        $this->doSetUp();
+
         $this->subject->setPosition(1, 99);
 
         $this->subject->setPosition(2, $columnNumber);
@@ -135,8 +154,10 @@ final class PositionTest extends TestCase
     /**
      * @test
      */
-    public function setPositionWithoutColumnNumberClearsColumnNumber(): void
+    public function setPositionWithoutColumnNumberClearsColumnNumber()
     {
+        $this->doSetUp();
+
         $this->subject->setPosition(1, 99);
 
         $this->subject->setPosition(2);
@@ -147,8 +168,10 @@ final class PositionTest extends TestCase
     /**
      * @test
      */
-    public function setPositionWithNullForColumnNumberClearsColumnNumber(): void
+    public function setPositionWithNullForColumnNumberClearsColumnNumber()
     {
+        $this->doSetUp();
+
         $this->subject->setPosition(1, 99);
 
         $this->subject->setPosition(2, null);
@@ -159,7 +182,7 @@ final class PositionTest extends TestCase
     /**
      * @return array<non-empty-string, array{0: int<1, max>, 1: int<0, max>}>
      */
-    public function provideLineAndColumnNumber(): array
+    public function provideLineAndColumnNumber()
     {
         return DataProviders::cross($this->provideLineNumber(), $this->provideColumnNumber());
     }
@@ -167,10 +190,15 @@ final class PositionTest extends TestCase
     /**
      * @test
      *
+     * @param int $lineNumber
+     * @param int $columnNumber
+     *
      * @dataProvider provideLineAndColumnNumber
      */
-    public function setPositionOnVirginSetsLineAndColumnNumber(int $lineNumber, int $columnNumber): void
+    public function setPositionOnVirginSetsLineAndColumnNumber($lineNumber, $columnNumber)
     {
+        $this->doSetUp();
+
         $this->subject->setPosition($lineNumber, $columnNumber);
 
         self::assertSame($lineNumber, $this->subject->getLineNumber());
@@ -180,10 +208,15 @@ final class PositionTest extends TestCase
     /**
      * @test
      *
+     * @param int $lineNumber
+     * @param int $columnNumber
+     *
      * @dataProvider provideLineAndColumnNumber
      */
-    public function setPositionSetsNewLineAndColumnNumber(int $lineNumber, int $columnNumber): void
+    public function setPositionSetsNewLineAndColumnNumber($lineNumber, $columnNumber)
     {
+        $this->doSetUp();
+
         $this->subject->setPosition(98, 99);
 
         $this->subject->setPosition($lineNumber, $columnNumber);
