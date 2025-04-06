@@ -434,8 +434,8 @@ class DeclarationBlock extends RuleSet
             'background-repeat' => ['repeat'],
             'background-attachment' => ['scroll'],
             'background-position' => [
-                new Size(0, '%', false, $this->iLineNo),
-                new Size(0, '%', false, $this->iLineNo),
+                new Size(0, '%', false, $this->getLineNumber()),
+                new Size(0, '%', false, $this->getLineNumber()),
             ],
         ];
         $mRuleValue = $oRule->getValue();
@@ -801,7 +801,7 @@ class DeclarationBlock extends RuleSet
                 $aLHValues = $mRuleValue->getListComponents();
             }
             if ($aLHValues[0] !== 'normal') {
-                $val = new RuleValueList('/', $this->iLineNo);
+                $val = new RuleValueList('/', $this->getLineNumber());
                 $val->addListComponent($aFSValues[0]);
                 $val->addListComponent($aLHValues[0]);
                 $oNewRule->addValue($val);
@@ -817,7 +817,7 @@ class DeclarationBlock extends RuleSet
         } else {
             $aFFValues = $mRuleValue->getListComponents();
         }
-        $oFFValue = new RuleValueList(',', $this->iLineNo);
+        $oFFValue = new RuleValueList(',', $this->getLineNumber());
         $oFFValue->setListComponents($aFFValues);
         $oNewRule->addValue($oFFValue);
 
