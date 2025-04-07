@@ -27,7 +27,8 @@
         "ext-iconv": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "5.7.27 || 6.5.14 || 7.5.20 || 8.5.41"
+        "phpunit/phpunit": "5.7.27 || 6.5.14 || 7.5.20 || 8.5.41",
+        "rawr/cross-data-providers": "^2.0.0"
     },
     "suggest": {
         "ext-mbstring": "for parsing UTF-8 CSS"

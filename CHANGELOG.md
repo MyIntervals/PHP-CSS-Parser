@@ -7,9 +7,28 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- Methods `getLineNumber` and `getColumnNumber` which return a nullable `int`
+  for the following classes:
+  `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
+  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225)
+- `Positionable` interface for CSS items that may have a position
+  (line and perhaps column number) in the parsed CSS (#1221)
+
 ### Changed
 
+- Implement `Positionable` in the following CSS item classes:
+  `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
+  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225)
+
 ### Deprecated
+
+- `getLineNo()` is deprecated in these classes (use `getLineNumber()` instead):
+  `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
+  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225, #1233)
+- `Rule::getColNo()` is deprecated (use `getColumnNumber()` instead)
+  (#1225, #1233)
+- Providing zero as the line number argument to `Rule::setPosition()` is
+  deprecated (pass `null` instead if there is no line number) (#1225, #1233)
 
 ### Removed
 
