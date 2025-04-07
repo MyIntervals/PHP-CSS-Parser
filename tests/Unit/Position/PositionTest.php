@@ -184,6 +184,11 @@ final class PositionTest extends TestCase
      */
     public function provideLineAndColumnNumber()
     {
+        if (!\class_exists(DataProviders::class)) {
+            self::markTestSkipped('`DataProviders` class is not available');
+            return [];
+        }
+
         return DataProviders::cross($this->provideLineNumber(), $this->provideColumnNumber());
     }
 
