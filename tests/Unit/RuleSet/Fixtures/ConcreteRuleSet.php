@@ -9,6 +9,9 @@ use Sabberworm\CSS\RuleSet\RuleSet;
 
 final class ConcreteRuleSet extends RuleSet
 {
+    /**
+     * @return never
+     */
     public function render(OutputFormat $outputFormat): string
     {
         throw new \BadMethodCallException('Nothing to see here :/', 1744067015);
