@@ -6,6 +6,7 @@ namespace Sabberworm\CSS\Tests\Unit\RuleSet;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSElement;
+use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\Tests\Unit\RuleSet\Fixtures\ConcreteRuleSet;
 
 /**
@@ -14,12 +15,28 @@ use Sabberworm\CSS\Tests\Unit\RuleSet\Fixtures\ConcreteRuleSet;
 final class RuleSetTest extends TestCase
 {
     /**
+     * @var ConcreteRuleSet
+     */
+    private $subject;
+
+    protected function setUp(): void
+    {
+        $this->subject = new ConcreteRuleSet();
+    }
+
+    /**
      * @test
      */
     public function implementsCSSElement(): void
     {
-        $subject = new ConcreteRuleSet();
+        self::assertInstanceOf(CSSElement::class, $this->subject);
+    }
 
-        self::assertInstanceOf(CSSElement::class, $subject);
+    /**
+     * @test
+     */
+    public function implementsCSSListItem(): void
+    {
+        self::assertInstanceOf(CSSListItem::class, $this->subject);
     }
 }
