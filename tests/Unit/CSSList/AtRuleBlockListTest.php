@@ -9,6 +9,7 @@ use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSList\AtRuleBlockList;
 use Sabberworm\CSS\CSSList\CSSBlockList;
 use Sabberworm\CSS\CSSList\CSSList;
+use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Renderable;
 
 /**
@@ -25,7 +26,7 @@ final class AtRuleBlockListTest extends TestCase
     {
         $subject = new AtRuleBlockList('supports');
 
-        self::assertInstanceOf(AtRuleBlockList::class, $subject);
+        self::assertInstanceOf(AtRule::class, $subject);
     }
 
     /**
