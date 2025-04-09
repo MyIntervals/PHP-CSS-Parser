@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\RuleSet;
 
 use Sabberworm\CSS\Comment\CommentContainer;
+use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
@@ -26,7 +27,7 @@ use Sabberworm\CSS\Rule\Rule;
  * Note that `CSSListItem` extends both `Commentable` and `Renderable`,
  * so those interfaces must also be implemented by concrete subclasses.
  */
-abstract class RuleSet implements CSSListItem, Positionable
+abstract class RuleSet implements CSSElement, CSSListItem, Positionable
 {
     use CommentContainer;
     use Position;

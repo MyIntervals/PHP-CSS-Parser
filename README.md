@@ -624,6 +624,9 @@ classDiagram
 
     %% Start of the part originally generated from the PHP code using tasuku43/mermaid-class-diagram
 
+    class CSSElement {
+        <<interface>>
+    }
     class Renderable {
         <<interface>>
     }
@@ -721,9 +724,11 @@ classDiagram
     }
 
     RuleSet <|-- DeclarationBlock: inheritance
+    Renderable <|-- CSSElement: inheritance
     Renderable <|-- CSSListItem: inheritance
     Commentable <|-- CSSListItem: inheritance
     Positionable <|.. RuleSet: realization
+    CSSElement <|.. RuleSet: realization
     CSSListItem <|.. RuleSet: realization
     RuleSet <|-- AtRuleSet: inheritance
     AtRule <|.. AtRuleSet: realization
@@ -736,7 +741,7 @@ classDiagram
     AtRule <|.. Import: realization
     Positionable <|.. CSSNamespace: realization
     AtRule <|.. CSSNamespace: realization
-    Renderable <|.. Rule: realization
+    CSSElement <|.. Rule: realization
     Positionable <|.. Rule: realization
     Commentable <|.. Rule: realization
     SourceException <|-- OutputException: inheritance
@@ -746,6 +751,7 @@ classDiagram
     SourceException <|-- UnexpectedTokenException: inheritance
     CSSList <|-- CSSBlockList: inheritance
     CSSBlockList <|-- Document: inheritance
+    CSSElement <|.. CSSList: realization
     Positionable <|.. CSSList: realization
     CSSListItem <|.. CSSList: realization
     CSSList <|-- KeyFrame: inheritance
@@ -758,7 +764,7 @@ classDiagram
     Value <|-- ValueList: inheritance
     CSSFunction <|-- CalcFunction: inheritance
     ValueList <|-- LineName: inheritance
-    Renderable <|.. Value: realization
+    CSSElement <|.. Value: realization
     Positionable <|.. Value: realization
     PrimitiveValue <|-- Size: inheritance
     PrimitiveValue <|-- CSSString: inheritance

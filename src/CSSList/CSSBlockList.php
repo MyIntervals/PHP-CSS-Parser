@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\CSSList;
 
+use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
@@ -75,7 +76,7 @@ abstract class CSSBlockList extends CSSList
     }
 
     /**
-     * @param CSSList|Rule|RuleSet|Value $element
+     * @param CSSElement|string $element
      * @param list<Value> $result
      */
     protected function allValues(

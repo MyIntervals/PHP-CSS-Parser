@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit\Value;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Settings;
+use Sabberworm\CSS\Tests\Unit\Value\Fixtures\ConcreteValue;
 use Sabberworm\CSS\Value\CSSFunction;
 use Sabberworm\CSS\Value\Value;
 
@@ -24,6 +26,16 @@ final class ValueTest extends TestCase
      * @var list<non-empty-string>
      */
     private const DEFAULT_DELIMITERS = [',', ' ', '/'];
+
+    /**
+     * @test
+     */
+    public function implementsCSSElement(): void
+    {
+        $subject = new ConcreteValue();
+
+        self::assertInstanceOf(CSSElement::class, $subject);
+    }
 
     /**
      * @return array<string, array{0: string}>
