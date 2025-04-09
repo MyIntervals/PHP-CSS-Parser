@@ -154,7 +154,7 @@ final class CSSBlockListTest extends TestCase
     /**
      * @test
      */
-    public function getAllRuleSetsReturnsOneDeclarationBlockDirectlySetAsContent(): void
+    public function getAllRuleSetsReturnsRuleSetFromOneDeclarationBlockDirectlySetAsContent(): void
     {
         $subject = new ConcreteCSSBlockList();
 
@@ -163,7 +163,7 @@ final class CSSBlockListTest extends TestCase
 
         $result = $subject->getAllRuleSets();
 
-        self::assertSame([$declarationBlock], $result);
+        self::assertSame([$declarationBlock->getRuleSet()], $result);
     }
 
     /**
@@ -184,7 +184,7 @@ final class CSSBlockListTest extends TestCase
     /**
      * @test
      */
-    public function getAllRuleSetsReturnsMultipleDeclarationBlocksDirectlySetAsContents(): void
+    public function getAllRuleSetsReturnsRuleSetsFromMultipleDeclarationBlocksDirectlySetAsContents(): void
     {
         $subject = new ConcreteCSSBlockList();
 
@@ -194,7 +194,7 @@ final class CSSBlockListTest extends TestCase
 
         $result = $subject->getAllRuleSets();
 
-        self::assertSame([$declarationBlock1, $declarationBlock2], $result);
+        self::assertSame([$declarationBlock1->getRuleSet(), $declarationBlock2->getRuleSet()], $result);
     }
 
     /**
@@ -216,7 +216,7 @@ final class CSSBlockListTest extends TestCase
     /**
      * @test
      */
-    public function getAllRuleSetsReturnsDeclarationBlocksWithinAtRuleBlockList(): void
+    public function getAllRuleSetsReturnsRuleSetsFromDeclarationBlocksWithinAtRuleBlockList(): void
     {
         $subject = new ConcreteCSSBlockList();
 
@@ -227,7 +227,7 @@ final class CSSBlockListTest extends TestCase
 
         $result = $subject->getAllRuleSets();
 
-        self::assertSame([$declarationBlock], $result);
+        self::assertSame([$declarationBlock->getRuleSet()], $result);
     }
 
     /**

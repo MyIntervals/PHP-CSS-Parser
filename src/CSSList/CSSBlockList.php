@@ -69,6 +69,8 @@ abstract class CSSBlockList extends CSSList
                 $result[] = $item;
             } elseif ($item instanceof CSSBlockList) {
                 $result = \array_merge($result, $item->getAllRuleSets());
+            } elseif ($item instanceof DeclarationBlock) {
+                $result[] = $item->getRuleSet();
             }
         }
 
@@ -89,7 +91,7 @@ abstract class CSSBlockList extends CSSList
             foreach ($element->getContents() as $content) {
                 $this->allValues($content, $result, $searchString, $searchInFunctionArguments);
             }
-        } elseif ($element instanceof RuleSet) {
+        } elseif ($element instanceof RuleSet || $element instanceof DeclarationBlock) {
             foreach ($element->getRules($searchString) as $rule) {
                 $this->allValues($rule, $result, $searchString, $searchInFunctionArguments);
             }
