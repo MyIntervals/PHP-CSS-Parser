@@ -2,6 +2,7 @@
 
 namespace Sabberworm\CSS\CSSList;
 
+use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
@@ -80,7 +81,7 @@ class Document extends CSSBlockList
     /**
      * Returns all `Value` objects found recursively in `Rule`s in the tree.
      *
-     * @param CSSList|RuleSet|string $mElement
+     * @param CSSElement|string $mElement
      *        the `CSSList` or `RuleSet` to start the search from (defaults to the whole document).
      *        If a string is given, it is used as rule name filter.
      * @param bool $bSearchInFunctionArguments whether to also return Value objects used as Function arguments.

@@ -2,19 +2,19 @@
 
 namespace Sabberworm\CSS\Value;
 
+use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
-use Sabberworm\CSS\Renderable;
 
 /**
  * Abstract base class for specific classes of CSS values: `Size`, `Color`, `CSSString` and `URL`, and another
  * abstract subclass `ValueList`.
  */
-abstract class Value implements Positionable, Renderable
+abstract class Value implements CSSElement, Positionable
 {
     use Position;
 
