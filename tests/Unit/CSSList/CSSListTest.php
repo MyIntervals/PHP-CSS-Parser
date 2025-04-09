@@ -7,6 +7,7 @@ namespace Sabberworm\CSS\Tests\Unit\CSSList;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSElement;
+use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Tests\Unit\CSSList\Fixtures\ConcreteCSSList;
@@ -44,6 +45,16 @@ final class CSSListTest extends TestCase
         $subject = new ConcreteCSSList();
 
         self::assertInstanceOf(Commentable::class, $subject);
+    }
+
+    /**
+     * @test
+     */
+    public function implementsCSSListItem(): void
+    {
+        $subject = new ConcreteCSSList();
+
+        self::assertInstanceOf(CSSListItem::class, $subject);
     }
 
     /**

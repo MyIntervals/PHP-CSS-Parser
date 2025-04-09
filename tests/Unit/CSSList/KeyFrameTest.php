@@ -7,6 +7,7 @@ namespace Sabberworm\CSS\Tests\Unit\CSSList;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSList\CSSList;
+use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\CSSList\KeyFrame;
 use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Renderable;
@@ -45,6 +46,16 @@ final class KeyFrameTest extends TestCase
         $subject = new KeyFrame();
 
         self::assertInstanceOf(Commentable::class, $subject);
+    }
+
+    /**
+     * @test
+     */
+    public function implementsCSSListItem(): void
+    {
+        $subject = new KeyFrame();
+
+        self::assertInstanceOf(CSSListItem::class, $subject);
     }
 
     /**
