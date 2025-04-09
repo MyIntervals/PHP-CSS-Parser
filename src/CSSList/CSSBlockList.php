@@ -42,20 +42,6 @@ abstract class CSSBlockList extends CSSList
     }
 
     /**
-     * @param list<DeclarationBlock> $result
-     */
-    protected function allDeclarationBlocks(array &$result): void
-    {
-        foreach ($this->contents as $item) {
-            if ($item instanceof DeclarationBlock) {
-                $result[] = $item;
-            } elseif ($item instanceof CSSBlockList) {
-                $item->allDeclarationBlocks($result);
-            }
-        }
-    }
-
-    /**
      * Returns all `RuleSet` objects recursively found in the tree, no matter how deeply nested the rule sets are.
      *
      * @return list<RuleSet>
@@ -111,9 +97,7 @@ abstract class CSSBlockList extends CSSList
      */
     protected function allSelectors(array &$result, ?string $specificitySearch = null): void
     {
-        $declarationBlocks = [];
-        $this->allDeclarationBlocks($declarationBlocks);
-        foreach ($declarationBlocks as $declarationBlock) {
+        foreach ($this->getAllDeclarationBlocks() as $declarationBlock) {
             foreach ($declarationBlock->getSelectors() as $selector) {
                 if ($specificitySearch === null) {
                     $result[] = $selector;
