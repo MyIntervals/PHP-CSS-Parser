@@ -60,6 +60,32 @@ abstract class CSSBlockList extends CSSList
     }
 
     /**
+     * Returns all `Value` objects found recursively in `Rule`s in the tree.
+     *
+     * @param CSSElement|string $element
+     *        the `CSSList` or `RuleSet` to start the search from (defaults to the whole document).
+     *        If a string is given, it is used as rule name filter.
+     * @param bool $searchInFunctionArguments whether to also return Value objects used as Function arguments.
+     *
+     * @return array<int, Value>
+     *
+     * @see RuleSet->getRules()
+     */
+    public function getAllValues($element = null, bool $searchInFunctionArguments = false): array
+    {
+        $searchString = null;
+        if ($element === null) {
+            $element = $this;
+        } elseif (\is_string($element)) {
+            $searchString = $element;
+            $element = $this;
+        }
+        $result = [];
+        $this->allValues($element, $result, $searchString, $searchInFunctionArguments);
+        return $result;
+    }
+
+    /**
      * @param CSSElement|string $oElement
      * @param array<int, Value> $aResult
      * @param string|null $sSearchString
