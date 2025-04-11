@@ -18,4 +18,12 @@ final class ConcreteValue extends Value
     {
         throw new \BadMethodCallException('Nothing to see here :/', 1744067951);
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->render(new OutputFormat());
+    }
 }
