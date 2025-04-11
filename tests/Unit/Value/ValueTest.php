@@ -16,8 +16,10 @@ final class ValueTest extends TestCase
 {
     /**
      * @test
+     *
+     * @return void
      */
-    public function implementsCSSElement(): void
+    public function implementsCSSElement()
     {
         $subject = new ConcreteValue();
 

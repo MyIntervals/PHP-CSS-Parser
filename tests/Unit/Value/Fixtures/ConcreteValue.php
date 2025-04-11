@@ -10,9 +10,11 @@ use Sabberworm\CSS\Value\Value;
 final class ConcreteValue extends Value
 {
     /**
+     * @param OutputFormat|null $outputFormat
+     *
      * @return never
      */
-    public function render(OutputFormat $outputFormat): string
+    public function render($outputFormat)
     {
         throw new \BadMethodCallException('Nothing to see here :/', 1744067951);
     }
