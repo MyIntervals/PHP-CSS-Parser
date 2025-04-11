@@ -3,6 +3,7 @@
 namespace Sabberworm\CSS\Tests\Unit\Rule;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Rule\Rule;
@@ -15,6 +16,18 @@ use Sabberworm\CSS\Value\ValueList;
  */
 final class RuleTest extends TestCase
 {
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function implementsCSSElement()
+    {
+        $subject = new Rule('beverage-container');
+
+        self::assertInstanceOf(CSSElement::class, $subject);
+    }
+
     /**
      * @return array<string, array{0: string, 1: list<class-string>}>
      */
