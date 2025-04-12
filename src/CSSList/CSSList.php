@@ -4,6 +4,7 @@ namespace Sabberworm\CSS\CSSList;
 
 use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\Comment\Commentable;
+use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
@@ -31,7 +32,7 @@ use Sabberworm\CSS\Value\Value;
  *
  * It can also contain `Import` and `Charset` objects stemming from at-rules.
  */
-abstract class CSSList implements Commentable, Positionable, Renderable
+abstract class CSSList implements Commentable, CSSElement, Positionable
 {
     use Position;
 

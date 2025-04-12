@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- Add Interface `CSSElement` (#1231)
 - Methods `getLineNumber` and `getColumnNumber` which return a nullable `int`
   for the following classes:
   `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
@@ -16,12 +17,20 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Parameters for `getAllValues()` are deconflated, so it now takes three (all
+  optional), allowing `$element` and `$ruleSearchPattern` to be specified
+  separately (#1241)
 - Implement `Positionable` in the following CSS item classes:
   `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
   `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225)
 
 ### Deprecated
 
+- Passing a string as the first argument to `getAllValues()` is deprecated;
+  the search pattern should now be passed as the second argument (#1241)
+- Passing a Boolean as the second argument to `getAllValues()` is deprecated;
+  the flag for searching in function arguments should now be passed as the third
+  argument (#1241)
 - `getLineNo()` is deprecated in these classes (use `getLineNumber()` instead):
   `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
   `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225, #1233)
