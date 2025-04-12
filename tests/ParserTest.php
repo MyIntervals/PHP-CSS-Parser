@@ -153,7 +153,7 @@ final class ParserTest extends TestCase
                 self::assertEmpty($colorRules);
             }
         }
-        foreach ($document->getAllValues('color') as $colorValue) {
+        foreach ($document->getAllValues(null, 'color') as $colorValue) {
             self::assertSame('red', $colorValue);
         }
         self::assertSame(
@@ -455,7 +455,7 @@ body {color: green;}',
             . '.collapser.expanded + * {height: auto;}';
         self::assertSame($expected, $document->render());
 
-        foreach ($document->getAllValues(null, true) as $value) {
+        foreach ($document->getAllValues(null, null, true) as $value) {
             if ($value instanceof Size && $value->isSize()) {
                 $value->setSize($value->getSize() * 3);
             }
@@ -463,7 +463,7 @@ body {color: green;}',
         $expected = \str_replace(['1.2em', '.2em', '60%'], ['3.6em', '.6em', '180%'], $expected);
         self::assertSame($expected, $document->render());
 
-        foreach ($document->getAllValues(null, true) as $value) {
+        foreach ($document->getAllValues(null, null, true) as $value) {
             if ($value instanceof Size && !$value->isRelative() && !$value->isColorComponent()) {
                 $value->setSize($value->getSize() * 2);
             }

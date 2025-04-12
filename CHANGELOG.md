@@ -61,6 +61,12 @@ Please also have a look at our
 
 ### Removed
 
+- Passing a string as the first argument to `getAllValues()` is no longer
+  supported and will not work;
+  the search pattern should now be passed as the second argument (#1243)
+- Passing a Boolean as the second argument to `getAllValues()` is no longer
+  supported and will not work; the flag for searching in function arguments
+  should now be passed as the third argument (#1243)
 - Remove `__toString()` (#1046)
 - Drop magic method forwarding in `OutputFormat` (#898)
 - Drop `atRuleArgs()` from the `AtRule` interface (#1141)

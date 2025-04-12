@@ -425,30 +425,6 @@ final class CSSBlockListTest extends TestCase
         $declarationBlock->addRule($rule2);
         $subject->setContents([$declarationBlock]);
 
-        $result = $subject->getAllValues('font-');
-
-        self::assertSame([$value1], $result);
-    }
-
-    /**
-     * @test
-     */
-    public function getAllValuesWithSearchStringProvidedInNewMethodSignatureReturnsOnlyValuesFromMatchingRules(): void
-    {
-        $subject = new ConcreteCSSBlockList();
-
-        $value1 = new CSSString('Superfont');
-        $value2 = new CSSString('aquamarine');
-
-        $declarationBlock = new DeclarationBlock();
-        $rule1 = new Rule('font-family');
-        $rule1->setValue($value1);
-        $declarationBlock->addRule($rule1);
-        $rule2 = new Rule('color');
-        $rule2->setValue($value2);
-        $declarationBlock->addRule($rule2);
-        $subject->setContents([$declarationBlock]);
-
         $result = $subject->getAllValues(null, 'font-');
 
         self::assertSame([$value1], $result);
@@ -479,27 +455,6 @@ final class CSSBlockListTest extends TestCase
      * @test
      */
     public function getAllValuesWithSearchInFunctionArgumentsReturnsValuesInFunctionArguments(): void
-    {
-        $subject = new ConcreteCSSBlockList();
-
-        $value1 = new Size(10, 'px');
-        $value2 = new Size(2, '%');
-
-        $declarationBlock = new DeclarationBlock();
-        $rule = new Rule('margin');
-        $rule->setValue(new CSSFunction('max', [$value1, $value2]));
-        $declarationBlock->addRule($rule);
-        $subject->setContents([$declarationBlock]);
-
-        $result = $subject->getAllValues(null, true);
-
-        self::assertSame([$value1, $value2], $result);
-    }
-
-    /**
-     * @test
-     */
-    public function getAllValuesWithSearchInFunctionArgumentsInNewMethodSignatureReturnsValuesInFunctionArguments(): void
     {
         $subject = new ConcreteCSSBlockList();
 
