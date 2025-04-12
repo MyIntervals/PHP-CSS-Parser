@@ -20,8 +20,10 @@ final class CSSBlockListTest extends TestCase
 {
     /**
      * @test
+     *
+     * @return void
      */
-    public function getAllValuesWhenNoContentSetReturnsEmptyArray(): void
+    public function getAllValuesWhenNoContentSetReturnsEmptyArray()
     {
         $subject = new ConcreteCSSBlockList();
 
@@ -30,8 +32,10 @@ final class CSSBlockListTest extends TestCase
 
     /**
      * @test
+     *
+     * @return void
      */
-    public function getAllValuesReturnsOneValueDirectlySetAsContent(): void
+    public function getAllValuesReturnsOneValueDirectlySetAsContent()
     {
         $subject = new ConcreteCSSBlockList();
 
@@ -50,8 +54,10 @@ final class CSSBlockListTest extends TestCase
 
     /**
      * @test
+     *
+     * @return void
      */
-    public function getAllValuesReturnsMultipleValuesDirectlySetAsContentInOneDeclarationBlock(): void
+    public function getAllValuesReturnsMultipleValuesDirectlySetAsContentInOneDeclarationBlock()
     {
         $subject = new ConcreteCSSBlockList();
 
@@ -74,8 +80,10 @@ final class CSSBlockListTest extends TestCase
 
     /**
      * @test
+     *
+     * @return void
      */
-    public function getAllValuesReturnsMultipleValuesDirectlySetAsContentInMultipleDeclarationBlocks(): void
+    public function getAllValuesReturnsMultipleValuesDirectlySetAsContentInMultipleDeclarationBlocks()
     {
         $subject = new ConcreteCSSBlockList();
 
@@ -99,8 +107,10 @@ final class CSSBlockListTest extends TestCase
 
     /**
      * @test
+     *
+     * @return void
      */
-    public function getAllValuesReturnsValuesWithinAtRuleBlockList(): void
+    public function getAllValuesReturnsValuesWithinAtRuleBlockList()
     {
         $subject = new ConcreteCSSBlockList();
 
@@ -121,8 +131,10 @@ final class CSSBlockListTest extends TestCase
 
     /**
      * @test
+     *
+     * @return void
      */
-    public function getAllValuesWithElementProvidedReturnsOnlyValuesWithinThatElement(): void
+    public function getAllValuesWithElementProvidedReturnsOnlyValuesWithinThatElement()
     {
         $subject = new ConcreteCSSBlockList();
 
@@ -146,8 +158,10 @@ final class CSSBlockListTest extends TestCase
 
     /**
      * @test
+     *
+     * @return void
      */
-    public function getAllValuesWithSearchStringProvidedReturnsOnlyValuesFromMatchingRules(): void
+    public function getAllValuesWithSearchStringProvidedReturnsOnlyValuesFromMatchingRules()
     {
         $subject = new ConcreteCSSBlockList();
 
@@ -170,8 +184,10 @@ final class CSSBlockListTest extends TestCase
 
     /**
      * @test
+     *
+     * @return void
      */
-    public function getAllValuesByDefaultDoesNotReturnValuesInFunctionArguments(): void
+    public function getAllValuesByDefaultDoesNotReturnValuesInFunctionArguments()
     {
         $subject = new ConcreteCSSBlockList();
 
@@ -191,8 +207,10 @@ final class CSSBlockListTest extends TestCase
 
     /**
      * @test
+     *
+     * @return void
      */
-    public function getAllValuesWithSearchInFunctionArgumentsReturnsValuesInFunctionArguments(): void
+    public function getAllValuesWithSearchInFunctionArgumentsReturnsValuesInFunctionArguments()
     {
         $subject = new ConcreteCSSBlockList();
 

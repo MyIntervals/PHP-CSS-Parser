@@ -71,7 +71,7 @@ abstract class CSSBlockList extends CSSList
      *
      * @see RuleSet->getRules()
      */
-    public function getAllValues($element = null, bool $searchInFunctionArguments = false): array
+    public function getAllValues($element = null, $searchInFunctionArguments = false)
     {
         $searchString = null;
         if ($element === null) {

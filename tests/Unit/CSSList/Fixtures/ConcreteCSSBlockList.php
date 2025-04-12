@@ -9,12 +9,20 @@ use Sabberworm\CSS\OutputFormat;
 
 final class ConcreteCSSBlockList extends CSSBlockList
 {
-    public function isRootList(): bool
+    /**
+     * @return never
+     */
+    public function isRootList()
     {
         throw new \BadMethodCallException('Not implemented', 1740395831);
     }
 
-    public function render(OutputFormat $outputFormat): string
+    /**
+     * @param OutputFormat|null $outputFormat
+     *
+     * @return never
+     */
+    public function render($outputFormat)
     {
         throw new \BadMethodCallException('Not implemented', 1740395836);
     }
