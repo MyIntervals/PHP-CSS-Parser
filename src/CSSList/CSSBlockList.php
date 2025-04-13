@@ -73,7 +73,7 @@ abstract class CSSBlockList extends CSSList
      *        will be returned).
      * @param bool $searchInFunctionArguments whether to also return `Value` objects used as `CSSFunction` arguments.
      *
-     * @return array<int, Value>
+     * @return list<Value>
      *
      * @see RuleSet->getRules()
      */
@@ -82,40 +82,52 @@ abstract class CSSBlockList extends CSSList
         ?string $ruleSearchPattern = null,
         bool $searchInFunctionArguments = false
     ): array {
-        $result = [];
-        $this->allValues($element ?? $this, $result, $ruleSearchPattern, $searchInFunctionArguments);
-        return $result;
-    }
+        $element = $element ?? $this;
 
-    /**
-     * @param CSSElement|string $element
-     * @param list<Value> $result
-     */
-    protected function allValues(
-        $element,
-        array &$result,
-        ?string $searchString = null,
-        bool $searchInFunctionArguments = false
-    ): void {
+        $result = [];
         if ($element instanceof CSSBlockList) {
-            foreach ($element->getContents() as $content) {
-                $this->allValues($content, $result, $searchString, $searchInFunctionArguments);
+            foreach ($element->getContents() as $contentItem) {
+                // Statement at-rules are skipped since they do not contain values.
+                if ($contentItem instanceof CSSElement) {
+                    $result = \array_merge(
+                        $result,
+                        $this->getAllValues($contentItem, $ruleSearchPattern, $searchInFunctionArguments)
+                    );
+                }
             }
         } elseif ($element instanceof RuleSet) {
-            foreach ($element->getRules($searchString) as $rule) {
-                $this->allValues($rule, $result, $searchString, $searchInFunctionArguments);
+            foreach ($element->getRules($ruleSearchPattern) as $rule) {
+                $result = \array_merge(
+                    $result,
+                    $this->getAllValues($rule, $ruleSearchPattern, $searchInFunctionArguments)
+                );
             }
         } elseif ($element instanceof Rule) {
-            $this->allValues($element->getValue(), $result, $searchString, $searchInFunctionArguments);
+            $value = $element->getValue();
+            // `string` values are discarded.
+            if ($value instanceof CSSElement) {
+                $result = \array_merge(
+                    $result,
+                    $this->getAllValues($value, $ruleSearchPattern, $searchInFunctionArguments)
+                );
+            }
         } elseif ($element instanceof ValueList) {
             if ($searchInFunctionArguments || !($element instanceof CSSFunction)) {
                 foreach ($element->getListComponents() as $component) {
-                    $this->allValues($component, $result, $searchString, $searchInFunctionArguments);
+                    // `string` components are discarded.
+                    if ($component instanceof CSSElement) {
+                        $result = \array_merge(
+                            $result,
+                            $this->getAllValues($component, $ruleSearchPattern, $searchInFunctionArguments)
+                        );
+                    }
                 }
             }
         } elseif ($element instanceof Value) {
             $result[] = $element;
         }
+
+        return $result;
     }
 
     /**
