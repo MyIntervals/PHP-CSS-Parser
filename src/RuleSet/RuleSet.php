@@ -149,7 +149,7 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable
             // Either no search rule is given or the search rule matches the found rule exactly
             // or the search rule ends in “-” and the found rule starts with the search rule.
             if (
-                !$searchPattern || $propertyName === $searchPattern
+                $searchPattern === null || $propertyName === $searchPattern
                 || (
                     \strrpos($searchPattern, '-') === \strlen($searchPattern) - \strlen('-')
                     && (\strpos($propertyName, $searchPattern) === 0
@@ -240,7 +240,7 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable
                 // or the search rule ends in “-” and the found rule starts with the search rule or equals it
                 // (without the trailing dash).
                 if (
-                    !$searchPattern || $propertyName === $searchPattern
+                    $searchPattern === null || $propertyName === $searchPattern
                     || (\strrpos($searchPattern, '-') === \strlen($searchPattern) - \strlen('-')
                         && (\strpos($propertyName, $searchPattern) === 0
                             || $propertyName === \substr($searchPattern, 0, -1)))

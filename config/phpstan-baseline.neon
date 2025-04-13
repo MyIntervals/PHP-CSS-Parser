@@ -55,12 +55,6 @@ parameters:
 			path: ../src/RuleSet/DeclarationBlock.php
 
 		-
-			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
-			identifier: booleanNot.exprNotBoolean
-			count: 2
-			path: ../src/RuleSet/RuleSet.php
-
-		-
 			message: '#^Parameters should have "string" types as the only types passed to this method$#'
 			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
