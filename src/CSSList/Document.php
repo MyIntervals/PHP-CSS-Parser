@@ -38,15 +38,13 @@ class Document extends CSSBlockList
      *        An optional filter by specificity.
      *        May contain a comparison operator and a number or just a number (defaults to "==").
      *
-     * @return array<int, Selector>
+     * @return list<Selector>
+     *
      * @example `getSelectorsBySpecificity('>= 100')`
      */
     public function getSelectorsBySpecificity(?string $specificitySearch = null): array
     {
-        /** @var array<int, Selector> $result */
-        $result = [];
-        $this->allSelectors($result, $specificitySearch);
-        return $result;
+        return $this->getAllSelectors($specificitySearch);
     }
 
     /**

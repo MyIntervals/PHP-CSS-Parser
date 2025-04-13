@@ -131,10 +131,12 @@ abstract class CSSBlockList extends CSSList
     }
 
     /**
-     * @param list<Selector> $result
+     * @return list<Selector>
      */
-    protected function allSelectors(array &$result, ?string $specificitySearch = null): void
+    protected function getAllSelectors(?string $specificitySearch = null): array
     {
+        $result = [];
+
         foreach ($this->getAllDeclarationBlocks() as $declarationBlock) {
             foreach ($declarationBlock->getSelectors() as $selector) {
                 if ($specificitySearch === null) {
@@ -173,5 +175,7 @@ abstract class CSSBlockList extends CSSList
                 }
             }
         }
+
+        return $result;
     }
 }
