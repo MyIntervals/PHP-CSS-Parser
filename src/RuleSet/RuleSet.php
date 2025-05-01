@@ -135,7 +135,8 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable
      *        Pattern to search for. If null, returns all rules.
      *        If the pattern ends with a dash, all rules starting with the pattern are returned
      *        as well as one matching the pattern with the dash excluded.
-     *        Passing a `Rule` behaves like calling `getRules($rule->getRule())`.
+     *        Passing a `Rule` for this parameter is deprecated in version 8.9.0, and will not work from v9.0.
+     *        Call `getRules($rule->getRule())` instead.
      *
      * @return array<int<0, max>, Rule>
      */
@@ -193,7 +194,9 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable
      * @param Rule|string|null $searchPattern
      *        Pattern to search for. If null, returns all rules. If the pattern ends with a dash,
      *        all rules starting with the pattern are returned as well as one matching the pattern with the dash
-     *        excluded. Passing a `Rule` behaves like calling `getRules($rule->getRule())`.
+     *        excluded.
+     *        Passing a `Rule` for this parameter is deprecated in version 8.9.0, and will not work from v9.0.
+     *        Call `getRulesAssoc($rule->getRule())` instead.
      *
      * @return array<string, Rule>
      */
