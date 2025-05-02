@@ -217,7 +217,7 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable
      * @param Rule|string|null $searchPattern
      *        `Rule` to remove.
      *        Passing a `string` or `null` is deprecated in version 8.9.0, and will no longer work from v9.0.
-     *        Use `removeMatchingRules()` instead.
+     *        Use `removeMatchingRules()` or `removeAllRules()` instead.
      */
     public function removeRule($searchPattern): void
     {
@@ -231,27 +231,30 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable
                     unset($this->rules[$nameOfPropertyToRemove][$key]);
                 }
             }
-        } else {
+        } elseif ($searchPattern !== null) {
             $this->removeMatchingRules($searchPattern);
+        } else {
+            $this->removeAllRules();
         }
     }
 
     /**
      * Removes rules by property name or search pattern.
      *
-     * @param string|null $searchPattern
-     *        pattern to remove. If null, all rules are removed. If the pattern ends in a dash,
+     * @param string $searchPattern
+     *        pattern to remove.
+     *        If the pattern ends in a dash,
      *        all rules starting with the pattern are removed as well as one matching the pattern with the dash
      *        excluded.
      */
-    public function removeMatchingRules(?string $searchPattern): void
+    public function removeMatchingRules(string $searchPattern): void
     {
         foreach ($this->rules as $propertyName => $rules) {
-            // Either no search rule is given or the search rule matches the found rule exactly
+            // Either the search rule matches the found rule exactly
             // or the search rule ends in “-” and the found rule starts with the search rule or equals it
             // (without the trailing dash).
             if (
-                $searchPattern === null || $propertyName === $searchPattern
+                $propertyName === $searchPattern
                 || (\strrpos($searchPattern, '-') === \strlen($searchPattern) - \strlen('-')
                     && (\strpos($propertyName, $searchPattern) === 0
                         || $propertyName === \substr($searchPattern, 0, -1)))
@@ -259,6 +262,11 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable
                 unset($this->rules[$propertyName]);
             }
         }
+    }
+
+    public function removeAllRules(): void
+    {
+        $this->rules = [];
     }
 
     protected function renderRules(OutputFormat $outputFormat): string
