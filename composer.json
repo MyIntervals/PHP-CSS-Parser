@@ -32,7 +32,7 @@
         "phpstan/phpstan": "1.12.16 || 2.1.2",
         "phpstan/phpstan-phpunit": "1.4.2 || 2.0.4",
         "phpstan/phpstan-strict-rules": "1.6.2 || 2.0.3",
-        "phpunit/phpunit": "8.5.41",
+        "phpunit/phpunit": "8.5.42",
         "rawr/phpunit-data-provider": "3.3.1",
         "rector/rector": "1.2.10 || 2.0.7",
         "rector/type-perfect": "1.0.0 || 2.0.2"
