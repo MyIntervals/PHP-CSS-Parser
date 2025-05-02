@@ -10,6 +10,8 @@ Please also have a look at our
 
 ### Added
 
+- `RuleSet::removeMatchingRules()` method for implementing classes `AtRuleSet`
+  and `DeclarationBlock` (#1249)
 - Add Interface `CSSElement` (#1231)
 - Methods `getLineNumber` and `getColumnNumber` which return a nullable `int`
   for the following classes:
@@ -46,6 +48,9 @@ Please also have a look at our
 
 ### Deprecated
 
+- Passing a `string` or `null` to `RuleSet::removeRule()` is deprecated
+  (implementing classes are `AtRuleSet` and `DeclarationBlock`);
+  use `removeMatchingRules()` instead (#1249)
 - Passing a `Rule` to `RuleSet::getRules()` or `getRulesAssoc()` is deprecated,
   affecting the implementing classes `AtRuleSet` and `DeclarationBlock`
   (call e.g. `getRules($rule->getRule())` instead) (#1248)

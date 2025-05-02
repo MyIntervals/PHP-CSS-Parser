@@ -212,18 +212,12 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable
     }
 
     /**
-     * Removes a rule from this RuleSet. This accepts all the possible values that `getRules()` accepts.
-     *
-     * If given a Rule, it will only remove this particular rule (by identity).
-     * If given a name, it will remove all rules by that name.
-     *
-     * Note: this is different from pre-v.2.0 behaviour of PHP-CSS-Parser, where passing a Rule instance would
-     * remove all rules with the same name. To get the old behaviour, use `removeRule($rule->getRule())`.
+     * Removes a `Rule` from this `RuleSet` by identity.
      *
      * @param Rule|string|null $searchPattern
-     *        pattern to remove. If null, all rules are removed. If the pattern ends in a dash,
-     *        all rules starting with the pattern are removed as well as one matching the pattern with the dash
-     *        excluded. Passing a Rule behaves matches by identity.
+     *        `Rule` to remove.
+     *        Passing a `string` or `null` is deprecated in version 8.9.0, and will no longer work from v9.0.
+     *        Use `removeMatchingRules()` instead.
      */
     public function removeRule($searchPattern): void
     {
@@ -238,18 +232,31 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable
                 }
             }
         } else {
-            foreach ($this->rules as $propertyName => $rules) {
-                // Either no search rule is given or the search rule matches the found rule exactly
-                // or the search rule ends in “-” and the found rule starts with the search rule or equals it
-                // (without the trailing dash).
-                if (
-                    $searchPattern === null || $propertyName === $searchPattern
-                    || (\strrpos($searchPattern, '-') === \strlen($searchPattern) - \strlen('-')
-                        && (\strpos($propertyName, $searchPattern) === 0
-                            || $propertyName === \substr($searchPattern, 0, -1)))
-                ) {
-                    unset($this->rules[$propertyName]);
-                }
+            $this->removeMatchingRules($searchPattern);
+        }
+    }
+
+    /**
+     * Removes rules by property name or search pattern.
+     *
+     * @param string|null $searchPattern
+     *        pattern to remove. If null, all rules are removed. If the pattern ends in a dash,
+     *        all rules starting with the pattern are removed as well as one matching the pattern with the dash
+     *        excluded.
+     */
+    public function removeMatchingRules(?string $searchPattern): void
+    {
+        foreach ($this->rules as $propertyName => $rules) {
+            // Either no search rule is given or the search rule matches the found rule exactly
+            // or the search rule ends in “-” and the found rule starts with the search rule or equals it
+            // (without the trailing dash).
+            if (
+                $searchPattern === null || $propertyName === $searchPattern
+                || (\strrpos($searchPattern, '-') === \strlen($searchPattern) - \strlen('-')
+                    && (\strpos($propertyName, $searchPattern) === 0
+                        || $propertyName === \substr($searchPattern, 0, -1)))
+            ) {
+                unset($this->rules[$propertyName]);
             }
         }
     }
