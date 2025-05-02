@@ -10,8 +10,8 @@ Please also have a look at our
 
 ### Added
 
-- `RuleSet::removeMatchingRules()` method for implementing classes `AtRuleSet`
-  and `DeclarationBlock` (#1249)
+- `RuleSet::removeMatchingRules()` method
+  (for the implementing classes `AtRuleSet` and `DeclarationBlock`) (#1249)
 - Add Interface `CSSElement` (#1231)
 - Methods `getLineNumber` and `getColumnNumber` which return a nullable `int`
   for the following classes:
