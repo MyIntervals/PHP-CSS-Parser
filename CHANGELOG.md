@@ -31,6 +31,9 @@ Please also have a look at our
 
 ### Changed
 
+- `RuleSet::removeRule()` now only allows `Rule` as the parameter
+  (implementing classes are `AtRuleSet` and `DeclarationBlock`);
+  use `removeMatchingRules()` or `removeAllRules()` for other functions (#1255)
 - `RuleSet::getRules()` and `getRulesAssoc()` now only allow `string` or `null`
   as the parameter (implementing classes are `AtRuleSet` and `DeclarationBlock`)
   (#1253)
