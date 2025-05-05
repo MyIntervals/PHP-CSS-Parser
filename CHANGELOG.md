@@ -31,6 +31,9 @@ Please also have a look at our
 
 ### Changed
 
+- `RuleSet::getRules()` and `getRulesAssoc()` now only allow `string` or `null`
+  as the parameter (implementing classes are `AtRuleSet` and `DeclarationBlock`)
+  (#1253)
 - Parameters for `getAllValues()` are deconflated, so it now takes three (all
   optional), allowing `$element` and `$ruleSearchPattern` to be specified
   separately (#1241)

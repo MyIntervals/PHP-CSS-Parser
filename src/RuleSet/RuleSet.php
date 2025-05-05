@@ -131,20 +131,15 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable
      * @example $ruleSet->getRules('font-')
      *          //returns an array of all rules either beginning with font- or matching font.
      *
-     * @param Rule|string|null $searchPattern
+     * @param string|null $searchPattern
      *        Pattern to search for. If null, returns all rules.
      *        If the pattern ends with a dash, all rules starting with the pattern are returned
      *        as well as one matching the pattern with the dash excluded.
-     *        Passing a `Rule` for this parameter is deprecated in version 8.9.0, and will not work from v9.0.
-     *        Call `getRules($rule->getRule())` instead.
      *
      * @return array<int<0, max>, Rule>
      */
-    public function getRules($searchPattern = null): array
+    public function getRules(?string $searchPattern = null): array
     {
-        if ($searchPattern instanceof Rule) {
-            $searchPattern = $searchPattern->getRule();
-        }
         $result = [];
         foreach ($this->rules as $propertyName => $rules) {
             // Either no search rule is given or the search rule matches the found rule exactly
@@ -191,16 +186,14 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable
      * like `{ background-color: green; background-color; rgba(0, 127, 0, 0.7); }` will only yield an associative array
      * containing the rgba-valued rule while `getRules()` would yield an indexed array containing both.
      *
-     * @param Rule|string|null $searchPattern
+     * @param string|null $searchPattern
      *        Pattern to search for. If null, returns all rules. If the pattern ends with a dash,
      *        all rules starting with the pattern are returned as well as one matching the pattern with the dash
      *        excluded.
-     *        Passing a `Rule` for this parameter is deprecated in version 8.9.0, and will not work from v9.0.
-     *        Call `getRulesAssoc($rule->getRule())` instead.
      *
      * @return array<string, Rule>
      */
-    public function getRulesAssoc($searchPattern = null): array
+    public function getRulesAssoc(?string $searchPattern = null): array
     {
         /** @var array<string, Rule> $result */
         $result = [];
