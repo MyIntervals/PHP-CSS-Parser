@@ -33,6 +33,9 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Passing a `string` or `null` to `RuleSet::removeRule()` is deprecated
   (implementing classes are `AtRuleSet` and `DeclarationBlock`);
   use `removeMatchingRules()` or `removeAllRules()` instead (#1249)
+- Passing a `Rule` to `RuleSet::getRules()` or `getRulesAssoc()` is deprecated,
+  affecting the implementing classes `AtRuleSet` and `DeclarationBlock`
+  (call e.g. `getRules($rule->getRule())` instead) (#1248)
 - Passing a string as the first argument to `getAllValues()` is deprecated;
   the search pattern should now be passed as the second argument (#1241)
 - Passing a Boolean as the second argument to `getAllValues()` is deprecated;
