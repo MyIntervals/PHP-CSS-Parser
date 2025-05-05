@@ -55,12 +55,6 @@ parameters:
 			path: ../src/RuleSet/DeclarationBlock.php
 
 		-
-			message: '#^Parameters should have "string" types as the only types passed to this method$#'
-			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 1
-			path: ../src/RuleSet/RuleSet.php
-
-		-
 			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
 			identifier: notEqual.notAllowed
 			count: 3
