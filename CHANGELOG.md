@@ -7,6 +7,10 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- `RuleSet::removeMatchingRules()` method
+  (for the implementing classes `AtRuleSet` and `DeclarationBlock`) (#1249)
+- `RuleSet::removeAllRules()` method
+  (for the implementing classes `AtRuleSet` and `DeclarationBlock`) (#1249)
 - Add Interface `CSSElement` (#1231)
 - Methods `getLineNumber` and `getColumnNumber` which return a nullable `int`
   for the following classes:
@@ -26,6 +30,9 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Deprecated
 
+- Passing a `string` or `null` to `RuleSet::removeRule()` is deprecated
+  (implementing classes are `AtRuleSet` and `DeclarationBlock`);
+  use `removeMatchingRules()` or `removeAllRules()` instead (#1249)
 - Passing a `Rule` to `RuleSet::getRules()` or `getRulesAssoc()` is deprecated,
   affecting the implementing classes `AtRuleSet` and `DeclarationBlock`
   (call e.g. `getRules($rule->getRule())` instead) (#1248)
