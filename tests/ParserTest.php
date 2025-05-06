@@ -348,7 +348,7 @@ body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}
             $document->render()
         );
         foreach ($document->getAllRuleSets() as $ruleSet) {
-            $ruleSet->removeRule('font-');
+            $ruleSet->removeMatchingRules('font-');
         }
         self::assertSame(
             '#header {margin: 10px 2em 1cm 2%;color: red !important;background-color: green;'
@@ -357,7 +357,7 @@ body {color: green;}',
             $document->render()
         );
         foreach ($document->getAllRuleSets() as $ruleSet) {
-            $ruleSet->removeRule('background-');
+            $ruleSet->removeMatchingRules('background-');
         }
         self::assertSame(
             '#header {margin: 10px 2em 1cm 2%;color: red !important;frequency: 30Hz;transform: rotate(1turn);}
