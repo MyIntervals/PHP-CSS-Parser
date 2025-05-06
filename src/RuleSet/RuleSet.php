@@ -206,28 +206,17 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable
 
     /**
      * Removes a `Rule` from this `RuleSet` by identity.
-     *
-     * @param Rule|string|null $searchPattern
-     *        `Rule` to remove.
-     *        Passing a `string` or `null` is deprecated in version 8.9.0, and will no longer work from v9.0.
-     *        Use `removeMatchingRules()` or `removeAllRules()` instead.
      */
-    public function removeRule($searchPattern): void
+    public function removeRule(Rule $ruleToRemove): void
     {
-        if ($searchPattern instanceof Rule) {
-            $nameOfPropertyToRemove = $searchPattern->getRule();
-            if (!isset($this->rules[$nameOfPropertyToRemove])) {
-                return;
+        $nameOfPropertyToRemove = $ruleToRemove->getRule();
+        if (!isset($this->rules[$nameOfPropertyToRemove])) {
+            return;
+        }
+        foreach ($this->rules[$nameOfPropertyToRemove] as $key => $rule) {
+            if ($rule === $ruleToRemove) {
+                unset($this->rules[$nameOfPropertyToRemove][$key]);
             }
-            foreach ($this->rules[$nameOfPropertyToRemove] as $key => $rule) {
-                if ($rule === $searchPattern) {
-                    unset($this->rules[$nameOfPropertyToRemove][$key]);
-                }
-            }
-        } elseif ($searchPattern !== null) {
-            $this->removeMatchingRules($searchPattern);
-        } else {
-            $this->removeAllRules();
         }
     }
 
