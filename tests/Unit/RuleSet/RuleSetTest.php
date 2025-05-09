@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\Rule\Rule;
+use Sabberworm\CSS\RuleSet\RuleContainer;
 use Sabberworm\CSS\Tests\Unit\RuleSet\Fixtures\ConcreteRuleSet;
 
 /**
@@ -39,6 +40,14 @@ final class RuleSetTest extends TestCase
     public function implementsCSSListItem(): void
     {
         self::assertInstanceOf(CSSListItem::class, $this->subject);
+    }
+
+    /**
+     * @test
+     */
+    public function implementsRuleContainer(): void
+    {
+        self::assertInstanceOf(RuleContainer::class, $this->subject);
     }
 
     /**

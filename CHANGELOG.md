@@ -10,6 +10,7 @@ Please also have a look at our
 
 ### Added
 
+- Interface `RuleContainer` for `RuleSet` `Rule` manipulation methods (#1256)
 - `RuleSet::removeMatchingRules()` method
   (for the implementing classes `AtRuleSet` and `DeclarationBlock`) (#1249)
 - `RuleSet::removeAllRules()` method
