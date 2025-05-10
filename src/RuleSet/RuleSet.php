@@ -27,7 +27,7 @@ use Sabberworm\CSS\Rule\Rule;
  * Note that `CSSListItem` extends both `Commentable` and `Renderable`,
  * so those interfaces must also be implemented by concrete subclasses.
  */
-abstract class RuleSet implements CSSElement, CSSListItem, Positionable
+abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
 {
     use CommentContainer;
     use Position;

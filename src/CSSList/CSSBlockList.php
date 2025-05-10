@@ -8,6 +8,7 @@ use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
+use Sabberworm\CSS\RuleSet\RuleContainer;
 use Sabberworm\CSS\RuleSet\RuleSet;
 use Sabberworm\CSS\Value\CSSFunction;
 use Sabberworm\CSS\Value\Value;
@@ -95,7 +96,7 @@ abstract class CSSBlockList extends CSSList
                     );
                 }
             }
-        } elseif ($element instanceof RuleSet) {
+        } elseif ($element instanceof RuleContainer) {
             foreach ($element->getRules($ruleSearchPattern) as $rule) {
                 $result = \array_merge(
                     $result,

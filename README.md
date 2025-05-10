@@ -636,6 +636,9 @@ classDiagram
     class CSSListItem {
         <<interface>>
     }
+    class RuleContainer {
+        <<interface>>
+    }
     class DeclarationBlock {
     }
     class RuleSet {
@@ -730,6 +733,7 @@ classDiagram
     Positionable <|.. RuleSet: realization
     CSSElement <|.. RuleSet: realization
     CSSListItem <|.. RuleSet: realization
+    RuleContainer <|.. RuleSet: realization
     RuleSet <|-- AtRuleSet: inheritance
     AtRule <|.. AtRuleSet: realization
     Renderable <|.. Selector: realization
