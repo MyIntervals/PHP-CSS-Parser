@@ -60,7 +60,7 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoOnEmptyInstanceReturnsZero(): void
+    public function getLineNumberOnEmptyInstanceReturnsZero(): void
     {
         $subject = new Comment();
 
@@ -70,7 +70,7 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoInitiallyReturnsLineNumberPassedToConstructor(): void
+    public function getLineNumberInitiallyReturnsLineNumberPassedToConstructor(): void
     {
         $lineNumber = 42;
         $subject = new Comment('', $lineNumber);

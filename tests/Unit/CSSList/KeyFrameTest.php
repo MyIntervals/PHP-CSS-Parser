@@ -71,7 +71,7 @@ final class KeyFrameTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoReturnsLineNumberProvidedToConstructor(): void
+    public function getLineNumberReturnsLineNumberProvidedToConstructor(): void
     {
         $lineNumber = 42;
 
