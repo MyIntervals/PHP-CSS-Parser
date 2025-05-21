@@ -32,14 +32,6 @@ trait Position
     }
 
     /**
-     * @return int<0, max>
-     */
-    public function getLineNo(): int
-    {
-        return $this->getLineNumber() ?? 0;
-    }
-
-    /**
      * @return int<0, max>|null
      */
     public function getColumnNumber(): ?int

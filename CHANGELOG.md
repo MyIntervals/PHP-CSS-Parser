@@ -81,6 +81,9 @@ Please also have a look at our
 
 ### Removed
 
+- Remove `getLineNo()` from these classes (use `getLineNumber()` instead):
+  `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
+  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1258)
 - Remove `Rule::getColNo()` (use `getColumnNumber()` instead) (#1287)
 - Passing a string as the first argument to `getAllValues()` is no longer
   supported and will not work;

@@ -60,27 +60,6 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoOnEmptyInstanceReturnsZero(): void
-    {
-        $subject = new Comment();
-
-        self::assertSame(0, $subject->getLineNo());
-    }
-
-    /**
-     * @test
-     */
-    public function getLineNoInitiallyReturnsLineNumberPassedToConstructor(): void
-    {
-        $lineNumber = 42;
-        $subject = new Comment('', $lineNumber);
-
-        self::assertSame($lineNumber, $subject->getLineNo());
-    }
-
-    /**
-     * @test
-     */
     public function getLineNumberByDefaultReturnsNull(): void
     {
         $subject = new Comment();
