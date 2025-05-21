@@ -24,7 +24,7 @@ final class UnexpectedEOFExceptionTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoByDefaultReturnsZero(): void
+    public function getLineNumberByDefaultReturnsZero(): void
     {
         $exception = new UnexpectedEOFException('expected', 'found');
 
@@ -34,7 +34,7 @@ final class UnexpectedEOFExceptionTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoReturnsLineNumberProvidedToConstructor(): void
+    public function getLineNumberReturnsLineNumberProvidedToConstructor(): void
     {
         $lineNumber = 17;
         $exception = new UnexpectedEOFException('expected', 'found', 'literal', $lineNumber);

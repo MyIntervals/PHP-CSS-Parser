@@ -48,7 +48,7 @@ final class PositionTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoInitiallyReturnsZero(): void
+    public function getLineNumberInitiallyReturnsZero(): void
     {
         self::assertSame(0, $this->subject->getLineNo());
     }
@@ -58,7 +58,7 @@ final class PositionTest extends TestCase
      *
      * @dataProvider provideLineNumber
      */
-    public function getLineNoReturnsLineNumberSet(int $lineNumber): void
+    public function getLineNumberReturnsLineNumberSet(int $lineNumber): void
     {
         $this->subject->setPosition($lineNumber);
 
@@ -68,7 +68,7 @@ final class PositionTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoReturnsZeroAfterLineNumberCleared(): void
+    public function getLineNumberReturnsZeroAfterLineNumberCleared(): void
     {
         $this->subject->setPosition(99);
 
@@ -80,7 +80,7 @@ final class PositionTest extends TestCase
     /**
      * @test
      */
-    public function getColNoInitiallyReturnsZero(): void
+    public function getColumnNumberInitiallyReturnsZero(): void
     {
         self::assertSame(0, $this->subject->getColNo());
     }
@@ -90,7 +90,7 @@ final class PositionTest extends TestCase
      *
      * @dataProvider provideColumnNumber
      */
-    public function getColNoReturnsColumnNumberSet(int $columnNumber): void
+    public function getColumnNumberReturnsColumnNumberSet(int $columnNumber): void
     {
         $this->subject->setPosition(1, $columnNumber);
 
@@ -100,7 +100,7 @@ final class PositionTest extends TestCase
     /**
      * @test
      */
-    public function getColNoReturnsZeroAfterColumnNumberCleared(): void
+    public function getColumnNumberReturnsZeroAfterColumnNumberCleared(): void
     {
         $this->subject->setPosition(1, 99);
 
@@ -124,7 +124,7 @@ final class PositionTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoAfterSetPositionWithZeroReturnsZero(): void
+    public function getLineNumberAfterSetPositionWithZeroReturnsZero(): void
     {
         $this->subject->setPosition(99);
 

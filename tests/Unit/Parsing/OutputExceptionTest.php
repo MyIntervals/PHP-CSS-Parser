@@ -35,7 +35,7 @@ final class OutputExceptionTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoByDefaultReturnsZero(): void
+    public function getLineNumberByDefaultReturnsZero(): void
     {
         $exception = new OutputException('foo');
 
@@ -45,7 +45,7 @@ final class OutputExceptionTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoReturnsLineNumberProvidedToConstructor(): void
+    public function getLineNumberReturnsLineNumberProvidedToConstructor(): void
     {
         $lineNumber = 17;
         $exception = new OutputException('foo', $lineNumber);

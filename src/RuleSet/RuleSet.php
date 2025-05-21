@@ -107,7 +107,7 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
             $siblingPosition = \array_search($sibling, $this->rules[$propertyName], true);
             if ($siblingPosition !== false) {
                 $position = $siblingPosition;
-                $ruleToAdd->setPosition($sibling->getLineNo(), $sibling->getColNo() - 1);
+                $ruleToAdd->setPosition($sibling->getLineNumber(), $sibling->getColNo() - 1);
             }
         }
         if ($ruleToAdd->getLineNo() === 0 && $ruleToAdd->getColNo() === 0) {
