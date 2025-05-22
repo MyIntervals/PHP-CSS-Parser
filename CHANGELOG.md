@@ -32,6 +32,8 @@ Please also have a look at our
 
 ### Changed
 
+- `setPosition()` (in `Rule` and other classes) now has fluent interface,
+  returning itself (#1259)
 - `RuleSet::removeRule()` now only allows `Rule` as the parameter
   (implementing classes are `AtRuleSet` and `DeclarationBlock`);
   use `removeMatchingRules()` or `removeAllRules()` for other functions (#1255)
