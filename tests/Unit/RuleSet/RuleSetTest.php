@@ -7,6 +7,7 @@ namespace Sabberworm\CSS\Tests\Unit\RuleSet;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\Rule\Rule;
+use Sabberworm\CSS\RuleSet\RuleSet;
 use Sabberworm\CSS\Tests\Unit\RuleSet\Fixtures\ConcreteRuleSet;
 
 /**
@@ -27,38 +28,38 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: list<Rule>, 1: string, 2: list<string>}>
+     * @return array<string, array{0: list<string>, 1: string, 2: list<string>}>
      */
-    public static function provideRulesAndPropertyNameToRemoveAndExpectedRemainingPropertyNames()
+    public static function providePropertyNamesAndPropertyNameToRemoveAndExpectedRemainingPropertyNames()
     {
         return [
             'removing single rule' => [
-                [new Rule('color')],
+                ['color'],
                 'color',
                 [],
             ],
             'removing first rule' => [
-                [new Rule('color'), new Rule('display')],
+                ['color', 'display'],
                 'color',
                 ['display'],
             ],
             'removing last rule' => [
-                [new Rule('color'), new Rule('display')],
+                ['color', 'display'],
                 'display',
                 ['color'],
             ],
             'removing middle rule' => [
-                [new Rule('color'), new Rule('display'), new Rule('width')],
+                ['color', 'display', 'width'],
                 'display',
                 ['color', 'width'],
             ],
             'removing multiple rules' => [
-                [new Rule('color'), new Rule('color')],
+                ['color', 'color'],
                 'color',
                 [],
             ],
             'removing multiple rules with another kept' => [
-                [new Rule('color'), new Rule('color'), new Rule('display')],
+                ['color', 'color', 'display'],
                 'color',
                 ['display'],
             ],
@@ -68,7 +69,7 @@ final class RuleSetTest extends TestCase
                 [],
             ],
             'removing nonexistent rule from nonempty list' => [
-                [new Rule('color'), new Rule('display')],
+                ['color', 'display'],
                 'width',
                 ['color', 'display'],
             ],
@@ -78,62 +79,62 @@ final class RuleSetTest extends TestCase
     /**
      * @test
      *
-     * @param list<Rule> $rules
-     * @param string $propertyName
+     * @param list<string> $initialPropertyNames
+     * @param string $propertyNameToRemove
      * @param list<string> $expectedRemainingPropertyNames
      *
-     * @dataProvider provideRulesAndPropertyNameToRemoveAndExpectedRemainingPropertyNames
+     * @dataProvider providePropertyNamesAndPropertyNameToRemoveAndExpectedRemainingPropertyNames
      */
     public function removeMatchingRulesRemovesRulesByPropertyNameAndKeepsOthers(
-        array $rules,
-        $propertyName,
+        array $initialPropertyNames,
+        $propertyNameToRemove,
         array $expectedRemainingPropertyNames
     ) {
         $subject = new ConcreteRuleSet();
-        $subject->setRules($rules);
+        self::setRulesFromPropertyNames($subject, $initialPropertyNames);
 
-        $subject->removeMatchingRules($propertyName);
+        $subject->removeMatchingRules($propertyNameToRemove);
 
         $remainingRules = $subject->getRulesAssoc();
-        self::assertArrayNotHasKey($propertyName, $remainingRules);
+        self::assertArrayNotHasKey($propertyNameToRemove, $remainingRules);
         foreach ($expectedRemainingPropertyNames as $expectedPropertyName) {
             self::assertArrayHasKey($expectedPropertyName, $remainingRules);
         }
     }
 
     /**
-     * @return array<string, array{0: list<Rule>, 1: string, 2: list<string>}>
+     * @return array<string, array{0: list<string>, 1: string, 2: list<string>}>
      */
-    public static function provideRulesAndPropertyNamePrefixToRemoveAndExpectedRemainingPropertyNames()
+    public static function providePropertyNamesAndPropertyNamePrefixToRemoveAndExpectedRemainingPropertyNames()
     {
         return [
             'removing shorthand rule' => [
-                [new Rule('font')],
+                ['font'],
                 'font',
                 [],
             ],
             'removing longhand rule' => [
-                [new Rule('font-size')],
+                ['font-size'],
                 'font',
                 [],
             ],
             'removing shorthand and longhand rule' => [
-                [new Rule('font'), new Rule('font-size')],
+                ['font', 'font-size'],
                 'font',
                 [],
             ],
             'removing shorthand rule with another kept' => [
-                [new Rule('font'), new Rule('color')],
+                ['font', 'color'],
                 'font',
                 ['color'],
             ],
             'removing longhand rule with another kept' => [
-                [new Rule('font-size'), new Rule('color')],
+                ['font-size', 'color'],
                 'font',
                 ['color'],
             ],
             'keeping other rules whose property names begin with the same characters' => [
-                [new Rule('contain'), new Rule('container'), new Rule('container-type')],
+                ['contain', 'container', 'container-type'],
                 'contain',
                 ['container', 'container-type'],
             ],
@@ -143,20 +144,20 @@ final class RuleSetTest extends TestCase
     /**
      * @test
      *
-     * @param list<Rule> $rules
+     * @param list<string> $initialPropertyNames
      * @param string $propertyNamePrefix
      * @param list<string> $expectedRemainingPropertyNames
      *
-     * @dataProvider provideRulesAndPropertyNamePrefixToRemoveAndExpectedRemainingPropertyNames
+     * @dataProvider providePropertyNamesAndPropertyNamePrefixToRemoveAndExpectedRemainingPropertyNames
      */
     public function removeMatchingRulesRemovesRulesByPropertyNamePrefixAndKeepsOthers(
-        array $rules,
+        array $initialPropertyNames,
         $propertyNamePrefix,
         array $expectedRemainingPropertyNames
     ) {
         $propertyNamePrefixWithHyphen = $propertyNamePrefix . '-';
         $subject = new ConcreteRuleSet();
-        $subject->setRules($rules);
+        self::setRulesFromPropertyNames($subject, $initialPropertyNames);
 
         $subject->removeMatchingRules($propertyNamePrefixWithHyphen);
 
@@ -171,32 +172,45 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: list<Rule>}>
+     * @return array<string, array{0: list<string>}>
      */
-    public static function provideRulesToRemove()
+    public static function providePropertyNamesToRemove()
     {
         return [
-            'no rules' => [[]],
-            'one rule' => [[new Rule('color')]],
-            'two rules for different properties' => [[new Rule('color'), new Rule('display')]],
-            'two rules for the same property' => [[new Rule('color'), new Rule('color')]],
+            'no properties' => [[]],
+            'one property' => [['color']],
+            'two different properties' => [['color', 'display']],
+            'two of the same property' => [['color', 'color']],
         ];
     }
 
     /**
      * @test
      *
-     * @param list<Rule> $rules
+     * @param list<string> $propertyNamesToRemove
      *
-     * @dataProvider provideRulesToRemove
+     * @dataProvider providePropertyNamesToRemove
      */
-    public function removeAllRulesRemovesAllRules(array $rules)
+    public function removeAllRulesRemovesAllRules(array $propertyNamesToRemove)
     {
         $subject = new ConcreteRuleSet();
-        $subject->setRules($rules);
+        self::setRulesFromPropertyNames($subject, $propertyNamesToRemove);
 
         $subject->removeAllRules();
 
         self::assertSame([], $subject->getRules());
+    }
+
+    /**
+     * @param list<string> $propertyNames
+     */
+    private static function setRulesFromPropertyNames(RuleSet $subject, array $propertyNames)
+    {
+        $subject->setRules(\array_map(
+            function ($propertyName) {
+                return new Rule($propertyName);
+            },
+            $propertyNames
+        ));
     }
 }
