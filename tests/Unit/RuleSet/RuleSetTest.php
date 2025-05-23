@@ -10,6 +10,7 @@ use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\RuleSet\RuleContainer;
 use Sabberworm\CSS\Tests\Unit\RuleSet\Fixtures\ConcreteRuleSet;
+use TRegx\PhpUnit\DataProviders\DataProvider;
 
 /**
  * @covers \Sabberworm\CSS\RuleSet\RuleSet
@@ -48,6 +49,139 @@ final class RuleSetTest extends TestCase
     public function implementsRuleContainer(): void
     {
         self::assertInstanceOf(RuleContainer::class, $this->subject);
+    }
+
+    /**
+     * @return array<string, array{0: list<non-empty-string>}>
+     */
+    public static function providePropertyNamesToBeSetInitially(): array
+    {
+        return [
+            'no properties' => [[]],
+            'one property' => [['color']],
+            'two different properties' => [['color', 'display']],
+            'two of the same property' => [['color', 'color']],
+        ];
+    }
+
+    /**
+     * @return array<string, array{0: non-empty-string}>
+     */
+    public static function providePropertyNameToAdd(): array
+    {
+        return [
+            'property name `color` maybe matching that of existing declaration' => ['color'],
+            'property name `display` maybe matching that of existing declaration' => ['display'],
+            'property name `width` not matching that of existing declaration' => ['width'],
+        ];
+    }
+
+    /**
+     * @return DataProvider<string, array{0: list<string>, 1: string}>
+     */
+    public static function provideInitialPropertyNamesAndPropertyNameToAdd(): DataProvider
+    {
+        return DataProvider::cross(self::providePropertyNamesToBeSetInitially(), self::providePropertyNameToAdd());
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $initialPropertyNames
+     *
+     * @dataProvider provideInitialPropertyNamesAndPropertyNameToAdd
+     */
+    public function addRuleWithoutSiblingAddsRuleAfterInitialRulesAndSetsValidLineAndColumnNumbers(
+        array $initialPropertyNames,
+        string $propertyNameToAdd
+    ): void {
+        if ($initialPropertyNames === []) {
+            self::markTestSkipped('currently broken - first rule added does not have valid line number set');
+        }
+
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        $this->subject->addRule($ruleToAdd);
+
+        $rules = $this->subject->getRules();
+        self::assertSame($ruleToAdd, \end($rules));
+        self::assertIsInt($ruleToAdd->getLineNumber(), 'line number not set');
+        self::assertGreaterThanOrEqual(1, $ruleToAdd->getLineNumber(), 'line number not valid');
+        self::assertIsInt($ruleToAdd->getColumnNumber(), 'column number not set');
+        self::assertGreaterThanOrEqual(0, $ruleToAdd->getColumnNumber(), 'column number not valid');
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideInitialPropertyNamesAndPropertyNameToAdd
+     *
+     * @param list<string> $initialPropertyNames
+     */
+    public function addRuleWithOnlyLineNumberAddsRuleAndSetsColumnNumberPreservingLineNumber(
+        array $initialPropertyNames,
+        string $propertyNameToAdd
+    ): void {
+        self::markTestSkipped('currently broken - does not set column number');
+
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $ruleToAdd->setPosition(42);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        $this->subject->addRule($ruleToAdd);
+
+        self::assertContains($ruleToAdd, $this->subject->getRules());
+        self::assertIsInt($ruleToAdd->getColumnNumber(), 'column number not set');
+        self::assertGreaterThanOrEqual(0, $ruleToAdd->getColumnNumber(), 'column number not valid');
+        self::assertSame(42, $ruleToAdd->getLineNumber(), 'line number not preserved');
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideInitialPropertyNamesAndPropertyNameToAdd
+     *
+     * @param list<string> $initialPropertyNames
+     */
+    public function addRuleWithOnlyColumnNumberAddsRuleAndSetsLineNumberPreservingColumnNumber(
+        array $initialPropertyNames,
+        string $propertyNameToAdd
+    ): void {
+        self::markTestSkipped('currently broken - does not preserve column number');
+
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $ruleToAdd->setPosition(null, 42);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        $this->subject->addRule($ruleToAdd);
+
+        self::assertContains($ruleToAdd, $this->subject->getRules());
+        self::assertIsInt($ruleToAdd->getLineNumber(), 'line number not set');
+        self::assertGreaterThanOrEqual(1, $ruleToAdd->getLineNumber(), 'line number not valid');
+        self::assertSame(42, $ruleToAdd->getColumnNumber(), 'column number not preserved');
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideInitialPropertyNamesAndPropertyNameToAdd
+     *
+     * @param list<string> $initialPropertyNames
+     */
+    public function addRuleWithCompletePositionAddsRuleAndPreservesPosition(
+        array $initialPropertyNames,
+        string $propertyNameToAdd
+    ): void {
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $ruleToAdd->setPosition(42, 64);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        $this->subject->addRule($ruleToAdd);
+
+        self::assertContains($ruleToAdd, $this->subject->getRules());
+        self::assertSame(42, $ruleToAdd->getLineNumber(), 'line number not preserved');
+        self::assertSame(64, $ruleToAdd->getColumnNumber(), 'column number not preserved');
     }
 
     /**
@@ -191,24 +325,11 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: list<string>}>
-     */
-    public static function providePropertyNamesToRemove(): array
-    {
-        return [
-            'no properties' => [[]],
-            'one property' => [['color']],
-            'two different properties' => [['color', 'display']],
-            'two of the same property' => [['color', 'color']],
-        ];
-    }
-
-    /**
      * @test
      *
      * @param list<string> $propertyNamesToRemove
      *
-     * @dataProvider providePropertyNamesToRemove
+     * @dataProvider providePropertyNamesToBeSetInitially
      */
     public function removeAllRulesRemovesAllRules(array $propertyNamesToRemove): void
     {
