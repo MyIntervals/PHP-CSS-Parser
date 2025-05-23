@@ -118,6 +118,8 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
                 $last = $rules[$rulesCount - 1];
                 $ruleToAdd->setPosition($last->getLineNo() + 1, 0);
             }
+        } elseif ($ruleToAdd->getColumnNumber() === null) {
+            $ruleToAdd->setPosition($ruleToAdd->getLineNumber(), 0);
         }
 
         \array_splice($this->rules[$propertyName], $position, 0, [$ruleToAdd]);

@@ -123,8 +123,6 @@ final class RuleSetTest extends TestCase
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        self::markTestSkipped('currently broken - does not set column number');
-
         $ruleToAdd = new Rule($propertyNameToAdd);
         $ruleToAdd->setPosition(42);
         $this->setRulesFromPropertyNames($initialPropertyNames);

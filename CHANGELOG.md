@@ -19,7 +19,7 @@ Please also have a look at our
 - Methods `getLineNumber` and `getColumnNumber` which return a nullable `int`
   for the following classes:
   `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
-  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225)
+  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225, #1263)
 - `Positionable` interface for CSS items that may have a position
   (line and perhaps column number) in the parsed CSS (#1221)
 - Partial support for CSS Color Module Level 4:
