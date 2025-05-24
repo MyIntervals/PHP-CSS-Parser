@@ -30,6 +30,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Deprecated
 
+- Support for PHP < 7.2 is deprecated; version 9.0 will require PHP 7.2 or later
+  (#1264)
 - Passing a `string` or `null` to `RuleSet::removeRule()` is deprecated
   (implementing classes are `AtRuleSet` and `DeclarationBlock`);
   use `removeMatchingRules()` or `removeAllRules()` instead (#1249)
