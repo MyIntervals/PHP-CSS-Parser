@@ -138,19 +138,18 @@ final class RuleSetTest extends TestCase
      *
      * @param list<string> $initialPropertyNames
      */
-    public function addRuleWithOnlyColumnNumberAddsRuleAndSetsLineNumberPreservingColumnNumber(
+    public function addRuleWithOnlyColumnNumberAddsRuleAfterInitialRulesAndSetsLineNumberPreservingColumnNumber(
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        self::markTestSkipped('currently broken - does not preserve column number');
-
         $ruleToAdd = new Rule($propertyNameToAdd);
         $ruleToAdd->setPosition(null, 42);
         $this->setRulesFromPropertyNames($initialPropertyNames);
 
         $this->subject->addRule($ruleToAdd);
 
-        self::assertContains($ruleToAdd, $this->subject->getRules());
+        $rules = $this->subject->getRules();
+        self::assertSame($ruleToAdd, \end($rules));
         self::assertIsInt($ruleToAdd->getLineNumber(), 'line number not set');
         self::assertGreaterThanOrEqual(1, $ruleToAdd->getLineNumber(), 'line number not valid');
         self::assertSame(42, $ruleToAdd->getColumnNumber(), 'column number not preserved');

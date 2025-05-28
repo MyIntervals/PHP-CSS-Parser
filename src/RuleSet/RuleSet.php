@@ -110,15 +110,16 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
                 $ruleToAdd->setPosition($sibling->getLineNo(), $sibling->getColNo() - 1);
             }
         }
-        if ($ruleToAdd->getLineNo() === 0 && $ruleToAdd->getColNo() === 0) {
+        if ($ruleToAdd->getLineNumber() === null) {
             //this node is added manually, give it the next best line
+            $columnNumber = $ruleToAdd->getColumnNumber() ?? 0;
             $rules = $this->getRules();
             $rulesCount = \count($rules);
             if ($rulesCount > 0) {
                 $last = $rules[$rulesCount - 1];
-                $ruleToAdd->setPosition($last->getLineNo() + 1, 0);
+                $ruleToAdd->setPosition($last->getLineNo() + 1, $columnNumber);
             } else {
-                $ruleToAdd->setPosition(1, 0);
+                $ruleToAdd->setPosition(1, $columnNumber);
             }
         } elseif ($ruleToAdd->getColumnNumber() === null) {
             $ruleToAdd->setPosition($ruleToAdd->getLineNumber(), 0);
