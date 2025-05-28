@@ -105,6 +105,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Set line number when `RuleSet::addRule()` called with only column number set
+  (#1265)
 - Ensure first rule added with `RuleSet::addRule()` has valid position (#1262)
 - Don't render `rgb` colors with percentage values using hex notation (#803)
 
