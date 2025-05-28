@@ -105,6 +105,7 @@ Please also have a look at our
 
 ### Fixed
 
+- Ensure first rule added with `RuleSet::addRule()` has valid position (#1262)
 - Don't render `rgb` colors with percentage values using hex notation (#803)
 
 ### Documentation

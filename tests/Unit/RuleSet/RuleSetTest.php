@@ -95,10 +95,6 @@ final class RuleSetTest extends TestCase
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        if ($initialPropertyNames === []) {
-            self::markTestSkipped('currently broken - first rule added does not have valid line number set');
-        }
-
         $ruleToAdd = new Rule($propertyNameToAdd);
         $this->setRulesFromPropertyNames($initialPropertyNames);
 
