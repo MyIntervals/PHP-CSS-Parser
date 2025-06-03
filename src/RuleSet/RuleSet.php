@@ -107,7 +107,20 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
             $siblingPosition = \array_search($sibling, $this->rules[$propertyName], true);
             if ($siblingPosition !== false) {
                 $position = $siblingPosition;
-                $ruleToAdd->setPosition($sibling->getLineNo(), $sibling->getColNo() - 1);
+                // Increment column number of all existing rules on same line, starting at sibling
+                $siblingLineNumber = $sibling->getLineNumber();
+                $siblingColumnNumber = $sibling->getColumnNumber();
+                foreach ($this->rules as $rulesForAProperty) {
+                    foreach ($rulesForAProperty as $rule) {
+                        if (
+                            $rule->getLineNumber() === $siblingLineNumber &&
+                            $rule->getColumnNumber() >= $siblingColumnNumber
+                        ) {
+                            $rule->setPosition($siblingLineNumber, $rule->getColumnNumber() + 1);
+                        }
+                    }
+                }
+                $ruleToAdd->setPosition($siblingLineNumber, $siblingColumnNumber);
             }
         }
         if ($ruleToAdd->getLineNumber() === null) {

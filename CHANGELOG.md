@@ -105,6 +105,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Ensure `RuleSet::addRule()` sets non-negative column number when sibling
+  provided (#1268)
 - Set line number when `RuleSet::addRule()` called with only column number set
   (#1265)
 - Ensure first rule added with `RuleSet::addRule()` has valid position (#1262)
