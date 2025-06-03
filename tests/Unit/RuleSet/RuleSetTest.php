@@ -271,8 +271,6 @@ final class RuleSetTest extends TestCase
         int $siblingIndex,
         string $propertyNameToAdd
     ): void {
-        self::markTestSkipped('tofix: sometimes a negative column number results');
-
         $ruleToAdd = new Rule($propertyNameToAdd);
         $this->setRulesFromPropertyNames($initialPropertyNames);
         $sibling = $this->subject->getRules()[$siblingIndex];
