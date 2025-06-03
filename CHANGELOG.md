@@ -15,7 +15,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Methods `getLineNumber` and `getColumnNumber` which return a nullable `int`
   for the following classes:
   `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
-  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225)
+  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225, #1263)
 - `Positionable` interface for CSS items that may have a position
   (line and perhaps column number) in the parsed CSS (#1221)
 
@@ -54,6 +54,10 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ### Removed
 
 ### Fixed
+
+- Set line number when `RuleSet::addRule()` called with only column number set
+  (#1265)
+- Ensure first rule added with `RuleSet::addRule()` has valid position (#1262)
 
 ## 8.8.0: Bug fixes and deprecations
 
