@@ -104,12 +104,29 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
         $position = \count($this->rules[$propertyName]);
 
         if ($sibling !== null) {
+            $siblingLineNumber = $sibling->getLineNumber();
+            $siblingColumnNumber = $sibling->getColumnNumber();
+            $siblingIsInSet = false;
             $siblingPosition = \array_search($sibling, $this->rules[$propertyName], true);
             if ($siblingPosition !== false) {
+                $siblingIsInSet = true;
                 $position = $siblingPosition;
+            } elseif ($siblingIsInSet = $this->hasRule($sibling)) {
+                // Maintain ordering within `$this->rules[$propertyName]`
+                // by inserting before first `Rule` with a same-or-later position than the sibling.
+                foreach ($this->rules[$propertyName] as $index => $rule) {
+                    if (
+                        $rule->getLineNumber() > $siblingLineNumber ||
+                        $rule->getLineNumber() === $siblingLineNumber &&
+                        $rule->getColumnNumber() >= $siblingColumnNumber
+                    ) {
+                        $position = $index;
+                        break;
+                    }
+                }
+            }
+            if ($siblingIsInSet) {
                 // Increment column number of all existing rules on same line, starting at sibling
-                $siblingLineNumber = $sibling->getLineNumber();
-                $siblingColumnNumber = $sibling->getColumnNumber();
                 foreach ($this->rules as $rulesForAProperty) {
                     foreach ($rulesForAProperty as $rule) {
                         if (
@@ -123,6 +140,7 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
                 $ruleToAdd->setPosition($siblingLineNumber, $siblingColumnNumber);
             }
         }
+
         if ($ruleToAdd->getLineNumber() === null) {
             //this node is added manually, give it the next best line
             $columnNumber = $ruleToAdd->getColumnNumber() ?? 0;
@@ -304,5 +322,16 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
             return $first->getColNo() - $second->getColNo();
         }
         return $first->getLineNo() - $second->getLineNo();
+    }
+
+    private function hasRule(Rule $rule): bool
+    {
+        foreach ($this->rules as $rulesForAProperty) {
+            if (\in_array($rule, $rulesForAProperty, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

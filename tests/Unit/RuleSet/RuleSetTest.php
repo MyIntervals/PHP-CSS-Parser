@@ -221,8 +221,6 @@ final class RuleSetTest extends TestCase
         int $siblingIndex,
         string $propertyNameToAdd
     ): void {
-        self::markTestSkipped('tofix: if property names don\'t match, sibling is ignored');
-
         $ruleToAdd = new Rule($propertyNameToAdd);
         $this->setRulesFromPropertyNames($initialPropertyNames);
         $sibling = $this->subject->getRules()[$siblingIndex];
