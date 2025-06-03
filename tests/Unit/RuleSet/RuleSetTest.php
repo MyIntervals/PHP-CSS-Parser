@@ -178,6 +178,138 @@ final class RuleSetTest extends TestCase
     }
 
     /**
+     * @return array<string, array{0: non-empty-list<non-empty-string>, 1: int<0, max>}>
+     */
+    public static function provideInitialPropertyNamesAndSiblingIndex(): array
+    {
+        $initialPropertyNamesSets = self::providePropertyNamesToBeSetInitially();
+
+        // Provide sets with each possible sibling index for the initially set `Rule`s.
+        $initialPropertyNamesAndSiblingIndexSets = [];
+        foreach ($initialPropertyNamesSets as $setName => $data) {
+            $initialPropertyNames = $data[0];
+            for ($siblingIndex = 0; $siblingIndex < \count($initialPropertyNames); ++$siblingIndex) {
+                $initialPropertyNamesAndSiblingIndexSets[$setName . ', sibling index ' . $siblingIndex] =
+                    [$initialPropertyNames, $siblingIndex];
+            }
+        }
+
+        return $initialPropertyNamesAndSiblingIndexSets;
+    }
+
+    /**
+     * @return DataProvider<string, array{0: non-empty-list<string>, 1: int<0, max>, 2: string}>
+     */
+    public static function provideInitialPropertyNamesAndSiblingIndexAndPropertyNameToAdd(): DataProvider
+    {
+        return DataProvider::cross(
+            self::provideInitialPropertyNamesAndSiblingIndex(),
+            self::providePropertyNameToAdd()
+        );
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $initialPropertyNames
+     * @param int<0, max> $siblingIndex
+     *
+     * @dataProvider provideInitialPropertyNamesAndSiblingIndexAndPropertyNameToAdd
+     */
+    public function addRuleWithSiblingInsertsRuleBeforeSibling(
+        array $initialPropertyNames,
+        int $siblingIndex,
+        string $propertyNameToAdd
+    ): void {
+        self::markTestSkipped('tofix: if property names don\'t match, sibling is ignored');
+
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $sibling = $this->subject->getRules()[$siblingIndex];
+
+        $this->subject->addRule($ruleToAdd, $sibling);
+
+        $rules = $this->subject->getRules();
+        $siblingPosition = \array_search($sibling, $rules, true);
+        self::assertIsInt($siblingPosition);
+        self::assertSame($siblingPosition - 1, \array_search($ruleToAdd, $rules, true));
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $initialPropertyNames
+     * @param int<0, max> $siblingIndex
+     *
+     * @dataProvider provideInitialPropertyNamesAndSiblingIndexAndPropertyNameToAdd
+     */
+    public function addRuleWithSiblingSetsValidLineNumber(
+        array $initialPropertyNames,
+        int $siblingIndex,
+        string $propertyNameToAdd
+    ): void {
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $sibling = $this->subject->getRules()[$siblingIndex];
+
+        $this->subject->addRule($ruleToAdd, $sibling);
+
+        self::assertIsInt($ruleToAdd->getLineNumber(), 'line number not set');
+        self::assertGreaterThanOrEqual(1, $ruleToAdd->getLineNumber(), 'line number not valid');
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $initialPropertyNames
+     * @param int<0, max> $siblingIndex
+     *
+     * @dataProvider provideInitialPropertyNamesAndSiblingIndexAndPropertyNameToAdd
+     */
+    public function addRuleWithSiblingSetsValidColumnNumber(
+        array $initialPropertyNames,
+        int $siblingIndex,
+        string $propertyNameToAdd
+    ): void {
+        self::markTestSkipped('tofix: sometimes a negative column number results');
+
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $sibling = $this->subject->getRules()[$siblingIndex];
+
+        $this->subject->addRule($ruleToAdd, $sibling);
+
+        self::assertIsInt($ruleToAdd->getColumnNumber(), 'column number not set');
+        self::assertGreaterThanOrEqual(0, $ruleToAdd->getColumnNumber(), 'column number not valid');
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $initialPropertyNames
+     *
+     * @dataProvider provideInitialPropertyNamesAndPropertyNameToAdd
+     */
+    public function addRuleWithSiblingNotInRuleSetAddsRuleAfterInitialRulesAndSetsValidLineAndColumnNumbers(
+        array $initialPropertyNames,
+        string $propertyNameToAdd
+    ): void {
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        // `display` is sometimes in `$initialPropertyNames` and sometimes the `$propertyNameToAdd`.
+        // Choosing this for the bogus sibling allows testing all combinations of whether it is or isn't.
+        $this->subject->addRule($ruleToAdd, new Rule('display'));
+
+        $rules = $this->subject->getRules();
+        self::assertSame($ruleToAdd, \end($rules));
+        self::assertIsInt($ruleToAdd->getLineNumber(), 'line number not set');
+        self::assertGreaterThanOrEqual(1, $ruleToAdd->getLineNumber(), 'line number not valid');
+        self::assertIsInt($ruleToAdd->getColumnNumber(), 'column number not set');
+        self::assertGreaterThanOrEqual(0, $ruleToAdd->getColumnNumber(), 'column number not valid');
+    }
+
+    /**
      * @return array<string, array{0: list<string>, 1: string, 2: list<string>}>
      */
     public static function providePropertyNamesAndPropertyNameToRemoveAndExpectedRemainingPropertyNames(): array
