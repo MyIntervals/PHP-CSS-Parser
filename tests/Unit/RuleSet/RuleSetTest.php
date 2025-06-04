@@ -77,10 +77,6 @@ final class RuleSetTest extends TestCase
         array $initialPropertyNames,
         string $propertyNameToAdd
     ) {
-        if ($initialPropertyNames === []) {
-            self::markTestSkipped('currently broken - first rule added does not have valid line number set');
-        }
-
         $subject = new ConcreteRuleSet();
         $ruleToAdd = new Rule($propertyNameToAdd);
         self::setRulesFromPropertyNames($subject, $initialPropertyNames);
@@ -106,8 +102,6 @@ final class RuleSetTest extends TestCase
         array $initialPropertyNames,
         string $propertyNameToAdd
     ) {
-        self::markTestSkipped('currently broken - does not set column number');
-
         $subject = new ConcreteRuleSet();
         $ruleToAdd = new Rule($propertyNameToAdd);
         $ruleToAdd->setPosition(42);
@@ -128,12 +122,10 @@ final class RuleSetTest extends TestCase
      *
      * @param list<string> $initialPropertyNames
      */
-    public function addRuleWithOnlyColumnNumberAddsRuleAndSetsLineNumberPreservingColumnNumber(
+    public function addRuleWithOnlyColumnNumberAddsRuleAfterInitialRulesAndSetsLineNumberPreservingColumnNumber(
         array $initialPropertyNames,
         string $propertyNameToAdd
     ) {
-        self::markTestSkipped('currently broken - does not preserve column number');
-
         $subject = new ConcreteRuleSet();
         $ruleToAdd = new Rule($propertyNameToAdd);
         $ruleToAdd->setPosition(null, 42);
@@ -141,7 +133,8 @@ final class RuleSetTest extends TestCase
 
         $subject->addRule($ruleToAdd);
 
-        self::assertContains($ruleToAdd, $subject->getRules());
+        $rules = $subject->getRules();
+        self::assertSame($ruleToAdd, \end($rules));
         self::assertInternalType('int', $ruleToAdd->getLineNumber(), 'line number not set');
         self::assertGreaterThanOrEqual(1, $ruleToAdd->getLineNumber(), 'line number not valid');
         self::assertSame(42, $ruleToAdd->getColumnNumber(), 'column number not preserved');

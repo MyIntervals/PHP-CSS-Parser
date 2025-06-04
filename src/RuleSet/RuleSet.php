@@ -121,14 +121,19 @@ abstract class RuleSet implements CSSElement, Commentable, Positionable
                 $oRule->setPosition($oSibling->getLineNo(), $oSibling->getColNo() - 1);
             }
         }
-        if ($oRule->getLineNo() === 0 && $oRule->getColNo() === 0) {
+        if ($oRule->getLineNumber() === null) {
             //this node is added manually, give it the next best line
+            $columnNumber = $oRule->getColNo();
             $rules = $this->getRules();
             $pos = count($rules);
             if ($pos > 0) {
                 $last = $rules[$pos - 1];
-                $oRule->setPosition($last->getLineNo() + 1, 0);
+                $oRule->setPosition($last->getLineNo() + 1, $columnNumber);
+            } else {
+                $oRule->setPosition(1, $columnNumber);
             }
+        } elseif ($oRule->getColumnNumber() === null) {
+            $oRule->setPosition($oRule->getLineNumber(), 0);
         }
 
         array_splice($this->aRules[$sRule], $iPosition, 0, [$oRule]);
