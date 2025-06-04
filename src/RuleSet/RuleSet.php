@@ -173,12 +173,7 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
                 $result = \array_merge($result, $rules);
             }
         }
-        \usort($result, static function (Rule $first, Rule $second): int {
-            if ($first->getLineNo() === $second->getLineNo()) {
-                return $first->getColNo() - $second->getColNo();
-            }
-            return $first->getLineNo() - $second->getLineNo();
-        });
+        \usort($result, [self::class, 'comparePositionable']);
 
         return $result;
     }
@@ -298,5 +293,16 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
         }
 
         return $formatter->removeLastSemicolon($result);
+    }
+
+    /**
+     * @return int negative if `$first` is before `$second`; zero if they have the same position; positive otherwise
+     */
+    private static function comparePositionable(Positionable $first, Positionable $second): int
+    {
+        if ($first->getLineNo() === $second->getLineNo()) {
+            return $first->getColNo() - $second->getColNo();
+        }
+        return $first->getLineNo() - $second->getLineNo();
     }
 }
