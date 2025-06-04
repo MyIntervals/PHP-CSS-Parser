@@ -63,7 +63,7 @@ final class URLTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoByDefaultReturnsZero(): void
+    public function getLineNumberByDefaultReturnsZero(): void
     {
         $subject = new URL(new CSSString('http://example.com'));
 
@@ -73,7 +73,7 @@ final class URLTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoReturnsLineNumberProvidedToConstructor(): void
+    public function getLineNumberReturnsLineNumberProvidedToConstructor(): void
     {
         $lineNumber = 17;
 
