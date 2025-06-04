@@ -104,8 +104,6 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
         $position = \count($this->rules[$propertyName]);
 
         if ($sibling !== null) {
-            $siblingLineNumber = $sibling->getLineNumber();
-            $siblingColumnNumber = $sibling->getColumnNumber();
             $siblingIsInSet = false;
             $siblingPosition = \array_search($sibling, $this->rules[$propertyName], true);
             if ($siblingPosition !== false) {
@@ -115,11 +113,7 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
                 // Maintain ordering within `$this->rules[$propertyName]`
                 // by inserting before first `Rule` with a same-or-later position than the sibling.
                 foreach ($this->rules[$propertyName] as $index => $rule) {
-                    if (
-                        $rule->getLineNumber() > $siblingLineNumber ||
-                        $rule->getLineNumber() === $siblingLineNumber &&
-                        $rule->getColumnNumber() >= $siblingColumnNumber
-                    ) {
+                    if (self::comparePositionable($rule, $sibling) >= 0) {
                         $position = $index;
                         break;
                     }
@@ -127,6 +121,8 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
             }
             if ($siblingIsInSet) {
                 // Increment column number of all existing rules on same line, starting at sibling
+                $siblingLineNumber = $sibling->getLineNumber();
+                $siblingColumnNumber = $sibling->getColumnNumber();
                 foreach ($this->rules as $rulesForAProperty) {
                     foreach ($rulesForAProperty as $rule) {
                         if (
