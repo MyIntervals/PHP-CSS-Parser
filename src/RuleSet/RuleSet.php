@@ -109,13 +109,16 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
             if ($siblingPosition !== false) {
                 $siblingIsInSet = true;
                 $position = $siblingPosition;
-            } elseif ($siblingIsInSet = $this->hasRule($sibling)) {
-                // Maintain ordering within `$this->rules[$propertyName]`
-                // by inserting before first `Rule` with a same-or-later position than the sibling.
-                foreach ($this->rules[$propertyName] as $index => $rule) {
-                    if (self::comparePositionable($rule, $sibling) >= 0) {
-                        $position = $index;
-                        break;
+            } else {
+                $siblingIsInSet = $this->hasRule($sibling);
+                if ($siblingIsInSet) {
+                    // Maintain ordering within `$this->rules[$propertyName]`
+                    // by inserting before first `Rule` with a same-or-later position than the sibling.
+                    foreach ($this->rules[$propertyName] as $index => $rule) {
+                        if (self::comparePositionable($rule, $sibling) >= 0) {
+                            $position = $index;
+                            break;
+                        }
                     }
                 }
             }
