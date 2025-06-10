@@ -67,7 +67,7 @@ final class RuleSetTest extends TestCase
     /**
      * @return array<string, array{0: non-empty-string}>
      */
-    public static function providePropertyNameToAdd(): array
+    public static function provideAnotherPropertyName(): array
     {
         return [
             'property name `color` maybe matching that of existing declaration' => ['color'],
@@ -79,9 +79,9 @@ final class RuleSetTest extends TestCase
     /**
      * @return DataProvider<string, array{0: list<string>, 1: string}>
      */
-    public static function provideInitialPropertyNamesAndPropertyNameToAdd(): DataProvider
+    public static function provideInitialPropertyNamesAndAnotherPropertyName(): DataProvider
     {
-        return DataProvider::cross(self::providePropertyNamesToBeSetInitially(), self::providePropertyNameToAdd());
+        return DataProvider::cross(self::providePropertyNamesToBeSetInitially(), self::provideAnotherPropertyName());
     }
 
     /**
@@ -89,7 +89,7 @@ final class RuleSetTest extends TestCase
      *
      * @param list<string> $initialPropertyNames
      *
-     * @dataProvider provideInitialPropertyNamesAndPropertyNameToAdd
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
      */
     public function addRuleWithoutSiblingAddsRuleAfterInitialRulesAndSetsValidLineAndColumnNumbers(
         array $initialPropertyNames,
@@ -111,7 +111,7 @@ final class RuleSetTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider provideInitialPropertyNamesAndPropertyNameToAdd
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
      *
      * @param list<string> $initialPropertyNames
      */
@@ -134,7 +134,7 @@ final class RuleSetTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider provideInitialPropertyNamesAndPropertyNameToAdd
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
      *
      * @param list<string> $initialPropertyNames
      */
@@ -158,7 +158,7 @@ final class RuleSetTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider provideInitialPropertyNamesAndPropertyNameToAdd
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
      *
      * @param list<string> $initialPropertyNames
      */
@@ -180,21 +180,21 @@ final class RuleSetTest extends TestCase
     /**
      * @return array<string, array{0: non-empty-list<non-empty-string>, 1: int<0, max>}>
      */
-    public static function provideInitialPropertyNamesAndSiblingIndex(): array
+    public static function provideInitialPropertyNamesAndIndexOfOne(): array
     {
         $initialPropertyNamesSets = self::providePropertyNamesToBeSetInitially();
 
-        // Provide sets with each possible sibling index for the initially set `Rule`s.
-        $initialPropertyNamesAndSiblingIndexSets = [];
+        // Provide sets with each possible index for the initially set `Rule`s.
+        $initialPropertyNamesAndIndexSets = [];
         foreach ($initialPropertyNamesSets as $setName => $data) {
             $initialPropertyNames = $data[0];
-            for ($siblingIndex = 0; $siblingIndex < \count($initialPropertyNames); ++$siblingIndex) {
-                $initialPropertyNamesAndSiblingIndexSets[$setName . ', sibling index ' . $siblingIndex] =
-                    [$initialPropertyNames, $siblingIndex];
+            for ($index = 0; $index < \count($initialPropertyNames); ++$index) {
+                $initialPropertyNamesAndIndexSets[$setName . ', index ' . $index] =
+                    [$initialPropertyNames, $index];
             }
         }
 
-        return $initialPropertyNamesAndSiblingIndexSets;
+        return $initialPropertyNamesAndIndexSets;
     }
 
     /**
@@ -203,15 +203,15 @@ final class RuleSetTest extends TestCase
     public static function provideInitialPropertyNamesAndSiblingIndexAndPropertyNameToAdd(): DataProvider
     {
         return DataProvider::cross(
-            self::provideInitialPropertyNamesAndSiblingIndex(),
-            self::providePropertyNameToAdd()
+            self::provideInitialPropertyNamesAndIndexOfOne(),
+            self::provideAnotherPropertyName()
         );
     }
 
     /**
      * @test
      *
-     * @param list<string> $initialPropertyNames
+     * @param non-empty-list<string> $initialPropertyNames
      * @param int<0, max> $siblingIndex
      *
      * @dataProvider provideInitialPropertyNamesAndSiblingIndexAndPropertyNameToAdd
@@ -236,7 +236,7 @@ final class RuleSetTest extends TestCase
     /**
      * @test
      *
-     * @param list<string> $initialPropertyNames
+     * @param non-empty-list<string> $initialPropertyNames
      * @param int<0, max> $siblingIndex
      *
      * @dataProvider provideInitialPropertyNamesAndSiblingIndexAndPropertyNameToAdd
@@ -259,7 +259,7 @@ final class RuleSetTest extends TestCase
     /**
      * @test
      *
-     * @param list<string> $initialPropertyNames
+     * @param non-empty-list<string> $initialPropertyNames
      * @param int<0, max> $siblingIndex
      *
      * @dataProvider provideInitialPropertyNamesAndSiblingIndexAndPropertyNameToAdd
@@ -284,7 +284,7 @@ final class RuleSetTest extends TestCase
      *
      * @param list<string> $initialPropertyNames
      *
-     * @dataProvider provideInitialPropertyNamesAndPropertyNameToAdd
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
      */
     public function addRuleWithSiblingNotInRuleSetAddsRuleAfterInitialRulesAndSetsValidLineAndColumnNumbers(
         array $initialPropertyNames,
@@ -303,6 +303,62 @@ final class RuleSetTest extends TestCase
         self::assertGreaterThanOrEqual(1, $ruleToAdd->getLineNumber(), 'line number not valid');
         self::assertIsInt($ruleToAdd->getColumnNumber(), 'column number not set');
         self::assertGreaterThanOrEqual(0, $ruleToAdd->getColumnNumber(), 'column number not valid');
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-list<string> $initialPropertyNames
+     * @param int<0, max> $indexToRemove
+     *
+     * @dataProvider provideInitialPropertyNamesAndIndexOfOne
+     */
+    public function removeRuleRemovesRuleInSet(array $initialPropertyNames, int $indexToRemove): void
+    {
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $ruleToRemove = $this->subject->getRules()[$indexToRemove];
+
+        $this->subject->removeRule($ruleToRemove);
+
+        self::assertNotContains($ruleToRemove, $this->subject->getRules());
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-list<string> $initialPropertyNames
+     * @param int<0, max> $indexToRemove
+     *
+     * @dataProvider provideInitialPropertyNamesAndIndexOfOne
+     */
+    public function removeRuleRemovesExactlyOneRule(array $initialPropertyNames, int $indexToRemove): void
+    {
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $ruleToRemove = $this->subject->getRules()[$indexToRemove];
+
+        $this->subject->removeRule($ruleToRemove);
+
+        self::assertCount(\count($initialPropertyNames) - 1, $this->subject->getRules());
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $initialPropertyNames
+     *
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
+     */
+    public function removeRuleWithRuleNotInSetKeepsSetUnchanged(
+        array $initialPropertyNames,
+        string $propertyNameToRemove
+    ): void {
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $initialRules = $this->subject->getRules();
+        $ruleToRemove = new Rule($propertyNameToRemove);
+
+        $this->subject->removeRule($ruleToRemove);
+
+        self::assertSame($initialRules, $this->subject->getRules());
     }
 
     /**
