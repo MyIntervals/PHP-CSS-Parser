@@ -313,16 +313,32 @@ final class RuleSetTest extends TestCase
      *
      * @dataProvider provideInitialPropertyNamesAndIndexOfOne
      */
-    public function removeRuleRemovesRuleInSetAndKeepsOthers(array $initialPropertyNames, int $indexToRemove): void
+    public function removeRuleRemovesRuleInSet(array $initialPropertyNames, int $indexToRemove): void
     {
         $this->setRulesFromPropertyNames($initialPropertyNames);
         $ruleToRemove = $this->subject->getRules()[$indexToRemove];
 
         $this->subject->removeRule($ruleToRemove);
 
-        $remainingRules = $this->subject->getRules();
-        self::assertNotContains($ruleToRemove, $remainingRules);
-        self::assertCount(\count($initialPropertyNames) - 1, $remainingRules);
+        self::assertNotContains($ruleToRemove, $this->subject->getRules());
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-list<string> $initialPropertyNames
+     * @param int<0, max> $indexToRemove
+     *
+     * @dataProvider provideInitialPropertyNamesAndIndexOfOne
+     */
+    public function removeRuleRemovesExactlyOneRule(array $initialPropertyNames, int $indexToRemove): void
+    {
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $ruleToRemove = $this->subject->getRules()[$indexToRemove];
+
+        $this->subject->removeRule($ruleToRemove);
+
+        self::assertCount(\count($initialPropertyNames) - 1, $this->subject->getRules());
     }
 
     /**
@@ -332,7 +348,7 @@ final class RuleSetTest extends TestCase
      *
      * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
      */
-    public function removeRuleDoesNothingWithRuleNotInSet(
+    public function removeRuleWithRuleNotInSetKeepsSetUnchanged(
         array $initialPropertyNames,
         string $propertyNameToRemove
     ): void {
