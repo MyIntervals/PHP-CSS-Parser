@@ -91,7 +91,7 @@ final class RuleSetTest extends TestCase
      *
      * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
      */
-    public function addRuleWithoutSiblingAddsRuleAfterInitialRulesAndSetsValidLineAndColumnNumbers(
+    public function addRuleWithoutPositionWithoutSiblingAddsRuleAfterInitialRules(
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
@@ -102,8 +102,44 @@ final class RuleSetTest extends TestCase
 
         $rules = $this->subject->getRules();
         self::assertSame($ruleToAdd, \end($rules));
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $initialPropertyNames
+     *
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
+     */
+    public function addRuleWithoutPositionWithoutSiblingSetsValidLineNumber(
+        array $initialPropertyNames,
+        string $propertyNameToAdd
+    ): void {
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        $this->subject->addRule($ruleToAdd);
+
         self::assertIsInt($ruleToAdd->getLineNumber(), 'line number not set');
         self::assertGreaterThanOrEqual(1, $ruleToAdd->getLineNumber(), 'line number not valid');
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $initialPropertyNames
+     *
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
+     */
+    public function addRuleWithoutPositionWithoutSiblingSetsValidColumnNumber(
+        array $initialPropertyNames,
+        string $propertyNameToAdd
+    ): void {
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        $this->subject->addRule($ruleToAdd);
+
         self::assertIsInt($ruleToAdd->getColumnNumber(), 'column number not set');
         self::assertGreaterThanOrEqual(0, $ruleToAdd->getColumnNumber(), 'column number not valid');
     }
@@ -115,7 +151,7 @@ final class RuleSetTest extends TestCase
      *
      * @param list<string> $initialPropertyNames
      */
-    public function addRuleWithOnlyLineNumberAddsRuleAndSetsColumnNumberPreservingLineNumber(
+    public function addRuleWithOnlyLineNumberWithoutSiblingAddsRule(
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
@@ -126,8 +162,46 @@ final class RuleSetTest extends TestCase
         $this->subject->addRule($ruleToAdd);
 
         self::assertContains($ruleToAdd, $this->subject->getRules());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
+     *
+     * @param list<string> $initialPropertyNames
+     */
+    public function addRuleWithOnlyLineNumberWithoutSiblingSetsColumnNumber(
+        array $initialPropertyNames,
+        string $propertyNameToAdd
+    ): void {
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $ruleToAdd->setPosition(42);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        $this->subject->addRule($ruleToAdd);
+
         self::assertIsInt($ruleToAdd->getColumnNumber(), 'column number not set');
         self::assertGreaterThanOrEqual(0, $ruleToAdd->getColumnNumber(), 'column number not valid');
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
+     *
+     * @param list<string> $initialPropertyNames
+     */
+    public function addRuleWithOnlyLineNumberWithoutSiblingPreservesLineNumber(
+        array $initialPropertyNames,
+        string $propertyNameToAdd
+    ): void {
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $ruleToAdd->setPosition(42);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        $this->subject->addRule($ruleToAdd);
+
         self::assertSame(42, $ruleToAdd->getLineNumber(), 'line number not preserved');
     }
 
@@ -138,7 +212,7 @@ final class RuleSetTest extends TestCase
      *
      * @param list<string> $initialPropertyNames
      */
-    public function addRuleWithOnlyColumnNumberAddsRuleAfterInitialRulesAndSetsLineNumberPreservingColumnNumber(
+    public function addRuleWithOnlyColumnNumberWithoutSiblingAddsRuleAfterInitialRules(
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
@@ -150,8 +224,46 @@ final class RuleSetTest extends TestCase
 
         $rules = $this->subject->getRules();
         self::assertSame($ruleToAdd, \end($rules));
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
+     *
+     * @param list<string> $initialPropertyNames
+     */
+    public function addRuleWithOnlyColumnNumberWithoutSiblingSetsLineNumber(
+        array $initialPropertyNames,
+        string $propertyNameToAdd
+    ): void {
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $ruleToAdd->setPosition(null, 42);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        $this->subject->addRule($ruleToAdd);
+
         self::assertIsInt($ruleToAdd->getLineNumber(), 'line number not set');
         self::assertGreaterThanOrEqual(1, $ruleToAdd->getLineNumber(), 'line number not valid');
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
+     *
+     * @param list<string> $initialPropertyNames
+     */
+    public function addRuleWithOnlyColumnNumberWithoutSiblingPreservesColumnNumber(
+        array $initialPropertyNames,
+        string $propertyNameToAdd
+    ): void {
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $ruleToAdd->setPosition(null, 42);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        $this->subject->addRule($ruleToAdd);
+
         self::assertSame(42, $ruleToAdd->getColumnNumber(), 'column number not preserved');
     }
 
@@ -162,7 +274,7 @@ final class RuleSetTest extends TestCase
      *
      * @param list<string> $initialPropertyNames
      */
-    public function addRuleWithCompletePositionAddsRuleAndPreservesPosition(
+    public function addRuleWithCompletePositionWithoutSiblingAddsRule(
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
@@ -173,6 +285,25 @@ final class RuleSetTest extends TestCase
         $this->subject->addRule($ruleToAdd);
 
         self::assertContains($ruleToAdd, $this->subject->getRules());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
+     *
+     * @param list<string> $initialPropertyNames
+     */
+    public function addRuleWithCompletePositionWithoutSiblingPreservesPosition(
+        array $initialPropertyNames,
+        string $propertyNameToAdd
+    ): void {
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $ruleToAdd->setPosition(42, 64);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        $this->subject->addRule($ruleToAdd);
+
         self::assertSame(42, $ruleToAdd->getLineNumber(), 'line number not preserved');
         self::assertSame(64, $ruleToAdd->getColumnNumber(), 'column number not preserved');
     }
@@ -286,7 +417,7 @@ final class RuleSetTest extends TestCase
      *
      * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
      */
-    public function addRuleWithSiblingNotInRuleSetAddsRuleAfterInitialRulesAndSetsValidLineAndColumnNumbers(
+    public function addRuleWithSiblingNotInSetAddsRuleAfterInitialRules(
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
@@ -299,8 +430,48 @@ final class RuleSetTest extends TestCase
 
         $rules = $this->subject->getRules();
         self::assertSame($ruleToAdd, \end($rules));
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $initialPropertyNames
+     *
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
+     */
+    public function addRuleWithSiblingNotInSetSetsValidLineNumber(
+        array $initialPropertyNames,
+        string $propertyNameToAdd
+    ): void {
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        // `display` is sometimes in `$initialPropertyNames` and sometimes the `$propertyNameToAdd`.
+        // Choosing this for the bogus sibling allows testing all combinations of whether it is or isn't.
+        $this->subject->addRule($ruleToAdd, new Rule('display'));
+
         self::assertIsInt($ruleToAdd->getLineNumber(), 'line number not set');
         self::assertGreaterThanOrEqual(1, $ruleToAdd->getLineNumber(), 'line number not valid');
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $initialPropertyNames
+     *
+     * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
+     */
+    public function addRuleWithSiblingNotInSetSetsValidColumnNumber(
+        array $initialPropertyNames,
+        string $propertyNameToAdd
+    ): void {
+        $ruleToAdd = new Rule($propertyNameToAdd);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        // `display` is sometimes in `$initialPropertyNames` and sometimes the `$propertyNameToAdd`.
+        // Choosing this for the bogus sibling allows testing all combinations of whether it is or isn't.
+        $this->subject->addRule($ruleToAdd, new Rule('display'));
+
         self::assertIsInt($ruleToAdd->getColumnNumber(), 'column number not set');
         self::assertGreaterThanOrEqual(0, $ruleToAdd->getColumnNumber(), 'column number not valid');
     }
@@ -414,11 +585,29 @@ final class RuleSetTest extends TestCase
      * @test
      *
      * @param list<string> $initialPropertyNames
+     *
+     * @dataProvider providePropertyNamesAndPropertyNameToRemoveAndExpectedRemainingPropertyNames
+     */
+    public function removeMatchingRulesRemovesRulesWithPropertyName(
+        array $initialPropertyNames,
+        string $propertyNameToRemove
+    ): void {
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        $this->subject->removeMatchingRules($propertyNameToRemove);
+
+        self::assertArrayNotHasKey($propertyNameToRemove, $this->subject->getRulesAssoc());
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $initialPropertyNames
      * @param list<string> $expectedRemainingPropertyNames
      *
      * @dataProvider providePropertyNamesAndPropertyNameToRemoveAndExpectedRemainingPropertyNames
      */
-    public function removeMatchingRulesRemovesRulesByPropertyNameAndKeepsOthers(
+    public function removeMatchingRulesWithPropertyNameKeepsOtherRules(
         array $initialPropertyNames,
         string $propertyNameToRemove,
         array $expectedRemainingPropertyNames
@@ -428,7 +617,9 @@ final class RuleSetTest extends TestCase
         $this->subject->removeMatchingRules($propertyNameToRemove);
 
         $remainingRules = $this->subject->getRulesAssoc();
-        self::assertArrayNotHasKey($propertyNameToRemove, $remainingRules);
+        if ($expectedRemainingPropertyNames === []) {
+            self::assertSame([], $remainingRules);
+        }
         foreach ($expectedRemainingPropertyNames as $expectedPropertyName) {
             self::assertArrayHasKey($expectedPropertyName, $remainingRules);
         }
@@ -477,14 +668,12 @@ final class RuleSetTest extends TestCase
      * @test
      *
      * @param list<string> $initialPropertyNames
-     * @param list<string> $expectedRemainingPropertyNames
      *
      * @dataProvider providePropertyNamesAndPropertyNamePrefixToRemoveAndExpectedRemainingPropertyNames
      */
-    public function removeMatchingRulesRemovesRulesByPropertyNamePrefixAndKeepsOthers(
+    public function removeMatchingRulesRemovesRulesWithPropertyNamePrefix(
         array $initialPropertyNames,
-        string $propertyNamePrefix,
-        array $expectedRemainingPropertyNames
+        string $propertyNamePrefix
     ): void {
         $propertyNamePrefixWithHyphen = $propertyNamePrefix . '-';
         $this->setRulesFromPropertyNames($initialPropertyNames);
@@ -495,6 +684,30 @@ final class RuleSetTest extends TestCase
         self::assertArrayNotHasKey($propertyNamePrefix, $remainingRules);
         foreach (\array_keys($remainingRules) as $remainingPropertyName) {
             self::assertStringStartsNotWith($propertyNamePrefixWithHyphen, $remainingPropertyName);
+        }
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $initialPropertyNames
+     * @param list<string> $expectedRemainingPropertyNames
+     *
+     * @dataProvider providePropertyNamesAndPropertyNamePrefixToRemoveAndExpectedRemainingPropertyNames
+     */
+    public function removeMatchingRulesWithPropertyNamePrefixKeepsOtherRules(
+        array $initialPropertyNames,
+        string $propertyNamePrefix,
+        array $expectedRemainingPropertyNames
+    ): void {
+        $propertyNamePrefixWithHyphen = $propertyNamePrefix . '-';
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        $this->subject->removeMatchingRules($propertyNamePrefixWithHyphen);
+
+        $remainingRules = $this->subject->getRulesAssoc();
+        if ($expectedRemainingPropertyNames === []) {
+            self::assertSame([], $remainingRules);
         }
         foreach ($expectedRemainingPropertyNames as $expectedPropertyName) {
             self::assertArrayHasKey($expectedPropertyName, $remainingRules);
