@@ -60,7 +60,7 @@ final class CSSListTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoByDefaultReturnsZero(): void
+    public function getLineNumberByDefaultReturnsZero(): void
     {
         $subject = new ConcreteCSSList();
 
@@ -70,7 +70,7 @@ final class CSSListTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoReturnsLineNumberProvidedToConstructor(): void
+    public function getLineNumberReturnsLineNumberProvidedToConstructor(): void
     {
         $lineNumber = 42;
 
