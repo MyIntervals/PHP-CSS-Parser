@@ -54,7 +54,7 @@ final class RuleSetTest extends TestCase
     /**
      * @return array<string, array{0: list<non-empty-string>}>
      */
-    public static function providePropertyNamesToBeSetInitially(): array
+    public static function providePropertyNames(): array
     {
         return [
             'no properties' => [[]],
@@ -81,7 +81,7 @@ final class RuleSetTest extends TestCase
      */
     public static function provideInitialPropertyNamesAndAnotherPropertyName(): DataProvider
     {
-        return DataProvider::cross(self::providePropertyNamesToBeSetInitially(), self::provideAnotherPropertyName());
+        return DataProvider::cross(self::providePropertyNames(), self::provideAnotherPropertyName());
     }
 
     /**
@@ -313,7 +313,7 @@ final class RuleSetTest extends TestCase
      */
     public static function provideInitialPropertyNamesAndIndexOfOne(): array
     {
-        $initialPropertyNamesSets = self::providePropertyNamesToBeSetInitially();
+        $initialPropertyNamesSets = self::providePropertyNames();
 
         // Provide sets with each possible index for the initially set `Rule`s.
         $initialPropertyNamesAndIndexSets = [];
@@ -719,7 +719,7 @@ final class RuleSetTest extends TestCase
      *
      * @param list<string> $propertyNamesToRemove
      *
-     * @dataProvider providePropertyNamesToBeSetInitially
+     * @dataProvider providePropertyNames
      */
     public function removeAllRulesRemovesAllRules(array $propertyNamesToRemove): void
     {
@@ -731,15 +731,169 @@ final class RuleSetTest extends TestCase
     }
 
     /**
+     * @test
+     *
+     * @param list<string> $propertyNamesToSet
+     *
+     * @dataProvider providePropertyNames
+     */
+    public function setRulesOnVirginSetsRules(array $propertyNamesToSet): void
+    {
+        $rulesToSet = self::createRulesFromPropertyNames($propertyNamesToSet);
+
+        $this->subject->setRules($rulesToSet);
+
+        self::assertArrayHasSameValues($rulesToSet, $this->subject->getRules());
+    }
+
+    /**
+     * @return DataProvider<string, array{0: list<string>, 1: list<string>}>
+     */
+    public static function provideInitialPropertyNamesAndPropertyNamesToSet(): DataProvider
+    {
+        return DataProvider::cross(self::providePropertyNames(), self::providePropertyNames());
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $initialPropertyNames
+     * @param list<string> $propertyNamesToSet
+     *
+     * @dataProvider provideInitialPropertyNamesAndPropertyNamesToSet
+     */
+    public function setRulesReplacesRules(array $initialPropertyNames, array $propertyNamesToSet): void
+    {
+        $rulesToSet = self::createRulesFromPropertyNames($propertyNamesToSet);
+        $this->setRulesFromPropertyNames($initialPropertyNames);
+
+        $this->subject->setRules($rulesToSet);
+
+        self::assertArrayHasSameValues($rulesToSet, $this->subject->getRules());
+    }
+
+    /**
+     * @test
+     */
+    public function setRulesWithRuleWithoutPositionSetsValidLineNumber(): void
+    {
+        $ruleToSet = new Rule('color');
+
+        $this->subject->setRules([$ruleToSet]);
+
+        self::assertIsInt($ruleToSet->getLineNumber(), 'line number not set');
+        self::assertGreaterThanOrEqual(1, $ruleToSet->getLineNumber(), 'line number not valid');
+    }
+
+    /**
+     * @test
+     */
+    public function setRulesWithRuleWithoutPositionSetsValidColumnNumber(): void
+    {
+        $ruleToSet = new Rule('color');
+
+        $this->subject->setRules([$ruleToSet]);
+
+        self::assertIsInt($ruleToSet->getColumnNumber(), 'column number not set');
+        self::assertGreaterThanOrEqual(0, $ruleToSet->getColumnNumber(), 'column number not valid');
+    }
+
+    /**
+     * @test
+     */
+    public function setRulesWithRuleWithOnlyLineNumberSetsColumnNumber(): void
+    {
+        $ruleToSet = new Rule('color');
+        $ruleToSet->setPosition(42);
+
+        $this->subject->setRules([$ruleToSet]);
+
+        self::assertIsInt($ruleToSet->getColumnNumber(), 'column number not set');
+        self::assertGreaterThanOrEqual(0, $ruleToSet->getColumnNumber(), 'column number not valid');
+    }
+
+    /**
+     * @test
+     */
+    public function setRulesWithRuleWithOnlyLineNumberPreservesLineNumber(): void
+    {
+        $ruleToSet = new Rule('color');
+        $ruleToSet->setPosition(42);
+
+        $this->subject->setRules([$ruleToSet]);
+
+        self::assertSame(42, $ruleToSet->getLineNumber(), 'line number not preserved');
+    }
+
+    /**
+     * @test
+     */
+    public function setRulesWithRuleWithOnlyColumnNumberSetsLineNumber(): void
+    {
+        $ruleToSet = new Rule('color');
+        $ruleToSet->setPosition(null, 42);
+
+        $this->subject->setRules([$ruleToSet]);
+
+        self::assertIsInt($ruleToSet->getLineNumber(), 'line number not set');
+        self::assertGreaterThanOrEqual(1, $ruleToSet->getLineNumber(), 'line number not valid');
+    }
+
+    /**
+     * @test
+     */
+    public function setRulesWithRuleWithOnlyColumnNumberPreservesColumnNumber(): void
+    {
+        $ruleToSet = new Rule('color');
+        $ruleToSet->setPosition(null, 42);
+
+        $this->subject->setRules([$ruleToSet]);
+
+        self::assertSame(42, $ruleToSet->getColumnNumber(), 'column number not preserved');
+    }
+
+    /**
+     * @test
+     */
+    public function setRulesWithRuleWithCompletePositionPreservesPosition(): void
+    {
+        $ruleToSet = new Rule('color');
+        $ruleToSet->setPosition(42, 64);
+
+        $this->subject->setRules([$ruleToSet]);
+
+        self::assertSame(42, $ruleToSet->getLineNumber(), 'line number not preserved');
+        self::assertSame(64, $ruleToSet->getColumnNumber(), 'column number not preserved');
+    }
+
+    /**
      * @param list<string> $propertyNames
      */
     private function setRulesFromPropertyNames(array $propertyNames): void
     {
-        $this->subject->setRules(\array_map(
-            static function (string $propertyName): Rule {
+        $this->subject->setRules(self::createRulesFromPropertyNames($propertyNames));
+    }
+
+    /**
+     * @param list<string> $propertyNames
+     *
+     * @return list<Rule>
+     */
+    private static function createRulesFromPropertyNames(array $propertyNames): array
+    {
+        return \array_map(
+            function (string $propertyName): Rule {
                 return new Rule($propertyName);
             },
             $propertyNames
-        ));
+        );
+    }
+
+    private static function assertArrayHasSameValues(array $expected, array $actual, string $message = ''): void
+    {
+        self::assertCount(\count($expected), $actual, $message);
+        foreach ($expected as $expectedElement) {
+            self::assertContains($expectedElement, $actual, $message);
+        }
     }
 }
