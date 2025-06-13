@@ -867,6 +867,53 @@ final class RuleSetTest extends TestCase
     }
 
     /**
+     * @test
+     *
+     * @param list<string> $propertyNamesToSet
+     *
+     * @dataProvider providePropertyNames
+     */
+    public function getRulesReturnsRulesSet(array $propertyNamesToSet): void
+    {
+        $rulesToSet = self::createRulesFromPropertyNames($propertyNamesToSet);
+        $this->subject->setRules($rulesToSet);
+
+        $result = $this->subject->getRules();
+
+        self::assertSame($rulesToSet, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getRulesOrdersByLineNumber(): void
+    {
+        $first = (new Rule('color'))->setPosition(1, 64);
+        $second = (new Rule('display'))->setPosition(19, 42);
+        $third = (new Rule('color'))->setPosition(55, 11);
+        $this->subject->setRules([$third, $second, $first]);
+
+        $result = $this->subject->getRules();
+
+        self::assertSame([$first, $second, $third], $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getRulesOrdersRulesWithSameLineNumberByColumnNumber(): void
+    {
+        $first = (new Rule('color'))->setPosition(1, 11);
+        $second = (new Rule('display'))->setPosition(1, 42);
+        $third = (new Rule('color'))->setPosition(1, 64);
+        $this->subject->setRules([$third, $second, $first]);
+
+        $result = $this->subject->getRules();
+
+        self::assertSame([$first, $second, $third], $result);
+    }
+
+    /**
      * @param list<string> $propertyNames
      */
     private function setRulesFromPropertyNames(array $propertyNames): void
