@@ -737,13 +737,13 @@ final class RuleSetTest extends TestCase
      *
      * @dataProvider providePropertyNames
      */
-    public function setRulesOnVirginSetsRules(array $propertyNamesToSet): void
+    public function setRulesOnVirginSetsRulesWithoutPositionInOrder(array $propertyNamesToSet): void
     {
         $rulesToSet = self::createRulesFromPropertyNames($propertyNamesToSet);
 
         $this->subject->setRules($rulesToSet);
 
-        self::assertArrayHasSameValues($rulesToSet, $this->subject->getRules());
+        self::assertSame($rulesToSet, $this->subject->getRules());
     }
 
     /**
@@ -769,7 +769,7 @@ final class RuleSetTest extends TestCase
 
         $this->subject->setRules($rulesToSet);
 
-        self::assertArrayHasSameValues($rulesToSet, $this->subject->getRules());
+        self::assertSame($rulesToSet, $this->subject->getRules());
     }
 
     /**
@@ -887,13 +887,5 @@ final class RuleSetTest extends TestCase
             },
             $propertyNames
         );
-    }
-
-    private static function assertArrayHasSameValues(array $expected, array $actual, string $message = ''): void
-    {
-        self::assertCount(\count($expected), $actual, $message);
-        foreach ($expected as $expectedElement) {
-            self::assertContains($expectedElement, $actual, $message);
-        }
     }
 }
