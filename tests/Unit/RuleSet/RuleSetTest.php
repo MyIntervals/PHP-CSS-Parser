@@ -914,6 +914,163 @@ final class RuleSetTest extends TestCase
     }
 
     /**
+     * @return array<string, array{0: list<string>, 1: string, 2: list<string>}>
+     */
+    public static function providePropertyNamesAndSearchPatternAndMatchingPropertyNames(): array
+    {
+        return [
+            'single rule matched' => [
+                ['color'],
+                'color',
+                ['color'],
+            ],
+            'first rule matched' => [
+                ['color', 'display'],
+                'color',
+                ['color'],
+            ],
+            'last rule matched' => [
+                ['color', 'display'],
+                'display',
+                ['display'],
+            ],
+            'middle rule matched' => [
+                ['color', 'display', 'width'],
+                'display',
+                ['display'],
+            ],
+            'multiple rules for the same property matched' => [
+                ['color', 'color'],
+                'color',
+                ['color'],
+            ],
+            'multiple rules for the same property matched in haystack' => [
+                ['color', 'display', 'color', 'width'],
+                'color',
+                ['color'],
+            ],
+            'no match in empty list' => [
+                [],
+                'color',
+                [],
+            ],
+            'no match for property not in list' => [
+                ['color', 'display'],
+                'width',
+                [],
+            ],
+            'shorthand rule matched' => [
+                ['font'],
+                'font-',
+                ['font'],
+            ],
+            'longhand rule matched' => [
+                ['font-size'],
+                'font-',
+                ['font-size'],
+            ],
+            'shorthand and longhand rule matched' => [
+                ['font', 'font-size'],
+                'font-',
+                ['font', 'font-size'],
+            ],
+            'shorthand rule matched in haystack' => [
+                ['font', 'color'],
+                'font-',
+                ['font'],
+            ],
+            'longhand rule matched in haystack' => [
+                ['font-size', 'color'],
+                'font-',
+                ['font-size'],
+            ],
+            'rules whose property names begin with the same characters not matched with pattern match' => [
+                ['contain', 'container', 'container-type'],
+                'contain-',
+                ['contain'],
+            ],
+            'rules whose property names begin with the same characters not matched with exact match' => [
+                ['contain', 'container', 'container-type'],
+                'contain',
+                ['contain'],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $propertyNamesToSet
+     * @param list<string> $matchingPropertyNames
+     *
+     * @dataProvider providePropertyNamesAndSearchPatternAndMatchingPropertyNames
+     */
+    public function getRulesWithPatternReturnsAllMatchingRules(
+        array $propertyNamesToSet,
+        string $searchPattern,
+        array $matchingPropertyNames
+    ): void {
+        $rulesToSet = self::createRulesFromPropertyNames($propertyNamesToSet);
+        $matchingRules = \array_filter(
+            $rulesToSet,
+            static function (Rule $rule) use ($matchingPropertyNames): bool {
+                return \in_array($rule->getRule(), $matchingPropertyNames, true);
+            }
+        );
+        $this->subject->setRules($rulesToSet);
+
+        $result = $this->subject->getRules($searchPattern);
+
+        if ($matchingRules === []) {
+            self::assertSame([], $result);
+        }
+        foreach ($matchingRules as $expectedMatchingRule) {
+            self::assertContains($expectedMatchingRule, $result);
+        }
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $propertyNamesToSet
+     * @param list<string> $matchingPropertyNames
+     *
+     * @dataProvider providePropertyNamesAndSearchPatternAndMatchingPropertyNames
+     */
+    public function getRulesWithPatternFiltersNonMatchingRules(
+        array $propertyNamesToSet,
+        string $searchPattern,
+        array $matchingPropertyNames
+    ): void {
+        $this->setRulesFromPropertyNames($propertyNamesToSet);
+
+        $result = $this->subject->getRules($searchPattern);
+
+        if ($result === []) {
+            self::expectNotToPerformAssertions();
+        }
+        foreach ($result as $resultRule) {
+            // 'expected' and 'actual' are transposed here due to necessity
+            self::assertContains($resultRule->getRule(), $matchingPropertyNames);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function getRulesWithPatternOrdersRulesByPosition(): void
+    {
+        $first = (new Rule('color'))->setPosition(1, 42);
+        $second = (new Rule('color'))->setPosition(1, 64);
+        $third = (new Rule('color'))->setPosition(55, 7);
+        $this->subject->setRules([$third, $second, $first]);
+
+        $result = $this->subject->getRules('color');
+
+        self::assertSame([$first, $second, $third], $result);
+    }
+
+    /**
      * @param list<string> $propertyNames
      */
     private function setRulesFromPropertyNames(array $propertyNames): void
