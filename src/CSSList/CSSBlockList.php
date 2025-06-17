@@ -56,6 +56,8 @@ abstract class CSSBlockList extends CSSList
                 $result[] = $item;
             } elseif ($item instanceof CSSBlockList) {
                 $result = \array_merge($result, $item->getAllRuleSets());
+            } elseif ($item instanceof DeclarationBlock) {
+                $result[] = $item->getRuleSet();
             }
         }
 
