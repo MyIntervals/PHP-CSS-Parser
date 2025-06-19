@@ -1182,9 +1182,6 @@ final class RuleSetTest extends TestCase
 
         $result = $this->subject->getRulesAssoc($searchPattern);
 
-        if ($matchingPropertyNames === []) {
-            self::assertSame([], $result);
-        }
         foreach ($matchingPropertyNames as $expectedMatchingPropertyName) {
             self::assertContains($expectedMatchingPropertyName, \array_keys($result));
         }
@@ -1207,13 +1204,28 @@ final class RuleSetTest extends TestCase
 
         $result = $this->subject->getRulesAssoc($searchPattern);
 
-        if ($result === []) {
-            self::expectNotToPerformAssertions();
-        }
         foreach ($result as $resultRule) {
             // 'expected' and 'actual' are transposed here due to necessity
             self::assertContains($resultRule->getRule(), $matchingPropertyNames);
         }
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $propertyNamesToSet
+     *
+     * @dataProvider providePropertyNamesAndNonMatchingSearchPattern
+     */
+    public function getRulesAssocWithNonMatchingPatternReturnsEmptyArray(
+        array $propertyNamesToSet,
+        string $searchPattern
+    ): void {
+        $this->setRulesFromPropertyNames($propertyNamesToSet);
+
+        $result = $this->subject->getRulesAssoc($searchPattern);
+
+        self::assertSame([], $result);
     }
 
     /**
