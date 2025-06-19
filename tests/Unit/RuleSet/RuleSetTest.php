@@ -1166,6 +1166,72 @@ final class RuleSetTest extends TestCase
     }
 
     /**
+     * @test
+     *
+     * @param list<string> $propertyNamesToSet
+     * @param list<string> $matchingPropertyNames
+     *
+     * @dataProvider providePropertyNamesAndSearchPatternAndMatchingPropertyNames
+     */
+    public function getRulesAssocWithPatternReturnsAllMatchingPropertyNames(
+        array $propertyNamesToSet,
+        string $searchPattern,
+        array $matchingPropertyNames
+    ): void {
+        $this->setRulesFromPropertyNames($propertyNamesToSet);
+
+        $result = $this->subject->getRulesAssoc($searchPattern);
+
+        if ($matchingPropertyNames === []) {
+            self::assertSame([], $result);
+        }
+        foreach ($matchingPropertyNames as $expectedMatchingPropertyName) {
+            self::assertContains($expectedMatchingPropertyName, \array_keys($result));
+        }
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $propertyNamesToSet
+     * @param list<string> $matchingPropertyNames
+     *
+     * @dataProvider providePropertyNamesAndSearchPatternAndMatchingPropertyNames
+     */
+    public function getRulesAssocWithPatternFiltersNonMatchingRules(
+        array $propertyNamesToSet,
+        string $searchPattern,
+        array $matchingPropertyNames
+    ): void {
+        $this->setRulesFromPropertyNames($propertyNamesToSet);
+
+        $result = $this->subject->getRulesAssoc($searchPattern);
+
+        if ($result === []) {
+            self::expectNotToPerformAssertions();
+        }
+        foreach ($result as $resultRule) {
+            // 'expected' and 'actual' are transposed here due to necessity
+            self::assertContains($resultRule->getRule(), $matchingPropertyNames);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function getRulesAssocWithPatternOrdersRulesByPosition(): void
+    {
+        $first = (new Rule('font'))->setPosition(1, 42);
+        $second = (new Rule('font-family'))->setPosition(1, 64);
+        $third = (new Rule('font-weight'))->setPosition(55, 7);
+        $this->subject->setRules([$third, $second, $first]);
+
+        $result = $this->subject->getRules('font-');
+
+        self::assertSame([$first, $second, $third], \array_values($result));
+    }
+
+    /**
      * @param list<string> $propertyNames
      */
     private function setRulesFromPropertyNames(array $propertyNames): void
