@@ -949,16 +949,6 @@ final class RuleSetTest extends TestCase
                 'color',
                 ['color'],
             ],
-            'no match in empty list' => [
-                [],
-                'color',
-                [],
-            ],
-            'no match for property not in list' => [
-                ['color', 'display'],
-                'width',
-                [],
-            ],
             'shorthand rule matched' => [
                 ['font'],
                 'font-',
@@ -1021,9 +1011,6 @@ final class RuleSetTest extends TestCase
 
         $result = $this->subject->getRules($searchPattern);
 
-        if ($matchingRules === []) {
-            self::assertSame([], $result);
-        }
         foreach ($matchingRules as $expectedMatchingRule) {
             self::assertContains($expectedMatchingRule, $result);
         }
@@ -1046,13 +1033,49 @@ final class RuleSetTest extends TestCase
 
         $result = $this->subject->getRules($searchPattern);
 
-        if ($result === []) {
-            self::expectNotToPerformAssertions();
-        }
         foreach ($result as $resultRule) {
             // 'expected' and 'actual' are transposed here due to necessity
             self::assertContains($resultRule->getRule(), $matchingPropertyNames);
         }
+    }
+
+    /**
+     * @return array<string, array{0: list<string>, 1: string}>
+     */
+    public static function providePropertyNamesAndNonMatchingSearchPattern(): array
+    {
+        return [
+            'no match in empty list' => [
+                [],
+                'color',
+            ],
+            'no match for different property' => [
+                ['color'],
+                'display',
+            ],
+            'no match for property not in list' => [
+                ['color', 'display'],
+                'width',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $propertyNamesToSet
+     *
+     * @dataProvider providePropertyNamesAndNonMatchingSearchPattern
+     */
+    public function getRulesWithNonMatchingPatternReturnsEmptyArray(
+        array $propertyNamesToSet,
+        string $searchPattern
+    ): void {
+        $this->setRulesFromPropertyNames($propertyNamesToSet);
+
+        $result = $this->subject->getRules($searchPattern);
+
+        self::assertSame([], $result);
     }
 
     /**
