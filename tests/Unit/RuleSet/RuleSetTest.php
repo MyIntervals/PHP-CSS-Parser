@@ -1071,6 +1071,78 @@ final class RuleSetTest extends TestCase
     }
 
     /**
+     * @return array<string, array{0: list<non-empty-string>}>
+     */
+    public static function provideDistinctPropertyNames(): array
+    {
+        return [
+            'no properties' => [[]],
+            'one property' => [['color']],
+            'two properties' => [['color', 'display']],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $propertyNamesToSet
+     *
+     * @dataProvider provideDistinctPropertyNames
+     */
+    public function getRulesAssocReturnsAllRulesWithDistinctPropertyNames(array $propertyNamesToSet): void
+    {
+        $rulesToSet = self::createRulesFromPropertyNames($propertyNamesToSet);
+        $this->subject->setRules($rulesToSet);
+
+        $result = $this->subject->getRulesAssoc();
+
+        self::assertSame($rulesToSet, \array_values($result));
+    }
+
+    /**
+     * @test
+     */
+    public function getRulesAssocReturnsLastRuleWithSamePropertyName(): void
+    {
+        $firstRule = new Rule('color');
+        $lastRule = new Rule('color');
+        $this->subject->setRules([$firstRule, $lastRule]);
+
+        $result = $this->subject->getRulesAssoc();
+
+        self::assertSame([$lastRule], \array_values($result));
+    }
+
+    /**
+     * @test
+     */
+    public function getRulesAssocOrdersRulesByPosition(): void
+    {
+        $first = (new Rule('color'))->setPosition(1, 42);
+        $second = (new Rule('display'))->setPosition(1, 64);
+        $third = (new Rule('width'))->setPosition(55, 7);
+        $this->subject->setRules([$third, $second, $first]);
+
+        $result = $this->subject->getRulesAssoc();
+
+        self::assertSame([$first, $second, $third], \array_values($result));
+    }
+
+    /**
+     * @test
+     */
+    public function getRulesAssocKeysRulesByPropertyName(): void
+    {
+        $this->subject->setRules([new Rule('color'), new Rule('display')]);
+
+        $result = $this->subject->getRulesAssoc();
+
+        foreach ($result as $key => $rule) {
+            self::assertSame($rule->getRule(), $key);
+        }
+    }
+
+    /**
      * @param list<string> $propertyNames
      */
     private function setRulesFromPropertyNames(array $propertyNames): void
