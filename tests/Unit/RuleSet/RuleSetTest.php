@@ -1183,7 +1183,7 @@ final class RuleSetTest extends TestCase
         $result = $this->subject->getRulesAssoc($searchPattern);
 
         foreach ($matchingPropertyNames as $expectedMatchingPropertyName) {
-            self::assertContains($expectedMatchingPropertyName, \array_keys($result));
+            self::assertArrayHasKey($expectedMatchingPropertyName, $result);
         }
     }
 
