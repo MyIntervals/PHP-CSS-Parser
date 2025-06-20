@@ -1182,32 +1182,10 @@ final class RuleSetTest extends TestCase
 
         $result = $this->subject->getRulesAssoc($searchPattern);
 
-        foreach ($matchingPropertyNames as $expectedMatchingPropertyName) {
-            self::assertArrayHasKey($expectedMatchingPropertyName, $result);
-        }
-    }
-
-    /**
-     * @test
-     *
-     * @param list<string> $propertyNamesToSet
-     * @param list<string> $matchingPropertyNames
-     *
-     * @dataProvider providePropertyNamesAndSearchPatternAndMatchingPropertyNames
-     */
-    public function getRulesAssocWithPatternFiltersNonMatchingRules(
-        array $propertyNamesToSet,
-        string $searchPattern,
-        array $matchingPropertyNames
-    ): void {
-        $this->setRulesFromPropertyNames($propertyNamesToSet);
-
-        $result = $this->subject->getRulesAssoc($searchPattern);
-
-        foreach ($result as $resultRule) {
-            // 'expected' and 'actual' are transposed here due to necessity
-            self::assertContains($resultRule->getRule(), $matchingPropertyNames);
-        }
+        $resultPropertyNames = \array_keys($result);
+        \sort($matchingPropertyNames);
+        \sort($resultPropertyNames);
+        self::assertSame($matchingPropertyNames, $resultPropertyNames);
     }
 
     /**
