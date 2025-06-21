@@ -1166,6 +1166,62 @@ final class RuleSetTest extends TestCase
     }
 
     /**
+     * @test
+     *
+     * @param list<string> $propertyNamesToSet
+     * @param list<string> $matchingPropertyNames
+     *
+     * @dataProvider providePropertyNamesAndSearchPatternAndMatchingPropertyNames
+     */
+    public function getRulesAssocWithPatternReturnsAllMatchingPropertyNames(
+        array $propertyNamesToSet,
+        string $searchPattern,
+        array $matchingPropertyNames
+    ): void {
+        $this->setRulesFromPropertyNames($propertyNamesToSet);
+
+        $result = $this->subject->getRulesAssoc($searchPattern);
+
+        $resultPropertyNames = \array_keys($result);
+        \sort($matchingPropertyNames);
+        \sort($resultPropertyNames);
+        self::assertSame($matchingPropertyNames, $resultPropertyNames);
+    }
+
+    /**
+     * @test
+     *
+     * @param list<string> $propertyNamesToSet
+     *
+     * @dataProvider providePropertyNamesAndNonMatchingSearchPattern
+     */
+    public function getRulesAssocWithNonMatchingPatternReturnsEmptyArray(
+        array $propertyNamesToSet,
+        string $searchPattern
+    ): void {
+        $this->setRulesFromPropertyNames($propertyNamesToSet);
+
+        $result = $this->subject->getRulesAssoc($searchPattern);
+
+        self::assertSame([], $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getRulesAssocWithPatternOrdersRulesByPosition(): void
+    {
+        $first = (new Rule('font'))->setPosition(1, 42);
+        $second = (new Rule('font-family'))->setPosition(1, 64);
+        $third = (new Rule('font-weight'))->setPosition(55, 7);
+        $this->subject->setRules([$third, $second, $first]);
+
+        $result = $this->subject->getRules('font-');
+
+        self::assertSame([$first, $second, $third], \array_values($result));
+    }
+
+    /**
      * @param list<string> $propertyNames
      */
     private function setRulesFromPropertyNames(array $propertyNames): void
