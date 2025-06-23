@@ -321,7 +321,7 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
     {
         $firstsLineNumber = $first->getLineNumber();
         $secondsLineNumber = $second->getLineNumber();
-        if (!isset($firstsLineNumber, $secondsLineNumber)) {
+        if (!\is_int($firstsLineNumber) || !\is_int($secondsLineNumber)) {
             throw new \UnexpectedValueException(
                 'A Rule without a line number was passed to comparePositionable',
                 1750637683
@@ -331,7 +331,7 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
         if ($firstsLineNumber === $secondsLineNumber) {
             $firstsColumnNumber = $first->getColumnNumber();
             $secondsColumnNumber = $second->getColumnNumber();
-            if (!isset($firstsColumnNumber, $secondsColumnNumber)) {
+            if (!\is_int($firstsColumnNumber) || !\is_int($secondsColumnNumber)) {
                 throw new \UnexpectedValueException(
                     'A Rule without a column number was passed to comparePositionable',
                     1750637761
