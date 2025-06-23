@@ -1001,42 +1001,21 @@ final class RuleSetTest extends TestCase
         array $matchingPropertyNames
     ): void {
         $rulesToSet = self::createRulesFromPropertyNames($propertyNamesToSet);
-        $matchingRules = \array_filter(
-            $rulesToSet,
-            static function (Rule $rule) use ($matchingPropertyNames): bool {
-                return \in_array($rule->getRule(), $matchingPropertyNames, true);
-            }
+        // Use `array_values` to ensure canonical numeric array, since `array_filter` does not reindex.
+        $matchingRules = \array_values(
+            \array_filter(
+                $rulesToSet,
+                static function (Rule $rule) use ($matchingPropertyNames): bool {
+                    return \in_array($rule->getRule(), $matchingPropertyNames, true);
+                }
+            )
         );
         $this->subject->setRules($rulesToSet);
 
         $result = $this->subject->getRules($searchPattern);
 
-        foreach ($matchingRules as $expectedMatchingRule) {
-            self::assertContains($expectedMatchingRule, $result);
-        }
-    }
-
-    /**
-     * @test
-     *
-     * @param list<string> $propertyNamesToSet
-     * @param list<string> $matchingPropertyNames
-     *
-     * @dataProvider providePropertyNamesAndSearchPatternAndMatchingPropertyNames
-     */
-    public function getRulesWithPatternFiltersNonMatchingRules(
-        array $propertyNamesToSet,
-        string $searchPattern,
-        array $matchingPropertyNames
-    ): void {
-        $this->setRulesFromPropertyNames($propertyNamesToSet);
-
-        $result = $this->subject->getRules($searchPattern);
-
-        foreach ($result as $resultRule) {
-            // 'expected' and 'actual' are transposed here due to necessity
-            self::assertContains($resultRule->getRule(), $matchingPropertyNames);
-        }
+        // `Rule`s without pre-set positions are returned in the order set.  This is tested separately.
+        self::assertSame($matchingRules, $result);
     }
 
     /**
