@@ -94,6 +94,11 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
         $parserState->consume('}');
     }
 
+    /**
+     * @throws \UnexpectedValueException
+     *         if the last `Rule` is needed as a basis for setting position, but does not have a valid position,
+     *         which should never happen
+     */
     public function addRule(Rule $ruleToAdd, ?Rule $sibling = null): void
     {
         $propertyName = $ruleToAdd->getRule();
@@ -147,7 +152,14 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
             $rulesCount = \count($rules);
             if ($rulesCount > 0) {
                 $last = $rules[$rulesCount - 1];
-                $ruleToAdd->setPosition($last->getLineNo() + 1, $columnNumber);
+                $lastsLineNumber = $last->getLineNumber();
+                if (!\is_int($lastsLineNumber)) {
+                    throw new \UnexpectedValueException(
+                        'A Rule without a line number was found during addRule',
+                        1750718399
+                    );
+                }
+                $ruleToAdd->setPosition($lastsLineNumber + 1, $columnNumber);
             } else {
                 $ruleToAdd->setPosition(1, $columnNumber);
             }
