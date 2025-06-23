@@ -314,13 +314,33 @@ abstract class RuleSet implements CSSElement, CSSListItem, Positionable, RuleCon
 
     /**
      * @return int negative if `$first` is before `$second`; zero if they have the same position; positive otherwise
+     *
+     * @throws \UnexpectedValueException if either argument does not have a valid position, which should never happen
      */
     private static function comparePositionable(Positionable $first, Positionable $second): int
     {
-        if ($first->getLineNo() === $second->getLineNo()) {
-            return $first->getColNo() - $second->getColNo();
+        $firstsLineNumber = $first->getLineNumber();
+        $secondsLineNumber = $second->getLineNumber();
+        if (!isset($firstsLineNumber, $secondsLineNumber)) {
+            throw new \UnexpectedValueException(
+                'A Rule without a line number was passed to comparePositionable',
+                1750637683
+            );
         }
-        return $first->getLineNo() - $second->getLineNo();
+
+        if ($firstsLineNumber === $secondsLineNumber) {
+            $firstsColumnNumber = $first->getColumnNumber();
+            $secondsColumnNumber = $second->getColumnNumber();
+            if (!isset($firstsColumnNumber, $secondsColumnNumber)) {
+                throw new \UnexpectedValueException(
+                    'A Rule without a column number was passed to comparePositionable',
+                    1750637761
+                );
+            }
+            return $firstsColumnNumber - $secondsColumnNumber;
+        }
+
+        return $firstsLineNumber - $secondsLineNumber;
     }
 
     private function hasRule(Rule $rule): bool
