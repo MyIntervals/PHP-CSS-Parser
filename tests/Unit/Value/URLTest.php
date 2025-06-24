@@ -81,4 +81,25 @@ final class URLTest extends TestCase
 
         self::assertSame($lineNumber, $subject->getLineNo());
     }
+
+    /**
+     * @test
+     */
+    public function getLineNumberByDefaultReturnsNull(): void
+    {
+        $subject = new URL(new CSSString('http://example.com'));
+
+        self::assertNull($subject->getLineNumber());
+    }
+
+    /**
+     * @test
+     */
+    public function getLineNumberReturnsLineNumberProvidedToConstructor(): void
+    {
+        $lineNumber = 42;
+        $subject = new URL(new CSSString('http://example.com'), $lineNumber);
+
+        self::assertSame($lineNumber, $subject->getLineNumber());
+    }
 }

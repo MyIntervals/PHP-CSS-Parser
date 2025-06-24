@@ -82,6 +82,27 @@ final class CSSListTest extends TestCase
     /**
      * @test
      */
+    public function getLineNumberByDefaultReturnsNull(): void
+    {
+        $subject = new ConcreteCSSList();
+
+        self::assertNull($subject->getLineNumber());
+    }
+
+    /**
+     * @test
+     */
+    public function getLineNumberReturnsLineNumberProvidedToConstructor(): void
+    {
+        $lineNumber = 42;
+        $subject = new ConcreteCSSList($lineNumber);
+
+        self::assertSame($lineNumber, $subject->getLineNumber());
+    }
+
+    /**
+     * @test
+     */
     public function getContentsInitiallyReturnsEmptyArray(): void
     {
         $subject = new ConcreteCSSList();

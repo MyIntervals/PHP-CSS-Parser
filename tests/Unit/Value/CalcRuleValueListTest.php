@@ -29,7 +29,7 @@ final class CalcRuleValueListTest extends TestCase
     /**
      * @test
      */
-    public function getLineNumberByDefaultReturnsZero(): void
+    public function getLineNoByDefaultReturnsZero(): void
     {
         $subject = new CalcRuleValueList();
 
@@ -46,6 +46,27 @@ final class CalcRuleValueListTest extends TestCase
         $subject = new CalcRuleValueList($lineNumber);
 
         self::assertSame($lineNumber, $subject->getLineNo());
+    }
+
+    /**
+     * @test
+     */
+    public function getLineNumberByDefaultReturnsNull(): void
+    {
+        $subject = new CalcRuleValueList();
+
+        self::assertNull($subject->getLineNumber());
+    }
+
+    /**
+     * @test
+     */
+    public function getLineNumberReturnsLineNumberProvidedToConstructor(): void
+    {
+        $lineNumber = 42;
+        $subject = new CalcRuleValueList($lineNumber);
+
+        self::assertSame($lineNumber, $subject->getLineNumber());
     }
 
     /**

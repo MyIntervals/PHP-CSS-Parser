@@ -56,6 +56,27 @@ final class OutputExceptionTest extends TestCase
     /**
      * @test
      */
+    public function getLineNumberByDefaultReturnsNull(): void
+    {
+        $subject = new OutputException('foo');
+
+        self::assertNull($subject->getLineNumber());
+    }
+
+    /**
+     * @test
+     */
+    public function getLineNumberReturnsLineNumberProvidedToConstructor(): void
+    {
+        $lineNumber = 42;
+        $subject = new OutputException('foo', $lineNumber);
+
+        self::assertSame($lineNumber, $subject->getLineNumber());
+    }
+
+    /**
+     * @test
+     */
     public function getMessageWithLineNumberProvidedIncludesLineNumber(): void
     {
         $lineNumber = 17;
