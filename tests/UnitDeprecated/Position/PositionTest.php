@@ -80,38 +80,6 @@ final class PositionTest extends TestCase
     /**
      * @test
      */
-    public function getColNoInitiallyReturnsZero(): void
-    {
-        self::assertSame(0, $this->subject->getColNo());
-    }
-
-    /**
-     * @test
-     *
-     * @dataProvider provideColumnNumber
-     */
-    public function getColNoReturnsColumnNumberSet(int $columnNumber): void
-    {
-        $this->subject->setPosition(1, $columnNumber);
-
-        self::assertSame($columnNumber, $this->subject->getColNo());
-    }
-
-    /**
-     * @test
-     */
-    public function getColNoReturnsZeroAfterColumnNumberCleared(): void
-    {
-        $this->subject->setPosition(1, 99);
-
-        $this->subject->setPosition(2);
-
-        self::assertSame(0, $this->subject->getColNo());
-    }
-
-    /**
-     * @test
-     */
     public function setPositionWithZeroClearsLineNumber(): void
     {
         $this->subject->setPosition(99);

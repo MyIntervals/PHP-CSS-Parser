@@ -80,6 +80,7 @@ Please also have a look at our
 
 ### Removed
 
+- Remove `Rule::getColNo()` (use `getColumnNumber()` instead) (#1287)
 - Passing a string as the first argument to `getAllValues()` is no longer
   supported and will not work;
   the search pattern should now be passed as the second argument (#1243)
