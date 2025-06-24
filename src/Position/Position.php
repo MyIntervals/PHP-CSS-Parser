@@ -48,14 +48,6 @@ trait Position
     }
 
     /**
-     * @return int<0, max>
-     */
-    public function getColNo(): int
-    {
-        return $this->getColumnNumber() ?? 0;
-    }
-
-    /**
      * @param int<0, max>|null $lineNumber
      * @param int<0, max>|null $columnNumber
      *

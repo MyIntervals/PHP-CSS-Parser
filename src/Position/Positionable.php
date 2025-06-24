@@ -29,13 +29,6 @@ interface Positionable
     public function getColumnNumber(): ?int;
 
     /**
-     * @return int<0, max>
-     *
-     * @deprecated in version 8.9.0, will be removed in v9.0. Use `getColumnNumber()` instead.
-     */
-    public function getColNo(): int;
-
-    /**
      * @param int<0, max>|null $lineNumber
      *        Providing zero for this parameter is deprecated in version 8.9.0, and will not be supported from v9.0.
      *        Use `null` instead when no line number is available.
