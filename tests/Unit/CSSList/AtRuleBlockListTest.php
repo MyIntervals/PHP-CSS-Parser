@@ -129,6 +129,27 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      */
+    public function getLineNumberByDefaultReturnsNull(): void
+    {
+        $subject = new AtRuleBlockList('');
+
+        self::assertNull($subject->getLineNumber());
+    }
+
+    /**
+     * @test
+     */
+    public function getLineNumberReturnsLineNumberProvidedToConstructor(): void
+    {
+        $lineNumber = 42;
+        $subject = new AtRuleBlockList('', '', $lineNumber);
+
+        self::assertSame($lineNumber, $subject->getLineNumber());
+    }
+
+    /**
+     * @test
+     */
     public function isRootListAlwaysReturnsFalse(): void
     {
         $subject = new AtRuleBlockList('supports');

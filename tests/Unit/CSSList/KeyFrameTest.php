@@ -83,6 +83,27 @@ final class KeyFrameTest extends TestCase
     /**
      * @test
      */
+    public function getLineNumberByDefaultReturnsNull(): void
+    {
+        $subject = new KeyFrame();
+
+        self::assertNull($subject->getLineNumber());
+    }
+
+    /**
+     * @test
+     */
+    public function getLineNumberReturnsLineNumberProvidedToConstructor(): void
+    {
+        $lineNumber = 42;
+        $subject = new KeyFrame($lineNumber);
+
+        self::assertSame($lineNumber, $subject->getLineNumber());
+    }
+
+    /**
+     * @test
+     */
     public function getAnimationNameByDefaultReturnsNone(): void
     {
         $subject = new KeyFrame();
