@@ -105,50 +105,50 @@ final class ParserTest extends TestCase
                 $colorRuleValue = $colorRules[0]->getValue();
                 self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
-                    'r' => new Size(35.0, null, true, $colorRuleValue->getLineNo()),
-                    'g' => new Size(35.0, null, true, $colorRuleValue->getLineNo()),
-                    'b' => new Size(35.0, null, true, $colorRuleValue->getLineNo()),
+                    'r' => new Size(35.0, null, true, $colorRuleValue->getLineNumber()),
+                    'g' => new Size(35.0, null, true, $colorRuleValue->getLineNumber()),
+                    'b' => new Size(35.0, null, true, $colorRuleValue->getLineNumber()),
                 ], $colorRuleValue->getColor());
                 $colorRules = $ruleSet->getRules('border-color');
                 $colorRuleValue = $colorRules[0]->getValue();
                 self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
-                    'r' => new Size(10.0, null, true, $colorRuleValue->getLineNo()),
-                    'g' => new Size(100.0, null, true, $colorRuleValue->getLineNo()),
-                    'b' => new Size(230.0, null, true, $colorRuleValue->getLineNo()),
+                    'r' => new Size(10.0, null, true, $colorRuleValue->getLineNumber()),
+                    'g' => new Size(100.0, null, true, $colorRuleValue->getLineNumber()),
+                    'b' => new Size(230.0, null, true, $colorRuleValue->getLineNumber()),
                 ], $colorRuleValue->getColor());
                 $colorRuleValue = $colorRules[1]->getValue();
                 self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
-                    'r' => new Size(10.0, null, true, $colorRuleValue->getLineNo()),
-                    'g' => new Size(100.0, null, true, $colorRuleValue->getLineNo()),
-                    'b' => new Size(231.0, null, true, $colorRuleValue->getLineNo()),
-                    'a' => new Size('0000.3', null, true, $colorRuleValue->getLineNo()),
+                    'r' => new Size(10.0, null, true, $colorRuleValue->getLineNumber()),
+                    'g' => new Size(100.0, null, true, $colorRuleValue->getLineNumber()),
+                    'b' => new Size(231.0, null, true, $colorRuleValue->getLineNumber()),
+                    'a' => new Size('0000.3', null, true, $colorRuleValue->getLineNumber()),
                 ], $colorRuleValue->getColor());
                 $colorRules = $ruleSet->getRules('outline-color');
                 $colorRuleValue = $colorRules[0]->getValue();
                 self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
-                    'r' => new Size(34.0, null, true, $colorRuleValue->getLineNo()),
-                    'g' => new Size(34.0, null, true, $colorRuleValue->getLineNo()),
-                    'b' => new Size(34.0, null, true, $colorRuleValue->getLineNo()),
+                    'r' => new Size(34.0, null, true, $colorRuleValue->getLineNumber()),
+                    'g' => new Size(34.0, null, true, $colorRuleValue->getLineNumber()),
+                    'b' => new Size(34.0, null, true, $colorRuleValue->getLineNumber()),
                 ], $colorRuleValue->getColor());
             } elseif ($selector === '#yours') {
                 $colorRules = $ruleSet->getRules('background-color');
                 $colorRuleValue = $colorRules[0]->getValue();
                 self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
-                    'h' => new Size(220.0, null, true, $colorRuleValue->getLineNo()),
-                    's' => new Size(10.0, '%', true, $colorRuleValue->getLineNo()),
-                    'l' => new Size(220.0, '%', true, $colorRuleValue->getLineNo()),
+                    'h' => new Size(220.0, null, true, $colorRuleValue->getLineNumber()),
+                    's' => new Size(10.0, '%', true, $colorRuleValue->getLineNumber()),
+                    'l' => new Size(220.0, '%', true, $colorRuleValue->getLineNumber()),
                 ], $colorRuleValue->getColor());
                 $colorRuleValue = $colorRules[1]->getValue();
                 self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
-                    'h' => new Size(220.0, null, true, $colorRuleValue->getLineNo()),
-                    's' => new Size(10.0, '%', true, $colorRuleValue->getLineNo()),
-                    'l' => new Size(220.0, '%', true, $colorRuleValue->getLineNo()),
-                    'a' => new Size(0000.3, null, true, $colorRuleValue->getLineNo()),
+                    'h' => new Size(220.0, null, true, $colorRuleValue->getLineNumber()),
+                    's' => new Size(10.0, '%', true, $colorRuleValue->getLineNumber()),
+                    'l' => new Size(220.0, '%', true, $colorRuleValue->getLineNumber()),
+                    'a' => new Size(0000.3, null, true, $colorRuleValue->getLineNumber()),
                 ], $colorRuleValue->getColor());
                 $colorRules = $ruleSet->getRules('outline-color');
                 self::assertEmpty($colorRules);
@@ -990,7 +990,7 @@ body {background-color: red;}';
         $actualLineNumbers = [];
         foreach ($document->getAllValues() as $value) {
             if ($value instanceof URL) {
-                $actualLineNumbers[] = $value->getLineNo();
+                $actualLineNumbers[] = $value->getLineNumber();
             }
         }
 
@@ -1003,11 +1003,11 @@ body {background-color: red;}';
         // Choose the 2nd one
         $valueOfSecondRule = $rules[1]->getValue();
         self::assertInstanceOf(Color::class, $valueOfSecondRule);
-        self::assertSame(27, $rules[1]->getLineNo());
+        self::assertSame(27, $rules[1]->getLineNumber());
 
         $actualColorLineNumbers = [];
         foreach ($valueOfSecondRule->getColor() as $size) {
-            $actualColorLineNumbers[] = $size->getLineNo();
+            $actualColorLineNumbers[] = $size->getLineNumber();
         }
 
         self::assertSame($expectedColorLineNumbers, $actualColorLineNumbers);
@@ -1026,7 +1026,7 @@ body {background-color: red;}';
         try {
             $parser->parse();
         } catch (UnexpectedTokenException $e) {
-            self::assertSame(2, $e->getLineNo());
+            self::assertSame(2, $e->getLineNumber());
             throw $e;
         }
     }
