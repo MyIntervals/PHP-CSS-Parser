@@ -29,9 +29,9 @@ class Import implements AtRule, Positionable
     private $mediaQuery;
 
     /**
-     * @param int<0, max> $lineNumber
+     * @param int<1, max>|null $lineNumber
      */
-    public function __construct(URL $location, ?string $mediaQuery, int $lineNumber = 0)
+    public function __construct(URL $location, ?string $mediaQuery, ?int $lineNumber = null)
     {
         $this->location = $location;
         $this->mediaQuery = $mediaQuery;

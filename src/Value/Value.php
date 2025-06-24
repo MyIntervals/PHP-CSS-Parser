@@ -21,9 +21,9 @@ abstract class Value implements CSSElement, Positionable
     use Position;
 
     /**
-     * @param int<0, max> $lineNumber
+     * @param int<1, max>|null $lineNumber
      */
-    public function __construct(int $lineNumber = 0)
+    public function __construct(?int $lineNumber = null)
     {
         $this->setPosition($lineNumber);
     }

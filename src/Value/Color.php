@@ -17,9 +17,9 @@ class Color extends CSSFunction
 {
     /**
      * @param array<non-empty-string, Value|string> $colorValues
-     * @param int<0, max> $lineNumber
+     * @param int<1, max>|null $lineNumber
      */
-    public function __construct(array $colorValues, int $lineNumber = 0)
+    public function __construct(array $colorValues, ?int $lineNumber = null)
     {
         parent::__construct(\implode('', \array_keys($colorValues)), $colorValues, ',', $lineNumber);
     }

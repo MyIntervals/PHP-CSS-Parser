@@ -13,9 +13,9 @@ class LineName extends ValueList
 {
     /**
      * @param array<Value|string> $components
-     * @param int<0, max> $lineNumber
+     * @param int<1, max>|null $lineNumber
      */
-    public function __construct(array $components = [], int $lineNumber = 0)
+    public function __construct(array $components = [], ?int $lineNumber = null)
     {
         parent::__construct($components, ' ', $lineNumber);
     }
