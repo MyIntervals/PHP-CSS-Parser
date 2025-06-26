@@ -24,27 +24,6 @@ final class UnexpectedEOFExceptionTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoByDefaultReturnsZero(): void
-    {
-        $exception = new UnexpectedEOFException('expected', 'found');
-
-        self::assertSame(0, $exception->getLineNo());
-    }
-
-    /**
-     * @test
-     */
-    public function getLineNoReturnsLineNumberProvidedToConstructor(): void
-    {
-        $lineNumber = 17;
-        $exception = new UnexpectedEOFException('expected', 'found', 'literal', $lineNumber);
-
-        self::assertSame($lineNumber, $exception->getLineNo());
-    }
-
-    /**
-     * @test
-     */
     public function getLineNumberByDefaultReturnsNull(): void
     {
         $subject = new UnexpectedEOFException('expected', 'found');

@@ -117,18 +117,6 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoReturnsLineNumberProvidedToConstructor(): void
-    {
-        $lineNumber = 42;
-
-        $subject = new AtRuleBlockList('', '', $lineNumber);
-
-        self::assertSame($lineNumber, $subject->getLineNo());
-    }
-
-    /**
-     * @test
-     */
     public function getLineNumberByDefaultReturnsNull(): void
     {
         $subject = new AtRuleBlockList('');

@@ -26,27 +26,6 @@ final class SourceExceptionTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoByDefaultReturnsZero(): void
-    {
-        $exception = new SourceException('foo');
-
-        self::assertSame(0, $exception->getLineNo());
-    }
-
-    /**
-     * @test
-     */
-    public function getLineNoReturnsLineNumberProvidedToConstructor(): void
-    {
-        $lineNumber = 17;
-        $exception = new SourceException('foo', $lineNumber);
-
-        self::assertSame($lineNumber, $exception->getLineNo());
-    }
-
-    /**
-     * @test
-     */
     public function getLineNumberByDefaultReturnsNull(): void
     {
         $subject = new SourceException('foo');

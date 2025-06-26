@@ -63,28 +63,6 @@ final class CSSStringTest extends TestCase
     /**
      * @test
      */
-    public function getLineNoByDefaultReturnsZero(): void
-    {
-        $subject = new CSSString('');
-
-        self::assertSame(0, $subject->getLineNo());
-    }
-
-    /**
-     * @test
-     */
-    public function getLineNoReturnsLineNumberProvidedToConstructor(): void
-    {
-        $lineNumber = 42;
-
-        $subject = new CSSString('', $lineNumber);
-
-        self::assertSame($lineNumber, $subject->getLineNo());
-    }
-
-    /**
-     * @test
-     */
     public function getLineNumberByDefaultReturnsNull(): void
     {
         $subject = new CSSString('');
