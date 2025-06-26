@@ -15,6 +15,8 @@ use Sabberworm\CSS\RuleSet\DeclarationBlock;
  */
 final class DeclarationBlockTest extends TestCase
 {
+    use RuleContainerTest;
+
     /**
      * @var DeclarationBlock
      */
