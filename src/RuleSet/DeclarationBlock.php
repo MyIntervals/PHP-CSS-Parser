@@ -21,7 +21,7 @@ use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Rule\Rule;
 
 /**
- * This class includes a `RuleSet` constrained by a `Selector`.
+ * This class represents a `RuleSet` constrained by a `Selector`.
  *
  * It contains an array of selector objects (comma-separated in the CSS) as well as the rules to be applied to the
  * matching elements.
