@@ -20,7 +20,7 @@ final class SourceExceptionTest extends TestCase
         $message = 'The cake is a lie.';
         $exception = new SourceException($message);
 
-        self::assertStringContainsString($message, $exception->getMessage());
+        self::assertSame($message, $exception->getMessage());
     }
 
     /**
@@ -53,6 +53,17 @@ final class SourceExceptionTest extends TestCase
         $exception = new SourceException('foo', $lineNumber);
 
         self::assertStringContainsString(' [line no: ' . $lineNumber . ']', $exception->getMessage());
+    }
+
+    /**
+     * @test
+     */
+    public function getMessageWithLineNumberProvidedIncludesMessage(): void
+    {
+        $message = 'There is no flatware.';
+        $exception = new SourceException($message, 17);
+
+        self::assertStringContainsString($message, $exception->getMessage());
     }
 
     /**

@@ -17,7 +17,7 @@ class SourceException extends \Exception implements Positionable
     public function __construct(string $message, ?int $lineNumber = null)
     {
         $this->setPosition($lineNumber);
-        if ($lineNumber !== 0) {
+        if ($lineNumber !== null) {
             $message .= " [line no: $lineNumber]";
         }
         parent::__construct($message);
