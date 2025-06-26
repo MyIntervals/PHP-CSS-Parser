@@ -29,9 +29,9 @@ class Charset implements AtRule, Positionable
     private $charset;
 
     /**
-     * @param int<0, max> $lineNumber
+     * @param int<1, max>|null $lineNumber
      */
-    public function __construct(CSSString $charset, int $lineNumber = 0)
+    public function __construct(CSSString $charset, ?int $lineNumber = null)
     {
         $this->charset = $charset;
         $this->setPosition($lineNumber);

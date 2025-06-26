@@ -24,9 +24,9 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
 
     /**
      * @param non-empty-string $type
-     * @param int<0, max> $lineNumber
+     * @param int<1, max>|null $lineNumber
      */
-    public function __construct(string $type, string $arguments = '', int $lineNumber = 0)
+    public function __construct(string $type, string $arguments = '', ?int $lineNumber = null)
     {
         parent::__construct($lineNumber);
         $this->type = $type;

@@ -21,9 +21,9 @@ class Comment implements Positionable, Renderable
     protected $commentText;
 
     /**
-     * @param int<0, max> $lineNumber
+     * @param int<1, max>|null $lineNumber
      */
-    public function __construct(string $commentText = '', int $lineNumber = 0)
+    public function __construct(string $commentText = '', ?int $lineNumber = null)
     {
         $this->commentText = $commentText;
         $this->setPosition($lineNumber);

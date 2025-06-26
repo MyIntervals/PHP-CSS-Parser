@@ -12,9 +12,9 @@ class SourceException extends \Exception implements Positionable
     use Position;
 
     /**
-     * @param int<0, max> $lineNumber
+     * @param int<1, max>|null $lineNumber
      */
-    public function __construct(string $message, int $lineNumber = 0)
+    public function __construct(string $message, ?int $lineNumber = null)
     {
         $this->setPosition($lineNumber);
         if ($lineNumber !== 0) {

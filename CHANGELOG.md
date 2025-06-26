@@ -32,6 +32,7 @@ Please also have a look at our
 
 ### Changed
 
+- The default line (and column) number is now `null` (not zero) (#1288)
 - `setPosition()` (in `Rule` and other classes) now has fluent interface,
   returning itself (#1259)
 - `RuleSet::removeRule()` now only allows `Rule` as the parameter

@@ -31,9 +31,9 @@ class CSSNamespace implements AtRule, Positionable
 
     /**
      * @param CSSString|URL $url
-     * @param int<0, max> $lineNumber
+     * @param int<1, max>|null $lineNumber
      */
-    public function __construct($url, ?string $prefix = null, int $lineNumber = 0)
+    public function __construct($url, ?string $prefix = null, ?int $lineNumber = null)
     {
         $this->url = $url;
         $this->prefix = $prefix;

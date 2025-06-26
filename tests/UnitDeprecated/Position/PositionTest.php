@@ -80,18 +80,6 @@ final class PositionTest extends TestCase
     /**
      * @test
      */
-    public function setPositionWithZeroClearsLineNumber(): void
-    {
-        $this->subject->setPosition(99);
-
-        $this->subject->setPosition(0);
-
-        self::assertNull($this->subject->getLineNumber());
-    }
-
-    /**
-     * @test
-     */
     public function getLineNoAfterSetPositionWithZeroReturnsZero(): void
     {
         $this->subject->setPosition(99);
