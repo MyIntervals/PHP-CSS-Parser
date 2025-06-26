@@ -764,6 +764,7 @@ classDiagram
     Positionable <|.. DeclarationBlock: realization
     CSSElement <|.. DeclarationBlock: realization
     CSSListItem <|.. DeclarationBlock: realization
+    RuleContainer <|.. DeclarationBlock: realization
     CSSFunction <|-- Color: inheritance
     PrimitiveValue <|-- URL: inheritance
     RuleValueList <|-- CalcRuleValueList: inheritance
