@@ -13,6 +13,8 @@ use TRegx\PhpUnit\DataProviders\DataProvider;
  * This trait provides test methods for unit-testing classes that implement `RuleContainer`.
  * It can be `use`d in a `TestCase` which has a `$subject` property that is an instance of the implementing class
  * (the class under test), `setUp()` with default values.
+ *
+ * @phpstan-require-extends TestCase
  */
 trait RuleContainerTest
 {
