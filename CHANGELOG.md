@@ -55,6 +55,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- Allow comma in selectors (e.g. `:not(html, body)`) (#1293)
 - Set line number when `RuleSet::addRule()` called with only column number set
   (#1265)
 - Ensure first rule added with `RuleSet::addRule()` has valid position (#1262)
