@@ -43,8 +43,9 @@ class DeclarationBlock extends RuleSet
             $selectors = [];
             $selectorParts = [];
             $stringWrapperCharacter = null;
+            $functionNestingLevel = 0;
             $consumedNextCharacter = false;
-            static $stopCharacters = ['{', '}', '\'', '"', ','];
+            static $stopCharacters = ['{', '}', '\'', '"', '(', ')', ','];
             do {
                 if (!$consumedNextCharacter) {
                     $selectorParts[] = $parserState->consume(1);
@@ -64,8 +65,21 @@ class DeclarationBlock extends RuleSet
                             }
                         }
                         break;
-                    case ',':
+                    case '(':
                         if (!\is_string($stringWrapperCharacter)) {
+                            ++$functionNestingLevel;
+                        }
+                        break;
+                    case ')':
+                        if (!\is_string($stringWrapperCharacter)) {
+                            if ($functionNestingLevel <= 0) {
+                                throw new UnexpectedTokenException('anything but', ')');
+                            }
+                            --$functionNestingLevel;
+                        }
+                        break;
+                    case ',':
+                        if (!\is_string($stringWrapperCharacter) && $functionNestingLevel === 0) {
                             $selectors[] = \implode('', $selectorParts);
                             $selectorParts = [];
                             $parserState->consume(1);
