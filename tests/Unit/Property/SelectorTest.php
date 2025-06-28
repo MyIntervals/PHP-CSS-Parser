@@ -60,6 +60,9 @@ final class SelectorTest extends TestCase
             'class with pseudo-selector' => ['.help:hover', 20],
             'ID' => ['#file', 100],
             'ID and descendant class' => ['#test .help', 110],
+            '`not`' => [':not(#your-mug)', 100],
+            // TODO, broken: The specificity should be the highest of the `:not` arguments, not the sum.
+            '`not` with multiple arguments' => [':not(#your-mug, .their-mug)', 110],
         ];
     }
 

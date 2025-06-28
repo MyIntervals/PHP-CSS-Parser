@@ -110,6 +110,7 @@ Please also have a look at our
 
 ### Fixed
 
+- Allow comma in selectors (e.g. `:not(html, body)`) (#1293)
 - Insert `Rule` before sibling even with different property name
   (in `RuleSet::addRule()`) (#1270)
 - Ensure `RuleSet::addRule()` sets non-negative column number when sibling
