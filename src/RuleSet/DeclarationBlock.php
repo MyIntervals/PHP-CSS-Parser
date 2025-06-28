@@ -49,7 +49,7 @@ class DeclarationBlock extends RuleSet
                     case '\'':
                         // The fallthrough is intentional.
                     case '"':
-                        if (!isset($stringWrapperCharacter)) {
+                        if (!\is_string($stringWrapperCharacter)) {
                             $stringWrapperCharacter = $nextCharacter;
                         } elseif ($stringWrapperCharacter === $nextCharacter) {
                             if (\substr(\end($selectorParts), -1) !== '\\') {
