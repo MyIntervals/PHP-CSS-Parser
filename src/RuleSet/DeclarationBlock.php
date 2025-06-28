@@ -47,6 +47,7 @@ class DeclarationBlock extends RuleSet
                 $nextCharacter = $parserState->peek();
                 switch ($nextCharacter) {
                     case '\'':
+                        // The fallthrough is intentional.
                     case '"':
                         if (!isset($stringWrapperCharacter)) {
                             $stringWrapperCharacter = $nextCharacter;
