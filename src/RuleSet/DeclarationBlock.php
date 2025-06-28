@@ -41,17 +41,25 @@ class DeclarationBlock extends RuleSet
         $result = new DeclarationBlock($parserState->currentLine());
         try {
             $selectorParts = [];
+            $stringWrapperCharacter = null;
             do {
                 $selectorParts[] = $parserState->consume(1)
                     . $parserState->consumeUntil(['{', '}', '\'', '"'], false, false, $comments);
-                if (\in_array($parserState->peek(), ['\'', '"'], true) && \substr(\end($selectorParts), -1) != '\\') {
-                    if (!isset($stringWrapperCharacter)) {
-                        $stringWrapperCharacter = $parserState->peek();
-                    } elseif ($stringWrapperCharacter === $parserState->peek()) {
-                        unset($stringWrapperCharacter);
-                    }
+                $nextCharacter = $parserState->peek();
+                switch ($nextCharacter) {
+                    case '\'':
+                        // The fallthrough is intentional.
+                    case '"':
+                        if (!\is_string($stringWrapperCharacter)) {
+                            $stringWrapperCharacter = $nextCharacter;
+                        } elseif ($stringWrapperCharacter === $nextCharacter) {
+                            if (\substr(\end($selectorParts), -1) !== '\\') {
+                                $stringWrapperCharacter = null;
+                            }
+                        }
+                        break;
                 }
-            } while (!\in_array($parserState->peek(), ['{', '}'], true) || isset($stringWrapperCharacter));
+            } while (!\in_array($nextCharacter, ['{', '}'], true) || \is_string($stringWrapperCharacter));
             $result->setSelectors(\implode('', $selectorParts), $list);
             if ($parserState->comes('{')) {
                 $parserState->consume(1);
