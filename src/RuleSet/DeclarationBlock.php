@@ -53,7 +53,7 @@ class DeclarationBlock extends RuleSet
                             $stringWrapperCharacter = $nextCharacter;
                         } elseif ($stringWrapperCharacter === $nextCharacter) {
                             if (\substr(\end($selectorParts), -1) !== '\\') {
-                                unset($stringWrapperCharacter);
+                                $stringWrapperCharacter = null;
                             }
                         }
                         break;
