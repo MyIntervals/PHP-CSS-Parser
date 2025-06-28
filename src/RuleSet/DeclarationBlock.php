@@ -58,7 +58,7 @@ class DeclarationBlock extends RuleSet
                         }
                         break;
                 }
-            } while (!\in_array($nextCharacter, ['{', '}'], true) || isset($stringWrapperCharacter));
+            } while (!\in_array($nextCharacter, ['{', '}'], true) || \is_string($stringWrapperCharacter));
             $result->setSelectors(\implode('', $selectorParts), $list);
             if ($parserState->comes('{')) {
                 $parserState->consume(1);
