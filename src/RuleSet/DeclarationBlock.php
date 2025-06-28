@@ -41,6 +41,7 @@ class DeclarationBlock extends RuleSet
         $result = new DeclarationBlock($parserState->currentLine());
         try {
             $selectorParts = [];
+            $stringWrapperCharacter = null;
             do {
                 $selectorParts[] = $parserState->consume(1)
                     . $parserState->consumeUntil(['{', '}', '\'', '"'], false, false, $comments);
