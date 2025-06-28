@@ -57,20 +57,27 @@ class DeclarationBlock extends RuleSet
         $aComments = [];
         $oResult = new DeclarationBlock($oParserState->currentLine());
         try {
-            $aSelectorParts = [];
-            $sStringWrapperChar = false;
+            $selectorParts = [];
+            $stringWrapperCharacter = null;
             do {
-                $aSelectorParts[] = $oParserState->consume(1)
+                $selectorParts[] = $oParserState->consume(1)
                     . $oParserState->consumeUntil(['{', '}', '\'', '"'], false, false, $aComments);
-                if (in_array($oParserState->peek(), ['\'', '"']) && substr(end($aSelectorParts), -1) != "\\") {
-                    if ($sStringWrapperChar === false) {
-                        $sStringWrapperChar = $oParserState->peek();
-                    } elseif ($sStringWrapperChar == $oParserState->peek()) {
-                        $sStringWrapperChar = false;
-                    }
+                $nextCharacter = $oParserState->peek();
+                switch ($nextCharacter) {
+                    case '\'':
+                        // The fallthrough is intentional.
+                    case '"':
+                        if (!\is_string($stringWrapperCharacter)) {
+                            $stringWrapperCharacter = $nextCharacter;
+                        } elseif ($stringWrapperCharacter === $nextCharacter) {
+                            if (\substr(\end($selectorParts), -1) !== '\\') {
+                                $stringWrapperCharacter = null;
+                            }
+                        }
+                        break;
                 }
-            } while (!in_array($oParserState->peek(), ['{', '}']) || $sStringWrapperChar !== false);
-            $oResult->setSelectors(implode('', $aSelectorParts), $oList);
+            } while (!\in_array($nextCharacter, ['{', '}'], true) || \is_string($stringWrapperCharacter));
+            $oResult->setSelectors(\implode('', $selectorParts), $oList);
             if ($oParserState->comes('{')) {
                 $oParserState->consume(1);
             }
