@@ -44,14 +44,20 @@ class DeclarationBlock extends RuleSet
             do {
                 $selectorParts[] = $parserState->consume(1)
                     . $parserState->consumeUntil(['{', '}', '\'', '"'], false, false, $comments);
-                if (\in_array($parserState->peek(), ['\'', '"'], true) && \substr(\end($selectorParts), -1) != '\\') {
-                    if (!isset($stringWrapperCharacter)) {
-                        $stringWrapperCharacter = $parserState->peek();
-                    } elseif ($stringWrapperCharacter === $parserState->peek()) {
-                        unset($stringWrapperCharacter);
-                    }
+                $nextCharacter = $parserState->peek();
+                switch ($nextCharacter) {
+                    case '\'':
+                    case '"':
+                        if (!isset($stringWrapperCharacter)) {
+                            $stringWrapperCharacter = $nextCharacter;
+                        } elseif ($stringWrapperCharacter === $nextCharacter) {
+                            if (\substr(\end($selectorParts), -1) !== '\\') {
+                                unset($stringWrapperCharacter);
+                            }
+                        }
+                        break;
                 }
-            } while (!\in_array($parserState->peek(), ['{', '}'], true) || isset($stringWrapperCharacter));
+            } while (!\in_array($nextCharacter, ['{', '}'], true) || isset($stringWrapperCharacter));
             $result->setSelectors(\implode('', $selectorParts), $list);
             if ($parserState->comes('{')) {
                 $parserState->consume(1);
