@@ -40,11 +40,13 @@ class DeclarationBlock extends RuleSet
         $comments = [];
         $result = new DeclarationBlock($parserState->currentLine());
         try {
+            $selectors = [];
             $selectorParts = [];
             $stringWrapperCharacter = null;
+            $functionNestingLevel = 0;
             do {
                 $selectorParts[] = $parserState->consume(1)
-                    . $parserState->consumeUntil(['{', '}', '\'', '"'], false, false, $comments);
+                    . $parserState->consumeUntil(['{', '}', '\'', '"', '(', ')', ','], false, false, $comments);
                 $nextCharacter = $parserState->peek();
                 switch ($nextCharacter) {
                     case '\'':
@@ -58,9 +60,30 @@ class DeclarationBlock extends RuleSet
                             }
                         }
                         break;
+                    case '(':
+                        if (!isset($stringWrapperCharacter)) {
+                            ++$functionNestingLevel;
+                        }
+                        break;
+                    case ')':
+                        if (!isset($stringWrapperCharacter)) {
+                            if ($functionNestingLevel <= 0) {
+                                throw new UnexpectedTokenException('anything but', ')');
+                            }
+                            --$functionNestingLevel;
+                        }
+                        break;
+                    case ',':
+                        if (!isset($stringWrapperCharacter) && $functionNestingLevel === 0) {
+                            $selectors[] = \implode('', $selectorParts);
+                            $selectorParts = [];
+                            $parserState->consume(1);
+                        }
+                        break;
                 }
             } while (!\in_array($nextCharacter, ['{', '}'], true) || \is_string($stringWrapperCharacter));
-            $result->setSelectors(\implode('', $selectorParts), $list);
+            $selectors[] = \implode('', $selectorParts); // add final or only selector
+            $result->setSelectors($selectors, $list);
             if ($parserState->comes('{')) {
                 $parserState->consume(1);
             }
