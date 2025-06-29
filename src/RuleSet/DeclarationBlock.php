@@ -97,7 +97,7 @@ class DeclarationBlock extends RuleSet
                     if (!Selector::isValid($selector)) {
                         throw new UnexpectedTokenException(
                             "Selector did not match '" . Selector::SELECTOR_VALIDATION_RX . "'.",
-                            $selectors,
+                            $selector,
                             'custom'
                         );
                     }
