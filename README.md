@@ -619,190 +619,243 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 ## Class diagram
 
 ```mermaid
+    %% start of the generated part
 classDiagram
     direction LR
 
-    %% Start of the part originally generated from the PHP code using tasuku43/mermaid-class-diagram
-
-    class CSSElement {
-        <<interface>>
-    }
-    class Renderable {
-        <<interface>>
-    }
-    class Positionable {
-        <<interface>>
-    }
-    class CSSListItem {
-        <<interface>>
-    }
-    class RuleContainer {
-        <<interface>>
-    }
-    class DeclarationBlock {
-    }
-    class RuleSet {
-        <<abstract>>
-    }
-    class AtRuleSet {
-    }
-    class KeyframeSelector {
+    class Anchor {
     }
     class AtRule {
         <<interface>>
     }
-    class Charset {
+    class AtRuleBlockList {
     }
-    class Import {
-    }
-    class Selector {
-    }
-    class CSSNamespace {
-    }
-    class Settings {
-    }
-    class Rule {
-    }
-    class Parser {
-    }
-    class OutputFormatter {
-    }
-    class OutputFormat {
-    }
-    class OutputException {
-    }
-    class UnexpectedEOFException {
-    }
-    class SourceException {
-    }
-    class UnexpectedTokenException {
-    }
-    class ParserState {
-    }
-    class Anchor {
+    class AtRuleSet {
     }
     class CSSBlockList {
         <<abstract>>
     }
-    class Document {
+    class CSSElement {
+        <<interface>>
+    }
+    class CSSFunction {
     }
     class CSSList {
         <<abstract>>
     }
-    class KeyFrame {
+    class CSSListItem {
+        <<interface>>
     }
-    class AtRuleBlockList {
-    }
-    class Color {
-    }
-    class URL {
-    }
-    class CalcRuleValueList {
-    }
-    class ValueList {
-        <<abstract>>
-    }
-    class CalcFunction {
-    }
-    class LineName {
-    }
-    class Value {
-        <<abstract>>
-    }
-    class Size {
+    class CSSNamespace {
     }
     class CSSString {
     }
-    class PrimitiveValue {
-        <<abstract>>
+    class CalcFunction {
     }
-    class CSSFunction {
+    class CalcRuleValueList {
     }
-    class RuleValueList {
+    class Charset {
+    }
+    class Color {
+    }
+    class Comment {
     }
     class Commentable {
         <<interface>>
     }
-    class Comment {
+    class DeclarationBlock {
+    }
+    class Document {
+    }
+    class Import {
+    }
+    class KeyFrame {
+    }
+    class KeyframeSelector {
+    }
+    class LineName {
+    }
+    class OutputException {
+    }
+    class OutputFormat {
+    }
+    class OutputFormatter {
+    }
+    class Parser {
+    }
+    class ParserState {
+    }
+    class Positionable {
+        <<interface>>
+    }
+    class PrimitiveValue {
+        <<abstract>>
+    }
+    class Renderable {
+        <<interface>>
+    }
+    class Rule {
+    }
+    class RuleContainer {
+        <<interface>>
+    }
+    class RuleSet {
+        <<abstract>>
+    }
+    class RuleValueList {
+    }
+    class Selector {
+    }
+    class Settings {
+    }
+    class Size {
+    }
+    class SourceException {
+    }
+    class SpecificityCalculator {
+    }
+    class URL {
+    }
+    class UnexpectedEOFException {
+    }
+    class UnexpectedTokenException {
+    }
+    class Value {
+        <<abstract>>
+    }
+    class ValueList {
+        <<abstract>>
     }
 
-    RuleSet <|-- DeclarationBlock: inheritance
+    Anchor ..> ParserState: dependency
+    CSSListItem <|-- AtRule: inheritance
+    AtRule <|.. AtRuleBlockList: realization
+    CSSBlockList <|-- AtRuleBlockList: inheritance
+    AtRuleBlockList ..> OutputFormat: dependency
+    AtRule <|.. AtRuleSet: realization
+    AtRuleSet ..> OutputFormat: dependency
+    RuleSet <|-- AtRuleSet: inheritance
+    CSSList <|-- CSSBlockList: inheritance
     Renderable <|-- CSSElement: inheritance
-    Renderable <|-- CSSListItem: inheritance
+    CSSFunction ..> OutputFormat: dependency
+    CSSFunction ..> ParserState: dependency
+    ValueList <|-- CSSFunction: inheritance
+    CSSList ..> AtRuleBlockList: dependency
+    CSSList ..> AtRuleSet: dependency
+    CSSElement <|.. CSSList: realization
+    CSSListItem <|.. CSSList: realization
+    CSSList ..> CSSNamespace: dependency
+    CSSList ..> Charset: dependency
+    CSSList ..> Import: dependency
+    CSSList ..> KeyFrame: dependency
+    CSSList ..> OutputFormat: dependency
+    CSSList ..> ParserState: dependency
+    Positionable <|.. CSSList: realization
+    CSSList ..> Selector: dependency
+    CSSList ..> SourceException: dependency
+    CSSList ..> UnexpectedTokenException: dependency
     Commentable <|-- CSSListItem: inheritance
-    Positionable <|.. RuleSet: realization
+    Renderable <|-- CSSListItem: inheritance
+    AtRule <|.. CSSNamespace: realization
+    CSSNamespace ..> OutputFormat: dependency
+    Positionable <|.. CSSNamespace: realization
+    CSSString ..> OutputFormat: dependency
+    CSSString ..> ParserState: dependency
+    PrimitiveValue <|-- CSSString: inheritance
+    CSSString ..> SourceException: dependency
+    CSSFunction <|-- CalcFunction: inheritance
+    CalcFunction ..> CalcRuleValueList: dependency
+    CalcFunction ..> ParserState: dependency
+    CalcFunction ..> RuleValueList: dependency
+    CalcFunction ..> UnexpectedTokenException: dependency
+    CalcRuleValueList ..> OutputFormat: dependency
+    RuleValueList <|-- CalcRuleValueList: inheritance
+    AtRule <|.. Charset: realization
+    Charset ..> CSSString: dependency
+    Charset ..> OutputFormat: dependency
+    Positionable <|.. Charset: realization
+    CSSFunction <|-- Color: inheritance
+    Color ..> OutputFormat: dependency
+    Color ..> ParserState: dependency
+    Color ..> Size: dependency
+    Color ..> UnexpectedTokenException: dependency
+    Comment ..> OutputFormat: dependency
+    Positionable <|.. Comment: realization
+    Renderable <|.. Comment: realization
+    DeclarationBlock ..> KeyframeSelector: dependency
+    DeclarationBlock ..> OutputException: dependency
+    DeclarationBlock ..> OutputFormat: dependency
+    DeclarationBlock ..> ParserState: dependency
+    RuleSet <|-- DeclarationBlock: inheritance
+    DeclarationBlock ..> Selector: dependency
+    DeclarationBlock ..> UnexpectedTokenException: dependency
+    CSSBlockList <|-- Document: inheritance
+    Document ..> OutputFormat: dependency
+    Document ..> ParserState: dependency
+    AtRule <|.. Import: realization
+    Import ..> OutputFormat: dependency
+    Positionable <|.. Import: realization
+    Import ..> URL: dependency
+    AtRule <|.. KeyFrame: realization
+    CSSList <|-- KeyFrame: inheritance
+    KeyFrame ..> OutputFormat: dependency
+    Selector <|-- KeyframeSelector: inheritance
+    LineName ..> OutputFormat: dependency
+    LineName ..> ParserState: dependency
+    ValueList <|-- LineName: inheritance
+    SourceException <|-- OutputException: inheritance
+    OutputFormat ..> OutputFormatter: dependency
+    OutputFormatter ..> Commentable: dependency
+    OutputFormatter ..> InvalidArgumentException: dependency
+    OutputFormatter ..> OutputFormat: dependency
+    Parser ..> Document: dependency
+    Parser ..> ParserState: dependency
+    ParserState ..> Anchor: dependency
+    ParserState ..> Comment: dependency
+    ParserState ..> Settings: dependency
+    ParserState ..> SourceException: dependency
+    ParserState ..> UnexpectedEOFException: dependency
+    ParserState ..> UnexpectedTokenException: dependency
+    Value <|-- PrimitiveValue: inheritance
+    Renderable ..> OutputFormat: dependency
+    CSSElement <|.. Rule: realization
+    Commentable <|.. Rule: realization
+    Rule ..> OutputFormat: dependency
+    Rule ..> ParserState: dependency
+    Positionable <|.. Rule: realization
+    Rule ..> RuleValueList: dependency
+    RuleContainer ..> Rule: dependency
     CSSElement <|.. RuleSet: realization
     CSSListItem <|.. RuleSet: realization
+    RuleSet ..> OutputFormat: dependency
+    RuleSet ..> ParserState: dependency
+    Positionable <|.. RuleSet: realization
+    RuleSet ..> Rule: dependency
     RuleContainer <|.. RuleSet: realization
-    RuleSet <|-- AtRuleSet: inheritance
-    AtRule <|.. AtRuleSet: realization
+    RuleSet ..> UnexpectedValueException: dependency
+    ValueList <|-- RuleValueList: inheritance
+    Selector ..> OutputFormat: dependency
     Renderable <|.. Selector: realization
-    Selector <|-- KeyframeSelector: inheritance
-    CSSListItem <|-- AtRule: inheritance
-    Positionable <|.. Charset: realization
-    AtRule <|.. Charset: realization
-    Positionable <|.. Import: realization
-    AtRule <|.. Import: realization
-    Positionable <|.. CSSNamespace: realization
-    AtRule <|.. CSSNamespace: realization
-    CSSElement <|.. Rule: realization
-    Positionable <|.. Rule: realization
-    Commentable <|.. Rule: realization
-    SourceException <|-- OutputException: inheritance
-    UnexpectedTokenException <|-- UnexpectedEOFException: inheritance
+    Size ..> OutputFormat: dependency
+    Size ..> ParserState: dependency
+    PrimitiveValue <|-- Size: inheritance
     Exception <|-- SourceException: inheritance
     Positionable <|.. SourceException: realization
-    SourceException <|-- UnexpectedTokenException: inheritance
-    CSSList <|-- CSSBlockList: inheritance
-    CSSBlockList <|-- Document: inheritance
-    CSSElement <|.. CSSList: realization
-    Positionable <|.. CSSList: realization
-    CSSListItem <|.. CSSList: realization
-    CSSList <|-- KeyFrame: inheritance
-    AtRule <|.. KeyFrame: realization
-    CSSBlockList <|-- AtRuleBlockList: inheritance
-    AtRule <|.. AtRuleBlockList: realization
-    CSSFunction <|-- Color: inheritance
+    URL ..> CSSString: dependency
+    URL ..> OutputFormat: dependency
+    URL ..> ParserState: dependency
     PrimitiveValue <|-- URL: inheritance
-    RuleValueList <|-- CalcRuleValueList: inheritance
-    Value <|-- ValueList: inheritance
-    CSSFunction <|-- CalcFunction: inheritance
-    ValueList <|-- LineName: inheritance
+    UnexpectedTokenException <|-- UnexpectedEOFException: inheritance
+    SourceException <|-- UnexpectedTokenException: inheritance
     CSSElement <|.. Value: realization
+    Value ..> CSSFunction: dependency
+    Value ..> ParserState: dependency
     Positionable <|.. Value: realization
-    PrimitiveValue <|-- Size: inheritance
-    PrimitiveValue <|-- CSSString: inheritance
-    Value <|-- PrimitiveValue: inheritance
-    ValueList <|-- CSSFunction: inheritance
-    ValueList <|-- RuleValueList: inheritance
-    Renderable <|.. Comment: realization
-    Positionable <|.. Comment: realization
-
+    Value ..> RuleValueList: dependency
+    Value ..> UnexpectedTokenException: dependency
+    ValueList ..> OutputFormat: dependency
+    Value <|-- ValueList: inheritance
     %% end of the generated part
-
-
-    Anchor --> "1" ParserState : parserState
-    CSSList --> "*" CSSList : contents
-    CSSList --> "*" Charset : contents
-    CSSList --> "*" Comment : comments
-    CSSList --> "*" Import : contents
-    CSSList --> "*" RuleSet : contents
-    CSSNamespace --> "*" Comment : comments
-    Charset --> "*" Comment : comments
-    Charset --> "1" CSSString : charset
-    DeclarationBlock --> "*" Selector : selectors
-    Import --> "*" Comment : comments
-    OutputFormat --> "1" OutputFormat : nextLevelFormat
-    OutputFormat --> "1" OutputFormatter : outputFormatter
-    OutputFormatter --> "1" OutputFormat : outputFormat
-    Parser --> "1" ParserState : parserState
-    ParserState --> "1" Settings : parserSettings
-    Rule --> "*" Comment : comments
-    Rule --> "1" RuleValueList : value
-    RuleSet --> "*" Comment : comments
-    RuleSet --> "*" Rule : rules
-    URL --> "1" CSSString : url
-    ValueList --> "*" Value : components
 ```
 
 ## API and deprecation policy
