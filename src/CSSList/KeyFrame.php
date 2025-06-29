@@ -101,6 +101,8 @@ class KeyFrame extends CSSList implements AtRule
 
     /**
      * @return string|null
+     *
+     * @deprecated since V8.9.0, will be removed in version 9.0.0. Use the specific getter instead.
      */
     public function atRuleArgs()
     {
