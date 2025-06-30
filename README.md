@@ -781,28 +781,28 @@ classDiagram
     %% end of the generated part
 
 
-    Anchor --> "1" ParserState : parserState
-    CSSList --> "*" CSSList : contents
-    CSSList --> "*" Charset : contents
-    CSSList --> "*" Comment : comments
-    CSSList --> "*" Import : contents
-    CSSList --> "*" RuleSet : contents
-    CSSNamespace --> "*" Comment : comments
-    Charset --> "*" Comment : comments
-    Charset --> "1" CSSString : charset
-    DeclarationBlock --> "*" Selector : selectors
-    Import --> "*" Comment : comments
-    OutputFormat --> "1" OutputFormat : nextLevelFormat
-    OutputFormat --> "1" OutputFormatter : outputFormatter
-    OutputFormatter --> "1" OutputFormat : outputFormat
-    Parser --> "1" ParserState : parserState
-    ParserState --> "1" Settings : parserSettings
-    Rule --> "*" Comment : comments
-    Rule --> "1" RuleValueList : value
-    RuleSet --> "*" Comment : comments
-    RuleSet --> "*" Rule : rules
-    URL --> "1" CSSString : url
-    ValueList --> "*" Value : components
+    Anchor --> "1" ParserState: parserState
+    CSSList --> "*" CSSList: contents
+    CSSList --> "*" Charset: contents
+    CSSList --> "*" Comment: comments
+    CSSList --> "*" Import: contents
+    CSSList --> "*" RuleSet: contents
+    CSSNamespace --> "*" Comment: comments
+    Charset --> "*" Comment: comments
+    Charset --> "1" CSSString: charset
+    DeclarationBlock --> "*" Selector: selectors
+    Import --> "*" Comment: comments
+    OutputFormat --> "1" OutputFormat: nextLevelFormat
+    OutputFormat --> "1" OutputFormatter: outputFormatter
+    OutputFormatter --> "1" OutputFormat: outputFormat
+    Parser --> "1" ParserState: parserState
+    ParserState --> "1" Settings: parserSettings
+    Rule --> "*" Comment: comments
+    Rule --> "1" RuleValueList: value
+    RuleSet --> "*" Comment: comments
+    RuleSet --> "*" Rule: rules
+    URL --> "1" CSSString: url
+    ValueList --> "*" Value: components
 ```
 
 ## API and deprecation policy
