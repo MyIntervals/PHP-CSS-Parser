@@ -624,106 +624,106 @@ classDiagram
 
     %% Start of the part originally generated from the PHP code using tasuku43/mermaid-class-diagram
 
-    class CSSElement {
-        <<interface>>
-    }
-    class Renderable {
-        <<interface>>
-    }
-    class Positionable {
-        <<interface>>
-    }
-    class CSSListItem {
-        <<interface>>
-    }
-    class RuleContainer {
-        <<interface>>
-    }
-    class DeclarationBlock {
-    }
-    class RuleSet {
-        <<abstract>>
-    }
-    class AtRuleSet {
-    }
-    class KeyframeSelector {
+    class Anchor {
     }
     class AtRule {
         <<interface>>
     }
-    class Charset {
+    class AtRuleBlockList {
     }
-    class Import {
-    }
-    class Selector {
-    }
-    class CSSNamespace {
-    }
-    class Settings {
-    }
-    class Rule {
-    }
-    class Parser {
-    }
-    class OutputFormatter {
-    }
-    class OutputFormat {
-    }
-    class OutputException {
-    }
-    class UnexpectedEOFException {
-    }
-    class SourceException {
-    }
-    class UnexpectedTokenException {
-    }
-    class ParserState {
-    }
-    class Anchor {
+    class AtRuleSet {
     }
     class CSSBlockList {
         <<abstract>>
     }
-    class Document {
+    class CSSElement {
+        <<interface>>
+    }
+    class CSSFunction {
     }
     class CSSList {
         <<abstract>>
     }
-    class KeyFrame {
+    class CSSListItem {
+        <<interface>>
     }
-    class AtRuleBlockList {
-    }
-    class Color {
-    }
-    class URL {
-    }
-    class CalcRuleValueList {
-    }
-    class ValueList {
-        <<abstract>>
-    }
-    class CalcFunction {
-    }
-    class LineName {
-    }
-    class Value {
-        <<abstract>>
-    }
-    class Size {
+    class CSSNamespace {
     }
     class CSSString {
     }
-    class PrimitiveValue {
-        <<abstract>>
+    class CalcFunction {
     }
-    class CSSFunction {
+    class CalcRuleValueList {
     }
-    class RuleValueList {
+    class Charset {
+    }
+    class Color {
+    }
+    class Comment {
     }
     class Commentable {
         <<interface>>
     }
-    class Comment {
+    class DeclarationBlock {
+    }
+    class Document {
+    }
+    class Import {
+    }
+    class KeyFrame {
+    }
+    class KeyframeSelector {
+    }
+    class LineName {
+    }
+    class OutputException {
+    }
+    class OutputFormat {
+    }
+    class OutputFormatter {
+    }
+    class Parser {
+    }
+    class ParserState {
+    }
+    class Positionable {
+        <<interface>>
+    }
+    class PrimitiveValue {
+        <<abstract>>
+    }
+    class Renderable {
+        <<interface>>
+    }
+    class Rule {
+    }
+    class RuleContainer {
+        <<interface>>
+    }
+    class RuleSet {
+        <<abstract>>
+    }
+    class RuleValueList {
+    }
+    class Selector {
+    }
+    class Settings {
+    }
+    class Size {
+    }
+    class SourceException {
+    }
+    class UnexpectedEOFException {
+    }
+    class UnexpectedTokenException {
+    }
+    class URL {
+    }
+    class Value {
+        <<abstract>>
+    }
+    class ValueList {
+        <<abstract>>
     }
 
     RuleSet <|-- DeclarationBlock: inheritance
