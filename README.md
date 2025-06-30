@@ -621,6 +621,7 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 ```mermaid
 classDiagram
     direction LR
+
     %% Start of the part originally generated from the PHP code using tasuku43/mermaid-class-diagram
 
     class Anchor {
