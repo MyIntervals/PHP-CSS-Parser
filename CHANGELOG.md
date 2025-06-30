@@ -110,6 +110,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Selector functions (like `:not`) with comma-separated arguments are now
+  parsed correclty (#1292)
 - Allow comma in selectors (e.g. `:not(html, body)`) (#1293)
 - Insert `Rule` before sibling even with different property name
   (in `RuleSet::addRule()`) (#1270)
