@@ -50,8 +50,8 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
      */
     public function __construct(?int $lineNumber = null)
     {
-        $this->setPosition($lineNumber);
         $this->ruleSet = new RuleSet($lineNumber);
+        $this->setPosition($lineNumber);
     }
 
     /**
