@@ -713,11 +713,11 @@ classDiagram
     }
     class SourceException {
     }
+    class URL {
+    }
     class UnexpectedEOFException {
     }
     class UnexpectedTokenException {
-    }
-    class URL {
     }
     class Value {
         <<abstract>>
@@ -726,83 +726,83 @@ classDiagram
         <<abstract>>
     }
 
-    RuleSet <|-- DeclarationBlock: inheritance
+    Anchor ..> ParserState: dependency
+    CSSListItem <|-- AtRule: inheritance
+    AtRule <|.. AtRuleBlockList: realization
+    CSSBlockList <|-- AtRuleBlockList: inheritance
+    AtRule <|.. AtRuleSet: realization
+    RuleSet <|-- AtRuleSet: inheritance
+    CSSList <|-- CSSBlockList: inheritance
     Renderable <|-- CSSElement: inheritance
-    Renderable <|-- CSSListItem: inheritance
+    ValueList <|-- CSSFunction: inheritance
+    CSSElement <|.. CSSList: realization
+    CSSListItem <|.. CSSList: realization
+    CSSList ..> CSSList: dependency
+    CSSList ..> Charset: dependency
+    CSSList ..> Comment: dependency
+    CSSList ..> Import: dependency
+    CSSList ..> RuleSet: dependency
+    Positionable <|.. CSSList: realization
     Commentable <|-- CSSListItem: inheritance
-    Positionable <|.. RuleSet: realization
+    Renderable <|-- CSSListItem: inheritance
+    AtRule <|.. CSSNamespace: realization
+    Positionable <|.. CSSNamespace: realization
+    CSSNamespace ..> Comment: dependency
+    PrimitiveValue <|-- CSSString: inheritance
+    Charset ..> Comment: dependency
+    Import ..> Comment: dependency
+    CSSFunction <|-- CalcFunction: inheritance
+    RuleValueList <|-- CalcRuleValueList: inheritance
+    AtRule <|.. Charset: realization
+    Charset ..> CSSString: dependency
+    Positionable <|.. Charset: realization
+    CSSFunction <|-- Color: inheritance
+    Positionable <|.. Comment: realization
+    Renderable <|.. Comment: realization
+    RuleSet <|-- DeclarationBlock: inheritance
+    DeclarationBlock ..> Selector: dependency
+    CSSBlockList <|-- Document: inheritance
+    AtRule <|.. Import: realization
+    Positionable <|.. Import: realization
+    AtRule <|.. KeyFrame: realization
+    CSSList <|-- KeyFrame: inheritance
+    Selector <|-- KeyframeSelector: inheritance
+    ValueList <|-- LineName: inheritance
+    SourceException <|-- OutputException: inheritance
+    OutputFormat ..> OutputFormat: dependency
+    OutputFormat ..> OutputFormatter: dependency
+    OutputFormatter ..> OutputFormat: dependency
+    Parser ..> ParserState: dependency
+    ParserState ..> Settings: dependency
+    Value <|-- PrimitiveValue: inheritance
+    CSSElement <|.. Rule: realization
+    Commentable <|.. Rule: realization
+    Positionable <|.. Rule: realization
+    Rule ..> RuleValueList: dependency
     CSSElement <|.. RuleSet: realization
     CSSListItem <|.. RuleSet: realization
+    Positionable <|.. RuleSet: realization
+    RuleSet ..> Rule: dependency
     RuleContainer <|.. RuleSet: realization
-    RuleSet <|-- AtRuleSet: inheritance
-    AtRule <|.. AtRuleSet: realization
+    ValueList <|-- RuleValueList: inheritance
+    Rule ..> Comment: dependency
+    RuleSet ..> Comment: dependency
     Renderable <|.. Selector: realization
-    Selector <|-- KeyframeSelector: inheritance
-    CSSListItem <|-- AtRule: inheritance
-    Positionable <|.. Charset: realization
-    AtRule <|.. Charset: realization
-    Positionable <|.. Import: realization
-    AtRule <|.. Import: realization
-    Positionable <|.. CSSNamespace: realization
-    AtRule <|.. CSSNamespace: realization
-    CSSElement <|.. Rule: realization
-    Positionable <|.. Rule: realization
-    Commentable <|.. Rule: realization
-    SourceException <|-- OutputException: inheritance
-    UnexpectedTokenException <|-- UnexpectedEOFException: inheritance
+    PrimitiveValue <|-- Size: inheritance
     Exception <|-- SourceException: inheritance
     Positionable <|.. SourceException: realization
-    SourceException <|-- UnexpectedTokenException: inheritance
-    CSSList <|-- CSSBlockList: inheritance
-    CSSBlockList <|-- Document: inheritance
-    CSSElement <|.. CSSList: realization
-    Positionable <|.. CSSList: realization
-    CSSListItem <|.. CSSList: realization
-    CSSList <|-- KeyFrame: inheritance
-    AtRule <|.. KeyFrame: realization
-    CSSBlockList <|-- AtRuleBlockList: inheritance
-    AtRule <|.. AtRuleBlockList: realization
-    CSSFunction <|-- Color: inheritance
+    URL ..> CSSString: dependency
+    ValueList ..> Value: dependency
     PrimitiveValue <|-- URL: inheritance
-    RuleValueList <|-- CalcRuleValueList: inheritance
-    Value <|-- ValueList: inheritance
-    CSSFunction <|-- CalcFunction: inheritance
-    ValueList <|-- LineName: inheritance
+    UnexpectedTokenException <|-- UnexpectedEOFException: inheritance
+    SourceException <|-- UnexpectedTokenException: inheritance
     CSSElement <|.. Value: realization
     Positionable <|.. Value: realization
-    PrimitiveValue <|-- Size: inheritance
-    PrimitiveValue <|-- CSSString: inheritance
-    Value <|-- PrimitiveValue: inheritance
-    ValueList <|-- CSSFunction: inheritance
-    ValueList <|-- RuleValueList: inheritance
-    Renderable <|.. Comment: realization
-    Positionable <|.. Comment: realization
+    Value <|-- ValueList: inheritance
 
     %% end of the generated part
 
 
-    Anchor --> "1" ParserState: parserState
-    CSSList --> "*" CSSList: contents
-    CSSList --> "*" Charset: contents
-    CSSList --> "*" Comment: comments
-    CSSList --> "*" Import: contents
-    CSSList --> "*" RuleSet: contents
-    CSSNamespace --> "*" Comment: comments
-    Charset --> "*" Comment: comments
-    Charset --> "1" CSSString: charset
-    DeclarationBlock --> "*" Selector: selectors
-    Import --> "*" Comment: comments
-    OutputFormat --> "1" OutputFormat: nextLevelFormat
-    OutputFormat --> "1" OutputFormatter: outputFormatter
-    OutputFormatter --> "1" OutputFormat: outputFormat
-    Parser --> "1" ParserState: parserState
-    ParserState --> "1" Settings: parserSettings
-    Rule --> "*" Comment: comments
-    Rule --> "1" RuleValueList: value
-    RuleSet --> "*" Comment: comments
-    RuleSet --> "*" Rule: rules
-    URL --> "1" CSSString: url
-    ValueList --> "*" Value: components
 ```
 
 ## API and deprecation policy
