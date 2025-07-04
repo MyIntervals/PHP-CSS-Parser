@@ -619,10 +619,9 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 ## Class diagram
 
 ```mermaid
+    %% start of the generated part
 classDiagram
     direction LR
-
-    %% Start of the part originally generated from the PHP code using tasuku43/mermaid-class-diagram
 
     class Anchor {
     }
@@ -779,7 +778,6 @@ classDiagram
     ValueList <|-- RuleValueList: inheritance
     Renderable <|.. Comment: realization
     Positionable <|.. Comment: realization
-
     %% end of the generated part
 
 
