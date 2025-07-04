@@ -713,11 +713,13 @@ classDiagram
     }
     class SourceException {
     }
+    class SpecificityCalculator {
+    }
+    class URL {
+    }
     class UnexpectedEOFException {
     }
     class UnexpectedTokenException {
-    }
-    class URL {
     }
     class Value {
         <<abstract>>
