@@ -781,28 +781,28 @@ classDiagram
     %% end of the generated part
 
 
-    Anchor ..> ParserState: parserState
-    CSSList ..> CSSList: contents
-    CSSList ..> Charset: contents
-    CSSList ..> Comment: comments
-    CSSList ..> Import: contents
-    CSSList ..> RuleSet: contents
-    CSSNamespace ..> Comment: comments
-    Charset ..> Comment: comments
-    Charset ..> CSSString: charset
-    DeclarationBlock ..> Selector: selectors
-    Import ..> Comment: comments
-    OutputFormat ..> OutputFormat: nextLevelFormat
-    OutputFormat ..> OutputFormatter: outputFormatter
-    OutputFormatter ..> OutputFormat: outputFormat
-    Parser ..> ParserState: parserState
-    ParserState ..> Settings: parserSettings
-    Rule ..> Comment: comments
-    Rule ..> RuleValueList: value
-    RuleSet ..> Comment: comments
-    RuleSet ..> Rule: rules
-    URL ..> CSSString: url
-    ValueList ..> Value: components
+    Anchor ..> ParserState: dependency
+    CSSList ..> CSSList: dependency
+    CSSList ..> Charset: dependency
+    CSSList ..> Comment: dependency
+    CSSList ..> Import: dependency
+    CSSList ..> RuleSet: dependency
+    CSSNamespace ..> Comment: dependency
+    Charset ..> Comment: dependency
+    Charset ..> CSSString: dependency
+    DeclarationBlock ..> Selector: dependency
+    Import ..> Comment: dependency
+    OutputFormat ..> OutputFormat: dependency
+    OutputFormat ..> OutputFormatter: dependency
+    OutputFormatter ..> OutputFormat: dependency
+    Parser ..> ParserState: dependency
+    ParserState ..> Settings: dependency
+    Rule ..> Comment: dependency
+    Rule ..> RuleValueList: dependency
+    RuleSet ..> Comment: dependency
+    RuleSet ..> Rule: dependency
+    URL ..> CSSString: dependency
+    ValueList ..> Value: dependency
 ```
 
 ## API and deprecation policy
