@@ -783,28 +783,28 @@ classDiagram
     %% end of the generated part
 
 
-    Anchor --> ParserState: parserState
-    CSSList --> CSSList: contents
-    CSSList --> Charset: contents
-    CSSList --> Comment: comments
-    CSSList --> Import: contents
-    CSSList --> RuleSet: contents
-    CSSNamespace --> Comment: comments
-    Charset --> Comment: comments
-    Charset --> CSSString: charset
-    DeclarationBlock --> Selector: selectors
-    Import --> Comment: comments
-    OutputFormat --> OutputFormat: nextLevelFormat
-    OutputFormat --> OutputFormatter: outputFormatter
-    OutputFormatter --> OutputFormat: outputFormat
-    Parser --> ParserState: parserState
-    ParserState --> Settings: parserSettings
-    Rule --> Comment: comments
-    Rule --> RuleValueList: value
-    RuleSet --> Comment: comments
-    RuleSet --> Rule: rules
-    URL --> CSSString: url
-    ValueList --> Value: components
+    Anchor ..> ParserState: parserState
+    CSSList ..> CSSList: contents
+    CSSList ..> Charset: contents
+    CSSList ..> Comment: comments
+    CSSList ..> Import: contents
+    CSSList ..> RuleSet: contents
+    CSSNamespace ..> Comment: comments
+    Charset ..> Comment: comments
+    Charset ..> CSSString: charset
+    DeclarationBlock ..> Selector: selectors
+    Import ..> Comment: comments
+    OutputFormat ..> OutputFormat: nextLevelFormat
+    OutputFormat ..> OutputFormatter: outputFormatter
+    OutputFormatter ..> OutputFormat: outputFormat
+    Parser ..> ParserState: parserState
+    ParserState ..> Settings: parserSettings
+    Rule ..> Comment: comments
+    Rule ..> RuleValueList: value
+    RuleSet ..> Comment: comments
+    RuleSet ..> Rule: rules
+    URL ..> CSSString: url
+    ValueList ..> Value: components
 ```
 
 ## API and deprecation policy
