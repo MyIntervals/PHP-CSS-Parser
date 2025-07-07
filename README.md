@@ -755,6 +755,11 @@ classDiagram
     Renderable <|.. Comment: realization
     RuleSet <|-- DeclarationBlock: inheritance
     DeclarationBlock ..> Selector: dependency
+    CSSBlockList <|-- Document: inheritance
+    AtRule <|.. Import: realization
+    Positionable <|.. Import: realization
+    AtRule <|.. KeyFrame: realization
+    CSSList <|-- KeyFrame: inheritance
 
     Positionable <|.. RuleSet: realization
     CSSElement <|.. RuleSet: realization
@@ -762,8 +767,6 @@ classDiagram
     RuleContainer <|.. RuleSet: realization
     Renderable <|.. Selector: realization
     Selector <|-- KeyframeSelector: inheritance
-    Positionable <|.. Import: realization
-    AtRule <|.. Import: realization
     CSSElement <|.. Rule: realization
     Positionable <|.. Rule: realization
     Commentable <|.. Rule: realization
@@ -772,9 +775,6 @@ classDiagram
     Exception <|-- SourceException: inheritance
     Positionable <|.. SourceException: realization
     SourceException <|-- UnexpectedTokenException: inheritance
-    CSSBlockList <|-- Document: inheritance
-    CSSList <|-- KeyFrame: inheritance
-    AtRule <|.. KeyFrame: realization
     PrimitiveValue <|-- URL: inheritance
     Value <|-- ValueList: inheritance
     ValueList <|-- LineName: inheritance
