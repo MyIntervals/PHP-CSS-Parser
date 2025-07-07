@@ -728,19 +728,20 @@ classDiagram
 
     Anchor ..> ParserState: dependency
     CSSListItem <|-- AtRule: inheritance
-    AtRule <|.. AtRuleSet: realization
-    CSSBlockList <|-- AtRuleBlockList: inheritance
     AtRule <|.. AtRuleBlockList: realization
+    CSSBlockList <|-- AtRuleBlockList: inheritance
+    AtRule <|.. AtRuleSet: realization
+    RuleSet <|-- AtRuleSet: inheritance
+    CSSList <|-- CSSBlockList: inheritance
+    Renderable <|-- CSSElement: inheritance
 
     RuleSet <|-- DeclarationBlock: inheritance
-    Renderable <|-- CSSElement: inheritance
     Renderable <|-- CSSListItem: inheritance
     Commentable <|-- CSSListItem: inheritance
     Positionable <|.. RuleSet: realization
     CSSElement <|.. RuleSet: realization
     CSSListItem <|.. RuleSet: realization
     RuleContainer <|.. RuleSet: realization
-    RuleSet <|-- AtRuleSet: inheritance
     Renderable <|.. Selector: realization
     Selector <|-- KeyframeSelector: inheritance
     Positionable <|.. Charset: realization
@@ -757,7 +758,6 @@ classDiagram
     Exception <|-- SourceException: inheritance
     Positionable <|.. SourceException: realization
     SourceException <|-- UnexpectedTokenException: inheritance
-    CSSList <|-- CSSBlockList: inheritance
     CSSBlockList <|-- Document: inheritance
     CSSElement <|.. CSSList: realization
     Positionable <|.. CSSList: realization
