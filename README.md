@@ -788,8 +788,8 @@ classDiagram
     SourceException <|-- UnexpectedTokenException: inheritance
     CSSElement <|.. Value: realization
     Positionable <|.. Value: realization
-
     Value <|-- ValueList: inheritance
+
     CSSList ..> CSSList: dependency
     CSSList ..> Comment: dependency
     CSSList ..> RuleSet: dependency
