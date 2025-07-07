@@ -726,6 +726,12 @@ classDiagram
         <<abstract>>
     }
 
+    Anchor ..> ParserState: dependency
+    CSSListItem <|-- AtRule: inheritance
+    AtRule <|.. AtRuleSet: realization
+    CSSBlockList <|-- AtRuleBlockList: inheritance
+    AtRule <|.. AtRuleBlockList: realization
+
     RuleSet <|-- DeclarationBlock: inheritance
     Renderable <|-- CSSElement: inheritance
     Renderable <|-- CSSListItem: inheritance
@@ -735,10 +741,8 @@ classDiagram
     CSSListItem <|.. RuleSet: realization
     RuleContainer <|.. RuleSet: realization
     RuleSet <|-- AtRuleSet: inheritance
-    AtRule <|.. AtRuleSet: realization
     Renderable <|.. Selector: realization
     Selector <|-- KeyframeSelector: inheritance
-    CSSListItem <|-- AtRule: inheritance
     Positionable <|.. Charset: realization
     AtRule <|.. Charset: realization
     Positionable <|.. Import: realization
@@ -760,8 +764,6 @@ classDiagram
     CSSListItem <|.. CSSList: realization
     CSSList <|-- KeyFrame: inheritance
     AtRule <|.. KeyFrame: realization
-    CSSBlockList <|-- AtRuleBlockList: inheritance
-    AtRule <|.. AtRuleBlockList: realization
     CSSFunction <|-- Color: inheritance
     PrimitiveValue <|-- URL: inheritance
     RuleValueList <|-- CalcRuleValueList: inheritance
@@ -777,7 +779,6 @@ classDiagram
     ValueList <|-- RuleValueList: inheritance
     Renderable <|.. Comment: realization
     Positionable <|.. Comment: realization
-    Anchor ..> ParserState: dependency
     CSSList ..> CSSList: dependency
     CSSList ..> Charset: dependency
     CSSList ..> Comment: dependency
