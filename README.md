@@ -734,6 +734,11 @@ classDiagram
     RuleSet <|-- AtRuleSet: inheritance
     CSSList <|-- CSSBlockList: inheritance
     Renderable <|-- CSSElement: inheritance
+    ValueList <|-- CSSFunction: inheritance
+    CSSElement <|.. CSSList: realization
+    CSSListItem <|.. CSSList: realization
+    CSSList ..> Charset: dependency
+    CSSList ..> Import: dependency
 
     RuleSet <|-- DeclarationBlock: inheritance
     Renderable <|-- CSSListItem: inheritance
@@ -759,9 +764,7 @@ classDiagram
     Positionable <|.. SourceException: realization
     SourceException <|-- UnexpectedTokenException: inheritance
     CSSBlockList <|-- Document: inheritance
-    CSSElement <|.. CSSList: realization
     Positionable <|.. CSSList: realization
-    CSSListItem <|.. CSSList: realization
     CSSList <|-- KeyFrame: inheritance
     AtRule <|.. KeyFrame: realization
     CSSFunction <|-- Color: inheritance
@@ -775,14 +778,11 @@ classDiagram
     PrimitiveValue <|-- Size: inheritance
     PrimitiveValue <|-- CSSString: inheritance
     Value <|-- PrimitiveValue: inheritance
-    ValueList <|-- CSSFunction: inheritance
     ValueList <|-- RuleValueList: inheritance
     Renderable <|.. Comment: realization
     Positionable <|.. Comment: realization
     CSSList ..> CSSList: dependency
-    CSSList ..> Charset: dependency
     CSSList ..> Comment: dependency
-    CSSList ..> Import: dependency
     CSSList ..> RuleSet: dependency
     CSSNamespace ..> Comment: dependency
     Charset ..> Comment: dependency
