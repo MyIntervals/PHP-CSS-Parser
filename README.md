@@ -619,7 +619,6 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 ## Class diagram
 
 ```mermaid
-    %% start of the generated part
 classDiagram
     direction LR
 
@@ -778,9 +777,6 @@ classDiagram
     ValueList <|-- RuleValueList: inheritance
     Renderable <|.. Comment: realization
     Positionable <|.. Comment: realization
-    %% end of the generated part
-
-
     Anchor ..> ParserState: dependency
     CSSList ..> CSSList: dependency
     CSSList ..> Charset: dependency
