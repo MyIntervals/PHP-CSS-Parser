@@ -749,15 +749,19 @@ classDiagram
     RuleValueList <|-- CalcRuleValueList: inheritance
     AtRule <|.. Charset: realization
     Charset ..> CSSString: dependency
-
+    Positionable <|.. Charset: realization
+    CSSFunction <|-- Color: inheritance
+    Positionable <|.. Comment: realization
+    Renderable <|.. Comment: realization
     RuleSet <|-- DeclarationBlock: inheritance
+    DeclarationBlock ..> Selector: dependency
+
     Positionable <|.. RuleSet: realization
     CSSElement <|.. RuleSet: realization
     CSSListItem <|.. RuleSet: realization
     RuleContainer <|.. RuleSet: realization
     Renderable <|.. Selector: realization
     Selector <|-- KeyframeSelector: inheritance
-    Positionable <|.. Charset: realization
     Positionable <|.. Import: realization
     AtRule <|.. Import: realization
     CSSElement <|.. Rule: realization
@@ -771,7 +775,6 @@ classDiagram
     CSSBlockList <|-- Document: inheritance
     CSSList <|-- KeyFrame: inheritance
     AtRule <|.. KeyFrame: realization
-    CSSFunction <|-- Color: inheritance
     PrimitiveValue <|-- URL: inheritance
     Value <|-- ValueList: inheritance
     ValueList <|-- LineName: inheritance
@@ -780,14 +783,11 @@ classDiagram
     PrimitiveValue <|-- Size: inheritance
     Value <|-- PrimitiveValue: inheritance
     ValueList <|-- RuleValueList: inheritance
-    Renderable <|.. Comment: realization
-    Positionable <|.. Comment: realization
     CSSList ..> CSSList: dependency
     CSSList ..> Comment: dependency
     CSSList ..> RuleSet: dependency
     CSSNamespace ..> Comment: dependency
     Charset ..> Comment: dependency
-    DeclarationBlock ..> Selector: dependency
     Import ..> Comment: dependency
     OutputFormat ..> OutputFormat: dependency
     OutputFormat ..> OutputFormatter: dependency
