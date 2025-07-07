@@ -783,13 +783,13 @@ classDiagram
     Exception <|-- SourceException: inheritance
     Positionable <|.. SourceException: realization
     URL ..> CSSString: dependency
-
+    PrimitiveValue <|-- URL: inheritance
     UnexpectedTokenException <|-- UnexpectedEOFException: inheritance
     SourceException <|-- UnexpectedTokenException: inheritance
-    PrimitiveValue <|-- URL: inheritance
-    Value <|-- ValueList: inheritance
     CSSElement <|.. Value: realization
     Positionable <|.. Value: realization
+
+    Value <|-- ValueList: inheritance
     CSSList ..> CSSList: dependency
     CSSList ..> Comment: dependency
     CSSList ..> RuleSet: dependency
