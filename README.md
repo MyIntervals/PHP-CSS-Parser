@@ -770,13 +770,15 @@ classDiagram
     Value <|-- PrimitiveValue: inheritance
     CSSElement <|.. Rule: realization
     Commentable <|.. Rule: realization
-
-    Positionable <|.. RuleSet: realization
+    Positionable <|.. Rule: realization
+    Rule ..> RuleValueList: dependency
     CSSElement <|.. RuleSet: realization
     CSSListItem <|.. RuleSet: realization
+    Positionable <|.. RuleSet: realization
+    RuleSet ..> Rule: dependency
     RuleContainer <|.. RuleSet: realization
+
     Renderable <|.. Selector: realization
-    Positionable <|.. Rule: realization
     UnexpectedTokenException <|-- UnexpectedEOFException: inheritance
     Exception <|-- SourceException: inheritance
     Positionable <|.. SourceException: realization
@@ -795,9 +797,7 @@ classDiagram
     Import ..> Comment: dependency
     OutputFormat ..> OutputFormat: dependency
     Rule ..> Comment: dependency
-    Rule ..> RuleValueList: dependency
     RuleSet ..> Comment: dependency
-    RuleSet ..> Rule: dependency
     URL ..> CSSString: dependency
     ValueList ..> Value: dependency
 ```
