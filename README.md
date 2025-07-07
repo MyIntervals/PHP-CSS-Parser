@@ -765,15 +765,18 @@ classDiagram
     SourceException <|-- OutputException: inheritance
     OutputFormat ..> OutputFormatter: dependency
     OutputFormatter ..> OutputFormat: dependency
+    Parser ..> ParserState: dependency
+    ParserState ..> Settings: dependency
+    Value <|-- PrimitiveValue: inheritance
+    CSSElement <|.. Rule: realization
+    Commentable <|.. Rule: realization
 
     Positionable <|.. RuleSet: realization
     CSSElement <|.. RuleSet: realization
     CSSListItem <|.. RuleSet: realization
     RuleContainer <|.. RuleSet: realization
     Renderable <|.. Selector: realization
-    CSSElement <|.. Rule: realization
     Positionable <|.. Rule: realization
-    Commentable <|.. Rule: realization
     UnexpectedTokenException <|-- UnexpectedEOFException: inheritance
     Exception <|-- SourceException: inheritance
     Positionable <|.. SourceException: realization
@@ -783,7 +786,6 @@ classDiagram
     CSSElement <|.. Value: realization
     Positionable <|.. Value: realization
     PrimitiveValue <|-- Size: inheritance
-    Value <|-- PrimitiveValue: inheritance
     ValueList <|-- RuleValueList: inheritance
     CSSList ..> CSSList: dependency
     CSSList ..> Comment: dependency
@@ -792,8 +794,6 @@ classDiagram
     Charset ..> Comment: dependency
     Import ..> Comment: dependency
     OutputFormat ..> OutputFormat: dependency
-    Parser ..> ParserState: dependency
-    ParserState ..> Settings: dependency
     Rule ..> Comment: dependency
     Rule ..> RuleValueList: dependency
     RuleSet ..> Comment: dependency
