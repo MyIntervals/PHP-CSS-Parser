@@ -760,24 +760,26 @@ classDiagram
     Positionable <|.. Import: realization
     AtRule <|.. KeyFrame: realization
     CSSList <|-- KeyFrame: inheritance
+    Selector <|-- KeyframeSelector: inheritance
+    ValueList <|-- LineName: inheritance
+    SourceException <|-- OutputException: inheritance
+    OutputFormat ..> OutputFormatter: dependency
+    OutputFormatter ..> OutputFormat: dependency
 
     Positionable <|.. RuleSet: realization
     CSSElement <|.. RuleSet: realization
     CSSListItem <|.. RuleSet: realization
     RuleContainer <|.. RuleSet: realization
     Renderable <|.. Selector: realization
-    Selector <|-- KeyframeSelector: inheritance
     CSSElement <|.. Rule: realization
     Positionable <|.. Rule: realization
     Commentable <|.. Rule: realization
-    SourceException <|-- OutputException: inheritance
     UnexpectedTokenException <|-- UnexpectedEOFException: inheritance
     Exception <|-- SourceException: inheritance
     Positionable <|.. SourceException: realization
     SourceException <|-- UnexpectedTokenException: inheritance
     PrimitiveValue <|-- URL: inheritance
     Value <|-- ValueList: inheritance
-    ValueList <|-- LineName: inheritance
     CSSElement <|.. Value: realization
     Positionable <|.. Value: realization
     PrimitiveValue <|-- Size: inheritance
@@ -790,8 +792,6 @@ classDiagram
     Charset ..> Comment: dependency
     Import ..> Comment: dependency
     OutputFormat ..> OutputFormat: dependency
-    OutputFormat ..> OutputFormatter: dependency
-    OutputFormatter ..> OutputFormat: dependency
     Parser ..> ParserState: dependency
     ParserState ..> Settings: dependency
     Rule ..> Comment: dependency
