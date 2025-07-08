@@ -2,6 +2,7 @@
 /.php-cs-fixer.cache
 /.php_cs.cache
 /.phpunit.result.cache
+/class-diagram.md
 /composer.lock
 /coverage.xml
 /phpstan.neon
