@@ -345,10 +345,6 @@ class ParserState
         $start = $this->currentPosition;
 
         while (!$this->isEnd()) {
-            $comment = $this->consumeComment();
-            if ($comment instanceof Comment) {
-                $comments[] = $comment;
-            }
             $character = $this->consume(1);
             if (\in_array($character, $stopCharacters, true)) {
                 if ($includeEnd) {
