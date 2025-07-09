@@ -106,7 +106,7 @@ final class DeclarationBlockTest extends TestCase
      */
     public function parsesTwoCommaSeparatedSelectors(string $firstSelector, string $secondSelector): void
     {
-        $joinedSelectors = $firstSelector . ',' . $secondSelector;
+        $joinedSelectors = $firstSelector . ', ' . $secondSelector;
 
         $subject = DeclarationBlock::parse(new ParserState($joinedSelectors . '{}', Settings::create()));
 
