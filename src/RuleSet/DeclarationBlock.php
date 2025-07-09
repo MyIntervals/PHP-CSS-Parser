@@ -42,9 +42,10 @@ class DeclarationBlock extends RuleSet
         try {
             $selectorParts = [];
             $stringWrapperCharacter = null;
+            static $stopCharacters = ['{', '}', '\'', '"'];
             do {
                 $selectorParts[] = $parserState->consume(1)
-                    . $parserState->consumeUntil(['{', '}', '\'', '"'], false, false, $comments);
+                    . $parserState->consumeUntil($stopCharacters, false, false, $comments);
                 $nextCharacter = $parserState->peek();
                 switch ($nextCharacter) {
                     case '\'':
