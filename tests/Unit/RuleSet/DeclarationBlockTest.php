@@ -82,7 +82,7 @@ final class DeclarationBlockTest extends TestCase
      */
     public function parsesSingleSelector(string $selector): void
     {
-        $subject = DeclarationBlock::parse(new ParserState($selector . '{}', Settings::create()));
+        $subject = DeclarationBlock::parse(new ParserState($selector . ' {}', Settings::create()));
 
         self::assertInstanceOf(DeclarationBlock::class, $subject);
         self::assertSame([$selector], self::getSelectorsAsStrings($subject));
@@ -108,7 +108,7 @@ final class DeclarationBlockTest extends TestCase
     {
         $joinedSelectors = $firstSelector . ', ' . $secondSelector;
 
-        $subject = DeclarationBlock::parse(new ParserState($joinedSelectors . '{}', Settings::create()));
+        $subject = DeclarationBlock::parse(new ParserState($joinedSelectors . ' {}', Settings::create()));
 
         self::assertInstanceOf(DeclarationBlock::class, $subject);
         self::assertSame([$firstSelector, $secondSelector], self::getSelectorsAsStrings($subject));
