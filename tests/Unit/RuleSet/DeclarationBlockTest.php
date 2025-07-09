@@ -84,7 +84,7 @@ final class DeclarationBlockTest extends TestCase
     {
         $subject = DeclarationBlock::parse(new ParserState($selector . '{}', Settings::create()));
 
-        self::assertNotNull($subject);
+        self::assertInstanceOf(DeclarationBlock::class, $subject);
         self::assertSame([$selector], self::getSelectorsAsStrings($subject));
     }
 
@@ -110,7 +110,7 @@ final class DeclarationBlockTest extends TestCase
 
         $subject = DeclarationBlock::parse(new ParserState($joinedSelectors . '{}', Settings::create()));
 
-        self::assertNotNull($subject);
+        self::assertInstanceOf(DeclarationBlock::class, $subject);
         self::assertSame([$firstSelector, $secondSelector], self::getSelectorsAsStrings($subject));
     }
 
