@@ -68,8 +68,8 @@ final class DeclarationBlockTest extends TestCase
             'type & pseudo-class' => ['a:hover'],
             '`not`' => [':not(#your-mug)'],
             'pseudo-element' => ['::before'],
-            'attribute with `"`' => ['[alt="{}()[]\\"\'"]'],
-            'attribute with `\'`' => ['[alt=\'{}()[]"\\\'\']'],
+            'attribute with `"`' => ['[alt="{}()[]\\"\',"]'],
+            'attribute with `\'`' => ['[alt=\'{}()[]"\\\',\']'],
         ];
     }
 

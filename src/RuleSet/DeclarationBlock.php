@@ -40,13 +40,18 @@ class DeclarationBlock extends RuleSet
         $comments = [];
         $result = new DeclarationBlock($parserState->currentLine());
         try {
+            $selectors = [];
             $selectorParts = [];
             $stringWrapperCharacter = null;
-            static $stopCharacters = ['{', '}', '\'', '"'];
+            $consumedNextCharacter = false;
+            static $stopCharacters = ['{', '}', '\'', '"', ','];
             do {
-                $selectorParts[] = $parserState->consume(1)
-                    . $parserState->consumeUntil($stopCharacters, false, false, $comments);
+                if (!$consumedNextCharacter) {
+                    $selectorParts[] = $parserState->consume(1);
+                }
+                $selectorParts[] = $parserState->consumeUntil($stopCharacters, false, false, $comments);
                 $nextCharacter = $parserState->peek();
+                $consumedNextCharacter = false;
                 switch ($nextCharacter) {
                     case '\'':
                         // The fallthrough is intentional.
@@ -59,9 +64,18 @@ class DeclarationBlock extends RuleSet
                             }
                         }
                         break;
+                    case ',':
+                        if (!\is_string($stringWrapperCharacter)) {
+                            $selectors[] = \implode('', $selectorParts);
+                            $selectorParts = [];
+                            $parserState->consume(1);
+                            $consumedNextCharacter = true;
+                        }
+                        break;
                 }
             } while (!\in_array($nextCharacter, ['{', '}'], true) || \is_string($stringWrapperCharacter));
-            $result->setSelectors(\implode('', $selectorParts), $list);
+            $selectors[] = \implode('', $selectorParts); // add final or only selector
+            $result->setSelectors($selectors, $list);
             if ($parserState->comes('{')) {
                 $parserState->consume(1);
             }
