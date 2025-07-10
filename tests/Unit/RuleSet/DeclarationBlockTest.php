@@ -58,6 +58,7 @@ final class DeclarationBlockTest extends TestCase
             'pseudo-class' => [':hover'],
             'type & pseudo-class' => ['a:hover'],
             '`not`' => [':not(#your-mug)'],
+            '`not` with multiple arguments' => [':not(#your-mug, .their-mug)'],
             'pseudo-element' => ['::before'],
             'attribute with `"`' => ['[alt="{}()[]\\"\',"]'],
             'attribute with `\'`' => ['[alt=\'{}()[]"\\\',\']'],
@@ -103,6 +104,40 @@ final class DeclarationBlockTest extends TestCase
 
         self::assertInstanceOf(DeclarationBlock::class, $subject);
         self::assertSame([$firstSelector, $secondSelector], self::getSelectorsAsStrings($subject));
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideInvalidSelector(): array
+    {
+        // TODO: the `parse` method consumes the first character without inspection,
+        // so the 'lone' test strings are prefixed with a space.
+        return [
+            'lone `(`' => [' ('],
+            'lone `)`' => [' )'],
+            'unclosed `(`' => [':not(#your-mug'],
+            'extra `)`' => [':not(#your-mug))'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $selector
+     *
+     * @dataProvider provideInvalidSelector
+     */
+    public function parseSkipsBlockWithInvalidSelector(string $selector): void
+    {
+        static $nextCss = ' .next {}';
+        $css = $selector . ' {}' . $nextCss;
+        $parserState = new ParserState($css, Settings::create());
+
+        $subject = DeclarationBlock::parse($parserState);
+
+        self::assertNull($subject);
+        self::assertTrue($parserState->comes($nextCss));
     }
 
     /**
