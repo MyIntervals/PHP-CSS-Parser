@@ -88,6 +88,9 @@ class DeclarationBlock extends RuleSet
                         break;
                 }
             } while (!\in_array($nextCharacter, ['{', '}'], true) || \is_string($stringWrapperCharacter));
+            if ($functionNestingLevel !== 0) {
+                throw new UnexpectedTokenException(')', $nextCharacter);
+            }
             $selectors[] = \implode('', $selectorParts); // add final or only selector
             $result->setSelectors($selectors, $list);
             if ($parserState->comes('{')) {
