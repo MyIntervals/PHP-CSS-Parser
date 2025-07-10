@@ -110,6 +110,7 @@ Please also have a look at our
 
 ### Fixed
 
+- Parse quoted attribute selector value containing comma (#1323)
 - Allow comma in selectors (e.g. `:not(html, body)`) (#1293)
 - Insert `Rule` before sibling even with different property name
   (in `RuleSet::addRule()`) (#1270)
