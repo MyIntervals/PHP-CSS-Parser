@@ -55,6 +55,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- Parse quoted attribute selector value containing comma (#1323)
 - Allow comma in selectors (e.g. `:not(html, body)`) (#1293)
 - Set line number when `RuleSet::addRule()` called with only column number set
   (#1265)

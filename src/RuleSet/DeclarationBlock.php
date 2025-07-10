@@ -57,13 +57,18 @@ class DeclarationBlock extends RuleSet
         $aComments = [];
         $oResult = new DeclarationBlock($oParserState->currentLine());
         try {
+            $selectors = [];
             $selectorParts = [];
             $stringWrapperCharacter = null;
-            static $stopCharacters = ['{', '}', '\'', '"'];
+            $consumedNextCharacter = false;
+            static $stopCharacters = ['{', '}', '\'', '"', ','];
             do {
-                $selectorParts[] = $oParserState->consume(1)
-                    . $oParserState->consumeUntil($stopCharacters, false, false, $aComments);
+                if (!$consumedNextCharacter) {
+                    $selectorParts[] = $oParserState->consume(1);
+                }
+                $selectorParts[] = $oParserState->consumeUntil($stopCharacters, false, false, $aComments);
                 $nextCharacter = $oParserState->peek();
+                $consumedNextCharacter = false;
                 switch ($nextCharacter) {
                     case '\'':
                         // The fallthrough is intentional.
@@ -76,11 +81,20 @@ class DeclarationBlock extends RuleSet
                             }
                         }
                         break;
+                    case ',':
+                        if (!\is_string($stringWrapperCharacter)) {
+                            $selectors[] = \implode('', $selectorParts);
+                            $selectorParts = [];
+                            $oParserState->consume(1);
+                            $consumedNextCharacter = true;
+                        }
+                        break;
                 }
             } while (!\in_array($nextCharacter, ['{', '}'], true) || \is_string($stringWrapperCharacter));
-            $oResult->setSelectors(\implode('', $selectorParts), $oList);
+            $selectors[] = \implode('', $selectorParts); // add final or only selector
+            $oResult->setSelectors($selectors, $oList);
             if ($oParserState->comes('{')) {
-                $oParserState->consume(1);
+                $oPparserState->consume(1);
             }
         } catch (UnexpectedTokenException $e) {
             if ($oParserState->getSettings()->bLenientParsing) {
