@@ -11,17 +11,6 @@ Please also have a look at our
 ### Added
 
 - Interface `RuleContainer` for `RuleSet` `Rule` manipulation methods (#1256)
-- `RuleSet::removeMatchingRules()` method
-  (for the implementing classes `AtRuleSet` and `DeclarationBlock`) (#1249)
-- `RuleSet::removeAllRules()` method
-  (for the implementing classes `AtRuleSet` and `DeclarationBlock`) (#1249)
-- Add Interface `CSSElement` (#1231)
-- Methods `getLineNumber` and `getColumnNumber` which return a nullable `int`
-  for the following classes:
-  `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
-  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225, #1263)
-- `Positionable` interface for CSS items that may have a position
-  (line and perhaps column number) in the parsed CSS (#1221)
 - Partial support for CSS Color Module Level 4:
     - `rgb` and `rgba`, and `hsl` and `hsla` are now aliases (#797}
     - Parse color functions that use the "modern" syntax (#800)
@@ -41,12 +30,6 @@ Please also have a look at our
 - `RuleSet::getRules()` and `getRulesAssoc()` now only allow `string` or `null`
   as the parameter (implementing classes are `AtRuleSet` and `DeclarationBlock`)
   (#1253)
-- Parameters for `getAllValues()` are deconflated, so it now takes three (all
-  optional), allowing `$element` and `$ruleSearchPattern` to be specified
-  separately (#1241)
-- Implement `Positionable` in the following CSS item classes:
-  `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
-  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225)
 - Initialize `KeyFrame` properties to sensible defaults (#1146)
 - Make `OutputFormat` `final` (#1128)
 - Make `Selector` a `Renderable` (#1017)
@@ -59,25 +42,6 @@ Please also have a look at our
 - Add visibility to all class/interface constants (#469)
 
 ### Deprecated
-
-- Passing a `string` or `null` to `RuleSet::removeRule()` is deprecated
-  (implementing classes are `AtRuleSet` and `DeclarationBlock`);
-  use `removeMatchingRules()` or `removeAllRules()` instead (#1249)
-- Passing a `Rule` to `RuleSet::getRules()` or `getRulesAssoc()` is deprecated,
-  affecting the implementing classes `AtRuleSet` and `DeclarationBlock`
-  (call e.g. `getRules($rule->getRule())` instead) (#1248)
-- Passing a string as the first argument to `getAllValues()` is deprecated;
-  the search pattern should now be passed as the second argument (#1241)
-- Passing a Boolean as the second argument to `getAllValues()` is deprecated;
-  the flag for searching in function arguments should now be passed as the third
-  argument (#1241)
-- `getLineNo()` is deprecated in these classes (use `getLineNumber()` instead):
-  `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
-  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225, #1233)
-- `Rule::getColNo()` is deprecated (use `getColumnNumber()` instead)
-  (#1225, #1233)
-- Providing zero as the line number argument to `Rule::setPosition()` is
-  deprecated (pass `null` instead if there is no line number) (#1225, #1233)
 
 ### Removed
 
@@ -117,8 +81,6 @@ Please also have a look at our
   (in `RuleSet::addRule()`) (#1270)
 - Ensure `RuleSet::addRule()` sets non-negative column number when sibling
   provided (#1268)
-- Set line number when `RuleSet::addRule()` called with only column number set
-  (#1265)
 - Ensure first rule added with `RuleSet::addRule()` has valid position (#1262)
 - Don't render `rgb` colors with percentage values using hex notation (#803)
 
@@ -128,6 +90,60 @@ Please also have a look at our
 
 @ziegenberg is a new contributor to this release and did a lot of the heavy
 lifting. Thanks! :heart:
+
+## 8.9.0: New features, bug fixes and deprecations
+
+### Added
+
+- `RuleSet::removeMatchingRules()` method
+  (for the implementing classes `AtRuleSet` and `DeclarationBlock`) (#1249)
+- `RuleSet::removeAllRules()` method
+  (for the implementing classes `AtRuleSet` and `DeclarationBlock`) (#1249)
+- Add Interface `CSSElement` (#1231)
+- Methods `getLineNumber` and `getColumnNumber` which return a nullable `int`
+  for the following classes:
+  `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
+  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225, #1263)
+- `Positionable` interface for CSS items that may have a position
+  (line and perhaps column number) in the parsed CSS (#1221)
+
+### Changed
+
+- Parameters for `getAllValues()` are deconflated, so it now takes three (all
+  optional), allowing `$element` and `$ruleSearchPattern` to be specified
+  separately (#1241)
+- Implement `Positionable` in the following CSS item classes:
+  `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
+  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225)
+
+### Deprecated
+
+- Support for PHP < 7.2 is deprecated; version 9.0 will require PHP 7.2 or later
+  (#1264)
+- Passing a `string` or `null` to `RuleSet::removeRule()` is deprecated
+  (implementing classes are `AtRuleSet` and `DeclarationBlock`);
+  use `removeMatchingRules()` or `removeAllRules()` instead (#1249)
+- Passing a `Rule` to `RuleSet::getRules()` or `getRulesAssoc()` is deprecated,
+  affecting the implementing classes `AtRuleSet` and `DeclarationBlock`
+  (call e.g. `getRules($rule->getRule())` instead) (#1248)
+- Passing a string as the first argument to `getAllValues()` is deprecated;
+  the search pattern should now be passed as the second argument (#1241)
+- Passing a Boolean as the second argument to `getAllValues()` is deprecated;
+  the flag for searching in function arguments should now be passed as the third
+  argument (#1241)
+- `getLineNo()` is deprecated in these classes (use `getLineNumber()` instead):
+  `Comment`, `CSSList`, `SourceException`, `Charset`, `CSSNamespace`, `Import`,
+  `Rule`, `DeclarationBlock`, `RuleSet`, `CSSFunction`, `Value` (#1225, #1233)
+- `Rule::getColNo()` is deprecated (use `getColumnNumber()` instead)
+  (#1225, #1233)
+- Providing zero as the line number argument to `Rule::setPosition()` is
+  deprecated (pass `null` instead if there is no line number) (#1225, #1233)
+
+### Fixed
+
+- Set line number when `RuleSet::addRule()` called with only column number set
+  (#1265)
+- Ensure first rule added with `RuleSet::addRule()` has valid position (#1262)
 
 ## 8.8.0: Bug fixes and deprecations
 
