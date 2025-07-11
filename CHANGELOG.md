@@ -7,6 +7,18 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## 8.9.0: New features, bug fixes and deprecations
+
+### Added
+
 - `RuleSet::removeMatchingRules()` method
   (for the implementing classes `AtRuleSet` and `DeclarationBlock`) (#1249)
 - `RuleSet::removeAllRules()` method
@@ -50,8 +62,6 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   (#1225, #1233)
 - Providing zero as the line number argument to `Rule::setPosition()` is
   deprecated (pass `null` instead if there is no line number) (#1225, #1233)
-
-### Removed
 
 ### Fixed
 
