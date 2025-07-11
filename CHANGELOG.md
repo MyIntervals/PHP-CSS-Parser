@@ -81,7 +81,6 @@ Please also have a look at our
   (in `RuleSet::addRule()`) (#1270)
 - Ensure `RuleSet::addRule()` sets non-negative column number when sibling
   provided (#1268)
-- Ensure first rule added with `RuleSet::addRule()` has valid position (#1262)
 - Don't render `rgb` colors with percentage values using hex notation (#803)
 
 ### Documentation
