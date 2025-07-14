@@ -30,7 +30,7 @@ class CalcFunction extends CSSFunction
     {
         $operators = ['+', '-', '*', '/'];
         $function = $parserState->parseIdentifier();
-        if ($parserState->peek() != '(') {
+        if ($parserState->peek() !== '(') {
             // Found ; or end of line before an opening bracket
             throw new UnexpectedTokenException('(', $parserState->peek(), 'literal', $parserState->currentLine());
         } elseif ($function !== 'calc') {
@@ -59,7 +59,7 @@ class CalcFunction extends CSSFunction
                 $parserState->consumeWhiteSpace();
                 continue;
             }
-            if ($lastComponentType != CalcFunction::T_OPERAND) {
+            if ($lastComponentType !== CalcFunction::T_OPERAND) {
                 $value = Value::parsePrimitiveValue($parserState);
                 $calcRuleValueList->addListComponent($value);
                 $lastComponentType = CalcFunction::T_OPERAND;
@@ -67,7 +67,7 @@ class CalcFunction extends CSSFunction
                 if (\in_array($parserState->peek(), $operators, true)) {
                     if (($parserState->comes('-') || $parserState->comes('+'))) {
                         if (
-                            $parserState->peek(1, -1) != ' '
+                            $parserState->peek(1, -1) !== ' '
                             || !($parserState->comes('- ')
                                 || $parserState->comes('+ '))
                         ) {

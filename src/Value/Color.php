@@ -289,7 +289,7 @@ class Color extends CSSFunction
             $this->components['g']->getSize(),
             $this->components['b']->getSize()
         );
-        $canUseShortVariant = ($result[0] == $result[1]) && ($result[2] == $result[3]) && ($result[4] == $result[5]);
+        $canUseShortVariant = ($result[0] === $result[1]) && ($result[2] === $result[3]) && ($result[4] === $result[5]);
 
         return '#' . ($canUseShortVariant ? $result[0] . $result[2] . $result[4] : $result);
     }

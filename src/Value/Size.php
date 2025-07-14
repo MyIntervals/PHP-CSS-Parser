@@ -189,7 +189,7 @@ class Size extends PrimitiveValue
         if (\in_array($this->unit, self::RELATIVE_SIZE_UNITS, true)) {
             return true;
         }
-        if ($this->unit === null && $this->size != 0) {
+        if ($this->unit === null && $this->size !== 0.0) {
             return true;
         }
         return false;
