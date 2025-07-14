@@ -158,7 +158,7 @@ class Rule implements Commentable, CSSElement, Positionable
         if (!($this->value instanceof RuleValueList) || $this->value->getListSeparator() !== $type) {
             $currentValue = $this->value;
             $this->value = new RuleValueList($type, $this->getLineNumber());
-            if ($currentValue) {
+            if ($currentValue !== null && $currentValue !== '') {
                 $this->value->addListComponent($currentValue);
             }
         }

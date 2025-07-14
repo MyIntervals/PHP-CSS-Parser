@@ -55,7 +55,7 @@ class AtRuleBlockList extends CSSBlockList implements AtRule
         $result = $formatter->comments($this);
         $result .= $outputFormat->getContentBeforeAtRuleBlock();
         $arguments = $this->arguments;
-        if ($arguments) {
+        if ($arguments !== '') {
             $arguments = ' ' . $arguments;
         }
         $result .= "@{$this->type}$arguments{$formatter->spaceBeforeOpeningBrace()}{";
