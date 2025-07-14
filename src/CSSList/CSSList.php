@@ -208,7 +208,7 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
         } else {
             // Unknown other at rule (font-face or such)
             $arguments = \trim($parserState->consumeUntil('{', false, true));
-            if (\substr_count($arguments, '(') != \substr_count($arguments, ')')) {
+            if (\substr_count($arguments, '(') !== \substr_count($arguments, ')')) {
                 if ($parserState->getSettings()->usesLenientParsing()) {
                     return null;
                 } else {

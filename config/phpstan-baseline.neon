@@ -13,12 +13,6 @@ parameters:
 			path: ../src/CSSList/CSSList.php
 
 		-
-			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
-			identifier: notEqual.notAllowed
-			count: 1
-			path: ../src/CSSList/CSSList.php
-
-		-
 			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
 			identifier: equal.notAllowed
 			count: 1
@@ -67,28 +61,10 @@ parameters:
 			path: ../src/RuleSet/DeclarationBlock.php
 
 		-
-			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
-			identifier: notEqual.notAllowed
-			count: 3
-			path: ../src/Value/CalcFunction.php
-
-		-
 			message: '#^Cannot call method getSize\(\) on Sabberworm\\CSS\\Value\\Value\|string\.$#'
 			identifier: method.nonObject
 			count: 3
 			path: ../src/Value/Color.php
-
-		-
-			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
-			identifier: equal.notAllowed
-			count: 3
-			path: ../src/Value/Color.php
-
-		-
-			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
-			identifier: notEqual.notAllowed
-			count: 1
-			path: ../src/Value/Size.php
 
 		-
 			message: '#^Parameters should have "float" types as the only types passed to this method$#'
