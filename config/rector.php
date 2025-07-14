@@ -35,7 +35,4 @@ return RectorConfig::configure()
         PHPUnitSetList::PHPUNIT_80,
         // PHPUnitSetList::PHPUNIT_CODE_QUALITY,
     ])
-    ->withRules([
-        AddVoidReturnTypeWhereNoReturnRector::class,
-    ])
     ->withImportNames(true, true, false);
