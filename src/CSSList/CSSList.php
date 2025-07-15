@@ -242,8 +242,11 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
      */
     private static function identifierIs(string $identifier, string $match): bool
     {
-        return (\strcasecmp($identifier, $match) === 0)
-            ?: \preg_match("/^(-\\w+-)?$match$/i", $identifier) === 1;
+        if (\strcasecmp($identifier, $match) === 0) {
+            return true;
+        }
+
+        return \preg_match("/^(-\\w+-)?$match$/i", $identifier) === 1;
     }
 
     /**
