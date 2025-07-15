@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\CSSList\CSSListItem;
+use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Tests\Unit\CSSList\Fixtures\ConcreteCSSList;
@@ -188,5 +189,141 @@ final class CSSListTest extends TestCase
 
         self::assertCount(4, $subject->getContents());
         self::assertSame([$bogusOne, $sibling, $bogusTwo, $item], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function removeDeclarationBlockBySelectorRemovesDeclarationBlockProvided(): void
+    {
+        $subject = new ConcreteCSSList();
+        $declarationBlock = new DeclarationBlock();
+        $declarationBlock->setSelectors(['html', 'body']);
+        $subject->setContents([$declarationBlock]);
+        self::assertNotSame([], $subject->getContents()); // make sure contents are set
+
+        $subject->removeDeclarationBlockBySelector($declarationBlock);
+
+        self::assertSame([], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function removeDeclarationBlockBySelectorRemovesDeclarationBlockWithSelectorsProvidedFromItself(): void
+    {
+        $subject = new ConcreteCSSList();
+        $declarationBlock = new DeclarationBlock();
+        $declarationBlock->setSelectors(['html', 'body']);
+        $subject->setContents([$declarationBlock]);
+        self::assertNotSame([], $subject->getContents()); // make sure contents are set
+
+        $subject->removeDeclarationBlockBySelector($declarationBlock->getSelectors());
+
+        self::assertSame([], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function removeDeclarationBlockBySelectorRemovesDeclarationBlockWithOutsourcedSelectorsProvided(): void
+    {
+        $subject = new ConcreteCSSList();
+        $declarationBlock = new DeclarationBlock();
+        $declarationBlock->setSelectors(['html', 'body']);
+        $subject->setContents([$declarationBlock]);
+        self::assertNotSame([], $subject->getContents()); // make sure contents are set
+
+        $subject->removeDeclarationBlockBySelector([new Selector('html'), new Selector('body')]);
+
+        self::assertSame([], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function removeDeclarationBlockBySelectorRemovesDeclarationBlockWithStringSelectorsProvided(): void
+    {
+        $subject = new ConcreteCSSList();
+        $declarationBlock = new DeclarationBlock();
+        $declarationBlock->setSelectors(['html', 'body']);
+        $subject->setContents([$declarationBlock]);
+        self::assertNotSame([], $subject->getContents()); // make sure contents are set
+
+        $subject->removeDeclarationBlockBySelector(['html', 'body']);
+
+        self::assertSame([], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function removeDeclarationBlockBySelectorRemovesDeclarationBlockProvidedAndAnotherWithSameSelectors(): void
+    {
+        $subject = new ConcreteCSSList();
+        $declarationBlock1 = new DeclarationBlock();
+        $declarationBlock1->setSelectors(['html', 'body']);
+        $declarationBlock2 = new DeclarationBlock();
+        $declarationBlock2->setSelectors(['html', 'body']);
+        $subject->setContents([$declarationBlock1, $declarationBlock2]);
+        self::assertNotSame([], $subject->getContents()); // make sure contents are set
+
+        $subject->removeDeclarationBlockBySelector($declarationBlock1, true);
+
+        self::assertSame([], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function removeDeclarationBlockBySelectorRemovesBlockWithSelectorsFromItselfAndAnotherMatching(): void
+    {
+        $subject = new ConcreteCSSList();
+        $declarationBlock1 = new DeclarationBlock();
+        $declarationBlock1->setSelectors(['html', 'body']);
+        $declarationBlock2 = new DeclarationBlock();
+        $declarationBlock2->setSelectors(['html', 'body']);
+        $subject->setContents([$declarationBlock1, $declarationBlock2]);
+        self::assertNotSame([], $subject->getContents()); // make sure contents are set
+
+        $subject->removeDeclarationBlockBySelector($declarationBlock1->getSelectors(), true);
+
+        self::assertSame([], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function removeDeclarationBlockBySelectorRemovesMultipleBlocksWithOutsourcedSelectors(): void
+    {
+        $subject = new ConcreteCSSList();
+        $declarationBlock1 = new DeclarationBlock();
+        $declarationBlock1->setSelectors(['html', 'body']);
+        $declarationBlock2 = new DeclarationBlock();
+        $declarationBlock2->setSelectors(['html', 'body']);
+        $subject->setContents([$declarationBlock1, $declarationBlock2]);
+        self::assertNotSame([], $subject->getContents()); // make sure contents are set
+
+        $subject->removeDeclarationBlockBySelector([new Selector('html'), new Selector('body')], true);
+
+        self::assertSame([], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function removeDeclarationBlockBySelectorRemovesMultipleBlocksWithStringSelectorsProvided(): void
+    {
+        $subject = new ConcreteCSSList();
+        $declarationBlock1 = new DeclarationBlock();
+        $declarationBlock1->setSelectors(['html', 'body']);
+        $declarationBlock2 = new DeclarationBlock();
+        $declarationBlock2->setSelectors(['html', 'body']);
+        $subject->setContents([$declarationBlock1, $declarationBlock2]);
+        self::assertNotSame([], $subject->getContents()); // make sure contents are set
+
+        $subject->removeDeclarationBlockBySelector(['html', 'body'], true);
+
+        self::assertSame([], $subject->getContents());
     }
 }
