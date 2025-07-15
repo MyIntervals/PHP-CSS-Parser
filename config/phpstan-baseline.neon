@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Call to function is_string\(\) with Sabberworm\\CSS\\Parsing\\ParserState will always evaluate to false\.$#'
-			identifier: function.impossibleType
-			count: 1
-			path: ../src/CSSList/CSSList.php
-
-		-
 			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
 			identifier: equal.notAllowed
 			count: 1

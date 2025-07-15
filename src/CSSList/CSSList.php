@@ -21,7 +21,6 @@ use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\RuleSet\AtRuleSet;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\RuleSet\RuleSet;
-use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\CSSString;
 use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\Value;
@@ -64,9 +63,6 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
     public static function parseList(ParserState $parserState, CSSList $list): void
     {
         $isRoot = $list instanceof Document;
-        if (\is_string($parserState)) {
-            $parserState = new ParserState($parserState, Settings::create());
-        }
         $usesLenientParsing = $parserState->getSettings()->usesLenientParsing();
         $comments = [];
         while (!$parserState->isEnd()) {
