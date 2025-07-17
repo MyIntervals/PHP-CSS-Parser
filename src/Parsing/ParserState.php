@@ -328,7 +328,7 @@ class ParserState
     }
 
     /**
-     * @param list<string|null>|string|null $stopCharacters
+     * @param list<string|self::EOF>|string|self::EOF $stopCharacters
      * @param array<int, Comment> $comments
      *
      * @throws UnexpectedEOFException
