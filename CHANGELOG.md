@@ -21,6 +21,8 @@ Please also have a look at our
 
 ### Changed
 
+- `DeclarationBlock` no longer extends `RuleSet` and instead has a `RuleSet` as
+  a property; use `getRuleSet()` to access it directly (#1194)
 - The default line (and column) number is now `null` (not zero) (#1288)
 - `setPosition()` (in `Rule` and other classes) now has fluent interface,
   returning itself (#1259)
