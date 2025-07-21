@@ -7,7 +7,7 @@ namespace Sabberworm\CSS\Tests\Unit\RuleSet;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\CSSList\CSSListItem;
-use Sabberworm\CSS\Tests\Unit\RuleSet\Fixtures\ConcreteRuleSet;
+use Sabberworm\CSS\RuleSet\RuleSet;
 
 /**
  * @covers \Sabberworm\CSS\RuleSet\RuleSet
@@ -17,13 +17,13 @@ final class RuleSetTest extends TestCase
     use RuleContainerTest;
 
     /**
-     * @var ConcreteRuleSet
+     * @var RuleSet
      */
     private $subject;
 
     protected function setUp(): void
     {
-        $this->subject = new ConcreteRuleSet();
+        $this->subject = new RuleSet();
     }
 
     /**
