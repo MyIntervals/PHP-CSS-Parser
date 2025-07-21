@@ -91,14 +91,14 @@ final class ParserTest extends TestCase
     public function colorParsing(): void
     {
         $document = self::parsedStructureForFile('colortest');
-        foreach ($document->getAllDeclarationBlocks() as $ruleSet) {
-            $selectors = $ruleSet->getSelectors();
+        foreach ($document->getAllDeclarationBlocks() as $declarationBlock) {
+            $selectors = $declarationBlock->getSelectors();
             $selector = $selectors[0]->getSelector();
             if ($selector === '#mine') {
-                $colorRules = $ruleSet->getRules('color');
+                $colorRules = $declarationBlock->getRules('color');
                 $colorRuleValue = $colorRules[0]->getValue();
                 self::assertSame('red', $colorRuleValue);
-                $colorRules = $ruleSet->getRules('background-');
+                $colorRules = $declarationBlock->getRules('background-');
                 $colorRuleValue = $colorRules[0]->getValue();
                 self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
@@ -106,7 +106,7 @@ final class ParserTest extends TestCase
                     'g' => new Size(35.0, null, true, $colorRuleValue->getLineNumber()),
                     'b' => new Size(35.0, null, true, $colorRuleValue->getLineNumber()),
                 ], $colorRuleValue->getColor());
-                $colorRules = $ruleSet->getRules('border-color');
+                $colorRules = $declarationBlock->getRules('border-color');
                 $colorRuleValue = $colorRules[0]->getValue();
                 self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
@@ -122,7 +122,7 @@ final class ParserTest extends TestCase
                     'b' => new Size(231.0, null, true, $colorRuleValue->getLineNumber()),
                     'a' => new Size('0000.3', null, true, $colorRuleValue->getLineNumber()),
                 ], $colorRuleValue->getColor());
-                $colorRules = $ruleSet->getRules('outline-color');
+                $colorRules = $declarationBlock->getRules('outline-color');
                 $colorRuleValue = $colorRules[0]->getValue();
                 self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
@@ -131,7 +131,7 @@ final class ParserTest extends TestCase
                     'b' => new Size(34.0, null, true, $colorRuleValue->getLineNumber()),
                 ], $colorRuleValue->getColor());
             } elseif ($selector === '#yours') {
-                $colorRules = $ruleSet->getRules('background-color');
+                $colorRules = $declarationBlock->getRules('background-color');
                 $colorRuleValue = $colorRules[0]->getValue();
                 self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
@@ -147,7 +147,7 @@ final class ParserTest extends TestCase
                     'l' => new Size(220.0, '%', true, $colorRuleValue->getLineNumber()),
                     'a' => new Size(0000.3, null, true, $colorRuleValue->getLineNumber()),
                 ], $colorRuleValue->getColor());
-                $colorRules = $ruleSet->getRules('outline-color');
+                $colorRules = $declarationBlock->getRules('outline-color');
                 self::assertEmpty($colorRules);
             }
         }
@@ -176,13 +176,13 @@ final class ParserTest extends TestCase
     public function unicodeParsing(): void
     {
         $document = self::parsedStructureForFile('unicode');
-        foreach ($document->getAllDeclarationBlocks() as $ruleSet) {
-            $selectors = $ruleSet->getSelectors();
+        foreach ($document->getAllDeclarationBlocks() as $declarationBlock) {
+            $selectors = $declarationBlock->getSelectors();
             $selector = $selectors[0]->getSelector();
             if (\substr($selector, 0, \strlen('.test-')) !== '.test-') {
                 continue;
             }
-            $contentRules = $ruleSet->getRules('content');
+            $contentRules = $declarationBlock->getRules('content');
             $firstContentRuleAsString = $contentRules[0]->getValue()->render(OutputFormat::create());
             if ($selector === '.test-1') {
                 self::assertSame('" "', $firstContentRuleAsString);
