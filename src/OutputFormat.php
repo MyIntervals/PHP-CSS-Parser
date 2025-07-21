@@ -726,6 +726,7 @@ final class OutputFormat
             ->setSpaceAfterRuleName('')
             ->setSpaceBeforeOpeningBrace('')
             ->setSpaceAfterSelectorSeparator('')
+            ->setSemicolonAfterLastRule(false)
             ->setRenderComments(false);
 
         return $format;

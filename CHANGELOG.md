@@ -74,6 +74,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Remove trailing semicolon from declatation blocks with 'compact'
+  `OutputFormat` (#1345)
 - Parse selector functions (like `:not`) with comma-separated arguments (#1292)
 - Parse quoted attribute selector value containing comma (#1323)
 - Allow comma in selectors (e.g. `:not(html, body)`) (#1293)
