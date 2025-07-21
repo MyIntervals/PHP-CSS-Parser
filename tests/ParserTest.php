@@ -91,10 +91,7 @@ final class ParserTest extends TestCase
     public function colorParsing(): void
     {
         $document = self::parsedStructureForFile('colortest');
-        foreach ($document->getAllRuleSets() as $ruleSet) {
-            if (!($ruleSet instanceof DeclarationBlock)) {
-                continue;
-            }
+        foreach ($document->getAllDeclarationBlocks() as $ruleSet) {
             $selectors = $ruleSet->getSelectors();
             $selector = $selectors[0]->getSelector();
             if ($selector === '#mine') {
