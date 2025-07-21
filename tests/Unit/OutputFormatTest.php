@@ -1037,6 +1037,16 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
+    public function createCompactReturnsInstanceWithRenderSemicolonAfterLastRuleDisabled(): void
+    {
+        $newInstance = OutputFormat::createCompact();
+
+        self::assertFalse($newInstance->shouldRenderSemicolonAfterLastRule());
+    }
+
+    /**
+     * @test
+     */
     public function createCompactReturnsInstanceWithRenderCommentsDisabled(): void
     {
         $newInstance = OutputFormat::createCompact();

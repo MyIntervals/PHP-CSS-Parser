@@ -71,7 +71,7 @@ final class RuleSetTest extends TestCase
     /**
      * @test
      */
-    public function renderWithCompactOutputFormatReturnsCssWithoutWhitespace(): void
+    public function renderWithCompactOutputFormatReturnsCssWithoutWhitespaceOrTrailingSemicolon(): void
     {
         $this->setRulesFromPropertyNamesAndValues([
             ['name' => 'color', 'value' => 'green'],
@@ -80,7 +80,7 @@ final class RuleSetTest extends TestCase
 
         $result = $this->subject->render(OutputFormat::createCompact());
 
-        self::assertSame('color:green;display:block;', $result);
+        self::assertSame('color:green;display:block', $result);
     }
 
     /**
