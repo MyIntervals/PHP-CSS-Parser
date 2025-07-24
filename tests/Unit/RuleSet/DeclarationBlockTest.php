@@ -266,11 +266,11 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @test
      *
-     * @param int<1, max> $lineNumber
+     * @param int<1, max>|null $lineNumber
      *
      * @dataProvider provideLineNumber
      */
-    public function getRuleSetReturnsObjectWithLineNumberPassedToConstructor(int $lineNumber): void
+    public function getRuleSetReturnsObjectWithLineNumberPassedToConstructor(?int $lineNumber): void
     {
         $subject = new DeclarationBlock($lineNumber);
 
