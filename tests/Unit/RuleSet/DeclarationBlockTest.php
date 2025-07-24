@@ -276,6 +276,6 @@ final class DeclarationBlockTest extends TestCase
 
         $result = $subject->getRuleSet();
 
-        self::assertSame($lineNumber, $subject->getLineNumber());
+        self::assertSame($lineNumber, $result->getLineNumber());
     }
 }
