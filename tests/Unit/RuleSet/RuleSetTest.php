@@ -76,6 +76,6 @@ final class RuleSetTest extends TestCase
 
         $result = $subject->getLineNumber();
 
-        self::assertSame($result, $subject->getLineNumber());
+        self::assertSame($lineNumber, $result);
     }
 }
