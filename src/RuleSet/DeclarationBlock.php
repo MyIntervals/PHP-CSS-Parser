@@ -133,7 +133,7 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
         }
         $result->setComments($comments);
 
-        RuleSet::parseRuleSet($parserState, $result->ruleSet);
+        RuleSet::parseRuleSet($parserState, $result->getRuleSet());
 
         return $result;
     }
