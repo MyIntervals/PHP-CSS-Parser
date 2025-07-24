@@ -252,4 +252,30 @@ final class DeclarationBlockTest extends TestCase
 
         self::assertSame($rules, $result->getRules());
     }
+
+    /**
+     * @test
+     */
+    public function getRuleSetByDefaultReturnsObjectWithNullLineNumber(): void
+    {
+        $result = $this->subject->getRuleSet();
+
+        self::assertNull($result->getLineNumber());
+    }
+
+    /**
+     * @test
+     *
+     * @param int<1, max> $lineNumber
+     *
+     * @dataProvider provideLineNumber
+     */
+    public function getRuleSetReturnsObjectWithLineNumberPassedToConstructor(int $lineNumber): void
+    {
+        $subject = new DeclarationBlock($lineNumber);
+
+        $result = $subject->getRuleSet();
+
+        self::assertSame($lineNumber, $subject->getLineNumber());
+    }
 }
