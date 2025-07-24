@@ -64,11 +64,12 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @return array<non-empty-string, array{0: int<1, max>}>
+     * @return array<non-empty-string, array{0: int<1, max>|null}>
      */
     public function provideLineNumber(): array
     {
         return [
+            'null' => [null],
             'line 1' => [1],
             'line 42' => [42],
         ];
@@ -77,11 +78,11 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @test
      *
-     * @param int<1, max> $lineNumber
+     * @param int<1, max>|null $lineNumber
      *
      * @dataProvider provideLineNumber
      */
-    public function getLineNumberReturnsLineNumberPassedToConstructor(int $lineNumber): void
+    public function getLineNumberReturnsLineNumberPassedToConstructor(?int $lineNumber): void
     {
         $subject = new DeclarationBlock($lineNumber);
 
