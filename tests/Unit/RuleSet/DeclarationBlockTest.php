@@ -54,6 +54,43 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function getLineNumberByDefaultReturnsNull(): void
+    {
+        $result = $this->subject->getLineNumber();
+
+        self::assertNull($result);
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: int<1, max>}>
+     */
+    public function provideLineNumber(): array
+    {
+        return [
+            'line 1' => [1],
+            'line 42' => [42],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param int<1, max> $lineNumber
+     *
+     * @dataProvider provideLineNumber
+     */
+    public function getLineNumberReturnsLineNumberPassedToConstructor(int $lineNumber): void
+    {
+        $subject = new DeclarationBlock($lineNumber);
+
+        $result = $subject->getLineNumber();
+
+        self::assertSame($lineNumber, $result);
+    }
+
+    /**
      * @return array<non-empty-string, array{0: non-empty-string}>
      */
     public static function provideSelector(): array
