@@ -41,4 +41,41 @@ final class RuleSetTest extends TestCase
     {
         self::assertInstanceOf(CSSListItem::class, $this->subject);
     }
+
+    /**
+     * @test
+     */
+    public function getLineNumberByDefaultReturnsNull(): void
+    {
+        $result = $this->subject->getLineNumber();
+
+        self::assertNull($result);
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: int<1, max>}>
+     */
+    public function provideLineNumber(): array
+    {
+        return [
+            'line 1' => [1],
+            'line 42' => [42],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param int<1, max> $lineNumber
+     *
+     * @dataProvider provideLineNumber
+     */
+    public function getLineNumberReturnsLineNumberPassedToConstructor(int $lineNumber): void
+    {
+        $subject = new RuleSet($lineNumber);
+
+        $result = $subject->getLineNumber();
+
+        self::assertSame($result, $subject->getLineNumber());
+    }
 }
