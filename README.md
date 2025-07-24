@@ -699,7 +699,6 @@ classDiagram
         <<interface>>
     }
     class RuleSet {
-        <<abstract>>
     }
     class RuleValueList {
     }
