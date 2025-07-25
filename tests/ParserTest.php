@@ -38,7 +38,7 @@ final class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parseForOneRuleSetReturnsDocumentWithOneRuleSet(): void
+    public function parseForOneDeclarationBlockReturnsDocumentWithOneDeclarationBlock(): void
     {
         $css = '.thing { left: 10px; }';
         $parser = new Parser($css);
@@ -49,7 +49,7 @@ final class ParserTest extends TestCase
 
         $cssList = $document->getContents();
         self::assertCount(1, $cssList);
-        self::assertInstanceOf(RuleSet::class, $cssList[0]);
+        self::assertInstanceOf(DeclarationBlock::class, $cssList[0]);
     }
 
     /**
@@ -926,9 +926,9 @@ body {background-color: red;}';
     public function missingPropertyValueLenient(): void
     {
         $parsed = self::parsedStructureForFile('missing-property-value', Settings::create()->withLenientParsing(true));
-        $rulesets = $parsed->getAllRuleSets();
-        self::assertCount(1, $rulesets);
-        $block = $rulesets[0];
+        $declarationBlocks = $parsed->getAllDeclarationBlocks();
+        self::assertCount(1, $declarationBlocks);
+        $block = $declarationBlocks[0];
         self::assertInstanceOf(DeclarationBlock::class, $block);
         self::assertEquals([new Selector('div')], $block->getSelectors());
         $rules = $block->getRules();
@@ -1055,7 +1055,7 @@ body {background-color: red;}';
         // $this->assertSame("* Number 5 *", $fooBarBlockComments[1]->getComment());
 
         // Declaration rules.
-        self::assertInstanceOf(RuleSet::class, $fooBarBlock);
+        self::assertInstanceOf(DeclarationBlock::class, $fooBarBlock);
         $fooBarRules = $fooBarBlock->getRules();
         $fooBarRule = $fooBarRules[0];
         $fooBarRuleComments = $fooBarRule->getComments();
@@ -1076,7 +1076,7 @@ body {background-color: red;}';
         self::assertSame('* Number 10 *', $fooBarComments[0]->getComment());
 
         // Media -> declaration -> rule.
-        self::assertInstanceOf(RuleSet::class, $mediaRules[0]);
+        self::assertInstanceOf(DeclarationBlock::class, $mediaRules[0]);
         $fooBarRules = $mediaRules[0]->getRules();
         $fooBarChildComments = $fooBarRules[0]->getComments();
         self::assertCount(1, $fooBarChildComments);
@@ -1092,7 +1092,7 @@ body {background-color: red;}';
         $document = $parser->parse();
 
         $contents = $document->getContents();
-        self::assertInstanceOf(RuleSet::class, $contents[0]);
+        self::assertInstanceOf(DeclarationBlock::class, $contents[0]);
         $divRules = $contents[0]->getRules();
         $comments = $divRules[0]->getComments();
 
@@ -1109,7 +1109,7 @@ body {background-color: red;}';
         $document = $parser->parse();
 
         $contents = $document->getContents();
-        self::assertInstanceOf(RuleSet::class, $contents[0]);
+        self::assertInstanceOf(DeclarationBlock::class, $contents[0]);
         $divRules = $contents[0]->getRules();
         $comments = $divRules[0]->getComments();
 
@@ -1127,7 +1127,7 @@ body {background-color: red;}';
         $document = $parser->parse();
 
         $contents = $document->getContents();
-        self::assertInstanceOf(RuleSet::class, $contents[0]);
+        self::assertInstanceOf(DeclarationBlock::class, $contents[0]);
         $divRules = $contents[0]->getRules();
         $comments = $divRules[0]->getComments();
 
@@ -1145,7 +1145,7 @@ body {background-color: red;}';
         $document = $parser->parse();
 
         $contents = $document->getContents();
-        self::assertInstanceOf(RuleSet::class, $contents[0]);
+        self::assertInstanceOf(DeclarationBlock::class, $contents[0]);
         $divRules = $contents[0]->getRules();
         $rule1Comments = $divRules[0]->getComments();
         $rule2Comments = $divRules[1]->getComments();
