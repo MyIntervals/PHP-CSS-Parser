@@ -10,6 +10,20 @@ Please also have a look at our
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Documentation
+
+## 9.0.0: New features, deprecation removals and bug fixes
+
+### Added
+
 - Interface `RuleContainer` for `RuleSet` `Rule` manipulation methods (#1256)
 - Partial support for CSS Color Module Level 4:
     - `rgb` and `rgba`, and `hsl` and `hsla` are now aliases (#797}
@@ -42,8 +56,6 @@ Please also have a look at our
   #1162, #1163, #1166, #1172, #1174, #1178, #1179, #1181, #1183, #1184, #1186,
   #1187, #1190, #1192, #1193, #1203)
 - Add visibility to all class/interface constants (#469)
-
-### Deprecated
 
 ### Removed
 
