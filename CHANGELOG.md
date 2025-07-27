@@ -10,6 +10,8 @@ Please also have a look at our
 
 ### Added
 
+- Add support for PHP 8.5 (#1355)
+
 ### Changed
 
 ### Deprecated
