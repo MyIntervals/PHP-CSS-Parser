@@ -26,7 +26,7 @@ Please also have a look at our
 
 - Interface `RuleContainer` for `RuleSet` `Rule` manipulation methods (#1256)
 - Partial support for CSS Color Module Level 4:
-    - `rgb` and `rgba`, and `hsl` and `hsla` are now aliases (#797}
+    - `rgb` and `rgba`, and `hsl` and `hsla` are now aliases (#797)
     - Parse color functions that use the "modern" syntax (#800)
     - Render RGB functions with "modern" syntax when required (#840)
     - Support `none` as color function component value (#859)
