@@ -7,6 +7,12 @@ parameters:
 			path: ../src/CSSList/CSSList.php
 
 		-
+			message: '#^Parameter \#2 \$found of class Sabberworm\\CSS\\Parsing\\UnexpectedTokenException constructor expects string, Sabberworm\\CSS\\Value\\CSSFunction\|Sabberworm\\CSS\\Value\\CSSString\|Sabberworm\\CSS\\Value\\LineName\|Sabberworm\\CSS\\Value\\Size\|Sabberworm\\CSS\\Value\\URL given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/CSSList/CSSList.php
+
+		-
 			message: '#^Parameters should have "Sabberworm\\CSS\\CSSList\\CSSListItem\|array" types as the only types passed to this method$#'
 			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
@@ -31,6 +37,18 @@ parameters:
 			path: ../src/RuleSet/DeclarationBlock.php
 
 		-
+			message: '#^Parameter \#2 \$arguments of class Sabberworm\\CSS\\Value\\CSSFunction constructor expects array\<Sabberworm\\CSS\\Value\\Value\|string\>\|Sabberworm\\CSS\\Value\\RuleValueList, Sabberworm\\CSS\\Value\\Value\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Value/CSSFunction.php
+
+		-
+			message: '#^Parameter \#2 \$offset of method Sabberworm\\CSS\\Parsing\\ParserState\:\:peek\(\) expects int\<0, max\>, \-1 given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../src/Value/CalcFunction.php
+
+		-
 			message: '#^Cannot call method getSize\(\) on Sabberworm\\CSS\\Value\\Value\|string\.$#'
 			identifier: method.nonObject
 			count: 3
@@ -49,7 +67,67 @@ parameters:
 			path: ../src/Value/Size.php
 
 		-
+			message: '#^Parameter \#2 \$arguments of class Sabberworm\\CSS\\Value\\CSSFunction constructor expects array\<Sabberworm\\CSS\\Value\\Value\|string\>\|Sabberworm\\CSS\\Value\\RuleValueList, Sabberworm\\CSS\\Value\\Value\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Value/Value.php
+
+		-
+			message: '#^Parameter \#2 \$offset of method Sabberworm\\CSS\\Parsing\\ParserState\:\:peek\(\) expects int\<0, max\>, \-1 given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Value/Value.php
+
+		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with ''red'' and Sabberworm\\CSS\\Value\\Value will always evaluate to false\.$#'
 			identifier: staticMethod.impossibleType
 			count: 1
 			path: ../tests/ParserTest.php
+
+		-
+			message: '#^Parameter \#1 \$message of static method PHPUnit\\Framework\\Assert\:\:fail\(\) expects string, Exception given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../tests/ParserTest.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Sabberworm\\CSS\\Rule\\Rule\:\:setValue\(\) expects Sabberworm\\CSS\\Value\\RuleValueList\|string\|null, Sabberworm\\CSS\\Value\\Size given\.$#'
+			identifier: argument.type
+			count: 3
+			path: ../tests/RuleSet/DeclarationBlockTest.php
+
+		-
+			message: '#^Parameter \#1 \$type of class Sabberworm\\CSS\\CSSList\\AtRuleBlockList constructor expects non\-empty\-string, '''' given\.$#'
+			identifier: argument.type
+			count: 3
+			path: ../tests/Unit/CSSList/AtRuleBlockListTest.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Sabberworm\\CSS\\Rule\\Rule\:\:setValue\(\) expects Sabberworm\\CSS\\Value\\RuleValueList\|string\|null, Sabberworm\\CSS\\Value\\CSSFunction given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../tests/Unit/CSSList/CSSBlockListTest.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Sabberworm\\CSS\\Rule\\Rule\:\:setValue\(\) expects Sabberworm\\CSS\\Value\\RuleValueList\|string\|null, Sabberworm\\CSS\\Value\\CSSString given\.$#'
+			identifier: argument.type
+			count: 10
+			path: ../tests/Unit/CSSList/CSSBlockListTest.php
+
+		-
+			message: '#^Parameter \#1 \$selectors of method Sabberworm\\CSS\\CSSList\\CSSList\:\:removeDeclarationBlockBySelector\(\) expects array\<Sabberworm\\CSS\\Property\\Selector\>\|Sabberworm\\CSS\\RuleSet\\DeclarationBlock\|string, array\<int, string\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../tests/Unit/CSSList/CSSListTest.php
+
+		-
+			message: '#^Parameter \#3 \$matchType of class Sabberworm\\CSS\\Parsing\\UnexpectedEOFException constructor expects ''count''\|''custom''\|''expression''\|''identifier''\|''literal''\|''search'', ''coding'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../tests/Unit/Parsing/UnexpectedEOFExceptionTest.php
+
+		-
+			message: '#^Parameter \#3 \$matchType of class Sabberworm\\CSS\\Parsing\\UnexpectedTokenException constructor expects ''count''\|''custom''\|''expression''\|''identifier''\|''literal''\|''search'', ''coding'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../tests/Unit/Parsing/UnexpectedTokenExceptionTest.php
