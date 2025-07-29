@@ -85,6 +85,7 @@ final class UnexpectedEOFExceptionTest extends TestCase
         $expected = 'tea';
         $found = 'coffee';
 
+        // @phpstan-ignore-next-line argument.type We're explicitly testing with an invalid value here.
         $exception = new UnexpectedEOFException($expected, $found, 'coding');
 
         $expectedMessage = 'Token “' . $expected . '” (coding) not found. Got “' . $found . '”.';
