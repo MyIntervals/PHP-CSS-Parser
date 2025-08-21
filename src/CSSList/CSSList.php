@@ -242,7 +242,7 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
             return true;
         }
 
-        return \preg_match("/^(-\\w+-)?$match$/i", $identifier) === 1;
+        return preg_match("/^(-\\w+-)?$match$/i", $identifier) === 1;
     }
 
     /**
