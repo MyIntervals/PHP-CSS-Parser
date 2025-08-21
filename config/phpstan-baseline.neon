@@ -1,7 +1,37 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Only booleans are allowed in an if condition, Sabberworm\\CSS\\CSSList\\CSSListItem\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: ../src/CSSList/CSSList.php
+
+		-
+			message: '#^Parameter \#1 \$animationName of method Sabberworm\\CSS\\CSSList\\KeyFrame\:\:setAnimationName\(\) expects non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/CSSList/CSSList.php
+
+		-
+			message: '#^Parameter \#1 \$selector of class Sabberworm\\CSS\\Property\\Selector constructor expects non\-empty\-list\<Sabberworm\\CSS\\Property\\Selector\\Component\>\|non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/CSSList/CSSList.php
+
+		-
 			message: '#^Parameter \#2 \$found of class Sabberworm\\CSS\\Parsing\\UnexpectedTokenException constructor expects string, Sabberworm\\CSS\\Value\\CSSFunction\|Sabberworm\\CSS\\Value\\CSSString\|Sabberworm\\CSS\\Value\\LineName\|Sabberworm\\CSS\\Value\\Size\|Sabberworm\\CSS\\Value\\URL given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/CSSList/CSSList.php
+
+		-
+			message: '#^Parameter \#2 \$found of class Sabberworm\\CSS\\Parsing\\UnexpectedTokenException constructor expects string, Sabberworm\\CSS\\Value\\CSSFunction\|Sabberworm\\CSS\\Value\\LineName\|Sabberworm\\CSS\\Value\\Size\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/CSSList/CSSList.php
+
+		-
+			message: '#^Parameter \#2 \$selectors2 of static method Sabberworm\\CSS\\CSSList\\CSSList\:\:selectorsMatch\(\) expects list\<Sabberworm\\CSS\\Property\\Selector\>, array\<Sabberworm\\CSS\\Property\\Selector\|string\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: ../src/CSSList/CSSList.php
@@ -19,10 +49,94 @@ parameters:
 			path: ../src/CSSList/Document.php
 
 		-
+			message: '#^Method Sabberworm\\CSS\\Comment\\Comment\:\:getShortClassName\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Comment/Comment.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Parsing\\ParserState\:\:parseIdentifier\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Parsing/ParserState.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Parsing\\ParserState\:\:strlen\(\) should return int\<0, max\> but returns int\<0, max\>\|false\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Parsing/ParserState.php
+
+		-
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
 			count: 1
 			path: ../src/Parsing/ParserState.php
+
+		-
+			message: '#^Property Sabberworm\\CSS\\Parsing\\ParserState\:\:\$currentPosition \(int\<0, max\>\) does not accept int\.$#'
+			identifier: assign.propertyType
+			count: 2
+			path: ../src/Parsing/ParserState.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Property\\Charset\:\:getShortClassName\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Property/Charset.php
+
+		-
+			message: '#^Parameter \#1 \$separator of class Sabberworm\\CSS\\Value\\RuleValueList constructor expects non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Property/Declaration.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Sabberworm\\CSS\\Property\\Declaration\:\:setValue\(\) expects Sabberworm\\CSS\\Value\\RuleValueList\|string\|null, Sabberworm\\CSS\\Value\\Value\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Property/Declaration.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Property\\Selector\:\:getSelector\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Property/Selector.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Property\\Selector\:\:getShortClassName\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Property/Selector.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Property\\Selector\:\:parseComponents\(\) should return non\-empty\-list\<Sabberworm\\CSS\\Property\\Selector\\Component\> but returns list\<Sabberworm\\CSS\\Property\\Selector\\Combinator\|Sabberworm\\CSS\\Property\\Selector\\CompoundSelector\>\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Property/Selector.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Property\\Selector\\Combinator\:\:getShortClassName\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Property/Selector/Combinator.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Property\\Selector\\CompoundSelector\:\:getShortClassName\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Property/Selector/CompoundSelector.php
+
+		-
+			message: '#^Parameter \#1 \$selector of class Sabberworm\\CSS\\Property\\KeyframeSelector constructor expects non\-empty\-list\<Sabberworm\\CSS\\Property\\Selector\\Component\>\|non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: '#^Parameter \#1 \$selector of class Sabberworm\\CSS\\Property\\Selector constructor expects non\-empty\-list\<Sabberworm\\CSS\\Property\\Selector\\Component\>\|non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/RuleSet/DeclarationBlock.php
 
 		-
 			message: '#^Parameters should have "string" types as the only types passed to this method$#'
@@ -31,10 +145,34 @@ parameters:
 			path: ../src/RuleSet/DeclarationBlock.php
 
 		-
+			message: '#^Property Sabberworm\\CSS\\RuleSet\\DeclarationBlock\:\:\$selectors \(list\<Sabberworm\\CSS\\Property\\Selector\>\) does not accept array\<int\<0, max\>, Sabberworm\\CSS\\Property\\Selector\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: '#^Property Sabberworm\\CSS\\RuleSet\\DeclarationBlock\:\:\$selectors \(list\<Sabberworm\\CSS\\Property\\Selector\>\) does not accept list\<Sabberworm\\CSS\\Property\\Selector\|string\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: ../src/RuleSet/DeclarationBlock.php
+
+		-
+			message: '#^Parameter \#1 \$name of class Sabberworm\\CSS\\Value\\CSSFunction constructor expects non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Value/CSSFunction.php
+
+		-
 			message: '#^Parameter \#2 \$arguments of class Sabberworm\\CSS\\Value\\CSSFunction constructor expects array\<Sabberworm\\CSS\\Value\\Value\|string\>\|Sabberworm\\CSS\\Value\\RuleValueList, Sabberworm\\CSS\\Value\\Value\|string given\.$#'
 			identifier: argument.type
 			count: 1
 			path: ../src/Value/CSSFunction.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Value\\CSSString\:\:getShortClassName\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Value/CSSString.php
 
 		-
 			message: '#^Parameter \#2 \$offset of method Sabberworm\\CSS\\Parsing\\ParserState\:\:peek\(\) expects int\<0, max\>, \-1 given\.$#'
@@ -49,6 +187,30 @@ parameters:
 			path: ../src/Value/Color.php
 
 		-
+			message: '#^Parameter \#1 \$name of method Sabberworm\\CSS\\Value\\CSSFunction\:\:__construct\(\) expects non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Value/Color.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Sabberworm\\CSS\\Value\\CSSFunction\:\:setName\(\) expects non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Value/Color.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Value\\Size\:\:getShortClassName\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Value/Size.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Value\\Size\:\:render\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Value/Size.php
+
+		-
 			message: '#^Parameters should have "float" types as the only types passed to this method$#'
 			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
@@ -59,6 +221,30 @@ parameters:
 			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: ../src/Value/Size.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Value\\URL\:\:getShortClassName\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Value/URL.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Value\\Value\:\:getShortClassName\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Value/Value.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Value\\Value\:\:parseIdentifierOrFunction\(\) should return Sabberworm\\CSS\\Value\\CSSFunction\|string but returns Sabberworm\\CSS\\Value\\CSSFunction\|Sabberworm\\CSS\\Value\\URL\|string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Value/Value.php
+
+		-
+			message: '#^Parameter \#1 \$name of class Sabberworm\\CSS\\Value\\CSSFunction constructor expects non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Value/Value.php
 
 		-
 			message: '#^Parameter \#2 \$arguments of class Sabberworm\\CSS\\Value\\CSSFunction constructor expects array\<Sabberworm\\CSS\\Value\\Value\|string\>\|Sabberworm\\CSS\\Value\\RuleValueList, Sabberworm\\CSS\\Value\\Value\|string given\.$#'
@@ -73,8 +259,38 @@ parameters:
 			path: ../src/Value/Value.php
 
 		-
+			message: '#^Method Sabberworm\\CSS\\Value\\ValueList\:\:getShortClassName\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../src/Value/ValueList.php
+
+		-
+			message: '#^Parameter \#1 \$propertyName of class Sabberworm\\CSS\\Property\\Declaration constructor expects non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../tests/Functional/RuleSet/RuleSetTest.php
+
+		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with ''red'' and Sabberworm\\CSS\\Value\\Value will always evaluate to false\.$#'
 			identifier: staticMethod.impossibleType
+			count: 1
+			path: ../tests/ParserTest.php
+
+		-
+			message: '#^Cannot call method getListComponents\(\) on Sabberworm\\CSS\\Value\\RuleValueList\|string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: ../tests/ParserTest.php
+
+		-
+			message: '#^Cannot call method getListSeparator\(\) on Sabberworm\\CSS\\Value\\RuleValueList\|string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: ../tests/ParserTest.php
+
+		-
+			message: '#^Cannot call method render\(\) on Sabberworm\\CSS\\Value\\RuleValueList\|string\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: ../tests/ParserTest.php
 
@@ -107,3 +323,105 @@ parameters:
 			identifier: argument.type
 			count: 2
 			path: ../tests/Unit/CSSList/CSSListTest.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Tests\\Unit\\Comment\\CommentContainerTest\:\:provideAlternativeNonemptyCommentArray\(\) should return array\<non\-empty\-string, array\{non\-empty\-list\<Sabberworm\\CSS\\Comment\\Comment\>\}\> but returns array\<non\-empty\-string, array\{list\<Sabberworm\\CSS\\Comment\\Comment\>\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: ../tests/Unit/Comment/CommentContainerTest.php
+
+		-
+			message: '#^Method Sabberworm\\CSS\\Tests\\Unit\\Fixtures\\ConcreteShortClassNameProvider\:\:getShortClassName\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: ../tests/Unit/Fixtures/ConcreteShortClassNameProvider.php
+
+		-
+			message: '#^Parameter \#1 \$numberOfSpaces of method Sabberworm\\CSS\\OutputFormat\:\:indentWithSpaces\(\) expects int\<1, max\>, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../tests/Unit/OutputFormatTest.php
+
+		-
+			message: '#^Parameter \#1 \$numberOfTabs of method Sabberworm\\CSS\\OutputFormat\:\:indentWithTabs\(\) expects int\<1, max\>, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../tests/Unit/OutputFormatTest.php
+
+		-
+			message: '#^Parameter \#1 \$lineNumber of method Sabberworm\\CSS\\Tests\\Unit\\Position\\Fixtures\\ConcretePosition\:\:setPosition\(\) expects int\<1, max\>\|null, int given\.$#'
+			identifier: argument.type
+			count: 2
+			path: ../tests/Unit/Position/PositionTest.php
+
+		-
+			message: '#^Parameter \#2 \$columnNumber of method Sabberworm\\CSS\\Tests\\Unit\\Position\\Fixtures\\ConcretePosition\:\:setPosition\(\) expects int\<0, max\>\|null, int given\.$#'
+			identifier: argument.type
+			count: 3
+			path: ../tests/Unit/Position/PositionTest.php
+
+		-
+			message: '#^Cannot access offset 0 on array\<mixed\>\|bool\|float\|int\|string\|null\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: ../tests/Unit/Property/KeyframeSelectorTest.php
+
+		-
+			message: '#^Parameter \#1 \$value of class Sabberworm\\CSS\\Property\\Selector\\Combinator constructor expects '' ''\|''\+''\|''\>''\|''~'', non\-empty\-string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../tests/Unit/Property/Selector/CombinatorTest.php
+
+		-
+			message: '#^Cannot access offset 0 on array\<mixed\>\|bool\|float\|int\|string\|null\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: ../tests/Unit/Property/SelectorTest.php
+
+		-
+			message: '#^Parameter \#1 \$selector of class Sabberworm\\CSS\\Property\\Selector constructor expects non\-empty\-list\<Sabberworm\\CSS\\Property\\Selector\\Component\>\|non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../tests/Unit/Property/SelectorTest.php
+
+		-
+			message: '#^Parameter \#1 \$selector of method Sabberworm\\CSS\\Property\\Selector\:\:setSelector\(\) expects non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../tests/Unit/Property/SelectorTest.php
+
+		-
+			message: '#^Parameter \#1 \$propertyName of class Sabberworm\\CSS\\Property\\Declaration constructor expects non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 19
+			path: ../tests/Unit/RuleSet/DeclarationBlockTest.php
+
+		-
+			message: '#^Parameter \#1 \$propertyName of class Sabberworm\\CSS\\Property\\Declaration constructor expects non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 19
+			path: ../tests/Unit/RuleSet/RuleSetTest.php
+
+		-
+			message: '#^Cannot access offset 0 on array\<mixed\>\|bool\|float\|int\|string\|null\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: ../tests/Unit/Value/ValueListTest.php
+
+		-
+			message: '#^Cannot access offset 1 on array\<mixed\>\|bool\|float\|int\|string\|null\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: ../tests/Unit/Value/ValueListTest.php
+
+		-
+			message: '#^Cannot access offset 2 on array\<mixed\>\|bool\|float\|int\|string\|null\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: ../tests/Unit/Value/ValueListTest.php
+
+		-
+			message: '#^Cannot call method getArrayRepresentation\(\) on Sabberworm\\CSS\\Value\\Value\|string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: ../tests/Unit/Value/ValueTest.php
