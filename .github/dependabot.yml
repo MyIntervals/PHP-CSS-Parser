@@ -21,6 +21,7 @@ updates:
         - dependency-name: "phpunit/phpunit"
           versions: [ ">= 9.0.0" ]
         - dependency-name: "rector/rector"
+        - dependency-name: "thecodingmachine/safe"
       versioning-strategy: "increase"
       commit-message:
           prefix: "[Dependabot] "
