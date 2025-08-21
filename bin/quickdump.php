@@ -3,13 +3,15 @@
 
 declare(strict_types=1);
 
+use function Safe\file_get_contents;
+
 /**
  * This script is used for generating the examples in the README.
  */
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-$sSource = \file_get_contents('php://stdin');
+$sSource = file_get_contents('php://stdin');
 $oParser = new Sabberworm\CSS\Parser($sSource);
 
 $oDoc = $oParser->parse();
