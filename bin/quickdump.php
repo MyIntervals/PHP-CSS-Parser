@@ -3,6 +3,8 @@
 
 declare(strict_types=1);
 
+use Sabberworm\CSS\Parser;
+
 use function Safe\file_get_contents;
 
 /**
@@ -11,17 +13,17 @@ use function Safe\file_get_contents;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-$sSource = file_get_contents('php://stdin');
-$oParser = new Sabberworm\CSS\Parser($sSource);
+$source = file_get_contents('php://stdin');
+$parser = new Parser($source);
 
-$oDoc = $oParser->parse();
+$document = $parser->parse();
 echo "\n" . '#### Input' . "\n\n```css\n";
-print $sSource;
+print $source;
 
 echo "\n```\n\n" . '#### Structure (`var_dump()`)' . "\n\n```php\n";
-\var_dump($oDoc);
+\var_dump($document);
 
 echo "\n```\n\n" . '#### Output (`render()`)' . "\n\n```css\n";
-print $oDoc->render();
+print $document->render();
 
 echo "\n```\n";
