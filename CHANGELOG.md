@@ -18,6 +18,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Use typesafe versions of PHP functions (#1368)
+
 ### Documentation
 
 ## 9.0.0: New features, deprecation removals and bug fixes

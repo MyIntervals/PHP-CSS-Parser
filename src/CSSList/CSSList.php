@@ -25,6 +25,8 @@ use Sabberworm\CSS\Value\CSSString;
 use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\Value;
 
+use function Safe\preg_match;
+
 /**
  * This is the most generic container available. It can contain `DeclarationBlock`s (rule sets with a selector),
  * `RuleSet`s as well as other `CSSList` objects.
@@ -242,7 +244,7 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
             return true;
         }
 
-        return \preg_match("/^(-\\w+-)?$match$/i", $identifier) === 1;
+        return preg_match("/^(-\\w+-)?$match$/i", $identifier) === 1;
     }
 
     /**
