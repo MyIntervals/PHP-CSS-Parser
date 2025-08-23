@@ -18,7 +18,7 @@ Please also have a look at our
 
 ### Fixed
 
-- Use typesafe versions of PHP functions (#1368)
+- Use typesafe versions of PHP functions (#1368, #1370)
 
 ### Documentation
 
