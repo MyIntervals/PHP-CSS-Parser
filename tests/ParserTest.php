@@ -73,11 +73,7 @@ final class ParserTest extends TestCase
                     continue;
                 }
                 $parser = new Parser(\file_get_contents($directory . '/' . $filename));
-                try {
-                    self::assertNotEquals('', $parser->parse()->render());
-                } catch (\Exception $e) {
-                    self::fail($e);
-                }
+                self::assertNotSame('', $parser->parse()->render());
             }
             \closedir($directoryHandle);
         }

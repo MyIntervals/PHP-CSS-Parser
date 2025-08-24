@@ -85,12 +85,6 @@ parameters:
 			path: ../tests/ParserTest.php
 
 		-
-			message: '#^Parameter \#1 \$message of static method PHPUnit\\Framework\\Assert\:\:fail\(\) expects string, Exception given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../tests/ParserTest.php
-
-		-
 			message: '#^Parameter \#1 \$value of method Sabberworm\\CSS\\Rule\\Rule\:\:setValue\(\) expects Sabberworm\\CSS\\Value\\RuleValueList\|string\|null, Sabberworm\\CSS\\Value\\Size given\.$#'
 			identifier: argument.type
 			count: 3

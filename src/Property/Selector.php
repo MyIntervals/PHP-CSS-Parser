@@ -8,6 +8,8 @@ use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Property\Selector\SpecificityCalculator;
 use Sabberworm\CSS\Renderable;
 
+use function Safe\preg_match;
+
 /**
  * Class representing a single CSS selector. Selectors have to be split by the comma prior to being passed into this
  * class.
@@ -57,7 +59,7 @@ class Selector implements Renderable
     public static function isValid(string $selector): bool
     {
         // Note: We need to use `static::` here as the constant is overridden in the `KeyframeSelector` class.
-        $numberOfMatches = \preg_match(static::SELECTOR_VALIDATION_RX, $selector);
+        $numberOfMatches = preg_match(static::SELECTOR_VALIDATION_RX, $selector);
 
         return $numberOfMatches === 1;
     }
