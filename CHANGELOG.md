@@ -18,6 +18,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Improve performance of selector validation
+  (avoiding silent PCRE catastrophic failure) (#1372)
 - Use typesafe versions of PHP functions (#1368, #1370)
 
 ### Documentation
