@@ -10,8 +10,6 @@ Please also have a look at our
 
 ### Added
 
-- Add support for PHP 8.5 (#1355)
-
 ### Changed
 
 ### Deprecated
@@ -20,11 +18,19 @@ Please also have a look at our
 
 ### Fixed
 
+### Documentation
+
+## 9.1.0: Add support for PHP 8.5
+
+### Added
+
+- Add support for PHP 8.5 (#1355)
+
+### Fixed
+
 - Improve performance of selector validation
   (avoiding silent PCRE catastrophic failure) (#1372)
 - Use typesafe versions of PHP functions (#1368, #1370)
-
-### Documentation
 
 ## 9.0.0: New features, deprecation removals and bug fixes
 

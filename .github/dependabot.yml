@@ -8,7 +8,7 @@ updates:
           interval: "daily"
       commit-message:
           prefix: "[Dependabot] "
-      milestone: 9
+      milestone: 10
 
     - package-ecosystem: "composer"
       directory: "/"
@@ -25,4 +25,4 @@ updates:
       versioning-strategy: "increase"
       commit-message:
           prefix: "[Dependabot] "
-      milestone: 9
+      milestone: 10
