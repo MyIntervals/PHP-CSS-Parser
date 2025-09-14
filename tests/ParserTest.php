@@ -30,6 +30,9 @@ use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\ValueList;
 
+use function Safe\file_get_contents;
+use function Safe\opendir;
+
 /**
  * @covers \Sabberworm\CSS\Parser
  */
@@ -58,25 +61,26 @@ final class ParserTest extends TestCase
     public function files(): void
     {
         $directory = __DIR__ . '/fixtures';
-        if ($directoryHandle = \opendir($directory)) {
-            /* This is the correct way to loop over the directory. */
-            while (false !== ($filename = \readdir($directoryHandle))) {
-                if (\strpos($filename, '.') === 0) {
-                    continue;
-                }
-                if (\strrpos($filename, '.css') !== \strlen($filename) - \strlen('.css')) {
-                    continue;
-                }
-                if (\strpos($filename, '-') === 0) {
-                    // Either a file which SHOULD fail (at least in strict mode)
-                    // or a future test of an as-of-now missing feature
-                    continue;
-                }
-                $parser = new Parser(\file_get_contents($directory . '/' . $filename));
-                self::assertNotSame('', $parser->parse()->render());
+        $directoryHandle = opendir($directory);
+
+        /* This is the correct way to loop over the directory. */
+        while (false !== ($filename = \readdir($directoryHandle))) {
+            if (\strpos($filename, '.') === 0) {
+                continue;
             }
-            \closedir($directoryHandle);
+            if (\strrpos($filename, '.css') !== \strlen($filename) - \strlen('.css')) {
+                continue;
+            }
+            if (\strpos($filename, '-') === 0) {
+                // Either a file which SHOULD fail (at least in strict mode)
+                // or a future test of an as-of-now missing feature
+                continue;
+            }
+            $parser = new Parser(file_get_contents($directory . '/' . $filename));
+            self::assertNotSame('', $parser->parse()->render());
         }
+
+        \closedir($directoryHandle);
     }
 
     /**
@@ -943,7 +947,7 @@ body {background-color: red;}';
     public static function parsedStructureForFile($filename, $settings = null): Document
     {
         $filename = __DIR__ . "/fixtures/$filename.css";
-        $parser = new Parser(\file_get_contents($filename), $settings);
+        $parser = new Parser(file_get_contents($filename), $settings);
         return $parser->parse();
     }
 
