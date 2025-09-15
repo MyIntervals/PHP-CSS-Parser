@@ -18,6 +18,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Use typesafe versions of PHP functions (#1379)
+
 ### Documentation
 
 ## 9.1.0: Add support for PHP 8.5
