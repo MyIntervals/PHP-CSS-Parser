@@ -12,6 +12,8 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
 
+use function Safe\preg_match;
+
 /**
  * Abstract base class for specific classes of CSS values: `Size`, `Color`, `CSSString` and `URL`, and another
  * abstract subclass `ValueList`.
@@ -204,7 +206,9 @@ abstract class Value implements CSSElement, Positionable
                 $codepointMaxLength = 13; // Max length is 2 six-digit code points + the dash(-) between them
             }
             $range .= $parserState->consume(1);
-        } while (\strlen($range) < $codepointMaxLength && \preg_match('/[A-Fa-f0-9\\?-]/', $parserState->peek()));
+        } while (
+            (\strlen($range) < $codepointMaxLength) && (preg_match('/[A-Fa-f0-9\\?-]/', $parserState->peek()) === 1)
+        );
 
         return "U+{$range}";
     }
