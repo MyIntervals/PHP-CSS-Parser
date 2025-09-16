@@ -9,6 +9,9 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
+use function Safe\preg_match;
+use function Safe\preg_replace;
+
 /**
  * A `Size` consists of a numeric `size` value and a unit.
  */
@@ -202,9 +205,9 @@ class Size extends PrimitiveValue
     {
         $locale = \localeconv();
         $decimalPoint = \preg_quote($locale['decimal_point'], '/');
-        $size = \preg_match('/[\\d\\.]+e[+-]?\\d+/i', (string) $this->size)
-            ? \preg_replace("/$decimalPoint?0+$/", '', \sprintf('%f', $this->size)) : (string) $this->size;
+        $size = preg_match('/[\\d\\.]+e[+-]?\\d+/i', (string) $this->size) === 1
+            ? preg_replace("/$decimalPoint?0+$/", '', \sprintf('%f', $this->size)) : (string) $this->size;
 
-        return \preg_replace(["/$decimalPoint/", '/^(-?)0\\./'], ['.', '$1.'], $size) . ($this->unit ?? '');
+        return preg_replace(["/$decimalPoint/", '/^(-?)0\\./'], ['.', '$1.'], $size) . ($this->unit ?? '');
     }
 }
