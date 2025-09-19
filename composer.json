@@ -36,7 +36,8 @@
         "phpunit/phpunit": "8.5.46",
         "rawr/phpunit-data-provider": "3.3.1",
         "rector/rector": "1.2.10 || 2.1.7",
-        "rector/type-perfect": "1.0.0 || 2.1.0"
+        "rector/type-perfect": "1.0.0 || 2.1.0",
+        "thecodingmachine/phpstan-safe-rule": "1.2.0 || 1.4.1"
     },
     "suggest": {
         "ext-mbstring": "for parsing UTF-8 CSS"
