@@ -80,7 +80,7 @@ code coverage of the fixed bugs and the new features.
 To run the existing PHPUnit tests, run this command:
 
 ```bash
-composer ci:tests:unit
+composer check:tests:unit
 ```
 
 ## Coding Style
@@ -94,7 +94,7 @@ We will only merge pull requests that follow the project's coding style.
 Please check your code with the provided static code analysis tools:
 
 ```bash
-composer ci:static
+composer check:static
 ```
 
 Please make your code clean, well-readable and easy to understand.
