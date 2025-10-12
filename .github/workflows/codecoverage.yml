@@ -52,7 +52,7 @@ jobs:
                   composer show;
 
             - name: Run Tests
-              run: composer ci:tests:coverage
+              run: composer check:tests:coverage
 
             - name: Show generated coverage files
               run: ls -lah

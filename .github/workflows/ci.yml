@@ -47,7 +47,7 @@ jobs:
                   composer show;
 
             - name: PHP Lint
-              run: composer ci:php:lint
+              run: composer check:php:lint
 
     unit-tests:
         name: Unit tests
@@ -145,4 +145,4 @@ jobs:
                   phive --no-progress install --trust-gpg-keys 0FDE18AE1D09E19F60F6B1CBC00543248C87FB13,BBAB5DF0A0D6672989CF1869E82B2FB314E9906E
 
             - name: Run Command
-              run: composer ci:${{ matrix.command }}
+              run: composer check:${{ matrix.command }}
