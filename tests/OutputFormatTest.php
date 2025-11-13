@@ -16,18 +16,18 @@ use Sabberworm\CSS\Parsing\OutputException;
 final class OutputFormatTest extends TestCase
 {
     private const TEST_CSS = "\n"
-        . ".main, .test {\n"
-        . "\tfont: italic normal bold 16px/1.2 \"Helvetica\", Verdana, sans-serif;\n"
-        . "\tbackground: white;\n"
-        . "}\n"
-        . "\n"
-        . "@media screen {\n"
-        . "\t.main {\n"
-        . "\t\tbackground-size: 100% 100%;\n"
-        . "\t\tfont-size: 1.3em;\n"
-        . "\t\tbackground-color: #fff;\n"
-        . "\t}\n"
-        . "}\n";
+    . ".main, .test {\n"
+    . "\tfont: italic normal bold 16px/1.2 \"Helvetica\", Verdana, sans-serif;\n"
+    . "\tbackground: white;\n"
+    . "}\n"
+    . "\n"
+    . "@media screen {\n"
+    . "\t.main {\n"
+    . "\t\tbackground-size: 100% 100%;\n"
+    . "\t\tfont-size: 1.3em;\n"
+    . "\t\tbackground-color: #fff;\n"
+    . "\t}\n"
+    . "}\n";
 
     /**
      * @var Parser
@@ -181,7 +181,8 @@ final class OutputFormatTest extends TestCase
             ->setSpaceBetweenRules("\n")
             ->setSpaceAfterRules("\n");
 
-        self::assertSame('.main, .test {
+        self::assertSame(
+            '.main, .test {
 	font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;
 	background: white;
 }
@@ -189,7 +190,9 @@ final class OutputFormatTest extends TestCase
 		background-size: 100% 100%;
 		font-size: 1.3em;
 		background-color: #fff;
-	}}', $this->document->render($outputFormat));
+	}}',
+            $this->document->render($outputFormat)
+        );
     }
 
     /**
@@ -202,12 +205,15 @@ final class OutputFormatTest extends TestCase
             ->setSpaceBetweenBlocks("\n")
             ->setSpaceAfterBlocks("\n");
 
-        self::assertSame('
+        self::assertSame(
+            '
 .main, .test {font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white;}
 @media screen {
 	.main {background-size: 100% 100%;font-size: 1.3em;background-color: #fff;}
 }
-', $this->document->render($outputFormat));
+',
+            $this->document->render($outputFormat)
+        );
     }
 
     /**
@@ -223,7 +229,8 @@ final class OutputFormatTest extends TestCase
             ->setSpaceBetweenBlocks("\n")
             ->setSpaceAfterBlocks("\n");
 
-        self::assertSame('
+        self::assertSame(
+            '
 .main, .test {
 	font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;
 	background: white;
@@ -235,7 +242,9 @@ final class OutputFormatTest extends TestCase
 		background-color: #fff;
 	}
 }
-', $this->document->render($outputFormat));
+',
+            $this->document->render($outputFormat)
+        );
     }
 
     /**
@@ -267,7 +276,8 @@ final class OutputFormatTest extends TestCase
             ->setSpaceAfterBlocks("\n")
             ->setIndentation('');
 
-        self::assertSame('
+        self::assertSame(
+            '
 .main, .test {
 font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;
 background: white;
@@ -279,7 +289,9 @@ font-size: 1.3em;
 background-color: #fff;
 }
 }
-', $this->document->render($outputFormat));
+',
+            $this->document->render($outputFormat)
+        );
     }
 
     /**

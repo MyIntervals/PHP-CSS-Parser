@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Comment;
 
 use Sabberworm\CSS\OutputFormat;
-use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
+use Sabberworm\CSS\Renderable;
 
 class Comment implements Positionable, Renderable
 {

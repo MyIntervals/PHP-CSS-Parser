@@ -19,7 +19,8 @@ final class CommentTest extends TestCase
     public function keepCommentsInOutput(): void
     {
         $cssDocument = TestsParserTest::parsedStructureForFile('comments');
-        self::assertSame('/** Number 11 **/
+        self::assertSame(
+            '/** Number 11 **/
 
 /**
  * Comments
@@ -43,7 +44,9 @@ final class CommentTest extends TestCase
 		position: absolute;
 	}
 }
-', $cssDocument->render(OutputFormat::createPretty()));
+',
+            $cssDocument->render(OutputFormat::createPretty())
+        );
         self::assertSame(
             '/** Number 11 **//**' . "\n"
             . ' * Comments' . "\n"
@@ -61,7 +64,8 @@ final class CommentTest extends TestCase
     public function stripCommentsFromOutput(): void
     {
         $css = TestsParserTest::parsedStructureForFile('comments');
-        self::assertSame('
+        self::assertSame(
+            '
 @import url("some/url.css") screen;
 
 .foo, #bar {
@@ -73,7 +77,9 @@ final class CommentTest extends TestCase
 		position: absolute;
 	}
 }
-', $css->render(OutputFormat::createPretty()->setRenderComments(false)));
+',
+            $css->render(OutputFormat::createPretty()->setRenderComments(false))
+        );
         self::assertSame(
             '@import url("some/url.css") screen;'
             . '.foo,#bar{background-color:#000}'

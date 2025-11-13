@@ -47,6 +47,7 @@ final class CalcFunctionTest extends TestCase
         self::assertSame(20.0, $components[2]->getSize());
         self::assertSame('px', $components[2]->getUnit());
     }
+
     /**
      * @test
      */
