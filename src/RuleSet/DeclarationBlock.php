@@ -216,9 +216,9 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     }
 
     /**
-     * @see RuleSet::getRules()
-     *
      * @return array<int<0, max>, Rule>
+     *
+     * @see RuleSet::getRules()
      */
     public function getRules(?string $searchPattern = null): array
     {
@@ -226,9 +226,9 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     }
 
     /**
-     * @see RuleSet::setRules()
-     *
      * @param array<Rule> $rules
+     *
+     * @see RuleSet::setRules()
      */
     public function setRules(array $rules): void
     {
@@ -236,9 +236,9 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     }
 
     /**
-     * @see RuleSet::getRulesAssoc()
-     *
      * @return array<string, Rule>
+     *
+     * @see RuleSet::getRulesAssoc()
      */
     public function getRulesAssoc(?string $searchPattern = null): array
     {
