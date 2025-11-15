@@ -37,6 +37,7 @@
         "rawr/phpunit-data-provider": "3.3.1",
         "rector/rector": "1.2.10 || 2.1.7",
         "rector/type-perfect": "1.0.0 || 2.1.0",
+        "squizlabs/php_codesniffer": "4.0.1",
         "thecodingmachine/phpstan-safe-rule": "1.2.0 || 1.4.1"
     },
     "suggest": {
@@ -75,6 +76,7 @@
         "check:dynamic": [
             "@check:tests"
         ],
+        "check:php:codesniffer": "phpcs --standard=config/phpcs.xml config src tests",
         "check:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix --dry-run -v --show-progress=dots --diff bin src tests config",
         "check:php:lint": "parallel-lint src tests config bin",
         "check:php:rector": "rector --no-progress-bar --dry-run --config=config/rector.php",
@@ -82,6 +84,7 @@
         "check:static": [
             "@check:composer:normalize",
             "@check:php:fixer",
+            "@check:php:codesniffer",
             "@check:php:lint",
             "@check:php:rector",
             "@check:php:stan"
@@ -99,8 +102,10 @@
         "fix:php": [
             "@fix:composer:normalize",
             "@fix:php:rector",
+            "@fix:php:codesniffer",
             "@fix:php:fixer"
         ],
+        "fix:php:codesniffer": "phpcbf --standard=config/phpcs.xml config src tests",
         "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix bin src tests",
         "fix:php:rector": "rector --config=config/rector.php",
         "phpstan:baseline": "phpstan --configuration=config/phpstan.neon --generate-baseline=config/phpstan-baseline.neon --allow-empty-baseline"
@@ -109,6 +114,7 @@
         "check": "Runs all dynamic and static code checks.",
         "check:composer:normalize": "Checks the formatting and structure of the composer.json.",
         "check:dynamic": "Runs all dynamic code checks (i.e., currently, the unit tests).",
+        "check:php:codesniffer": "Checks the code style with PHP_CodeSniffer.",
         "check:php:fixer": "Checks the code style with PHP CS Fixer.",
         "check:php:lint": "Checks the syntax of the PHP code.",
         "check:php:rector": "Checks the code for possible code updates and refactoring.",
@@ -121,6 +127,7 @@
         "fix": "Runs all fixers",
         "fix:composer:normalize": "Reformats and sorts the composer.json file.",
         "fix:php": "Autofixes all autofixable issues in the PHP code.",
+        "fix:php:codesniffer": "Reformats the code with PHP_CodeSniffer.",
         "fix:php:fixer": "Fixes autofixable issues found by PHP CS Fixer.",
         "fix:php:rector": "Fixes autofixable issues found by Rector.",
         "phpstan:baseline": "Updates the PHPStan baseline file to match the code."
