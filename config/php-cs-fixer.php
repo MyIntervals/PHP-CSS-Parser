@@ -6,18 +6,18 @@ return (new \PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules(
         [
-            '@PER-CS2.0' => true,
-            '@PER-CS2.0:risky' => true,
+            '@PER-CS2x0' => true,
+            '@PER-CS2x0:risky' => true,
 
-            '@PHPUnit50Migration:risky' => true,
-            '@PHPUnit52Migration:risky' => true,
-            '@PHPUnit54Migration:risky' => true,
-            '@PHPUnit55Migration:risky' => true,
-            '@PHPUnit56Migration:risky' => true,
-            '@PHPUnit57Migration:risky' => true,
-            '@PHPUnit60Migration:risky' => true,
-            '@PHPUnit75Migration:risky' => true,
-            '@PHPUnit84Migration:risky' => true,
+            '@PHPUnit5x0Migration:risky' => true,
+            '@PHPUnit5x2Migration:risky' => true,
+            '@PHPUnit5x4Migration:risky' => true,
+            '@PHPUnit5x5Migration:risky' => true,
+            '@PHPUnit5x6Migration:risky' => true,
+            '@PHPUnit5x7Migration:risky' => true,
+            '@PHPUnit6x0Migration:risky' => true,
+            '@PHPUnit7x5Migration:risky' => true,
+            '@PHPUnit8x4Migration:risky' => true,
 
             // overwrite the PER2 defaults to restore compatibility with PHP 7.x
             'trailing_comma_in_multiline' => ['elements' => ['arrays']],
