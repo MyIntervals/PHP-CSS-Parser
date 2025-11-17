@@ -18,8 +18,7 @@ final class OutputFormatTest extends TestCase
     /**
      * @var string
      */
-    private const TEST_CSS = <<<EOT
-
+    private const TEST_CSS = '
 .main, .test {
 	font: italic normal bold 16px/1.2 "Helvetica", Verdana, sans-serif;
 	background: white;
@@ -32,8 +31,7 @@ final class OutputFormatTest extends TestCase
 		background-color: #fff;
 	}
 }
-
-EOT;
+';
 
     /**
      * @var Parser
@@ -187,7 +185,8 @@ EOT;
             ->setSpaceBetweenRules("\n")
             ->setSpaceAfterRules("\n");
 
-        self::assertSame('.main, .test {
+        self::assertSame(
+            '.main, .test {
 	font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;
 	background: white;
 }
@@ -195,7 +194,9 @@ EOT;
 		background-size: 100% 100%;
 		font-size: 1.3em;
 		background-color: #fff;
-	}}', $this->document->render($outputFormat));
+	}}',
+            $this->document->render($outputFormat)
+        );
     }
 
     /**
@@ -208,12 +209,15 @@ EOT;
             ->setSpaceBetweenBlocks("\n")
             ->setSpaceAfterBlocks("\n");
 
-        self::assertSame('
+        self::assertSame(
+            '
 .main, .test {font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;background: white;}
 @media screen {
 	.main {background-size: 100% 100%;font-size: 1.3em;background-color: #fff;}
 }
-', $this->document->render($outputFormat));
+',
+            $this->document->render($outputFormat)
+        );
     }
 
     /**
@@ -229,7 +233,8 @@ EOT;
             ->setSpaceBetweenBlocks("\n")
             ->setSpaceAfterBlocks("\n");
 
-        self::assertSame('
+        self::assertSame(
+            '
 .main, .test {
 	font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;
 	background: white;
@@ -241,7 +246,9 @@ EOT;
 		background-color: #fff;
 	}
 }
-', $this->document->render($outputFormat));
+',
+            $this->document->render($outputFormat)
+        );
     }
 
     /**
@@ -273,7 +280,8 @@ EOT;
             ->setSpaceAfterBlocks("\n")
             ->setIndentation('');
 
-        self::assertSame('
+        self::assertSame(
+            '
 .main, .test {
 font: italic normal bold 16px/1.2 "Helvetica",Verdana,sans-serif;
 background: white;
@@ -285,7 +293,9 @@ font-size: 1.3em;
 background-color: #fff;
 }
 }
-', $this->document->render($outputFormat));
+',
+            $this->document->render($outputFormat)
+        );
     }
 
     /**
