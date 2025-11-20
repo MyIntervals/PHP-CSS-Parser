@@ -13,14 +13,14 @@ parameters:
 			path: ../src/CSSList/CSSList.php
 
 		-
-			message: '#^Parameters should have "string\|null" types as the only types passed to this method$#'
-			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 1
-			path: ../src/CSSList/Document.php
-
-		-
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: ../src/Parsing/ParserState.php
+
+		-
+			message: '#^Parameters should have "string\|int\|null" types as the only types passed to this method$#'
+			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
 			path: ../src/Parsing/ParserState.php
 
