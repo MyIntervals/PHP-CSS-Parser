@@ -619,6 +619,7 @@ class Sabberworm\CSS\CSSList\Document#4 (2) {
 ## Class diagram
 
 ```mermaid
+    %% start of the generated part
 classDiagram
     direction LR
 
@@ -729,80 +730,136 @@ classDiagram
     CSSListItem <|-- AtRule: inheritance
     AtRule <|.. AtRuleBlockList: realization
     CSSBlockList <|-- AtRuleBlockList: inheritance
+    AtRuleBlockList ..> OutputFormat: dependency
     AtRule <|.. AtRuleSet: realization
+    AtRuleSet ..> OutputFormat: dependency
     RuleSet <|-- AtRuleSet: inheritance
     CSSList <|-- CSSBlockList: inheritance
     Renderable <|-- CSSElement: inheritance
+    CSSFunction ..> OutputFormat: dependency
+    CSSFunction ..> ParserState: dependency
     ValueList <|-- CSSFunction: inheritance
+    CSSList ..> AtRuleBlockList: dependency
+    CSSList ..> AtRuleSet: dependency
     CSSElement <|.. CSSList: realization
     CSSListItem <|.. CSSList: realization
+    CSSList ..> CSSNamespace: dependency
     CSSList ..> Charset: dependency
     CSSList ..> Import: dependency
+    CSSList ..> KeyFrame: dependency
+    CSSList ..> OutputFormat: dependency
+    CSSList ..> ParserState: dependency
     Positionable <|.. CSSList: realization
+    CSSList ..> Selector: dependency
+    CSSList ..> SourceException: dependency
+    CSSList ..> UnexpectedTokenException: dependency
     Commentable <|-- CSSListItem: inheritance
     Renderable <|-- CSSListItem: inheritance
     AtRule <|.. CSSNamespace: realization
+    CSSNamespace ..> OutputFormat: dependency
     Positionable <|.. CSSNamespace: realization
+    CSSString ..> OutputFormat: dependency
+    CSSString ..> ParserState: dependency
     PrimitiveValue <|-- CSSString: inheritance
+    CSSString ..> SourceException: dependency
     CSSFunction <|-- CalcFunction: inheritance
+    CalcFunction ..> CalcRuleValueList: dependency
+    CalcFunction ..> ParserState: dependency
+    CalcFunction ..> RuleValueList: dependency
+    CalcFunction ..> UnexpectedTokenException: dependency
+    CalcRuleValueList ..> OutputFormat: dependency
     RuleValueList <|-- CalcRuleValueList: inheritance
     AtRule <|.. Charset: realization
     Charset ..> CSSString: dependency
+    Charset ..> OutputFormat: dependency
     Positionable <|.. Charset: realization
     CSSFunction <|-- Color: inheritance
+    Color ..> OutputFormat: dependency
+    Color ..> ParserState: dependency
+    Color ..> Size: dependency
+    Color ..> UnexpectedTokenException: dependency
+    Comment ..> OutputFormat: dependency
     Positionable <|.. Comment: realization
     Renderable <|.. Comment: realization
     CSSElement <|.. DeclarationBlock: realization
     CSSListItem <|.. DeclarationBlock: realization
+    DeclarationBlock ..> KeyframeSelector: dependency
+    DeclarationBlock ..> OutputException: dependency
+    DeclarationBlock ..> OutputFormat: dependency
+    DeclarationBlock ..> ParserState: dependency
     Positionable <|.. DeclarationBlock: realization
+    DeclarationBlock ..> Rule: dependency
     RuleContainer <|.. DeclarationBlock: realization
-    DeclarationBlock ..> RuleSet : dependency
+    DeclarationBlock ..> RuleSet: dependency
     DeclarationBlock ..> Selector: dependency
+    DeclarationBlock ..> UnexpectedTokenException: dependency
     CSSBlockList <|-- Document: inheritance
+    Document ..> OutputFormat: dependency
+    Document ..> ParserState: dependency
     AtRule <|.. Import: realization
+    Import ..> OutputFormat: dependency
     Positionable <|.. Import: realization
+    Import ..> URL: dependency
     AtRule <|.. KeyFrame: realization
     CSSList <|-- KeyFrame: inheritance
+    KeyFrame ..> OutputFormat: dependency
     Selector <|-- KeyframeSelector: inheritance
+    LineName ..> OutputFormat: dependency
+    LineName ..> ParserState: dependency
     ValueList <|-- LineName: inheritance
     SourceException <|-- OutputException: inheritance
     OutputFormat ..> OutputFormatter: dependency
+    OutputFormatter ..> Commentable: dependency
+    OutputFormatter ..> InvalidArgumentException: dependency
     OutputFormatter ..> OutputFormat: dependency
+    Parser ..> Document: dependency
     Parser ..> ParserState: dependency
+    ParserState ..> Anchor: dependency
+    ParserState ..> Comment: dependency
     ParserState ..> Settings: dependency
+    ParserState ..> SourceException: dependency
+    ParserState ..> UnexpectedEOFException: dependency
+    ParserState ..> UnexpectedTokenException: dependency
     Value <|-- PrimitiveValue: inheritance
+    Renderable ..> OutputFormat: dependency
     CSSElement <|.. Rule: realization
     Commentable <|.. Rule: realization
+    Rule ..> OutputFormat: dependency
+    Rule ..> ParserState: dependency
     Positionable <|.. Rule: realization
     Rule ..> RuleValueList: dependency
+    RuleContainer ..> Rule: dependency
     CSSElement <|.. RuleSet: realization
     CSSListItem <|.. RuleSet: realization
+    RuleSet ..> OutputFormat: dependency
+    RuleSet ..> ParserState: dependency
     Positionable <|.. RuleSet: realization
     RuleSet ..> Rule: dependency
     RuleContainer <|.. RuleSet: realization
+    RuleSet ..> UnexpectedValueException: dependency
     ValueList <|-- RuleValueList: inheritance
+    Selector ..> OutputFormat: dependency
     Renderable <|.. Selector: realization
+    Size ..> OutputFormat: dependency
+    Size ..> ParserState: dependency
     PrimitiveValue <|-- Size: inheritance
     Exception <|-- SourceException: inheritance
     Positionable <|.. SourceException: realization
     URL ..> CSSString: dependency
+    URL ..> OutputFormat: dependency
+    URL ..> ParserState: dependency
     PrimitiveValue <|-- URL: inheritance
     UnexpectedTokenException <|-- UnexpectedEOFException: inheritance
     SourceException <|-- UnexpectedTokenException: inheritance
     CSSElement <|.. Value: realization
+    Value ..> CSSFunction: dependency
+    Value ..> ParserState: dependency
     Positionable <|.. Value: realization
+    Value ..> RuleValueList: dependency
+    Value ..> UnexpectedTokenException: dependency
+    ValueList ..> OutputFormat: dependency
     Value <|-- ValueList: inheritance
-
-    CSSList ..> CSSList: dependency
-    CSSList ..> Comment: dependency
-    CSSList ..> RuleSet: dependency
-    CSSNamespace ..> Comment: dependency
-    Charset ..> Comment: dependency
-    Import ..> Comment: dependency
-    OutputFormat ..> OutputFormat: dependency
-    Rule ..> Comment: dependency
-    RuleSet ..> Comment: dependency
-    ValueList ..> Value: dependency
+    %% end of the generated part
 ```
 
 ## API and deprecation policy
