@@ -48,6 +48,9 @@ final class AtRuleBlockListTest extends TestCase
                     }
                 ',
             ],
+            'container' => [
+                '@container (min-width: 60rem) { .items { background: blue; } }',
+            ],
         ];
     }
 

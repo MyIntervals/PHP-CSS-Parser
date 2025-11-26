@@ -10,6 +10,8 @@ Please also have a look at our
 
 ### Added
 
+- Support for CSS container queries (#1400)
+
 ### Changed
 
 ### Deprecated
