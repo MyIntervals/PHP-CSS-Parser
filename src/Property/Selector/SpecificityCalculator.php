@@ -15,8 +15,6 @@ final class SpecificityCalculator
 {
     /**
      * regexp for specificity calculations
-     *
-     * @var non-empty-string
      */
     private const NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX = '/
         (\\.[\\w]+)                   # classes
@@ -39,8 +37,6 @@ final class SpecificityCalculator
 
     /**
      * regexp for specificity calculations
-     *
-     * @var non-empty-string
      */
     private const ELEMENTS_AND_PSEUDO_ELEMENTS_RX = '/
         ((^|[\\s\\+\\>\\~]+)[\\w]+   # elements

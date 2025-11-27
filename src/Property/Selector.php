@@ -17,8 +17,6 @@ use function Safe\preg_match;
 class Selector implements Renderable
 {
     /**
-     * @var non-empty-string
-     *
      * @internal since 8.5.2
      */
     public const SELECTOR_VALIDATION_RX = '/

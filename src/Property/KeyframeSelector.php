@@ -11,8 +11,6 @@ class KeyframeSelector extends Selector
      * - comma is not allowed unless escaped or quoted;
      * - percentage value is allowed by itself.
      *
-     * @var non-empty-string
-     *
      * @internal since 8.5.2
      */
     public const SELECTOR_VALIDATION_RX = '/

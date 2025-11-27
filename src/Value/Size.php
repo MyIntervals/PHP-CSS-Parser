@@ -19,8 +19,6 @@ class Size extends PrimitiveValue
 {
     /**
      * vh/vw/vm(ax)/vmin/rem are absolute insofar as they don’t scale to the immediate parent (only the viewport)
-     *
-     * @var list<non-empty-string>
      */
     private const ABSOLUTE_SIZE_UNITS = [
         'px',
@@ -40,14 +38,8 @@ class Size extends PrimitiveValue
         'rem',
     ];
 
-    /**
-     * @var list<non-empty-string>
-     */
     private const RELATIVE_SIZE_UNITS = ['%', 'em', 'ex', 'ch', 'fr'];
 
-    /**
-     * @var list<non-empty-string>
-     */
     private const NON_SIZE_UNITS = ['deg', 'grad', 'rad', 's', 'ms', 'turn', 'Hz', 'kHz'];
 
     /**
