@@ -15,9 +15,6 @@ use Sabberworm\CSS\Parsing\OutputException;
  */
 final class OutputFormatTest extends TestCase
 {
-    /**
-     * @var string
-     */
     private const TEST_CSS = <<<EOT
 
 .main, .test {

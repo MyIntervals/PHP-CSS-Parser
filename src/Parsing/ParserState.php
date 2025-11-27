@@ -16,9 +16,6 @@ use function Safe\preg_split;
  */
 class ParserState
 {
-    /**
-     * @var null
-     */
     public const EOF = null;
 
     /**

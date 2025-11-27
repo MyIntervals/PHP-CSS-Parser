@@ -10,14 +10,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
 class CalcFunction extends CSSFunction
 {
-    /**
-     * @var int
-     */
     private const T_OPERAND = 1;
-
-    /**
-     * @var int
-     */
     private const T_OPERATOR = 2;
 
     /**

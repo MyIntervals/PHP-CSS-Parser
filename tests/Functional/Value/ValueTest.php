@@ -20,8 +20,6 @@ final class ValueTest extends TestCase
      * the default set of delimiters for parsing most values
      *
      * @see \Sabberworm\CSS\Rule\Rule::listDelimiterForRule
-     *
-     * @var list<non-empty-string>
      */
     private const DEFAULT_DELIMITERS = [',', ' ', '/'];
 
