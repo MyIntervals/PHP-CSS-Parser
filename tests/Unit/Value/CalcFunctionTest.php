@@ -96,7 +96,7 @@ final class CalcFunctionTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: string, 1: string}>
+     * @return array<string, array{0: non-empty-string, 1: non-empty-string}>
      */
     public function provideValidOperatorSyntax(): array
     {
@@ -123,7 +123,7 @@ final class CalcFunctionTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: string, 1: string}>
+     * @return array<string, array{0: non-empty-string, 1: non-empty-string}>
      */
     public function provideMultiline(): array
     {
@@ -151,7 +151,7 @@ final class CalcFunctionTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: string}>
+     * @return array<string, array{0: non-empty-string}>
      */
     public function provideInvalidSyntax(): array
     {
@@ -188,9 +188,6 @@ final class CalcFunctionTest extends TestCase
 
     /**
      * Parse provided CSS as a CalcFunction
-     *
-     * @param string $css
-     * @return CalcFunction
      */
     private function parse(string $css): CalcFunction
     {
