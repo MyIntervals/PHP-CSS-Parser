@@ -10,7 +10,7 @@ Please also have a look at our
 
 ### Added
 
-- Support for CSS container queries (#1400)
+- Add support for CSS container queries (#1400)
 
 ### Changed
 
@@ -22,7 +22,7 @@ Please also have a look at our
 
 - Use typesafe versions of PHP functions (#1379, #1380, #1382, #1383, #1384)
 - Fix parsing of `calc` expressions when a newline immediately precedes or
-  follows a + or - operator (#1399)
+  follows a `+` or `-` operator (#1399)
 
 ### Documentation
 

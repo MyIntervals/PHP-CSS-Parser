@@ -7,6 +7,9 @@ namespace Sabberworm\CSS\Tests\Unit\Property;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Property\AtRule;
 
+/**
+ * @covers \Sabberworm\CSS\Property\AtRule
+ */
 final class AtRuleTest extends TestCase
 {
     /**
