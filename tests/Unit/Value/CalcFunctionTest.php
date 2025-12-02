@@ -33,7 +33,6 @@ final class CalcFunctionTest extends TestCase
         self::assertCount(1, $args);
         self::assertInstanceOf(CalcRuleValueList::class, $args[0]);
 
-        /** @var CalcRuleValueList $value */
         $value = $args[0];
         $components = $value->getListComponents();
         self::assertCount(3, $components); // 100%, -, 20px
@@ -63,11 +62,9 @@ final class CalcFunctionTest extends TestCase
         self::assertCount(3, $components);
         self::assertSame('-', $components[1]);
 
-        /** @var CalcFunction */
         $nestedCalc = $components[2];
         self::assertInstanceOf(CalcFunction::class, $nestedCalc);
 
-        /** @var CalcRuleValueList $nestedValue */
         $nestedValue = $nestedCalc->getArguments()[0];
         self::assertInstanceOf(CalcRuleValueList::class, $nestedValue);
         $nestedComponents = $nestedValue->getListComponents();
