@@ -242,6 +242,22 @@ final class CSSListTest extends TestCase
     /**
      * @test
      */
+    public function removeDeclarationBlockBySelectorRemovesDeclarationBlockWithSelectorsInReverseOrder(): void
+    {
+        $subject = new ConcreteCSSList();
+        $declarationBlock = new DeclarationBlock();
+        $declarationBlock->setSelectors(['html', 'body']);
+        $subject->setContents([$declarationBlock]);
+        self::assertNotSame([], $subject->getContents()); // make sure contents are set
+
+        $subject->removeDeclarationBlockBySelector([new Selector('body'), new Selector('html')]);
+
+        self::assertSame([], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
     public function removeDeclarationBlockBySelectorRemovesDeclarationBlockWithStringSelectorsProvided(): void
     {
         $subject = new ConcreteCSSList();

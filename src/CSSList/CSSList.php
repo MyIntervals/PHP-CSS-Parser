@@ -370,7 +370,7 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
             if (!($item instanceof DeclarationBlock)) {
                 continue;
             }
-            if ($item->getSelectors() == $selectors) {
+            if (self::selectorsMatch($item->getSelectors(), $selectors)) {
                 unset($this->contents[$key]);
                 if (!$removeAll) {
                     return;
@@ -426,5 +426,35 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
     public function getContents(): array
     {
         return $this->contents;
+    }
+
+    /**
+     * @param list<Selector> $selectors1
+     * @param list<Selector> $selectors2
+     */
+    private static function selectorsMatch(array $selectors1, array $selectors2): bool
+    {
+        $selectorStrings1 = self::getSelectorStrings($selectors1);
+        $selectorStrings2 = self::getSelectorStrings($selectors2);
+
+        \sort($selectorStrings1);
+        \sort($selectorStrings2);
+
+        return $selectorStrings1 === $selectorStrings2;
+    }
+
+    /**
+     * @param list<Selector> $selectors
+     *
+     * @return list<string>
+     */
+    private static function getSelectorStrings(array $selectors): array
+    {
+        return \array_map(
+            static function (Selector $selector): string {
+                return $selector->getSelector();
+            },
+            $selectors
+        );
     }
 }

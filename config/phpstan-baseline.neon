@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
-			identifier: equal.notAllowed
-			count: 1
-			path: ../src/CSSList/CSSList.php
-
-		-
 			message: '#^Parameter \#2 \$found of class Sabberworm\\CSS\\Parsing\\UnexpectedTokenException constructor expects string, Sabberworm\\CSS\\Value\\CSSFunction\|Sabberworm\\CSS\\Value\\CSSString\|Sabberworm\\CSS\\Value\\LineName\|Sabberworm\\CSS\\Value\\Size\|Sabberworm\\CSS\\Value\\URL given\.$#'
 			identifier: argument.type
 			count: 1
