@@ -429,18 +429,18 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
     }
 
     /**
-     * @param list<Selector> $lhs
-     * @param list<Selector> $rhs
+     * @param list<Selector> $selectors1
+     * @param list<Selector> $selectors2
      */
-    private static function selectorsMatch(array $lhs, array $rhs): bool
+    private static function selectorsMatch(array $selectors1, array $selectors2): bool
     {
-        $lhsStrings = self::getSelectorStrings($lhs);
-        $rhsStrings = self::getSelectorStrings($rhs);
+        $selectorStrings1 = self::getSelectorStrings($selectors1);
+        $selectorStrings2 = self::getSelectorStrings($selectors2);
 
-        \sort($lhsStrings);
-        \sort($rhsStrings);
+        \sort($selectorStrings1);
+        \sort($selectorStrings2);
 
-        return $lhsStrings === $rhsStrings;
+        return $selectorStrings1 === $selectorStrings2;
     }
 
     /**
