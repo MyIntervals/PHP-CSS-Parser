@@ -15,8 +15,7 @@ use Sabberworm\CSS\Parsing\OutputException;
  */
 final class OutputFormatTest extends TestCase
 {
-    private const TEST_CSS = <<<EOT
-
+    private const TEST_CSS = '
 .main, .test {
 	font: italic normal bold 16px/1.2 "Helvetica", Verdana, sans-serif;
 	background: white;
@@ -29,8 +28,7 @@ final class OutputFormatTest extends TestCase
 		background-color: #fff;
 	}
 }
-
-EOT;
+';
 
     /**
      * @var Parser
