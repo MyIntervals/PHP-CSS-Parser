@@ -23,6 +23,7 @@ Please also have a look at our
 
 ### Fixed
 
+- Allow `removeDeclarationBlockBySelector()` to be order-insensitve (#1406)
 - Fix parsing of `calc` expressions when a newline immediately precedes or
   follows a `+` or `-` operator (#1399)
 - Use typesafe versions of PHP functions (#1379, #1380, #1382, #1383, #1384)
