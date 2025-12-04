@@ -36,7 +36,7 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     use Position;
 
     /**
-     * @var array<Selector|string>
+     * @var list<Selector>
      */
     private $selectors = [];
 
@@ -146,11 +146,13 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     public function setSelectors($selectors, ?CSSList $list = null): void
     {
         if (\is_array($selectors)) {
-            $this->selectors = $selectors;
+            $selectorsToSet = $selectors;
         } else {
-            $this->selectors = \explode(',', $selectors);
+            $selectorsToSet = \explode(',', $selectors);
         }
-        foreach ($this->selectors as $key => $selector) {
+
+        // Convert all items to a `Selector` if not already
+        foreach ($selectorsToSet as $key => $selector) {
             if (!($selector instanceof Selector)) {
                 if ($list === null || !($list instanceof KeyFrame)) {
                     if (!Selector::isValid($selector)) {
@@ -160,7 +162,7 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
                             'custom'
                         );
                     }
-                    $this->selectors[$key] = new Selector($selector);
+                    $selectorsToSet[$key] = new Selector($selector);
                 } else {
                     if (!KeyframeSelector::isValid($selector)) {
                         throw new UnexpectedTokenException(
@@ -169,10 +171,13 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
                             'custom'
                         );
                     }
-                    $this->selectors[$key] = new KeyframeSelector($selector);
+                    $selectorsToSet[$key] = new KeyframeSelector($selector);
                 }
             }
         }
+
+        // Discard the keys and reindex the array
+        $this->selectors = \array_values($selectorsToSet);
     }
 
     /**
@@ -195,7 +200,7 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     }
 
     /**
-     * @return array<Selector>
+     * @return list<Selector>
      */
     public function getSelectors(): array
     {

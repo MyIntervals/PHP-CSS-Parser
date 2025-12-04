@@ -278,4 +278,19 @@ final class DeclarationBlockTest extends TestCase
 
         self::assertSame($lineNumber, $result->getLineNumber());
     }
+
+    /**
+     * @test
+     *
+     * Any type of array may be passed to the method, but the resultant property should be a `list`.
+     */
+    public function setSelectorsIgnoresKeys(): void
+    {
+        $subject = new DeclarationBlock();
+        $subject->setSelectors(['Bob' => 'html', 'Mary' => 'body']);
+
+        $result = $subject->getSelectors();
+
+        self::assertSame([0, 1], \array_keys($result));
+    }
 }

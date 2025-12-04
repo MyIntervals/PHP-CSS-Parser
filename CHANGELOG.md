@@ -14,6 +14,9 @@ Please also have a look at our
 
 ### Changed
 
+- The array keys passed to `DeclarationBlock::setSelectors()` are no longer
+  preserved (#1407)
+
 ### Deprecated
 
 ### Removed
