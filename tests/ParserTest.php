@@ -570,11 +570,10 @@ body {font-size: 1.6em;}';
     public function comments(): void
     {
         $document = self::parsedStructureForFile('comments');
-        $expected = <<<EXPECTED
-@import url("some/url.css") screen;
-.foo, #bar {background-color: #000;}
-@media screen {#foo.bar {position: absolute;}}
-EXPECTED;
+
+        $expected = "@import url(\"some/url.css\") screen;\n"
+            . ".foo, #bar {background-color: #000;}\n"
+            . '@media screen {#foo.bar {position: absolute;}}';
         self::assertSame($expected, $document->render());
     }
 
