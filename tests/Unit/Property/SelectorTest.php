@@ -141,4 +141,29 @@ final class SelectorTest extends TestCase
     {
         self::assertFalse(Selector::isValid($selector));
     }
+
+    /**
+     * @test
+     */
+    public function cleanupSpacesWithinSelector(): void
+    {
+        $selector = <<<'CSS'
+        p    >
+            small
+        CSS;
+
+        $subject = new Selector($selector);
+
+        self::assertSame('p > small', $subject->getSelector());
+    }
+
+    /**
+     * @test
+     */
+    public function doNotCleanupSpacesWithinAttributeSelector(): void
+    {
+        $subject = new Selector('a[title="extra  space"]');
+
+        self::assertSame('a[title="extra  space"]', $subject->getSelector());
+    }
 }
