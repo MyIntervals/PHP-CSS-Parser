@@ -75,7 +75,9 @@ class Selector implements Renderable
 
     public function setSelector(string $selector): void
     {
-        $this->selector = preg_replace('/\s{1,}/', ' ', \trim($selector));
+        $selector = \trim($selector);
+
+        $this->selector = !str_contains($selector, '[') ? preg_replace('/\s{2,}/', ' ', $selector) : $selector;
     }
 
     /**
