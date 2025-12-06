@@ -770,7 +770,7 @@ body {background-color: red;}';
         $document = self::parsedStructureForFile('selector-ignores', Settings::create()->withMultibyteSupport(true));
         $expected = '.some[selectors-may=\'contain-a-{\'] {}'
             . "\n"
-            . '.this-selector  .valid {width: 100px;}'
+            . '.this-selector .valid {width: 100px;}'
             . "\n"
             . '@media only screen and (min-width: 200px) {.test {prop: val;}}';
         self::assertSame($expected, $document->render());
