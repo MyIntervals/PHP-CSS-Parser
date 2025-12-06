@@ -145,12 +145,11 @@ final class SelectorTest extends TestCase
     /**
      * @test
      */
-    public function cleanupSpacesWithinSelector(): void
+    public function cleansUpSpacesTabsAndNewLinesWithinSelector(): void
     {
-        $selector = <<<'CSS'
-        p    >
+        $selector = "p  \t  >
             small
-        CSS;
+        ";
 
         $subject = new Selector($selector);
 
@@ -160,7 +159,7 @@ final class SelectorTest extends TestCase
     /**
      * @test
      */
-    public function doNotCleanupSpacesWithinAttributeSelector(): void
+    public function doesNotCleanupSpacesWithinAttributeSelector(): void
     {
         $subject = new Selector('a[title="extra  space"]');
 
