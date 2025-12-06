@@ -145,16 +145,41 @@ final class SelectorTest extends TestCase
     /**
      * @test
      */
-    public function cleansUpSpacesTabsAndNewLinesWithinSelector(): void
+    public function cleansUpSpacesWithinSelector(): void
     {
-        $selector = "p  \t  >
-            small
-        ";
+        $selector = 'p   >    small';
 
         $subject = new Selector($selector);
 
         self::assertSame('p > small', $subject->getSelector());
     }
+
+    /**
+     * @test
+     */
+    public function cleansUpTabsWithinSelector(): void
+    {
+        $selector = "p\t>\tsmall";
+
+        $subject = new Selector($selector);
+
+        self::assertSame('p > small', $subject->getSelector());
+    }
+
+    /**
+     * @test
+     */
+    public function cleansUpNewLineWithinSelector(): void
+    {
+        $selector = "p
+>
+small";
+
+        $subject = new Selector($selector);
+
+        self::assertSame('p > small', $subject->getSelector());
+    }
+
 
     /**
      * @test
