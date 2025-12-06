@@ -77,7 +77,7 @@ class Selector implements Renderable
     {
         $selector = \trim($selector);
 
-        $this->selector = !str_contains($selector, '[') ? preg_replace('/\s{2,}/', ' ', $selector) : $selector;
+        $this->selector = !str_contains($selector, '[') ? preg_replace('/\\s++/', ' ', $selector) : $selector;
     }
 
     /**
