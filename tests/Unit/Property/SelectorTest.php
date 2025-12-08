@@ -171,9 +171,7 @@ final class SelectorTest extends TestCase
      */
     public function cleansUpNewLineWithinSelector(): void
     {
-        $selector = "p
->
-small";
+        $selector = "p\n>\nsmall";
 
         $subject = new Selector($selector);
 
