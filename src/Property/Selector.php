@@ -79,6 +79,7 @@ class Selector implements Renderable
 
         $hasAttribute = \strpos($selector, '[') !== false;
 
+        // Whitespace can't be adjusted within an attribute selector, as it would change its meaning
         $this->selector = !$hasAttribute ? preg_replace('/\\s++/', ' ', $selector) : $selector;
     }
 
