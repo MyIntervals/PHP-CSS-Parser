@@ -9,4 +9,5 @@
       <property name="absoluteLineLimit" value="120"/>
     </properties>
   </rule>
+  <rule ref="Squiz.PHP.Heredoc"/>
 </ruleset>
