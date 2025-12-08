@@ -9,6 +9,7 @@ use Sabberworm\CSS\Property\Selector\SpecificityCalculator;
 use Sabberworm\CSS\Renderable;
 
 use function Safe\preg_match;
+use function Safe\preg_replace;
 
 /**
  * Class representing a single CSS selector. Selectors have to be split by the comma prior to being passed into this
@@ -74,7 +75,12 @@ class Selector implements Renderable
 
     public function setSelector(string $selector): void
     {
-        $this->selector = \trim($selector);
+        $selector = \trim($selector);
+
+        $hasAttribute = \strpos($selector, '[') !== false;
+
+        // Whitespace can't be adjusted within an attribute selector, as it would change its meaning
+        $this->selector = !$hasAttribute ? preg_replace('/\\s++/', ' ', $selector) : $selector;
     }
 
     /**

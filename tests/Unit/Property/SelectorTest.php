@@ -141,4 +141,51 @@ final class SelectorTest extends TestCase
     {
         self::assertFalse(Selector::isValid($selector));
     }
+
+    /**
+     * @test
+     */
+    public function cleansUpSpacesWithinSelector(): void
+    {
+        $selector = 'p   >    small';
+
+        $subject = new Selector($selector);
+
+        self::assertSame('p > small', $subject->getSelector());
+    }
+
+    /**
+     * @test
+     */
+    public function cleansUpTabsWithinSelector(): void
+    {
+        $selector = "p\t>\tsmall";
+
+        $subject = new Selector($selector);
+
+        self::assertSame('p > small', $subject->getSelector());
+    }
+
+    /**
+     * @test
+     */
+    public function cleansUpNewLineWithinSelector(): void
+    {
+        $selector = "p\n>\nsmall";
+
+        $subject = new Selector($selector);
+
+        self::assertSame('p > small', $subject->getSelector());
+    }
+
+
+    /**
+     * @test
+     */
+    public function doesNotCleanupSpacesWithinAttributeSelector(): void
+    {
+        $subject = new Selector('a[title="extra  space"]');
+
+        self::assertSame('a[title="extra  space"]', $subject->getSelector());
+    }
 }
