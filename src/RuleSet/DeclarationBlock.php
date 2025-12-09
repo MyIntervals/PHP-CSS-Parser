@@ -255,7 +255,7 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     }
 
     /**
-     * @param array<int, Comment> $comments
+     * @param list<Comment> $comments
      *
      * @return list<string>
      *
