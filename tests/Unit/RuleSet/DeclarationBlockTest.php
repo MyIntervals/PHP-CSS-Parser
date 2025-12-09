@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Rule\Rule;
@@ -292,5 +293,74 @@ final class DeclarationBlockTest extends TestCase
         $result = $subject->getSelectors();
 
         self::assertSame([0, 1], \array_keys($result));
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $selector
+     *
+     * @dataProvider provideSelector
+     */
+    public function setSelectorsSetsSingleSelectorProvidedAsString(string $selector): void
+    {
+        $subject = new DeclarationBlock();
+
+        $subject->setSelectors($selector);
+
+        $result = $subject->getSelectors();
+        self::assertSame([$selector], self::getSelectorsAsStrings($subject));
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $firstSelector
+     * @param non-empty-string $secondSelector
+     *
+     * @dataProvider provideTwoSelectors
+     */
+    public function setSelectorsSetsTwoCommaSeparatedSelectorsProvidedAsString(
+        string $firstSelector,
+        string $secondSelector
+    ): void {
+        $joinedSelectors = $firstSelector . ', ' . $secondSelector;
+        $subject = new DeclarationBlock();
+
+        $subject->setSelectors($joinedSelectors);
+
+        $result = $subject->getSelectors();
+        self::assertSame([$firstSelector, $secondSelector], self::getSelectorsAsStrings($subject));
+    }
+
+    /**
+     * Provides selectors that would be parsed without error in the context of full CSS, but are nonetheless invalid.
+     *
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideInvalidStandaloneSelector(): array
+    {
+        return [
+            'rogue `{`' => ['a { b'],
+            'rogue `}`' => ['a } b'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $selector
+     *
+     * @dataProvider provideInvalidSelector
+     * @dataProvider provideInvalidStandaloneSelector
+     */
+    public function setSelectorsThrowsExceptionWithInvalidSelector(string $selector): void
+    {
+        $this->expectException(UnexpectedTokenException::class);
+        $this->expectExceptionMessageMatches('/^Selector\\(s\\) string is not valid. /');
+
+        $subject = new DeclarationBlock();
+
+        $subject->setSelectors($selector);
     }
 }

@@ -20,6 +20,7 @@ use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Property\KeyframeSelector;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Rule\Rule;
+use Sabberworm\CSS\Settings;
 
 /**
  * This class represents a `RuleSet` constrained by a `Selector`.
@@ -98,7 +99,25 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
         if (\is_array($selectors)) {
             $selectorsToSet = $selectors;
         } else {
-            $selectorsToSet = \explode(',', $selectors);
+            // A string of comma-separated selectors requires parsing.
+            // Parse as if it's the opening part of a rule.
+            try {
+                $parserState = new ParserState($selectors . '{', Settings::create());
+                $selectorsToSet = self::parseSelectors($parserState);
+                $parserState->consume('{'); // throw exception if this is not next
+                if (!$parserState->isEnd()) {
+                    throw new UnexpectedTokenException('EOF', 'more');
+                }
+            } catch (UnexpectedTokenException $exception) {
+                // The exception message from parsing may refer to the faux `{` block start token,
+                // which would be confusing.
+                // Rethrow with a more useful message, that also includes the selector(s) string that was passed.
+                throw new UnexpectedTokenException(
+                    'Selector(s) string is not valid.',
+                    $selectors,
+                    'custom'
+                );
+            }
         }
 
         // Convert all items to a `Selector` if not already
@@ -261,7 +280,7 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
      *
      * @throws UnexpectedTokenException
      */
-    private static function parseSelectors(ParserState $parserState, array &$comments): array
+    private static function parseSelectors(ParserState $parserState, array &$comments = []): array
     {
         $selectors = [];
         $selectorParts = [];

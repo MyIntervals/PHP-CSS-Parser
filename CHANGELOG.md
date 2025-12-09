@@ -24,6 +24,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Support attribute selectors with values containing commas in
+  `DeclarationBlock::setSelectors()` (#1419)
 - Allow `removeDeclarationBlockBySelector()` to be order-insensitve (#1406)
 - Fix parsing of `calc` expressions when a newline immediately precedes or
   follows a `+` or `-` operator (#1399)
