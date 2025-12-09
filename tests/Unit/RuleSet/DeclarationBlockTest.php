@@ -334,15 +334,30 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
+     * Provides selectors that would be parsed without error in the context of full CSS, but are nonetheless invalid.
+     *
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideInvalidStandaloneSelector(): array
+    {
+        return [
+            'rogue `{`' => ['a { b'],
+            'rogue `}`' => ['a } b'],
+        ];
+    }
+
+    /**
      * @test
      *
      * @param non-empty-string $selector
      *
      * @dataProvider provideInvalidSelector
+     * @dataProvider provideInvalidStandaloneSelector
      */
     public function setSelectorsThrowsExceptionWithInvalidSelector(string $selector): void
     {
         $this->expectException(UnexpectedTokenException::class);
+        $this->expectExceptionMessageMatches('/^Selector\\(s\\) string is not valid. /');
 
         $subject = new DeclarationBlock();
 
