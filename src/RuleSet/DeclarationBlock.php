@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\RuleSet;
 
+use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\Comment\CommentContainer;
 use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\CSSList\CSSList;
@@ -65,58 +66,7 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
         $comments = [];
         $result = new DeclarationBlock($parserState->currentLine());
         try {
-            $selectors = [];
-            $selectorParts = [];
-            $stringWrapperCharacter = null;
-            $functionNestingLevel = 0;
-            $consumedNextCharacter = false;
-            static $stopCharacters = ['{', '}', '\'', '"', '(', ')', ','];
-            do {
-                if (!$consumedNextCharacter) {
-                    $selectorParts[] = $parserState->consume(1);
-                }
-                $selectorParts[] = $parserState->consumeUntil($stopCharacters, false, false, $comments);
-                $nextCharacter = $parserState->peek();
-                $consumedNextCharacter = false;
-                switch ($nextCharacter) {
-                    case '\'':
-                        // The fallthrough is intentional.
-                    case '"':
-                        if (!\is_string($stringWrapperCharacter)) {
-                            $stringWrapperCharacter = $nextCharacter;
-                        } elseif ($stringWrapperCharacter === $nextCharacter) {
-                            if (\substr(\end($selectorParts), -1) !== '\\') {
-                                $stringWrapperCharacter = null;
-                            }
-                        }
-                        break;
-                    case '(':
-                        if (!\is_string($stringWrapperCharacter)) {
-                            ++$functionNestingLevel;
-                        }
-                        break;
-                    case ')':
-                        if (!\is_string($stringWrapperCharacter)) {
-                            if ($functionNestingLevel <= 0) {
-                                throw new UnexpectedTokenException('anything but', ')');
-                            }
-                            --$functionNestingLevel;
-                        }
-                        break;
-                    case ',':
-                        if (!\is_string($stringWrapperCharacter) && $functionNestingLevel === 0) {
-                            $selectors[] = \implode('', $selectorParts);
-                            $selectorParts = [];
-                            $parserState->consume(1);
-                            $consumedNextCharacter = true;
-                        }
-                        break;
-                }
-            } while (!\in_array($nextCharacter, ['{', '}'], true) || \is_string($stringWrapperCharacter));
-            if ($functionNestingLevel !== 0) {
-                throw new UnexpectedTokenException(')', $nextCharacter);
-            }
-            $selectors[] = \implode('', $selectorParts); // add final or only selector
+            $selectors = self::parseSelectors($parserState, $comments);
             $result->setSelectors($selectors, $list);
             if ($parserState->comes('{')) {
                 $parserState->consume(1);
@@ -302,5 +252,72 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
         $result .= $outputFormat->getContentAfterDeclarationBlock();
 
         return $result;
+    }
+
+    /**
+     * @param array<int, Comment> $comments
+     *
+     * @return list<string>
+     *
+     * @throws UnexpectedTokenException
+     */
+    private static function parseSelectors(ParserState $parserState, array &$comments): array
+    {
+        $selectors = [];
+        $selectorParts = [];
+        $stringWrapperCharacter = null;
+        $functionNestingLevel = 0;
+        $consumedNextCharacter = false;
+        static $stopCharacters = ['{', '}', '\'', '"', '(', ')', ','];
+
+        do {
+            if (!$consumedNextCharacter) {
+                $selectorParts[] = $parserState->consume(1);
+            }
+            $selectorParts[] = $parserState->consumeUntil($stopCharacters, false, false, $comments);
+            $nextCharacter = $parserState->peek();
+            $consumedNextCharacter = false;
+            switch ($nextCharacter) {
+                case '\'':
+                    // The fallthrough is intentional.
+                case '"':
+                    if (!\is_string($stringWrapperCharacter)) {
+                        $stringWrapperCharacter = $nextCharacter;
+                    } elseif ($stringWrapperCharacter === $nextCharacter) {
+                        if (\substr(\end($selectorParts), -1) !== '\\') {
+                            $stringWrapperCharacter = null;
+                        }
+                    }
+                    break;
+                case '(':
+                    if (!\is_string($stringWrapperCharacter)) {
+                        ++$functionNestingLevel;
+                    }
+                    break;
+                case ')':
+                    if (!\is_string($stringWrapperCharacter)) {
+                        if ($functionNestingLevel <= 0) {
+                            throw new UnexpectedTokenException('anything but', ')');
+                        }
+                        --$functionNestingLevel;
+                    }
+                    break;
+                case ',':
+                    if (!\is_string($stringWrapperCharacter) && $functionNestingLevel === 0) {
+                        $selectors[] = \implode('', $selectorParts);
+                        $selectorParts = [];
+                        $parserState->consume(1);
+                        $consumedNextCharacter = true;
+                    }
+                    break;
+            }
+        } while (!\in_array($nextCharacter, ['{', '}'], true) || \is_string($stringWrapperCharacter));
+
+        if ($functionNestingLevel !== 0) {
+            throw new UnexpectedTokenException(')', $nextCharacter);
+        }
+        $selectors[] = \implode('', $selectorParts); // add final or only selector
+
+        return $selectors;
     }
 }
