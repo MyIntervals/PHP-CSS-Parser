@@ -13,3 +13,28 @@
    [Releases tab](https://github.com/MyIntervals/PHP-CSS-Parser/releases),
    create a new release and copy the change log entries to the new release.
 1. Post about the new release on social media.
+
+## Working with git tags
+
+List all tags:
+
+```bash
+git tag
+```
+
+Locally create a tag from the current `HEAD` commit and push it to the git
+remote `origin`:
+
+```bash
+git tag -a v4.2.0 -m "Tag version 4.2.0"
+git push --tags
+```
+
+Locally create a
+[GPG-signed](https://git-scm.com/book/ms/v2/Git-Tools-Signing-Your-Work) tag
+from the current `HEAD` commit and push it to the git remote `origin`:
+
+```bash
+git tag -a -s v4.2.0 -m "Tag version 4.2.0"
+git push --tags
+```
