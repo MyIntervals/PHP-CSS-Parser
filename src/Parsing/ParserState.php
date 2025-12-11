@@ -343,6 +343,7 @@ class ParserState
         $consumedCharacters = '';
         $start = $this->currentPosition;
 
+        $comments = \array_merge($comments, $this->consumeComments());
         while (!$this->isEnd()) {
             $character = $this->consume(1);
             if (\in_array($character, $stopCharacters, true)) {
@@ -354,10 +355,7 @@ class ParserState
                 return $consumedCharacters;
             }
             $consumedCharacters .= $character;
-            $comment = $this->consumeComment();
-            if ($comment instanceof Comment) {
-                $comments[] = $comment;
-            }
+            $comments = \array_merge($comments, $this->consumeComments());
         }
 
         if (\in_array(self::EOF, $stopCharacters, true)) {
@@ -454,5 +452,22 @@ class ParserState
         }
 
         return $result;
+    }
+
+    /**
+     * @return list<Comment>
+     */
+    private function consumeComments(): array
+    {
+        $comments = [];
+
+        while (true) {
+            $comment = $this->consumeComment();
+            if ($comment instanceof Comment) {
+                $comments[] = $comment;
+            } else {
+                return $comments;
+            }
+        }
     }
 }
