@@ -97,4 +97,64 @@ final class ParserStateTest extends TestCase
         );
         self::assertSame($expectedComments, $commentsAsText);
     }
+
+    /**
+     * @test
+     */
+    public function consumeIfComesComsumesMatchingContent(): void
+    {
+        $subject = new ParserState('abc', Settings::create());
+
+        $subject->consumeIfComes('ab');
+
+        self::assertSame('c', $subject->peek());
+    }
+
+    /**
+     * @test
+     */
+    public function consumeIfComesDoesNotComsumeNonMatchingContent(): void
+    {
+        $subject = new ParserState('a', Settings::create());
+
+        $subject->consumeIfComes('x');
+
+        self::assertSame('a', $subject->peek());
+    }
+
+    /**
+     * @test
+     */
+    public function consumeIfComesReturnsTrueIfContentConsumed(): void
+    {
+        $subject = new ParserState('abc', Settings::create());
+
+        $result = $subject->consumeIfComes('ab');
+
+        self::assertTrue($result);
+    }
+
+    /**
+     * @test
+     */
+    public function consumeIfComesReturnsFalseIfContentNotConsumed(): void
+    {
+        $subject = new ParserState('a', Settings::create());
+
+        $result = $subject->consumeIfComes('x');
+
+        self::assertFalse($result);
+    }
+
+    /**
+     * @test
+     */
+    public function consumeIfComesUpdatesLineNumber(): void
+    {
+        $subject = new ParserState("\n", Settings::create());
+
+        $subject->consumeIfComes("\n");
+
+        self::assertSame(2, $subject->currentLine());
+    }
 }

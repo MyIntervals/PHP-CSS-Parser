@@ -280,6 +280,27 @@ class ParserState
     }
 
     /**
+     * If the possibly-expected next content is next, consume it.
+     *
+     * @param non-empty-string $nextContent
+     *
+     * @return bool whether the possibly-expected content was found and consumed
+     */
+    public function consumeIfComes(string $nextContent): bool
+    {
+        $length = $this->strlen($nextContent);
+        if (!$this->streql($this->substr($this->currentPosition, $length), $nextContent)) {
+            return false;
+        }
+
+        $numberOfLines = \substr_count($nextContent, "\n");
+        $this->lineNumber += $numberOfLines;
+        $this->currentPosition += $this->strlen($nextContent);
+
+        return true;
+    }
+
+    /**
      * @param string $expression
      * @param int<1, max>|null $maximumLength
      *
