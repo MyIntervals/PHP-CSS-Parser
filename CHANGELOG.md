@@ -24,6 +24,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Parse comment(s) immediately preceding a selector (#1421)
+- Parse consecutive comments (#1421)
 - Support attribute selectors with values containing commas in
   `DeclarationBlock::setSelectors()` (#1419)
 - Allow `removeDeclarationBlockBySelector()` to be order-insensitve (#1406)

@@ -1048,10 +1048,9 @@ body {background-color: red;}';
         $fooBarBlock = $nodes[1];
         self::assertInstanceOf(Commentable::class, $fooBarBlock);
         $fooBarBlockComments = $fooBarBlock->getComments();
-        // TODO Support comments in selectors.
-        // $this->assertCount(2, $fooBarBlockComments);
-        // $this->assertSame("* Number 4 *", $fooBarBlockComments[0]->getComment());
-        // $this->assertSame("* Number 5 *", $fooBarBlockComments[1]->getComment());
+        self::assertCount(2, $fooBarBlockComments);
+        self::assertSame(' Number 4 ', $fooBarBlockComments[0]->getComment());
+        self::assertSame(' Number 5 ', $fooBarBlockComments[1]->getComment());
 
         // Declaration rules.
         self::assertInstanceOf(DeclarationBlock::class, $fooBarBlock);
