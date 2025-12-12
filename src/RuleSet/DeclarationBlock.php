@@ -283,19 +283,33 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     private static function parseSelectors(ParserState $parserState, array &$comments = []): array
     {
         $selectors = [];
+
+        while (true) {
+            $selectors[] = self::parseSelector($parserState, $comments);
+            if (!$parserState->consumeIfComes(',')) {
+                break;
+            }
+        }
+
+        return $selectors;
+    }
+
+    /**
+     * @param list<Comment> $comments
+     *
+     * @throws UnexpectedTokenException
+     */
+    private static function parseSelector(ParserState $parserState, array &$comments = []): string
+    {
         $selectorParts = [];
         $stringWrapperCharacter = null;
         $functionNestingLevel = 0;
-        $consumedNextCharacter = false;
         static $stopCharacters = ['{', '}', '\'', '"', '(', ')', ','];
 
-        do {
-            if (!$consumedNextCharacter) {
-                $selectorParts[] = $parserState->consume(1);
-            }
+        while (true) {
+            $selectorParts[] = $parserState->consume(1);
             $selectorParts[] = $parserState->consumeUntil($stopCharacters, false, false, $comments);
             $nextCharacter = $parserState->peek();
-            $consumedNextCharacter = false;
             switch ($nextCharacter) {
                 case '\'':
                     // The fallthrough is intentional.
@@ -321,22 +335,25 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
                         --$functionNestingLevel;
                     }
                     break;
+                case '{':
+                    // The fallthrough is intentional.
+                case '}':
+                    if (!\is_string($stringWrapperCharacter)) {
+                        break 2;
+                    }
+                    break;
                 case ',':
                     if (!\is_string($stringWrapperCharacter) && $functionNestingLevel === 0) {
-                        $selectors[] = \implode('', $selectorParts);
-                        $selectorParts = [];
-                        $parserState->consume(1);
-                        $consumedNextCharacter = true;
+                        break 2;
                     }
                     break;
             }
-        } while (!\in_array($nextCharacter, ['{', '}'], true) || \is_string($stringWrapperCharacter));
+        }
 
         if ($functionNestingLevel !== 0) {
             throw new UnexpectedTokenException(')', $nextCharacter);
         }
-        $selectors[] = \implode('', $selectorParts); // add final or only selector
 
-        return $selectors;
+        return \implode('', $selectorParts);
     }
 }
