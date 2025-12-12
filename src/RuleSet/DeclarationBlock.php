@@ -307,7 +307,6 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
         static $stopCharacters = ['{', '}', '\'', '"', '(', ')', ','];
 
         while (true) {
-            $selectorParts[] = $parserState->consume(1);
             $selectorParts[] = $parserState->consumeUntil($stopCharacters, false, false, $comments);
             $nextCharacter = $parserState->peek();
             switch ($nextCharacter) {
@@ -348,6 +347,7 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
                     }
                     break;
             }
+            $selectorParts[] = $parserState->consume(1);
         }
 
         if ($functionNestingLevel !== 0) {

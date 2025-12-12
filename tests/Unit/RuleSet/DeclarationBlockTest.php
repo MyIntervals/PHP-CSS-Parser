@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit\RuleSet;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\Parsing\ParserState;
@@ -159,20 +160,84 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
+     * @return array<non-empty-string, array{0: non-empty-string, 1: non-empty-string}>
+     */
+    public static function provideSelectorWithAndWithoutComment(): array
+    {
+        return [
+            'comment before' => ['/*comment*/body', 'body'],
+            'comment after' => ['body/*comment*/', 'body'],
+            'comment within' => ['./*comment*/teapot', '.teapot'],
+            'comment within function' => [':not(#your-mug,/*comment*/.their-mug)', ':not(#your-mug,.their-mug)'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $selectorWith
+     * @param non-empty-string $selectorWithout
+     *
+     * @dataProvider provideSelectorWithAndWithoutComment
+     */
+    public function parsesSelectorWithComment(string $selectorWith, string $selectorWithout): void
+    {
+        $subject = DeclarationBlock::parse(new ParserState($selectorWith . ' {}', Settings::create()));
+
+        self::assertInstanceOf(DeclarationBlock::class, $subject);
+        self::assertSame([$selectorWithout], self::getSelectorsAsStrings($subject));
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $selector
+     *
+     * @dataProvider provideSelectorWithAndWithoutComment
+     */
+    public function parseExtractsCommentFromSelector(string $selector): void
+    {
+        $subject = DeclarationBlock::parse(new ParserState($selector . ' {}', Settings::create()));
+
+        self::assertInstanceOf(DeclarationBlock::class, $subject);
+        self::assertSame(['comment'], self::getCommentsAsStrings($subject));
+    }
+
+    /**
+     * @test
+     */
+    public function parsesSelectorWithTwoComments(): void
+    {
+        $subject = DeclarationBlock::parse(new ParserState('/*comment1*/a/*comment2*/ {}', Settings::create()));
+
+        self::assertInstanceOf(DeclarationBlock::class, $subject);
+        self::assertSame(['a'], self::getSelectorsAsStrings($subject));
+    }
+
+    /**
+     * @test
+     */
+    public function parseExtractsTwoCommentsFromSelector(): void
+    {
+        $subject = DeclarationBlock::parse(new ParserState('/*comment1*/a/*comment2*/ {}', Settings::create()));
+
+        self::assertInstanceOf(DeclarationBlock::class, $subject);
+        self::assertSame(['comment1', 'comment2'], self::getCommentsAsStrings($subject));
+    }
+
+    /**
      * @return array<non-empty-string, array{0: string, 1: non-empty-string}>
      */
     public static function provideInvalidSelectorAndExpectedExceptionMessage(): array
     {
-        // TODO: the `parse` method consumes the first character without inspection,
-        // so some of the test strings are prefixed with a space.
         return [
-            'no selector' => [' ', 'Token “selector” (literal) not found. Got “{”. [line no: 1]'],
-            'lone `(`' => [' (', 'Token “)” (literal) not found. Got “{”.'],
-            'lone `)`' => [' )', 'Token “anything but” (literal) not found. Got “)”.'],
-            'lone `,`' => [' ,', 'Token “selector” (literal) not found. Got “,”. [line no: 1]'],
+            'no selector' => ['', 'Token “selector” (literal) not found. Got “{”. [line no: 1]'],
+            'lone `(`' => ['(', 'Token “)” (literal) not found. Got “{”.'],
+            'lone `)`' => [')', 'Token “anything but” (literal) not found. Got “)”.'],
+            'lone `,`' => [',', 'Token “selector” (literal) not found. Got “,”. [line no: 1]'],
             'unclosed `(`' => [':not(#your-mug', 'Token “)” (literal) not found. Got “{”.'],
             'extra `)`' => [':not(#your-mug))', 'Token “anything but” (literal) not found. Got “)”.'],
-            '`,` missing left operand' => [' , a', 'Token “selector” (literal) not found. Got “,”. [line no: 1]'],
+            '`,` missing left operand' => [', a', 'Token “selector” (literal) not found. Got “,”. [line no: 1]'],
             '`,` missing right operand' => ['a,', 'Token “selector” (literal) not found. Got “{”. [line no: 1]'],
         ];
     }
@@ -198,8 +263,6 @@ final class DeclarationBlockTest extends TestCase
 
     /**
      * @test
-     *
-     * @param non-empty-string $selector
      *
      * @dataProvider provideInvalidSelector
      */
@@ -323,6 +386,19 @@ final class DeclarationBlockTest extends TestCase
                 return $selectorObject->getSelector();
             },
             $declarationBlock->getSelectors()
+        );
+    }
+
+    /**
+     * @return list<string>
+     */
+    private static function getCommentsAsStrings(DeclarationBlock $declarationBlock): array
+    {
+        return \array_map(
+            static function (Comment $comment): string {
+                return $comment->getComment();
+            },
+            $declarationBlock->getComments()
         );
     }
 
