@@ -336,6 +336,7 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
                     }
                     break;
                 case '{':
+                    // The fallthrough is intentional.
                 case '}':
                     if (!\is_string($stringWrapperCharacter)) {
                         break 2;
