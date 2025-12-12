@@ -75,7 +75,7 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
         } catch (UnexpectedTokenException $e) {
             if ($parserState->getSettings()->usesLenientParsing()) {
                 if (!$parserState->consumeIfComes('}')) {
-                    $parserState->consumeUntil('}', false, true);
+                    $parserState->consumeUntil(['}', ParserState::EOF], false, true);
                 }
                 return null;
             } else {
@@ -307,7 +307,6 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
         static $stopCharacters = ['{', '}', '\'', '"', '(', ')', ','];
 
         while (true) {
-            $selectorParts[] = $parserState->consume(1);
             $selectorParts[] = $parserState->consumeUntil($stopCharacters, false, false, $comments);
             $nextCharacter = $parserState->peek();
             switch ($nextCharacter) {
@@ -348,12 +347,18 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
                     }
                     break;
             }
+            $selectorParts[] = $parserState->consume(1);
         }
 
         if ($functionNestingLevel !== 0) {
             throw new UnexpectedTokenException(')', $nextCharacter);
         }
 
-        return \implode('', $selectorParts);
+        $selector = \implode('', $selectorParts);
+        if ($selector === '') {
+            throw new UnexpectedTokenException('selector', $nextCharacter, 'literal', $parserState->currentLine());
+        }
+
+        return $selector;
     }
 }
