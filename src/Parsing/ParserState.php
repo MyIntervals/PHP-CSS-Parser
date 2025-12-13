@@ -192,6 +192,10 @@ class ParserState
      *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
+     *
+     * @phpstan-impure
+     * This method may change the state of the object by advancing the internal position;
+     * it does not simply 'get' a value.
      */
     public function consumeWhiteSpace(): array
     {
