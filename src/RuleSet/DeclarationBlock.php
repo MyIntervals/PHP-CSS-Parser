@@ -74,7 +74,7 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
             }
         } catch (UnexpectedTokenException $e) {
             if ($parserState->getSettings()->usesLenientParsing()) {
-                if (!$parserState->comes('}')) {
+                if (!$parserState->consumeIfComes('}')) {
                     $parserState->consumeUntil('}', false, true);
                 }
                 return null;

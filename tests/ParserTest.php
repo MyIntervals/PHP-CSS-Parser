@@ -718,6 +718,7 @@ div {height: calc;}';
         $document = self::parsedStructureForFile('invalid-selectors', Settings::create()->withMultibyteSupport(true));
         $expected = '@keyframes mymove {from {top: 0px;}}
 #test {color: white;background: green;}
+#test {display: block;background: red;color: white;}
 #test {display: block;background: white;color: black;}';
         self::assertSame($expected, $document->render());
 
@@ -727,6 +728,7 @@ div {height: calc;}';
 	.super-menu > li:last-of-type {border-right-width: 0;}
 	html[dir="rtl"] .super-menu > li:first-of-type {border-left-width: 1px;border-right-width: 0;}
 	html[dir="rtl"] .super-menu > li:last-of-type {border-left-width: 0;}}
+.super-menu.menu-floated {border-right-width: 1px;border-left-width: 1px;border-color: #5a4242;border-style: dotted;}
 body {background-color: red;}';
         self::assertSame($expected, $document->render());
     }
@@ -739,15 +741,6 @@ body {background-color: red;}';
         $document = self::parsedStructureForFile('selector-escapes', Settings::create()->withMultibyteSupport(true));
         $expected = '#\\# {color: red;}
 .col-sm-1\\/5 {width: 20%;}';
-        self::assertSame($expected, $document->render());
-
-        $document = self::parsedStructureForFile('invalid-selectors-2', Settings::create()->withMultibyteSupport(true));
-        $expected = '@media only screen and (max-width: 1215px) {.breadcrumb {padding-left: 10px;}
-	.super-menu > li:first-of-type {border-left-width: 0;}
-	.super-menu > li:last-of-type {border-right-width: 0;}
-	html[dir="rtl"] .super-menu > li:first-of-type {border-left-width: 1px;border-right-width: 0;}
-	html[dir="rtl"] .super-menu > li:last-of-type {border-left-width: 0;}}
-body {background-color: red;}';
         self::assertSame($expected, $document->render());
     }
 

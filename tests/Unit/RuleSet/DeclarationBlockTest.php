@@ -193,6 +193,45 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideClosingBrace(): array
+    {
+        return [
+            'as is' => ['}'],
+            'with space before' => [' }'],
+            'with newline before' => ["\n}"],
+        ];
+    }
+
+    /**
+     * @return DataProvider<non-empty-string, array{0: non-empty-string, 1: non-empty-string}>
+     */
+    public static function provideInvalidSelectorAndClosingBrace(): DataProvider
+    {
+        return DataProvider::cross(self::provideInvalidSelector(), self::provideClosingBrace());
+    }
+
+    /**
+     * TODO: It's probably not the responsibility of `DeclarationBlock` to deal with this.
+     *
+     * @test
+     *
+     * @param non-empty-string $selector
+     * @param non-empty-string $closingBrace
+     *
+     * @dataProvider provideInvalidSelectorAndClosingBrace
+     */
+    public function parseConsumesClosingBraceAfterInvalidSelector(string $selector, string $closingBrace): void
+    {
+        $parserState = new ParserState($selector . $closingBrace, Settings::create());
+
+        DeclarationBlock::parse($parserState);
+
+        self::assertTrue($parserState->isEnd());
+    }
+
+    /**
      * @return array<string>
      */
     private static function getSelectorsAsStrings(DeclarationBlock $declarationBlock): array
