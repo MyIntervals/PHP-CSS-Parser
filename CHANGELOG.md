@@ -24,6 +24,7 @@ Please also have a look at our
 
 ### Fixed
 
+- Improve recovery parsing when a rogue `}` is encountered (#1425)
 - Parse comment(s) immediately preceding a selector (#1421)
 - Parse consecutive comments (#1421)
 - Support attribute selectors with values containing commas in
