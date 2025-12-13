@@ -163,11 +163,9 @@ final class DeclarationBlockTest extends TestCase
      */
     public static function provideInvalidSelector(): array
     {
-        // TODO: the `parse` method consumes the first character without inspection,
-        // so the 'lone' test strings are prefixed with a space.
         return [
-            'lone `(`' => [' ('],
-            'lone `)`' => [' )'],
+            'lone `(`' => ['('],
+            'lone `)`' => [')'],
             'unclosed `(`' => [':not(#your-mug'],
             'extra `)`' => [':not(#your-mug))'],
         ];
