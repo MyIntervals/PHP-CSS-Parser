@@ -133,7 +133,8 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
         } elseif ($parserState->comes('}')) {
             if ($isRoot) {
                 if ($parserState->getSettings()->usesLenientParsing()) {
-                    return DeclarationBlock::parse($parserState) ?? false;
+                    $parserState->consume(1);
+                    return self::parseListItem($parserState, $list);
                 } else {
                     throw new SourceException('Unopened {', $parserState->currentLine());
                 }
