@@ -19,40 +19,35 @@ final class CommentTest extends TestCase
     public function keepCommentsInOutput(): void
     {
         $cssDocument = TestsParserTest::parsedStructureForFile('comments');
-        self::assertSame('/** Number 11 **/
 
-/**
- * Comments
- */
+        $expected1 = "/** Number 11 **/\n\n"
+            . "/**\n"
+            . " * Comments\n"
+            . " */\n\n"
+            . "/* Hell */\n"
+            . "@import url(\"some/url.css\") screen;\n\n"
+            . "/* Number 4 */\n\n"
+            . "/* Number 5 */\n"
+            . ".foo, #bar {\n"
+            . "\t/* Number 6 */\n"
+            . "\tbackground-color: #000;\n"
+            . "}\n\n"
+            . "@media screen {\n"
+            . "\t/** Number 10 **/\n"
+            . "\t#foo.bar {\n"
+            . "\t\t/** Number 10b **/\n"
+            . "\t\tposition: absolute;\n"
+            . "\t}\n"
+            . "}\n";
+        self::assertSame($expected1, $cssDocument->render(OutputFormat::createPretty()));
 
-/* Hell */
-@import url("some/url.css") screen;
-
-/* Number 4 */
-
-/* Number 5 */
-.foo, #bar {
-	/* Number 6 */
-	background-color: #000;
-}
-
-@media screen {
-	/** Number 10 **/
-	#foo.bar {
-		/** Number 10b **/
-		position: absolute;
-	}
-}
-', $cssDocument->render(OutputFormat::createPretty()));
-        self::assertSame(
-            '/** Number 11 **//**' . "\n"
-            . ' * Comments' . "\n"
+        $expected2 = "/** Number 11 **//**\n"
+            . " * Comments\n"
             . ' *//* Hell */@import url("some/url.css") screen;'
             . '/* Number 4 *//* Number 5 */.foo,#bar{'
             . '/* Number 6 */background-color:#000}@media screen{'
-            . '/** Number 10 **/#foo.bar{/** Number 10b **/position:absolute}}',
-            $cssDocument->render(OutputFormat::createCompact()->setRenderComments(true))
-        );
+            . '/** Number 10 **/#foo.bar{/** Number 10b **/position:absolute}}';
+        self::assertSame($expected2, $cssDocument->render(OutputFormat::createCompact()->setRenderComments(true)));
     }
 
     /**
@@ -61,24 +56,22 @@ final class CommentTest extends TestCase
     public function stripCommentsFromOutput(): void
     {
         $css = TestsParserTest::parsedStructureForFile('comments');
-        self::assertSame('
-@import url("some/url.css") screen;
 
-.foo, #bar {
-	background-color: #000;
-}
+        $expected1 = "\n"
+            . "@import url(\"some/url.css\") screen;\n\n"
+            . ".foo, #bar {\n" .
+            "\tbackground-color: #000;\n"
+            . "}\n\n"
+            . "@media screen {\n"
+            . "\t#foo.bar {\n"
+            . "\t\tposition: absolute;\n"
+            . "\t}\n"
+            . "}\n";
+        self::assertSame($expected1, $css->render(OutputFormat::createPretty()->setRenderComments(false)));
 
-@media screen {
-	#foo.bar {
-		position: absolute;
-	}
-}
-', $css->render(OutputFormat::createPretty()->setRenderComments(false)));
-        self::assertSame(
-            '@import url("some/url.css") screen;'
+        $expected2 = '@import url("some/url.css") screen;'
             . '.foo,#bar{background-color:#000}'
-            . '@media screen{#foo.bar{position:absolute}}',
-            $css->render(OutputFormat::createCompact())
-        );
+            . '@media screen{#foo.bar{position:absolute}}';
+        self::assertSame($expected2, $css->render(OutputFormat::createCompact()));
     }
 }
