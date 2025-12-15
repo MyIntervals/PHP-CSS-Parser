@@ -19,8 +19,7 @@ final class OutputFormatTest extends TestCase
     . ".main, .test {\n"
     . "\tfont: italic normal bold 16px/1.2 \"Helvetica\", Verdana, sans-serif;\n"
     . "\tbackground: white;\n"
-    . "}\n"
-    . "\n"
+    . "}\n\n"
     . "@media screen {\n"
     . "\t.main {\n"
     . "\t\tbackground-size: 100% 100%;\n"
@@ -84,8 +83,8 @@ final class OutputFormatTest extends TestCase
     {
         self::assertSame(
             '.main, .test {font: italic   normal   bold   16px/  1.2   '
-            . '"Helvetica",  Verdana,  sans-serif;background: white;}'
-            . "\n@media screen {.main {background-size: 100%   100%;font-size: 1.3em;background-color: #fff;}}",
+            . "\"Helvetica\",  Verdana,  sans-serif;background: white;}\n"
+            . '@media screen {.main {background-size: 100%   100%;font-size: 1.3em;background-color: #fff;}}',
             $this->document->render(OutputFormat::create()->setSpaceAfterListArgumentSeparator('  '))
         );
     }

@@ -156,14 +156,11 @@ final class ParserTest extends TestCase
         }
         self::assertSame(
             '#mine {color: red;border-color: #0a64e6;border-color: rgba(10,100,231,.3);outline-color: #222;'
-            . 'background-color: #232323;}'
-            . "\n"
-            . '#yours {background-color: hsl(220,10%,220%);background-color: hsla(220,10%,220%,.3);}'
-            . "\n"
+            . "background-color: #232323;}\n"
+            . "#yours {background-color: hsl(220,10%,220%);background-color: hsla(220,10%,220%,.3);}\n"
             . '#variables {background-color: rgb(var(--some-rgb));background-color: rgb(var(--r),var(--g),var(--b));'
             . 'background-color: rgb(255,var(--g),var(--b));background-color: rgb(255,255,var(--b));'
-            . 'background-color: rgb(255,var(--rg));background-color: hsl(var(--some-hsl));}'
-            . "\n"
+            . "background-color: rgb(255,var(--rg));background-color: hsl(var(--some-hsl));}\n"
             . '#variables-alpha {background-color: rgba(var(--some-rgb),.1);'
             . 'background-color: rgba(var(--some-rg),255,.1);background-color: hsla(var(--some-hsl),.1);}',
             $document->render()
@@ -265,35 +262,21 @@ final class ParserTest extends TestCase
     {
         $document = self::parsedStructureForFile('atrules');
         self::assertSame(
-            '@charset "utf-8";'
-            . "\n"
-            . '@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}'
-            . "\n"
-            . 'html, body {font-size: -.6em;}'
-            . "\n"
-            . '@keyframes mymove {from {top: 0px;}'
-            . "\n\t"
-            . 'to {top: 200px;}}'
-            . "\n"
-            . '@-moz-keyframes some-move {from {top: 0px;}'
-            . "\n\t"
-            . 'to {top: 200px;}}'
-            . "\n"
+            "@charset \"utf-8\";\n"
+            . "@font-face {font-family: \"CrassRoots\";src: url(\"../media/cr.ttf\");}\n"
+            . "html, body {font-size: -.6em;}\n"
+            . "@keyframes mymove {from {top: 0px;}\n"
+            . "\tto {top: 200px;}}\n"
+            . "@-moz-keyframes some-move {from {top: 0px;}\n"
+            . "\tto {top: 200px;}}\n"
             . '@supports ( (perspective: 10px) or (-moz-perspective: 10px) or (-webkit-perspective: 10px) or '
-            . '(-ms-perspective: 10px) or (-o-perspective: 10px) ) {body {font-family: "Helvetica";}}'
-            . "\n"
-            . '@page :pseudo-class {margin: 2in;}'
-            . "\n"
-            . '@-moz-document url(https://www.w3.org/),'
-            . "\n"
-            . '               url-prefix(https://www.w3.org/Style/),'
-            . "\n"
-            . '               domain(mozilla.org),'
-            . "\n"
-            . '               regexp("https:.*") {body {color: purple;background: yellow;}}'
-            . "\n"
-            . '@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}'
-            . "\n"
+            . "(-ms-perspective: 10px) or (-o-perspective: 10px) ) {body {font-family: \"Helvetica\";}}\n"
+            . "@page :pseudo-class {margin: 2in;}\n"
+            . "@-moz-document url(https://www.w3.org/),\n"
+            . "               url-prefix(https://www.w3.org/Style/),\n"
+            . "               domain(mozilla.org),\n"
+            . "               regexp(\"https:.*\") {body {color: purple;background: yellow;}}\n"
+            . "@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}\n"
             . '@region-style #intro {p {color: blue;}}',
             $document->render()
         );
@@ -304,35 +287,21 @@ final class ParserTest extends TestCase
             }
         }
         self::assertSame(
-            '@charset "utf-8";'
-            . "\n"
-            . '@font-face {font-family: "CrassRoots";src: url("../media/cr.ttf");}'
-            . "\n"
-            . '#my_id html, #my_id body {font-size: -.6em;}'
-            . "\n"
-            . '@keyframes mymove {from {top: 0px;}'
-            . "\n\t"
-            . 'to {top: 200px;}}'
-            . "\n"
-            . '@-moz-keyframes some-move {from {top: 0px;}'
-            . "\n\t"
-            . 'to {top: 200px;}}'
-            . "\n"
+            "@charset \"utf-8\";\n"
+            . "@font-face {font-family: \"CrassRoots\";src: url(\"../media/cr.ttf\");}\n"
+            . "#my_id html, #my_id body {font-size: -.6em;}\n"
+            . "@keyframes mymove {from {top: 0px;}\n"
+            . "\tto {top: 200px;}}\n"
+            . "@-moz-keyframes some-move {from {top: 0px;}\n"
+            . "\tto {top: 200px;}}\n"
             . '@supports ( (perspective: 10px) or (-moz-perspective: 10px) or (-webkit-perspective: 10px) '
-            . 'or (-ms-perspective: 10px) or (-o-perspective: 10px) ) {#my_id body {font-family: "Helvetica";}}'
-            . "\n"
-            . '@page :pseudo-class {margin: 2in;}'
-            . "\n"
-            . '@-moz-document url(https://www.w3.org/),'
-            . "\n"
-            . '               url-prefix(https://www.w3.org/Style/),'
-            . "\n"
-            . '               domain(mozilla.org),'
-            . "\n"
-            . '               regexp("https:.*") {#my_id body {color: purple;background: yellow;}}'
-            . "\n"
-            . '@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}'
-            . "\n"
+            . "or (-ms-perspective: 10px) or (-o-perspective: 10px) ) {#my_id body {font-family: \"Helvetica\";}}\n"
+            . "@page :pseudo-class {margin: 2in;}\n"
+            . "@-moz-document url(https://www.w3.org/),\n"
+            . "               url-prefix(https://www.w3.org/Style/),\n"
+            . "               domain(mozilla.org),\n"
+            . "               regexp(\"https:.*\") {#my_id body {color: purple;background: yellow;}}\n"
+            . "@media screen and (orientation: landscape) {@-ms-viewport {width: 1024px;height: 768px;}}\n"
             . '@region-style #intro {#my_id p {color: blue;}}',
             $document->render(OutputFormat::create()->setRenderComments(false))
         );
@@ -438,18 +407,14 @@ body {color: green;}',
     public function functionSyntax(): void
     {
         $document = self::parsedStructureForFile('functions');
-        $expected = 'div.main {background-image: linear-gradient(#000,#fff);}'
-            . "\n"
+        $expected = "div.main {background-image: linear-gradient(#000,#fff);}\n"
             . '.collapser::before, .collapser::-moz-before, .collapser::-webkit-before {content: "»";font-size: 1.2em;'
             . 'margin-right: .2em;-moz-transition-property: -moz-transform;-moz-transition-duration: .2s;'
-            . '-moz-transform-origin: center 60%;}'
-            . "\n"
+            . "-moz-transform-origin: center 60%;}\n"
             . '.collapser.expanded::before, .collapser.expanded::-moz-before,'
-            . ' .collapser.expanded::-webkit-before {-moz-transform: rotate(90deg);}'
-            . "\n"
+            . " .collapser.expanded::-webkit-before {-moz-transform: rotate(90deg);}\n"
             . '.collapser + * {height: 0;overflow: hidden;-moz-transition-property: height;'
-            . '-moz-transition-duration: .3s;}'
-            . "\n"
+            . "-moz-transition-duration: .3s;}\n"
             . '.collapser.expanded + * {height: auto;}';
         self::assertSame($expected, $document->render());
 
@@ -761,10 +726,8 @@ body {background-color: red;}';
     public function selectorIgnoresInFile(): void
     {
         $document = self::parsedStructureForFile('selector-ignores', Settings::create()->withMultibyteSupport(true));
-        $expected = '.some[selectors-may=\'contain-a-{\'] {}'
-            . "\n"
-            . '.this-selector .valid {width: 100px;}'
-            . "\n"
+        $expected = ".some[selectors-may='contain-a-{'] {}\n"
+            . ".this-selector .valid {width: 100px;}\n"
             . '@media only screen and (min-width: 200px) {.test {prop: val;}}';
         self::assertSame($expected, $document->render());
     }
@@ -778,11 +741,9 @@ body {background-color: red;}';
             'keyframe-selector-validation',
             Settings::create()->withMultibyteSupport(true)
         );
-        $expected = '@-webkit-keyframes zoom {0% {-webkit-transform: scale(1,1);}'
-            . "\n\t"
-            . '50% {-webkit-transform: scale(1.2,1.2);}'
-            . "\n\t"
-            . '100% {-webkit-transform: scale(1,1);}}';
+        $expected = "@-webkit-keyframes zoom {0% {-webkit-transform: scale(1,1);}\n"
+            . "\t50% {-webkit-transform: scale(1.2,1.2);}\n"
+            . "\t100% {-webkit-transform: scale(1,1);}}";
         self::assertSame($expected, $document->render());
     }
 
@@ -812,8 +773,7 @@ body {background-color: red;}';
     public function urlInFileMbOff(): void
     {
         $document = self::parsedStructureForFile('url', Settings::create()->withMultibyteSupport(false));
-        $expected = 'body {background: #fff url("https://somesite.com/images/someimage.gif") repeat top center;}'
-            . "\n"
+        $expected = "body {background: #fff url(\"https://somesite.com/images/someimage.gif\") repeat top center;}\n"
             . 'body {background-url: url("https://somesite.com/images/someimage.gif");}';
         self::assertSame($expected, $document->render());
     }
