@@ -232,6 +232,46 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
+     * @return array<non-empty-string, array{0: string}>
+     */
+    public static function provideOptionalWhitespace(): array
+    {
+        return [
+            'none' => [''],
+            'space' => [' '],
+            'newline' => ["\n"],
+        ];
+    }
+
+    /**
+     * @return DataProvider<non-empty-string, array{0: non-empty-string, 1: string}>
+     */
+    public static function provideInvalidSelectorAndOptionalWhitespace(): DataProvider
+    {
+        return DataProvider::cross(self::provideInvalidSelector(), self::provideOptionalWhitespace());
+    }
+
+    /**
+     * TODO: It's probably not the responsibility of `DeclarationBlock` to deal with this.
+     *
+     * @test
+     *
+     * @param non-empty-string $selector
+     *
+     * @dataProvider provideInvalidSelectorAndOptionalWhitespace
+     */
+    public function parseConsumesToEofIfNoClosingBraceAfterInvalidSelector(
+        string $selector,
+        string $optionalWhitespace
+    ): void {
+        $parserState = new ParserState($selector . $optionalWhitespace, Settings::create());
+
+        DeclarationBlock::parse($parserState);
+
+        self::assertTrue($parserState->isEnd());
+    }
+
+    /**
      * @return array<string>
      */
     private static function getSelectorsAsStrings(DeclarationBlock $declarationBlock): array
