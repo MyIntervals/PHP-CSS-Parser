@@ -24,6 +24,7 @@ Please also have a look at our
 
 ### Fixed
 
+- Reject selector comprising only whitespace (#1433)
 - Improve recovery parsing when a rogue `}` is encountered (#1425, #1426)
 - Parse comment(s) immediately preceding a selector (#1421)
 - Parse consecutive comments (#1421)

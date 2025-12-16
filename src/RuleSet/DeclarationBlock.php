@@ -354,6 +354,11 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
             throw new UnexpectedTokenException(')', $nextCharacter);
         }
 
-        return \implode('', $selectorParts);
+        $selector = \trim(\implode('', $selectorParts));
+        if ($selector === '') {
+            throw new UnexpectedTokenException('selector', $nextCharacter, 'literal', $parserState->currentLine());
+        }
+
+        return $selector;
     }
 }
