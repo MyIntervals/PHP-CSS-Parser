@@ -26,7 +26,7 @@ Please also have a look at our
 
 - Reject selector comprising only whitespace (#1433)
 - Improve recovery parsing when a rogue `}` is encountered (#1425, #1426)
-- Parse comment(s) immediately preceding a selector (#1421)
+- Parse comment(s) immediately preceding a selector (#1421, #1424)
 - Parse consecutive comments (#1421)
 - Support attribute selectors with values containing commas in
   `DeclarationBlock::setSelectors()` (#1419)
