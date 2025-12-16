@@ -159,18 +159,41 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @return array<non-empty-string, array{0: non-empty-string}>
+     * @return array<non-empty-string, array{0: string, 1: non-empty-string}>
+     */
+    public static function provideInvalidSelectorAndExpectedExceptionMessage(): array
+    {
+        // TODO: the `parse` method consumes the first character without inspection,
+        // so some of the test strings are prefixed with a space.
+        return [
+            'no selector' => [' ', 'Token “selector” (literal) not found. Got “{”. [line no: 1]'],
+            'lone `(`' => [' (', 'Token “)” (literal) not found. Got “{”.'],
+            'lone `)`' => [' )', 'Token “anything but” (literal) not found. Got “)”.'],
+            'lone `,`' => [' ,', 'Token “selector” (literal) not found. Got “,”. [line no: 1]'],
+            'unclosed `(`' => [':not(#your-mug', 'Token “)” (literal) not found. Got “{”.'],
+            'extra `)`' => [':not(#your-mug))', 'Token “anything but” (literal) not found. Got “)”.'],
+            '`,` missing left operand' => [' , a', 'Token “selector” (literal) not found. Got “,”. [line no: 1]'],
+            '`,` missing right operand' => ['a,', 'Token “selector” (literal) not found. Got “{”. [line no: 1]'],
+        ];
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: string}>
      */
     public static function provideInvalidSelector(): array
     {
-        // TODO: the `parse` method consumes the first character without inspection,
-        // so the 'lone' test strings are prefixed with a space.
-        return [
-            'lone `(`' => [' ('],
-            'lone `)`' => [' )'],
-            'unclosed `(`' => [':not(#your-mug'],
-            'extra `)`' => [':not(#your-mug))'],
-        ];
+        // Re-use the set of invalid selectors, but remove the expected exception message for tests that don't need it.
+        return \array_map(
+            /**
+             * @param array{0: string, 1: non-empty-string}
+             *
+             * @return array<{0: string}>
+             */
+            static function (array $testData): array {
+                return [$testData[0]];
+            },
+            self::provideInvalidSelectorAndExpectedExceptionMessage()
+        );
     }
 
     /**
@@ -190,6 +213,25 @@ final class DeclarationBlockTest extends TestCase
 
         self::assertNull($subject);
         self::assertTrue($parserState->comes($nextCss));
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $expectedExceptionMessage
+     *
+     * @dataProvider provideInvalidSelectorAndExpectedExceptionMessage
+     */
+    public function parseInStrictModeThrowsExceptionWithInvalidSelector(
+        string $selector,
+        string $expectedExceptionMessage
+    ): void {
+        $this->expectException(UnexpectedTokenException::class);
+        $this->expectExceptionMessage($expectedExceptionMessage);
+
+        $parserState = new ParserState($selector . ' {}', Settings::create()->beStrict());
+
+        $subject = DeclarationBlock::parse($parserState);
     }
 
     /**
@@ -436,7 +478,7 @@ final class DeclarationBlockTest extends TestCase
     public function setSelectorsThrowsExceptionWithInvalidSelector(string $selector): void
     {
         $this->expectException(UnexpectedTokenException::class);
-        $this->expectExceptionMessageMatches('/^Selector\\(s\\) string is not valid. /');
+        $this->expectExceptionMessageMatches('/^Selector\\(s\\) string is not valid./');
 
         $subject = new DeclarationBlock();
 
