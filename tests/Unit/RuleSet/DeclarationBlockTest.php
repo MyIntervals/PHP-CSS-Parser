@@ -232,11 +232,11 @@ final class DeclarationBlockTest extends TestCase
     {
         return [
             'no selector' => ['', 'Token “selector” (literal) not found. Got “{”. [line no: 1]'],
-            'lone `(`' => ['(', 'Token “)” (literal) not found. Got “{”.'],
-            'lone `)`' => [')', 'Token “anything but” (literal) not found. Got “)”.'],
+            'lone `(`' => ['(', 'Token “)” (literal) not found. Got “{”. [line no: 1]'],
+            'lone `)`' => [')', 'Token “anything but” (literal) not found. Got “)”. [line no: 1]'],
             'lone `,`' => [',', 'Token “selector” (literal) not found. Got “,”. [line no: 1]'],
-            'unclosed `(`' => [':not(#your-mug', 'Token “)” (literal) not found. Got “{”.'],
-            'extra `)`' => [':not(#your-mug))', 'Token “anything but” (literal) not found. Got “)”.'],
+            'unclosed `(`' => [':not(#your-mug', 'Token “)” (literal) not found. Got “{”. [line no: 1]'],
+            'extra `)`' => [':not(#your-mug))', 'Token “anything but” (literal) not found. Got “)”. [line no: 1]'],
             '`,` missing left operand' => [', a', 'Token “selector” (literal) not found. Got “,”. [line no: 1]'],
             '`,` missing right operand' => ['a,', 'Token “selector” (literal) not found. Got “{”. [line no: 1]'],
         ];
