@@ -377,32 +377,6 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
-     * @return array<string>
-     */
-    private static function getSelectorsAsStrings(DeclarationBlock $declarationBlock): array
-    {
-        return \array_map(
-            static function (Selector $selectorObject): string {
-                return $selectorObject->getSelector();
-            },
-            $declarationBlock->getSelectors()
-        );
-    }
-
-    /**
-     * @return list<string>
-     */
-    private static function getCommentsAsStrings(DeclarationBlock $declarationBlock): array
-    {
-        return \array_map(
-            static function (Comment $comment): string {
-                return $comment->getComment();
-            },
-            $declarationBlock->getComments()
-        );
-    }
-
-    /**
      * @test
      */
     public function getRuleSetOnVirginReturnsARuleSet(): void
@@ -559,5 +533,31 @@ final class DeclarationBlockTest extends TestCase
         $subject = new DeclarationBlock();
 
         $subject->setSelectors($selector);
+    }
+
+    /**
+     * @return array<string>
+     */
+    private static function getSelectorsAsStrings(DeclarationBlock $declarationBlock): array
+    {
+        return \array_map(
+            static function (Selector $selectorObject): string {
+                return $selectorObject->getSelector();
+            },
+            $declarationBlock->getSelectors()
+        );
+    }
+
+    /**
+     * @return list<string>
+     */
+    private static function getCommentsAsStrings(DeclarationBlock $declarationBlock): array
+    {
+        return \array_map(
+            static function (Comment $comment): string {
+                return $comment->getComment();
+            },
+            $declarationBlock->getComments()
+        );
     }
 }
