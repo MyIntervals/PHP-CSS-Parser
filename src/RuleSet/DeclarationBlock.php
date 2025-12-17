@@ -329,7 +329,12 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
                 case ')':
                     if (!\is_string($stringWrapperCharacter)) {
                         if ($functionNestingLevel <= 0) {
-                            throw new UnexpectedTokenException('anything but', ')');
+                            throw new UnexpectedTokenException(
+                                'anything but',
+                                ')',
+                                'literal',
+                                $parserState->currentLine()
+                            );
                         }
                         --$functionNestingLevel;
                     }
@@ -351,7 +356,7 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
         }
 
         if ($functionNestingLevel !== 0) {
-            throw new UnexpectedTokenException(')', $nextCharacter);
+            throw new UnexpectedTokenException(')', $nextCharacter, 'literal', $parserState->currentLine());
         }
 
         $selector = \trim(\implode('', $selectorParts));
