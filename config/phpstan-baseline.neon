@@ -49,6 +49,12 @@ parameters:
 			path: ../src/Value/Color.php
 
 		-
+			message: '#^Parameter \#2 \$arguments of class Sabberworm\\CSS\\Value\\Expression constructor expects array\<Sabberworm\\CSS\\Value\\Value\|string\>\|Sabberworm\\CSS\\Value\\RuleValueList, Sabberworm\\CSS\\Value\\Value\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../src/Value/Expression.php
+
+		-
 			message: '#^Parameters should have "float" types as the only types passed to this method$#'
 			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
@@ -107,3 +113,9 @@ parameters:
 			identifier: argument.type
 			count: 2
 			path: ../tests/Unit/CSSList/CSSListTest.php
+
+		-
+			message: '#^Call to an undefined static method Sabberworm\\CSS\\Tests\\Value\\ExpressionTest\:\:listDelimiterForRule\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: ../tests/Unit/Value/ExpressionTest.php

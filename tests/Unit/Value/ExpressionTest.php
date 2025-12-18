@@ -19,7 +19,7 @@ use Sabberworm\CSS\Rule\Rule;
 final class ExpressionTest extends TestCase
 {
     /**
-     * @return array<0, array{string: string}>
+     * @return list<array{input: non-empty-string, expected_output: non-empty-string, expression_index: int}>
      */
     public static function provideExpressions(): array
     {
@@ -54,6 +54,9 @@ final class ExpressionTest extends TestCase
         self::assertSame($expected, $val->render(OutputFormat::createCompact()));
     }
 
+    /**
+     * @return list<non-empty-string>
+     */
     private function getDelimiters(string $rule): array
     {
         $closure = function ($rule) {

@@ -17,14 +17,14 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 class CSSFunction extends ValueList
 {
     /**
-     * @var non-empty-string
+     * @var string
      *
      * @internal since 8.8.0
      */
     protected $name;
 
     /**
-     * @param non-empty-string $name
+     * @param string $name
      * @param RuleValueList|array<Value|string> $arguments
      * @param non-empty-string $separator
      * @param int<1, max>|null $lineNumber

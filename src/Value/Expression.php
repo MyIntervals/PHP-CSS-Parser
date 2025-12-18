@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Value;
 
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\SourceException;
 
 /**
  * An `Expression` represents a special kind of value that is comprised of multiple components wrapped in parenthesis.
@@ -14,10 +15,8 @@ class Expression extends CSSFunction
 {
     /**
      * @throws SourceException
-     * @throws UnexpectedEOFException
-     * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $oParserState, bool $bIgnoreCase = false): Expression
+    public static function parse(ParserState $oParserState, bool $bIgnoreCase = false): CSSFunction
     {
         $oParserState->consume('(');
         $aArguments = parent::parseArguments($oParserState);
