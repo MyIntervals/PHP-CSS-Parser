@@ -438,7 +438,7 @@ body {color: green;}',
     /**
      * @test
      */
-    public function parseExpressions()
+    public function parseExpressions(): void
     {
         $oDoc = self::parsedStructureForFile('expressions');
         $sExpected = 'div {height: (vh - 10);}'
@@ -1194,7 +1194,7 @@ body {background-color: red;}';
     /**
      * @test
      */
-    public function functionArithmeticInFile()
+    public function functionArithmeticInFile(): void
     {
         $oDoc = self::parsedStructureForFile('function-arithmetic', Settings::create()->withMultibyteSupport(true));
         $sExpected = 'div {height: max(300,vh + 10);}

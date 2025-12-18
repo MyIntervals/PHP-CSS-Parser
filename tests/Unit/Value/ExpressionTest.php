@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\Tests\Value;
 
 use PHPUnit\Framework\TestCase;
@@ -30,7 +32,7 @@ final class ExpressionTest extends TestCase
             [
                 'input' => 'max(5, (vh - 10))',
                 'expected_output' => 'max(5,(vh - 10))',
-                'expression_index' => 1
+                'expression_index' => 1,
             ],
         ];
     }
@@ -54,7 +56,7 @@ final class ExpressionTest extends TestCase
 
     private function getDelimiters(string $rule): array
     {
-        $closure = function($rule) {
+        $closure = function ($rule) {
             return self::listDelimiterForRule($rule);
         };
 

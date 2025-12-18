@@ -164,7 +164,7 @@ abstract class Value implements CSSElement, Positionable
             $value = LineName::parse($parserState);
         } elseif ($parserState->comes('U+')) {
             $value = self::parseUnicodeRangeValue($parserState);
-        } elseif ($parserState->comes("(")) {
+        } elseif ($parserState->comes('(')) {
             $value = Expression::parse($parserState);
         } else {
             $nextCharacter = $parserState->peek(1);

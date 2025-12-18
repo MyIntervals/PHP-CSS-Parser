@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sabberworm\CSS\Value;
 
-use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 
 /**
@@ -20,7 +21,7 @@ class Expression extends CSSFunction
     {
         $oParserState->consume('(');
         $aArguments = parent::parseArguments($oParserState);
-        $mResult = new Expression("", $aArguments, ',', $oParserState->currentLine());
+        $mResult = new Expression('', $aArguments, ',', $oParserState->currentLine());
         $oParserState->consume(')');
         return $mResult;
     }
