@@ -4,6 +4,7 @@ namespace Sabberworm\CSS\Tests\Value;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\Value;
 use Sabberworm\CSS\Value\ValueList;
@@ -48,7 +49,7 @@ final class ExpressionTest extends TestCase
 
         self::assertInstanceOf(ValueList::class, $val);
         self::assertInstanceOf(Expression::class, $val->getListComponents()[$expression_index]);
-        self::assertSame($expected, (string) $val);
+        self::assertSame($expected, $val->render(OutputFormat::createCompact()));
     }
 
     private function getDelimiters(string $rule): array
