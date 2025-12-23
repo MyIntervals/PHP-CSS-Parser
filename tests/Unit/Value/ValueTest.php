@@ -141,4 +141,16 @@ final class ValueTest extends TestCase
             $subject->render(OutputFormat::createCompact())
         );
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new ConcreteValue();
+
+        $subject->getArrayRepresentation();
+    }
 }

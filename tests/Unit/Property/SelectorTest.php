@@ -188,4 +188,16 @@ final class SelectorTest extends TestCase
 
         self::assertSame('a[title="extra  space"]', $subject->getSelector());
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new Selector('a');
+
+        $subject->getArrayRepresentation();
+    }
 }

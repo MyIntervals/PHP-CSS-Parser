@@ -332,6 +332,16 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
     }
 
     /**
+     * @internal
+     *
+     * @return array<string, bool|int|float|string|list<array<string, mixed>>>
+     */
+    public function getArrayRepresentation(): array
+    {
+        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
+    }
+
+    /**
      * @return int negative if `$first` is before `$second`; zero if they have the same position; positive otherwise
      *
      * @throws \UnexpectedValueException if either argument does not have a valid position, which should never happen

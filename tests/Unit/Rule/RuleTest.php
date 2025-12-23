@@ -70,4 +70,16 @@ final class RuleTest extends TestCase
 
         self::assertSame($expectedTypeClassnames, $actualClassnames);
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new Rule('todo');
+
+        $subject->getArrayRepresentation();
+    }
 }

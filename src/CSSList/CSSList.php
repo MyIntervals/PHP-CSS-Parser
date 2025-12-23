@@ -436,6 +436,16 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
     }
 
     /**
+     * @internal
+     *
+     * @return array<string, bool|int|float|string|list<array<string, mixed>>>
+     */
+    public function getArrayRepresentation(): array
+    {
+        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
+    }
+
+    /**
      * @param list<Selector> $selectors1
      * @param list<Selector> $selectors2
      */

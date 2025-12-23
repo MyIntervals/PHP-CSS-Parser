@@ -46,4 +46,14 @@ class Comment implements Positionable, Renderable
     {
         return '/*' . $this->commentText . '*/';
     }
+
+    /**
+     * @internal
+     *
+     * @return array<string, bool|int|float|string|list<array<string, mixed>>>
+     */
+    public function getArrayRepresentation(): array
+    {
+        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
+    }
 }
