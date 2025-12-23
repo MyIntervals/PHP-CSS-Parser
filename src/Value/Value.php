@@ -182,6 +182,18 @@ abstract class Value implements CSSElement, Positionable
     }
 
     /**
+     * @internal
+     *
+     * @return array<string, bool|int|float|string|list<array<string, mixed>>>
+     */
+    public function getArrayRepresentation(): array
+    {
+        $reflect = new \ReflectionClass($this);
+
+        return ['class' => $reflect->getShortName()];
+    }
+
+    /**
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */

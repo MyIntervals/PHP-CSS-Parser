@@ -93,4 +93,31 @@ abstract class ValueList extends Value
             $this->components
         );
     }
+
+    /**
+     * @internal
+     *
+     * @return array<string, bool|int|float|string|list<array<string, mixed>>>
+     */
+    public function getArrayRepresentation(): array
+    {
+        $result = parent::getArrayRepresentation();
+
+        $result['components'] = \array_map(
+            /**
+             * @parm Value|string $component
+             *
+             * @return array|string
+             */
+            function ($component) {
+                if (\is_string($component)) {
+                    return $component;
+                }
+                return $component->getArrayRepresentation();
+            },
+            $this->components
+        );
+
+        return $result;
+    }
 }

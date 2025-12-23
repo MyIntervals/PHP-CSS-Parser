@@ -60,6 +60,31 @@ final class ValueTest extends TestCase
             self::DEFAULT_DELIMITERS
         );
 
+        $result = $subject->getArrayRepresentation();
+        self::assertSame(
+            [
+                'class' => 'CSSFunction',
+                'components' => [
+                    [
+                        'class' => 'Size',
+                    ],
+                    [
+                        'class' => 'RuleValueList',
+                        'components' => [
+                            [
+                                'class' => 'Size',
+                            ],
+                            $operator,
+                            [
+                                'class' => 'Size',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            $result
+        );
+
         self::assertInstanceOf(CSSFunction::class, $subject);
         self::assertSame('max(300px,50vh ' . $operator . ' 10px)', $subject->render(OutputFormat::createCompact()));
     }
