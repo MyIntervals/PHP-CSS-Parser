@@ -324,7 +324,10 @@ class Color extends CSSFunction
         foreach ($this->components as $key => $value) {
             if ($key === 'a') {
                 // Alpha can have units that don't match those of the RGB components in the "legacy" syntax.
-                // So it is not necessary to check it.  It's also always last, hence `break` rather than `continue`.
+                if ($value->getUnit() === '%' || is_float($value->getSize())) {
+                    $hasPercentage = true;
+                }
+
                 break;
             }
             if (!($value instanceof Size)) {
