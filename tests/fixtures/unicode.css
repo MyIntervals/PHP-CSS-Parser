@@ -5,7 +5,7 @@
 .test-6 { content: "\00A5" } /* Same as "¥" */
 .test-7 { content: '\a' } /* Same as "\A" (Newline) */
 .test-8 { content: "\"\22" } /* Same as "\"\"" */
-.test-9 { content: "\"\27" } /* Same as ""\"\'"" */
+.test-9 { content: "\"\27" } /* Same as ""\"'"" */
 .test-10 { content: "\'\\" } /* Same as "'\" */
 .test-11 { content: "\test" } /* Same as "test" */
 

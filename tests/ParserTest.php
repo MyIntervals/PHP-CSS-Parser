@@ -206,10 +206,10 @@ final class ParserTest extends TestCase
                 self::assertSame('"\\"\\""', $firstContentRuleAsString);
             }
             if ($selector === '.test-9') {
-                self::assertSame('"\\"\\\'"', $firstContentRuleAsString);
+                self::assertSame('"\\"\'"', $firstContentRuleAsString);
             }
             if ($selector === '.test-10') {
-                self::assertSame('"\\\'\\\\"', $firstContentRuleAsString);
+                self::assertSame('"\'\\\\"', $firstContentRuleAsString);
             }
             if ($selector === '.test-11') {
                 self::assertSame('"test"', $firstContentRuleAsString);
