@@ -93,6 +93,55 @@ class Selector implements Renderable
 
     public function render(OutputFormat $outputFormat): string
     {
-        return $this->getSelector();
+        $tidy = [
+            '>',
+            '~',
+            '+',
+        ];
+
+        $selector = $this->getSelector();
+        $attribute = false;
+        $output = '';
+
+        for ($i = 0; $i < \strlen($selector); ++$i) {
+            $current = $selector[$i];
+
+            if ($current === '[') {
+                $attribute = true;
+                $output .= $current;
+                $previous = $current;
+                continue;
+            }
+
+            if ($attribute) {
+                if ($current === ']') {
+                    $attribute = false;
+                }
+
+                $output .= $current;
+                $previous = $current;
+                continue;
+            }
+
+            if (\in_array($current, $tidy, true)) {
+                if ($previous !== ' ') {
+                    $output .= ' ';
+                }
+
+                $output .= $current;
+
+                if ($selector[$i +1] !== ' ') {
+                    $output .= ' ';
+                }
+
+                $current = ' ';
+            } else {
+                $output .= $current;
+            }
+
+            $previous = $current;
+        }
+
+        return $output;
     }
 }
