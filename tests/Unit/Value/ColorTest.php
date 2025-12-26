@@ -41,11 +41,11 @@ final class ColorTest extends TestCase
             ],
             '4-digit hex color (with alpha)' => [
                 '#0707',
-                'rgba(0,119,0,.47)',
+                'rgba(0 119 0/.47)',
             ],
             '8-digit hex color (with alpha)' => [
                 '#0077007F',
-                'rgba(0,119,0,.5)',
+                'rgba(0 119 0/.5)',
             ],
             'legacy rgb that can be represented as 3-digit hex' => [
                 'rgb(0, 119, 0)',
@@ -61,11 +61,11 @@ final class ColorTest extends TestCase
             ],
             'legacy rgba with fractional alpha' => [
                 'rgba(0, 119, 0, 0.5)',
-                'rgba(0,119,0,.5)',
+                'rgba(0 119 0/.5)',
             ],
             'legacy rgba with percentage alpha' => [
                 'rgba(0, 119, 0, 50%)',
-                'rgba(0,119,0,50%)',
+                'rgba(0 119 0/50%)',
             ],
             'legacy rgba with percentage components and fractional alpha' => [
                 'rgba(0%, 60%, 0%, 0.5)',
@@ -81,7 +81,7 @@ final class ColorTest extends TestCase
             ],
             'legacy rgba as rgb' => [
                 'rgb(0, 119, 0, 0.5)',
-                'rgba(0,119,0,.5)',
+                'rgba(0 119 0/.5)',
             ],
             'modern rgb' => [
                 'rgb(0 119 0)',
@@ -129,11 +129,11 @@ final class ColorTest extends TestCase
             ],
             'modern rgba with fractional alpha' => [
                 'rgb(0 119 0 / 0.5)',
-                'rgba(0,119,0,.5)',
+                'rgba(0 119 0/.5)',
             ],
             'modern rgba with percentage alpha' => [
                 'rgb(0 119 0 / 50%)',
-                'rgba(0,119,0,50%)',
+                'rgba(0 119 0/50%)',
             ],
             'modern rgba with percentage R' => [
                 'rgb(0% 119 0 / 0.5)',

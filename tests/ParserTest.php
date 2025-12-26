@@ -155,7 +155,7 @@ final class ParserTest extends TestCase
             self::assertSame('red', $colorValue);
         }
         self::assertSame(
-            '#mine {color: red;border-color: #0a64e6;border-color: rgba(10,100,231,.3);outline-color: #222;'
+            '#mine {color: red;border-color: #0a64e6;border-color: rgba(10 100 231/.3);outline-color: #222;'
             . "background-color: #232323;}\n"
             . "#yours {background-color: hsl(220,10%,220%);background-color: hsla(220,10%,220%,.3);}\n"
             . '#variables {background-color: rgb(var(--some-rgb));background-color: rgb(var(--r),var(--g),var(--b));'
@@ -310,7 +310,7 @@ final class ParserTest extends TestCase
         self::assertSame(
             '#header {margin: 10px 2em 1cm 2%;font-family: Verdana,Helvetica,"Gill Sans",sans-serif;'
             . 'font-size: 10px;color: red !important;background-color: green;'
-            . 'background-color: rgba(0,128,0,.7);frequency: 30Hz;transform: rotate(1turn);}
+            . 'background-color: rgba(0 128 0/.7);frequency: 30Hz;transform: rotate(1turn);}
 body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}',
             $document->render()
         );
@@ -319,7 +319,7 @@ body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}
         }
         self::assertSame(
             '#header {margin: 10px 2em 1cm 2%;color: red !important;background-color: green;'
-            . 'background-color: rgba(0,128,0,.7);frequency: 30Hz;transform: rotate(1turn);}
+            . 'background-color: rgba(0 128 0/.7);frequency: 30Hz;transform: rotate(1turn);}
 body {color: green;}',
             $document->render()
         );
@@ -559,8 +559,8 @@ body {background-url: url("https://somesite.com/images/someimage.gif");}';
     public function hexAlphaInFile(): void
     {
         $document = self::parsedStructureForFile('hex-alpha', Settings::create()->withMultibyteSupport(true));
-        $expected = 'div {background: rgba(17,34,51,.27);}
-div {background: rgba(17,34,51,.27);}';
+        $expected = 'div {background: rgba(17 34 51/.27);}
+div {background: rgba(17 34 51/.27);}';
         self::assertSame($expected, $document->render());
     }
 
