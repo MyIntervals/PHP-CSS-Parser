@@ -90,8 +90,35 @@ class CSSString extends PrimitiveValue
      */
     public function render(OutputFormat $outputFormat): string
     {
-        $string = \addslashes($this->string);
+        $string = $this->escape($this->string, $outputFormat->getStringQuotingType());
         $string = \str_replace("\n", '\\A', $string);
         return $outputFormat->getStringQuotingType() . $string . $outputFormat->getStringQuotingType();
+    }
+
+    private function escape(string $str, string $quote) : string
+    {
+        $matches = [
+            0x0, // null
+            0x5c, // \
+        ];
+
+        $matches[] = $quote === '"' ? 0x22 : 0x27;
+
+        $length = \strlen($str);
+        $output = '';
+        $previous = 0x0;
+
+        for ($i = 0; $i < $length; ++$i) {
+            $current = \ord($str[$i]);
+
+            if (\in_array($current, $matches, true) && $previous !== 0x5c) {
+                $output .= '\\';
+            }
+
+            $output .= $str[$i];
+            $previous = $current;
+        }
+
+        return $output;
     }
 }
