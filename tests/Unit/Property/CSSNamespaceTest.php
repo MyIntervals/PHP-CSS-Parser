@@ -31,4 +31,14 @@ final class CSSNamespaceTest extends TestCase
     {
         self::assertInstanceOf(CSSListItem::class, $this->subject);
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $this->subject->getArrayRepresentation();
+    }
 }

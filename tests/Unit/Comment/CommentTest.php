@@ -77,4 +77,16 @@ final class CommentTest extends TestCase
 
         self::assertSame($lineNumber, $subject->getLineNumber());
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new Comment();
+
+        $subject->getArrayRepresentation();
+    }
 }

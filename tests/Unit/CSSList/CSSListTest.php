@@ -380,4 +380,16 @@ final class CSSListTest extends TestCase
 
         self::assertSame($followingContent, $subject->render(new OutputFormat()));
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new ConcreteCSSList();
+
+        $subject->getArrayRepresentation();
+    }
 }

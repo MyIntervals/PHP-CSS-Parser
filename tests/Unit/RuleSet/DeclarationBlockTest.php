@@ -536,6 +536,16 @@ final class DeclarationBlockTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $this->subject->getArrayRepresentation();
+    }
+
+    /**
      * @return list<string>
      */
     private static function getSelectorsAsStrings(DeclarationBlock $declarationBlock): array

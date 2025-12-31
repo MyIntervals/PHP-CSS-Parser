@@ -79,4 +79,14 @@ final class RuleSetTest extends TestCase
 
         self::assertSame($lineNumber, $result);
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $this->subject->getArrayRepresentation();
+    }
 }
