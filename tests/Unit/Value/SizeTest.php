@@ -98,4 +98,16 @@ final class SizeTest extends TestCase
 
         self::assertSame($unit, $parsedSize->getUnit());
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new Size(1);
+
+        $subject->getArrayRepresentation();
+    }
 }

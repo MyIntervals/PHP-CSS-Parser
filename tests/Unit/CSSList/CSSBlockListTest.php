@@ -471,4 +471,16 @@ final class CSSBlockListTest extends TestCase
 
         self::assertSame([$value1, $value2], $result);
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new ConcreteCSSBlockList();
+
+        $subject->getArrayRepresentation();
+    }
 }

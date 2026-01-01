@@ -80,4 +80,16 @@ final class CSSStringTest extends TestCase
 
         self::assertSame($lineNumber, $subject->getLineNumber());
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new CSSString('');
+
+        $subject->getArrayRepresentation();
+    }
 }

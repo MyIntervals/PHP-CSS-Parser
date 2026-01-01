@@ -471,4 +471,16 @@ final class ColorTest extends TestCase
 
         Color::parse(new ParserState($color, Settings::create()));
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new Color([]);
+
+        $subject->getArrayRepresentation();
+    }
 }

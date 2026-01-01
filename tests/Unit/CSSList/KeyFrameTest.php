@@ -108,4 +108,16 @@ final class KeyFrameTest extends TestCase
 
         self::assertSame('keyframes', $subject->getVendorKeyFrame());
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new KeyFrame();
+
+        $subject->getArrayRepresentation();
+    }
 }

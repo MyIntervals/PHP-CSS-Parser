@@ -198,4 +198,16 @@ final class CalcFunctionTest extends TestCase
         self::assertInstanceOf(CalcFunction::class, $function);
         return $function;
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new CalcFunction('calc', []);
+
+        $subject->getArrayRepresentation();
+    }
 }
