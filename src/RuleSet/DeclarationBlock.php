@@ -274,9 +274,9 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     }
 
     /**
-     * @internal
-     *
      * @return array<string, bool|int|float|string|list<array<string, mixed>>>
+     *
+     * @internal
      */
     public function getArrayRepresentation(): array
     {

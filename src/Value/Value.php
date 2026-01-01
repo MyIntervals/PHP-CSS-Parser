@@ -182,9 +182,9 @@ abstract class Value implements CSSElement, Positionable
     }
 
     /**
-     * @internal
-     *
      * @return array<string, bool|int|float|string|list<array<string, mixed>>>
+     *
+     * @internal
      */
     public function getArrayRepresentation(): array
     {
