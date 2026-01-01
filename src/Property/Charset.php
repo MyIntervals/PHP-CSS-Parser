@@ -73,9 +73,9 @@ class Charset implements AtRule, Positionable
     }
 
     /**
-     * @internal
-     *
      * @return array<string, bool|int|float|string|list<array<string, mixed>>>
+     *
+     * @internal
      */
     public function getArrayRepresentation(): array
     {

@@ -332,9 +332,9 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
     }
 
     /**
-     * @internal
-     *
      * @return array<string, bool|int|float|string|list<array<string, mixed>>>
+     *
+     * @internal
      */
     public function getArrayRepresentation(): array
     {
