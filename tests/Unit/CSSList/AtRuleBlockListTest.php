@@ -144,4 +144,16 @@ final class AtRuleBlockListTest extends TestCase
 
         self::assertFalse($subject->isRootList());
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new AtRuleBlockList('media');
+
+        $subject->getArrayRepresentation();
+    }
 }

@@ -63,4 +63,16 @@ final class DocumentTest extends TestCase
 
         self::assertTrue($subject->isRootList());
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new Document();
+
+        $subject->getArrayRepresentation();
+    }
 }

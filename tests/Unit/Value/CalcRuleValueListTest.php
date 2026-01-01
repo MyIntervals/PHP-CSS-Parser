@@ -56,4 +56,16 @@ final class CalcRuleValueListTest extends TestCase
 
         self::assertSame(',', $subject->getListSeparator());
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new CalcRuleValueList();
+
+        $subject->getArrayRepresentation();
+    }
 }

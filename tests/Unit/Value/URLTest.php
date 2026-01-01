@@ -80,4 +80,16 @@ final class URLTest extends TestCase
 
         self::assertSame($lineNumber, $subject->getLineNumber());
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationThrowsException(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $subject = new URL(new CSSString('http://example.com'));
+
+        $subject->getArrayRepresentation();
+    }
 }
