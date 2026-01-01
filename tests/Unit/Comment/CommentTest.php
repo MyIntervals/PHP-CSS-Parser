@@ -47,7 +47,7 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function setCommentSetsComments(): void
+    public function setCommentSetsComment(): void
     {
         $comment = 'There is no spoon.';
         $subject = new Comment();
