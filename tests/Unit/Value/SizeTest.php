@@ -102,12 +102,39 @@ final class SizeTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationThrowsException(): void
+    public function getArrayRepresentationIncludesClassName(): void
     {
-        $this->expectException(\BadMethodCallException::class);
-
         $subject = new Size(1);
 
-        $subject->getArrayRepresentation();
+        $result = $subject->getArrayRepresentation();
+
+        self::assertArrayHasKey('class', $result);
+        self::assertSame('Size', $result['class']);
+    }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationIncludesNumber(): void
+    {
+        $subject = new Size(1);
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertArrayHasKey('number', $result);
+        self::assertSame(1.0, $result['number']);
+    }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationIncludesUnit(): void
+    {
+        $subject = new Size(1, 'px');
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertArrayHasKey('unit', $result);
+        self::assertSame('px', $result['unit']);
     }
 }
