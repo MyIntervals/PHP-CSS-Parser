@@ -81,12 +81,27 @@ final class CommentTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationThrowsException(): void
+    public function getArrayRepresentationIncludesClassName(): void
     {
-        $this->expectException(\BadMethodCallException::class);
-
         $subject = new Comment();
 
-        $subject->getArrayRepresentation();
+        $result = $subject->getArrayRepresentation();
+
+        self::assertArrayHasKey('class', $result);
+        self::assertSame('Comment', $result['class']);
+    }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationIncludesContents(): void
+    {
+        $contents = 'War. War never changes.';
+        $subject = new Comment($contents);
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertArrayHasKey('contents', $result);
+        self::assertSame($contents, $result['contents']);
     }
 }
