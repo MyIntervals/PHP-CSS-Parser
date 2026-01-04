@@ -105,6 +105,7 @@ jobs:
                 command:
                     - composer:normalize
                     - php:fixer
+                    - php:codesniffer
                     - php:stan
                     - php:rector
                 php-version:
