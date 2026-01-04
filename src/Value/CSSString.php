@@ -9,6 +9,7 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\ShortClassNameProvider;
 
 use function Safe\preg_match;
 
@@ -19,6 +20,8 @@ use function Safe\preg_match;
  */
 class CSSString extends PrimitiveValue
 {
+    use ShortClassNameProvider;
+
     /**
      * @var string
      */
@@ -93,5 +96,19 @@ class CSSString extends PrimitiveValue
         $string = \addslashes($this->string);
         $string = \str_replace("\n", '\\A', $string);
         return $outputFormat->getStringQuotingType() . $string . $outputFormat->getStringQuotingType();
+    }
+
+    /**
+     * @return array<string, bool|int|float|string|list<array<string, mixed>>>
+     *
+     * @internal
+     */
+    public function getArrayRepresentation(): array
+    {
+        return [
+            'class' => $this->getShortClassName(),
+            // We're using the term "contents" here to make the difference to the class more clear.
+            'contents' => $this->string,
+        ];
     }
 }

@@ -84,12 +84,27 @@ final class CSSStringTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationThrowsException(): void
+    public function getArrayRepresentationIncludesClassName(): void
     {
-        $this->expectException(\BadMethodCallException::class);
-
         $subject = new CSSString('');
 
-        $subject->getArrayRepresentation();
+        $result = $subject->getArrayRepresentation();
+
+        self::assertArrayHasKey('class', $result);
+        self::assertSame('CSSString', $result['class']);
+    }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationIncludesContents(): void
+    {
+        $contents = 'What is love?';
+        $subject = new CSSString($contents);
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertArrayHasKey('contents', $result);
+        self::assertSame($contents, $result['contents']);
     }
 }
