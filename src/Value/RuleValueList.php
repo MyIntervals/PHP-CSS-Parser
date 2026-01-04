@@ -19,4 +19,14 @@ class RuleValueList extends ValueList
     {
         parent::__construct([], $separator, $lineNumber);
     }
+
+    /**
+     * @return array<string, bool|int|float|string|list<array<string, mixed>>>
+     *
+     * @internal
+     */
+    public function getArrayRepresentation(): array
+    {
+        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
+    }
 }
