@@ -188,7 +188,9 @@ abstract class Value implements CSSElement, Positionable
      */
     public function getArrayRepresentation(): array
     {
-        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
+        throw new \BadMethodCallException(
+            '`getArrayRepresentation` is not yet implemented for `' . static::class . '`'
+        );
     }
 
     /**
