@@ -113,4 +113,14 @@ class CSSFunction extends ValueList
         $arguments = parent::render($outputFormat);
         return "{$this->name}({$arguments})";
     }
+
+    /**
+     * @return array<string, bool|int|float|string|list<array<string, mixed>>>
+     *
+     * @internal
+     */
+    public function getArrayRepresentation(): array
+    {
+        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
+    }
 }
