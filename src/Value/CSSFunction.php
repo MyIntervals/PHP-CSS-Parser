@@ -121,6 +121,10 @@ class CSSFunction extends ValueList
      */
     public function getArrayRepresentation(): array
     {
-        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
+        $result = parent::getArrayRepresentation();
+
+        $result['name'] = $this->name;
+
+        return $result;
     }
 }

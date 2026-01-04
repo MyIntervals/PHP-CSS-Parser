@@ -17,12 +17,26 @@ final class CSSFunctionTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationThrowsException(): void
+    public function getArrayRepresentationIncludesClassName(): void
     {
-        $this->expectException(\BadMethodCallException::class);
-
         $subject = new CSSFunction('filter', []);
 
-        $subject->getArrayRepresentation();
+        $result = $subject->getArrayRepresentation();
+
+        self::assertArrayHasKey('class', $result);
+        self::assertSame('CSSFunction', $result['class']);
+    }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationIncludesFunctionName(): void
+    {
+        $subject = new CSSFunction('filter', []);
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertArrayHasKey('name', $result);
+        self::assertSame('filter', $result['name']);
     }
 }
