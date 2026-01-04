@@ -17,12 +17,13 @@ final class RuleValueListTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationThrowsException(): void
+    public function getArrayRepresentationIncludesClassName(): void
     {
-        $this->expectException(\BadMethodCallException::class);
-
         $subject = new RuleValueList();
 
-        $subject->getArrayRepresentation();
+        $result = $subject->getArrayRepresentation();
+
+        self::assertArrayHasKey('class', $result);
+        self::assertSame('RuleValueList', $result['class']);
     }
 }

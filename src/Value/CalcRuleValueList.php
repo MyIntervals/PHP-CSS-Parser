@@ -20,4 +20,14 @@ class CalcRuleValueList extends RuleValueList
     {
         return $outputFormat->getFormatter()->implode(' ', $this->components);
     }
+
+    /**
+     * @return array<string, bool|int|float|string|list<array<string, mixed>>>
+     *
+     * @internal
+     */
+    public function getArrayRepresentation(): array
+    {
+        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
+    }
 }
