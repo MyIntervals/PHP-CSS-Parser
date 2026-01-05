@@ -64,6 +64,7 @@ final class ValueTest extends TestCase
         self::assertSame(
             [
                 'class' => 'CSSFunction',
+                'name' => 'max',
                 'components' => [
                     [
                         'class' => 'Size',
@@ -92,7 +93,6 @@ final class ValueTest extends TestCase
                     ],
                 ],
                 'separator' => ',',
-                'name' => 'max',
             ],
             $result
         );

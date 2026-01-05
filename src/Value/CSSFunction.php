@@ -121,10 +121,12 @@ class CSSFunction extends ValueList
      */
     public function getArrayRepresentation(): array
     {
-        $result = parent::getArrayRepresentation();
-
-        $result['name'] = $this->name;
-
-        return $result;
+        return \array_merge(
+            [
+                'class' => 'placeholder',
+                'name' => $this->name,
+            ],
+            parent::getArrayRepresentation()
+        );
     }
 }
