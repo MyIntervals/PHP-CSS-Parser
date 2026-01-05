@@ -93,7 +93,7 @@ class URL extends PrimitiveValue
     {
         return [
             'class' => $this->getShortClassName(),
-            // We're using the term "uri" here to terminology the wording used in the specs:
+            // We're using the term "uri" here to match the wording used in the specs:
             // https://www.w3.org/TR/CSS22/syndata.html#uri
             'uri' => $this->url->getArrayRepresentation(),
         ];
