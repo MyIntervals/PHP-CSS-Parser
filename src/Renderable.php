@@ -9,7 +9,7 @@ interface Renderable
     public function render(OutputFormat $outputFormat): string;
 
     /**
-     * @return array<string, bool|int|float|string|list<array<string, mixed>>>
+     * @return array<string, bool|int|float|string|array<mixed>|null>
      *
      * @internal
      */
