@@ -84,12 +84,27 @@ final class URLTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationThrowsException(): void
+    public function getArrayRepresentationIncludesClassName(): void
     {
-        $this->expectException(\BadMethodCallException::class);
+        $subject = new URL(new CSSString('https://example.com'));
 
-        $subject = new URL(new CSSString('http://example.com'));
+        $result = $subject->getArrayRepresentation();
 
-        $subject->getArrayRepresentation();
+        self::assertArrayHasKey('class', $result);
+        self::assertSame('URL', $result['class']);
+    }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationIncludesUri(): void
+    {
+        $uri = 'https://example.com';
+        $subject = new URL(new CSSString($uri));
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertArrayHasKey('uri', $result);
+        self::assertSame(['class' => 'CSSString', 'contents' => $uri], $result['uri']);
     }
 }
