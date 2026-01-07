@@ -232,7 +232,7 @@ class Color extends CSSFunction
             return $this->renderAsHex();
         }
 
-        if ($this->shouldRenderInModernSyntax()) {
+        if ($this->shouldRenderInModernSyntax($outputFormat)) {
             return $this->renderInModernSyntax($outputFormat);
         }
 
@@ -309,7 +309,7 @@ class Color extends CSSFunction
      *     The same in the CSS Color Module Level 4 W3C Candidate Recommendation Draft
      *   } (as of 13 February 2024, at time of writing).
      */
-    private function shouldRenderInModernSyntax(): bool
+    private function shouldRenderInModernSyntax(OutputFormat $outputFormat): bool
     {
         if ($this->hasNoneAsComponentValue()) {
             return true;
@@ -317,6 +317,10 @@ class Color extends CSSFunction
 
         if (!$this->colorFunctionMayHaveMixedValueTypes($this->getRealName())) {
             return false;
+        }
+
+        if ($outputFormat->usesModernColorSyntax()) {
+            return true;
         }
 
         $hasPercentage = false;
