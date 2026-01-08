@@ -311,16 +311,12 @@ class Color extends CSSFunction
      */
     private function shouldRenderInModernSyntax(OutputFormat $outputFormat): bool
     {
-        if ($this->hasNoneAsComponentValue()) {
+        if ($this->hasNoneAsComponentValue() || $outputFormat->usesModernColorSyntax()) {
             return true;
         }
 
         if (!$this->colorFunctionMayHaveMixedValueTypes($this->getRealName())) {
             return false;
-        }
-
-        if ($outputFormat->usesModernColorSyntax()) {
-            return true;
         }
 
         $hasPercentage = false;

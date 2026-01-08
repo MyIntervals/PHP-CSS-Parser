@@ -39,6 +39,12 @@ Please also have a look at our
 
 ### Documentation
 
+## 9.2.0:
+
+### Added
+
+- Add use modern CSS color syntax option to `OutputFormat` (#1442)
+
 ## 9.1.0: Add support for PHP 8.5
 
 ### Added
