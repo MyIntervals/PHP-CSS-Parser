@@ -130,4 +130,22 @@ final class CSSStringTest extends TestCase
 
         self::assertSame("'{$expected}'", (new CSSString($input))->render($outputFormat));
     }
+
+    /**
+     * @test
+     */
+    public function doesNotEscapeCharactersThatDoNotNeedToBeEscaped2(): void
+    {
+        $outputFormat = OutputFormat::createPretty();
+
+        $input = "'Hello World'";
+
+        self::assertSame("\"{$input}\"", (new CSSString($input))->render($outputFormat));
+
+        $input = '"Hello World"';
+
+        $outputFormat->setStringQuotingType("'");
+
+        self::assertSame("'{$input}'", (new CSSString($input))->render($outputFormat));
+    }
 }
