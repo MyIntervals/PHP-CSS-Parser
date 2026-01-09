@@ -39,6 +39,12 @@ Please also have a look at our
 
 ### Documentation
 
+## 9.2.0:
+
+### Fixed
+
+- Do not escape characters that do not need escaping in CSS string (#1444)
+
 ## 9.1.0: Add support for PHP 8.5
 
 ### Added

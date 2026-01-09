@@ -93,7 +93,7 @@ class CSSString extends PrimitiveValue
      */
     public function render(OutputFormat $outputFormat): string
     {
-        $string = \addslashes($this->string);
+        $string = $this->escape($this->string, $outputFormat->getStringQuotingType());
         $string = \str_replace("\n", '\\A', $string);
         return $outputFormat->getStringQuotingType() . $string . $outputFormat->getStringQuotingType();
     }
@@ -110,5 +110,14 @@ class CSSString extends PrimitiveValue
             // We're using the term "contents" here to make the difference to the class more clear.
             'contents' => $this->string,
         ];
+    }
+
+    private function escape(string $string, string $quote): string
+    {
+        $string = \addslashes($string);
+
+        $replace = $quote === '"' ? ["\\'" => "'"] : ['\\"' => '"'];
+
+        return \str_replace(array_keys($replace), array_values($replace), $string);
     }
 }
