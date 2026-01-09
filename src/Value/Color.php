@@ -385,6 +385,12 @@ class Color extends CSSFunction
             $arguments = $formatter->implode($separator, [$arguments, $alpha]);
         }
 
-        return $this->getName() . '(' . $arguments . ')';
+        $name = $this->getName();
+
+        if ($outputFormat->usesModernColorSyntax()) {
+            $name = str_replace('a', '', $name);
+        }
+
+        return $name . '(' . $arguments . ')';
     }
 }
