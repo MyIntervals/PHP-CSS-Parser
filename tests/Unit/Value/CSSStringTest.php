@@ -112,7 +112,7 @@ final class CSSStringTest extends TestCase
     /**
      * @test
      */
-    public function doesNotEscapeCharactersThatDoNotNeedToBeEscaped(): void
+    public function doesNotEscapeSingleQuotesThatDoNotNeedToBeEscaped(): void
     {
         $input = "data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none'" .
         " xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd'" .
