@@ -134,7 +134,7 @@ final class CSSStringTest extends TestCase
     /**
      * @test
      */
-    public function doesNotEscapeCharactersThatDoNotNeedToBeEscaped2(): void
+    public function doesNotEscapeDoubleQuotesThatDoNotNeedToBeEscaped(): void
     {
         $outputFormat = OutputFormat::createPretty();
 
