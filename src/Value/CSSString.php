@@ -112,6 +112,9 @@ class CSSString extends PrimitiveValue
         ];
     }
 
+    /**
+     * @param "'"|'"' $quote
+     */
     private function escape(string $string, string $quote): string
     {
         $charactersToEscape = '\\';
