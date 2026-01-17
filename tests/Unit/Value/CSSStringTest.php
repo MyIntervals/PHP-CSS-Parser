@@ -136,13 +136,12 @@ final class CSSStringTest extends TestCase
      */
     public function doesNotEscapeDoubleQuotesThatDoNotNeedToBeEscaped(): void
     {
+        $input = '"Hello World"';
+        
         $outputFormat = OutputFormat::createPretty();
 
-        $input = "'Hello World'";
+        self::assertSame('"\\"Hello World\\""', (new CSSString($input))->render($outputFormat));
 
-        self::assertSame("\"{$input}\"", (new CSSString($input))->render($outputFormat));
-
-        $input = '"Hello World"';
 
         $outputFormat->setStringQuotingType("'");
 
