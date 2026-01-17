@@ -142,7 +142,6 @@ final class CSSStringTest extends TestCase
 
         self::assertSame('"\\"Hello World\\""', (new CSSString($input))->render($outputFormat));
 
-
         $outputFormat->setStringQuotingType("'");
 
         self::assertSame("'{$input}'", (new CSSString($input))->render($outputFormat));
