@@ -114,10 +114,9 @@ class CSSString extends PrimitiveValue
 
     private function escape(string $string, string $quote): string
     {
-        $string = \addslashes($string);
+        $charactersToEscape = '\\';
+        $charactersToEscape .= ($quote === '"' ? '"' : "'");
 
-        $replace = $quote === '"' ? ["\\'" => "'"] : ['\\"' => '"'];
-
-        return \str_replace(array_keys($replace), array_values($replace), $string);
+        return \addcslashes($string, $charactersToEscape);
     }
 }
