@@ -7,9 +7,7 @@ namespace Sabberworm\CSS;
 final class OutputFormat
 {
     /**
-     * Value format: `"` means double-quote, `'` means single-quote
-     *
-     * @var non-empty-string
+     * @var '"'|"'"
      */
     private $stringQuotingType = '"';
 
@@ -181,7 +179,7 @@ final class OutputFormat
     private $indentationLevel = 0;
 
     /**
-     * @return non-empty-string
+     * @return '"'|"'"
      *
      * @internal
      */
@@ -191,7 +189,7 @@ final class OutputFormat
     }
 
     /**
-     * @param non-empty-string $quotingType
+     * @param '"'|"'" $quotingType
      *
      * @return $this fluent interface
      */
