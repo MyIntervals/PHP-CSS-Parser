@@ -26,6 +26,7 @@ Please also have a look at our
 
 ### Fixed
 
+- Do not escape characters that do not need escaping in CSS string (#1444)
 - Reject selector comprising only whitespace (#1433)
 - Improve recovery parsing when a rogue `}` is encountered (#1425, #1426)
 - Parse comment(s) immediately preceding a selector (#1421, #1424)
@@ -38,12 +39,6 @@ Please also have a look at our
 - Use typesafe versions of PHP functions (#1379, #1380, #1382, #1383, #1384)
 
 ### Documentation
-
-## 9.2.0:
-
-### Fixed
-
-- Do not escape characters that do not need escaping in CSS string (#1444)
 
 ## 9.1.0: Add support for PHP 8.5
 
