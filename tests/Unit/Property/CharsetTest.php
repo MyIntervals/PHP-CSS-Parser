@@ -35,10 +35,25 @@ final class CharsetTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationThrowsException(): void
+    public function getArrayRepresentationIncludesClassName(): void
     {
-        $this->expectException(\BadMethodCallException::class);
+        $result = $this->subject->getArrayRepresentation();
 
-        $this->subject->getArrayRepresentation();
+        self::assertArrayHasKey('class', $result);
+        self::assertSame('Charset', $result['class']);
+    }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationIncludesCharset(): void
+    {
+        $charset = 'iso-8859-15';
+        $subject = new Charset(new CSSString($charset));
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertArrayHasKey('charset', $result);
+        self::assertSame(['class' => 'CSSString', 'contents' => $charset], $result['charset']);
     }
 }
