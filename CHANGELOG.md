@@ -26,6 +26,7 @@ Please also have a look at our
 
 ### Fixed
 
+- Do not escape characters that do not need escaping in CSS string (#1444)
 - Reject selector comprising only whitespace (#1433)
 - Improve recovery parsing when a rogue `}` is encountered (#1425, #1426)
 - Parse comment(s) immediately preceding a selector (#1421, #1424)
