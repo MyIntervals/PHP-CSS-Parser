@@ -232,7 +232,7 @@ class Color extends CSSFunction
             return $this->renderAsHex();
         }
 
-        if ($this->shouldRenderInModernSyntax()) {
+        if ($this->shouldRenderInModernSyntax($outputFormat)) {
             return $this->renderInModernSyntax($outputFormat);
         }
 
@@ -319,9 +319,9 @@ class Color extends CSSFunction
      *     The same in the CSS Color Module Level 4 W3C Candidate Recommendation Draft
      *   } (as of 13 February 2024, at time of writing).
      */
-    private function shouldRenderInModernSyntax(): bool
+    private function shouldRenderInModernSyntax(OutputFormat $outputFormat): bool
     {
-        if ($this->hasNoneAsComponentValue()) {
+        if ($this->hasNoneAsComponentValue() || $outputFormat->usesModernColorSyntax()) {
             return true;
         }
 
@@ -395,6 +395,12 @@ class Color extends CSSFunction
             $arguments = $formatter->implode($separator, [$arguments, $alpha]);
         }
 
-        return $this->getName() . '(' . $arguments . ')';
+        $name = $this->getName();
+
+        if ($outputFormat->usesModernColorSyntax()) {
+            $name = str_replace('a', '', $name);
+        }
+
+        return $name . '(' . $arguments . ')';
     }
 }
