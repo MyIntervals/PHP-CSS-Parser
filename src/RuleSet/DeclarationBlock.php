@@ -67,7 +67,7 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
         $comments = [];
         $result = new DeclarationBlock($parserState->currentLine());
         try {
-            $selectors = self::parseSelectors($parserState, $comments);
+            $selectors = self::parseSelectors($parserState, $list, $comments);
             $result->setSelectors($selectors, $list);
             if ($parserState->comes('{')) {
                 $parserState->consume(1);
@@ -100,11 +100,9 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
             $selectorsToSet = $selectors;
         } else {
             // A string of comma-separated selectors requires parsing.
-            // Parse as if it's the opening part of a rule.
             try {
-                $parserState = new ParserState($selectors . '{', Settings::create());
-                $selectorsToSet = self::parseSelectors($parserState);
-                $parserState->consume('{'); // throw exception if this is not next
+                $parserState = new ParserState($selectors, Settings::create());
+                $selectorsToSet = self::parseSelectors($parserState, $list);
                 if (!$parserState->isEnd()) {
                     throw new UnexpectedTokenException('EOF', 'more');
                 }
@@ -286,94 +284,22 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     /**
      * @param list<Comment> $comments
      *
-     * @return list<string>
+     * @return list<Selector>
      *
      * @throws UnexpectedTokenException
      */
-    private static function parseSelectors(ParserState $parserState, array &$comments = []): array
+    private static function parseSelectors(ParserState $parserState, ?CSSList $list, array &$comments = []): array
     {
+        $selectorClass = $list instanceof KeyFrame ? KeyFrameSelector::class : Selector::class;
         $selectors = [];
 
         while (true) {
-            $selectors[] = self::parseSelector($parserState, $comments);
+            $selectors[] = $selectorClass::parse($parserState, $comments);
             if (!$parserState->consumeIfComes(',')) {
                 break;
             }
         }
 
         return $selectors;
-    }
-
-    /**
-     * @param list<Comment> $comments
-     *
-     * @throws UnexpectedTokenException
-     */
-    private static function parseSelector(ParserState $parserState, array &$comments = []): string
-    {
-        $selectorParts = [];
-        $stringWrapperCharacter = null;
-        $functionNestingLevel = 0;
-        static $stopCharacters = ['{', '}', '\'', '"', '(', ')', ','];
-
-        while (true) {
-            $selectorParts[] = $parserState->consumeUntil($stopCharacters, false, false, $comments);
-            $nextCharacter = $parserState->peek();
-            switch ($nextCharacter) {
-                case '\'':
-                    // The fallthrough is intentional.
-                case '"':
-                    if (!\is_string($stringWrapperCharacter)) {
-                        $stringWrapperCharacter = $nextCharacter;
-                    } elseif ($stringWrapperCharacter === $nextCharacter) {
-                        if (\substr(\end($selectorParts), -1) !== '\\') {
-                            $stringWrapperCharacter = null;
-                        }
-                    }
-                    break;
-                case '(':
-                    if (!\is_string($stringWrapperCharacter)) {
-                        ++$functionNestingLevel;
-                    }
-                    break;
-                case ')':
-                    if (!\is_string($stringWrapperCharacter)) {
-                        if ($functionNestingLevel <= 0) {
-                            throw new UnexpectedTokenException(
-                                'anything but',
-                                ')',
-                                'literal',
-                                $parserState->currentLine()
-                            );
-                        }
-                        --$functionNestingLevel;
-                    }
-                    break;
-                case '{':
-                    // The fallthrough is intentional.
-                case '}':
-                    if (!\is_string($stringWrapperCharacter)) {
-                        break 2;
-                    }
-                    break;
-                case ',':
-                    if (!\is_string($stringWrapperCharacter) && $functionNestingLevel === 0) {
-                        break 2;
-                    }
-                    break;
-            }
-            $selectorParts[] = $parserState->consume(1);
-        }
-
-        if ($functionNestingLevel !== 0) {
-            throw new UnexpectedTokenException(')', $nextCharacter, 'literal', $parserState->currentLine());
-        }
-
-        $selector = \trim(\implode('', $selectorParts));
-        if ($selector === '') {
-            throw new UnexpectedTokenException('selector', $nextCharacter, 'literal', $parserState->currentLine());
-        }
-
-        return $selector;
     }
 }
