@@ -91,7 +91,6 @@ final class CSSStringTest extends TestCase
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertArrayHasKey('class', $result);
         self::assertSame('CSSString', $result['class']);
     }
 
@@ -105,7 +104,6 @@ final class CSSStringTest extends TestCase
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertArrayHasKey('contents', $result);
         self::assertSame($contents, $result['contents']);
     }
 

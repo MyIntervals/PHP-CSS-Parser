@@ -23,7 +23,6 @@ final class CSSFunctionTest extends TestCase
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertArrayHasKey('class', $result);
         self::assertSame('CSSFunction', $result['class']);
     }
 
@@ -36,7 +35,6 @@ final class CSSFunctionTest extends TestCase
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertArrayHasKey('name', $result);
         self::assertSame('filter', $result['name']);
     }
 }

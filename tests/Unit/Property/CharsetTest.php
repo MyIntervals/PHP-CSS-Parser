@@ -39,7 +39,6 @@ final class CharsetTest extends TestCase
     {
         $result = $this->subject->getArrayRepresentation();
 
-        self::assertArrayHasKey('class', $result);
         self::assertSame('Charset', $result['class']);
     }
 
@@ -53,7 +52,12 @@ final class CharsetTest extends TestCase
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertArrayHasKey('charset', $result);
-        self::assertSame(['class' => 'CSSString', 'contents' => $charset], $result['charset']);
+        self::assertSame(
+            [
+                'class' => 'CSSString',
+                'contents' => $charset,
+            ],
+            $result['charset']
+        );
     }
 }

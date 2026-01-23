@@ -90,7 +90,6 @@ final class URLTest extends TestCase
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertArrayHasKey('class', $result);
         self::assertSame('URL', $result['class']);
     }
 
@@ -104,7 +103,12 @@ final class URLTest extends TestCase
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertArrayHasKey('uri', $result);
-        self::assertSame(['class' => 'CSSString', 'contents' => $uri], $result['uri']);
+        self::assertSame(
+            [
+                'class' => 'CSSString',
+                'contents' => $uri,
+            ],
+            $result['uri']
+        );
     }
 }

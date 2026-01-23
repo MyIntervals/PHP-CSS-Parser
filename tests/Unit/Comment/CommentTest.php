@@ -87,7 +87,6 @@ final class CommentTest extends TestCase
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertArrayHasKey('class', $result);
         self::assertSame('Comment', $result['class']);
     }
 
@@ -101,7 +100,6 @@ final class CommentTest extends TestCase
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertArrayHasKey('contents', $result);
         self::assertSame($contents, $result['contents']);
     }
 }
