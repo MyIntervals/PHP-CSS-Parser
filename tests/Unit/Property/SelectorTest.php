@@ -226,7 +226,6 @@ final class SelectorTest extends TestCase
         $result = [];
         Selector::parse(new ParserState($selector, Settings::create()), $result);
 
-        self::assertArrayHasKey(0, $result);
         self::assertInstanceOf(Comment::class, $result[0]);
         self::assertSame('comment', $result[0]->getComment());
     }
@@ -250,10 +249,8 @@ final class SelectorTest extends TestCase
         $result = [];
         Selector::parse(new ParserState('/*comment1*/a/*comment2*/', Settings::create()), $result);
 
-        self::assertArrayHasKey(0, $result);
         self::assertInstanceOf(Comment::class, $result[0]);
         self::assertSame('comment1', $result[0]->getComment());
-        self::assertArrayHasKey(1, $result);
         self::assertInstanceOf(Comment::class, $result[1]);
         self::assertSame('comment2', $result[1]->getComment());
     }

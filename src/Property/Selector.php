@@ -133,6 +133,12 @@ class Selector implements Renderable
                         break 2;
                     }
                     break;
+                default:
+                    // This will never happen unless something gets broken in `ParserState`.
+                    throw new \UnexpectedValueException(
+                        'Unexpected character \'' . $nextCharacter
+                        . '\' returned from `ParserState::peek()` in `Selector::parse()`'
+                    );
             }
             $selectorParts[] = $parserState->consume(1);
         }
