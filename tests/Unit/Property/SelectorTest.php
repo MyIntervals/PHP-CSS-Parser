@@ -53,16 +53,23 @@ final class SelectorTest extends TestCase
     public static function provideSelectorsAndSpecificities(): array
     {
         return [
-            'element' => ['a', 1],
-            'element and descendant with pseudo-selector' => ['ol li::before', 3],
+            'type' => ['a', 1],
             'class' => ['.highlighted', 10],
-            'element with class' => ['li.green', 11],
-            'class with pseudo-selector' => ['.help:hover', 20],
+            'type with class' => ['li.green', 11],
+            'pseudo-class' => [':hover', 10],
+            'type with pseudo-class' => ['a:hover', 11],
+            'class with pseudo-class' => ['.help:hover', 20],
             'ID' => ['#file', 100],
-            'ID and descendant class' => ['#test .help', 110],
+            'ID and descendent class' => ['#test .help', 110],
+            'type with ID' => ['h2#my-mug', 101],
+            'pseudo-element' => ['::before', 1],
+            'type with pseudo-element' => ['li::before', 2],
+            'type and descendent type with pseudo-element' => ['ol li::before', 3],
             '`not`' => [':not(#your-mug)', 100],
             // TODO, broken: The specificity should be the highest of the `:not` arguments, not the sum.
             '`not` with multiple arguments' => [':not(#your-mug, .their-mug)', 110],
+            'attribute with `"`' => ['[alt="{}()[]\\"\',"]', 10],
+            'attribute with `\'`' => ['[alt=\'{}()[]"\\\',\']', 10],
         ];
     }
 
