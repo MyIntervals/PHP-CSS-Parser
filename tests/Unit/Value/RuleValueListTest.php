@@ -23,7 +23,6 @@ final class RuleValueListTest extends TestCase
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertArrayHasKey('class', $result);
         self::assertSame('RuleValueList', $result['class']);
     }
 }

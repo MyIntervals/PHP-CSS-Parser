@@ -108,7 +108,6 @@ final class SizeTest extends TestCase
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertArrayHasKey('class', $result);
         self::assertSame('Size', $result['class']);
     }
 
@@ -121,7 +120,6 @@ final class SizeTest extends TestCase
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertArrayHasKey('number', $result);
         self::assertSame(1.0, $result['number']);
     }
 
@@ -134,7 +132,6 @@ final class SizeTest extends TestCase
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertArrayHasKey('unit', $result);
         self::assertSame('px', $result['unit']);
     }
 }
