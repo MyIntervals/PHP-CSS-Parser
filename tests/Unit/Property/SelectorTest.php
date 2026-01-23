@@ -67,6 +67,26 @@ final class SelectorTest extends TestCase
     }
 
     /**
+     * @return array<string, array{0: string}>
+     */
+    public static function provideInvalidSelectors(): array
+    {
+        return [
+            // This is currently broken.
+            // 'empty string' => [''],
+            'percent sign' => ['%'],
+            // This is currently broken.
+            // 'hash only' => ['#'],
+            // This is currently broken.
+            // 'dot only' => ['.'],
+            'slash' => ['/'],
+            'less-than sign' => ['<'],
+            // This is currently broken.
+            // 'whitespace only' => [" \t\n\r"],
+        ];
+    }
+
+    /**
      * @test
      *
      * @param non-empty-string $selector
@@ -110,26 +130,6 @@ final class SelectorTest extends TestCase
     public function isValidForValidSelectorReturnsTrue(string $selector): void
     {
         self::assertTrue(Selector::isValid($selector));
-    }
-
-    /**
-     * @return array<string, array{0: string}>
-     */
-    public static function provideInvalidSelectors(): array
-    {
-        return [
-            // This is currently broken.
-            // 'empty string' => [''],
-            'percent sign' => ['%'],
-            // This is currently broken.
-            // 'hash only' => ['#'],
-            // This is currently broken.
-            // 'dot only' => ['.'],
-            'slash' => ['/'],
-            'less-than sign' => ['<'],
-            // This is currently broken.
-            // 'whitespace only' => [" \t\n\r"],
-        ];
     }
 
     /**
