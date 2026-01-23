@@ -8,6 +8,8 @@ use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\Property\Selector\Combinator;
+use Sabberworm\CSS\Property\Selector\CompoundSelector;
 use Sabberworm\CSS\Property\Selector\SpecificityCalculator;
 use Sabberworm\CSS\Renderable;
 
@@ -80,98 +82,54 @@ class Selector implements Renderable
      */
     public static function parse(ParserState $parserState, array &$comments = []): self
     {
+        // Whitespace is a descendent combinator, not allowed around a compound selector.
+        // (It is allowed within, e.g. as part of a string or within a function like `:not()`.)
+        // Gobble any up now to get a clean start.
+        $parserState->consumeWhiteSpace($comments);
+
         $selectorParts = [];
-        $stringWrapperCharacter = null;
-        $functionNestingLevel = 0;
-        static $stopCharacters = ['{', '}', '\'', '"', '(', ')', ',', ParserState::EOF, ''];
-
         while (true) {
-            $selectorParts[] = $parserState->consumeUntil($stopCharacters, false, false, $comments);
-            $nextCharacter = $parserState->peek();
-            switch ($nextCharacter) {
-                case '':
-                    // EOF
-                    break 2;
-                case '\'':
-                    // The fallthrough is intentional.
-                case '"':
-                    $lastPart = \end($selectorParts);
-                    $backslashCount = \strspn(\strrev($lastPart), '\\');
-                    $quoteIsEscaped = ($backslashCount % 2 === 1);
-                    if (!$quoteIsEscaped) {
-                        if (!\is_string($stringWrapperCharacter)) {
-                            $stringWrapperCharacter = $nextCharacter;
-                        } elseif ($stringWrapperCharacter === $nextCharacter) {
-                            $stringWrapperCharacter = null;
-                        }
-                    }
+            try {
+                $selectorParts[] = CompoundSelector::parse($parserState, $comments);
+            } catch (UnexpectedTokenException $e) {
+                if ($selectorParts !== [] && \end($selectorParts)->getValue() === ' ') {
+                    // The whitespace was not a descendent combinator, and was, in fact, arbitrary,
+                    // after the end of the selector.  Discard it.
+                    \array_pop($selectorParts);
                     break;
-                case '(':
-                    if (!\is_string($stringWrapperCharacter)) {
-                        ++$functionNestingLevel;
-                    }
-                    break;
-                case ')':
-                    if (!\is_string($stringWrapperCharacter)) {
-                        if ($functionNestingLevel <= 0) {
-                            throw new UnexpectedTokenException(
-                                'anything but',
-                                ')',
-                                'literal',
-                                $parserState->currentLine()
-                            );
-                        }
-                        --$functionNestingLevel;
-                    }
-                    break;
-                case ',':
-                    if (!\is_string($stringWrapperCharacter) && $functionNestingLevel === 0) {
-                        break 2;
-                    }
-                    break;
-                case '{':
-                    // The fallthrough is intentional.
-                case '}':
-                    if (!\is_string($stringWrapperCharacter)) {
-                        break 2;
-                    }
-                    break;
-                default:
-                    // This will never happen unless something gets broken in `ParserState`.
-                    throw new \UnexpectedValueException(
-                        'Unexpected character \'' . $nextCharacter
-                        . '\' returned from `ParserState::peek()` in `Selector::parse()`'
-                    );
+                } else {
+                    throw $e;
+                }
             }
-            $selectorParts[] = $parserState->consume(1);
+            try {
+                $selectorParts[] = Combinator::parse($parserState, $comments);
+            } catch (UnexpectedTokenException $e) {
+                // End of selector has been reached.
+                break;
+            }
         }
 
-        if ($functionNestingLevel !== 0) {
-            throw new UnexpectedTokenException(')', $nextCharacter, 'literal', $parserState->currentLine());
-        }
-        if (\is_string($stringWrapperCharacter)) {
+        // Check that the selector has been fully parsed:
+        if (!\in_array($parserState->peek(), ['{', '}', ',', ''], true)) {
             throw new UnexpectedTokenException(
-                $stringWrapperCharacter,
-                $nextCharacter,
+                '`,`, `{`, `}` or EOF',
+                $parserState->peek(5),
                 'literal',
                 $parserState->currentLine()
             );
         }
 
-        $selector = \trim(\implode('', $selectorParts));
-        if ($selector === '') {
-            throw new UnexpectedTokenException('selector', $nextCharacter, 'literal', $parserState->currentLine());
-        }
-        if (!self::isValid($selector)) {
-            throw new UnexpectedTokenException(
-                "Selector did not match '" . static::SELECTOR_VALIDATION_RX . "'.",
-                $selector,
-                'custom',
-                $parserState->currentLine()
-            );
+        $selectorString = '';
+        foreach ($selectorParts as $selectorPart) {
+            $selectorPartValue = $selectorPart->getValue();
+            if (\in_array($selectorPartValue, ['>', '+', '~'], true)) {
+                $selectorString .= ' ' . $selectorPartValue . ' ';
+            } else {
+                $selectorString .= $selectorPartValue;
+            }
         }
 
-        return new static($selector);
+        return new static($selectorString);
     }
 
     public function getSelector(): string
