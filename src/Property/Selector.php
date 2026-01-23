@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\Property;
 
+use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\Selector\SpecificityCalculator;
 use Sabberworm\CSS\Renderable;
 
@@ -63,9 +66,103 @@ class Selector implements Renderable
         return $numberOfMatches === 1;
     }
 
-    public function __construct(string $selector)
+    final public function __construct(string $selector)
     {
         $this->setSelector($selector);
+    }
+
+    /**
+     * @param list<Comment> $comments
+     *
+     * @throws UnexpectedTokenException
+     *
+     * @internal
+     */
+    public static function parse(ParserState $parserState, array &$comments = []): self
+    {
+        $selectorParts = [];
+        $stringWrapperCharacter = null;
+        $functionNestingLevel = 0;
+        static $stopCharacters = ['{', '}', '\'', '"', '(', ')', ',', ParserState::EOF, ''];
+
+        while (true) {
+            $selectorParts[] = $parserState->consumeUntil($stopCharacters, false, false, $comments);
+            $nextCharacter = $parserState->peek();
+            switch ($nextCharacter) {
+                case '':
+                    // EOF
+                    break 2;
+                case '\'':
+                    // The fallthrough is intentional.
+                case '"':
+                    if (!\is_string($stringWrapperCharacter)) {
+                        $stringWrapperCharacter = $nextCharacter;
+                    } elseif ($stringWrapperCharacter === $nextCharacter) {
+                        if (\substr(\end($selectorParts), -1) !== '\\') {
+                            $stringWrapperCharacter = null;
+                        }
+                    }
+                    break;
+                case '(':
+                    if (!\is_string($stringWrapperCharacter)) {
+                        ++$functionNestingLevel;
+                    }
+                    break;
+                case ')':
+                    if (!\is_string($stringWrapperCharacter)) {
+                        if ($functionNestingLevel <= 0) {
+                            throw new UnexpectedTokenException(
+                                'anything but',
+                                ')',
+                                'literal',
+                                $parserState->currentLine()
+                            );
+                        }
+                        --$functionNestingLevel;
+                    }
+                    break;
+                case ',':
+                    if (!\is_string($stringWrapperCharacter) && $functionNestingLevel === 0) {
+                        break 2;
+                    }
+                    break;
+                case '{':
+                    // The fallthrough is intentional.
+                case '}':
+                    if (!\is_string($stringWrapperCharacter)) {
+                        break 2;
+                    }
+                    break;
+            }
+            $selectorParts[] = $parserState->consume(1);
+        }
+
+        if ($functionNestingLevel !== 0) {
+            throw new UnexpectedTokenException(')', $nextCharacter, 'literal', $parserState->currentLine());
+        }
+        if (\is_string($stringWrapperCharacter)) {
+            throw new UnexpectedTokenException(
+                $stringWrapperCharacter,
+                $nextCharacter,
+                'literal',
+                $parserState->currentLine()
+            );
+        }
+
+        $selector = \trim(\implode('', $selectorParts));
+        if ($selector === '') {
+            throw new UnexpectedTokenException('selector', $nextCharacter, 'literal', $parserState->currentLine());
+        }
+        if (!self::isValid($selector)) {
+            throw new UnexpectedTokenException(
+                "Selector did not match '" . static::SELECTOR_VALIDATION_RX . "'.",
+                $selector,
+                'custom',
+                $parserState->currentLine()
+            );
+        }
+
+        return new static($selector);
     }
 
     public function getSelector(): string

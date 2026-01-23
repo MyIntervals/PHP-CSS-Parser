@@ -5,8 +5,13 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit\Property;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\Comment\Comment;
+use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Renderable;
+use Sabberworm\CSS\Settings;
+use TRegx\PhpUnit\DataProviders\DataProvider;
 
 /**
  * @covers \Sabberworm\CSS\Property\Selector
@@ -74,6 +79,21 @@ final class SelectorTest extends TestCase
     }
 
     /**
+     * @test
+     *
+     * @param non-empty-string $selector
+     *
+     * @dataProvider provideSelectorsAndSpecificities
+     */
+    public function parsesValidSelector(string $selector): void
+    {
+        $result = Selector::parse(new ParserState($selector, Settings::create()));
+
+        self::assertInstanceOf(Selector::class, $result);
+        self::assertSame($result->getSelector(), $selector);
+    }
+
+    /**
      * @return array<non-empty-string, array{0: string}>
      */
     public static function provideInvalidSelectors(): array
@@ -91,6 +111,146 @@ final class SelectorTest extends TestCase
             // This is currently broken.
             // 'whitespace only' => [" \t\n\r"],
         ];
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: string}>
+     */
+    public static function provideInvalidSelectorsForParse(): array
+    {
+        return [
+            'empty string' => [''],
+            'whitespace only' => [" \t\n\r"],
+            'not missing closing brace' => [':not(a'],
+            'not missing opening brace' => [':not a)'],
+            'attribute value missing closing single quote' => ['a[href=\'#top]'],
+            'attribute value missing closing double quote' => ['a[href="#top]'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $selector
+     *
+     * @dataProvider provideInvalidSelectors
+     * @dataProvider provideInvalidSelectorsForParse
+     */
+    public function parseThrowsExceptionWithInvalidSelector(string $selector): void
+    {
+        $this->expectException(UnexpectedTokenException::class);
+
+        Selector::parse(new ParserState($selector, Settings::create()));
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideStopCharacters(): array
+    {
+        return [
+            ',' => ['{'],
+            '{' => ['{'],
+            '}' => ['}'],
+        ];
+    }
+
+    /**
+     * @return DataProvider<non-empty-string, array{0: non-empty-string, 1: non-empty-string}>
+     */
+    public function provideStopCharactersAndValidSelectors(): DataProvider
+    {
+        return DataProvider::cross(self::provideStopCharacters(), self::provideSelectorsAndSpecificities());
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $stopCharacter
+     * @param non-empty-string $selector
+     *
+     * @dataProvider provideStopCharactersAndValidSelectors
+     */
+    public function parseDoesNotConsumeStopCharacter(string $stopCharacter, string $selector): void
+    {
+        $subject = new ParserState($selector . $stopCharacter, Settings::create());
+
+        Selector::parse($subject);
+
+        self::assertSame($stopCharacter, $subject->peek());
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string, 1: non-empty-string}>
+     */
+    public static function provideSelectorsWithAndWithoutComment(): array
+    {
+        return [
+            'comment before' => ['/*comment*/body', 'body'],
+            'comment after' => ['body/*comment*/', 'body'],
+            'comment within' => ['./*comment*/teapot', '.teapot'],
+            'comment within function' => [':not(#your-mug,/*comment*/.their-mug)', ':not(#your-mug,.their-mug)'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $selectorWith
+     * @param non-empty-string $selectorWithout
+     *
+     * @dataProvider provideSelectorsWithAndWithoutComment
+     */
+    public function parsesSelectorWithComment(string $selectorWith, string $selectorWithout): void
+    {
+        $result = Selector::parse(new ParserState($selectorWith, Settings::create()));
+
+        self::assertInstanceOf(Selector::class, $result);
+        self::assertSame($selectorWithout, $result->getSelector());
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $selector
+     *
+     * @dataProvider provideSelectorsWithAndWithoutComment
+     */
+    public function parseExtractsCommentFromSelector(string $selector): void
+    {
+        $result = [];
+        Selector::parse(new ParserState($selector, Settings::create()), $result);
+
+        self::assertArrayHasKey(0, $result);
+        self::assertInstanceOf(Comment::class, $result[0]);
+        self::assertSame('comment', $result[0]->getComment());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesSelectorWithTwoComments(): void
+    {
+        $result = Selector::parse(new ParserState('/*comment1*/a/*comment2*/', Settings::create()));
+
+        self::assertInstanceOf(Selector::class, $result);
+        self::assertSame('a', $result->getSelector());
+    }
+
+    /**
+     * @test
+     */
+    public function parseExtractsTwoCommentsFromSelector(): void
+    {
+        $result = [];
+        Selector::parse(new ParserState('/*comment1*/a/*comment2*/', Settings::create()), $result);
+
+        self::assertArrayHasKey(0, $result);
+        self::assertInstanceOf(Comment::class, $result[0]);
+        self::assertSame('comment1', $result[0]->getComment());
+        self::assertArrayHasKey(1, $result);
+        self::assertInstanceOf(Comment::class, $result[1]);
+        self::assertSame('comment2', $result[1]->getComment());
     }
 
     /**
