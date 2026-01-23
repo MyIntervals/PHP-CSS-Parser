@@ -59,7 +59,8 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
             $parserState->consume(';');
         }
         while (true) {
-            $commentsBeforeRule = $parserState->consumeWhiteSpace();
+            $commentsBeforeRule = [];
+            $parserState->consumeWhiteSpace($commentsBeforeRule);
             if ($parserState->comes('}')) {
                 break;
             }

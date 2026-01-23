@@ -188,7 +188,7 @@ class ParserState
     }
 
     /**
-     * @return list<Comment>
+     * @param list<Comment> $comments
      *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
@@ -197,12 +197,12 @@ class ParserState
      * This method may change the state of the object by advancing the internal position;
      * it does not simply 'get' a value.
      */
-    public function consumeWhiteSpace(): array
+    public function consumeWhiteSpace(array &$comments = []): string
     {
-        $comments = [];
+        $consumed = '';
         do {
             while (preg_match('/\\s/isSu', $this->peek()) === 1) {
-                $this->consume(1);
+                $consumed .= $this->consume(1);
             }
             if ($this->parserSettings->usesLenientParsing()) {
                 try {
@@ -219,7 +219,7 @@ class ParserState
             }
         } while ($comment instanceof Comment);
 
-        return $comments;
+        return $consumed;
     }
 
     /**
