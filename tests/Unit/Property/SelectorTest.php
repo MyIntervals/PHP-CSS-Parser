@@ -48,7 +48,7 @@ final class SelectorTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: non-empty-string, 1: int<0, max>}>
+     * @return array<non-empty-string, array{0: non-empty-string, 1: int<0, max>}>
      */
     public static function provideSelectorsAndSpecificities(): array
     {
@@ -74,7 +74,7 @@ final class SelectorTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: string}>
+     * @return array<non-empty-string, array{0: string}>
      */
     public static function provideInvalidSelectors(): array
     {
