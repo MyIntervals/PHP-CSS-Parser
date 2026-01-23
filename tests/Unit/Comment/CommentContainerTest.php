@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit\Comment;
 
 use PHPUnit\Framework\Constraint\LogicalAnd;
-use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Comment;
+use Sabberworm\CSS\Tests\Support\TraversableContains;
 use Sabberworm\CSS\Tests\Unit\Comment\Fixtures\ConcreteCommentContainer;
 use TRegx\PhpUnit\DataProviders\DataProvider;
 

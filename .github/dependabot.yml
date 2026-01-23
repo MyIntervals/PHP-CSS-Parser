@@ -19,7 +19,7 @@ updates:
       ignore:
         - dependency-name: "phpstan/*"
         - dependency-name: "phpunit/phpunit"
-          versions: [ ">= 9.0.0" ]
+          versions: [ ">= 10.0.0" ]
         - dependency-name: "rector/rector"
         - dependency-name: "thecodingmachine/safe"
         - dependency-name: "thecodingmachine/phpstan-safe-rule"
