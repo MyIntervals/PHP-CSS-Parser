@@ -120,11 +120,16 @@ final class SelectorTest extends TestCase
     {
         return [
             'empty string' => [''],
-            'whitespace only' => [" \t\n\r"],
-            'not missing closing brace' => [':not(a'],
-            'not missing opening brace' => [':not a)'],
+            'space' => [' '],
+            'tab' => ["\t"],
+            'line feed' => ["\n"],
+            'carriage return' => ["\r"],
+            'a `:not` missing the closing brace' => [':not(a'],
+            'a `:not` missing the opening brace' => [':not a)'],
             'attribute value missing closing single quote' => ['a[href=\'#top]'],
             'attribute value missing closing double quote' => ['a[href="#top]'],
+            'attribute value with mismatched quotes, single quote opening' => ['a[href=\'#top"]'],
+            'attribute value with mismatched quotes, double quote opening' => ['a[href="#top\']'],
         ];
     }
 
@@ -149,7 +154,7 @@ final class SelectorTest extends TestCase
     public static function provideStopCharacters(): array
     {
         return [
-            ',' => ['{'],
+            ',' => [','],
             '{' => ['{'],
             '}' => ['}'],
         ];
