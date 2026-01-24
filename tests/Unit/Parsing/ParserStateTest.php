@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Settings;
+use TRegx\PhpUnit\DataProviders\DataProvider;
 
 /**
  * @covers \Sabberworm\CSS\Parsing\ParserState
@@ -245,6 +246,8 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      *
+     * @param non-empty-string $whitespace
+     *
      * @dataProvider provideWhitespace
      */
     public function consumeWhiteSpaceExtractsCommentWithSurroundingWhitespace(string $whitespace): void
@@ -257,5 +260,47 @@ final class ParserStateTest extends TestCase
 
         self::assertInstanceOf(Comment::class, $result[0]);
         self::assertSame($commentText, $result[0]->getComment());
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideNonWhitespace(): array
+    {
+        return [
+            'number' => ['7'],
+            'uppercase letter' => ['B'],
+            'lowercase letter' => ['c'],
+            'symbol' => ['@'],
+            'sequence of non-whitespace characters' => ['Hello!'],
+            'sequence of characters including space which isn\'t first' => ['Oh no!'],
+        ];
+    }
+
+    /**
+     * @return DataProvider<non-empty-string, array{0: non-empty-string, 1: string}>
+     */
+    public function provideNonWhitespaceAndContentWithPossibleWhitespaceOrComments(): DataProvider
+    {
+        return DataProvider::cross(
+            self::provideNonWhitespace(),
+            self::provideContentWhichMayHaveWhitespaceOrCommentsAndExpectedConsumption()
+        );
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $nonWhitespace
+     *
+     * @dataProvider provideNonWhitespaceAndContentWithPossibleWhitespaceOrComments
+     */
+    public function consumeWhiteSpaceStopsAtNonWhitespace(string $nonWhitespace, string $whitespace): void
+    {
+        $subject = new ParserState($whitespace . $nonWhitespace, Settings::create());
+
+        $subject->consumeWhiteSpace();
+
+        self::assertTrue($subject->comes($nonWhitespace));
     }
 }

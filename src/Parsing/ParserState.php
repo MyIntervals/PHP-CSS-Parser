@@ -188,7 +188,11 @@ class ParserState
     }
 
     /**
-     * @param list<Comment> $comments
+     * Consumes whitespace and/or comments until the next non-whitespace character that isn't a slash opening a comment.
+     *
+     * @param list<Comment> $comments Any comments consumed will be appended to this array.
+     *
+     * @return string the whitespace consumed, without the comments
      *
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
