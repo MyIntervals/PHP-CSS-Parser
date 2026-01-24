@@ -14,6 +14,7 @@ use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
+use Sabberworm\CSS\ShortClassNameProvider;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Value;
 
@@ -28,6 +29,7 @@ class Rule implements Commentable, CSSElement, Positionable
 {
     use CommentContainer;
     use Position;
+    use ShortClassNameProvider;
 
     /**
      * @var non-empty-string
@@ -205,6 +207,10 @@ class Rule implements Commentable, CSSElement, Positionable
      */
     public function getArrayRepresentation(): array
     {
-        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
+        return [
+            'class' => $this->getShortClassName(),
+            'rule' => $this->getRule(),
+            'important' => $this->getIsImportant(),
+        ];
     }
 }

@@ -10,6 +10,7 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\RuleValueList;
+use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\Value;
 use Sabberworm\CSS\Value\ValueList;
 
@@ -59,9 +60,9 @@ final class RuleTest extends TestCase
         self::assertInstanceOf(ValueList::class, $value);
 
         $actualClassnames = \array_map(
-            /**
-             * @param Value|string $component
-             */
+        /**
+         * @param Value|string $component
+         */
             static function ($component): string {
                 return \is_string($component) ? 'string' : \get_class($component);
             },
@@ -74,12 +75,51 @@ final class RuleTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationThrowsException(): void
+    public function getArrayRepresentationIncludesClassName(): void
     {
-        $this->expectException(\BadMethodCallException::class);
+        $subject = new Rule('beverage-container');
 
-        $subject = new Rule('todo');
+        $result = $subject->getArrayRepresentation();
 
-        $subject->getArrayRepresentation();
+        self::assertSame('Rule', $result['class']);
+    }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationIncludesRule(): void
+    {
+        $rule = 'terraforming-mars';
+        $subject = new Rule($rule);
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertSame($rule, $result['rule']);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideBooleans
+     */
+    public function getArrayRepresentationIncludesImportantFlag(bool $importantValue): void
+    {
+        $subject = new Rule('beverage-container');
+        $subject->setIsImportant($importantValue);
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertSame($importantValue, $result['important']);
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: bool}>
+     */
+    public static function provideBooleans(): array
+    {
+        return [
+            'true' => [true],
+            'false' => [false],
+        ];
     }
 }
