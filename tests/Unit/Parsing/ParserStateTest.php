@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Settings;
+use TRegx\PhpUnit\DataProviders\DataProvider;
 
 /**
  * @covers \Sabberworm\CSS\Parsing\ParserState
@@ -156,5 +157,150 @@ final class ParserStateTest extends TestCase
         $subject->consumeIfComes("\n");
 
         self::assertSame(2, $subject->currentLine());
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: string, 1: string}>
+     */
+    public static function provideContentWhichMayHaveWhitespaceOrCommentsAndExpectedConsumption(): array
+    {
+        return [
+            'nothing' => ['', ''],
+            'space' => [' ', ' '],
+            'tab' => ["\t", "\t"],
+            'line feed' => ["\n", "\n"],
+            'carriage return' => ["\r", "\r"],
+            'two spaces' => ['  ', '  '],
+            'comment' => ['/*hello*/', ''],
+            'comment with space to the left' => [' /*hello*/', ' '],
+            'comment with space to the right' => ['/*hello*/ ', ' '],
+            'two comments' => ['/*hello*//*bye*/', ''],
+            'two comments with space between' => ['/*hello*/ /*bye*/', ' '],
+            'two comments with line feed between' => ["/*hello*/\n/*bye*/", "\n"],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideContentWhichMayHaveWhitespaceOrCommentsAndExpectedConsumption
+     */
+    public function consumeWhiteSpaceReturnsTheConsumed(
+        string $whitespaceMaybeWithComments,
+        string $expectedConsumption
+    ): void {
+        $subject = new ParserState($whitespaceMaybeWithComments, Settings::create());
+
+        $result = $subject->consumeWhiteSpace();
+
+        self::assertSame($expectedConsumption, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function consumeWhiteSpaceExtractsComment(): void
+    {
+        $commentText = 'Did they get you to trade your heroes for ghosts?';
+        $subject = new ParserState('/*' . $commentText . '*/', Settings::create());
+
+        $result = [];
+        $subject->consumeWhiteSpace($result);
+
+        self::assertInstanceOf(Comment::class, $result[0]);
+        self::assertSame($commentText, $result[0]->getComment());
+    }
+
+    /**
+     * @test
+     */
+    public function consumeWhiteSpaceExtractsTwoComments(): void
+    {
+        $commentText1 = 'Hot ashes for trees? Hot air for a cool breeze?';
+        $commentText2 = 'Cold comfort for change? Did you exchange';
+        $subject = new ParserState('/*' . $commentText1 . '*//*' . $commentText2 . '*/', Settings::create());
+
+        $result = [];
+        $subject->consumeWhiteSpace($result);
+
+        self::assertInstanceOf(Comment::class, $result[0]);
+        self::assertSame($commentText1, $result[0]->getComment());
+        self::assertInstanceOf(Comment::class, $result[1]);
+        self::assertSame($commentText2, $result[1]->getComment());
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideWhitespace(): array
+    {
+        return [
+            'space' => [' '],
+            'tab' => ["\t"],
+            'line feed' => ["\n"],
+            'carriage return' => ["\r"],
+            'two spaces' => ['  '],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $whitespace
+     *
+     * @dataProvider provideWhitespace
+     */
+    public function consumeWhiteSpaceExtractsCommentWithSurroundingWhitespace(string $whitespace): void
+    {
+        $commentText = 'A walk-on part in the war for a lead role in a cage?';
+        $subject = new ParserState($whitespace . '/*' . $commentText . '*/' . $whitespace, Settings::create());
+
+        $result = [];
+        $subject->consumeWhiteSpace($result);
+
+        self::assertInstanceOf(Comment::class, $result[0]);
+        self::assertSame($commentText, $result[0]->getComment());
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideNonWhitespace(): array
+    {
+        return [
+            'number' => ['7'],
+            'uppercase letter' => ['B'],
+            'lowercase letter' => ['c'],
+            'symbol' => ['@'],
+            'sequence of non-whitespace characters' => ['Hello!'],
+            'sequence of characters including space which isn\'t first' => ['Oh no!'],
+        ];
+    }
+
+    /**
+     * @return DataProvider<non-empty-string, array{0: non-empty-string, 1: string}>
+     */
+    public function provideNonWhitespaceAndContentWithPossibleWhitespaceOrComments(): DataProvider
+    {
+        return DataProvider::cross(
+            self::provideNonWhitespace(),
+            self::provideContentWhichMayHaveWhitespaceOrCommentsAndExpectedConsumption()
+        );
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $nonWhitespace
+     *
+     * @dataProvider provideNonWhitespaceAndContentWithPossibleWhitespaceOrComments
+     */
+    public function consumeWhiteSpaceStopsAtNonWhitespace(string $nonWhitespace, string $whitespace): void
+    {
+        $subject = new ParserState($whitespace . $nonWhitespace, Settings::create());
+
+        $subject->consumeWhiteSpace();
+
+        self::assertTrue($subject->comes($nonWhitespace));
     }
 }

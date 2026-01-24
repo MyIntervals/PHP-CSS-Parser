@@ -65,14 +65,15 @@ class Rule implements Commentable, CSSElement, Positionable
      */
     public static function parse(ParserState $parserState, array $commentsBeforeRule = []): Rule
     {
-        $comments = \array_merge($commentsBeforeRule, $parserState->consumeWhiteSpace());
+        $comments = $commentsBeforeRule;
+        $parserState->consumeWhiteSpace($comments);
         $rule = new Rule(
             $parserState->parseIdentifier(!$parserState->comes('--')),
             $parserState->currentLine(),
             $parserState->currentColumn()
         );
+        $parserState->consumeWhiteSpace($comments);
         $rule->setComments($comments);
-        $rule->addComments($parserState->consumeWhiteSpace());
         $parserState->consume(':');
         $value = Value::parseValue($parserState, self::listDelimiterForRule($rule->getRule()));
         $rule->setValue($value);

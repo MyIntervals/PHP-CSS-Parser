@@ -68,7 +68,7 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
         $usesLenientParsing = $parserState->getSettings()->usesLenientParsing();
         $comments = [];
         while (!$parserState->isEnd()) {
-            $comments = \array_merge($comments, $parserState->consumeWhiteSpace());
+            $parserState->consumeWhiteSpace($comments);
             $listItem = null;
             if ($usesLenientParsing) {
                 try {
@@ -93,7 +93,8 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
                 $listItem->addComments($comments);
                 $list->append($listItem);
             }
-            $comments = $parserState->consumeWhiteSpace();
+            $comments = [];
+            $parserState->consumeWhiteSpace($comments);
         }
         $list->addComments($comments);
         if (!$isRoot && !$usesLenientParsing) {
