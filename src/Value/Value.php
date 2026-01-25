@@ -11,6 +11,7 @@ use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
+use Sabberworm\CSS\ShortClassNameProvider;
 
 use function Safe\preg_match;
 
@@ -21,6 +22,7 @@ use function Safe\preg_match;
 abstract class Value implements CSSElement, Positionable
 {
     use Position;
+    use ShortClassNameProvider;
 
     /**
      * @param int<1, max>|null $lineNumber
@@ -188,9 +190,9 @@ abstract class Value implements CSSElement, Positionable
      */
     public function getArrayRepresentation(): array
     {
-        throw new \BadMethodCallException(
-            '`getArrayRepresentation` is not yet implemented for `' . static::class . '`'
-        );
+        return [
+            'class' => $this->getShortClassName(),
+        ];
     }
 
     /**
