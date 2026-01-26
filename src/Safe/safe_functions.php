@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * These functions have been absorbed from "thecodingmachine/safe" to prevent a dependency.
+ * These functions have been absorbed from "thecodingmachine/safe" to avoid a dependency.
  *
  * See: https://github.com/thecodingmachine/safe
  */
