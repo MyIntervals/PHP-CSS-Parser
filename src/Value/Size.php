@@ -10,8 +10,8 @@ use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\ShortClassNameProvider;
 
-use function Safe\preg_match;
-use function Safe\preg_replace;
+use function Sabberworm\CSS\Safe\preg_match;
+use function Sabberworm\CSS\Safe\preg_replace;
 
 /**
  * A `Size` consists of a numeric `size` value and a unit.

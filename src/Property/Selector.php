@@ -11,8 +11,8 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\Selector\SpecificityCalculator;
 use Sabberworm\CSS\Renderable;
 
-use function Safe\preg_match;
-use function Safe\preg_replace;
+use function Sabberworm\CSS\Safe\preg_match;
+use function Sabberworm\CSS\Safe\preg_replace;
 
 /**
  * Class representing a single CSS selector. Selectors have to be split by the comma prior to being passed into this

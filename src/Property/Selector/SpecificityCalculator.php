@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\Property\Selector;
 
-use function Safe\preg_match_all;
+use function Sabberworm\CSS\Safe\preg_match_all;
 
 /**
  * Utility class to calculate the specificity of a CSS selector.
