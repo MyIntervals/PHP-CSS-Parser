@@ -5,24 +5,20 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Property\Selector;
 
 /**
- * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Selectors/Selector_structure
+ * This interface is for a class that represents a part of a selector which is either a compound selector (or a simple
+ * selector, which is effectively a compound selector without any compounding) or a selector combinator.
  *
- * A complex selector is a sequence of one or more simple and/or compound selectors that are separated by combinators,
- * including the white space descendant combinator.
- *
- * This is essentially a 'selector', as a 'selector list' is a list of comma-separated selectors.
- *
- * A compound selector is a superset that includes a simple selector:
- * - `li` is a simple selector (but can be treated as a compound selector);
- * - `li:last-child` is a compound selector;
- * - `ul li:last-child` is a complex selector as it has a combinator (the whitespace descendent combinator).
- *
- * A (complex) selector can be decomposed thus:
+ * It allows a selector to be represented as an array of objects that implement this interface.
+ * This is the formal definition:
  * selector = compound-selector [combinator, compound-selector]*
  *
- * It's a list of alternating types.
+ * The selector is comprised of an array of alternating types that can't be easily represented in a type-safe manner
+ * without this.
  *
- * This interface covers both types, so they can be put into an array of the interface type.
+ * 'Selector component' is not a known grammar in the spec, but a convenience for the implementation.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Selectors/Selector_structure
+ * @see https://www.w3.org/TR/selectors-4/#structure
  */
 interface SelectorComponent
 {
