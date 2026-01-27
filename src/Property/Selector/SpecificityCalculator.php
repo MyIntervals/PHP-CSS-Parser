@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\Property\Selector;
 
-use function Safe\preg_match_all;
-
 /**
  * Utility class to calculate the specificity of a CSS selector.
  *
@@ -65,8 +63,16 @@ final class SpecificityCalculator
             /// @todo should exclude \# as well as "#"
             $matches = null;
             $b = \substr_count($selector, '#');
-            $c = preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $selector, $matches);
-            $d = preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $selector, $matches);
+            /** @phpstan-ignore theCodingMachineSafe.function */
+            $c = \preg_match_all(self::NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX, $selector, $matches);
+            if ($c === false) {
+                throw new \RuntimeException('Unexpected error');
+            }
+            /** @phpstan-ignore theCodingMachineSafe.function */
+            $d = \preg_match_all(self::ELEMENTS_AND_PSEUDO_ELEMENTS_RX, $selector, $matches);
+            if ($d === false) {
+                throw new \RuntimeException('Unexpected error');
+            }
             self::$cache[$selector] = ($a * 1000) + ($b * 100) + ($c * 10) + $d;
         }
 

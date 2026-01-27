@@ -11,8 +11,6 @@ use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\ShortClassNameProvider;
 
-use function Safe\preg_match;
-
 /**
  * This class is a wrapper for quoted strings to distinguish them from keywords.
  *
@@ -59,7 +57,15 @@ class CSSString extends PrimitiveValue
         $content = null;
         if ($quote === null) {
             // Unquoted strings end in whitespace or with braces, brackets, parentheses
-            while (preg_match('/[\\s{}()<>\\[\\]]/isu', $parserState->peek()) === 0) {
+            while (true) {
+                /** @phpstan-ignore theCodingMachineSafe.function */
+                $matchResult = \preg_match('/[\\s{}()<>\\[\\]]/isu', $parserState->peek());
+                if ($matchResult === false) {
+                    throw new \RuntimeException('Unexpected error');
+                }
+                if ($matchResult !== 0) {
+                    break;
+                }
                 $result .= $parserState->parseCharacter(false);
             }
         } else {

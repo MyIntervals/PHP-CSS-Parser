@@ -17,8 +17,6 @@ use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Value;
 
-use function Safe\preg_match;
-
 /**
  * `Rule`s just have a string key (the rule) and a 'Value'.
  *
@@ -103,7 +101,12 @@ class Rule implements Commentable, CSSElement, Positionable
      */
     private static function listDelimiterForRule(string $rule): array
     {
-        if (preg_match('/^font($|-)/', $rule) === 1) {
+        /** @phpstan-ignore theCodingMachineSafe.function */
+        $matchResult = \preg_match('/^font($|-)/', $rule);
+        if ($matchResult === false) {
+            throw new \RuntimeException('Unexpected error');
+        }
+        if ($matchResult === 1) {
             return [',', '/', ' '];
         }
 

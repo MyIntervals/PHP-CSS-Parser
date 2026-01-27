@@ -30,9 +30,6 @@ use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\ValueList;
 
-use function Safe\file_get_contents;
-use function Safe\opendir;
-
 /**
  * @covers \Sabberworm\CSS\Parser
  */
@@ -61,7 +58,7 @@ final class ParserTest extends TestCase
     public function files(): void
     {
         $directory = __DIR__ . '/fixtures';
-        $directoryHandle = opendir($directory);
+        $directoryHandle = \opendir($directory);
 
         /* This is the correct way to loop over the directory. */
         while (false !== ($filename = \readdir($directoryHandle))) {
@@ -76,7 +73,7 @@ final class ParserTest extends TestCase
                 // or a future test of an as-of-now missing feature
                 continue;
             }
-            $parser = new Parser(file_get_contents($directory . '/' . $filename));
+            $parser = new Parser(\file_get_contents($directory . '/' . $filename));
             self::assertNotSame('', $parser->parse()->render());
         }
 
@@ -899,7 +896,7 @@ body {background-color: red;}';
     public static function parsedStructureForFile($filename, $settings = null): Document
     {
         $filename = __DIR__ . "/fixtures/$filename.css";
-        $parser = new Parser(file_get_contents($filename), $settings);
+        $parser = new Parser(\file_get_contents($filename), $settings);
         return $parser->parse();
     }
 
