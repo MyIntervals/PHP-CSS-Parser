@@ -202,13 +202,22 @@ class Size extends PrimitiveValue
         if ($matchResult === false) {
             throw new \RuntimeException('Unexpected error');
         }
-        $size = $matchResult === 1
+        if ($matchResult === 1) {
             /** @phpstan-ignore theCodingMachineSafe.function */
-            ? \preg_replace("/$decimalPoint?0+$/", '', \sprintf('%f', $this->size))
-            : (string) $this->size;
+            $size = \preg_replace("/$decimalPoint?0+$/", '', \sprintf('%f', $this->size));
+            if ($size === null) {
+                throw new \RuntimeException('Unexpected error');
+            }
+        } else {
+            $size = (string) $this->size;
+        }
 
         /** @phpstan-ignore theCodingMachineSafe.function */
-        return \preg_replace(["/$decimalPoint/", '/^(-?)0\\./'], ['.', '$1.'], $size) . ($this->unit ?? '');
+        $result = \preg_replace(["/$decimalPoint/", '/^(-?)0\\./'], ['.', '$1.'], $size);
+        if ($result === null) {
+            throw new \RuntimeException('Unexpected error');
+        }
+        return $result . ($this->unit ?? '');
     }
 
     /**
