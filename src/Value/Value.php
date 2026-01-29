@@ -13,7 +13,7 @@ use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\ShortClassNameProvider;
 
-use function Safe\preg_match;
+use function Sabberworm\CSS\Safe\preg_match;
 
 /**
  * Abstract base class for specific classes of CSS values: `Size`, `Color`, `CSSString` and `URL`, and another

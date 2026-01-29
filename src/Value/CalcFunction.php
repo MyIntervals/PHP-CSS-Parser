@@ -8,7 +8,7 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
-use function Safe\preg_match;
+use function Sabberworm\CSS\Safe\preg_match;
 
 class CalcFunction extends CSSFunction
 {

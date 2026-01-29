@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 use Sabberworm\CSS\Parser;
 
-use function Safe\file_get_contents;
+use function Sabberworm\CSS\Safe\file_get_contents;
 
 /**
  * This script is used for generating the examples in the README.

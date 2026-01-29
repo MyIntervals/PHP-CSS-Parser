@@ -17,7 +17,7 @@ use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Value;
 
-use function Safe\preg_match;
+use function Sabberworm\CSS\Safe\preg_match;
 
 /**
  * `Rule`s just have a string key (the rule) and a 'Value'.

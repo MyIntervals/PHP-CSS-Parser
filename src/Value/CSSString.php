@@ -11,7 +11,7 @@ use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\ShortClassNameProvider;
 
-use function Safe\preg_match;
+use function Sabberworm\CSS\Safe\preg_match;
 
 /**
  * This class is a wrapper for quoted strings to distinguish them from keywords.

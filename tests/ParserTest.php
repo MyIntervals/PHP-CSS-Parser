@@ -30,8 +30,8 @@ use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\ValueList;
 
-use function Safe\file_get_contents;
-use function Safe\opendir;
+use function Sabberworm\CSS\Safe\file_get_contents;
+use function Sabberworm\CSS\Safe\opendir;
 
 /**
  * @covers \Sabberworm\CSS\Parser

@@ -10,7 +10,7 @@ use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Settings;
 
-use function Safe\file_get_contents;
+use function Sabberworm\CSS\Safe\file_get_contents;
 
 /**
  * @coversNothing
