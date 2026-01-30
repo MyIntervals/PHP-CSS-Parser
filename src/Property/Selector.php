@@ -95,7 +95,10 @@ class Selector implements Renderable
                 case '\'':
                     // The fallthrough is intentional.
                 case '"':
-                    if (!\is_string($stringWrapperCharacter)) {
+                    $lastPart = \end($selectorParts);
+                    $backslashCount = \strspn(\strrev($lastPart), '\\');
+                    $quoteIsEscaped = ($backslashCount % 2 === 1);
+                    if (!\is_string($stringWrapperCharacter) && !$quoteIsEscaped) {
                         $stringWrapperCharacter = $nextCharacter;
                     } elseif ($stringWrapperCharacter === $nextCharacter) {
                         if (\substr(\end($selectorParts), -1) !== '\\') {
