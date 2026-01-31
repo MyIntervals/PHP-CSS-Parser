@@ -20,7 +20,7 @@ namespace Sabberworm\CSS\Property\Selector;
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Selectors/Selector_structure
  * @see https://www.w3.org/TR/selectors-4/#structure
  */
-interface SelectorComponent
+interface Component
 {
     /**
      * @return non-empty-string
