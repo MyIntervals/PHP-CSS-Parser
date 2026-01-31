@@ -72,19 +72,15 @@ class Combinator implements Component, Renderable
     /**
      * @param non-empty-string $value
      *
-     * @throws \UnexpectedValueException
+     * @throws \UnexpectedValueException if `$value` is not either space, '>', '+' or '~'
      */
     public function setValue(string $value): void
     {
-        // Allow extra and other whitespace even if not publicly documented.
-        $trimmedValue = \trim($value);
-
-        // But reject anything else that is not a combinator.
-        if (!\in_array($trimmedValue, ['', '>', '+', '~'], true)) {
-            throw new \UnexpectedValueException('`' . $trimmedValue . '` is not a valid selector combinator.');
+        if (!\in_array($value, [' ', '>', '+', '~'], true)) {
+            throw new \UnexpectedValueException('`' . $value . '` is not a valid selector combinator.');
         }
 
-        $this->value = $trimmedValue !== '' ? $trimmedValue : ' ';
+        $this->value = $value;
     }
 
     /**
