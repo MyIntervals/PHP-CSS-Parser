@@ -214,9 +214,26 @@ final class CombinatorTest extends TestCase
      *
      * @dataProvider provideValidValue
      */
-    public function getValueReturnsValueProvided(string $value): void
+    public function getValueReturnsValueProvidedToConstructor(string $value): void
     {
         $subject = new Combinator($value);
+
+        $result = $subject->getValue();
+
+        self::assertSame($value, $result);
+    }
+
+    /**
+     * @test
+     *
+     * @param ' '|'>'|'+'|'~' $value
+     *
+     * @dataProvider provideValidValue
+     */
+    public function getValueReturnsValueProvidedToSetValue(string $value): void
+    {
+        $subject = new Combinator('>');
+        $subject->setValue($value);
 
         $result = $subject->getValue();
 
