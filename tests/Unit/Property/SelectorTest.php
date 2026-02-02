@@ -422,7 +422,7 @@ final class SelectorTest extends TestCase
     {
         // This tests that an escaped quote doesn't close the string prematurely
         $selector = 'input[placeholder="Enter \\"quoted\\" text here"]';
-        
+
         $result = Selector::parse(new ParserState($selector, Settings::create()));
 
         self::assertInstanceOf(Selector::class, $result);
@@ -436,7 +436,7 @@ final class SelectorTest extends TestCase
     {
         // One backslash = escaped quote (should not close string)
         $selector = 'a[data-value="test\\"more"]';
-        
+
         $result = Selector::parse(new ParserState($selector, Settings::create()));
 
         self::assertSame($selector, $result->getSelector());
@@ -449,7 +449,7 @@ final class SelectorTest extends TestCase
     {
         // Two backslashes = escaped backslash + unescaped quote (should close string)
         $selector = 'a[data-value="test\\\\"]';
-        
+
         $result = Selector::parse(new ParserState($selector, Settings::create()));
 
         self::assertSame($selector, $result->getSelector());
