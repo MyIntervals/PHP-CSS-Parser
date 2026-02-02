@@ -100,10 +100,8 @@ class Selector implements Renderable
                     $quoteIsEscaped = ($backslashCount % 2 === 1);
                     if (!\is_string($stringWrapperCharacter) && !$quoteIsEscaped) {
                         $stringWrapperCharacter = $nextCharacter;
-                    } elseif ($stringWrapperCharacter === $nextCharacter) {
-                        if (\substr(\end($selectorParts), -1) !== '\\') {
-                            $stringWrapperCharacter = null;
-                        }
+                    } elseif ($stringWrapperCharacter === $nextCharacter && !$quoteIsEscaped) {
+                        $stringWrapperCharacter = null;
                     }
                     break;
                 case '(':
