@@ -418,9 +418,8 @@ final class SelectorTest extends TestCase
     /**
      * @test
      */
-    public function parsesAttributeWithEscapedQuoteNotPrematurelyClosingString(): void
+    public function parsingAttributeWithEscapedQuoteDoesNotPrematurelyCloseString(): void
     {
-        // This tests that an escaped quote doesn't close the string prematurely
         $selector = 'input[placeholder="Enter \\"quoted\\" text here"]';
 
         $result = Selector::parse(new ParserState($selector, Settings::create()));
@@ -432,7 +431,7 @@ final class SelectorTest extends TestCase
     /**
      * @test
      */
-    public function distinguishesEscapedFromUnescapedQuotes(): void
+    public function parseDistinguishesEscapedFromUnescapedQuotes(): void
     {
         // One backslash = escaped quote (should not close string)
         $selector = 'a[data-value="test\\"more"]';
@@ -445,7 +444,7 @@ final class SelectorTest extends TestCase
     /**
      * @test
      */
-    public function handlesEvenNumberOfBackslashesBeforeQuote(): void
+    public function parseHandlesEvenNumberOfBackslashesBeforeQuote(): void
     {
         // Two backslashes = escaped backslash + unescaped quote (should close string)
         $selector = 'a[data-value="test\\\\"]';
