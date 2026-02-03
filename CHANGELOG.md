@@ -10,10 +10,10 @@ Please also have a look at our
 
 ### Added
 
-- Provide line number in exception message for mismatched parentheses in
-  selector (#1435)
-- Add support for CSS container queries (#1400)
 - Add support for escaped quotes in the selectors (#1485)
+- Provide line number in exception message for mismatched parentheses in
+selector (#1435)
+- Add support for CSS container queries (#1400)
 
 ### Changed
 
