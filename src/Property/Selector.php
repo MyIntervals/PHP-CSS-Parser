@@ -98,10 +98,12 @@ class Selector implements Renderable
                     $lastPart = \end($selectorParts);
                     $backslashCount = \strspn(\strrev($lastPart), '\\');
                     $quoteIsEscaped = ($backslashCount % 2 === 1);
-                    if (!\is_string($stringWrapperCharacter) && !$quoteIsEscaped) {
-                        $stringWrapperCharacter = $nextCharacter;
-                    } elseif ($stringWrapperCharacter === $nextCharacter && !$quoteIsEscaped) {
-                        $stringWrapperCharacter = null;
+                    if (!$quoteIsEscaped) {
+                        if (!\is_string($stringWrapperCharacter)) {
+                            $stringWrapperCharacter = $nextCharacter;
+                        } elseif ($stringWrapperCharacter === $nextCharacter) {
+                            $stringWrapperCharacter = null;
+                        }
                     }
                     break;
                 case '(':
