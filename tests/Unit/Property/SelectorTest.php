@@ -79,6 +79,28 @@ final class SelectorTest extends TestCase
     }
 
     /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideSelectorsWithEscapedQuotes(): array
+    {
+        return [
+            'escaped double quote in double-quoted attribute' => ['a[href="test\\"value"]'],
+            'escaped single quote in single-quoted attribute' => ['a[href=\'test\\\'value\']'],
+            'multiple escaped double quotes in double-quoted attribute' => ['a[title="say \\"hello\\" world"]'],
+            'multiple escaped single quotes in single-quoted attribute' => ['a[title=\'say \\\'hello\\\' world\']'],
+            'escaped quote at start of attribute value' => ['a[data-test="\\"start"]'],
+            'escaped quote at end of attribute value' => ['a[data-test="end\\""]'],
+            'escaped backslash followed by quote' => ['a[data-test="test\\\\"]'],
+            'escaped backslash before escaped quote' => ['a[data-test="test\\\\\\"value"]'],
+            'triple backslash before quote' => ['a[data-test="test\\\\\\""]'],
+            'escaped single quotes in selector itself, with other escaped characters'
+                => ['.before\\:content-\\[\\\'\\\'\\]:before'],
+            'escaped double quotes in selector itself, with other escaped characters'
+                => ['.before\\:content-\\[\\"\\"\\]:before'],
+        ];
+    }
+
+    /**
      * @test
      *
      * @param non-empty-string $selector
@@ -91,6 +113,45 @@ final class SelectorTest extends TestCase
         $result = Selector::parse(new ParserState($selector, Settings::create()));
 
         self::assertInstanceOf(Selector::class, $result);
+        self::assertSame($selector, $result->getSelector());
+    }
+
+    /**
+     * @test
+     */
+    public function parsingAttributeWithEscapedQuoteDoesNotPrematurelyCloseString(): void
+    {
+        $selector = 'input[placeholder="Enter \\"quoted\\" text here"]';
+
+        $result = Selector::parse(new ParserState($selector, Settings::create()));
+
+        self::assertInstanceOf(Selector::class, $result);
+        self::assertSame($selector, $result->getSelector());
+    }
+
+    /**
+     * @test
+     */
+    public function parseDistinguishesEscapedFromUnescapedQuotes(): void
+    {
+        // One backslash = escaped quote (should not close string)
+        $selector = 'a[data-value="test\\"more"]';
+
+        $result = Selector::parse(new ParserState($selector, Settings::create()));
+
+        self::assertSame($selector, $result->getSelector());
+    }
+
+    /**
+     * @test
+     */
+    public function parseHandlesEvenNumberOfBackslashesBeforeQuote(): void
+    {
+        // Two backslashes = escaped backslash + unescaped quote (should close string)
+        $selector = 'a[data-value="test\\\\"]';
+
+        $result = Selector::parse(new ParserState($selector, Settings::create()));
+
         self::assertSame($selector, $result->getSelector());
     }
 
@@ -370,66 +431,5 @@ final class SelectorTest extends TestCase
         $subject = new Selector('a');
 
         $subject->getArrayRepresentation();
-    }
-
-    /**
-     * @return array<non-empty-string, array{0: non-empty-string}>
-     */
-    public static function provideSelectorsWithEscapedQuotes(): array
-    {
-        return [
-            'escaped double quote in double-quoted attribute' => ['a[href="test\\"value"]'],
-            'escaped single quote in single-quoted attribute' => ['a[href=\'test\\\'value\']'],
-            'multiple escaped double quotes in double-quoted attribute' => ['a[title="say \\"hello\\" world"]'],
-            'multiple escaped single quotes in single-quoted attribute' => ['a[title=\'say \\\'hello\\\' world\']'],
-            'escaped quote at start of attribute value' => ['a[data-test="\\"start"]'],
-            'escaped quote at end of attribute value' => ['a[data-test="end\\""]'],
-            'escaped backslash followed by quote' => ['a[data-test="test\\\\"]'],
-            'escaped backslash before escaped quote' => ['a[data-test="test\\\\\\"value"]'],
-            'triple backslash before quote' => ['a[data-test="test\\\\\\""]'],
-            'escaped single quotes in selector itself, with other escaped characters'
-                => ['.before\\:content-\\[\\\'\\\'\\]:before'],
-            'escaped double quotes in selector itself, with other escaped characters'
-                => ['.before\\:content-\\[\\"\\"\\]:before'],
-        ];
-    }
-
-    /**
-     * @test
-     */
-    public function parsingAttributeWithEscapedQuoteDoesNotPrematurelyCloseString(): void
-    {
-        $selector = 'input[placeholder="Enter \\"quoted\\" text here"]';
-
-        $result = Selector::parse(new ParserState($selector, Settings::create()));
-
-        self::assertInstanceOf(Selector::class, $result);
-        self::assertSame($selector, $result->getSelector());
-    }
-
-    /**
-     * @test
-     */
-    public function parseDistinguishesEscapedFromUnescapedQuotes(): void
-    {
-        // One backslash = escaped quote (should not close string)
-        $selector = 'a[data-value="test\\"more"]';
-
-        $result = Selector::parse(new ParserState($selector, Settings::create()));
-
-        self::assertSame($selector, $result->getSelector());
-    }
-
-    /**
-     * @test
-     */
-    public function parseHandlesEvenNumberOfBackslashesBeforeQuote(): void
-    {
-        // Two backslashes = escaped backslash + unescaped quote (should close string)
-        $selector = 'a[data-value="test\\\\"]';
-
-        $result = Selector::parse(new ParserState($selector, Settings::create()));
-
-        self::assertSame($selector, $result->getSelector());
     }
 }
