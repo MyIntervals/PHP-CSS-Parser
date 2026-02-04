@@ -17,6 +17,7 @@ Please also have a look at our
 
 ### Changed
 
+- Remove `thecodingmachine/safe` dependency (#1482)
 - Clean up extra whitespace in CSS selector (#1398)
 - The array keys passed to `DeclarationBlock::setSelectors()` are no longer
   preserved (#1407)

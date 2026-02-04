@@ -7,9 +7,9 @@ namespace Sabberworm\CSS\Parsing;
 use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\Settings;
 
-use function Safe\iconv;
-use function Safe\preg_match;
-use function Safe\preg_split;
+use function Sabberworm\CSS\Safe\iconv;
+use function Sabberworm\CSS\Safe\preg_match;
+use function Sabberworm\CSS\Safe\preg_split;
 
 /**
  * @internal since 8.7.0
