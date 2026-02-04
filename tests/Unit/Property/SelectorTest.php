@@ -84,6 +84,7 @@ final class SelectorTest extends TestCase
      * @param non-empty-string $selector
      *
      * @dataProvider provideSelectorsAndSpecificities
+     * @dataProvider provideSelectorsWithEscapedQuotes
      */
     public function parsesValidSelector(string $selector): void
     {
@@ -295,6 +296,7 @@ final class SelectorTest extends TestCase
      * @test
      *
      * @dataProvider provideSelectorsAndSpecificities
+     * @dataProvider provideSelectorsWithEscapedQuotes
      */
     public function isValidForValidSelectorReturnsTrue(string $selector): void
     {
@@ -390,33 +392,6 @@ final class SelectorTest extends TestCase
             'escaped double quotes in selector itself, with other escaped characters'
                 => ['.before\\:content-\\[\\"\\"\\]:before'],
         ];
-    }
-
-    /**
-     * @test
-     *
-     * @param non-empty-string $selector
-     *
-     * @dataProvider provideSelectorsWithEscapedQuotes
-     */
-    public function parsesSelectorsWithEscapedQuotes(string $selector): void
-    {
-        $result = Selector::parse(new ParserState($selector, Settings::create()));
-
-        self::assertInstanceOf(Selector::class, $result);
-        self::assertSame($selector, $result->getSelector());
-    }
-
-    /**
-     * @test
-     *
-     * @param non-empty-string $selector
-     *
-     * @dataProvider provideSelectorsWithEscapedQuotes
-     */
-    public function isValidForSelectorsWithEscapedQuotesReturnsTrue(string $selector): void
-    {
-        self::assertTrue(Selector::isValid($selector));
     }
 
     /**
