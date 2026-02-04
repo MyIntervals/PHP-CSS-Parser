@@ -13,18 +13,20 @@ use Sabberworm\CSS\ShortClassNameProvider;
 
 /**
  * Class representing a CSS selector combinator (space, `>`, `+`, or `~`).
+ *
+ * @phpstan-type ValidCombinatorValue ' '|'>'|'+'|'~'
  */
 class Combinator implements Component, Renderable
 {
     use ShortClassNameProvider;
 
     /**
-     * @var ' '|'>'|'+'|'~'
+     * @var ValidCombinatorValue
      */
     private $value;
 
     /**
-     * @param ' '|'>'|'+'|'~' $value
+     * @param ValidCombinatorValue $value
      */
     public function __construct(string $value)
     {
@@ -62,7 +64,7 @@ class Combinator implements Component, Renderable
     }
 
     /**
-     * @return ' '|'>'|'+'|'~'
+     * @return ValidCombinatorValue
      */
     public function getValue(): string
     {

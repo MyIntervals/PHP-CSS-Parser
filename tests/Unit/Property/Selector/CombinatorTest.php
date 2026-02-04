@@ -8,13 +8,15 @@ use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
-use Sabberworm\CSS\Property\Selector\Component;
 use Sabberworm\CSS\Property\Selector\Combinator;
+use Sabberworm\CSS\Property\Selector\Component;
 use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Settings;
 
 /**
  * @covers \Sabberworm\CSS\Property\Selector\Combinator
+ *
+ * @phpstan-import-type ValidCombinatorValue from Combinator
  */
 final class CombinatorTest extends TestCase
 {
@@ -35,7 +37,7 @@ final class CombinatorTest extends TestCase
     }
 
     /**
-     * @return array<non-empty-string, array{0: ' '|'>'|'+'|'~'}>
+     * @return array<non-empty-string, array{0: ValidCombinatorValue}>
      */
     public static function provideValidValue(): array
     {
@@ -64,7 +66,7 @@ final class CombinatorTest extends TestCase
     /**
      * @test
      *
-     * @param ' '|'>'|'+'|'~' $combinator
+     * @param ValidCombinatorValue $combinator
      *
      * @dataProvider provideValidValue
      */
@@ -92,7 +94,7 @@ final class CombinatorTest extends TestCase
     /**
      * @test
      *
-     * @param ' '|'>'|'+'|'~' $combinator
+     * @param ValidCombinatorValue $combinator
      *
      * @dataProvider provideValidValue
      */
@@ -106,7 +108,7 @@ final class CombinatorTest extends TestCase
     /**
      * @test
      *
-     * @param ' '|'>'|'+'|'~' $combinator
+     * @param ValidCombinatorValue $combinator
      *
      * @dataProvider provideValidValue
      */
@@ -120,7 +122,7 @@ final class CombinatorTest extends TestCase
     /**
      * @test
      *
-     * @param ' '|'>'|'+'|'~' $combinator
+     * @param ValidCombinatorValue $combinator
      *
      * @dataProvider provideValidValue
      */
@@ -135,7 +137,7 @@ final class CombinatorTest extends TestCase
     /**
      * @test
      *
-     * @param ' '|'>'|'+'|'~' $combinator
+     * @param ValidCombinatorValue $combinator
      *
      * @dataProvider provideValidValue
      */
@@ -150,7 +152,7 @@ final class CombinatorTest extends TestCase
     /**
      * @test
      *
-     * @param ' '|'>'|'+'|'~' $value
+     * @param ValidCombinatorValue $value
      *
      * @dataProvider provideValidValue
      */
@@ -178,7 +180,7 @@ final class CombinatorTest extends TestCase
     /**
      * @test
      *
-     * @param ' '|'>'|'+'|'~' $value
+     * @param ValidCombinatorValue $value
      *
      * @dataProvider provideValidValue
      */
@@ -210,7 +212,7 @@ final class CombinatorTest extends TestCase
     /**
      * @test
      *
-     * @param ' '|'>'|'+'|'~' $value
+     * @param ValidCombinatorValue $value
      *
      * @dataProvider provideValidValue
      */
@@ -226,7 +228,7 @@ final class CombinatorTest extends TestCase
     /**
      * @test
      *
-     * @param ' '|'>'|'+'|'~' $value
+     * @param ValidCombinatorValue $value
      *
      * @dataProvider provideValidValue
      */
@@ -243,7 +245,7 @@ final class CombinatorTest extends TestCase
     /**
      * @test
      *
-     * @param ' '|'>'|'+'|'~' $value
+     * @param ValidCombinatorValue $value
      *
      * @dataProvider provideValidValue
      */
@@ -257,7 +259,7 @@ final class CombinatorTest extends TestCase
     /**
      * @test
      *
-     * @param ' '|'>'|'+'|'~' $value
+     * @param ValidCombinatorValue $value
      *
      * @dataProvider provideValidValue
      */
@@ -283,7 +285,7 @@ final class CombinatorTest extends TestCase
     /**
      * @test
      *
-     * @param ' '|'>'|'+'|'~' $value
+     * @param ValidCombinatorValue $value
      *
      * @dataProvider provideValidValue
      */
