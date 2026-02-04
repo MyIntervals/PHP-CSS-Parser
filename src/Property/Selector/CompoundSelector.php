@@ -21,6 +21,25 @@ class CompoundSelector implements Renderable, Component
 {
     use ShortClassNameProvider;
 
+    private const PARSER_STOP_CHARACTERS = [
+        '{',
+        '}',
+        '\'',
+        '"',
+        '(',
+        ')',
+        ',',
+        ' ',
+        "\t",
+        "\n",
+        "\r",
+        '>',
+        '+',
+        '~',
+        ParserState::EOF,
+        '', // `ParserState::peek()` returns empty string rather than `ParserState::EOF` when end of string is reached
+    ];
+
     private const SELECTOR_VALIDATION_RX = '/
         ^
             # not starting with whitespace
@@ -82,27 +101,9 @@ class CompoundSelector implements Renderable, Component
         $selectorParts = [];
         $stringWrapperCharacter = null;
         $functionNestingLevel = 0;
-        static $stopCharacters = [
-            '{',
-            '}',
-            '\'',
-            '"',
-            '(',
-            ')',
-            ',',
-            ' ',
-            "\t",
-            "\n",
-            "\r",
-            '>',
-            '+',
-            '~',
-            ParserState::EOF,
-            '',
-        ];
 
         while (true) {
-            $selectorParts[] = $parserState->consumeUntil($stopCharacters, false, false, $comments);
+            $selectorParts[] = $parserState->consumeUntil(self::PARSER_STOP_CHARACTERS, false, false, $comments);
             $nextCharacter = $parserState->peek();
             switch ($nextCharacter) {
                 case '':
