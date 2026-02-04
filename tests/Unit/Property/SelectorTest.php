@@ -90,7 +90,7 @@ final class SelectorTest extends TestCase
         $result = Selector::parse(new ParserState($selector, Settings::create()));
 
         self::assertInstanceOf(Selector::class, $result);
-        self::assertSame($result->getSelector(), $selector);
+        self::assertSame($selector, $result->getSelector());
     }
 
     /**
