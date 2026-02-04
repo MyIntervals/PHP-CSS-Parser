@@ -67,16 +67,16 @@ final class CompoundSelectorTest extends TestCase
     {
         return [
             'escaped double quote in double-quoted attribute' => ['a[href="test\\"value"]'],
-            'escaped single quote in single-quoted attribute' => ['a[href=\'test\\\'value\']'],
+            'escaped single quote in single-quoted attribute' => ["a[href='test\\'value']"],
             'multiple escaped double quotes in double-quoted attribute' => ['a[title="say \\"hello\\" world"]'],
-            'multiple escaped single quotes in single-quoted attribute' => ['a[title=\'say \\\'hello\\\' world\']'],
+            'multiple escaped single quotes in single-quoted attribute' => ["a[title='say \\'hello\\' world']"],
             'escaped quote at start of attribute value' => ['a[data-test="\\"start"]'],
             'escaped quote at end of attribute value' => ['a[data-test="end\\""]'],
             'escaped backslash followed by quote' => ['a[data-test="test\\\\"]'],
             'escaped backslash before escaped quote' => ['a[data-test="test\\\\\\"value"]'],
             'triple backslash before quote' => ['a[data-test="test\\\\\\""]'],
             'escaped single quotes in selector itself, with other escaped characters'
-                => ['.before\\:content-\\[\\\'\\\'\\]:before'],
+                => [".before\\:content-\\[\\'\\'\\]:before"],
             'escaped double quotes in selector itself, with other escaped characters'
                 => ['.before\\:content-\\[\\"\\"\\]:before'],
         ];
@@ -169,7 +169,7 @@ final class CompoundSelectorTest extends TestCase
         return [
             'a `:not` missing the closing brace' => [':not(a'],
             'a `:not` missing the opening brace' => [':nota)'],
-            'attribute value missing closing single quote' => ['a[href=\'#top]'],
+            'attribute value missing closing single quote' => ["a[href='#top]"],
             'attribute value missing closing double quote' => ['a[href="#top]'],
             'attribute value with mismatched quotes, single quote opening' => ['a[href=\'#top"]'],
             'attribute value with mismatched quotes, double quote opening' => ['a[href="#top\']'],
