@@ -184,7 +184,7 @@ final class CombinatorTest extends TestCase
      *
      * @dataProvider provideValidValue
      */
-    public function setsValueProvided(string $value): void
+    public function setValueSetsValueProvided(string $value): void
     {
         $subject = new Combinator('>');
 
@@ -263,7 +263,7 @@ final class CombinatorTest extends TestCase
      *
      * @dataProvider provideValidValue
      */
-    public function rendersValueProvided(string $value): void
+    public function renderReturnsValueProvided(string $value): void
     {
         $subject = new Combinator($value);
 
