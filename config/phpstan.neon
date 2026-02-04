@@ -26,3 +26,6 @@ parameters:
     -
       message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) .* will always evaluate to#'
       path: '../tests/'
+    -
+      identifier: theCodingMachineSafe.function
+      path: '../tests/'

@@ -11,9 +11,6 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\Selector\SpecificityCalculator;
 use Sabberworm\CSS\Renderable;
 
-use function Safe\preg_match;
-use function Safe\preg_replace;
-
 /**
  * Class representing a single CSS selector. Selectors have to be split by the comma prior to being passed into this
  * class.
@@ -61,7 +58,11 @@ class Selector implements Renderable
     public static function isValid(string $selector): bool
     {
         // Note: We need to use `static::` here as the constant is overridden in the `KeyframeSelector` class.
-        $numberOfMatches = preg_match(static::SELECTOR_VALIDATION_RX, $selector);
+        /** @phpstan-ignore theCodingMachineSafe.function */
+        $numberOfMatches = \preg_match(static::SELECTOR_VALIDATION_RX, $selector);
+        if ($numberOfMatches === false) {
+            throw new \RuntimeException('Unexpected error');
+        }
 
         return $numberOfMatches === 1;
     }
@@ -186,7 +187,16 @@ class Selector implements Renderable
         $hasAttribute = \strpos($selector, '[') !== false;
 
         // Whitespace can't be adjusted within an attribute selector, as it would change its meaning
-        $this->selector = !$hasAttribute ? preg_replace('/\\s++/', ' ', $selector) : $selector;
+        if ($hasAttribute) {
+            $this->selector = $selector;
+        } else {
+            /** @phpstan-ignore theCodingMachineSafe.function */
+            $normalized = \preg_replace('/\\s++/', ' ', $selector);
+            if ($normalized === null) {
+                throw new \RuntimeException('Unexpected error');
+            }
+            $this->selector = $normalized;
+        }
     }
 
     /**

@@ -8,8 +8,6 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
-use function Safe\preg_match;
-
 class CalcFunction extends CSSFunction
 {
     private const T_OPERAND = 1;
@@ -62,7 +60,9 @@ class CalcFunction extends CSSFunction
                 if (\in_array($parserState->peek(), $operators, true)) {
                     if (($parserState->comes('-') || $parserState->comes('+'))) {
                         if (
+                            /** @phpstan-ignore theCodingMachineSafe.function */
                             preg_match('/\\s/', $parserState->peek(1, -1)) !== 1
+                            /** @phpstan-ignore theCodingMachineSafe.function */
                             || preg_match('/\\s/', $parserState->peek(1, 1)) !== 1
                         ) {
                             throw new UnexpectedTokenException(
