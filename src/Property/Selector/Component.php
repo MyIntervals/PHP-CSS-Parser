@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\Property\Selector;
 
+use Sabberworm\CSS\Renderable;
+
 /**
  * This interface is for a class that represents a part of a selector which is either a compound selector (or a simple
  * selector, which is effectively a compound selector without any compounding) or a selector combinator.
@@ -20,7 +22,7 @@ namespace Sabberworm\CSS\Property\Selector;
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Selectors/Selector_structure
  * @see https://www.w3.org/TR/selectors-4/#structure
  */
-interface Component
+interface Component extends Renderable
 {
     /**
      * @return non-empty-string

@@ -8,7 +8,6 @@ use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
-use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\ShortClassNameProvider;
 
 /**
@@ -16,7 +15,7 @@ use Sabberworm\CSS\ShortClassNameProvider;
  *
  * @phpstan-type ValidCombinatorValue ' '|'>'|'+'|'~'
  */
-class Combinator implements Component, Renderable
+class Combinator implements Component
 {
     use ShortClassNameProvider;
 
