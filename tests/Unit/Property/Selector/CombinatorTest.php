@@ -37,15 +37,15 @@ final class CombinatorTest extends TestCase
     }
 
     /**
-     * @return array<non-empty-string, array{0: ValidCombinatorValue}>
+     * @return array<non-empty-string, array{0: ValidCombinatorValue, 1: non-empty-string}>
      */
-    public static function provideValidValue(): array
+    public static function provideValidValueAndDefaultRendering(): array
     {
         return [
-            'descendent' => [' '],
-            'child' => ['>'],
-            'next sibling' => ['+'],
-            'subsequent sibling' => ['~'],
+            'descendent' => [' ', ' '],
+            'child' => ['>', ' > '],
+            'next sibling' => ['+', ' + '],
+            'subsequent sibling' => ['~', ' ~ '],
         ];
     }
 
@@ -68,7 +68,7 @@ final class CombinatorTest extends TestCase
      *
      * @param ValidCombinatorValue $combinator
      *
-     * @dataProvider provideValidValue
+     * @dataProvider provideValidValueAndDefaultRendering
      */
     public function parsesValidCombinator(string $combinator): void
     {
@@ -96,7 +96,7 @@ final class CombinatorTest extends TestCase
      *
      * @param ValidCombinatorValue $combinator
      *
-     * @dataProvider provideValidValue
+     * @dataProvider provideValidValueAndDefaultRendering
      */
     public function parsesCombinatorWithCommentBefore(string $combinator): void
     {
@@ -110,7 +110,7 @@ final class CombinatorTest extends TestCase
      *
      * @param ValidCombinatorValue $combinator
      *
-     * @dataProvider provideValidValue
+     * @dataProvider provideValidValueAndDefaultRendering
      */
     public function parsesCombinatorWithCommentAfter(string $combinator): void
     {
@@ -124,7 +124,7 @@ final class CombinatorTest extends TestCase
      *
      * @param ValidCombinatorValue $combinator
      *
-     * @dataProvider provideValidValue
+     * @dataProvider provideValidValueAndDefaultRendering
      */
     public function parseExtractsCommentBefore(string $combinator): void
     {
@@ -139,7 +139,7 @@ final class CombinatorTest extends TestCase
      *
      * @param ValidCombinatorValue $combinator
      *
-     * @dataProvider provideValidValue
+     * @dataProvider provideValidValueAndDefaultRendering
      */
     public function parseExtractsCommentAfter(string $combinator): void
     {
@@ -154,7 +154,7 @@ final class CombinatorTest extends TestCase
      *
      * @param ValidCombinatorValue $value
      *
-     * @dataProvider provideValidValue
+     * @dataProvider provideValidValueAndDefaultRendering
      */
     public function constructsWithValueProvided(string $value): void
     {
@@ -182,7 +182,7 @@ final class CombinatorTest extends TestCase
      *
      * @param ValidCombinatorValue $value
      *
-     * @dataProvider provideValidValue
+     * @dataProvider provideValidValueAndDefaultRendering
      */
     public function setValueSetsValueProvided(string $value): void
     {
@@ -214,7 +214,7 @@ final class CombinatorTest extends TestCase
      *
      * @param ValidCombinatorValue $value
      *
-     * @dataProvider provideValidValue
+     * @dataProvider provideValidValueAndDefaultRendering
      */
     public function getValueReturnsValueProvidedToConstructor(string $value): void
     {
@@ -230,7 +230,7 @@ final class CombinatorTest extends TestCase
      *
      * @param ValidCombinatorValue $value
      *
-     * @dataProvider provideValidValue
+     * @dataProvider provideValidValueAndDefaultRendering
      */
     public function getValueReturnsValueProvidedToSetValue(string $value): void
     {
@@ -247,7 +247,7 @@ final class CombinatorTest extends TestCase
      *
      * @param ValidCombinatorValue $value
      *
-     * @dataProvider provideValidValue
+     * @dataProvider provideValidValueAndDefaultRendering
      */
     public function hasNoSpecificity(string $value): void
     {
@@ -260,14 +260,15 @@ final class CombinatorTest extends TestCase
      * @test
      *
      * @param ValidCombinatorValue $value
+     * @param non-empty-string $expectedRendering
      *
-     * @dataProvider provideValidValue
+     * @dataProvider provideValidValueAndDefaultRendering
      */
-    public function renderReturnsValueProvided(string $value): void
+    public function renderReturnsDefaultRenderingForValueProvided(string $value, string $expectedRendering): void
     {
         $subject = new Combinator($value);
 
-        self::assertSame($value, $subject->render(OutputFormat::create()));
+        self::assertSame($expectedRendering, $subject->render(OutputFormat::create()));
     }
 
     /**
@@ -287,7 +288,7 @@ final class CombinatorTest extends TestCase
      *
      * @param ValidCombinatorValue $value
      *
-     * @dataProvider provideValidValue
+     * @dataProvider provideValidValueAndDefaultRendering
      */
     public function getArrayRepresentationIncludesValue(string $value): void
     {

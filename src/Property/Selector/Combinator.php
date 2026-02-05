@@ -95,7 +95,7 @@ class Combinator implements Component
     public function render(OutputFormat $outputFormat): string
     {
         // TODO: allow optional spacing controlled via OutputFormat
-        return $this->getValue();
+        return $this->value !== ' ' ? (' ' . $this->value . ' ') : ' ';
     }
 
     /**
