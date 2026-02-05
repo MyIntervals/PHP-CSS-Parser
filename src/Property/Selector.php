@@ -9,6 +9,7 @@ use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\Selector\Combinator;
+use Sabberworm\CSS\Property\Selector\Component;
 use Sabberworm\CSS\Property\Selector\CompoundSelector;
 use Sabberworm\CSS\Property\Selector\SpecificityCalculator;
 use Sabberworm\CSS\Renderable;
@@ -76,11 +77,11 @@ class Selector implements Renderable
     /**
      * @param list<Comment> $comments
      *
-     * @throws UnexpectedTokenException
+     * @return list<Component>
      *
-     * @internal
+     * @throws UnexpectedTokenException
      */
-    public static function parse(ParserState $parserState, array &$comments = []): self
+    private static function parseComponents(ParserState $parserState, array &$comments = []): array
     {
         // Whitespace is a descendent combinator, not allowed around a compound selector.
         // (It is allowed within, e.g. as part of a string or within a function like `:not()`.)
@@ -108,6 +109,20 @@ class Selector implements Renderable
                 break;
             }
         }
+
+        return $selectorParts;
+    }
+
+    /**
+     * @param list<Comment> $comments
+     *
+     * @throws UnexpectedTokenException
+     *
+     * @internal
+     */
+    public static function parse(ParserState $parserState, array &$comments = []): self
+    {
+        $selectorParts = self::parseComponents($parserState, $comments);
 
         // Check that the selector has been fully parsed:
         if (!\in_array($parserState->peek(), ['{', '}', ',', ''], true)) {
