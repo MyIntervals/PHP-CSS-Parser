@@ -198,8 +198,6 @@ final class SelectorTest extends TestCase
     /**
      * @test
      *
-     * @param non-empty-string $selector
-     *
      * @dataProvider provideInvalidSelectors
      * @dataProvider provideInvalidSelectorsForParse
      */
