@@ -11,12 +11,11 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\Selector\Combinator;
 use Sabberworm\CSS\Property\Selector\Component;
 use Sabberworm\CSS\Property\Selector\CompoundSelector;
-use Sabberworm\CSS\Property\Selector\SpecificityCalculator;
 use Sabberworm\CSS\Renderable;
+use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\ShortClassNameProvider;
 
 use function Safe\preg_match;
-use function Safe\preg_replace;
 
 /**
  * Class representing a single CSS selector. Selectors have to be split by the comma prior to being passed into this
@@ -59,9 +58,9 @@ class Selector implements Renderable
         /ux';
 
     /**
-     * @var non-empty-string
+     * @var list<Component>
      */
-    private $selector;
+    private $components = [];
 
     /**
      * @internal since V8.8.0
@@ -79,9 +78,13 @@ class Selector implements Renderable
      *
      * @throws \UnexpectedValueException if the selector is not valid
      */
-    final public function __construct(string $selector)
+    final public function __construct(string $selector = '')
     {
-        $this->setSelector($selector);
+        // Allow construction of empty object for content to be set via `setComponents()`.
+        // (`setSelector()` will throw an exception when provided with an empty string.)
+        if ($selector !== '') {
+            $this->setSelector($selector);
+        }
     }
 
     /**
@@ -144,17 +147,27 @@ class Selector implements Renderable
             );
         }
 
-        $selectorString = '';
-        foreach ($selectorParts as $selectorPart) {
-            $selectorPartValue = $selectorPart->getValue();
-            if (\in_array($selectorPartValue, ['>', '+', '~'], true)) {
-                $selectorString .= ' ' . $selectorPartValue . ' ';
-            } else {
-                $selectorString .= $selectorPartValue;
-            }
-        }
+        return (new static())->setComponents($selectorParts);
+    }
 
-        return new static($selectorString);
+    /**
+     * @return list<Component>
+     */
+    public function getComponents(): array
+    {
+        return $this->components;
+    }
+
+    /**
+     * @param list<Component> $components
+     *        This should be an alternating sequence of `CompoundSelector` and `Combinator`, starting and ending with a
+     *        `CompoundSelector`, and may be a single `CompoundSelector`.
+     */
+    public function setComponents(array $components): self
+    {
+        $this->components = $components;
+
+        return $this;
     }
 
     /**
@@ -162,7 +175,7 @@ class Selector implements Renderable
      */
     public function getSelector(): string
     {
-        return $this->selector;
+        return $this->render(new OutputFormat());
     }
 
     /**
@@ -172,16 +185,20 @@ class Selector implements Renderable
      */
     public function setSelector(string $selector): void
     {
-        if (!self::isValid($selector)) {
-            throw new \UnexpectedValueException("Selector `$selector` is not valid.");
+        $parserState = new ParserState($selector, Settings::create());
+
+        $components = self::parseComponents($parserState);
+
+        // Check that the selector has been fully parsed:
+        if (!$parserState->isEnd()) {
+            throw new UnexpectedTokenException(
+                'EOF',
+                $parserState->peek(5),
+                'literal'
+            );
         }
 
-        $selector = \trim($selector);
-
-        $hasAttribute = \strpos($selector, '[') !== false;
-
-        // Whitespace can't be adjusted within an attribute selector, as it would change its meaning
-        $this->selector = !$hasAttribute ? preg_replace('/\\s++/', ' ', $selector) : $selector;
+        $this->components = $components;
     }
 
     /**
@@ -189,12 +206,22 @@ class Selector implements Renderable
      */
     public function getSpecificity(): int
     {
-        return SpecificityCalculator::calculate($this->selector);
+        return \array_sum(\array_map(
+            static function (Component $component): int {
+                return $component->getSpecificity();
+            },
+            $this->components
+        ));
     }
 
     public function render(OutputFormat $outputFormat): string
     {
-        return $this->getSelector();
+        return \implode('', \array_map(
+            static function (Component $component) use ($outputFormat): string {
+                return $component->render($outputFormat);
+            },
+            $this->components
+        ));
     }
 
     /**
@@ -206,6 +233,12 @@ class Selector implements Renderable
     {
         return [
             'class' => $this->getShortClassName(),
+            'components' => \array_map(
+                static function (Component $component): array {
+                    return $component->getArrayRepresentation();
+                },
+                $this->components
+            ),
         ];
     }
 }
