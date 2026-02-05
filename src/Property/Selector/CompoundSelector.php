@@ -8,7 +8,6 @@ use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
-use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\ShortClassNameProvider;
 
 use function Safe\preg_match;
@@ -17,7 +16,7 @@ use function Safe\preg_match;
  * Class representing a CSS compound selector.
  * Selectors have to be split at combinators (space, `>`, `+`, `~`) before being passed to this class.
  */
-class CompoundSelector implements Renderable, Component
+class CompoundSelector implements Component
 {
     use ShortClassNameProvider;
 
