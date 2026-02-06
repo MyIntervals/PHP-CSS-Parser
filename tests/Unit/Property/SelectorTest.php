@@ -317,6 +317,42 @@ final class SelectorTest extends TestCase
 
     /**
      * @test
+     */
+    public function canConstructObjectWithEmptyState(): void
+    {
+        $subject = new Selector('');
+
+        self::assertSame('', $subject->getSelector());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideInvalidSelectors
+     */
+    public function constructorThrowsExceptionWithInvalidSelector(string $selector): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+
+        new Selector($selector);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideInvalidSelectors
+     */
+    public function setSelectorThrowsExceptionWithInvalidSelector(string $selector): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+
+        $subject = new Selector('a');
+
+        $subject->setSelector($selector);
+    }
+
+    /**
+     * @test
      *
      * @param non-empty-string $selector
      * @param int<0, max> $expectedSpecificity
