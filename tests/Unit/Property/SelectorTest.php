@@ -458,12 +458,12 @@ final class SelectorTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationThrowsException(): void
+    public function getArrayRepresentationIncludesClassName(): void
     {
-        $this->expectException(\BadMethodCallException::class);
-
         $subject = new Selector('a');
 
-        $subject->getArrayRepresentation();
+        $result = $subject->getArrayRepresentation();
+
+        self::assertSame('Selector', $result['class']);
     }
 }

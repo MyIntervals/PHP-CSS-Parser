@@ -16,12 +16,12 @@ final class KeyframeSelectorTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationThrowsException(): void
+    public function getArrayRepresentationIncludesClassName(): void
     {
-        $this->expectException(\BadMethodCallException::class);
+        $subject = new KeyframeSelector('50%');
 
-        $subject = new KeyframeSelector('a');
+        $result = $subject->getArrayRepresentation();
 
-        $subject->getArrayRepresentation();
+        self::assertSame('KeyframeSelector', $result['class']);
     }
 }

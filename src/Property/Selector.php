@@ -13,6 +13,7 @@ use Sabberworm\CSS\Property\Selector\Component;
 use Sabberworm\CSS\Property\Selector\CompoundSelector;
 use Sabberworm\CSS\Property\Selector\SpecificityCalculator;
 use Sabberworm\CSS\Renderable;
+use Sabberworm\CSS\ShortClassNameProvider;
 
 use function Safe\preg_match;
 use function Safe\preg_replace;
@@ -23,6 +24,8 @@ use function Safe\preg_replace;
  */
 class Selector implements Renderable
 {
+    use ShortClassNameProvider;
+
     /**
      * @internal since 8.5.2
      */
@@ -192,6 +195,8 @@ class Selector implements Renderable
      */
     public function getArrayRepresentation(): array
     {
-        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
+        return [
+            'class' => $this->getShortClassName(),
+        ];
     }
 }
