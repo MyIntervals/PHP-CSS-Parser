@@ -69,6 +69,9 @@ class Selector implements Renderable
         return $numberOfMatches === 1;
     }
 
+    /**
+     * @throws \UnexpectedValueException if the selector is not valid
+     */
     final public function __construct(string $selector)
     {
         $this->setSelector($selector);
@@ -152,8 +155,15 @@ class Selector implements Renderable
         return $this->selector;
     }
 
+    /**
+     * @throws \UnexpectedValueException if the selector is not valid
+     */
     public function setSelector(string $selector): void
     {
+        if (!self::isValid($selector)) {
+            throw new \UnexpectedValueException("Selector `$selector` is not valid.");
+        }
+
         $selector = \trim($selector);
 
         $hasAttribute = \strpos($selector, '[') !== false;
