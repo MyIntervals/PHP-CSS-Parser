@@ -172,6 +172,8 @@ class Selector implements Renderable
 
     /**
      * @return non-empty-string
+     *
+     * @deprecated in version 9.2, will be removed in v10.0.  Use either `getComponents()` or `render()` instead.
      */
     public function getSelector(): string
     {
@@ -182,6 +184,8 @@ class Selector implements Renderable
      * @param non-empty-string $selector
      *
      * @throws \UnexpectedValueException if the selector is not valid
+     *
+     * @deprecated in version 9.2, will be removed in v10.0.  Use `setComponents()` instead.
      */
     public function setSelector(string $selector): void
     {
