@@ -403,6 +403,18 @@ final class SelectorTest extends TestCase
 
     /**
      * @test
+     */
+    public function getComponentsReturnsEmptyArrayIfNotSet(): void
+    {
+        $subject = new Selector();
+
+        $result = $subject->getComponents();
+
+        self::assertSame([], $result);
+    }
+
+    /**
+     * @test
      *
      * @param list<Component> $components
      *
