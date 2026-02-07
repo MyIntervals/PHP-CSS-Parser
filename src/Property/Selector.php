@@ -56,7 +56,7 @@ class Selector implements Renderable
     /**
      * @var string
      */
-    private $selector;
+    private $selector = '';
 
     /**
      * @internal since V8.8.0
@@ -72,9 +72,12 @@ class Selector implements Renderable
     /**
      * @throws \UnexpectedValueException if the selector is not valid
      */
-    final public function __construct(string $selector)
+    final public function __construct(string $selector = '')
     {
-        $this->setSelector($selector);
+        // Allow construction of empty object for content to be set later via a setter method.
+        if ($selector !== '') {
+            $this->setSelector($selector);
+        }
     }
 
     /**
