@@ -331,7 +331,7 @@ final class SelectorTest extends TestCase
     /**
      * @test
      */
-    public function canConstructObjectWithEmptyState(): void
+    public function constructsObjectWithEmptyStateWithNoArgumetProvided(): void
     {
         $subject = new Selector();
 
@@ -432,6 +432,18 @@ final class SelectorTest extends TestCase
 
         $representation = $subject->getArrayRepresentation()['components'];
         self::assertSame($expectedRepresenation, $representation);
+    }
+
+    /**
+     * @test
+     */
+    public function getComponentsReturnsEmptyArrayIfNotSet(): void
+    {
+        $subject = new Selector();
+
+        $result = $subject->getComponents();
+
+        self::assertSame([], $result);
     }
 
     /**
