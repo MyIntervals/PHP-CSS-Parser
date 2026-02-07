@@ -198,6 +198,7 @@ final class SelectorTest extends TestCase
      * @test
      *
      * @dataProvider provideInvalidSelectors
+     * @dataProvider provideEmptyStringAsInvalidSelector
      * @dataProvider provideInvalidSelectorsForParse
      */
     public function parseThrowsExceptionWithInvalidSelector(string $selector): void
@@ -322,12 +323,6 @@ final class SelectorTest extends TestCase
      */
     public function constructorThrowsExceptionWithInvalidSelector(string $selector): void
     {
-        // An empty string is allowed to construct an empty object
-        if ($selector === '') {
-            self::expectNotToPerformAssertions();
-            return;
-        }
-
         $this->expectException(UnexpectedTokenException::class);
 
         new Selector($selector);
@@ -337,6 +332,7 @@ final class SelectorTest extends TestCase
      * @test
      *
      * @dataProvider provideInvalidSelectors
+     * @dataProvider provideEmptyStringAsInvalidSelector
      * @dataProvider provideInvalidSelectorsForParse
      */
     public function setSelectorThrowsExceptionWithInvalidSelector(string $selector): void
