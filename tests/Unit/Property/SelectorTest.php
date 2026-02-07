@@ -325,7 +325,17 @@ final class SelectorTest extends TestCase
     {
         $subject = new Selector();
 
-        self::assertSame('', $subject->getSelector());
+        self::assertSame([], $subject->getArrayRepresentation()['components']);
+    }
+
+    /**
+     * @test
+     */
+    public function constructsObjectWithEmptyStateWithEmptyStringProvided(): void
+    {
+        $subject = new Selector('');
+
+        self::assertSame([], $subject->getArrayRepresentation()['components']);
     }
 
     /**
