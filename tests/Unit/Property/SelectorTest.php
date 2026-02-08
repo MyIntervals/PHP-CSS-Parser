@@ -318,7 +318,17 @@ final class SelectorTest extends TestCase
     /**
      * @test
      */
-    public function canConstructObjectWithEmptyState(): void
+    public function constructsObjectWithEmptyStateWithNoArgumetProvided(): void
+    {
+        $subject = new Selector();
+
+        self::assertSame('', $subject->getSelector());
+    }
+
+    /**
+     * @test
+     */
+    public function constructsObjectWithEmptyStateWithEmptyStringProvided(): void
     {
         $subject = new Selector('');
 
