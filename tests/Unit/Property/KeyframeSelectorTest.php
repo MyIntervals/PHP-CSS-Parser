@@ -31,7 +31,7 @@ final class KeyframeSelectorTest extends TestCase
      */
     public function getArrayRepresentationIncludesComponent(): void
     {
-        $subject = (new KeyframeSelector())->setComponents([new CompoundSelector('50%')]);
+        $subject = new KeyframeSelector([new CompoundSelector('50%')]);
 
         $result = $subject->getArrayRepresentation();
 

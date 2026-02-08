@@ -393,7 +393,7 @@ final class SelectorTest extends TestCase
      */
     public function setComponentsSetsComponentsProvided(array $components, array $expectedRepresenation): void
     {
-        $subject = new Selector();
+        $subject = new Selector([]);
 
         $subject->setComponents($components);
 
@@ -406,7 +406,7 @@ final class SelectorTest extends TestCase
      */
     public function getComponentsReturnsEmptyArrayIfNotSet(): void
     {
-        $subject = new Selector();
+        $subject = new Selector([]);
 
         $result = $subject->getComponents();
 
@@ -422,7 +422,7 @@ final class SelectorTest extends TestCase
      */
     public function getComponentsReturnsComponentsSet(array $components): void
     {
-        $subject = new Selector();
+        $subject = new Selector([]);
         $subject->setComponents($components);
 
         $result = $subject->getComponents();
@@ -539,7 +539,7 @@ final class SelectorTest extends TestCase
      */
     public function getArrayRepresentationIncludesClassName(): void
     {
-        $subject = new Selector();
+        $subject = new Selector([]);
 
         $result = $subject->getArrayRepresentation();
 
@@ -551,7 +551,7 @@ final class SelectorTest extends TestCase
      */
     public function getArrayRepresentationIncludesComponent(): void
     {
-        $subject = (new Selector())->setComponents([new CompoundSelector('p.test')]);
+        $subject = new Selector([new CompoundSelector('p.test')]);
 
         $result = $subject->getArrayRepresentation();
 

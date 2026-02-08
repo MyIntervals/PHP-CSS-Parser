@@ -74,16 +74,17 @@ class Selector implements Renderable
     }
 
     /**
-     * @param non-empty-string $selector
+     * @param non-empty-string|list<Component> $selector
+     *        Providing a string is deprecated in version 9.2 and will not work from v10.0
      *
      * @throws \UnexpectedValueException if the selector is not valid
      */
-    final public function __construct(string $selector = '')
+    final public function __construct($selector)
     {
-        // Allow construction of empty object for content to be set via `setComponents()`.
-        // (`setSelector()` will throw an exception when provided with an empty string.)
-        if ($selector !== '') {
+        if (\is_string($selector)) {
             $this->setSelector($selector);
+        } else {
+            $this->setComponents($selector);
         }
     }
 
@@ -147,7 +148,7 @@ class Selector implements Renderable
             );
         }
 
-        return (new static())->setComponents($selectorParts);
+        return new static($selectorParts);
     }
 
     /**
