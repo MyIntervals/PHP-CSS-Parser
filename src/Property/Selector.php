@@ -58,9 +58,9 @@ class Selector implements Renderable
         /ux';
 
     /**
-     * @var list<Component>
+     * @var non-empty-list<Component>
      */
-    private $components = [];
+    private $components;
 
     /**
      * @internal since V8.8.0
@@ -74,7 +74,7 @@ class Selector implements Renderable
     }
 
     /**
-     * @param non-empty-string|list<Component> $selector
+     * @param non-empty-string|non-empty-list<Component> $selector
      *        Providing a string is deprecated in version 9.2 and will not work from v10.0
      *
      * @throws \UnexpectedValueException if the selector is not valid

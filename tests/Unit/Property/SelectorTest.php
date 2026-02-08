@@ -198,7 +198,6 @@ final class SelectorTest extends TestCase
      * @test
      *
      * @dataProvider provideInvalidSelectors
-     * @dataProvider provideEmptyStringAsInvalidSelector
      * @dataProvider provideInvalidSelectorsForParse
      */
     public function parseThrowsExceptionWithInvalidSelector(string $selector): void
@@ -332,7 +331,6 @@ final class SelectorTest extends TestCase
      * @test
      *
      * @dataProvider provideInvalidSelectors
-     * @dataProvider provideEmptyStringAsInvalidSelector
      * @dataProvider provideInvalidSelectorsForParse
      */
     public function setSelectorThrowsExceptionWithInvalidSelector(string $selector): void
@@ -393,7 +391,7 @@ final class SelectorTest extends TestCase
      */
     public function setComponentsSetsComponentsProvided(array $components, array $expectedRepresenation): void
     {
-        $subject = new Selector([]);
+        $subject = new Selector([new CompoundSelector('p')]);
 
         $subject->setComponents($components);
 
@@ -403,26 +401,30 @@ final class SelectorTest extends TestCase
 
     /**
      * @test
+     *
+     * @param non-empty-list<Component> $components
+     *
+     * @dataProvider provideComponentsAndArrayRepresentation
      */
-    public function getComponentsReturnsEmptyArrayIfNotSet(): void
+    public function getComponentsReturnsComponentsProvidedToConstructor(array $components): void
     {
-        $subject = new Selector([]);
+        $subject = new Selector($components);
 
         $result = $subject->getComponents();
 
-        self::assertSame([], $result);
+        self::assertSame($components, $result);
     }
 
     /**
      * @test
      *
-     * @param list<Component> $components
+     * @param non-empty-list<Component> $components
      *
      * @dataProvider provideComponentsAndArrayRepresentation
      */
     public function getComponentsReturnsComponentsSet(array $components): void
     {
-        $subject = new Selector([]);
+        $subject = new Selector([new CompoundSelector('p')]);
         $subject->setComponents($components);
 
         $result = $subject->getComponents();
@@ -539,7 +541,7 @@ final class SelectorTest extends TestCase
      */
     public function getArrayRepresentationIncludesClassName(): void
     {
-        $subject = new Selector([]);
+        $subject = new Selector([new CompoundSelector('p')]);
 
         $result = $subject->getArrayRepresentation();
 
