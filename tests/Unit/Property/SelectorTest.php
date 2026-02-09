@@ -173,8 +173,6 @@ final class SelectorTest extends TestCase
             // 'dot only' => ['.'],
             'slash' => ['/'],
             'less-than sign' => ['<'],
-            // This is currently broken.
-            // 'whitespace only' => [" \t\n\r"],
         ];
     }
 
