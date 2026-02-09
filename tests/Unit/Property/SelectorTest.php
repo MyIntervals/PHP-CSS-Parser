@@ -389,6 +389,22 @@ final class SelectorTest extends TestCase
      *
      * @dataProvider provideComponentsAndArrayRepresentation
      */
+    public function constructsWithComponentsProvided(array $components, array $expectedRepresenation): void
+    {
+        $subject = new Selector($components);
+
+        $representation = $subject->getArrayRepresentation()['components'];
+        self::assertSame($expectedRepresenation, $representation);
+    }
+
+    /**
+     * @test
+     *
+     * @param list<Component> $components
+     * @param list<array{class: string, value: string}> $expectedRepresenation
+     *
+     * @dataProvider provideComponentsAndArrayRepresentation
+     */
     public function setComponentsSetsComponentsProvided(array $components, array $expectedRepresenation): void
     {
         $subject = new Selector([new CompoundSelector('p')]);
