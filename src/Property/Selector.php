@@ -77,7 +77,7 @@ class Selector implements Renderable
      * @param non-empty-string|non-empty-list<Component> $selector
      *        Providing a string is deprecated in version 9.2 and will not work from v10.0
      *
-     * @throws \UnexpectedValueException if the selector is not valid
+     * @throws UnexpectedTokenException if the selector is not valid
      */
     final public function __construct($selector)
     {
@@ -184,7 +184,7 @@ class Selector implements Renderable
     /**
      * @param non-empty-string $selector
      *
-     * @throws \UnexpectedValueException if the selector is not valid
+     * @throws UnexpectedTokenException if the selector is not valid
      *
      * @deprecated in version 9.2, will be removed in v10.0.  Use `setComponents()` instead.
      */
