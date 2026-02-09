@@ -152,7 +152,7 @@ class Selector implements Renderable
     }
 
     /**
-     * @return list<Component>
+     * @return non-empty-list<Component>
      */
     public function getComponents(): array
     {
@@ -160,7 +160,7 @@ class Selector implements Renderable
     }
 
     /**
-     * @param list<Component> $components
+     * @param non-empty-list<Component> $components
      *        This should be an alternating sequence of `CompoundSelector` and `Combinator`, starting and ending with a
      *        `CompoundSelector`, and may be a single `CompoundSelector`.
      */
