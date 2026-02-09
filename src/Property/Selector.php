@@ -31,6 +31,8 @@ class Selector implements Renderable
      */
     public const SELECTOR_VALIDATION_RX = '/
         ^(
+            # not whitespace only
+            (?!\\s*+$)
             (?:
                 # any sequence of valid unescaped characters, except quotes
                 [a-zA-Z0-9\\x{00A0}-\\x{FFFF}_^$|*=~\\[\\]()\\-\\s\\.:#+>,]++
@@ -57,7 +59,7 @@ class Selector implements Renderable
         /ux';
 
     /**
-     * @var string
+     * @var non-empty-string
      */
     private $selector;
 
@@ -73,6 +75,8 @@ class Selector implements Renderable
     }
 
     /**
+     * @param non-empty-string $selector
+     *
      * @throws \UnexpectedValueException if the selector is not valid
      */
     final public function __construct(string $selector)
@@ -83,7 +87,7 @@ class Selector implements Renderable
     /**
      * @param list<Comment> $comments
      *
-     * @return list<Component>
+     * @return non-empty-list<Component>
      *
      * @throws UnexpectedTokenException
      */
@@ -153,12 +157,17 @@ class Selector implements Renderable
         return new static($selectorString);
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getSelector(): string
     {
         return $this->selector;
     }
 
     /**
+     * @param non-empty-string $selector
+     *
      * @throws \UnexpectedValueException if the selector is not valid
      */
     public function setSelector(string $selector): void

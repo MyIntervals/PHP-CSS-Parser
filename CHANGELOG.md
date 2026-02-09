@@ -18,7 +18,7 @@ Please also have a look at our
 ### Changed
 
 - `Selector::setSelector()` and `Selector` constructor will now throw exception
-  upon provision of an invalid selectior (#1498)
+  upon provision of an invalid selectior (#1498, #1502)
 - Clean up extra whitespace in CSS selector (#1398)
 - The array keys passed to `DeclarationBlock::setSelectors()` are no longer
   preserved (#1407)
