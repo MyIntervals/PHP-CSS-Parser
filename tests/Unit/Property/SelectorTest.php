@@ -399,6 +399,18 @@ final class SelectorTest extends TestCase
 
     /**
      * @test
+     */
+    public function setComponentsProvidesFluentInterface(): void
+    {
+        $subject = new Selector([new CompoundSelector('p')]);
+
+        $result = $subject->setComponents([new CompoundSelector('li')]);
+
+        self::assertSame($subject, $result);
+    }
+
+    /**
+     * @test
      *
      * @param list<Component> $components
      * @param list<array{class: string, value: string}> $expectedRepresenation
