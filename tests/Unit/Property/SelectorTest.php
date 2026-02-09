@@ -343,7 +343,13 @@ final class SelectorTest extends TestCase
     }
 
     /**
-     * @return array<non-empty-string, array{0: list<Component>, 1: list<array{class: string, value: string}>}>
+     * @return array<
+     *             non-empty-string,
+     *             array{
+     *                 0: non-empty-list<Component>,
+     *                 1: non-empty-list<array{class: non-empty-string, value: non-empty-string}>
+     *             }
+     *         >
      */
     public static function provideComponentsAndArrayRepresentation(): array
     {
@@ -384,8 +390,8 @@ final class SelectorTest extends TestCase
     /**
      * @test
      *
-     * @param list<Component> $components
-     * @param list<array{class: string, value: string}> $expectedRepresenation
+     * @param non-empty-list<Component> $components
+     * @param non-empty-list<array{class: non-empty-string, value: non-empty-string}> $expectedRepresenation
      *
      * @dataProvider provideComponentsAndArrayRepresentation
      */
@@ -412,8 +418,8 @@ final class SelectorTest extends TestCase
     /**
      * @test
      *
-     * @param list<Component> $components
-     * @param list<array{class: string, value: string}> $expectedRepresenation
+     * @param non-empty-list<Component> $components
+     * @param non-empty-list<array{class: non-empty-string, value: non-empty-string}> $expectedRepresenation
      *
      * @dataProvider provideComponentsAndArrayRepresentation
      */
