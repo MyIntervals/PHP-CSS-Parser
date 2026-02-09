@@ -161,8 +161,11 @@ final class SelectorTest extends TestCase
     public static function provideInvalidSelectors(): array
     {
         return [
-            // This is currently broken.
-            // 'empty string' => [''],
+            'empty string' => [''],
+            'space' => [' '],
+            'tab' => ["\t"],
+            'line feed' => ["\n"],
+            'carriage return' => ["\r"],
             'percent sign' => ['%'],
             // This is currently broken.
             // 'hash only' => ['#'],
@@ -176,16 +179,11 @@ final class SelectorTest extends TestCase
     }
 
     /**
-     * @return array<non-empty-string, array{0: string}>
+     * @return array<non-empty-string, array{0: non-empty-string}>
      */
     public static function provideInvalidSelectorsForParse(): array
     {
         return [
-            'empty string' => [''],
-            'space' => [' '],
-            'tab' => ["\t"],
-            'line feed' => ["\n"],
-            'carriage return' => ["\r"],
             'a `:not` missing the closing brace' => [':not(a'],
             'a `:not` missing the opening brace' => [':not a)'],
             'attribute value missing closing single quote' => ['a[href=\'#top]'],
@@ -313,16 +311,6 @@ final class SelectorTest extends TestCase
         self::assertSame('comment1', $result[0]->getComment());
         self::assertInstanceOf(Comment::class, $result[1]);
         self::assertSame('comment2', $result[1]->getComment());
-    }
-
-    /**
-     * @test
-     */
-    public function canConstructObjectWithEmptyState(): void
-    {
-        $subject = new Selector('');
-
-        self::assertSame('', $subject->getSelector());
     }
 
     /**
