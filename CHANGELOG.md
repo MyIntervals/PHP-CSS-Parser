@@ -17,6 +17,9 @@ Please also have a look at our
 
 ### Changed
 
+- `Selector` is now represented as a sequence of `Selector\Component` objects
+  which can be accessed via `getComponents()`, manipulated individually, or set
+  via `setComponents()` (#1478, #1486, #1487, #1488, #1494, #1496)
 - `Selector::setSelector()` and `Selector` constructor will now throw exception
   upon provision of an invalid selectior (#1498, #1502)
 - Clean up extra whitespace in CSS selector (#1398)

@@ -9,6 +9,9 @@ use Sabberworm\CSS\Comment\Comment;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\Selector;
+use Sabberworm\CSS\Property\Selector\Combinator;
+use Sabberworm\CSS\Property\Selector\Component;
+use Sabberworm\CSS\Property\Selector\CompoundSelector;
 use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Settings;
 use TRegx\PhpUnit\DataProviders\DataProvider;
@@ -315,10 +318,11 @@ final class SelectorTest extends TestCase
      * @test
      *
      * @dataProvider provideInvalidSelectors
+     * @dataProvider provideInvalidSelectorsForParse
      */
     public function constructorThrowsExceptionWithInvalidSelector(string $selector): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedTokenException::class);
 
         new Selector($selector);
     }
@@ -327,14 +331,139 @@ final class SelectorTest extends TestCase
      * @test
      *
      * @dataProvider provideInvalidSelectors
+     * @dataProvider provideInvalidSelectorsForParse
      */
     public function setSelectorThrowsExceptionWithInvalidSelector(string $selector): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedTokenException::class);
 
         $subject = new Selector('a');
 
         $subject->setSelector($selector);
+    }
+
+    /**
+     * @return array<
+     *             non-empty-string,
+     *             array{
+     *                 0: non-empty-list<Component>,
+     *                 1: non-empty-list<array{class: non-empty-string, value: non-empty-string}>
+     *             }
+     *         >
+     */
+    public static function provideComponentsAndArrayRepresentation(): array
+    {
+        return [
+            'simple selector' => [
+                [new CompoundSelector('p')],
+                [
+                    [
+                        'class' => 'CompoundSelector',
+                        'value' => 'p',
+                    ],
+                ],
+            ],
+            'selector with combinator' => [
+                [
+                    new CompoundSelector('ul'),
+                    new Combinator('>'),
+                    new CompoundSelector('li'),
+                ],
+                [
+                    [
+                        'class' => 'CompoundSelector',
+                        'value' => 'ul',
+                    ],
+                    [
+                        'class' => 'Combinator',
+                        'value' => '>',
+                    ],
+                    [
+                        'class' => 'CompoundSelector',
+                        'value' => 'li',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-list<Component> $components
+     * @param non-empty-list<array{class: non-empty-string, value: non-empty-string}> $expectedRepresenation
+     *
+     * @dataProvider provideComponentsAndArrayRepresentation
+     */
+    public function constructsWithComponentsProvided(array $components, array $expectedRepresenation): void
+    {
+        $subject = new Selector($components);
+
+        $representation = $subject->getArrayRepresentation()['components'];
+        self::assertSame($expectedRepresenation, $representation);
+    }
+
+    /**
+     * @test
+     */
+    public function setComponentsProvidesFluentInterface(): void
+    {
+        $subject = new Selector([new CompoundSelector('p')]);
+
+        $result = $subject->setComponents([new CompoundSelector('li')]);
+
+        self::assertSame($subject, $result);
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-list<Component> $components
+     * @param non-empty-list<array{class: non-empty-string, value: non-empty-string}> $expectedRepresenation
+     *
+     * @dataProvider provideComponentsAndArrayRepresentation
+     */
+    public function setComponentsSetsComponentsProvided(array $components, array $expectedRepresenation): void
+    {
+        $subject = new Selector([new CompoundSelector('p')]);
+
+        $subject->setComponents($components);
+
+        $representation = $subject->getArrayRepresentation()['components'];
+        self::assertSame($expectedRepresenation, $representation);
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-list<Component> $components
+     *
+     * @dataProvider provideComponentsAndArrayRepresentation
+     */
+    public function getComponentsReturnsComponentsProvidedToConstructor(array $components): void
+    {
+        $subject = new Selector($components);
+
+        $result = $subject->getComponents();
+
+        self::assertSame($components, $result);
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-list<Component> $components
+     *
+     * @dataProvider provideComponentsAndArrayRepresentation
+     */
+    public function getComponentsReturnsComponentsSet(array $components): void
+    {
+        $subject = new Selector([new CompoundSelector('p')]);
+        $subject->setComponents($components);
+
+        $result = $subject->getComponents();
+
+        self::assertSame($components, $result);
     }
 
     /**
@@ -446,10 +575,22 @@ final class SelectorTest extends TestCase
      */
     public function getArrayRepresentationIncludesClassName(): void
     {
-        $subject = new Selector('a');
+        $subject = new Selector([new CompoundSelector('p')]);
 
         $result = $subject->getArrayRepresentation();
 
         self::assertSame('Selector', $result['class']);
+    }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationIncludesComponent(): void
+    {
+        $subject = new Selector([new CompoundSelector('p.test')]);
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertSame('p.test', $result['components'][0]['value']);
     }
 }
