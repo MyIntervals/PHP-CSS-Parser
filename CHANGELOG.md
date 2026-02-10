@@ -10,6 +10,7 @@ Please also have a look at our
 
 ### Added
 
+- Add `OutputFormat::setSpaceAroundSelectorCombinator()` (#1504)
 - Add support for escaped quotes in the selectors (#1485, #1489)
 - Provide line number in exception message for mismatched parentheses in
   selector (#1435)

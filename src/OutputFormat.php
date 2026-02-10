@@ -93,6 +93,11 @@ final class OutputFormat
     private $spaceAfterSelectorSeparator = ' ';
 
     /**
+     * @var string
+     */
+    private $spaceAroundSelectorCombinator = ' ';
+
+    /**
      * This is what’s inserted before the separator in value lists, by default.
      *
      * @var string
@@ -437,6 +442,27 @@ final class OutputFormat
     /**
      * @internal
      */
+    public function getSpaceAroundSelectorCombinator(): string
+    {
+        return $this->spaceAroundSelectorCombinator;
+    }
+
+    /**
+     * The spacing set is also used for the descendent combinator, which is whitespace only,
+     * unless an empty string is set, in which case a space will be used.
+     *
+     * @return $this fluent interface
+     */
+    public function setSpaceAroundSelectorCombinator(string $whitespace): self
+    {
+        $this->spaceAroundSelectorCombinator = $whitespace;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
     public function getSpaceBeforeListArgumentSeparator(): string
     {
         return $this->spaceBeforeListArgumentSeparator;
@@ -724,6 +750,7 @@ final class OutputFormat
             ->setSpaceAfterRuleName('')
             ->setSpaceBeforeOpeningBrace('')
             ->setSpaceAfterSelectorSeparator('')
+            ->setSpaceAroundSelectorCombinator('')
             ->setSemicolonAfterLastRule(false)
             ->setRenderComments(false);
 
