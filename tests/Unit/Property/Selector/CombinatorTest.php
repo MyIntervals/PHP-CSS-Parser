@@ -272,6 +272,52 @@ final class CombinatorTest extends TestCase
     }
 
     /**
+     * @return array<non-empty-string, array{0: string}>
+     */
+    public static function provideSpacing(): array
+    {
+        return [
+            'empty string' => [''],
+            'space' => [' '],
+            'newline' => ["\n"],
+            'carriage return' => ["\r"],
+            'tab' => ["\t"],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideSpacing
+     */
+    public function renderIncludesSpacingSetInOutputFormat(string $spacing): void
+    {
+        $subject = new Combinator('>');
+        $outputFormat = (OutputFormat::create())->setSpaceAroundSelectorCombinator($spacing);
+
+        $result = $subject->render($outputFormat);
+
+        $expectedRendering = $spacing . '>' . $spacing;
+        self::assertSame($expectedRendering, $result);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideSpacing
+     */
+    public function renderReturnsSpacingSetInOutputFormatForDescendentCombinatorOrSpaceIfNeeded(string $spacing): void
+    {
+        $subject = new Combinator(' ');
+        $outputFormat = (OutputFormat::create())->setSpaceAroundSelectorCombinator($spacing);
+
+        $result = $subject->render($outputFormat);
+
+        $expectedRendering = $spacing !== '' ? $spacing : ' ';
+        self::assertSame($expectedRendering, $result);
+    }
+
+    /**
      * @test
      */
     public function getArrayRepresentationIncludesClassName(): void
