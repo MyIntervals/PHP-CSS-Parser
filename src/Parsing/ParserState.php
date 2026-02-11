@@ -201,12 +201,16 @@ class ParserState
      * This method may change the state of the object by advancing the internal position;
      * it does not simply 'get' a value.
      */
-    public function consumeWhiteSpace(array &$comments = []): string
+    public function consumeWhiteSpace(array &$comments = [], bool $stopAfterLineFeed = false): string
     {
         $consumed = '';
         do {
             while (preg_match('/\\s/isSu', $this->peek()) === 1) {
-                $consumed .= $this->consume(1);
+                $characterComsumed = $this->consume(1);
+                $consumed .= $characterComsumed;
+                if ($stopAfterLineFeed && $characterComsumed === "\n") {
+                    break 2;
+                }
             }
             if ($this->parserSettings->usesLenientParsing()) {
                 try {
