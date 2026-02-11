@@ -108,6 +108,15 @@
         "fix:php:codesniffer": "phpcbf --standard=config/phpcs.xml config src tests",
         "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix bin src tests",
         "fix:php:rector": "rector --config=config/rector.php",
+        "generate:class-diagram": [
+            "composer require --dev tasuku43/mermaid-class-diagram:0.6.0",
+            "mermaid-class-diagram generate --path src --exclude-relationships composition > class-diagram.md",
+            "perl -i -0pe 's/(    %% start of the generated part).*(    %% end of the generated part)/\\1\\nCLASS_DIAGRAM\\n\\2/s' README.md",
+            "sed -i -n '/CLASS_DIAGRAM/!{p;d;}; r class-diagram.md' README.md",
+            "sed -i -E 's/(classDiagram)/\\1\\n    direction LR\\n/' README.md",
+            "rm class-diagram.md",
+            "composer remove --dev tasuku43/mermaid-class-diagram"
+        ],
         "phpstan:baseline": "phpstan --configuration=config/phpstan.neon --generate-baseline=config/phpstan-baseline.neon --allow-empty-baseline"
     },
     "scripts-descriptions": {
@@ -130,6 +139,7 @@
         "fix:php:codesniffer": "Reformats the code with PHP_CodeSniffer.",
         "fix:php:fixer": "Fixes autofixable issues found by PHP CS Fixer.",
         "fix:php:rector": "Fixes autofixable issues found by Rector.",
+        "generate:class-diagram": "Updates the class diagram in the README.md file.",
         "phpstan:baseline": "Updates the PHPStan baseline file to match the code."
     }
 }
