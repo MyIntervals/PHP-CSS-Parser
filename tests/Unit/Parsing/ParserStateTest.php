@@ -303,4 +303,67 @@ final class ParserStateTest extends TestCase
 
         self::assertTrue($subject->comes($nonWhitespace));
     }
+
+    /**
+     * @return array<non-empty-string, array{0: string}>
+     */
+    public static function providePossibleWhitespaceWithoutLineFeedPossiblyIncludingComments(): array
+    {
+        return [
+            'nothing' => [''],
+            'space' => [' '],
+            'tab' => ["\t"],
+            'carriage return' => ["\r"], // inclusion of this is debatable, but Mac line endings are not generally seen
+            'two spaces' => ['  '],
+            'comment' => ['/* Time for bed */'],
+            'comment with spacing around' => [' /* I am so tired */ '],
+        ];
+    }
+
+    /**
+     * @return DataProvider<non-empty-string, array{0: string, 1: string}>
+     */
+    public function providePossibleWhitespaceWithoutLineFeedPossiblyIncludingCommentsAndTheSameAgain(): DataProvider
+    {
+        return DataProvider::cross(
+            self::providePossibleWhitespaceWithoutLineFeedPossiblyIncludingComments(),
+            self::providePossibleWhitespaceWithoutLineFeedPossiblyIncludingComments()
+        );
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider providePossibleWhitespaceWithoutLineFeedPossiblyIncludingCommentsAndTheSameAgain
+     */
+    public function consumeWhiteSpaceStopsAfterLineFeedWhenRequested(string $firstLine, string $secondLine): void
+    {
+        $subject = new ParserState($firstLine . "\n" . $secondLine, Settings::create());
+
+        $comments = [];
+        $subject->consumeWhiteSpace($comments, true);
+
+        if ($secondLine === '') {
+            self::assertTrue($subject->isEnd());
+        } else {
+            self::assertTrue($subject->comes($secondLine));
+        }
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider providePossibleWhitespaceWithoutLineFeedPossiblyIncludingCommentsAndTheSameAgain
+     */
+    public function consumeWhiteSpaceDoesNotStopAfterLineFeedWhenNotRequested(
+        string $firstLine,
+        string $secondLine
+    ): void {
+        $subject = new ParserState($firstLine . "\n" . $secondLine, Settings::create());
+
+        $comments = [];
+        $subject->consumeWhiteSpace($comments, false);
+
+        self::assertTrue($subject->isEnd());
+    }
 }
