@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\CSSList;
 
 use Sabberworm\CSS\CSSElement;
+use Sabberworm\CSS\Property\Declaration;
 use Sabberworm\CSS\Property\Selector;
-use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\RuleSet\RuleContainer;
 use Sabberworm\CSS\RuleSet\RuleSet;
@@ -65,7 +65,7 @@ abstract class CSSBlockList extends CSSList
     }
 
     /**
-     * Returns all `Value` objects found recursively in `Rule`s in the tree.
+     * Returns all `Value` objects found recursively in `Declaration`s in the tree.
      *
      * @param CSSElement|null $element
      *        This is the `CSSList` or `RuleSet` to start the search from (defaults to the whole document).
@@ -105,7 +105,7 @@ abstract class CSSBlockList extends CSSList
                     $this->getAllValues($rule, $ruleSearchPattern, $searchInFunctionArguments)
                 );
             }
-        } elseif ($element instanceof Rule) {
+        } elseif ($element instanceof Declaration) {
             $value = $element->getValue();
             // `string` values are discarded.
             if ($value instanceof CSSElement) {
