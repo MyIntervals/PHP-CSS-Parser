@@ -17,9 +17,9 @@ use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
+use Sabberworm\CSS\Property\Declaration;
 use Sabberworm\CSS\Property\KeyframeSelector;
 use Sabberworm\CSS\Property\Selector;
-use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Settings;
 
 /**
@@ -182,13 +182,13 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     /**
      * @see RuleSet::addRule()
      */
-    public function addRule(Rule $ruleToAdd, ?Rule $sibling = null): void
+    public function addRule(Declaration $declarationToAdd, ?Declaration $sibling = null): void
     {
-        $this->ruleSet->addRule($ruleToAdd, $sibling);
+        $this->ruleSet->addRule($declarationToAdd, $sibling);
     }
 
     /**
-     * @return array<int<0, max>, Rule>
+     * @return array<int<0, max>, Declaration>
      *
      * @see RuleSet::getRules()
      */
@@ -198,17 +198,17 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     }
 
     /**
-     * @param array<Rule> $rules
+     * @param array<Declaration> $declarations
      *
      * @see RuleSet::setRules()
      */
-    public function setRules(array $rules): void
+    public function setRules(array $declarations): void
     {
-        $this->ruleSet->setRules($rules);
+        $this->ruleSet->setRules($declarations);
     }
 
     /**
-     * @return array<string, Rule>
+     * @return array<string, Declaration>
      *
      * @see RuleSet::getRulesAssoc()
      */
@@ -220,9 +220,9 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     /**
      * @see RuleSet::removeRule()
      */
-    public function removeRule(Rule $ruleToRemove): void
+    public function removeRule(Declaration $declarationToRemove): void
     {
-        $this->ruleSet->removeRule($ruleToRemove);
+        $this->ruleSet->removeRule($declarationToRemove);
     }
 
     /**
