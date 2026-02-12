@@ -75,7 +75,7 @@ class Rule implements Commentable, CSSElement, Positionable
         $parserState->consumeWhiteSpace($comments);
         $rule->setComments($comments);
         $parserState->consume(':');
-        $value = Value::parseValue($parserState, self::listDelimiterForRule($rule->getRule()));
+        $value = Value::parseValue($parserState, self::getDelimitersForPropertyValue($rule->getRule()));
         $rule->setValue($value);
         $parserState->consumeWhiteSpace();
         if ($parserState->comes('!')) {
@@ -101,7 +101,7 @@ class Rule implements Commentable, CSSElement, Positionable
      *
      * @return list<non-empty-string>
      */
-    private static function listDelimiterForRule(string $propertyName): array
+    private static function getDelimitersForPropertyValue(string $propertyName): array
     {
         if (preg_match('/^font($|-)/', $propertyName) === 1) {
             return [',', '/', ' '];
