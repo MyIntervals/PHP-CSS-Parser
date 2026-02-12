@@ -18,6 +18,8 @@ Please also have a look at our
 
 ### Changed
 
+- `Rule::setRule()` and `getRule()` are replaced with `setPropertyName()` and
+  `getPropertyName()` (#1506)
 - `Selector` is now represented as a sequence of `Selector\Component` objects
   which can be accessed via `getComponents()`, manipulated individually, or set
   via `setComponents()` (#1478, #1486, #1487, #1488, #1494, #1496)
@@ -28,6 +30,9 @@ Please also have a look at our
   preserved (#1407)
 
 ### Deprecated
+
+- `Rule::setRule()` and `getRule()` are deprecated and replaced with
+  `setPropertyName()` and `getPropertyName()` (#1506)
 
 ### Removed
 

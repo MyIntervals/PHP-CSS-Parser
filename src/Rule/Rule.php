@@ -20,7 +20,7 @@ use Sabberworm\CSS\Value\Value;
 use function Safe\preg_match;
 
 /**
- * `Rule`s just have a string key (the rule) and a 'Value'.
+ * `Rule`s just have a string key (the property name) and a 'Value'.
  *
  * In CSS, `Rule`s are expressed as follows: “key: value[0][0] value[0][1], value[1][0] value[1][1];”
  */
@@ -32,7 +32,7 @@ class Rule implements Commentable, CSSElement, Positionable
     /**
      * @var non-empty-string
      */
-    private $rule;
+    private $propertyName;
 
     /**
      * @var RuleValueList|string|null
@@ -45,13 +45,13 @@ class Rule implements Commentable, CSSElement, Positionable
     private $isImportant = false;
 
     /**
-     * @param non-empty-string $rule
+     * @param non-empty-string $propertyName
      * @param int<1, max>|null $lineNumber
      * @param int<0, max>|null $columnNumber
      */
-    public function __construct(string $rule, ?int $lineNumber = null, ?int $columnNumber = null)
+    public function __construct(string $propertyName, ?int $lineNumber = null, ?int $columnNumber = null)
     {
-        $this->rule = $rule;
+        $this->propertyName = $propertyName;
         $this->setPosition($lineNumber, $columnNumber);
     }
 
@@ -75,7 +75,7 @@ class Rule implements Commentable, CSSElement, Positionable
         $parserState->consumeWhiteSpace($comments);
         $rule->setComments($comments);
         $parserState->consume(':');
-        $value = Value::parseValue($parserState, self::listDelimiterForRule($rule->getRule()));
+        $value = Value::parseValue($parserState, self::getDelimitersForPropertyValue($rule->getRule()));
         $rule->setValue($value);
         $parserState->consumeWhiteSpace();
         if ($parserState->comes('!')) {
@@ -97,17 +97,17 @@ class Rule implements Commentable, CSSElement, Positionable
      * The first item is the innermost separator (or, put another way, the highest-precedence operator).
      * The sequence continues to the outermost separator (or lowest-precedence operator).
      *
-     * @param non-empty-string $rule
+     * @param non-empty-string $propertyName
      *
      * @return list<non-empty-string>
      */
-    private static function listDelimiterForRule(string $rule): array
+    private static function getDelimitersForPropertyValue(string $propertyName): array
     {
-        if (preg_match('/^font($|-)/', $rule) === 1) {
+        if (preg_match('/^font($|-)/', $propertyName) === 1) {
             return [',', '/', ' '];
         }
 
-        switch ($rule) {
+        switch ($propertyName) {
             case 'src':
                 return [' ', ','];
             default:
@@ -116,19 +116,39 @@ class Rule implements Commentable, CSSElement, Positionable
     }
 
     /**
-     * @param non-empty-string $rule
+     * @param non-empty-string $propertyName
      */
-    public function setRule(string $rule): void
+    public function setPropertyName(string $propertyName): void
     {
-        $this->rule = $rule;
+        $this->propertyName = $propertyName;
     }
 
     /**
      * @return non-empty-string
      */
+    public function getPropertyName(): string
+    {
+        return $this->propertyName;
+    }
+
+    /**
+     * @param non-empty-string $propertyName
+     *
+     * @deprecated in v9.2, will be removed in v10.0; use `setPropertyName()` instead.
+     */
+    public function setRule(string $propertyName): void
+    {
+        $this->propertyName = $propertyName;
+    }
+
+    /**
+     * @return non-empty-string
+     *
+     * @deprecated in v9.2, will be removed in v10.0; use `getPropertyName()` instead.
+     */
     public function getRule(): string
     {
-        return $this->rule;
+        return $this->propertyName;
     }
 
     /**
@@ -186,7 +206,7 @@ class Rule implements Commentable, CSSElement, Positionable
     public function render(OutputFormat $outputFormat): string
     {
         $formatter = $outputFormat->getFormatter();
-        $result = "{$formatter->comments($this)}{$this->rule}:{$formatter->spaceAfterRuleName()}";
+        $result = "{$formatter->comments($this)}{$this->propertyName}:{$formatter->spaceAfterRuleName()}";
         if ($this->value instanceof Value) { // Can also be a ValueList
             $result .= $this->value->render($outputFormat);
         } else {

@@ -21,7 +21,7 @@ final class ValueTest extends TestCase
     /**
      * the default set of delimiters for parsing most values
      *
-     * @see \Sabberworm\CSS\Rule\Rule::listDelimiterForRule
+     * @see \Sabberworm\CSS\Rule\Rule::getDelimitersForPropertyValue
      */
     private const DEFAULT_DELIMITERS = [',', ' ', '/'];
 
