@@ -18,6 +18,7 @@ Please also have a look at our
 
 ### Changed
 
+- `Rule\Rule` class is renamed to `Property\Declaration` (#1508)
 - `Rule::setRule()` and `getRule()` are replaced with `setPropertyName()` and
   `getPropertyName()` (#1506)
 - `Selector` is now represented as a sequence of `Selector\Component` objects
@@ -31,6 +32,8 @@ Please also have a look at our
 
 ### Deprecated
 
+- `Rule\Rule` class is deprecated; `Property\Declaration` is a direct
+  replacement (#1508)
 - `Rule::setRule()` and `getRule()` are deprecated and replaced with
   `setPropertyName()` and `getPropertyName()` (#1506)
 
