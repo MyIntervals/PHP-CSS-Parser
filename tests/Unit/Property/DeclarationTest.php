@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Sabberworm\CSS\Tests\Unit\Rule;
+namespace Sabberworm\CSS\Tests\Unit\Property;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\Parsing\ParserState;
-use Sabberworm\CSS\Rule\Rule;
+use Sabberworm\CSS\Property\Declaration;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Value;
 use Sabberworm\CSS\Value\ValueList;
 
 /**
- * @covers \Sabberworm\CSS\Rule\Rule
+ * @covers \Sabberworm\CSS\Property\Declaration
  */
-final class RuleTest extends TestCase
+final class DeclarationTest extends TestCase
 {
     /**
      * @test
      */
     public function implementsCSSElement(): void
     {
-        $subject = new Rule('beverage-container');
+        $subject = new Declaration('beverage-container');
 
         self::assertInstanceOf(CSSElement::class, $subject);
     }
@@ -31,7 +31,7 @@ final class RuleTest extends TestCase
     /**
      * @return array<string, array{0: string, 1: list<class-string>}>
      */
-    public static function provideRulesAndExpectedParsedValueListTypes(): array
+    public static function provideDeclarationsAndExpectedParsedValueListTypes(): array
     {
         return [
             'src (e.g. in @font-face)' => [
@@ -49,11 +49,11 @@ final class RuleTest extends TestCase
      *
      * @param list<class-string> $expectedTypeClassnames
      *
-     * @dataProvider provideRulesAndExpectedParsedValueListTypes
+     * @dataProvider provideDeclarationsAndExpectedParsedValueListTypes
      */
-    public function parsesValuesIntoExpectedTypeList(string $rule, array $expectedTypeClassnames): void
+    public function parsesValuesIntoExpectedTypeList(string $declaration, array $expectedTypeClassnames): void
     {
-        $subject = Rule::parse(new ParserState($rule, Settings::create()));
+        $subject = Declaration::parse(new ParserState($declaration, Settings::create()));
 
         $value = $subject->getValue();
         self::assertInstanceOf(ValueList::class, $value);
@@ -78,7 +78,7 @@ final class RuleTest extends TestCase
     {
         $this->expectException(\BadMethodCallException::class);
 
-        $subject = new Rule('todo');
+        $subject = new Declaration('todo');
 
         $subject->getArrayRepresentation();
     }
