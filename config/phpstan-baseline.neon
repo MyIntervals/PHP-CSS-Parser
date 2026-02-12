@@ -79,7 +79,7 @@ parameters:
 			path: ../tests/ParserTest.php
 
 		-
-			message: '#^Parameter \#1 \$value of method Sabberworm\\CSS\\Rule\\Rule\:\:setValue\(\) expects Sabberworm\\CSS\\Value\\RuleValueList\|string\|null, Sabberworm\\CSS\\Value\\Size given\.$#'
+			message: '#^Parameter \#1 \$value of method Sabberworm\\CSS\\Property\\Declaration\:\:setValue\(\) expects Sabberworm\\CSS\\Value\\RuleValueList\|string\|null, Sabberworm\\CSS\\Value\\Size given\.$#'
 			identifier: argument.type
 			count: 3
 			path: ../tests/RuleSet/DeclarationBlockTest.php
@@ -91,13 +91,13 @@ parameters:
 			path: ../tests/Unit/CSSList/AtRuleBlockListTest.php
 
 		-
-			message: '#^Parameter \#1 \$value of method Sabberworm\\CSS\\Rule\\Rule\:\:setValue\(\) expects Sabberworm\\CSS\\Value\\RuleValueList\|string\|null, Sabberworm\\CSS\\Value\\CSSFunction given\.$#'
+			message: '#^Parameter \#1 \$value of method Sabberworm\\CSS\\Property\\Declaration\:\:setValue\(\) expects Sabberworm\\CSS\\Value\\RuleValueList\|string\|null, Sabberworm\\CSS\\Value\\CSSFunction given\.$#'
 			identifier: argument.type
 			count: 2
 			path: ../tests/Unit/CSSList/CSSBlockListTest.php
 
 		-
-			message: '#^Parameter \#1 \$value of method Sabberworm\\CSS\\Rule\\Rule\:\:setValue\(\) expects Sabberworm\\CSS\\Value\\RuleValueList\|string\|null, Sabberworm\\CSS\\Value\\CSSString given\.$#'
+			message: '#^Parameter \#1 \$value of method Sabberworm\\CSS\\Property\\Declaration\:\:setValue\(\) expects Sabberworm\\CSS\\Value\\RuleValueList\|string\|null, Sabberworm\\CSS\\Value\\CSSString given\.$#'
 			identifier: argument.type
 			count: 10
 			path: ../tests/Unit/CSSList/CSSBlockListTest.php
