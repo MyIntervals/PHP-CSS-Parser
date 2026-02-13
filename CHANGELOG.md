@@ -35,7 +35,7 @@ Please also have a look at our
 - `Rule\Rule` class is deprecated; `Property\Declaration` is a direct
   replacement (#1508)
 - `Rule::setRule()` and `getRule()` are deprecated and replaced with
-  `setPropertyName()` and `getPropertyName()` (#1506)
+  `setPropertyName()` and `getPropertyName()` (#1506, #1519)
 
 ### Removed
 

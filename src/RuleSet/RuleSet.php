@@ -101,7 +101,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
      */
     public function addRule(Declaration $declarationToAdd, ?Declaration $sibling = null): void
     {
-        $propertyName = $declarationToAdd->getRule();
+        $propertyName = $declarationToAdd->getPropertyName();
         if (!isset($this->declarations[$propertyName])) {
             $this->declarations[$propertyName] = [];
         }
@@ -240,7 +240,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
         /** @var array<string, Declaration> $result */
         $result = [];
         foreach ($this->getRules($searchPattern) as $declaration) {
-            $result[$declaration->getRule()] = $declaration;
+            $result[$declaration->getPropertyName()] = $declaration;
         }
 
         return $result;
@@ -251,7 +251,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
      */
     public function removeRule(Declaration $declarationToRemove): void
     {
-        $nameOfPropertyToRemove = $declarationToRemove->getRule();
+        $nameOfPropertyToRemove = $declarationToRemove->getPropertyName();
         if (!isset($this->declarations[$nameOfPropertyToRemove])) {
             return;
         }
