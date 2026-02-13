@@ -4,33 +4,33 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\RuleSet;
 
-use Sabberworm\CSS\Rule\Rule;
+use Sabberworm\CSS\Property\Declaration;
 
 /**
  * Represents a CSS item that contains `Rules`, defining the methods to manipulate them.
  */
 interface RuleContainer
 {
-    public function addRule(Rule $ruleToAdd, ?Rule $sibling = null): void;
+    public function addRule(Declaration $declarationToAdd, ?Declaration $sibling = null): void;
 
-    public function removeRule(Rule $ruleToRemove): void;
+    public function removeRule(Declaration $declarationToRemove): void;
 
     public function removeMatchingRules(string $searchPattern): void;
 
     public function removeAllRules(): void;
 
     /**
-     * @param array<Rule> $rules
+     * @param array<Declaration> $declarations
      */
-    public function setRules(array $rules): void;
+    public function setRules(array $declarations): void;
 
     /**
-     * @return array<int<0, max>, Rule>
+     * @return array<int<0, max>, Declaration>
      */
     public function getRules(?string $searchPattern = null): array;
 
     /**
-     * @return array<string, Rule>
+     * @return array<string, Declaration>
      */
     public function getRulesAssoc(?string $searchPattern = null): array;
 }

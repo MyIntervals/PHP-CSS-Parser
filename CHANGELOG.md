@@ -18,7 +18,7 @@ Please also have a look at our
 
 ### Changed
 
-- `Rule\Rule` class is renamed to `Property\Declaration` (#1508, #1512)
+- `Rule\Rule` class is renamed to `Property\Declaration` (#1508, #1512, #1513)
 - `Rule::setRule()` and `getRule()` are replaced with `setPropertyName()` and
   `getPropertyName()` (#1506)
 - `Selector` is now represented as a sequence of `Selector\Component` objects
