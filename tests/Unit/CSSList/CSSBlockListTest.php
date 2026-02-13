@@ -9,9 +9,9 @@ use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSList\AtRuleBlockList;
 use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\Property\Charset;
+use Sabberworm\CSS\Property\Declaration;
 use Sabberworm\CSS\Property\Import;
 use Sabberworm\CSS\Renderable;
-use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\RuleSet\AtRuleSet;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Tests\Unit\CSSList\Fixtures\ConcreteCSSBlockList;
@@ -300,9 +300,9 @@ final class CSSBlockListTest extends TestCase
         $value = new CSSString('Superfont');
 
         $declarationBlock = new DeclarationBlock();
-        $rule = new Rule('font-family');
-        $rule->setValue($value);
-        $declarationBlock->addRule($rule);
+        $declaration = new Declaration('font-family');
+        $declaration->setValue($value);
+        $declarationBlock->addRule($declaration);
         $subject->setContents([$declarationBlock]);
 
         $result = $subject->getAllValues();
@@ -321,12 +321,12 @@ final class CSSBlockListTest extends TestCase
         $value2 = new CSSString('aquamarine');
 
         $declarationBlock = new DeclarationBlock();
-        $rule1 = new Rule('font-family');
-        $rule1->setValue($value1);
-        $declarationBlock->addRule($rule1);
-        $rule2 = new Rule('color');
-        $rule2->setValue($value2);
-        $declarationBlock->addRule($rule2);
+        $declaration1 = new Declaration('font-family');
+        $declaration1->setValue($value1);
+        $declarationBlock->addRule($declaration1);
+        $declaration2 = new Declaration('color');
+        $declaration2->setValue($value2);
+        $declarationBlock->addRule($declaration2);
         $subject->setContents([$declarationBlock]);
 
         $result = $subject->getAllValues();
@@ -345,13 +345,13 @@ final class CSSBlockListTest extends TestCase
         $value2 = new CSSString('aquamarine');
 
         $declarationBlock1 = new DeclarationBlock();
-        $rule1 = new Rule('font-family');
-        $rule1->setValue($value1);
-        $declarationBlock1->addRule($rule1);
+        $declaration1 = new Declaration('font-family');
+        $declaration1->setValue($value1);
+        $declarationBlock1->addRule($declaration1);
         $declarationBlock2 = new DeclarationBlock();
-        $rule2 = new Rule('color');
-        $rule2->setValue($value2);
-        $declarationBlock2->addRule($rule2);
+        $declaration2 = new Declaration('color');
+        $declaration2->setValue($value2);
+        $declarationBlock2->addRule($declaration2);
         $subject->setContents([$declarationBlock1, $declarationBlock2]);
 
         $result = $subject->getAllValues();
@@ -369,9 +369,9 @@ final class CSSBlockListTest extends TestCase
         $value = new CSSString('Superfont');
 
         $declarationBlock = new DeclarationBlock();
-        $rule = new Rule('font-family');
-        $rule->setValue($value);
-        $declarationBlock->addRule($rule);
+        $declaration = new Declaration('font-family');
+        $declaration->setValue($value);
+        $declarationBlock->addRule($declaration);
         $atRuleBlockList = new AtRuleBlockList('media');
         $atRuleBlockList->setContents([$declarationBlock]);
         $subject->setContents([$atRuleBlockList]);
@@ -392,13 +392,13 @@ final class CSSBlockListTest extends TestCase
         $value2 = new CSSString('aquamarine');
 
         $declarationBlock1 = new DeclarationBlock();
-        $rule1 = new Rule('font-family');
-        $rule1->setValue($value1);
-        $declarationBlock1->addRule($rule1);
+        $declaration1 = new Declaration('font-family');
+        $declaration1->setValue($value1);
+        $declarationBlock1->addRule($declaration1);
         $declarationBlock2 = new DeclarationBlock();
-        $rule2 = new Rule('color');
-        $rule2->setValue($value2);
-        $declarationBlock2->addRule($rule2);
+        $declaration2 = new Declaration('color');
+        $declaration2->setValue($value2);
+        $declarationBlock2->addRule($declaration2);
         $subject->setContents([$declarationBlock1, $declarationBlock2]);
 
         $result = $subject->getAllValues($declarationBlock1);
@@ -409,7 +409,7 @@ final class CSSBlockListTest extends TestCase
     /**
      * @test
      */
-    public function getAllValuesWithSearchStringProvidedReturnsOnlyValuesFromMatchingRules(): void
+    public function getAllValuesWithSearchStringProvidedReturnsOnlyValuesFromMatchingDeclarations(): void
     {
         $subject = new ConcreteCSSBlockList();
 
@@ -417,12 +417,12 @@ final class CSSBlockListTest extends TestCase
         $value2 = new CSSString('aquamarine');
 
         $declarationBlock = new DeclarationBlock();
-        $rule1 = new Rule('font-family');
-        $rule1->setValue($value1);
-        $declarationBlock->addRule($rule1);
-        $rule2 = new Rule('color');
-        $rule2->setValue($value2);
-        $declarationBlock->addRule($rule2);
+        $declaration1 = new Declaration('font-family');
+        $declaration1->setValue($value1);
+        $declarationBlock->addRule($declaration1);
+        $declaration2 = new Declaration('color');
+        $declaration2->setValue($value2);
+        $declarationBlock->addRule($declaration2);
         $subject->setContents([$declarationBlock]);
 
         $result = $subject->getAllValues(null, 'font-');
@@ -441,9 +441,9 @@ final class CSSBlockListTest extends TestCase
         $value2 = new Size(2, '%');
 
         $declarationBlock = new DeclarationBlock();
-        $rule = new Rule('margin');
-        $rule->setValue(new CSSFunction('max', [$value1, $value2]));
-        $declarationBlock->addRule($rule);
+        $declaration = new Declaration('margin');
+        $declaration->setValue(new CSSFunction('max', [$value1, $value2]));
+        $declarationBlock->addRule($declaration);
         $subject->setContents([$declarationBlock]);
 
         $result = $subject->getAllValues();
@@ -462,9 +462,9 @@ final class CSSBlockListTest extends TestCase
         $value2 = new Size(2, '%');
 
         $declarationBlock = new DeclarationBlock();
-        $rule = new Rule('margin');
-        $rule->setValue(new CSSFunction('max', [$value1, $value2]));
-        $declarationBlock->addRule($rule);
+        $declaration = new Declaration('margin');
+        $declaration->setValue(new CSSFunction('max', [$value1, $value2]));
+        $declarationBlock->addRule($declaration);
         $subject->setContents([$declarationBlock]);
 
         $result = $subject->getAllValues(null, null, true);
