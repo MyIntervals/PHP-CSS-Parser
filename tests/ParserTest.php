@@ -344,8 +344,8 @@ body {color: green;}',
         $bodyBlock = $declarationBlocks[1];
         $backgroundHeaderRules = $headerBlock->getRules('background-');
         self::assertCount(2, $backgroundHeaderRules);
-        self::assertSame('background-color', $backgroundHeaderRules[0]->getRule());
-        self::assertSame('background-color', $backgroundHeaderRules[1]->getRule());
+        self::assertSame('background-color', $backgroundHeaderRules[0]->getPropertyName());
+        self::assertSame('background-color', $backgroundHeaderRules[1]->getPropertyName());
         $backgroundHeaderRules = $headerBlock->getRulesAssoc('background-');
         self::assertCount(1, $backgroundHeaderRules);
         self::assertInstanceOf(Color::class, $backgroundHeaderRules['background-color']->getValue());
@@ -886,7 +886,7 @@ body {background-color: red;}';
         $rules = $block->getRules();
         self::assertCount(1, $rules);
         $rule = $rules[0];
-        self::assertSame('display', $rule->getRule());
+        self::assertSame('display', $rule->getPropertyName());
         self::assertSame('inline-block', $rule->getValue());
     }
 
