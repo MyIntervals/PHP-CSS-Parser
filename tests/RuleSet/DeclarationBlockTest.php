@@ -7,7 +7,7 @@ namespace Sabberworm\CSS\Tests\RuleSet;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parser;
-use Sabberworm\CSS\Rule\Rule;
+use Sabberworm\CSS\Property\Declaration;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Settings as ParserSettings;
 use Sabberworm\CSS\Value\Size;
@@ -25,25 +25,25 @@ final class DeclarationBlockTest extends TestCase
         $css = '.wrapper { left: 10px; text-align: left; }';
         $parser = new Parser($css);
         $document = $parser->parse();
-        $rule = new Rule('right');
-        $rule->setValue('-10px');
+        $declaration = new Declaration('right');
+        $declaration->setValue('-10px');
         $contents = $document->getContents();
         $wrapper = $contents[0];
 
         self::assertInstanceOf(DeclarationBlock::class, $wrapper);
         self::assertCount(2, $wrapper->getRules());
-        $wrapper->setRules([$rule]);
+        $wrapper->setRules([$declaration]);
 
-        $rules = $wrapper->getRules();
-        self::assertCount(1, $rules);
-        self::assertSame('right', $rules[0]->getRule());
-        self::assertSame('-10px', $rules[0]->getValue());
+        $declarations = $wrapper->getRules();
+        self::assertCount(1, $declarations);
+        self::assertSame('right', $declarations[0]->getRule());
+        self::assertSame('-10px', $declarations[0]->getValue());
     }
 
     /**
      * @test
      */
-    public function ruleInsertion(): void
+    public function declarationInsertion(): void
     {
         $css = '.wrapper { left: 10px; text-align: left; }';
         $parser = new Parser($css);
@@ -53,34 +53,34 @@ final class DeclarationBlockTest extends TestCase
 
         self::assertInstanceOf(DeclarationBlock::class, $wrapper);
 
-        $leftRules = $wrapper->getRules('left');
-        self::assertCount(1, $leftRules);
-        $firstLeftRule = $leftRules[0];
+        $leftDeclarations = $wrapper->getRules('left');
+        self::assertCount(1, $leftDeclarations);
+        $firstLeftDeclaration = $leftDeclarations[0];
 
-        $textRules = $wrapper->getRules('text-');
-        self::assertCount(1, $textRules);
-        $firstTextRule = $textRules[0];
+        $textDeclarations = $wrapper->getRules('text-');
+        self::assertCount(1, $textDeclarations);
+        $firstTextDeclaration = $textDeclarations[0];
 
-        $leftPrefixRule = new Rule('left');
-        $leftPrefixRule->setValue(new Size(16, 'em'));
+        $leftPrefixDeclaration = new Declaration('left');
+        $leftPrefixDeclaration->setValue(new Size(16, 'em'));
 
-        $textAlignRule = new Rule('text-align');
-        $textAlignRule->setValue(new Size(1));
+        $textAlignDeclaration = new Declaration('text-align');
+        $textAlignDeclaration->setValue(new Size(1));
 
-        $borderBottomRule = new Rule('border-bottom-width');
-        $borderBottomRule->setValue(new Size(1, 'px'));
+        $borderBottomDeclaration = new Declaration('border-bottom-width');
+        $borderBottomDeclaration->setValue(new Size(1, 'px'));
 
-        $wrapper->addRule($borderBottomRule);
-        $wrapper->addRule($leftPrefixRule, $firstLeftRule);
-        $wrapper->addRule($textAlignRule, $firstTextRule);
+        $wrapper->addRule($borderBottomDeclaration);
+        $wrapper->addRule($leftPrefixDeclaration, $firstLeftDeclaration);
+        $wrapper->addRule($textAlignDeclaration, $firstTextDeclaration);
 
-        $rules = $wrapper->getRules();
+        $declarations = $wrapper->getRules();
 
-        self::assertSame($leftPrefixRule, $rules[0]);
-        self::assertSame($firstLeftRule, $rules[1]);
-        self::assertSame($textAlignRule, $rules[2]);
-        self::assertSame($firstTextRule, $rules[3]);
-        self::assertSame($borderBottomRule, $rules[4]);
+        self::assertSame($leftPrefixDeclaration, $declarations[0]);
+        self::assertSame($firstLeftDeclaration, $declarations[1]);
+        self::assertSame($textAlignDeclaration, $declarations[2]);
+        self::assertSame($firstTextDeclaration, $declarations[3]);
+        self::assertSame($borderBottomDeclaration, $declarations[4]);
 
         self::assertSame(
             '.wrapper {left: 16em;left: 10px;text-align: 1;text-align: left;border-bottom-width: 1px;}',
@@ -103,7 +103,7 @@ final class DeclarationBlockTest extends TestCase
      * @test
      * @dataProvider declarationBlocksWithCommentsProvider
      */
-    public function canRemoveCommentsFromRulesUsingLenientParsing(
+    public function canRemoveCommentsFromDeclarationsUsingLenientParsing(
         string $cssWithComments,
         string $cssWithoutComments
     ): void {
@@ -120,7 +120,7 @@ final class DeclarationBlockTest extends TestCase
      * @test
      * @dataProvider declarationBlocksWithCommentsProvider
      */
-    public function canRemoveCommentsFromRulesUsingStrictParsing(
+    public function canRemoveCommentsFromDeclarationsUsingStrictParsing(
         string $cssWithComments,
         string $cssWithoutComments
     ): void {
