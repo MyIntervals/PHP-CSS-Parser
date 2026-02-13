@@ -7,8 +7,8 @@ namespace Sabberworm\CSS\Tests\Functional\RuleSet;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Property\Declaration;
 use Sabberworm\CSS\Property\Selector;
-use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Settings;
 
@@ -46,22 +46,22 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @test
      */
-    public function rendersRulesInOrderProvided(): void
+    public function rendersDeclarationsInOrderProvided(): void
     {
         $declarationBlock = new DeclarationBlock();
         $declarationBlock->setSelectors([new Selector('.test')]);
 
-        $rule1 = new Rule('background-color');
-        $rule1->setValue('transparent');
-        $declarationBlock->addRule($rule1);
+        $declaration1 = new Declaration('background-color');
+        $declaration1->setValue('transparent');
+        $declarationBlock->addRule($declaration1);
 
-        $rule2 = new Rule('background');
-        $rule2->setValue('#222');
-        $declarationBlock->addRule($rule2);
+        $declaration2 = new Declaration('background');
+        $declaration2->setValue('#222');
+        $declarationBlock->addRule($declaration2);
 
-        $rule3 = new Rule('background-color');
-        $rule3->setValue('#fff');
-        $declarationBlock->addRule($rule3);
+        $declaration3 = new Declaration('background-color');
+        $declaration3->setValue('#fff');
+        $declarationBlock->addRule($declaration3);
 
         $expectedRendering = 'background-color: transparent;background: #222;background-color: #fff';
         self::assertStringContainsString($expectedRendering, $declarationBlock->render(new OutputFormat()));

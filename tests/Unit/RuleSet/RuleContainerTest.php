@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit\RuleSet;
 
 use PHPUnit\Framework\TestCase;
-use Sabberworm\CSS\Rule\Rule;
+use Sabberworm\CSS\Property\Declaration;
 use Sabberworm\CSS\RuleSet\RuleContainer;
 use TRegx\PhpUnit\DataProviders\DataProvider;
 
@@ -66,17 +66,17 @@ trait RuleContainerTest
      *
      * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
      */
-    public function addRuleWithoutPositionWithoutSiblingAddsRuleAfterInitialRules(
+    public function addRuleWithoutPositionWithoutSiblingAddsDeclarationAfterInitialDeclarations(
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
-        $this->subject->addRule($ruleToAdd);
+        $this->subject->addRule($declarationToAdd);
 
-        $rules = $this->subject->getRules();
-        self::assertSame($ruleToAdd, \end($rules));
+        $declarations = $this->subject->getRules();
+        self::assertSame($declarationToAdd, \end($declarations));
     }
 
     /**
@@ -90,13 +90,13 @@ trait RuleContainerTest
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
-        $this->subject->addRule($ruleToAdd);
+        $this->subject->addRule($declarationToAdd);
 
-        self::assertIsInt($ruleToAdd->getLineNumber(), 'line number not set');
-        self::assertGreaterThanOrEqual(1, $ruleToAdd->getLineNumber(), 'line number not valid');
+        self::assertIsInt($declarationToAdd->getLineNumber(), 'line number not set');
+        self::assertGreaterThanOrEqual(1, $declarationToAdd->getLineNumber(), 'line number not valid');
     }
 
     /**
@@ -110,13 +110,13 @@ trait RuleContainerTest
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
-        $this->subject->addRule($ruleToAdd);
+        $this->subject->addRule($declarationToAdd);
 
-        self::assertIsInt($ruleToAdd->getColumnNumber(), 'column number not set');
-        self::assertGreaterThanOrEqual(0, $ruleToAdd->getColumnNumber(), 'column number not valid');
+        self::assertIsInt($declarationToAdd->getColumnNumber(), 'column number not set');
+        self::assertGreaterThanOrEqual(0, $declarationToAdd->getColumnNumber(), 'column number not valid');
     }
 
     /**
@@ -126,17 +126,17 @@ trait RuleContainerTest
      *
      * @param list<string> $initialPropertyNames
      */
-    public function addRuleWithOnlyLineNumberWithoutSiblingAddsRule(
+    public function addRuleWithOnlyLineNumberWithoutSiblingAddsDeclaration(
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $ruleToAdd->setPosition(42);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $declarationToAdd->setPosition(42);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
-        $this->subject->addRule($ruleToAdd);
+        $this->subject->addRule($declarationToAdd);
 
-        self::assertContains($ruleToAdd, $this->subject->getRules());
+        self::assertContains($declarationToAdd, $this->subject->getRules());
     }
 
     /**
@@ -150,14 +150,14 @@ trait RuleContainerTest
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $ruleToAdd->setPosition(42);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $declarationToAdd->setPosition(42);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
-        $this->subject->addRule($ruleToAdd);
+        $this->subject->addRule($declarationToAdd);
 
-        self::assertIsInt($ruleToAdd->getColumnNumber(), 'column number not set');
-        self::assertGreaterThanOrEqual(0, $ruleToAdd->getColumnNumber(), 'column number not valid');
+        self::assertIsInt($declarationToAdd->getColumnNumber(), 'column number not set');
+        self::assertGreaterThanOrEqual(0, $declarationToAdd->getColumnNumber(), 'column number not valid');
     }
 
     /**
@@ -171,13 +171,13 @@ trait RuleContainerTest
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $ruleToAdd->setPosition(42);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $declarationToAdd->setPosition(42);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
-        $this->subject->addRule($ruleToAdd);
+        $this->subject->addRule($declarationToAdd);
 
-        self::assertSame(42, $ruleToAdd->getLineNumber(), 'line number not preserved');
+        self::assertSame(42, $declarationToAdd->getLineNumber(), 'line number not preserved');
     }
 
     /**
@@ -187,18 +187,18 @@ trait RuleContainerTest
      *
      * @param list<string> $initialPropertyNames
      */
-    public function addRuleWithOnlyColumnNumberWithoutSiblingAddsRuleAfterInitialRules(
+    public function addRuleWithOnlyColumnNumberWithoutSiblingAddsDeclarationAfterInitialDeclarations(
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $ruleToAdd->setPosition(null, 42);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $declarationToAdd->setPosition(null, 42);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
-        $this->subject->addRule($ruleToAdd);
+        $this->subject->addRule($declarationToAdd);
 
-        $rules = $this->subject->getRules();
-        self::assertSame($ruleToAdd, \end($rules));
+        $declarations = $this->subject->getRules();
+        self::assertSame($declarationToAdd, \end($declarations));
     }
 
     /**
@@ -212,14 +212,14 @@ trait RuleContainerTest
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $ruleToAdd->setPosition(null, 42);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $declarationToAdd->setPosition(null, 42);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
-        $this->subject->addRule($ruleToAdd);
+        $this->subject->addRule($declarationToAdd);
 
-        self::assertIsInt($ruleToAdd->getLineNumber(), 'line number not set');
-        self::assertGreaterThanOrEqual(1, $ruleToAdd->getLineNumber(), 'line number not valid');
+        self::assertIsInt($declarationToAdd->getLineNumber(), 'line number not set');
+        self::assertGreaterThanOrEqual(1, $declarationToAdd->getLineNumber(), 'line number not valid');
     }
 
     /**
@@ -233,13 +233,13 @@ trait RuleContainerTest
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $ruleToAdd->setPosition(null, 42);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $declarationToAdd->setPosition(null, 42);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
-        $this->subject->addRule($ruleToAdd);
+        $this->subject->addRule($declarationToAdd);
 
-        self::assertSame(42, $ruleToAdd->getColumnNumber(), 'column number not preserved');
+        self::assertSame(42, $declarationToAdd->getColumnNumber(), 'column number not preserved');
     }
 
     /**
@@ -249,17 +249,17 @@ trait RuleContainerTest
      *
      * @param list<string> $initialPropertyNames
      */
-    public function addRuleWithCompletePositionWithoutSiblingAddsRule(
+    public function addRuleWithCompletePositionWithoutSiblingAddsDeclaration(
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $ruleToAdd->setPosition(42, 64);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $declarationToAdd->setPosition(42, 64);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
-        $this->subject->addRule($ruleToAdd);
+        $this->subject->addRule($declarationToAdd);
 
-        self::assertContains($ruleToAdd, $this->subject->getRules());
+        self::assertContains($declarationToAdd, $this->subject->getRules());
     }
 
     /**
@@ -273,14 +273,14 @@ trait RuleContainerTest
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $ruleToAdd->setPosition(42, 64);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $declarationToAdd->setPosition(42, 64);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
-        $this->subject->addRule($ruleToAdd);
+        $this->subject->addRule($declarationToAdd);
 
-        self::assertSame(42, $ruleToAdd->getLineNumber(), 'line number not preserved');
-        self::assertSame(64, $ruleToAdd->getColumnNumber(), 'column number not preserved');
+        self::assertSame(42, $declarationToAdd->getLineNumber(), 'line number not preserved');
+        self::assertSame(64, $declarationToAdd->getColumnNumber(), 'column number not preserved');
     }
 
     /**
@@ -290,7 +290,7 @@ trait RuleContainerTest
     {
         $initialPropertyNamesSets = self::providePropertyNames();
 
-        // Provide sets with each possible index for the initially set `Rule`s.
+        // Provide sets with each possible index for the initially set `Declaration`s.
         $initialPropertyNamesAndIndexSets = [];
         foreach ($initialPropertyNamesSets as $setName => $data) {
             $initialPropertyNames = $data[0];
@@ -322,21 +322,21 @@ trait RuleContainerTest
      *
      * @dataProvider provideInitialPropertyNamesAndSiblingIndexAndPropertyNameToAdd
      */
-    public function addRuleWithSiblingInsertsRuleBeforeSibling(
+    public function addRuleWithSiblingInsertsDeclarationBeforeSibling(
         array $initialPropertyNames,
         int $siblingIndex,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
         $sibling = $this->subject->getRules()[$siblingIndex];
 
-        $this->subject->addRule($ruleToAdd, $sibling);
+        $this->subject->addRule($declarationToAdd, $sibling);
 
-        $rules = $this->subject->getRules();
-        $siblingPosition = \array_search($sibling, $rules, true);
+        $declarations = $this->subject->getRules();
+        $siblingPosition = \array_search($sibling, $declarations, true);
         self::assertIsInt($siblingPosition);
-        self::assertSame($siblingPosition - 1, \array_search($ruleToAdd, $rules, true));
+        self::assertSame($siblingPosition - 1, \array_search($declarationToAdd, $declarations, true));
     }
 
     /**
@@ -352,14 +352,14 @@ trait RuleContainerTest
         int $siblingIndex,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
         $sibling = $this->subject->getRules()[$siblingIndex];
 
-        $this->subject->addRule($ruleToAdd, $sibling);
+        $this->subject->addRule($declarationToAdd, $sibling);
 
-        self::assertIsInt($ruleToAdd->getLineNumber(), 'line number not set');
-        self::assertGreaterThanOrEqual(1, $ruleToAdd->getLineNumber(), 'line number not valid');
+        self::assertIsInt($declarationToAdd->getLineNumber(), 'line number not set');
+        self::assertGreaterThanOrEqual(1, $declarationToAdd->getLineNumber(), 'line number not valid');
     }
 
     /**
@@ -375,14 +375,14 @@ trait RuleContainerTest
         int $siblingIndex,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
         $sibling = $this->subject->getRules()[$siblingIndex];
 
-        $this->subject->addRule($ruleToAdd, $sibling);
+        $this->subject->addRule($declarationToAdd, $sibling);
 
-        self::assertIsInt($ruleToAdd->getColumnNumber(), 'column number not set');
-        self::assertGreaterThanOrEqual(0, $ruleToAdd->getColumnNumber(), 'column number not valid');
+        self::assertIsInt($declarationToAdd->getColumnNumber(), 'column number not set');
+        self::assertGreaterThanOrEqual(0, $declarationToAdd->getColumnNumber(), 'column number not valid');
     }
 
     /**
@@ -392,19 +392,19 @@ trait RuleContainerTest
      *
      * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
      */
-    public function addRuleWithSiblingNotInSetAddsRuleAfterInitialRules(
+    public function addRuleWithSiblingNotInSetAddsDeclarationAfterInitialDeclarations(
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
         // `display` is sometimes in `$initialPropertyNames` and sometimes the `$propertyNameToAdd`.
         // Choosing this for the bogus sibling allows testing all combinations of whether it is or isn't.
-        $this->subject->addRule($ruleToAdd, new Rule('display'));
+        $this->subject->addRule($declarationToAdd, new Declaration('display'));
 
-        $rules = $this->subject->getRules();
-        self::assertSame($ruleToAdd, \end($rules));
+        $declarations = $this->subject->getRules();
+        self::assertSame($declarationToAdd, \end($declarations));
     }
 
     /**
@@ -418,15 +418,15 @@ trait RuleContainerTest
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
         // `display` is sometimes in `$initialPropertyNames` and sometimes the `$propertyNameToAdd`.
         // Choosing this for the bogus sibling allows testing all combinations of whether it is or isn't.
-        $this->subject->addRule($ruleToAdd, new Rule('display'));
+        $this->subject->addRule($declarationToAdd, new Declaration('display'));
 
-        self::assertIsInt($ruleToAdd->getLineNumber(), 'line number not set');
-        self::assertGreaterThanOrEqual(1, $ruleToAdd->getLineNumber(), 'line number not valid');
+        self::assertIsInt($declarationToAdd->getLineNumber(), 'line number not set');
+        self::assertGreaterThanOrEqual(1, $declarationToAdd->getLineNumber(), 'line number not valid');
     }
 
     /**
@@ -440,15 +440,15 @@ trait RuleContainerTest
         array $initialPropertyNames,
         string $propertyNameToAdd
     ): void {
-        $ruleToAdd = new Rule($propertyNameToAdd);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationToAdd = new Declaration($propertyNameToAdd);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
         // `display` is sometimes in `$initialPropertyNames` and sometimes the `$propertyNameToAdd`.
         // Choosing this for the bogus sibling allows testing all combinations of whether it is or isn't.
-        $this->subject->addRule($ruleToAdd, new Rule('display'));
+        $this->subject->addRule($declarationToAdd, new Declaration('display'));
 
-        self::assertIsInt($ruleToAdd->getColumnNumber(), 'column number not set');
-        self::assertGreaterThanOrEqual(0, $ruleToAdd->getColumnNumber(), 'column number not valid');
+        self::assertIsInt($declarationToAdd->getColumnNumber(), 'column number not set');
+        self::assertGreaterThanOrEqual(0, $declarationToAdd->getColumnNumber(), 'column number not valid');
     }
 
     /**
@@ -459,14 +459,14 @@ trait RuleContainerTest
      *
      * @dataProvider provideInitialPropertyNamesAndIndexOfOne
      */
-    public function removeRuleRemovesRuleInSet(array $initialPropertyNames, int $indexToRemove): void
+    public function removeRuleRemovesDeclarationInSet(array $initialPropertyNames, int $indexToRemove): void
     {
-        $this->setRulesFromPropertyNames($initialPropertyNames);
-        $ruleToRemove = $this->subject->getRules()[$indexToRemove];
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
+        $declarationToRemove = $this->subject->getRules()[$indexToRemove];
 
-        $this->subject->removeRule($ruleToRemove);
+        $this->subject->removeRule($declarationToRemove);
 
-        self::assertNotContains($ruleToRemove, $this->subject->getRules());
+        self::assertNotContains($declarationToRemove, $this->subject->getRules());
     }
 
     /**
@@ -477,12 +477,12 @@ trait RuleContainerTest
      *
      * @dataProvider provideInitialPropertyNamesAndIndexOfOne
      */
-    public function removeRuleRemovesExactlyOneRule(array $initialPropertyNames, int $indexToRemove): void
+    public function removeRuleRemovesExactlyOneDeclaration(array $initialPropertyNames, int $indexToRemove): void
     {
-        $this->setRulesFromPropertyNames($initialPropertyNames);
-        $ruleToRemove = $this->subject->getRules()[$indexToRemove];
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
+        $declarationToRemove = $this->subject->getRules()[$indexToRemove];
 
-        $this->subject->removeRule($ruleToRemove);
+        $this->subject->removeRule($declarationToRemove);
 
         self::assertCount(\count($initialPropertyNames) - 1, $this->subject->getRules());
     }
@@ -494,17 +494,17 @@ trait RuleContainerTest
      *
      * @dataProvider provideInitialPropertyNamesAndAnotherPropertyName
      */
-    public function removeRuleWithRuleNotInSetKeepsSetUnchanged(
+    public function removeRuleWithDeclarationNotInSetKeepsSetUnchanged(
         array $initialPropertyNames,
         string $propertyNameToRemove
     ): void {
-        $this->setRulesFromPropertyNames($initialPropertyNames);
-        $initialRules = $this->subject->getRules();
-        $ruleToRemove = new Rule($propertyNameToRemove);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
+        $initialDeclarations = $this->subject->getRules();
+        $declarationToRemove = new Declaration($propertyNameToRemove);
 
-        $this->subject->removeRule($ruleToRemove);
+        $this->subject->removeRule($declarationToRemove);
 
-        self::assertSame($initialRules, $this->subject->getRules());
+        self::assertSame($initialDeclarations, $this->subject->getRules());
     }
 
     /**
@@ -513,42 +513,42 @@ trait RuleContainerTest
     public static function providePropertyNamesAndPropertyNameToRemoveAndExpectedRemainingPropertyNames(): array
     {
         return [
-            'removing single rule' => [
+            'removing single declaration' => [
                 ['color'],
                 'color',
                 [],
             ],
-            'removing first rule' => [
+            'removing first declaration' => [
                 ['color', 'display'],
                 'color',
                 ['display'],
             ],
-            'removing last rule' => [
+            'removing last declaration' => [
                 ['color', 'display'],
                 'display',
                 ['color'],
             ],
-            'removing middle rule' => [
+            'removing middle declaration' => [
                 ['color', 'display', 'width'],
                 'display',
                 ['color', 'width'],
             ],
-            'removing multiple rules' => [
+            'removing multiple declarations' => [
                 ['color', 'color'],
                 'color',
                 [],
             ],
-            'removing multiple rules with another kept' => [
+            'removing multiple declarations with another kept' => [
                 ['color', 'color', 'display'],
                 'color',
                 ['display'],
             ],
-            'removing nonexistent rule from empty list' => [
+            'removing nonexistent declaration from empty list' => [
                 [],
                 'color',
                 [],
             ],
-            'removing nonexistent rule from nonempty list' => [
+            'removing nonexistent declaration from nonempty list' => [
                 ['color', 'display'],
                 'width',
                 ['color', 'display'],
@@ -563,11 +563,11 @@ trait RuleContainerTest
      *
      * @dataProvider providePropertyNamesAndPropertyNameToRemoveAndExpectedRemainingPropertyNames
      */
-    public function removeMatchingRulesRemovesRulesWithPropertyName(
+    public function removeMatchingRulesRemovesDeclarationsWithPropertyName(
         array $initialPropertyNames,
         string $propertyNameToRemove
     ): void {
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
         $this->subject->removeMatchingRules($propertyNameToRemove);
 
@@ -582,21 +582,21 @@ trait RuleContainerTest
      *
      * @dataProvider providePropertyNamesAndPropertyNameToRemoveAndExpectedRemainingPropertyNames
      */
-    public function removeMatchingRulesWithPropertyNameKeepsOtherRules(
+    public function removeMatchingRulesWithPropertyNameKeepsOtherDeclarations(
         array $initialPropertyNames,
         string $propertyNameToRemove,
         array $expectedRemainingPropertyNames
     ): void {
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
         $this->subject->removeMatchingRules($propertyNameToRemove);
 
-        $remainingRules = $this->subject->getRulesAssoc();
+        $remainingDeclarations = $this->subject->getRulesAssoc();
         if ($expectedRemainingPropertyNames === []) {
-            self::assertSame([], $remainingRules);
+            self::assertSame([], $remainingDeclarations);
         }
         foreach ($expectedRemainingPropertyNames as $expectedPropertyName) {
-            self::assertArrayHasKey($expectedPropertyName, $remainingRules);
+            self::assertArrayHasKey($expectedPropertyName, $remainingDeclarations);
         }
     }
 
@@ -606,32 +606,32 @@ trait RuleContainerTest
     public static function providePropertyNamesAndPropertyNamePrefixToRemoveAndExpectedRemainingPropertyNames(): array
     {
         return [
-            'removing shorthand rule' => [
+            'removing shorthand declaration' => [
                 ['font'],
                 'font',
                 [],
             ],
-            'removing longhand rule' => [
+            'removing longhand declaration' => [
                 ['font-size'],
                 'font',
                 [],
             ],
-            'removing shorthand and longhand rule' => [
+            'removing shorthand and longhand declaration' => [
                 ['font', 'font-size'],
                 'font',
                 [],
             ],
-            'removing shorthand rule with another kept' => [
+            'removing shorthand declaration with another kept' => [
                 ['font', 'color'],
                 'font',
                 ['color'],
             ],
-            'removing longhand rule with another kept' => [
+            'removing longhand declaration with another kept' => [
                 ['font-size', 'color'],
                 'font',
                 ['color'],
             ],
-            'keeping other rules whose property names begin with the same characters' => [
+            'keeping other declarations whose property names begin with the same characters' => [
                 ['contain', 'container', 'container-type'],
                 'contain',
                 ['container', 'container-type'],
@@ -646,18 +646,18 @@ trait RuleContainerTest
      *
      * @dataProvider providePropertyNamesAndPropertyNamePrefixToRemoveAndExpectedRemainingPropertyNames
      */
-    public function removeMatchingRulesRemovesRulesWithPropertyNamePrefix(
+    public function removeMatchingRulesRemovesDeclarationsWithPropertyNamePrefix(
         array $initialPropertyNames,
         string $propertyNamePrefix
     ): void {
         $propertyNamePrefixWithHyphen = $propertyNamePrefix . '-';
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
         $this->subject->removeMatchingRules($propertyNamePrefixWithHyphen);
 
-        $remainingRules = $this->subject->getRulesAssoc();
-        self::assertArrayNotHasKey($propertyNamePrefix, $remainingRules);
-        foreach (\array_keys($remainingRules) as $remainingPropertyName) {
+        $remainingDeclarations = $this->subject->getRulesAssoc();
+        self::assertArrayNotHasKey($propertyNamePrefix, $remainingDeclarations);
+        foreach (\array_keys($remainingDeclarations) as $remainingPropertyName) {
             self::assertStringStartsNotWith($propertyNamePrefixWithHyphen, $remainingPropertyName);
         }
     }
@@ -670,22 +670,22 @@ trait RuleContainerTest
      *
      * @dataProvider providePropertyNamesAndPropertyNamePrefixToRemoveAndExpectedRemainingPropertyNames
      */
-    public function removeMatchingRulesWithPropertyNamePrefixKeepsOtherRules(
+    public function removeMatchingRulesWithPropertyNamePrefixKeepsOtherDeclarations(
         array $initialPropertyNames,
         string $propertyNamePrefix,
         array $expectedRemainingPropertyNames
     ): void {
         $propertyNamePrefixWithHyphen = $propertyNamePrefix . '-';
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
         $this->subject->removeMatchingRules($propertyNamePrefixWithHyphen);
 
-        $remainingRules = $this->subject->getRulesAssoc();
+        $remainingDeclarations = $this->subject->getRulesAssoc();
         if ($expectedRemainingPropertyNames === []) {
-            self::assertSame([], $remainingRules);
+            self::assertSame([], $remainingDeclarations);
         }
         foreach ($expectedRemainingPropertyNames as $expectedPropertyName) {
-            self::assertArrayHasKey($expectedPropertyName, $remainingRules);
+            self::assertArrayHasKey($expectedPropertyName, $remainingDeclarations);
         }
     }
 
@@ -696,9 +696,9 @@ trait RuleContainerTest
      *
      * @dataProvider providePropertyNames
      */
-    public function removeAllRulesRemovesAllRules(array $propertyNamesToRemove): void
+    public function removeAllRulesRemovesAllDeclarations(array $propertyNamesToRemove): void
     {
-        $this->setRulesFromPropertyNames($propertyNamesToRemove);
+        $this->setDeclarationsFromPropertyNames($propertyNamesToRemove);
 
         $this->subject->removeAllRules();
 
@@ -712,13 +712,13 @@ trait RuleContainerTest
      *
      * @dataProvider providePropertyNames
      */
-    public function setRulesOnVirginSetsRulesWithoutPositionInOrder(array $propertyNamesToSet): void
+    public function setRulesOnVirginSetsDeclarationsWithoutPositionInOrder(array $propertyNamesToSet): void
     {
-        $rulesToSet = self::createRulesFromPropertyNames($propertyNamesToSet);
+        $declarationsToSet = self::createDeclarationsFromPropertyNames($propertyNamesToSet);
 
-        $this->subject->setRules($rulesToSet);
+        $this->subject->setRules($declarationsToSet);
 
-        self::assertSame($rulesToSet, $this->subject->getRules());
+        self::assertSame($declarationsToSet, $this->subject->getRules());
     }
 
     /**
@@ -737,108 +737,108 @@ trait RuleContainerTest
      *
      * @dataProvider provideInitialPropertyNamesAndPropertyNamesToSet
      */
-    public function setRulesReplacesRules(array $initialPropertyNames, array $propertyNamesToSet): void
+    public function setRulesReplacesDeclarations(array $initialPropertyNames, array $propertyNamesToSet): void
     {
-        $rulesToSet = self::createRulesFromPropertyNames($propertyNamesToSet);
-        $this->setRulesFromPropertyNames($initialPropertyNames);
+        $declarationsToSet = self::createDeclarationsFromPropertyNames($propertyNamesToSet);
+        $this->setDeclarationsFromPropertyNames($initialPropertyNames);
 
-        $this->subject->setRules($rulesToSet);
+        $this->subject->setRules($declarationsToSet);
 
-        self::assertSame($rulesToSet, $this->subject->getRules());
+        self::assertSame($declarationsToSet, $this->subject->getRules());
     }
 
     /**
      * @test
      */
-    public function setRulesWithRuleWithoutPositionSetsValidLineNumber(): void
+    public function setRulesWithDeclarationWithoutPositionSetsValidLineNumber(): void
     {
-        $ruleToSet = new Rule('color');
+        $declarationToSet = new Declaration('color');
 
-        $this->subject->setRules([$ruleToSet]);
+        $this->subject->setRules([$declarationToSet]);
 
-        self::assertIsInt($ruleToSet->getLineNumber(), 'line number not set');
-        self::assertGreaterThanOrEqual(1, $ruleToSet->getLineNumber(), 'line number not valid');
+        self::assertIsInt($declarationToSet->getLineNumber(), 'line number not set');
+        self::assertGreaterThanOrEqual(1, $declarationToSet->getLineNumber(), 'line number not valid');
     }
 
     /**
      * @test
      */
-    public function setRulesWithRuleWithoutPositionSetsValidColumnNumber(): void
+    public function setRulesWithDeclarationWithoutPositionSetsValidColumnNumber(): void
     {
-        $ruleToSet = new Rule('color');
+        $declarationToSet = new Declaration('color');
 
-        $this->subject->setRules([$ruleToSet]);
+        $this->subject->setRules([$declarationToSet]);
 
-        self::assertIsInt($ruleToSet->getColumnNumber(), 'column number not set');
-        self::assertGreaterThanOrEqual(0, $ruleToSet->getColumnNumber(), 'column number not valid');
+        self::assertIsInt($declarationToSet->getColumnNumber(), 'column number not set');
+        self::assertGreaterThanOrEqual(0, $declarationToSet->getColumnNumber(), 'column number not valid');
     }
 
     /**
      * @test
      */
-    public function setRulesWithRuleWithOnlyLineNumberSetsColumnNumber(): void
+    public function setRulesWithDeclarationWithOnlyLineNumberSetsColumnNumber(): void
     {
-        $ruleToSet = new Rule('color');
-        $ruleToSet->setPosition(42);
+        $declarationToSet = new Declaration('color');
+        $declarationToSet->setPosition(42);
 
-        $this->subject->setRules([$ruleToSet]);
+        $this->subject->setRules([$declarationToSet]);
 
-        self::assertIsInt($ruleToSet->getColumnNumber(), 'column number not set');
-        self::assertGreaterThanOrEqual(0, $ruleToSet->getColumnNumber(), 'column number not valid');
+        self::assertIsInt($declarationToSet->getColumnNumber(), 'column number not set');
+        self::assertGreaterThanOrEqual(0, $declarationToSet->getColumnNumber(), 'column number not valid');
     }
 
     /**
      * @test
      */
-    public function setRulesWithRuleWithOnlyLineNumberPreservesLineNumber(): void
+    public function setRulesWithDeclarationWithOnlyLineNumberPreservesLineNumber(): void
     {
-        $ruleToSet = new Rule('color');
-        $ruleToSet->setPosition(42);
+        $declarationToSet = new Declaration('color');
+        $declarationToSet->setPosition(42);
 
-        $this->subject->setRules([$ruleToSet]);
+        $this->subject->setRules([$declarationToSet]);
 
-        self::assertSame(42, $ruleToSet->getLineNumber(), 'line number not preserved');
+        self::assertSame(42, $declarationToSet->getLineNumber(), 'line number not preserved');
     }
 
     /**
      * @test
      */
-    public function setRulesWithRuleWithOnlyColumnNumberSetsLineNumber(): void
+    public function setRulesWithDeclarationWithOnlyColumnNumberSetsLineNumber(): void
     {
-        $ruleToSet = new Rule('color');
-        $ruleToSet->setPosition(null, 42);
+        $declarationToSet = new Declaration('color');
+        $declarationToSet->setPosition(null, 42);
 
-        $this->subject->setRules([$ruleToSet]);
+        $this->subject->setRules([$declarationToSet]);
 
-        self::assertIsInt($ruleToSet->getLineNumber(), 'line number not set');
-        self::assertGreaterThanOrEqual(1, $ruleToSet->getLineNumber(), 'line number not valid');
+        self::assertIsInt($declarationToSet->getLineNumber(), 'line number not set');
+        self::assertGreaterThanOrEqual(1, $declarationToSet->getLineNumber(), 'line number not valid');
     }
 
     /**
      * @test
      */
-    public function setRulesWithRuleWithOnlyColumnNumberPreservesColumnNumber(): void
+    public function setRulesWithDeclarationWithOnlyColumnNumberPreservesColumnNumber(): void
     {
-        $ruleToSet = new Rule('color');
-        $ruleToSet->setPosition(null, 42);
+        $declarationToSet = new Declaration('color');
+        $declarationToSet->setPosition(null, 42);
 
-        $this->subject->setRules([$ruleToSet]);
+        $this->subject->setRules([$declarationToSet]);
 
-        self::assertSame(42, $ruleToSet->getColumnNumber(), 'column number not preserved');
+        self::assertSame(42, $declarationToSet->getColumnNumber(), 'column number not preserved');
     }
 
     /**
      * @test
      */
-    public function setRulesWithRuleWithCompletePositionPreservesPosition(): void
+    public function setRulesWithDeclarationWithCompletePositionPreservesPosition(): void
     {
-        $ruleToSet = new Rule('color');
-        $ruleToSet->setPosition(42, 64);
+        $declarationToSet = new Declaration('color');
+        $declarationToSet->setPosition(42, 64);
 
-        $this->subject->setRules([$ruleToSet]);
+        $this->subject->setRules([$declarationToSet]);
 
-        self::assertSame(42, $ruleToSet->getLineNumber(), 'line number not preserved');
-        self::assertSame(64, $ruleToSet->getColumnNumber(), 'column number not preserved');
+        self::assertSame(42, $declarationToSet->getLineNumber(), 'line number not preserved');
+        self::assertSame(64, $declarationToSet->getColumnNumber(), 'column number not preserved');
     }
 
     /**
@@ -848,14 +848,14 @@ trait RuleContainerTest
      *
      * @dataProvider providePropertyNames
      */
-    public function getRulesReturnsRulesSet(array $propertyNamesToSet): void
+    public function getRulesReturnsDeclarationsSet(array $propertyNamesToSet): void
     {
-        $rulesToSet = self::createRulesFromPropertyNames($propertyNamesToSet);
-        $this->subject->setRules($rulesToSet);
+        $declarationsToSet = self::createDeclarationsFromPropertyNames($propertyNamesToSet);
+        $this->subject->setRules($declarationsToSet);
 
         $result = $this->subject->getRules();
 
-        self::assertSame($rulesToSet, $result);
+        self::assertSame($declarationsToSet, $result);
     }
 
     /**
@@ -863,9 +863,9 @@ trait RuleContainerTest
      */
     public function getRulesOrdersByLineNumber(): void
     {
-        $first = (new Rule('color'))->setPosition(1, 64);
-        $second = (new Rule('display'))->setPosition(19, 42);
-        $third = (new Rule('color'))->setPosition(55, 11);
+        $first = (new Declaration('color'))->setPosition(1, 64);
+        $second = (new Declaration('display'))->setPosition(19, 42);
+        $third = (new Declaration('color'))->setPosition(55, 11);
         $this->subject->setRules([$third, $second, $first]);
 
         $result = $this->subject->getRules();
@@ -876,11 +876,11 @@ trait RuleContainerTest
     /**
      * @test
      */
-    public function getRulesOrdersRulesWithSameLineNumberByColumnNumber(): void
+    public function getRulesOrdersDeclarationsWithSameLineNumberByColumnNumber(): void
     {
-        $first = (new Rule('color'))->setPosition(1, 11);
-        $second = (new Rule('display'))->setPosition(1, 42);
-        $third = (new Rule('color'))->setPosition(1, 64);
+        $first = (new Declaration('color'))->setPosition(1, 11);
+        $second = (new Declaration('display'))->setPosition(1, 42);
+        $third = (new Declaration('color'))->setPosition(1, 64);
         $this->subject->setRules([$third, $second, $first]);
 
         $result = $this->subject->getRules();
@@ -894,67 +894,67 @@ trait RuleContainerTest
     public static function providePropertyNamesAndSearchPatternAndMatchingPropertyNames(): array
     {
         return [
-            'single rule matched' => [
+            'single declaration matched' => [
                 ['color'],
                 'color',
                 ['color'],
             ],
-            'first rule matched' => [
+            'first declaration matched' => [
                 ['color', 'display'],
                 'color',
                 ['color'],
             ],
-            'last rule matched' => [
+            'last declaration matched' => [
                 ['color', 'display'],
                 'display',
                 ['display'],
             ],
-            'middle rule matched' => [
+            'middle declaration matched' => [
                 ['color', 'display', 'width'],
                 'display',
                 ['display'],
             ],
-            'multiple rules for the same property matched' => [
+            'multiple declarations for the same property matched' => [
                 ['color', 'color'],
                 'color',
                 ['color'],
             ],
-            'multiple rules for the same property matched in haystack' => [
+            'multiple declarations for the same property matched in haystack' => [
                 ['color', 'display', 'color', 'width'],
                 'color',
                 ['color'],
             ],
-            'shorthand rule matched' => [
+            'shorthand declaration matched' => [
                 ['font'],
                 'font-',
                 ['font'],
             ],
-            'longhand rule matched' => [
+            'longhand declaration matched' => [
                 ['font-size'],
                 'font-',
                 ['font-size'],
             ],
-            'shorthand and longhand rule matched' => [
+            'shorthand and longhand declaration matched' => [
                 ['font', 'font-size'],
                 'font-',
                 ['font', 'font-size'],
             ],
-            'shorthand rule matched in haystack' => [
+            'shorthand declaration matched in haystack' => [
                 ['font', 'color'],
                 'font-',
                 ['font'],
             ],
-            'longhand rule matched in haystack' => [
+            'longhand declaration matched in haystack' => [
                 ['font-size', 'color'],
                 'font-',
                 ['font-size'],
             ],
-            'rules whose property names begin with the same characters not matched with pattern match' => [
+            'declarations whose property names begin with the same characters not matched with pattern match' => [
                 ['contain', 'container', 'container-type'],
                 'contain-',
                 ['contain'],
             ],
-            'rules whose property names begin with the same characters not matched with exact match' => [
+            'declarations whose property names begin with the same characters not matched with exact match' => [
                 ['contain', 'container', 'container-type'],
                 'contain',
                 ['contain'],
@@ -970,27 +970,27 @@ trait RuleContainerTest
      *
      * @dataProvider providePropertyNamesAndSearchPatternAndMatchingPropertyNames
      */
-    public function getRulesWithPatternReturnsAllMatchingRules(
+    public function getRulesWithPatternReturnsAllMatchingDeclarations(
         array $propertyNamesToSet,
         string $searchPattern,
         array $matchingPropertyNames
     ): void {
-        $rulesToSet = self::createRulesFromPropertyNames($propertyNamesToSet);
+        $declarationsToSet = self::createDeclarationsFromPropertyNames($propertyNamesToSet);
         // Use `array_values` to ensure canonical numeric array, since `array_filter` does not reindex.
-        $matchingRules = \array_values(
+        $matchingDeclarations = \array_values(
             \array_filter(
-                $rulesToSet,
-                static function (Rule $rule) use ($matchingPropertyNames): bool {
-                    return \in_array($rule->getRule(), $matchingPropertyNames, true);
+                $declarationsToSet,
+                static function (Declaration $declaration) use ($matchingPropertyNames): bool {
+                    return \in_array($declaration->getPropertyName(), $matchingPropertyNames, true);
                 }
             )
         );
-        $this->subject->setRules($rulesToSet);
+        $this->subject->setRules($declarationsToSet);
 
         $result = $this->subject->getRules($searchPattern);
 
-        // `Rule`s without pre-set positions are returned in the order set.  This is tested separately.
-        self::assertSame($matchingRules, $result);
+        // `Declaration`s without pre-set positions are returned in the order set.  This is tested separately.
+        self::assertSame($matchingDeclarations, $result);
     }
 
     /**
@@ -1025,7 +1025,7 @@ trait RuleContainerTest
         array $propertyNamesToSet,
         string $searchPattern
     ): void {
-        $this->setRulesFromPropertyNames($propertyNamesToSet);
+        $this->setDeclarationsFromPropertyNames($propertyNamesToSet);
 
         $result = $this->subject->getRules($searchPattern);
 
@@ -1035,11 +1035,11 @@ trait RuleContainerTest
     /**
      * @test
      */
-    public function getRulesWithPatternOrdersRulesByPosition(): void
+    public function getRulesWithPatternOrdersDeclarationsByPosition(): void
     {
-        $first = (new Rule('color'))->setPosition(1, 42);
-        $second = (new Rule('color'))->setPosition(1, 64);
-        $third = (new Rule('color'))->setPosition(55, 7);
+        $first = (new Declaration('color'))->setPosition(1, 42);
+        $second = (new Declaration('color'))->setPosition(1, 64);
+        $third = (new Declaration('color'))->setPosition(55, 7);
         $this->subject->setRules([$third, $second, $first]);
 
         $result = $this->subject->getRules('color');
@@ -1066,38 +1066,38 @@ trait RuleContainerTest
      *
      * @dataProvider provideDistinctPropertyNames
      */
-    public function getRulesAssocReturnsAllRulesWithDistinctPropertyNames(array $propertyNamesToSet): void
+    public function getRulesAssocReturnsAllDeclarationsWithDistinctPropertyNames(array $propertyNamesToSet): void
     {
-        $rulesToSet = self::createRulesFromPropertyNames($propertyNamesToSet);
-        $this->subject->setRules($rulesToSet);
+        $declarationsToSet = self::createDeclarationsFromPropertyNames($propertyNamesToSet);
+        $this->subject->setRules($declarationsToSet);
 
         $result = $this->subject->getRulesAssoc();
 
-        self::assertSame($rulesToSet, \array_values($result));
+        self::assertSame($declarationsToSet, \array_values($result));
     }
 
     /**
      * @test
      */
-    public function getRulesAssocReturnsLastRuleWithSamePropertyName(): void
+    public function getRulesAssocReturnsLastDeclarationWithSamePropertyName(): void
     {
-        $firstRule = new Rule('color');
-        $lastRule = new Rule('color');
-        $this->subject->setRules([$firstRule, $lastRule]);
+        $firstDeclaration = new Declaration('color');
+        $lastDeclaration = new Declaration('color');
+        $this->subject->setRules([$firstDeclaration, $lastDeclaration]);
 
         $result = $this->subject->getRulesAssoc();
 
-        self::assertSame([$lastRule], \array_values($result));
+        self::assertSame([$lastDeclaration], \array_values($result));
     }
 
     /**
      * @test
      */
-    public function getRulesAssocOrdersRulesByPosition(): void
+    public function getRulesAssocOrdersDeclarationsByPosition(): void
     {
-        $first = (new Rule('color'))->setPosition(1, 42);
-        $second = (new Rule('display'))->setPosition(1, 64);
-        $third = (new Rule('width'))->setPosition(55, 7);
+        $first = (new Declaration('color'))->setPosition(1, 42);
+        $second = (new Declaration('display'))->setPosition(1, 64);
+        $third = (new Declaration('width'))->setPosition(55, 7);
         $this->subject->setRules([$third, $second, $first]);
 
         $result = $this->subject->getRulesAssoc();
@@ -1108,14 +1108,14 @@ trait RuleContainerTest
     /**
      * @test
      */
-    public function getRulesAssocKeysRulesByPropertyName(): void
+    public function getRulesAssocKeysDeclarationsByPropertyName(): void
     {
-        $this->subject->setRules([new Rule('color'), new Rule('display')]);
+        $this->subject->setRules([new Declaration('color'), new Declaration('display')]);
 
         $result = $this->subject->getRulesAssoc();
 
-        foreach ($result as $key => $rule) {
-            self::assertSame($rule->getRule(), $key);
+        foreach ($result as $key => $declaration) {
+            self::assertSame($declaration->getPropertyName(), $key);
         }
     }
 
@@ -1132,7 +1132,7 @@ trait RuleContainerTest
         string $searchPattern,
         array $matchingPropertyNames
     ): void {
-        $this->setRulesFromPropertyNames($propertyNamesToSet);
+        $this->setDeclarationsFromPropertyNames($propertyNamesToSet);
 
         $result = $this->subject->getRulesAssoc($searchPattern);
 
@@ -1153,7 +1153,7 @@ trait RuleContainerTest
         array $propertyNamesToSet,
         string $searchPattern
     ): void {
-        $this->setRulesFromPropertyNames($propertyNamesToSet);
+        $this->setDeclarationsFromPropertyNames($propertyNamesToSet);
 
         $result = $this->subject->getRulesAssoc($searchPattern);
 
@@ -1163,11 +1163,11 @@ trait RuleContainerTest
     /**
      * @test
      */
-    public function getRulesAssocWithPatternOrdersRulesByPosition(): void
+    public function getRulesAssocWithPatternOrdersDeclarationsByPosition(): void
     {
-        $first = (new Rule('font'))->setPosition(1, 42);
-        $second = (new Rule('font-family'))->setPosition(1, 64);
-        $third = (new Rule('font-weight'))->setPosition(55, 7);
+        $first = (new Declaration('font'))->setPosition(1, 42);
+        $second = (new Declaration('font-family'))->setPosition(1, 64);
+        $third = (new Declaration('font-weight'))->setPosition(55, 7);
         $this->subject->setRules([$third, $second, $first]);
 
         $result = $this->subject->getRules('font-');
@@ -1178,21 +1178,21 @@ trait RuleContainerTest
     /**
      * @param list<string> $propertyNames
      */
-    private function setRulesFromPropertyNames(array $propertyNames): void
+    private function setDeclarationsFromPropertyNames(array $propertyNames): void
     {
-        $this->subject->setRules(self::createRulesFromPropertyNames($propertyNames));
+        $this->subject->setRules(self::createDeclarationsFromPropertyNames($propertyNames));
     }
 
     /**
      * @param list<string> $propertyNames
      *
-     * @return list<Rule>
+     * @return list<Declaration>
      */
-    private static function createRulesFromPropertyNames(array $propertyNames): array
+    private static function createDeclarationsFromPropertyNames(array $propertyNames): array
     {
         return \array_map(
-            function (string $propertyName): Rule {
-                return new Rule($propertyName);
+            function (string $propertyName): Declaration {
+                return new Declaration($propertyName);
             },
             $propertyNames
         );

@@ -11,8 +11,8 @@ use Sabberworm\CSS\CSSList\CSSListItem;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Position\Positionable;
+use Sabberworm\CSS\Property\Declaration;
 use Sabberworm\CSS\Property\Selector;
-use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\RuleSet\RuleSet;
 use Sabberworm\CSS\Settings;
@@ -391,7 +391,7 @@ final class DeclarationBlockTest extends TestCase
      */
     public function getRuleSetAfterRulesSetReturnsARuleSet(): void
     {
-        $this->subject->setRules([new Rule('color')]);
+        $this->subject->setRules([new Declaration('color')]);
 
         $result = $this->subject->getRuleSet();
 
@@ -401,7 +401,7 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @test
      */
-    public function getRuleSetOnVirginReturnsObjectWithoutRules(): void
+    public function getRuleSetOnVirginReturnsObjectWithoutDeclarations(): void
     {
         $result = $this->subject->getRuleSet();
 
@@ -415,14 +415,14 @@ final class DeclarationBlockTest extends TestCase
      *
      * @dataProvider providePropertyNames
      */
-    public function getRuleSetReturnsObjectWithRulesSet(array $propertyNamesToSet): void
+    public function getRuleSetReturnsObjectWithDeclarationsSet(array $propertyNamesToSet): void
     {
-        $rules = self::createRulesFromPropertyNames($propertyNamesToSet);
-        $this->subject->setRules($rules);
+        $declarations = self::createDeclarationsFromPropertyNames($propertyNamesToSet);
+        $this->subject->setRules($declarations);
 
         $result = $this->subject->getRuleSet();
 
-        self::assertSame($rules, $result->getRules());
+        self::assertSame($declarations, $result->getRules());
     }
 
     /**
