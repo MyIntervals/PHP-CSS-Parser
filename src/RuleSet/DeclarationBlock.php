@@ -35,6 +35,7 @@ use Sabberworm\CSS\Settings;
 class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleContainer
 {
     use CommentContainer;
+    use LegacyRuleContainerMethods;
     use Position;
 
     /**
@@ -180,65 +181,65 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     }
 
     /**
-     * @see RuleSet::addRule()
+     * @see RuleSet::addDeclaration()
      */
-    public function addRule(Declaration $declarationToAdd, ?Declaration $sibling = null): void
+    public function addDeclaration(Declaration $declarationToAdd, ?Declaration $sibling = null): void
     {
-        $this->ruleSet->addRule($declarationToAdd, $sibling);
+        $this->ruleSet->addDeclaration($declarationToAdd, $sibling);
     }
 
     /**
      * @return array<int<0, max>, Declaration>
      *
-     * @see RuleSet::getRules()
+     * @see RuleSet::getDeclarations()
      */
-    public function getRules(?string $searchPattern = null): array
+    public function getDeclarations(?string $searchPattern = null): array
     {
-        return $this->ruleSet->getRules($searchPattern);
+        return $this->ruleSet->getDeclarations($searchPattern);
     }
 
     /**
      * @param array<Declaration> $declarations
      *
-     * @see RuleSet::setRules()
+     * @see RuleSet::setDeclarations()
      */
-    public function setRules(array $declarations): void
+    public function setDeclarations(array $declarations): void
     {
-        $this->ruleSet->setRules($declarations);
+        $this->ruleSet->setDeclarations($declarations);
     }
 
     /**
      * @return array<string, Declaration>
      *
-     * @see RuleSet::getRulesAssoc()
+     * @see RuleSet::getDeclarationsAssociative()
      */
-    public function getRulesAssoc(?string $searchPattern = null): array
+    public function getDeclarationsAssociative(?string $searchPattern = null): array
     {
-        return $this->ruleSet->getRulesAssoc($searchPattern);
+        return $this->ruleSet->getDeclarationsAssociative($searchPattern);
     }
 
     /**
-     * @see RuleSet::removeRule()
+     * @see RuleSet::removeDeclaration()
      */
-    public function removeRule(Declaration $declarationToRemove): void
+    public function removeDeclaration(Declaration $declarationToRemove): void
     {
-        $this->ruleSet->removeRule($declarationToRemove);
+        $this->ruleSet->removeDeclaration($declarationToRemove);
     }
 
     /**
-     * @see RuleSet::removeMatchingRules()
+     * @see RuleSet::removeMatchingDeclarations()
      */
-    public function removeMatchingRules(string $searchPattern): void
+    public function removeMatchingDeclarations(string $searchPattern): void
     {
-        $this->ruleSet->removeMatchingRules($searchPattern);
+        $this->ruleSet->removeMatchingDeclarations($searchPattern);
     }
 
     /**
-     * @see RuleSet::removeAllRules()
+     * @see RuleSet::removeAllDeclarations()
      */
-    public function removeAllRules(): void
+    public function removeAllDeclarations(): void
     {
-        $this->ruleSet->removeAllRules();
+        $this->ruleSet->removeAllDeclarations();
     }
 
     /**
