@@ -6,7 +6,7 @@ namespace Sabberworm\CSS\Tests\Functional\RuleSet;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\OutputFormat;
-use Sabberworm\CSS\Rule\Rule;
+use Sabberworm\CSS\Property\Declaration;
 use Sabberworm\CSS\RuleSet\RuleSet;
 
 /**
@@ -59,9 +59,9 @@ final class RuleSetTest extends TestCase
      *
      * @dataProvider providePropertyNamesAndValuesAndExpectedCss
      */
-    public function renderReturnsCssForRulesSet(array $propertyNamesAndValuesToSet, string $expectedCss): void
+    public function renderReturnsCssForDeclarationsSet(array $propertyNamesAndValuesToSet, string $expectedCss): void
     {
-        $this->setRulesFromPropertyNamesAndValues($propertyNamesAndValuesToSet);
+        $this->setDeclarationsFromPropertyNamesAndValues($propertyNamesAndValuesToSet);
 
         $result = $this->subject->render(OutputFormat::create());
 
@@ -73,7 +73,7 @@ final class RuleSetTest extends TestCase
      */
     public function renderWithCompactOutputFormatReturnsCssWithoutWhitespaceOrTrailingSemicolon(): void
     {
-        $this->setRulesFromPropertyNamesAndValues([
+        $this->setDeclarationsFromPropertyNamesAndValues([
             ['name' => 'color', 'value' => 'green'],
             ['name' => 'display', 'value' => 'block'],
         ]);
@@ -88,7 +88,7 @@ final class RuleSetTest extends TestCase
      */
     public function renderWithPrettyOutputFormatReturnsCssWithNewlinesAroundIndentedDeclarations(): void
     {
-        $this->setRulesFromPropertyNamesAndValues([
+        $this->setDeclarationsFromPropertyNamesAndValues([
             ['name' => 'color', 'value' => 'green'],
             ['name' => 'display', 'value' => 'block'],
         ]);
@@ -101,19 +101,19 @@ final class RuleSetTest extends TestCase
     /**
      * @param list<array{name: string, value: string}> $propertyNamesAndValues
      */
-    private function setRulesFromPropertyNamesAndValues(array $propertyNamesAndValues): void
+    private function setDeclarationsFromPropertyNamesAndValues(array $propertyNamesAndValues): void
     {
-        $rulesToSet = \array_map(
+        $declarationsToSet = \array_map(
             /**
              * @param array{name: string, value: string} $nameAndValue
              */
-            static function (array $nameAndValue): Rule {
-                $rule = new Rule($nameAndValue['name']);
-                $rule->setValue($nameAndValue['value']);
-                return $rule;
+            static function (array $nameAndValue): Declaration {
+                $declaration = new Declaration($nameAndValue['name']);
+                $declaration->setValue($nameAndValue['value']);
+                return $declaration;
             },
             $propertyNamesAndValues
         );
-        $this->subject->setRules($rulesToSet);
+        $this->subject->setRules($declarationsToSet);
     }
 }
