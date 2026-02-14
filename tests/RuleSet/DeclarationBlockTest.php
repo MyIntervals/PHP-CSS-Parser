@@ -36,7 +36,7 @@ final class DeclarationBlockTest extends TestCase
 
         $declarations = $wrapper->getRules();
         self::assertCount(1, $declarations);
-        self::assertSame('right', $declarations[0]->getRule());
+        self::assertSame('right', $declarations[0]->getPropertyName());
         self::assertSame('-10px', $declarations[0]->getValue());
     }
 
