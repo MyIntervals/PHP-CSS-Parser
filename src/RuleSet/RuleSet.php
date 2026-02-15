@@ -128,7 +128,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
                 }
             }
             if ($siblingIsInSet) {
-                // Increment column number of all existing rules on same line, starting at sibling
+                // Increment column number of all existing declarations on same line, starting at sibling
                 $siblingLineNumber = $sibling->getLineNumber();
                 $siblingColumnNumber = $sibling->getColumnNumber();
                 foreach ($this->declarations as $declarationsForAProperty) {
