@@ -18,6 +18,8 @@ Please also have a look at our
 
 ### Changed
 
+- Methods like `setRule()` in `RuleSet` and `DeclarationBlock` have been renamed
+  to `setDeclaration()`, etc. (#1521)
 - `Rule\Rule` class is renamed to `Property\Declaration`
   (#1508, #1512, #1513, #1522)
 - `Rule::setRule()` and `getRule()` are replaced with `setPropertyName()` and
@@ -33,6 +35,8 @@ Please also have a look at our
 
 ### Deprecated
 
+- Methods like `setRule()` in `RuleSet` and `DeclarationBlock` are deprecated;
+  there are direct replacements such as `setDeclaration()` (#1521)
 - `Rule\Rule` class is deprecated; `Property\Declaration` is a direct
   replacement (#1508)
 - `Rule::setRule()` and `getRule()` are deprecated and replaced with

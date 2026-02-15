@@ -22,13 +22,14 @@ use Sabberworm\CSS\Property\Declaration;
  * However, unknown `AtRule`s (like `@font-face`) are rule sets as well.
  *
  * If you want to manipulate a `RuleSet`,
- * use the methods `addRule()`, `getRules()`, `removeRule()`, `removeMatchingRules()`, etc.
+ * use the methods `addDeclaration()`, `getDeclarations()`, `removeDeclaration()`, `removeMatchingDeclarations()`, etc.
  *
  * Note that `CSSListItem` extends both `Commentable` and `Renderable`, so those interfaces must also be implemented.
  */
 class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
 {
     use CommentContainer;
+    use LegacyRuleContainerMethods;
     use Position;
 
     /**
@@ -88,7 +89,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
                 $declaration = Declaration::parse($parserState, $commentsBeforeDeclaration);
             }
             if ($declaration instanceof Declaration) {
-                $ruleSet->addRule($declaration);
+                $ruleSet->addDeclaration($declaration);
             }
         }
         $parserState->consume('}');
@@ -99,7 +100,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
      *         if the last `Declaration` is needed as a basis for setting position, but does not have a valid position,
      *         which should never happen
      */
-    public function addRule(Declaration $declarationToAdd, ?Declaration $sibling = null): void
+    public function addDeclaration(Declaration $declarationToAdd, ?Declaration $sibling = null): void
     {
         $propertyName = $declarationToAdd->getPropertyName();
         if (!isset($this->declarations[$propertyName])) {
@@ -148,14 +149,14 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
         if ($declarationToAdd->getLineNumber() === null) {
             //this node is added manually, give it the next best line
             $columnNumber = $declarationToAdd->getColumnNumber() ?? 0;
-            $declarations = $this->getRules();
+            $declarations = $this->getDeclarations();
             $declarationsCount = \count($declarations);
             if ($declarationsCount > 0) {
                 $last = $declarations[$declarationsCount - 1];
                 $lastsLineNumber = $last->getLineNumber();
                 if (!\is_int($lastsLineNumber)) {
                     throw new \UnexpectedValueException(
-                        'A Declaration without a line number was found during addRule',
+                        'A Declaration without a line number was found during addDeclaration',
                         1750718399
                     );
                 }
@@ -173,9 +174,9 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
     /**
      * Returns all declarations matching the given property name
      *
-     * @example $ruleSet->getRules('font') // returns array(0 => $declaration, …) or array().
+     * @example $ruleSet->getDeclarations('font') // returns array(0 => $declaration, …) or array().
      *
-     * @example $ruleSet->getRules('font-')
+     * @example $ruleSet->getDeclarations('font-')
      *          //returns an array of all declarations either beginning with font- or matching font.
      *
      * @param string|null $searchPattern
@@ -185,7 +186,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
      *
      * @return array<int<0, max>, Declaration>
      */
-    public function getRules(?string $searchPattern = null): array
+    public function getDeclarations(?string $searchPattern = null): array
     {
         $result = [];
         foreach ($this->declarations as $propertyName => $declarations) {
@@ -214,11 +215,11 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
      *
      * @param array<Declaration> $declarations
      */
-    public function setRules(array $declarations): void
+    public function setDeclarations(array $declarations): void
     {
         $this->declarations = [];
         foreach ($declarations as $declaration) {
-            $this->addRule($declaration);
+            $this->addDeclaration($declaration);
         }
     }
 
@@ -238,11 +239,11 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
      *
      * @return array<string, Declaration>
      */
-    public function getRulesAssoc(?string $searchPattern = null): array
+    public function getDeclarationsAssociative(?string $searchPattern = null): array
     {
         /** @var array<string, Declaration> $result */
         $result = [];
-        foreach ($this->getRules($searchPattern) as $declaration) {
+        foreach ($this->getDeclarations($searchPattern) as $declaration) {
             $result[$declaration->getPropertyName()] = $declaration;
         }
 
@@ -252,7 +253,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
     /**
      * Removes a `Declaration` from this `RuleSet` by identity.
      */
-    public function removeRule(Declaration $declarationToRemove): void
+    public function removeDeclaration(Declaration $declarationToRemove): void
     {
         $nameOfPropertyToRemove = $declarationToRemove->getPropertyName();
         if (!isset($this->declarations[$nameOfPropertyToRemove])) {
@@ -274,7 +275,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
      *        all declarations starting with the pattern are removed as well as one matching the pattern with the dash
      *        excluded.
      */
-    public function removeMatchingRules(string $searchPattern): void
+    public function removeMatchingDeclarations(string $searchPattern): void
     {
         foreach ($this->declarations as $propertyName => $declarations) {
             // Either the search pattern matches the found declaration's property name exactly
@@ -291,7 +292,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
         }
     }
 
-    public function removeAllRules(): void
+    public function removeAllDeclarations(): void
     {
         $this->declarations = [];
     }
@@ -301,15 +302,15 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
      */
     public function render(OutputFormat $outputFormat): string
     {
-        return $this->renderRules($outputFormat);
+        return $this->renderDeclarations($outputFormat);
     }
 
-    protected function renderRules(OutputFormat $outputFormat): string
+    protected function renderDeclarations(OutputFormat $outputFormat): string
     {
         $result = '';
         $isFirst = true;
         $nextLevelFormat = $outputFormat->nextLevel();
-        foreach ($this->getRules() as $declaration) {
+        foreach ($this->getDeclarations() as $declaration) {
             $nextLevelFormatter = $nextLevelFormat->getFormatter();
             $renderedDeclaration = $nextLevelFormatter->safely(
                 static function () use ($declaration, $nextLevelFormat): string {

@@ -61,7 +61,7 @@ class AtRuleSet extends RuleSet implements AtRule
             $arguments = ' ' . $arguments;
         }
         $result .= "@{$this->type}$arguments{$formatter->spaceBeforeOpeningBrace()}{";
-        $result .= $this->renderRules($outputFormat);
+        $result .= $this->renderDeclarations($outputFormat);
         $result .= '}';
         return $result;
     }
