@@ -7,7 +7,7 @@ namespace Sabberworm\CSS\RuleSet;
 use Sabberworm\CSS\Property\Declaration;
 
 /**
- * @internal
+ * Provides a mapping of the deprecated methods in a `RuleContainer` to their renamed replacements.
  */
 trait LegacyRuleContainerMethods
 {
