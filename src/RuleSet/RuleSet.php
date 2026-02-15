@@ -21,8 +21,8 @@ use Sabberworm\CSS\Property\Declaration;
  * The most common form of a rule set is one constrained by a selector, i.e., a `DeclarationBlock`.
  * However, unknown `AtRule`s (like `@font-face`) are rule sets as well.
  *
- * If you want to manipulate a `RuleSet`, use the methods `addRule()`, `getRules()` and `removeRule()`
- * (which accepts either a `Declaration` or a rule name; optionally suffixed by a dash to remove all related rules).
+ * If you want to manipulate a `RuleSet`,
+ * use the methods `addRule()`, `getRules()`, `removeRule()`, `removeMatchingRules()`, etc.
  *
  * Note that `CSSListItem` extends both `Commentable` and `Renderable`, so those interfaces must also be implemented.
  */
