@@ -7,7 +7,7 @@ namespace Sabberworm\CSS\RuleSet;
 use Sabberworm\CSS\Property\Declaration;
 
 /**
- * Represents a CSS item that contains `Rules`, defining the methods to manipulate them.
+ * Represents a CSS item that contains `Declaration`s, defining the methods to manipulate them.
  */
 interface RuleContainer
 {
