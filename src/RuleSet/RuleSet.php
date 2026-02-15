@@ -59,15 +59,15 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
             $parserState->consume(';');
         }
         while (true) {
-            $commentsBeforeRule = [];
-            $parserState->consumeWhiteSpace($commentsBeforeRule);
+            $commentsBeforeDeclaration = [];
+            $parserState->consumeWhiteSpace($commentsBeforeDeclaration);
             if ($parserState->comes('}')) {
                 break;
             }
             $declaration = null;
             if ($parserState->getSettings()->usesLenientParsing()) {
                 try {
-                    $declaration = Declaration::parse($parserState, $commentsBeforeRule);
+                    $declaration = Declaration::parse($parserState, $commentsBeforeDeclaration);
                 } catch (UnexpectedTokenException $e) {
                     try {
                         $consumedText = $parserState->consumeUntil(["\n", ';', '}'], true);
@@ -85,7 +85,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
                     }
                 }
             } else {
-                $declaration = Declaration::parse($parserState, $commentsBeforeRule);
+                $declaration = Declaration::parse($parserState, $commentsBeforeDeclaration);
             }
             if ($declaration instanceof Declaration) {
                 $ruleSet->addRule($declaration);
@@ -115,7 +115,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
                 $siblingIsInSet = true;
                 $position = $siblingPosition;
             } else {
-                $siblingIsInSet = $this->hasRule($sibling);
+                $siblingIsInSet = $this->hasDeclaration($sibling);
                 if ($siblingIsInSet) {
                     // Maintain ordering within `$this->declarations[$propertyName]`
                     // by inserting before first `Declaration` with a same-or-later position than the sibling.
@@ -311,12 +311,12 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
         $nextLevelFormat = $outputFormat->nextLevel();
         foreach ($this->getRules() as $declaration) {
             $nextLevelFormatter = $nextLevelFormat->getFormatter();
-            $renderedRule = $nextLevelFormatter->safely(
+            $renderedDeclaration = $nextLevelFormatter->safely(
                 static function () use ($declaration, $nextLevelFormat): string {
                     return $declaration->render($nextLevelFormat);
                 }
             );
-            if ($renderedRule === null) {
+            if ($renderedDeclaration === null) {
                 continue;
             }
             if ($isFirst) {
@@ -325,7 +325,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
             } else {
                 $result .= $nextLevelFormatter->spaceBetweenRules();
             }
-            $result .= $renderedRule;
+            $result .= $renderedDeclaration;
         }
 
         $formatter = $outputFormat->getFormatter();
@@ -378,7 +378,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, RuleContainer
         return $firstsLineNumber - $secondsLineNumber;
     }
 
-    private function hasRule(Declaration $declaration): bool
+    private function hasDeclaration(Declaration $declaration): bool
     {
         foreach ($this->declarations as $declarationsForAProperty) {
             if (\in_array($declaration, $declarationsForAProperty, true)) {
