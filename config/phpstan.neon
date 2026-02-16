@@ -17,6 +17,7 @@ parameters:
 
   bootstrapFiles:
     - %currentWorkingDirectory%/src/Rule/Rule.php
+    - %currentWorkingDirectory%/src/RuleSet/RuleContainer.php
 
   type_perfect:
     no_mixed_property: true

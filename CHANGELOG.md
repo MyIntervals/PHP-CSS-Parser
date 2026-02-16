@@ -18,6 +18,7 @@ Please also have a look at our
 
 ### Changed
 
+- `RuleSet\RuleContainer` is renamed to `RuleSet\DeclarationList` (#1530)
 - Methods like `setRule()` in `RuleSet` and `DeclarationBlock` have been renamed
   to `setDeclaration()`, etc. (#1521)
 - `Rule\Rule` class is renamed to `Property\Declaration`
@@ -35,6 +36,8 @@ Please also have a look at our
 
 ### Deprecated
 
+- `RuleSet\RuleContainer` is deprecated; use `RuleSet\DeclarationList` instead
+  (#1530)
 - Methods like `setRule()` in `RuleSet` and `DeclarationBlock` are deprecated;
   there are direct replacements such as `setDeclaration()` (#1521)
 - `Rule\Rule` class is deprecated; `Property\Declaration` is a direct
