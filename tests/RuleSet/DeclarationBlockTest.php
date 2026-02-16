@@ -31,10 +31,10 @@ final class DeclarationBlockTest extends TestCase
         $wrapper = $contents[0];
 
         self::assertInstanceOf(DeclarationBlock::class, $wrapper);
-        self::assertCount(2, $wrapper->getRules());
-        $wrapper->setRules([$declaration]);
+        self::assertCount(2, $wrapper->getDeclarations());
+        $wrapper->setDeclarations([$declaration]);
 
-        $declarations = $wrapper->getRules();
+        $declarations = $wrapper->getDeclarations();
         self::assertCount(1, $declarations);
         self::assertSame('right', $declarations[0]->getPropertyName());
         self::assertSame('-10px', $declarations[0]->getValue());
@@ -53,11 +53,11 @@ final class DeclarationBlockTest extends TestCase
 
         self::assertInstanceOf(DeclarationBlock::class, $wrapper);
 
-        $leftDeclarations = $wrapper->getRules('left');
+        $leftDeclarations = $wrapper->getDeclarations('left');
         self::assertCount(1, $leftDeclarations);
         $firstLeftDeclaration = $leftDeclarations[0];
 
-        $textDeclarations = $wrapper->getRules('text-');
+        $textDeclarations = $wrapper->getDeclarations('text-');
         self::assertCount(1, $textDeclarations);
         $firstTextDeclaration = $textDeclarations[0];
 
@@ -70,11 +70,11 @@ final class DeclarationBlockTest extends TestCase
         $borderBottomDeclaration = new Declaration('border-bottom-width');
         $borderBottomDeclaration->setValue(new Size(1, 'px'));
 
-        $wrapper->addRule($borderBottomDeclaration);
-        $wrapper->addRule($leftPrefixDeclaration, $firstLeftDeclaration);
-        $wrapper->addRule($textAlignDeclaration, $firstTextDeclaration);
+        $wrapper->addDeclaration($borderBottomDeclaration);
+        $wrapper->addDeclaration($leftPrefixDeclaration, $firstLeftDeclaration);
+        $wrapper->addDeclaration($textAlignDeclaration, $firstTextDeclaration);
 
-        $declarations = $wrapper->getRules();
+        $declarations = $wrapper->getDeclarations();
 
         self::assertSame($leftPrefixDeclaration, $declarations[0]);
         self::assertSame($firstLeftDeclaration, $declarations[1]);

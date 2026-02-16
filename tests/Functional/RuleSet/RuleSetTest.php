@@ -114,6 +114,6 @@ final class RuleSetTest extends TestCase
             },
             $propertyNamesAndValues
         );
-        $this->subject->setRules($declarationsToSet);
+        $this->subject->setDeclarations($declarationsToSet);
     }
 }
