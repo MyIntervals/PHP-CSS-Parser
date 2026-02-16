@@ -20,7 +20,7 @@ final class DeclarationBlockTest extends TestCase
     /**
      * @test
      */
-    public function overrideRules(): void
+    public function overrideDeclarations(): void
     {
         $css = '.wrapper { left: 10px; text-align: left; }';
         $parser = new Parser($css);
