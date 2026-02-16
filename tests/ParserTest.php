@@ -95,10 +95,10 @@ final class ParserTest extends TestCase
             $selectors = $declarationBlock->getSelectors();
             $selector = $selectors[0]->getSelector();
             if ($selector === '#mine') {
-                $colorRules = $declarationBlock->getRules('color');
+                $colorRules = $declarationBlock->getDeclarations('color');
                 $colorRuleValue = $colorRules[0]->getValue();
                 self::assertSame('red', $colorRuleValue);
-                $colorRules = $declarationBlock->getRules('background-');
+                $colorRules = $declarationBlock->getDeclarations('background-');
                 $colorRuleValue = $colorRules[0]->getValue();
                 self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
@@ -106,7 +106,7 @@ final class ParserTest extends TestCase
                     'g' => new Size(35.0, null, true, $colorRuleValue->getLineNumber()),
                     'b' => new Size(35.0, null, true, $colorRuleValue->getLineNumber()),
                 ], $colorRuleValue->getColor());
-                $colorRules = $declarationBlock->getRules('border-color');
+                $colorRules = $declarationBlock->getDeclarations('border-color');
                 $colorRuleValue = $colorRules[0]->getValue();
                 self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
@@ -122,7 +122,7 @@ final class ParserTest extends TestCase
                     'b' => new Size(231.0, null, true, $colorRuleValue->getLineNumber()),
                     'a' => new Size('0000.3', null, true, $colorRuleValue->getLineNumber()),
                 ], $colorRuleValue->getColor());
-                $colorRules = $declarationBlock->getRules('outline-color');
+                $colorRules = $declarationBlock->getDeclarations('outline-color');
                 $colorRuleValue = $colorRules[0]->getValue();
                 self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
@@ -131,7 +131,7 @@ final class ParserTest extends TestCase
                     'b' => new Size(34.0, null, true, $colorRuleValue->getLineNumber()),
                 ], $colorRuleValue->getColor());
             } elseif ($selector === '#yours') {
-                $colorRules = $declarationBlock->getRules('background-color');
+                $colorRules = $declarationBlock->getDeclarations('background-color');
                 $colorRuleValue = $colorRules[0]->getValue();
                 self::assertInstanceOf(Color::class, $colorRuleValue);
                 self::assertEquals([
@@ -147,7 +147,7 @@ final class ParserTest extends TestCase
                     'l' => new Size(220.0, '%', true, $colorRuleValue->getLineNumber()),
                     'a' => new Size(0000.3, null, true, $colorRuleValue->getLineNumber()),
                 ], $colorRuleValue->getColor());
-                $colorRules = $declarationBlock->getRules('outline-color');
+                $colorRules = $declarationBlock->getDeclarations('outline-color');
                 self::assertEmpty($colorRules);
             }
         }
@@ -179,7 +179,7 @@ final class ParserTest extends TestCase
             if (\substr($selector, 0, \strlen('.test-')) !== '.test-') {
                 continue;
             }
-            $contentRules = $declarationBlock->getRules('content');
+            $contentRules = $declarationBlock->getDeclarations('content');
             $firstContentRuleAsString = $contentRules[0]->getValue()->render(OutputFormat::create());
             if ($selector === '.test-1') {
                 self::assertSame('" "', $firstContentRuleAsString);
@@ -315,7 +315,7 @@ body {color: green;font: 75% "Lucida Grande","Trebuchet MS",Verdana,sans-serif;}
             $document->render()
         );
         foreach ($document->getAllRuleSets() as $ruleSet) {
-            $ruleSet->removeMatchingRules('font-');
+            $ruleSet->removeMatchingDeclarations('font-');
         }
         self::assertSame(
             '#header {margin: 10px 2em 1cm 2%;color: red !important;background-color: green;'
@@ -324,7 +324,7 @@ body {color: green;}',
             $document->render()
         );
         foreach ($document->getAllRuleSets() as $ruleSet) {
-            $ruleSet->removeMatchingRules('background-');
+            $ruleSet->removeMatchingDeclarations('background-');
         }
         self::assertSame(
             '#header {margin: 10px 2em 1cm 2%;color: red !important;frequency: 30Hz;transform: rotate(1turn);}
@@ -342,16 +342,16 @@ body {color: green;}',
         $declarationBlocks = $document->getAllDeclarationBlocks();
         $headerBlock = $declarationBlocks[0];
         $bodyBlock = $declarationBlocks[1];
-        $backgroundHeaderRules = $headerBlock->getRules('background-');
+        $backgroundHeaderRules = $headerBlock->getDeclarations('background-');
         self::assertCount(2, $backgroundHeaderRules);
         self::assertSame('background-color', $backgroundHeaderRules[0]->getPropertyName());
         self::assertSame('background-color', $backgroundHeaderRules[1]->getPropertyName());
-        $backgroundHeaderRules = $headerBlock->getRulesAssoc('background-');
+        $backgroundHeaderRules = $headerBlock->getDeclarationsAssociative('background-');
         self::assertCount(1, $backgroundHeaderRules);
         self::assertInstanceOf(Color::class, $backgroundHeaderRules['background-color']->getValue());
         self::assertSame('rgba', $backgroundHeaderRules['background-color']->getValue()->getColorDescription());
-        $headerBlock->removeRule($backgroundHeaderRules['background-color']);
-        $backgroundHeaderRules = $headerBlock->getRules('background-');
+        $headerBlock->removeDeclaration($backgroundHeaderRules['background-color']);
+        $backgroundHeaderRules = $headerBlock->getDeclarations('background-');
         self::assertCount(1, $backgroundHeaderRules);
         self::assertSame('green', $backgroundHeaderRules[0]->getValue());
     }
@@ -372,7 +372,7 @@ body {color: green;}',
             }
         }
         foreach ($document->getAllDeclarationBlocks() as $declarationBlock) {
-            $fontRules = $declarationBlock->getRules('font');
+            $fontRules = $declarationBlock->getDeclarations('font');
             $fontRule = $fontRules[0];
             $fontRuleValue = $fontRule->getValue();
             self::assertSame(' ', $fontRuleValue->getListSeparator());
@@ -383,7 +383,7 @@ body {color: green;}',
             self::assertInstanceOf(ValueList::class, $slashList);
             self::assertSame(',', $commaList->getListSeparator());
             self::assertSame('/', $slashList->getListSeparator());
-            $borderRadiusRules = $declarationBlock->getRules('border-radius');
+            $borderRadiusRules = $declarationBlock->getDeclarations('border-radius');
             $borderRadiusRule = $borderRadiusRules[0];
             $slashList = $borderRadiusRule->getValue();
             self::assertSame('/', $slashList->getListSeparator());
@@ -883,7 +883,7 @@ body {background-color: red;}';
         $block = $declarationBlocks[0];
         self::assertInstanceOf(DeclarationBlock::class, $block);
         self::assertEquals([new Selector('div')], $block->getSelectors());
-        $rules = $block->getRules();
+        $rules = $block->getDeclarations();
         self::assertCount(1, $rules);
         $rule = $rules[0];
         self::assertSame('display', $rule->getPropertyName());
@@ -948,7 +948,7 @@ body {background-color: red;}';
         $declarationBlocks = $document->getAllDeclarationBlocks();
         // Choose the 2nd one
         $secondDeclarationBlock = $declarationBlocks[1];
-        $rules = $secondDeclarationBlock->getRules();
+        $rules = $secondDeclarationBlock->getDeclarations();
         // Choose the 2nd one
         $valueOfSecondRule = $rules[1]->getValue();
         self::assertInstanceOf(Color::class, $valueOfSecondRule);
@@ -1007,7 +1007,7 @@ body {background-color: red;}';
 
         // Declaration rules.
         self::assertInstanceOf(DeclarationBlock::class, $fooBarBlock);
-        $fooBarRules = $fooBarBlock->getRules();
+        $fooBarRules = $fooBarBlock->getDeclarations();
         $fooBarRule = $fooBarRules[0];
         $fooBarRuleComments = $fooBarRule->getComments();
         self::assertCount(1, $fooBarRuleComments);
@@ -1028,7 +1028,7 @@ body {background-color: red;}';
 
         // Media -> declaration -> rule.
         self::assertInstanceOf(DeclarationBlock::class, $mediaRules[0]);
-        $fooBarRules = $mediaRules[0]->getRules();
+        $fooBarRules = $mediaRules[0]->getDeclarations();
         $fooBarChildComments = $fooBarRules[0]->getComments();
         self::assertCount(1, $fooBarChildComments);
         self::assertSame('* Number 10b *', $fooBarChildComments[0]->getComment());
@@ -1044,7 +1044,7 @@ body {background-color: red;}';
 
         $contents = $document->getContents();
         self::assertInstanceOf(DeclarationBlock::class, $contents[0]);
-        $divRules = $contents[0]->getRules();
+        $divRules = $contents[0]->getDeclarations();
         $comments = $divRules[0]->getComments();
 
         self::assertCount(1, $comments);
@@ -1061,7 +1061,7 @@ body {background-color: red;}';
 
         $contents = $document->getContents();
         self::assertInstanceOf(DeclarationBlock::class, $contents[0]);
-        $divRules = $contents[0]->getRules();
+        $divRules = $contents[0]->getDeclarations();
         $comments = $divRules[0]->getComments();
 
         self::assertCount(2, $comments);
@@ -1079,7 +1079,7 @@ body {background-color: red;}';
 
         $contents = $document->getContents();
         self::assertInstanceOf(DeclarationBlock::class, $contents[0]);
-        $divRules = $contents[0]->getRules();
+        $divRules = $contents[0]->getDeclarations();
         $comments = $divRules[0]->getComments();
 
         self::assertCount(2, $comments);
@@ -1097,7 +1097,7 @@ body {background-color: red;}';
 
         $contents = $document->getContents();
         self::assertInstanceOf(DeclarationBlock::class, $contents[0]);
-        $divRules = $contents[0]->getRules();
+        $divRules = $contents[0]->getDeclarations();
         $rule1Comments = $divRules[0]->getComments();
         $rule2Comments = $divRules[1]->getComments();
 
@@ -1182,7 +1182,7 @@ body {background-color: red;}';
         $document = self::parsedStructureForFile('escaped-tokens');
         $contents = $document->getContents();
         self::assertInstanceOf(RuleSet::class, $contents[0]);
-        $rules = $contents[0]->getRules();
+        $rules = $contents[0]->getDeclarations();
         $urlRule = $rules[0];
         $calcRule = $rules[1];
         self::assertInstanceOf(URL::class, $urlRule->getValue());

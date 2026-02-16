@@ -302,7 +302,7 @@ final class CSSBlockListTest extends TestCase
         $declarationBlock = new DeclarationBlock();
         $declaration = new Declaration('font-family');
         $declaration->setValue($value);
-        $declarationBlock->addRule($declaration);
+        $declarationBlock->addDeclaration($declaration);
         $subject->setContents([$declarationBlock]);
 
         $result = $subject->getAllValues();
@@ -323,10 +323,10 @@ final class CSSBlockListTest extends TestCase
         $declarationBlock = new DeclarationBlock();
         $declaration1 = new Declaration('font-family');
         $declaration1->setValue($value1);
-        $declarationBlock->addRule($declaration1);
+        $declarationBlock->addDeclaration($declaration1);
         $declaration2 = new Declaration('color');
         $declaration2->setValue($value2);
-        $declarationBlock->addRule($declaration2);
+        $declarationBlock->addDeclaration($declaration2);
         $subject->setContents([$declarationBlock]);
 
         $result = $subject->getAllValues();
@@ -347,11 +347,11 @@ final class CSSBlockListTest extends TestCase
         $declarationBlock1 = new DeclarationBlock();
         $declaration1 = new Declaration('font-family');
         $declaration1->setValue($value1);
-        $declarationBlock1->addRule($declaration1);
+        $declarationBlock1->addDeclaration($declaration1);
         $declarationBlock2 = new DeclarationBlock();
         $declaration2 = new Declaration('color');
         $declaration2->setValue($value2);
-        $declarationBlock2->addRule($declaration2);
+        $declarationBlock2->addDeclaration($declaration2);
         $subject->setContents([$declarationBlock1, $declarationBlock2]);
 
         $result = $subject->getAllValues();
@@ -371,7 +371,7 @@ final class CSSBlockListTest extends TestCase
         $declarationBlock = new DeclarationBlock();
         $declaration = new Declaration('font-family');
         $declaration->setValue($value);
-        $declarationBlock->addRule($declaration);
+        $declarationBlock->addDeclaration($declaration);
         $atRuleBlockList = new AtRuleBlockList('media');
         $atRuleBlockList->setContents([$declarationBlock]);
         $subject->setContents([$atRuleBlockList]);
@@ -394,11 +394,11 @@ final class CSSBlockListTest extends TestCase
         $declarationBlock1 = new DeclarationBlock();
         $declaration1 = new Declaration('font-family');
         $declaration1->setValue($value1);
-        $declarationBlock1->addRule($declaration1);
+        $declarationBlock1->addDeclaration($declaration1);
         $declarationBlock2 = new DeclarationBlock();
         $declaration2 = new Declaration('color');
         $declaration2->setValue($value2);
-        $declarationBlock2->addRule($declaration2);
+        $declarationBlock2->addDeclaration($declaration2);
         $subject->setContents([$declarationBlock1, $declarationBlock2]);
 
         $result = $subject->getAllValues($declarationBlock1);
@@ -419,10 +419,10 @@ final class CSSBlockListTest extends TestCase
         $declarationBlock = new DeclarationBlock();
         $declaration1 = new Declaration('font-family');
         $declaration1->setValue($value1);
-        $declarationBlock->addRule($declaration1);
+        $declarationBlock->addDeclaration($declaration1);
         $declaration2 = new Declaration('color');
         $declaration2->setValue($value2);
-        $declarationBlock->addRule($declaration2);
+        $declarationBlock->addDeclaration($declaration2);
         $subject->setContents([$declarationBlock]);
 
         $result = $subject->getAllValues(null, 'font-');
@@ -443,7 +443,7 @@ final class CSSBlockListTest extends TestCase
         $declarationBlock = new DeclarationBlock();
         $declaration = new Declaration('margin');
         $declaration->setValue(new CSSFunction('max', [$value1, $value2]));
-        $declarationBlock->addRule($declaration);
+        $declarationBlock->addDeclaration($declaration);
         $subject->setContents([$declarationBlock]);
 
         $result = $subject->getAllValues();
@@ -464,7 +464,7 @@ final class CSSBlockListTest extends TestCase
         $declarationBlock = new DeclarationBlock();
         $declaration = new Declaration('margin');
         $declaration->setValue(new CSSFunction('max', [$value1, $value2]));
-        $declarationBlock->addRule($declaration);
+        $declarationBlock->addDeclaration($declaration);
         $subject->setContents([$declarationBlock]);
 
         $result = $subject->getAllValues(null, null, true);

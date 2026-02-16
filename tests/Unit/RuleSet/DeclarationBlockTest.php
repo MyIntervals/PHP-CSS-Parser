@@ -391,7 +391,7 @@ final class DeclarationBlockTest extends TestCase
      */
     public function getRuleSetAfterRulesSetReturnsARuleSet(): void
     {
-        $this->subject->setRules([new Declaration('color')]);
+        $this->subject->setDeclarations([new Declaration('color')]);
 
         $result = $this->subject->getRuleSet();
 
@@ -405,7 +405,7 @@ final class DeclarationBlockTest extends TestCase
     {
         $result = $this->subject->getRuleSet();
 
-        self::assertSame([], $result->getRules());
+        self::assertSame([], $result->getDeclarations());
     }
 
     /**
@@ -418,11 +418,11 @@ final class DeclarationBlockTest extends TestCase
     public function getRuleSetReturnsObjectWithDeclarationsSet(array $propertyNamesToSet): void
     {
         $declarations = self::createDeclarationsFromPropertyNames($propertyNamesToSet);
-        $this->subject->setRules($declarations);
+        $this->subject->setDeclarations($declarations);
 
         $result = $this->subject->getRuleSet();
 
-        self::assertSame($declarations, $result->getRules());
+        self::assertSame($declarations, $result->getDeclarations());
     }
 
     /**

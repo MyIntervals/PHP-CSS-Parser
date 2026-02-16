@@ -53,15 +53,15 @@ final class DeclarationBlockTest extends TestCase
 
         $declaration1 = new Declaration('background-color');
         $declaration1->setValue('transparent');
-        $declarationBlock->addRule($declaration1);
+        $declarationBlock->addDeclaration($declaration1);
 
         $declaration2 = new Declaration('background');
         $declaration2->setValue('#222');
-        $declarationBlock->addRule($declaration2);
+        $declarationBlock->addDeclaration($declaration2);
 
         $declaration3 = new Declaration('background-color');
         $declaration3->setValue('#fff');
-        $declarationBlock->addRule($declaration3);
+        $declarationBlock->addDeclaration($declaration3);
 
         $expectedRendering = 'background-color: transparent;background: #222;background-color: #fff';
         self::assertStringContainsString($expectedRendering, $declarationBlock->render(new OutputFormat()));
