@@ -76,10 +76,10 @@
         "check:dynamic": [
             "@check:tests"
         ],
-        "check:php:codesniffer": "phpcs --standard=config/phpcs.xml config src tests",
-        "check:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix --dry-run -v --show-progress=dots --diff bin src tests config",
-        "check:php:lint": "parallel-lint src tests config bin",
-        "check:php:rector": "rector --no-progress-bar --dry-run --config=config/rector.php",
+        "check:php:codesniffer": "phpcs --standard=config/phpcs.xml bin config src tests",
+        "check:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix --dry-run -v --show-progress=dots --diff bin config src tests",
+        "check:php:lint": "parallel-lint bin config src tests",
+        "check:php:rector": "rector process --no-progress-bar --dry-run --config=config/rector.php",
         "check:php:stan": "phpstan --no-progress --configuration=config/phpstan.neon",
         "check:static": [
             "@check:composer:normalize",
@@ -105,9 +105,9 @@
             "@fix:php:codesniffer",
             "@fix:php:fixer"
         ],
-        "fix:php:codesniffer": "phpcbf --standard=config/phpcs.xml config src tests",
-        "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix bin src tests",
-        "fix:php:rector": "rector --config=config/rector.php",
+        "fix:php:codesniffer": "phpcbf --standard=config/phpcs.xml bin config src tests",
+        "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix bin config src tests",
+        "fix:php:rector": "rector process --config=config/rector.php",
         "phpstan:baseline": "phpstan --configuration=config/phpstan.neon --generate-baseline=config/phpstan-baseline.neon --allow-empty-baseline"
     },
     "scripts-descriptions": {

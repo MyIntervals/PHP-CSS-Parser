@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-return (new \PhpCsFixer\Config())
+use PhpCsFixer\Config;
+
+return (new Config())
     ->setRiskyAllowed(true)
     ->setRules(
         [
