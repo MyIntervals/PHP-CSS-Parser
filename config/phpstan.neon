@@ -15,10 +15,6 @@ parameters:
     - %currentWorkingDirectory%/src/
     - %currentWorkingDirectory%/tests/
 
-  bootstrapFiles:
-    - %currentWorkingDirectory%/src/Rule/Rule.php
-    - %currentWorkingDirectory%/src/RuleSet/RuleContainer.php
-
   type_perfect:
     no_mixed_property: true
     no_mixed_caller: true
