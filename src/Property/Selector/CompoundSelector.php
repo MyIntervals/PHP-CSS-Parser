@@ -27,6 +27,8 @@ class CompoundSelector implements Component
         '"',
         '(',
         ')',
+        '[',
+        ']',
         ',',
         ' ',
         "\t",
@@ -46,7 +48,7 @@ class CompoundSelector implements Component
             (?:
                 (?:
                     # any sequence of valid unescaped characters, except quotes
-                    [a-zA-Z0-9\\x{00A0}-\\x{FFFF}_^$|*=\\[\\]()\\-\\.:#,\\s]++
+                    [a-zA-Z0-9\\x{00A0}-\\x{FFFF}_^$|*~=\\[\\]()\\-\\.:#,\\s]++
                     |
                     # one or more escaped characters
                     (?:\\\\.)++
@@ -100,6 +102,7 @@ class CompoundSelector implements Component
         $selectorParts = [];
         $stringWrapperCharacter = null;
         $functionNestingLevel = 0;
+        $isWithinAttribute = false;
 
         while (true) {
             $selectorParts[] = $parserState->consumeUntil(self::PARSER_STOP_CHARACTERS, false, false, $comments);
@@ -140,6 +143,32 @@ class CompoundSelector implements Component
                         --$functionNestingLevel;
                     }
                     break;
+                case '[':
+                    if (!\is_string($stringWrapperCharacter)) {
+                        if ($isWithinAttribute) {
+                            throw new UnexpectedTokenException(
+                                'anything but',
+                                '[',
+                                'literal',
+                                $parserState->currentLine()
+                            );
+                        }
+                        $isWithinAttribute = true;
+                    }
+                    break;
+                case ']':
+                    if (!\is_string($stringWrapperCharacter)) {
+                        if (!$isWithinAttribute) {
+                            throw new UnexpectedTokenException(
+                                'anything but',
+                                ']',
+                                'literal',
+                                $parserState->currentLine()
+                            );
+                        }
+                        $isWithinAttribute = false;
+                    }
+                    break;
                 case '{':
                     // The fallthrough is intentional.
                 case '}':
@@ -162,7 +191,7 @@ class CompoundSelector implements Component
                 case '+':
                     // The fallthrough is intentional.
                 case '~':
-                    if (!\is_string($stringWrapperCharacter) && $functionNestingLevel === 0) {
+                    if (!\is_string($stringWrapperCharacter) && $functionNestingLevel === 0 && !$isWithinAttribute) {
                         break 2;
                     }
                     break;
