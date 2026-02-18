@@ -46,7 +46,11 @@
     "autoload": {
         "psr-4": {
             "Sabberworm\\CSS\\": "src/"
-        }
+        },
+        "files": [
+            "src/Rule/Rule.php",
+            "src/RuleSet/RuleContainer.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
