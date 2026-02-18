@@ -48,7 +48,7 @@ class CompoundSelector implements Component
             (?:
                 (?:
                     # any sequence of valid unescaped characters, except quotes
-                    [a-zA-Z0-9\\x{00A0}-\\x{FFFF}_^$|*~=\\[\\]()\\-\\.:#,\\s]++
+                    [a-zA-Z0-9\\x{00A0}-\\x{FFFF}_^$|*=~\\[\\]()\\-\\s\\.:#+>,]++
                     |
                     # one or more escaped characters
                     (?:\\\\.)++
