@@ -57,6 +57,17 @@ final class CompoundSelectorTest extends TestCase
             '`not` with multiple arguments' => [':not(#your-mug, .their-mug)', 110],
             'attribute with `"`' => ['[alt="{}()[]\\"\',"]', 10],
             'attribute with `\'`' => ['[alt=\'{}()[]"\\\',\']', 10],
+            // TODO, broken: specificity should be 11, but the calculator doesn't realize the `#` is in a string.
+            'attribute with `^=`' => ['a[href^="#"]', 111],
+            'attribute with `*=`' => ['a[href*="example"]', 11],
+            // TODO, broken: specificity should be 11, but the calculator doesn't realize the `.` is in a string.
+            'attribute with `$=`' => ['a[href$=".org"]', 21],
+            'attribute with `~=`' => ['span[title~="bonjour"]', 11],
+            'attribute with `|=`' => ['[lang|="en"]', 10],
+            // TODO, broken: specificity should be 11, but the calculator doesn't realize the `i` is in an attribute.
+            'attribute with case insensitive modifier' => ['a[href*="insensitive" i]', 12],
+            // TODO, broken: specificity should be 21, but the calculator doesn't realize the `.` is in a string.
+            'multiple attributes' => ['a[href^="https://"][href$=".org"]', 31],
         ];
     }
 
@@ -173,6 +184,8 @@ final class CompoundSelectorTest extends TestCase
             'attribute value missing closing double quote' => ['a[href="#top]'],
             'attribute value with mismatched quotes, single quote opening' => ['a[href=\'#top"]'],
             'attribute value with mismatched quotes, double quote opening' => ['a[href="#top\']'],
+            'attribute value with extra `[`' => ['a[[href="#top"]'],
+            'attribute value with extra `]`' => ['a[href="#top"]]'],
         ];
     }
 
