@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Sabberworm\CSS\Rule\Rule;
-use Sabberworm\CSS\RuleSet\RuleContainer;
 use Sabberworm\CSS\Property\Declaration;
+use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\RuleSet\DeclarationList;
+use Sabberworm\CSS\RuleSet\RuleContainer;
 
 use function Safe\class_alias;
 
