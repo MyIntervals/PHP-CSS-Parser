@@ -48,7 +48,8 @@
             "Sabberworm\\CSS\\": "src/"
         },
         "files": [
-            "class-aliases/aliases.php"
+            "src/Rule/Rule.php",
+            "src/RuleSet/RuleContainer.php"
         ]
     },
     "autoload-dev": {
@@ -79,9 +80,9 @@
         "check:dynamic": [
             "@check:tests"
         ],
-        "check:php:codesniffer": "phpcs --standard=config/phpcs.xml bin class-aliases config src tests",
-        "check:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix --dry-run -v --show-progress=dots --diff bin class-aliases config src tests",
-        "check:php:lint": "parallel-lint bin class-aliases config src tests",
+        "check:php:codesniffer": "phpcs --standard=config/phpcs.xml bin config src tests",
+        "check:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix --dry-run -v --show-progress=dots --diff bin config src tests",
+        "check:php:lint": "parallel-lint bin config src tests",
         "check:php:rector": "rector process --no-progress-bar --dry-run --config=config/rector.php",
         "check:php:stan": "phpstan --no-progress --configuration=config/phpstan.neon",
         "check:static": [
@@ -108,8 +109,8 @@
             "@fix:php:codesniffer",
             "@fix:php:fixer"
         ],
-        "fix:php:codesniffer": "phpcbf --standard=config/phpcs.xml bin class-aliases config src tests",
-        "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix bin class-aliases config src tests",
+        "fix:php:codesniffer": "phpcbf --standard=config/phpcs.xml bin config src tests",
+        "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix bin config src tests",
         "fix:php:rector": "rector process --config=config/rector.php",
         "phpstan:baseline": "phpstan --configuration=config/phpstan.neon --generate-baseline=config/phpstan-baseline.neon --allow-empty-baseline"
     },
