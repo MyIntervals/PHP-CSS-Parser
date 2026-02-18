@@ -68,6 +68,16 @@ final class CompoundSelectorTest extends TestCase
             'attribute with case insensitive modifier' => ['a[href*="insensitive" i]', 12],
             // TODO, broken: specificity should be 21, but the calculator doesn't realize the `.` is in a string.
             'multiple attributes' => ['a[href^="https://"][href$=".org"]', 31],
+            // TODO, broken: specificity should be 11, but the calculator is treating the `n` as a type selector.
+            'nth-last-child' => ['li:nth-last-child(2n+3)', 12],
+            // TODO, maybe broken: specificity should probably be 2 (1 for `p` and 1 for `span`).
+            '`not` with descendent combinator' => [':not(p span)', 1],
+            // TODO, maybe broken: specificity should probably be 2 (1 for `p` and 1 for `span`).
+            '`not` with child combinator' => [':not(p > span)', 1],
+            // TODO, maybe broken: specificity should probably be 2 (1 for `h1` and 1 for `p`).
+            '`not` with next-sibling combinator' => [':not(h1 + p)', 1],
+            // TODO, maybe broken: specificity should probably be 2 (1 for `h1` and 1 for `p`).
+            '`not` with subsequent-sibling combinator' => [':not(h1 ~ p)', 1],
         ];
     }
 
