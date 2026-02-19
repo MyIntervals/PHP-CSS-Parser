@@ -18,7 +18,7 @@ Please also have a look at our
 
 ### Changed
 
-- `RuleSet\RuleContainer` is renamed to `RuleSet\DeclarationList` (#1530)
+- `RuleSet\RuleContainer` is renamed to `RuleSet\DeclarationList` (#1530, #1539)
 - Methods like `setRule()` in `RuleSet` and `DeclarationBlock` have been renamed
   to `setDeclaration()`, etc. (#1521)
 - `Rule\Rule` class is renamed to `Property\Declaration`
