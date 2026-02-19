@@ -112,7 +112,8 @@
         "fix:php:codesniffer": "phpcbf --standard=config/phpcs.xml bin config src tests",
         "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=config/php-cs-fixer.php fix bin config src tests",
         "fix:php:rector": "rector process --config=config/rector.php",
-        "phpstan:baseline": "phpstan --configuration=config/phpstan.neon --generate-baseline=config/phpstan-baseline.neon --allow-empty-baseline"
+        "phpstan:baseline": "phpstan --configuration=config/phpstan.neon --generate-baseline=config/phpstan-baseline.neon --allow-empty-baseline",
+        "phpstan:clearcache": "phpstan clear-result-cache"
     },
     "scripts-descriptions": {
         "check": "Runs all dynamic and static code checks.",
@@ -134,6 +135,7 @@
         "fix:php:codesniffer": "Reformats the code with PHP_CodeSniffer.",
         "fix:php:fixer": "Fixes autofixable issues found by PHP CS Fixer.",
         "fix:php:rector": "Fixes autofixable issues found by Rector.",
-        "phpstan:baseline": "Updates the PHPStan baseline file to match the code."
+        "phpstan:baseline": "Updates the PHPStan baseline file to match the code.",
+        "phpstan:clearcache": "Clears the PHPStan cache."
     }
 }
