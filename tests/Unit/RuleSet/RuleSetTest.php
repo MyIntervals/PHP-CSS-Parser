@@ -14,7 +14,7 @@ use Sabberworm\CSS\RuleSet\RuleSet;
  */
 final class RuleSetTest extends TestCase
 {
-    use RuleContainerTest;
+    use DeclarationListTest;
 
     /**
      * @var RuleSet
