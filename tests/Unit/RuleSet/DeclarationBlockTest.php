@@ -23,7 +23,7 @@ use TRegx\PhpUnit\DataProviders\DataProvider;
  */
 final class DeclarationBlockTest extends TestCase
 {
-    use DeclarationListTest;
+    use DeclarationListTests;
 
     /**
      * @var DeclarationBlock

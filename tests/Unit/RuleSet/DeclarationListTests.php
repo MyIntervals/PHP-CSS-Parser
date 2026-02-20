@@ -16,7 +16,7 @@ use TRegx\PhpUnit\DataProviders\DataProvider;
  *
  * @phpstan-require-extends TestCase
  */
-trait DeclarationListTest
+trait DeclarationListTests
 {
     /**
      * @test
