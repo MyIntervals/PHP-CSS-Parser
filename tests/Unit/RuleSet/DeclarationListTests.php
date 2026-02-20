@@ -6,24 +6,24 @@ namespace Sabberworm\CSS\Tests\Unit\RuleSet;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Property\Declaration;
-use Sabberworm\CSS\RuleSet\RuleContainer;
+use Sabberworm\CSS\RuleSet\DeclarationList;
 use TRegx\PhpUnit\DataProviders\DataProvider;
 
 /**
- * This trait provides test methods for unit-testing classes that implement `RuleContainer`.
+ * This trait provides test methods for unit-testing classes that implement `DeclarationList`.
  * It can be `use`d in a `TestCase` which has a `$subject` property that is an instance of the implementing class
  * (the class under test), `setUp()` with default values.
  *
  * @phpstan-require-extends TestCase
  */
-trait RuleContainerTest
+trait DeclarationListTests
 {
     /**
      * @test
      */
-    public function implementsRuleContainer(): void
+    public function implementsDeclarationList(): void
     {
-        self::assertInstanceOf(RuleContainer::class, $this->subject);
+        self::assertInstanceOf(DeclarationList::class, $this->subject);
     }
 
     /**
