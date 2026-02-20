@@ -7,9 +7,9 @@ namespace Sabberworm\CSS\RuleSet;
 use Sabberworm\CSS\Property\Declaration;
 
 /**
- * Provides a mapping of the deprecated methods in a `RuleContainer` to their renamed replacements.
+ * Provides a mapping of the deprecated methods in a `DeclarationList` to their renamed replacements.
  */
-trait LegacyRuleContainerMethods
+trait LegacyDeclarationListMethods
 {
     /**
      * @deprecated in v9.2, will be removed in v10.0; use `addDeclaration()` instead.

@@ -32,10 +32,10 @@ use Sabberworm\CSS\Settings;
  *
  * Note that `CSSListItem` extends both `Commentable` and `Renderable`, so those interfaces must also be implemented.
  */
-class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleContainer
+class DeclarationBlock implements CSSElement, CSSListItem, Positionable, DeclarationList
 {
     use CommentContainer;
-    use LegacyRuleContainerMethods;
+    use LegacyDeclarationListMethods;
     use Position;
 
     /**
