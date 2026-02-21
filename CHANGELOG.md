@@ -10,6 +10,20 @@ Please also have a look at our
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Documentation
+
+## 9.2.0: New features and deprecations
+
+### Added
+
 - Add `OutputFormat::setSpaceAroundSelectorCombinator()` (#1504)
 - Add support for escaped quotes in the selectors (#1485, #1489)
 - Provide line number in exception message for mismatched parentheses in
@@ -45,8 +59,6 @@ Please also have a look at our
 - `Rule::setRule()` and `getRule()` are deprecated and replaced with
   `setPropertyName()` and `getPropertyName()` (#1506, #1519)
 
-### Removed
-
 ### Fixed
 
 - Do not escape characters that do not need escaping in CSS string (#1444)
@@ -60,8 +72,6 @@ Please also have a look at our
 - Fix parsing of `calc` expressions when a newline immediately precedes or
   follows a `+` or `-` operator (#1399)
 - Use typesafe versions of PHP functions (#1379, #1380, #1382, #1383, #1384)
-
-### Documentation
 
 ## 9.1.0: Add support for PHP 8.5
 
