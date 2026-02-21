@@ -19,6 +19,13 @@ final class OutputFormat
     private $usesRgbHashNotation = true;
 
     /**
+     * Output RGB colors in CSS 4 notation if possible
+     *
+     * @var bool
+     */
+    private $usesModernColorSyntax = false;
+
+    /**
      * Declaration format
      *
      * Semicolon after the last rule of a declaration block can be omitted. To do that, set this false.
@@ -219,6 +226,24 @@ final class OutputFormat
     public function setRGBHashNotation(bool $usesRgbHashNotation): self
     {
         $this->usesRgbHashNotation = $usesRgbHashNotation;
+
+        return $this;
+    }
+
+    /**
+     * @internal
+     */
+    public function usesModernColorSyntax(): bool
+    {
+        return $this->usesModernColorSyntax;
+    }
+
+    /**
+     * @return $this fluent interface
+     */
+    public function setUseModernColorSyntax(bool $usesModernColorSyntax): self
+    {
+        $this->usesModernColorSyntax = $usesModernColorSyntax;
 
         return $this;
     }
