@@ -8,6 +8,7 @@ use Sabberworm\CSS\Comment\CommentContainer;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
+use Sabberworm\CSS\ShortClassNameProvider;
 use Sabberworm\CSS\Value\CSSString;
 use Sabberworm\CSS\Value\URL;
 
@@ -18,6 +19,7 @@ class CSSNamespace implements AtRule, Positionable
 {
     use CommentContainer;
     use Position;
+    use ShortClassNameProvider;
 
     /**
      * @var CSSString|URL
@@ -102,6 +104,11 @@ class CSSNamespace implements AtRule, Positionable
      */
     public function getArrayRepresentation(): array
     {
-        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
+        return [
+            'class' => $this->getShortClassName(),
+            // We're using `uri` here instead of `url` to better match the spec.
+            'uri' => $this->url->getArrayRepresentation(),
+            'prefix' => $this->prefix,
+        ];
     }
 }
