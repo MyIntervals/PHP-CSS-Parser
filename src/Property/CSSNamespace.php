@@ -106,7 +106,8 @@ class CSSNamespace implements AtRule, Positionable
     {
         return [
             'class' => $this->getShortClassName(),
-            'url' => $this->url->getArrayRepresentation(),
+            // We're using `uri` here instead of `url` to better match the spec.
+            'uri' => $this->url->getArrayRepresentation(),
             'prefix' => $this->prefix,
         ];
     }

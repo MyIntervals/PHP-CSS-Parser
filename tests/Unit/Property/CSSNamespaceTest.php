@@ -60,7 +60,7 @@ final class CSSNamespaceTest extends TestCase
                 'class' => 'CSSString',
                 'contents' => $uri,
             ],
-            $result['url']
+            $result['uri']
         );
     }
 
@@ -82,7 +82,7 @@ final class CSSNamespaceTest extends TestCase
                     'contents' => $uri,
                 ],
             ],
-            $result['url']
+            $result['uri']
         );
     }
 
