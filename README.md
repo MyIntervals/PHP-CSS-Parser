@@ -121,6 +121,78 @@ There are a few convenience methods on `Document` to ease finding, manipulating 
 * Real multibyte support. Currently, only multibyte charsets whose first 255 code points take up only one byte and are identical with ASCII are supported (yes, UTF-8 fits this description).
 * Named color support (using `Color` instead of an anonymous string literal)
 
+## Preloading 
+
+In environments where file caching / preloading is being used, you may encounter a "double declaration" exception, similar to:
+
+```
+NOTICE: PHP message: Exception [/var/www/html/vendor/thecodingmachine/safe/generated/Exceptions/ClassobjException.php: 9]: Cannot redeclare class Sabberworm\CSS\Rule\Rule (previously declared in /var/www/html/vendor/sabberworm/php-css-parser/src/Property/Declaration.php:27)
+
+Traceback: 
+#0 /var/www/html/vendor/thecodingmachine/safe/generated/8.1/classobj.php(19): Safe\Exceptions\ClassobjException::createFromPhpError()
+#1 /var/www/html/vendor/sabberworm/php-css-parser/src/Rule/Rule.php(14): Safe\class_alias('Sabberworm\\CSS\\...', 'Sabberworm\\CSS\\...')
+#2 /var/www/html/vendor/composer/autoload_real.php(41): require('/var/www/html/v...')
+#3 /var/www/html/vendor/composer/autoload_real.php(45): {closure:ComposerAutoloaderInita513f45a21088ff88ff9a0ececb2b3ac::getLoader():37}('0174385c3be07e8...', '/var/www/html/v...')
+#4 /var/www/html/vendor/autoload.php(22): ComposerAutoloaderInita513f45a21088ff88ff9a0ececb2b3ac::getLoader()
+```
+This relates to this issues:
+
+[1546](https://github.com/MyIntervals/PHP-CSS-Parser/issues/1546) - https://github.com/MyIntervals/PHP-CSS-Parser/issues/1546
+
+[11102](https://github.com/composer/composer/issues/11102) - https://github.com/composer/composer/issues/11102
+
+This is most likely to occur in environments where OPCache or other file caching featuers are being used.  For example, when running behind a web server.
+
+Unfortunately this behavior appears to be rooted in the PHP Composer autoload code itself.  While you can try to avoid the problem, you may ultimately have to patch your autoload files to fully resolve the issue.  There are a couple of class files that get added directly to the Composer autoload files, and becuase of he way Composer itself loads files...you can hit the "double declaration" even if you aren't directly including any files from the PHP CSS Parser.  It happens by way of the autoload system itself transitively loading everything it thinks it needs.
+
+To avoid the excpetion:
+
+- Don't use file caching if you don't have to.
+- If you ae doing preloading, do not include PHP CSS Parser files/folders in your preload script (opcache.preload)
+- Don't require composer's autoload file inside your preload script if you don't have to (vendor/autoload.php)
+- Add PHP CSS Parser files/folder to the preloading blacklist (opcache.blacklist_filename)
+- Double check that within your preload script you are only using require_once() and neve rusing require()
+
+If you still see the exception, then you can patch the Composer autoload files to not directly load the classes involved in the exception.  The reason those classes end up being added directly is to make them visible for code analysis toolts (like PHPStan), but for runtime deployment...that isn't required, so you can just remove the references.  
+
+Typically your local development environment will be copied into a Docker container, and then your Docker container is what actually runs or gets deployed.  So you can safely patch the autoload files as part of your Docker image build.  That way, you resolve the problem for your web server environment (typically a Docker based microservice), without haivng to change anything in your local environemnt.  You can then continue using analysis tools as you were before.
+
+An example patching script to call from Docker boot script:
+
+```
+#!/bin/bash
+
+# the two files that need to be "unpatched":
+
+autoOne=/var/www/html/vendor/composer/autoload_files.php
+autoTwo=/var/www/html/vendor/composer/autoload_static.php
+
+echo -e "\e[0m[\e[32mautoload-fixup\e[0m] patching..."
+
+# fix the first one
+
+if [ -w "$autoOne" ] ; then
+
+echo -e "\e[0m[\e[32mautoload-fixup\e[0m] fixing: $autoOne"
+
+sed -i.bak '/sabberworm.*\.php/d' $autoOne
+
+fi
+
+# fix the second one
+
+if [ -w "$autoTwo" ] ; then
+
+echo -e "\e[0m[\e[32mautoload-fixup\e[0m] fixing: $autoTwo"
+
+sed -i.bak '/sabberworm.*\.php/d' $autoTwo
+fi
+
+echo -e "\e[0m[\e[32mautoload-fixup\e[0m] patching completed."
+```
+
+The intent here is just to remove direct class file references to the PHP CSS Parser folder.  At the time of writing, its composer package name was sabberworm/php-css-parser.
+
 ## Use cases
 
 ### Use `Parser` to prepend an ID to all selectors
