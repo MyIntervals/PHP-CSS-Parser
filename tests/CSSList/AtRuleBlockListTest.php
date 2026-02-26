@@ -51,6 +51,21 @@ final class AtRuleBlockListTest extends TestCase
             'container' => [
                 '@container (min-width: 60rem) { .items { background: blue; } }',
             ],
+            'layer named' => [
+                '@layer theme { .button { color: blue; } }',
+            ],
+            'layer anonymous' => [
+                '@layer { .card { padding: 1rem; } }',
+            ],
+            'scope with selector' => [
+                '@scope (.card) { .title { font-size: 2rem; } }',
+            ],
+            'scope root only' => [
+                '@scope { .content { margin: 0; } }',
+            ],
+            'starting-style' => [
+                '@starting-style { .dialog { opacity: 0; transform: translateY(-10px); } }',
+            ],
         ];
     }
 
@@ -93,5 +108,132 @@ final class AtRuleBlockListTest extends TestCase
         $contents = (new Parser($css, Settings::create()->beStrict()))->parse()->getContents();
 
         self::assertNotEmpty($contents, 'Failing CSS: `' . $css . '`');
+    }
+
+    /**
+     * @test
+     */
+    public function parsesLayerWithNamedArgument(): void
+    {
+        $css = '@layer theme { .button { color: blue; } }';
+        $contents = (new Parser($css))->parse()->getContents();
+        $atRuleBlockList = $contents[0];
+
+        self::assertInstanceOf(AtRuleBlockList::class, $atRuleBlockList);
+        self::assertSame('layer', $atRuleBlockList->atRuleName());
+        self::assertSame('theme', $atRuleBlockList->atRuleArgs());
+
+        $nestedContents = $atRuleBlockList->getContents();
+        self::assertCount(1, $nestedContents, 'Layer should contain one declaration block');
+    }
+
+    /**
+     * @test
+     */
+    public function parsesLayerWithoutArguments(): void
+    {
+        $css = '@layer { .card { padding: 1rem; } }';
+        $contents = (new Parser($css))->parse()->getContents();
+        $atRuleBlockList = $contents[0];
+
+        self::assertInstanceOf(AtRuleBlockList::class, $atRuleBlockList);
+        self::assertSame('layer', $atRuleBlockList->atRuleName());
+        self::assertSame('', $atRuleBlockList->atRuleArgs());
+
+        $nestedContents = $atRuleBlockList->getContents();
+        self::assertCount(1, $nestedContents, 'Layer should contain one declaration block');
+    }
+
+    /**
+     * @test
+     */
+    public function parsesScopeWithSelector(): void
+    {
+        $css = '@scope (.card) { .title { font-size: 2rem; } }';
+        $contents = (new Parser($css))->parse()->getContents();
+        $atRuleBlockList = $contents[0];
+
+        self::assertInstanceOf(AtRuleBlockList::class, $atRuleBlockList);
+        self::assertSame('scope', $atRuleBlockList->atRuleName());
+        self::assertSame('(.card)', $atRuleBlockList->atRuleArgs());
+
+        $nestedContents = $atRuleBlockList->getContents();
+        self::assertCount(1, $nestedContents, 'Scope should contain one declaration block');
+    }
+
+    /**
+     * @test
+     */
+    public function parsesScopeWithoutSelector(): void
+    {
+        $css = '@scope { .content { margin: 0; } }';
+        $contents = (new Parser($css))->parse()->getContents();
+        $atRuleBlockList = $contents[0];
+
+        self::assertInstanceOf(AtRuleBlockList::class, $atRuleBlockList);
+        self::assertSame('scope', $atRuleBlockList->atRuleName());
+        self::assertSame('', $atRuleBlockList->atRuleArgs());
+
+        $nestedContents = $atRuleBlockList->getContents();
+        self::assertCount(1, $nestedContents, 'Scope should contain one declaration block');
+    }
+
+    /**
+     * @test
+     */
+    public function parsesStartingStyle(): void
+    {
+        $css = '@starting-style { .dialog { opacity: 0; transform: translateY(-10px); } }';
+        $contents = (new Parser($css))->parse()->getContents();
+        $atRuleBlockList = $contents[0];
+
+        self::assertInstanceOf(AtRuleBlockList::class, $atRuleBlockList);
+        self::assertSame('starting-style', $atRuleBlockList->atRuleName());
+        self::assertSame('', $atRuleBlockList->atRuleArgs());
+
+        $nestedContents = $atRuleBlockList->getContents();
+        self::assertCount(1, $nestedContents, 'Starting-style should contain one declaration block');
+    }
+
+    /**
+     * @test
+     */
+    public function rendersLayerCorrectly(): void
+    {
+        $css = '@layer theme { .button { color: blue; } }';
+        $document = (new Parser($css))->parse();
+        $rendered = $document->render();
+
+        self::assertStringContainsString('@layer theme', $rendered);
+        self::assertStringContainsString('.button', $rendered);
+        self::assertStringContainsString('color: blue', $rendered);
+    }
+
+    /**
+     * @test
+     */
+    public function rendersScopeCorrectly(): void
+    {
+        $css = '@scope (.card) { .title { font-size: 2rem; } }';
+        $document = (new Parser($css))->parse();
+        $rendered = $document->render();
+
+        self::assertStringContainsString('@scope (.card)', $rendered);
+        self::assertStringContainsString('.title', $rendered);
+        self::assertStringContainsString('font-size: 2rem', $rendered);
+    }
+
+    /**
+     * @test
+     */
+    public function rendersStartingStyleCorrectly(): void
+    {
+        $css = '@starting-style { .dialog { opacity: 0; } }';
+        $document = (new Parser($css))->parse();
+        $rendered = $document->render();
+
+        self::assertStringContainsString('@starting-style', $rendered);
+        self::assertStringContainsString('.dialog', $rendered);
+        self::assertStringContainsString('opacity: 0', $rendered);
     }
 }

@@ -10,6 +10,8 @@ Please also have a look at our
 
 ### Added
 
+- Add support for modern CSS at-rules: `@layer`, `@scope`, and `@starting-style` (#????)
+
 ### Changed
 
 ### Deprecated
