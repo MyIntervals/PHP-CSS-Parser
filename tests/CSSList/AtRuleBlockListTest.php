@@ -111,129 +111,98 @@ final class AtRuleBlockListTest extends TestCase
     }
 
     /**
-     * @test
+     * @return array<string, array{0: string, 1: string, 2: string, 3: int}>
      */
-    public function parsesLayerWithNamedArgument(): void
+    public static function provideAtRuleParsingData(): array
     {
-        $css = '@layer theme { .button { color: blue; } }';
+        return [
+            'layer with named argument' => [
+                '@layer theme { .button { color: blue; } }',
+                'layer',
+                'theme',
+                1,
+            ],
+            'layer without arguments' => [
+                '@layer { .card { padding: 1rem; } }',
+                'layer',
+                '',
+                1,
+            ],
+            'scope with selector' => [
+                '@scope (.card) { .title { font-size: 2rem; } }',
+                'scope',
+                '(.card)',
+                1,
+            ],
+            'scope without selector' => [
+                '@scope { .content { margin: 0; } }',
+                'scope',
+                '',
+                1,
+            ],
+            'starting-style' => [
+                '@starting-style { .dialog { opacity: 0; transform: translateY(-10px); } }',
+                'starting-style',
+                '',
+                1,
+            ],
+        ];
+    }
+
+    /**
+     * @return array<string, array{0: string, 1: list<string>}>
+     */
+    public static function provideAtRuleRenderingData(): array
+    {
+        return [
+            'layer with named argument' => [
+                '@layer theme { .button { color: blue; } }',
+                ['@layer theme', '.button', 'color: blue'],
+            ],
+            'scope with selector' => [
+                '@scope (.card) { .title { font-size: 2rem; } }',
+                ['@scope (.card)', '.title', 'font-size: 2rem'],
+            ],
+            'starting-style' => [
+                '@starting-style { .dialog { opacity: 0; } }',
+                ['@starting-style', '.dialog', 'opacity: 0'],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideAtRuleParsingData
+     */
+    public function parsesAtRuleBlockList(
+        string $css,
+        string $expectedName,
+        string $expectedArgs,
+        int $expectedContentCount
+    ): void {
         $contents = (new Parser($css))->parse()->getContents();
         $atRuleBlockList = $contents[0];
 
         self::assertInstanceOf(AtRuleBlockList::class, $atRuleBlockList);
-        self::assertSame('layer', $atRuleBlockList->atRuleName());
-        self::assertSame('theme', $atRuleBlockList->atRuleArgs());
-
-        $nestedContents = $atRuleBlockList->getContents();
-        self::assertCount(1, $nestedContents, 'Layer should contain one declaration block');
+        self::assertSame($expectedName, $atRuleBlockList->atRuleName());
+        self::assertSame($expectedArgs, $atRuleBlockList->atRuleArgs());
+        self::assertCount($expectedContentCount, $atRuleBlockList->getContents());
     }
 
     /**
      * @test
+     *
+     * @dataProvider provideAtRuleRenderingData
+     *
+     * @param list<string> $expectedSubstrings
      */
-    public function parsesLayerWithoutArguments(): void
+    public function rendersAtRuleBlockListCorrectly(string $css, array $expectedSubstrings): void
     {
-        $css = '@layer { .card { padding: 1rem; } }';
-        $contents = (new Parser($css))->parse()->getContents();
-        $atRuleBlockList = $contents[0];
+        $rendered = (new Parser($css))->parse()->render();
 
-        self::assertInstanceOf(AtRuleBlockList::class, $atRuleBlockList);
-        self::assertSame('layer', $atRuleBlockList->atRuleName());
-        self::assertSame('', $atRuleBlockList->atRuleArgs());
-
-        $nestedContents = $atRuleBlockList->getContents();
-        self::assertCount(1, $nestedContents, 'Layer should contain one declaration block');
-    }
-
-    /**
-     * @test
-     */
-    public function parsesScopeWithSelector(): void
-    {
-        $css = '@scope (.card) { .title { font-size: 2rem; } }';
-        $contents = (new Parser($css))->parse()->getContents();
-        $atRuleBlockList = $contents[0];
-
-        self::assertInstanceOf(AtRuleBlockList::class, $atRuleBlockList);
-        self::assertSame('scope', $atRuleBlockList->atRuleName());
-        self::assertSame('(.card)', $atRuleBlockList->atRuleArgs());
-
-        $nestedContents = $atRuleBlockList->getContents();
-        self::assertCount(1, $nestedContents, 'Scope should contain one declaration block');
-    }
-
-    /**
-     * @test
-     */
-    public function parsesScopeWithoutSelector(): void
-    {
-        $css = '@scope { .content { margin: 0; } }';
-        $contents = (new Parser($css))->parse()->getContents();
-        $atRuleBlockList = $contents[0];
-
-        self::assertInstanceOf(AtRuleBlockList::class, $atRuleBlockList);
-        self::assertSame('scope', $atRuleBlockList->atRuleName());
-        self::assertSame('', $atRuleBlockList->atRuleArgs());
-
-        $nestedContents = $atRuleBlockList->getContents();
-        self::assertCount(1, $nestedContents, 'Scope should contain one declaration block');
-    }
-
-    /**
-     * @test
-     */
-    public function parsesStartingStyle(): void
-    {
-        $css = '@starting-style { .dialog { opacity: 0; transform: translateY(-10px); } }';
-        $contents = (new Parser($css))->parse()->getContents();
-        $atRuleBlockList = $contents[0];
-
-        self::assertInstanceOf(AtRuleBlockList::class, $atRuleBlockList);
-        self::assertSame('starting-style', $atRuleBlockList->atRuleName());
-        self::assertSame('', $atRuleBlockList->atRuleArgs());
-
-        $nestedContents = $atRuleBlockList->getContents();
-        self::assertCount(1, $nestedContents, 'Starting-style should contain one declaration block');
-    }
-
-    /**
-     * @test
-     */
-    public function rendersLayerCorrectly(): void
-    {
-        $css = '@layer theme { .button { color: blue; } }';
-        $document = (new Parser($css))->parse();
-        $rendered = $document->render();
-
-        self::assertStringContainsString('@layer theme', $rendered);
-        self::assertStringContainsString('.button', $rendered);
-        self::assertStringContainsString('color: blue', $rendered);
-    }
-
-    /**
-     * @test
-     */
-    public function rendersScopeCorrectly(): void
-    {
-        $css = '@scope (.card) { .title { font-size: 2rem; } }';
-        $document = (new Parser($css))->parse();
-        $rendered = $document->render();
-
-        self::assertStringContainsString('@scope (.card)', $rendered);
-        self::assertStringContainsString('.title', $rendered);
-        self::assertStringContainsString('font-size: 2rem', $rendered);
-    }
-
-    /**
-     * @test
-     */
-    public function rendersStartingStyleCorrectly(): void
-    {
-        $css = '@starting-style { .dialog { opacity: 0; } }';
-        $document = (new Parser($css))->parse();
-        $rendered = $document->render();
-
-        self::assertStringContainsString('@starting-style', $rendered);
-        self::assertStringContainsString('.dialog', $rendered);
-        self::assertStringContainsString('opacity: 0', $rendered);
+        foreach ($expectedSubstrings as $expected) {
+            self::assertStringContainsString($expected, $rendered);
+        }
     }
 }
