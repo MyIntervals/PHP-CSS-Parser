@@ -11,6 +11,7 @@ return RectorConfig::configure()
     ->withPaths(
         [
             __DIR__ . '/../bin',
+            __DIR__ . '/../class-aliases',
             __DIR__ . '/../config',
             __DIR__ . '/../src',
             __DIR__ . '/../tests',
