@@ -17,7 +17,7 @@ use Sabberworm\CSS\Settings;
 final class AtRuleBlockListTest extends TestCase
 {
     /**
-     * @return array<string, array{0: string}>
+     * @return array<non-empty-string, array{0: non-empty-string}>
      */
     public static function provideMinWidthMediaRule(): array
     {
@@ -28,7 +28,7 @@ final class AtRuleBlockListTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: string}>
+     * @return array<non-empty-string, array{0: non-empty-string}>
      */
     public static function provideSyntacticallyCorrectAtRule(): array
     {
@@ -75,6 +75,8 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      *
+     * @param non-empty-string $css
+     *
      * @dataProvider provideMinWidthMediaRule
      */
     public function parsesRuleNameOfMediaQueries(string $css): void
@@ -88,6 +90,8 @@ final class AtRuleBlockListTest extends TestCase
 
     /**
      * @test
+     *
+     * @param non-empty-string $css
      *
      * @dataProvider provideMinWidthMediaRule
      */
@@ -103,6 +107,8 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      *
+     * @param non-empty-string $css
+     *
      * @dataProvider provideMinWidthMediaRule
      * @dataProvider provideSyntacticallyCorrectAtRule
      */
@@ -114,7 +120,7 @@ final class AtRuleBlockListTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: string, 1: string, 2: string, 3: int}>
+     * @return array<non-empty-string, array{0: non-empty-string, 1: non-empty-string, 2: string, 3: int<0, max>}>
      */
     public static function provideAtRuleParsingData(): array
     {
@@ -159,7 +165,7 @@ final class AtRuleBlockListTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: string, 1: list<string>}>
+     * @return array<non-empty-string, array{0: non-empty-string, 1: non-empty-list<non-empty-string>}>
      */
     public static function provideAtRuleRenderingData(): array
     {
@@ -186,6 +192,10 @@ final class AtRuleBlockListTest extends TestCase
     /**
      * @test
      *
+     * @param non-empty-string $css
+     * @param non-empty-string $expectedName
+     * @param int<0, max> $expectedContentCount
+     *
      * @dataProvider provideAtRuleParsingData
      */
     public function parsesAtRuleBlockList(
@@ -208,7 +218,8 @@ final class AtRuleBlockListTest extends TestCase
      *
      * @dataProvider provideAtRuleRenderingData
      *
-     * @param list<string> $expectedSubstrings
+     * @param non-empty-string $css
+     * @param non-empty-list<non-empty-string> $expectedSubstrings
      */
     public function rendersAtRuleBlockListCorrectly(string $css, array $expectedSubstrings): void
     {
