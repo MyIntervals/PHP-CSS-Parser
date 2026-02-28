@@ -15,7 +15,6 @@ interface AtRule extends CSSListItem
     /**
      * Since there are more set rules than block rules,
      * we’re whitelisting the block rules and have anything else be treated as a set rule.
-     * NOTE: The new line when assigning the value is added to avoid the line length limit of codesniffer.
      *
      * @internal since 8.5.2
      */

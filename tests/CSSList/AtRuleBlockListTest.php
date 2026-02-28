@@ -63,6 +63,9 @@ final class AtRuleBlockListTest extends TestCase
             'scope root only' => [
                 '@scope { .content { margin: 0; } }',
             ],
+            'scope with limit' => [
+                '@scope (.article-body) to (figure) { h2 { color: red; } }',
+            ],
             'starting-style' => [
                 '@starting-style { .dialog { opacity: 0; transform: translateY(-10px); } }',
             ],
@@ -140,6 +143,12 @@ final class AtRuleBlockListTest extends TestCase
                 '',
                 1,
             ],
+            'scope with limit' => [
+                '@scope (.article-body) to (figure) { h2 { color: red; } }',
+                'scope',
+                '(.article-body) to (figure)',
+                1,
+            ],
             'starting-style' => [
                 '@starting-style { .dialog { opacity: 0; transform: translateY(-10px); } }',
                 'starting-style',
@@ -162,6 +171,10 @@ final class AtRuleBlockListTest extends TestCase
             'scope with selector' => [
                 '@scope (.card) { .title { font-size: 2rem; } }',
                 ['@scope (.card)', '.title', 'font-size: 2rem'],
+            ],
+            'scope with limit' => [
+                '@scope (.article-body) to (figure) { h2 { color: red; } }',
+                ['@scope (.article-body) to (figure)', 'h2', 'color: red'],
             ],
             'starting-style' => [
                 '@starting-style { .dialog { opacity: 0; } }',
