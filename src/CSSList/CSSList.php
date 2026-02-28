@@ -222,7 +222,7 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
                 }
             }
             $useRuleSet = true;
-            foreach (\explode('/', AtRule::BLOCK_RULES) as $blockRuleName) {
+            foreach (AtRule::BLOCK_RULES as $blockRuleName) {
                 if (self::identifierIs($identifier, $blockRuleName)) {
                     $useRuleSet = false;
                     break;

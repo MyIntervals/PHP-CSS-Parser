@@ -29,7 +29,7 @@ final class AtRuleTest extends TestCase
                 'scope',
                 'starting-style',
             ],
-            explode('/', AtRule::BLOCK_RULES)
+            AtRule::BLOCK_RULES
         );
     }
 }
