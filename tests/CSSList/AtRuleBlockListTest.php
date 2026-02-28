@@ -51,6 +51,24 @@ final class AtRuleBlockListTest extends TestCase
             'container' => [
                 '@container (min-width: 60rem) { .items { background: blue; } }',
             ],
+            'layer named' => [
+                '@layer theme { .button { color: blue; } }',
+            ],
+            'layer anonymous' => [
+                '@layer { .card { padding: 1rem; } }',
+            ],
+            'scope with selector' => [
+                '@scope (.card) { .title { font-size: 2rem; } }',
+            ],
+            'scope root only' => [
+                '@scope { .content { margin: 0; } }',
+            ],
+            'scope with limit' => [
+                '@scope (.article-body) to (figure) { h2 { color: red; } }',
+            ],
+            'starting-style' => [
+                '@starting-style { .dialog { opacity: 0; transform: translateY(-10px); } }',
+            ],
         ];
     }
 
@@ -93,5 +111,111 @@ final class AtRuleBlockListTest extends TestCase
         $contents = (new Parser($css, Settings::create()->beStrict()))->parse()->getContents();
 
         self::assertNotEmpty($contents, 'Failing CSS: `' . $css . '`');
+    }
+
+    /**
+     * @return array<string, array{0: string, 1: string, 2: string, 3: int}>
+     */
+    public static function provideAtRuleParsingData(): array
+    {
+        return [
+            'layer with named argument' => [
+                '@layer theme { .button { color: blue; } }',
+                'layer',
+                'theme',
+                1,
+            ],
+            'layer without arguments' => [
+                '@layer { .card { padding: 1rem; } }',
+                'layer',
+                '',
+                1,
+            ],
+            'scope with selector' => [
+                '@scope (.card) { .title { font-size: 2rem; } }',
+                'scope',
+                '(.card)',
+                1,
+            ],
+            'scope without selector' => [
+                '@scope { .content { margin: 0; } }',
+                'scope',
+                '',
+                1,
+            ],
+            'scope with limit' => [
+                '@scope (.article-body) to (figure) { h2 { color: red; } }',
+                'scope',
+                '(.article-body) to (figure)',
+                1,
+            ],
+            'starting-style' => [
+                '@starting-style { .dialog { opacity: 0; transform: translateY(-10px); } }',
+                'starting-style',
+                '',
+                1,
+            ],
+        ];
+    }
+
+    /**
+     * @return array<string, array{0: string, 1: list<string>}>
+     */
+    public static function provideAtRuleRenderingData(): array
+    {
+        return [
+            'layer with named argument' => [
+                '@layer theme { .button { color: blue; } }',
+                ['@layer theme', '.button', 'color: blue'],
+            ],
+            'scope with selector' => [
+                '@scope (.card) { .title { font-size: 2rem; } }',
+                ['@scope (.card)', '.title', 'font-size: 2rem'],
+            ],
+            'scope with limit' => [
+                '@scope (.article-body) to (figure) { h2 { color: red; } }',
+                ['@scope (.article-body) to (figure)', 'h2', 'color: red'],
+            ],
+            'starting-style' => [
+                '@starting-style { .dialog { opacity: 0; } }',
+                ['@starting-style', '.dialog', 'opacity: 0'],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideAtRuleParsingData
+     */
+    public function parsesAtRuleBlockList(
+        string $css,
+        string $expectedName,
+        string $expectedArgs,
+        int $expectedContentCount
+    ): void {
+        $contents = (new Parser($css))->parse()->getContents();
+        $atRuleBlockList = $contents[0];
+
+        self::assertInstanceOf(AtRuleBlockList::class, $atRuleBlockList);
+        self::assertSame($expectedName, $atRuleBlockList->atRuleName());
+        self::assertSame($expectedArgs, $atRuleBlockList->atRuleArgs());
+        self::assertCount($expectedContentCount, $atRuleBlockList->getContents());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideAtRuleRenderingData
+     *
+     * @param list<string> $expectedSubstrings
+     */
+    public function rendersAtRuleBlockListCorrectly(string $css, array $expectedSubstrings): void
+    {
+        $rendered = (new Parser($css))->parse()->render();
+
+        foreach ($expectedSubstrings as $expected) {
+            self::assertStringContainsString($expected, $rendered);
+        }
     }
 }

@@ -18,7 +18,17 @@ final class AtRuleTest extends TestCase
     public function blockRulesConstantIsCorrect(): void
     {
         self::assertEqualsCanonicalizing(
-            ['media', 'document', 'supports', 'region-style', 'font-feature-values', 'container'],
+            [
+                'media',
+                'document',
+                'supports',
+                'region-style',
+                'font-feature-values',
+                'container',
+                'layer',
+                'scope',
+                'starting-style',
+            ],
             explode('/', AtRule::BLOCK_RULES)
         );
     }
