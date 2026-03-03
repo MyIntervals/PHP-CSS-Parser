@@ -20,6 +20,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Avoid double autoloading of class aliases (#1552)
+
 ### Documentation
 
 ## 9.2.0: New features and deprecations
