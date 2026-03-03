@@ -10,13 +10,21 @@ Please also have a look at our
 
 ### Added
 
-- Add support for modern CSS at-rules: `@layer`, `@scope`, and `@starting-style` (#1549)
-
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+### Documentation
+
+## 9.3.0: Support for modern CSS at-rules and autoloading bugfix
+
+### Added
+
+- Add support for modern CSS at-rules: `@layer`, `@scope`, and `@starting-style` (#1549)
 
 ### Fixed
 
