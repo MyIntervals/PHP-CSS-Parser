@@ -8,7 +8,6 @@ parameters:
 
   paths:
     - %currentWorkingDirectory%/bin/
-    - %currentWorkingDirectory%/class-aliases/
     - %currentWorkingDirectory%/src/
     - %currentWorkingDirectory%/tests/
 
