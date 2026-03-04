@@ -25,22 +25,10 @@ parameters:
 			path: ../src/Parsing/ParserState.php
 
 		-
-			message: '#^Negated boolean expression is always true\.$#'
-			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: ../src/Rule/Rule.php
-
-		-
 			message: '#^Parameters should have "string" types as the only types passed to this method$#'
 			identifier: typePerfect.narrowPublicClassMethodParamType
 			count: 1
 			path: ../src/RuleSet/DeclarationBlock.php
-
-		-
-			message: '#^Negated boolean expression is always true\.$#'
-			identifier: booleanNot.alwaysTrue
-			count: 1
-			path: ../src/RuleSet/RuleContainer.php
 
 		-
 			message: '#^Parameter \#2 \$arguments of class Sabberworm\\CSS\\Value\\CSSFunction constructor expects array\<Sabberworm\\CSS\\Value\\Value\|string\>\|Sabberworm\\CSS\\Value\\RuleValueList, Sabberworm\\CSS\\Value\\Value\|string given\.$#'
