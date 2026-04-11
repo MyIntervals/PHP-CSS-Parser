@@ -14,6 +14,7 @@ use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
+use Sabberworm\CSS\ShortClassNameProvider;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Value;
 
@@ -28,6 +29,7 @@ class Declaration implements Commentable, CSSElement, Positionable
 {
     use CommentContainer;
     use Position;
+    use ShortClassNameProvider;
 
     /**
      * @var non-empty-string
@@ -226,6 +228,13 @@ class Declaration implements Commentable, CSSElement, Positionable
      */
     public function getArrayRepresentation(): array
     {
-        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
+        return [
+            'class' => $this->getShortClassName(),
+            'propertyName' => $this->propertyName,
+            // We're using the term "property value" here to match the wording used in the specs:
+            // https://www.w3.org/TR/CSS22/syndata.html#declaration
+            'propertyValue' => $this->value,
+            'important' => $this->isImportant,
+        ];
     }
 }
