@@ -14,6 +14,8 @@ Please also have a look at our
 
 ### Deprecated
 
+- Deprecate support for PHP 7.2 and 7.3 (#1565)  
+
 ### Removed
 
 ### Fixed
