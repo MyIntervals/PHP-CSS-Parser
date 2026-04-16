@@ -96,9 +96,9 @@
         "check:tests": [
             "@check:tests:unit"
         ],
-        "check:tests:coverage": "phpunit --do-not-cache-result --coverage-clover=coverage.xml",
-        "check:tests:sof": "phpunit --stop-on-failure --do-not-cache-result",
-        "check:tests:unit": "phpunit --do-not-cache-result",
+        "check:tests:coverage": "phpunit --config=./Build/phpunit/config.xml --do-not-cache-result --coverage-clover=coverage.xml",
+        "check:tests:sof": "phpunit --stop-on-failure --config=./Build/phpunit/config.xml --do-not-cache-result",
+        "check:tests:unit": "phpunit --config=./Build/phpunit/config.xml --do-not-cache-result",
         "fix": [
             "@fix:php"
         ],
