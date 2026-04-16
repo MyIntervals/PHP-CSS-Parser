@@ -90,7 +90,7 @@ jobs:
                   composer show;
 
             - name: Run Tests
-              run: ./vendor/bin/phpunit
+              run: composer check:tests:unit
 
     static-analysis:
         name: Static Analysis
