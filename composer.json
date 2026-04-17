@@ -80,10 +80,10 @@
         "check:dynamic": [
             "@check:tests"
         ],
-        "check:php:codesniffer": "phpcs --standard=./Build/phpcs/config.xml Build bin config src tests",
-        "check:php:fixer": "\"./.phive/php-cs-fixer\" --config=./Build/php-cs-fixer/config.php fix --dry-run -v --show-progress=dots --diff Build bin config src tests",
-        "check:php:lint": "parallel-lint bin config src tests",
-        "check:php:rector": "rector process --no-progress-bar --dry-run --config=config/rector.php",
+        "check:php:codesniffer": "phpcs --standard=./Build/phpcs/config.xml Build bin src tests",
+        "check:php:fixer": "\"./.phive/php-cs-fixer\" --config=./Build/php-cs-fixer/config.php fix --dry-run -v --show-progress=dots --diff Build bin src tests",
+        "check:php:lint": "parallel-lint Build bin src tests",
+        "check:php:rector": "rector process --no-progress-bar --dry-run --config=./Build/rector/config.php",
         "check:php:stan": "phpstan --no-progress --configuration=./Build/phpstan/phpstan.neon",
         "check:static": [
             "@check:composer:normalize",
@@ -109,9 +109,9 @@
             "@fix:php:codesniffer",
             "@fix:php:fixer"
         ],
-        "fix:php:codesniffer": "phpcbf --standard=./Build/phpcs/config.xml Build bin config src tests",
-        "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=./Build/php-cs-fixer/config.php fix Build bin config src tests",
-        "fix:php:rector": "rector process --config=config/rector.php",
+        "fix:php:codesniffer": "phpcbf --standard=./Build/phpcs/config.xml Build bin src tests",
+        "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=./Build/php-cs-fixer/config.php fix Build bin src tests",
+        "fix:php:rector": "rector process --config=./Build/rector/config.php",
         "phpstan:baseline": "phpstan --configuration=./Build/phpstan/phpstan.neon --generate-baseline=./Build/phpstan/phpstan-baseline.neon --allow-empty-baseline",
         "phpstan:clearcache": "phpstan clear-result-cache --configuration=./Build/phpstan/phpstan.neon"
     },
