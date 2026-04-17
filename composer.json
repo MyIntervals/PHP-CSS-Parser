@@ -84,7 +84,7 @@
         "check:php:fixer": "\"./.phive/php-cs-fixer\" --config=./Build/php-cs-fixer/config.php fix --dry-run -v --show-progress=dots --diff Build bin config src tests",
         "check:php:lint": "parallel-lint bin config src tests",
         "check:php:rector": "rector process --no-progress-bar --dry-run --config=config/rector.php",
-        "check:php:stan": "phpstan --no-progress --configuration=config/phpstan.neon",
+        "check:php:stan": "phpstan --no-progress --configuration=./Build/phpstan/phpstan.neon",
         "check:static": [
             "@check:composer:normalize",
             "@check:php:fixer",
@@ -112,8 +112,8 @@
         "fix:php:codesniffer": "phpcbf --standard=config/phpcs.xml bin config src tests",
         "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=./Build/php-cs-fixer/config.php fix Build bin config src tests",
         "fix:php:rector": "rector process --config=config/rector.php",
-        "phpstan:baseline": "phpstan --configuration=config/phpstan.neon --generate-baseline=config/phpstan-baseline.neon --allow-empty-baseline",
-        "phpstan:clearcache": "phpstan clear-result-cache"
+        "phpstan:baseline": "phpstan --configuration=./Build/phpstan/phpstan.neon --generate-baseline=./Build/phpstan/phpstan-baseline.neon --allow-empty-baseline",
+        "phpstan:clearcache": "phpstan clear-result-cache --configuration=./Build/phpstan/phpstan.neon"
     },
     "scripts-descriptions": {
         "check": "Runs all dynamic and static code checks.",
