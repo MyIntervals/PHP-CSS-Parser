@@ -21,4 +21,4 @@ parameters:
   ignoreErrors:
     -
       message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) .* will always evaluate to#'
-      path: '../tests/'
+      path: '%currentWorkingDirectory%/tests/'
