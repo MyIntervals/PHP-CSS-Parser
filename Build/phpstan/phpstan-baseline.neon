@@ -7,28 +7,10 @@ parameters:
 			path: ../../src/CSSList/CSSList.php
 
 		-
-			message: '#^Parameters should have "Sabberworm\\CSS\\CSSList\\CSSListItem\|array" types as the only types passed to this method$#'
-			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 1
-			path: ../../src/CSSList/CSSList.php
-
-		-
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
 			count: 1
 			path: ../../src/Parsing/ParserState.php
-
-		-
-			message: '#^Parameters should have "string\|int\|null" types as the only types passed to this method$#'
-			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 1
-			path: ../../src/Parsing/ParserState.php
-
-		-
-			message: '#^Parameters should have "string" types as the only types passed to this method$#'
-			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 1
-			path: ../../src/RuleSet/DeclarationBlock.php
 
 		-
 			message: '#^Parameter \#2 \$arguments of class Sabberworm\\CSS\\Value\\CSSFunction constructor expects array\<Sabberworm\\CSS\\Value\\Value\|string\>\|Sabberworm\\CSS\\Value\\RuleValueList, Sabberworm\\CSS\\Value\\Value\|string given\.$#'
@@ -47,12 +29,6 @@ parameters:
 			identifier: method.nonObject
 			count: 3
 			path: ../../src/Value/Color.php
-
-		-
-			message: '#^Parameters should have "float" types as the only types passed to this method$#'
-			identifier: typePerfect.narrowPublicClassMethodParamType
-			count: 1
-			path: ../../src/Value/Size.php
 
 		-
 			message: '#^Strict comparison using \!\=\= between non\-empty\-string and null will always evaluate to true\.$#'
