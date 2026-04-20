@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit\Value;
 
 use PHPUnit\Framework\TestCase;
-use Sabberworm\CSS\Tests\Unit\Value\Fixtures\ConcreteRuleValueList;
+use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Size;
 
 /**
@@ -20,11 +20,11 @@ final class RuleValueListTest extends TestCase
      */
     public function getArrayRepresentationIncludesClassName(): void
     {
-        $subject = new ConcreteRuleValueList();
+        $subject = new RuleValueList();
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertSame('ConcreteRuleValueList', $result['class']);
+        self::assertSame('RuleValueList', $result['class']);
     }
 
     /**
@@ -32,7 +32,7 @@ final class RuleValueListTest extends TestCase
      */
     public function getArrayRepresentationIncludesStringComponent(): void
     {
-        $subject = new ConcreteRuleValueList();
+        $subject = new RuleValueList();
         $subject->addListComponent('Helvetica');
 
         $result = $subject->getArrayRepresentation();
@@ -45,7 +45,7 @@ final class RuleValueListTest extends TestCase
      */
     public function getArrayRepresentationIncludesValueComponent(): void
     {
-        $subject = new ConcreteRuleValueList();
+        $subject = new RuleValueList();
         $subject->addListComponent(new Size(1));
 
         $result = $subject->getArrayRepresentation();
@@ -58,7 +58,7 @@ final class RuleValueListTest extends TestCase
      */
     public function getArrayRepresentationIncludesMultipleMixedComponents(): void
     {
-        $subject = new ConcreteRuleValueList();
+        $subject = new RuleValueList();
         $subject->addListComponent(new Size(1));
         $subject->addListComponent('+');
         $subject->addListComponent(new Size(2));
@@ -76,7 +76,7 @@ final class RuleValueListTest extends TestCase
     public function getArrayRepresentationIncludesSeparator(): void
     {
         $separator = ', ';
-        $subject = new ConcreteRuleValueList($separator);
+        $subject = new RuleValueList($separator);
 
         $result = $subject->getArrayRepresentation();
 
