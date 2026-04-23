@@ -76,22 +76,22 @@
             "@check:static",
             "@check:dynamic"
         ],
-        "check:composer:normalize": "\"./.phive/composer-normalize\" --dry-run",
+        "check:composer:normalize": "\"./.phive/composer-normalize\" --no-check-lock --dry-run",
         "check:dynamic": [
             "@check:tests"
         ],
-        "check:php:codesniffer": "phpcs --standard=./Build/phpcs/config.xml Build bin src tests",
-        "check:php:fixer": "\"./.phive/php-cs-fixer\" --config=./Build/php-cs-fixer/config.php fix --dry-run -v --show-progress=dots --diff Build bin src tests",
+        "check:php:cs-fixer": "\"./.phive/php-cs-fixer\" fix --config=./Build/php-cs-fixer/config.php -v --dry-run --diff --show-progress=dots Build bin src tests",
         "check:php:lint": "parallel-lint Build bin src tests",
         "check:php:rector": "rector process --no-progress-bar --dry-run --config=./Build/rector/config.php",
-        "check:php:stan": "phpstan --no-progress --configuration=./Build/phpstan/phpstan.neon",
+        "check:php:sniff": "phpcs --standard=./Build/phpcs/config.xml Build bin src tests",
+        "check:php:stan": "phpstan --no-progress -v --configuration=./Build/phpstan/phpstan.neon",
         "check:static": [
             "@check:composer:normalize",
-            "@check:php:fixer",
-            "@check:php:codesniffer",
             "@check:php:lint",
             "@check:php:rector",
-            "@check:php:stan"
+            "@check:php:sniff",
+            "@check:php:stan",
+            "@check:php:cs-fixer"
         ],
         "check:tests": [
             "@check:tests:unit"
@@ -106,35 +106,35 @@
         "fix:php": [
             "@fix:composer:normalize",
             "@fix:php:rector",
-            "@fix:php:codesniffer",
-            "@fix:php:fixer"
+            "@fix:php:sniff",
+            "@fix:php:cs-fixer"
         ],
-        "fix:php:codesniffer": "phpcbf --standard=./Build/phpcs/config.xml Build bin src tests",
-        "fix:php:fixer": "\"./.phive/php-cs-fixer\" --config=./Build/php-cs-fixer/config.php fix Build bin src tests",
+        "fix:php:cs-fixer": "\"./.phive/php-cs-fixer\" fix --config=./Build/php-cs-fixer/config.php Build bin src tests",
         "fix:php:rector": "rector process --config=./Build/rector/config.php",
-        "phpstan:baseline": "phpstan --configuration=./Build/phpstan/phpstan.neon --generate-baseline=./Build/phpstan/phpstan-baseline.neon --allow-empty-baseline",
+        "fix:php:sniff": "phpcbf --standard=./Build/phpcs/config.xml Build bin src tests",
+        "phpstan:baseline": "phpstan --configuration=./Build/phpstan/phpstan.neon --allow-empty-baseline --generate-baseline=./Build/phpstan/phpstan-baseline.neon",
         "phpstan:clearcache": "phpstan clear-result-cache --configuration=./Build/phpstan/phpstan.neon"
     },
     "scripts-descriptions": {
         "check": "Runs all dynamic and static code checks.",
-        "check:composer:normalize": "Checks the formatting and structure of the composer.json.",
+        "check:composer:normalize": "Checks the composer.json.",
         "check:dynamic": "Runs all dynamic code checks (i.e., currently, the unit tests).",
-        "check:php:codesniffer": "Checks the code style with PHP_CodeSniffer.",
-        "check:php:fixer": "Checks the code style with PHP CS Fixer.",
-        "check:php:lint": "Checks the syntax of the PHP code.",
-        "check:php:rector": "Checks the code for possible code updates and refactoring.",
-        "check:php:stan": "Checks the types with PHPStan.",
-        "check:static": "Runs all static code analysis checks for the code.",
+        "check:php:cs-fixer": "Checks the code style with the PHP Coding Standards Fixer (PHP-CS-Fixer).",
+        "check:php:lint": "Lints the PHP files for syntax errors.",
+        "check:php:rector": "Checks for code for changes by Rector.",
+        "check:php:sniff": "Checks the code style with PHP_CodeSniffer (PHPCS).",
+        "check:php:stan": "Checks the PHP types using PHPStan.",
+        "check:static": "Runs all static code checks (syntax, style, types).",
         "check:tests": "Runs all dynamic tests (i.e., currently, the unit tests).",
         "check:tests:coverage": "Runs the unit tests with code coverage.",
         "check:tests:sof": "Runs the unit tests and stops at the first failure.",
-        "check:tests:unit": "Runs all unit tests.",
-        "fix": "Runs all fixers",
-        "fix:composer:normalize": "Reformats and sorts the composer.json file.",
-        "fix:php": "Autofixes all autofixable issues in the PHP code.",
-        "fix:php:codesniffer": "Reformats the code with PHP_CodeSniffer.",
-        "fix:php:fixer": "Fixes autofixable issues found by PHP CS Fixer.",
-        "fix:php:rector": "Fixes autofixable issues found by Rector.",
+        "check:tests:unit": "Runs the unit tests.",
+        "fix": "Runs all automatic code style fixes.",
+        "fix:composer:normalize": "Normalizes composer.json file content.",
+        "fix:php": "Runs all fixers for the PHP code.",
+        "fix:php:cs-fixer": "Fixes the code style with PHP-CS-Fixer.",
+        "fix:php:rector": "Updates the code with Rector.",
+        "fix:php:sniff": "Fixes the code style with PHP_CodeSniffer.",
         "phpstan:baseline": "Updates the PHPStan baseline file to match the code.",
         "phpstan:clearcache": "Clears the PHPStan cache."
     }
