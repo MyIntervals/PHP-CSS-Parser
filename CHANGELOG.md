@@ -14,7 +14,7 @@ Please also have a look at our
 
 ### Deprecated
 
-- Deprecate support for PHP 7.2 and 7.3 (#1565)  
+- Deprecate support for PHP 7.2 and 7.3 (#1565)
 
 ### Removed
 
@@ -26,7 +26,8 @@ Please also have a look at our
 
 ### Added
 
-- Add support for modern CSS at-rules: `@layer`, `@scope`, and `@starting-style` (#1549)
+- Add support for modern CSS at-rules: `@layer`, `@scope`, and
+  `@starting-style` (#1549)
 
 ### Fixed
 

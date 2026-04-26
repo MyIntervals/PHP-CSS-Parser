@@ -97,9 +97,9 @@ final class SelectorTest extends TestCase
             'escaped backslash before escaped quote' => ['a[data-test="test\\\\\\"value"]'],
             'triple backslash before quote' => ['a[data-test="test\\\\\\""]'],
             'escaped single quotes in selector itself, with other escaped characters'
-                => ['.before\\:content-\\[\\\'\\\'\\]:before'],
+            => ['.before\\:content-\\[\\\'\\\'\\]:before'],
             'escaped double quotes in selector itself, with other escaped characters'
-                => ['.before\\:content-\\[\\"\\"\\]:before'],
+            => ['.before\\:content-\\[\\"\\"\\]:before'],
         ];
     }
 
