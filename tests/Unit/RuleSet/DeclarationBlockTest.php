@@ -294,7 +294,7 @@ final class DeclarationBlockTest extends TestCase
 
         $parserState = new ParserState($selector . ' {}', Settings::create()->beStrict());
 
-        $subject = DeclarationBlock::parse($parserState);
+        DeclarationBlock::parse($parserState);
     }
 
     /**
@@ -479,7 +479,6 @@ final class DeclarationBlockTest extends TestCase
 
         $subject->setSelectors($selector);
 
-        $result = $subject->getSelectors();
         self::assertSame([$selector], self::getSelectorsAsStrings($subject));
     }
 
@@ -500,7 +499,6 @@ final class DeclarationBlockTest extends TestCase
 
         $subject->setSelectors($joinedSelectors);
 
-        $result = $subject->getSelectors();
         self::assertSame([$firstSelector, $secondSelector], self::getSelectorsAsStrings($subject));
     }
 

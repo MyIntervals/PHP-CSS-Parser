@@ -341,7 +341,6 @@ body {color: green;}',
         $document = self::parsedStructureForFile('values');
         $declarationBlocks = $document->getAllDeclarationBlocks();
         $headerBlock = $declarationBlocks[0];
-        $bodyBlock = $declarationBlocks[1];
         $backgroundHeaderDeclarations = $headerBlock->getDeclarations('background-');
         self::assertCount(2, $backgroundHeaderDeclarations);
         self::assertSame('background-color', $backgroundHeaderDeclarations[0]->getPropertyName());
@@ -1128,7 +1127,7 @@ body {background-color: red;}';
     {
         $this->expectException(UnexpectedTokenException::class);
 
-        $document = self::parsedStructureForFile('ms-filter', Settings::create()->beStrict());
+        self::parsedStructureForFile('ms-filter', Settings::create()->beStrict());
     }
 
     /**
