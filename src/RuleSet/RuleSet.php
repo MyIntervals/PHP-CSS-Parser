@@ -14,6 +14,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Property\Declaration;
+use Sabberworm\CSS\ShortClassNameProvider;
 
 /**
  * This class is a container for individual `Declaration`s.
@@ -31,6 +32,7 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, DeclarationList
     use CommentContainer;
     use LegacyDeclarationListMethods;
     use Position;
+    use ShortClassNameProvider;
 
     /**
      * the declarations in this rule set, using the property name as the key,
@@ -344,7 +346,20 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, DeclarationList
      */
     public function getArrayRepresentation(): array
     {
-        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
+        $declarationsArrayRepresentation = [];
+        foreach ($this->declarations as $propertyName => $declarationForOneProperty) {
+            $declarationsArrayRepresentation[$propertyName] = \array_map(
+                function (Declaration $declaration): array {
+                    return $declaration->getArrayRepresentation();
+                },
+                $declarationForOneProperty
+            );
+        }
+
+        return [
+            'class' => $this->getShortClassName(),
+            'declarations' => $declarationsArrayRepresentation,
+        ];
     }
 
     /**

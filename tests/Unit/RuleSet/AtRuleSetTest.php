@@ -6,6 +6,7 @@ namespace Sabberworm\CSS\Tests\Unit\RuleSet;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSList\CSSListItem;
+use Sabberworm\CSS\Property\Declaration;
 use Sabberworm\CSS\RuleSet\AtRuleSet;
 
 /**
@@ -34,10 +35,46 @@ final class AtRuleSetTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationThrowsException(): void
+    public function getArrayRepresentationIncludesClassName(): void
     {
-        $this->expectException(\BadMethodCallException::class);
+        $subject = new AtRuleSet('supports');
 
-        $this->subject->getArrayRepresentation();
+        $result = $subject->getArrayRepresentation();
+
+        self::assertSame('AtRuleSet', $result['class']);
+    }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationIncludesDeclarations(): void
+    {
+        $subject = new AtRuleSet('supports');
+        $subject->addDeclaration(new Declaration('display'));
+        $subject->addDeclaration(new Declaration('transform-origin'));
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertSame(
+            [
+                'display' => [
+                    [
+                        'class' => 'Declaration',
+                        'propertyName' => 'display',
+                        'propertyValue' => null,
+                        'important' => false,
+                    ],
+                ],
+                'transform-origin' => [
+                    [
+                        'class' => 'Declaration',
+                        'propertyName' => 'transform-origin',
+                        'propertyValue' => null,
+                        'important' => false,
+                    ],
+                ],
+            ],
+            $result['declarations']
+        );
     }
 }
