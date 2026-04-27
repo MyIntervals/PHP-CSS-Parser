@@ -211,22 +211,27 @@ class Selector implements Renderable
      */
     public function getSpecificity(): int
     {
-        return \array_sum(\array_map(
-            static function (Component $component): int {
-                return $component->getSpecificity();
-            },
-            $this->components
-        ));
+        return \array_sum(
+            \array_map(
+                static function (Component $component): int {
+                    return $component->getSpecificity();
+                },
+                $this->components
+            )
+        );
     }
 
     public function render(OutputFormat $outputFormat): string
     {
-        return \implode('', \array_map(
-            static function (Component $component) use ($outputFormat): string {
-                return $component->render($outputFormat);
-            },
-            $this->components
-        ));
+        return \implode(
+            '',
+            \array_map(
+                static function (Component $component) use ($outputFormat): string {
+                    return $component->render($outputFormat);
+                },
+                $this->components
+            )
+        );
     }
 
     /**
