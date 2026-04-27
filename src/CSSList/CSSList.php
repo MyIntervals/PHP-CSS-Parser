@@ -362,7 +362,7 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
         if (!\is_array($selectors)) {
             $selectors = \explode(',', $selectors);
         }
-        foreach ($selectors as $key => &$selector) {
+        foreach ($selectors as &$selector) {
             if (!($selector instanceof Selector)) {
                 if (!Selector::isValid($selector)) {
                     throw new UnexpectedTokenException(

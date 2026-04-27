@@ -110,7 +110,6 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, DeclarationList
         $position = \count($this->declarations[$propertyName]);
 
         if ($sibling !== null) {
-            $siblingIsInSet = false;
             $siblingPosition = \array_search($sibling, $this->declarations[$propertyName], true);
             if ($siblingPosition !== false) {
                 $siblingIsInSet = true;

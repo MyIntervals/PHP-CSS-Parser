@@ -147,7 +147,6 @@ abstract class Value implements CSSElement, Positionable
      */
     public static function parsePrimitiveValue(ParserState $parserState)
     {
-        $value = null;
         $parserState->consumeWhiteSpace();
         if (
             \is_numeric($parserState->peek())

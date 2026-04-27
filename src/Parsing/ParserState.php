@@ -119,7 +119,6 @@ class ParserState
         if ($result === null) {
             throw new UnexpectedTokenException('', $this->peek(5), 'identifier', $this->lineNumber);
         }
-        $character = null;
         while (!$this->isEnd() && ($character = $this->parseCharacter(true)) !== null) {
             if (preg_match('/[a-zA-Z0-9\\x{00A0}-\\x{FFFF}_-]/Sux', $character) !== 0) {
                 $result .= $character;
