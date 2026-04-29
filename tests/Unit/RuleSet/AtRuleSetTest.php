@@ -77,4 +77,30 @@ final class AtRuleSetTest extends TestCase
             $result['declarations']
         );
     }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationIncludesAtRuleName(): void
+    {
+        $atRuleName = 'supports';
+        $subject = new AtRuleSet($atRuleName);
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertSame($atRuleName, $result['atRuleName']);
+    }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationIncludesArguments(): void
+    {
+        $arguments = 'foo';
+        $subject = new AtRuleSet('supports', $arguments);
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertSame($arguments, $result['arguments']);
+    }
 }

@@ -65,4 +65,18 @@ class AtRuleSet extends RuleSet implements AtRule
         $result .= '}';
         return $result;
     }
+
+    /**
+     * @return array<string, bool|int|float|string|array<mixed>|null>
+     *
+     * @internal
+     */
+    public function getArrayRepresentation(): array
+    {
+        $arrayRepresentation = parent::getArrayRepresentation();
+        $arrayRepresentation['atRuleName'] = $this->type;
+        $arrayRepresentation['arguments'] = $this->arguments;
+
+        return $arrayRepresentation;
+    }
 }
