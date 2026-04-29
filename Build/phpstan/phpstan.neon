@@ -4,7 +4,7 @@ includes:
 parameters:
   phpVersion: 70200
 
-  level: 6
+  level: 7
 
   paths:
     - %currentWorkingDirectory%/bin/
