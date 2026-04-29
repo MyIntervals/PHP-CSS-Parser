@@ -347,12 +347,12 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, DeclarationList
     public function getArrayRepresentation(): array
     {
         $declarationsArrayRepresentation = [];
-        foreach ($this->declarations as $propertyName => $declarationForOneProperty) {
+        foreach ($this->declarations as $propertyName => $declarationsForOneProperty) {
             $declarationsArrayRepresentation[$propertyName] = \array_map(
                 function (Declaration $declaration): array {
                     return $declaration->getArrayRepresentation();
                 },
-                $declarationForOneProperty
+                $declarationsForOneProperty
             );
         }
 
