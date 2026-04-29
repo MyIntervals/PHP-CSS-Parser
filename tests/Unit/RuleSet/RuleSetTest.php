@@ -7,6 +7,7 @@ namespace Sabberworm\CSS\Tests\Unit\RuleSet;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\CSSList\CSSListItem;
+use Sabberworm\CSS\Property\Declaration;
 use Sabberworm\CSS\RuleSet\RuleSet;
 
 /**
@@ -83,10 +84,53 @@ final class RuleSetTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationThrowsException(): void
+    public function getArrayRepresentationIncludesClassName(): void
     {
-        $this->expectException(\BadMethodCallException::class);
+        $subject = new RuleSet();
 
-        $this->subject->getArrayRepresentation();
+        $result = $subject->getArrayRepresentation();
+
+        self::assertSame('RuleSet', $result['class']);
+    }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationIncludesDeclarations(): void
+    {
+        $subject = new RuleSet();
+        $subject->addDeclaration(new Declaration('line-height'));
+        $subject->addDeclaration(new Declaration('line-height'));
+        $subject->addDeclaration(new Declaration('color'));
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertSame(
+            [
+                'line-height' => [
+                    [
+                        'class' => 'Declaration',
+                        'propertyName' => 'line-height',
+                        'propertyValue' => null,
+                        'important' => false,
+                    ],
+                    [
+                        'class' => 'Declaration',
+                        'propertyName' => 'line-height',
+                        'propertyValue' => null,
+                        'important' => false,
+                    ],
+                ],
+                'color' => [
+                    [
+                        'class' => 'Declaration',
+                        'propertyName' => 'color',
+                        'propertyValue' => null,
+                        'important' => false,
+                    ],
+                ],
+            ],
+            $result['declarations']
+        );
     }
 }
