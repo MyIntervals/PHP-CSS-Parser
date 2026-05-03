@@ -56,14 +56,4 @@ class LineName extends ValueList
     {
         return '[' . parent::render(OutputFormat::createCompact()) . ']';
     }
-
-    /**
-     * @return array<string, bool|int|float|string|array<mixed>|null>
-     *
-     * @internal
-     */
-    public function getArrayRepresentation(): array
-    {
-        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
-    }
 }
