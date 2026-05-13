@@ -49,12 +49,6 @@ parameters:
 			path: ../../src/Value/Value.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with ''red'' and Sabberworm\\CSS\\Value\\Value will always evaluate to false\.$#'
-			identifier: staticMethod.impossibleType
-			count: 1
-			path: ../../tests/ParserTest.php
-
-		-
 			message: '#^Parameter \#1 \$value of method Sabberworm\\CSS\\Property\\Declaration\:\:setValue\(\) expects Sabberworm\\CSS\\Value\\RuleValueList\|string\|null, Sabberworm\\CSS\\Value\\Size given\.$#'
 			identifier: argument.type
 			count: 3
