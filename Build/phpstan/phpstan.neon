@@ -11,6 +11,8 @@ parameters:
     - %currentWorkingDirectory%/src/
     - %currentWorkingDirectory%/tests/
 
+  treatPhpDocTypesAsCertain: false
+
   type_perfect:
     no_mixed_property: true
     no_mixed_caller: true
