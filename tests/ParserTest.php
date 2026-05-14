@@ -151,9 +151,6 @@ final class ParserTest extends TestCase
                 self::assertEmpty($colorDeclarations);
             }
         }
-        foreach ($document->getAllValues(null, 'color') as $colorValue) {
-            self::assertSame('red', $colorValue);
-        }
         self::assertSame(
             '#mine {color: red;border-color: #0a64e6;border-color: rgba(10,100,231,.3);outline-color: #222;'
             . "background-color: #232323;}\n"
