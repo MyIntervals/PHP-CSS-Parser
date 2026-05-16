@@ -295,8 +295,8 @@ trait DeclarationListTests
         foreach ($initialPropertyNamesSets as $setName => $data) {
             $initialPropertyNames = $data[0];
             for ($index = 0; $index < \count($initialPropertyNames); ++$index) {
-                $initialPropertyNamesAndIndexSets[$setName . ', index ' . $index] =
-                    [$initialPropertyNames, $index];
+                $initialPropertyNamesAndIndexSets[$setName . ', index ' . $index]
+                    = [$initialPropertyNames, $index];
             }
         }
 

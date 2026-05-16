@@ -138,8 +138,8 @@ class Color extends CSSFunction
 
             // With a `var` argument, the function can have fewer arguments.
             // And as of CSS Color Module Level 4, the alpha argument is optional.
-            $canCloseNow =
-                $containsVar
+            $canCloseNow
+                = $containsVar
                 || ($mayHaveOptionalAlpha && $argumentIndex >= $expectedArgumentCount - 2);
             if ($canCloseNow && $parserState->comes(')')) {
                 break;
