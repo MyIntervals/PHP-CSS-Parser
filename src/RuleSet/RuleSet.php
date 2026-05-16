@@ -136,8 +136,8 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, DeclarationList
                 foreach ($this->declarations as $declarationsForAProperty) {
                     foreach ($declarationsForAProperty as $declaration) {
                         if (
-                            $declaration->getLineNumber() === $siblingLineNumber &&
-                            $declaration->getColumnNumber() >= $siblingColumnNumber
+                            $declaration->getLineNumber() === $siblingLineNumber
+                            && $declaration->getColumnNumber() >= $siblingColumnNumber
                         ) {
                             $declaration->setPosition($siblingLineNumber, $declaration->getColumnNumber() + 1);
                         }

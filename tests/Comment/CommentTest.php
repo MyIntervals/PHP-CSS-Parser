@@ -59,8 +59,8 @@ final class CommentTest extends TestCase
 
         $expected1 = "\n"
             . "@import url(\"some/url.css\") screen;\n\n"
-            . ".foo, #bar {\n" .
-            "\tbackground-color: #000;\n"
+            . ".foo, #bar {\n"
+            . "\tbackground-color: #000;\n"
             . "}\n\n"
             . "@media screen {\n"
             . "\t#foo.bar {\n"
