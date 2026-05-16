@@ -9,6 +9,12 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 
+/**
+ * A name for a named CSS grid line.
+ *
+ * @see https://www.w3.org/TR/css-grid-1/#line-name
+ * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Named_grid_lines
+ */
 class LineName extends ValueList
 {
     /**
