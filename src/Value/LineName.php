@@ -18,7 +18,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 class LineName extends ValueList
 {
     /**
-     * @param array<Value|string> $components
+     * @param array<string> $components
      * @param int<1, max>|null $lineNumber
      */
     public function __construct(array $components = [], ?int $lineNumber = null)
