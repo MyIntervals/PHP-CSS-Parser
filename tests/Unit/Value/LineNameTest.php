@@ -6,7 +6,6 @@ namespace Sabberworm\CSS\Tests\Unit\Value;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Value\LineName;
-use Sabberworm\CSS\Value\Size;
 
 /**
  * @covers \Sabberworm\CSS\Value\LineName
@@ -30,40 +29,31 @@ final class LineNameTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationIncludesStringComponent(): void
+    public function getArrayRepresentationCanIncludeOneStringComponent(): void
     {
-        $subject = new LineName(['Helvetica']);
+        $name = 'main-start';
+        $subject = new LineName([$name]);
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertSame('Helvetica', $result['components'][0]['value']);
+        self::assertSame($name, $result['components'][0]['value']);
     }
 
     /**
      * @test
      */
-    public function getArrayRepresentationIncludesValueComponent(): void
+    public function getArrayRepresentationCanIncludesMultipleStringComponents(): void
     {
-        $subject = new LineName([new Size(1)]);
+        $name1 = 'main-start';
+        $name2 = 'main-end';
+        $subject = new LineName([$name1, $name2]);
 
         $result = $subject->getArrayRepresentation();
 
-        self::assertSame('Size', $result['components'][0]['class']);
+        self::assertSame($name1, $result['components'][0]['value']);
+        self::assertSame($name2, $result['components'][1]['value']);
     }
 
-    /**
-     * @test
-     */
-    public function getArrayRepresentationIncludesMultipleMixedComponents(): void
-    {
-        $subject = new LineName([new Size(1), '+', new Size(2)]);
-
-        $result = $subject->getArrayRepresentation();
-
-        self::assertSame('Size', $result['components'][0]['class']);
-        self::assertSame('+', $result['components'][1]['value']);
-        self::assertSame('Size', $result['components'][2]['class']);
-    }
 
     /**
      * @test
