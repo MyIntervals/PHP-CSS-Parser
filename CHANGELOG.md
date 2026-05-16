@@ -20,6 +20,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Only allow strings as `LineName` components (#1590)
+
 ### Documentation
 
 ## 9.3.0: Support for modern CSS at-rules and autoloading bugfix
