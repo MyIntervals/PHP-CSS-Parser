@@ -17,12 +17,53 @@ final class LineNameTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationThrowsException(): void
+    public function getArrayRepresentationIncludesClassName(): void
     {
-        $this->expectException(\BadMethodCallException::class);
-
         $subject = new LineName();
 
-        $subject->getArrayRepresentation();
+        $result = $subject->getArrayRepresentation();
+
+        self::assertSame('LineName', $result['class']);
+    }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationCanIncludeOneStringComponent(): void
+    {
+        $name = 'main-start';
+        $subject = new LineName([$name]);
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertSame($name, $result['components'][0]['value']);
+    }
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationCanIncludeMultipleStringComponents(): void
+    {
+        $name1 = 'main-start';
+        $name2 = 'main-end';
+        $subject = new LineName([$name1, $name2]);
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertSame($name1, $result['components'][0]['value']);
+        self::assertSame($name2, $result['components'][1]['value']);
+    }
+
+
+    /**
+     * @test
+     */
+    public function getArrayRepresentationIncludesSpaceSeparator(): void
+    {
+        $subject = new LineName();
+
+        $result = $subject->getArrayRepresentation();
+
+        self::assertSame(' ', $result['separator']);
     }
 }
