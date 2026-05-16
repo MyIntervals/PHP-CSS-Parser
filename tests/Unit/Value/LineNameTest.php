@@ -42,7 +42,7 @@ final class LineNameTest extends TestCase
     /**
      * @test
      */
-    public function getArrayRepresentationCanIncludesMultipleStringComponents(): void
+    public function getArrayRepresentationCanIncludeMultipleStringComponents(): void
     {
         $name1 = 'main-start';
         $name2 = 'main-end';
