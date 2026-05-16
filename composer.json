@@ -113,7 +113,7 @@
         "fix:php:rector": "rector process --config=./Build/rector/config.php",
         "fix:php:sniff": "phpcbf --standard=./Build/phpcs/config.xml Build bin src tests",
         "phpstan:baseline": "phpstan --configuration=./Build/phpstan/phpstan.neon --allow-empty-baseline --generate-baseline=./Build/phpstan/phpstan-baseline.neon",
-        "phpstan:clearcache": "phpstan clear-result-cache --configuration=./Build/phpstan/phpstan.neon"
+        "phpstan:clearcache": "phpstan clear-result-cache"
     },
     "scripts-descriptions": {
         "check": "Runs all dynamic and static code checks.",
