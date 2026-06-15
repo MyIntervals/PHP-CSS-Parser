@@ -20,6 +20,7 @@ Please also have a look at our
 
 ### Fixed
 
+- Allow CSS containing only whitespace or comments (#1593)
 - Only allow strings as `LineName` components (#1590)
 
 ### Documentation
