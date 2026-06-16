@@ -1,0 +1,5 @@
+services:
+  -
+    class: \Sabberworm\CSS\PhpStan\IgnoreBooleanAlways
+    tags:
+      - phpstan.ignoreErrorExtension
