@@ -8,4 +8,5 @@
 /CONTRIBUTING.md export-ignore
 /bin/ export-ignore
 /docs/ export-ignore
+/src/PhpStan/ export-ignore
 /tests/ export-ignore

@@ -11,7 +11,8 @@ parameters:
     - %currentWorkingDirectory%/src/
     - %currentWorkingDirectory%/tests/
 
-  treatPhpDocTypesAsCertain: false
+  excludePaths:
+    - %currentWorkingDirectory%/tests/fixtures/phpstan/
 
   type_perfect:
     no_mixed_property: true
@@ -24,3 +25,9 @@ parameters:
     -
       message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) .* will always evaluate to#'
       path: '%currentWorkingDirectory%/tests/'
+
+services:
+  -
+    class: \Sabberworm\CSS\PhpStan\IgnoreBooleanAlways
+    tags:
+      - phpstan.ignoreErrorExtension
