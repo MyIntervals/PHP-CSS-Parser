@@ -14,16 +14,22 @@ Please also have a look at our
 
 ### Deprecated
 
-- Deprecate support for PHP 7.2 and 7.3 (#1565)
-
 ### Removed
+
+### Fixed
+
+### Documentation
+
+## 9.4.0: Deprecations and bugfixes
+
+### Deprecated
+
+- Deprecate support for PHP 7.2 and 7.3 (#1565)
 
 ### Fixed
 
 - Allow CSS containing only whitespace or comments (#1593)
 - Only allow strings as `LineName` components (#1590)
-
-### Documentation
 
 ## 9.3.0: Support for modern CSS at-rules and autoloading bugfix
 
