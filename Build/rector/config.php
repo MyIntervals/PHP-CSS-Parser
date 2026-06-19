@@ -27,7 +27,6 @@ return RectorConfig::configure()
         // SetList::INSTANCEOF,
         // SetList::NAMING,
         // SetList::PRIVATIZATION,
-        SetList::STRICT_BOOLEANS,
         SetList::TYPE_DECLARATION,
 
         // PHPUnit sets

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit\PhpStan;
 
 use PHPStan\Analyser\IgnoreErrorExtension;
-use PHPStan\Testing\RuleTestCase;
 use PHPStan\Rules\Classes\ImpossibleInstanceOfRule;
 use PHPStan\Rules\Rule;
 
