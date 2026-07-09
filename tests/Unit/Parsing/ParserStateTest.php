@@ -309,6 +309,10 @@ final class ParserStateTest extends TestCase
      */
     public function constructorThrowsForTextThatIsNotValidUtf8(): void
     {
+        if (\PHP_VERSION_ID < 70304) {
+            self::markTestSkipped('preg_split returns false for invalid UTF-8 since PHP 7.3.4 (https://bugs.php.net/76127)');
+        }
+
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Unexpected error');
 
