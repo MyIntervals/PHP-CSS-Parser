@@ -176,7 +176,11 @@ class ParserState
                 $codePoint = $codePoint >> 8;
             }
             /** @phpstan-ignore theCodingMachineSafe.function */
-            return \iconv('utf-32le', $this->charset, $utf32EncodedCharacter);
+            $character = \iconv('utf-32le', $this->charset, $utf32EncodedCharacter);
+            if ($character === false) {
+                throw new \RuntimeException('Unexpected error');
+            }
+            return $character;
         }
         if ($isForIdentifier) {
             $peek = \ord($this->peek());
