@@ -2,7 +2,9 @@ includes:
     - phpstan-baseline.neon
 
 parameters:
-  phpVersion: 70200
+  phpVersion:
+    min: 70200
+    max: 80500
 
   level: 6
 
