@@ -20,7 +20,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7
 
             - name: Install PHP
               uses: shivammathur/setup-php@v2
@@ -34,7 +34,7 @@ jobs:
               run: composer config --global --list
 
             - name: Cache dependencies installed with composer
-              uses: actions/cache@v5
+              uses: actions/cache@v6
               with:
                   path: ~/.cache/composer
                   key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
@@ -63,7 +63,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7
 
             - name: Install PHP
               uses: shivammathur/setup-php@v2
@@ -77,7 +77,7 @@ jobs:
               run: composer config --global --list
 
             - name: Cache dependencies installed with composer
-              uses: actions/cache@v5
+              uses: actions/cache@v6
               with:
                   path: ~/.cache/composer
                   key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
@@ -90,7 +90,7 @@ jobs:
                   composer show;
 
             - name: Run Tests
-              run: ./vendor/bin/phpunit
+              run: composer check:tests:unit
 
     static-analysis:
         name: Static Analysis
@@ -104,8 +104,8 @@ jobs:
             matrix:
                 command:
                     - composer:normalize
-                    - php:fixer
-                    - php:codesniffer
+                    - php:cs-fixer
+                    - php:sniff
                     - php:stan
                     - php:rector
                 php-version:
@@ -113,7 +113,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7
 
             - name: Install PHP
               uses: shivammathur/setup-php@v2
@@ -127,7 +127,7 @@ jobs:
               run: composer config --global --list
 
             - name: Cache dependencies installed with composer
-              uses: actions/cache@v5
+              uses: actions/cache@v6
               with:
                   path: ~/.cache/composer
                   key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}

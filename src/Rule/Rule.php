@@ -4,211 +4,22 @@ declare(strict_types=1);
 
 namespace Sabberworm\CSS\Rule;
 
-use Sabberworm\CSS\Comment\Comment;
-use Sabberworm\CSS\Comment\Commentable;
-use Sabberworm\CSS\Comment\CommentContainer;
-use Sabberworm\CSS\CSSElement;
-use Sabberworm\CSS\OutputFormat;
-use Sabberworm\CSS\Parsing\ParserState;
-use Sabberworm\CSS\Parsing\UnexpectedEOFException;
-use Sabberworm\CSS\Parsing\UnexpectedTokenException;
-use Sabberworm\CSS\Position\Position;
-use Sabberworm\CSS\Position\Positionable;
-use Sabberworm\CSS\Value\RuleValueList;
-use Sabberworm\CSS\Value\Value;
+use Sabberworm\CSS\Property\Declaration;
 
-/**
- * `Rule`s just have a string key (the rule) and a 'Value'.
- *
- * In CSS, `Rule`s are expressed as follows: “key: value[0][0] value[0][1], value[1][0] value[1][1];”
- */
-class Rule implements Commentable, CSSElement, Positionable
-{
-    use CommentContainer;
-    use Position;
-
-    /**
-     * @var non-empty-string
-     */
-    private $rule;
-
-    /**
-     * @var RuleValueList|string|null
-     */
-    private $value;
-
-    /**
-     * @var bool
-     */
-    private $isImportant = false;
-
-    /**
-     * @param non-empty-string $rule
-     * @param int<1, max>|null $lineNumber
-     * @param int<0, max>|null $columnNumber
-     */
-    public function __construct(string $rule, ?int $lineNumber = null, ?int $columnNumber = null)
-    {
-        $this->rule = $rule;
-        $this->setPosition($lineNumber, $columnNumber);
+// @phpstan-ignore function.impossibleType
+if (!\class_exists(Rule::class, false) && !\interface_exists(Rule::class, false)) {
+    /** @phpstan-ignore theCodingMachineSafe.function */
+    if (\class_alias(Declaration::class, Rule::class) === false) {
+        throw new \RuntimeException('Unexpected error');
     }
-
-    /**
-     * @param list<Comment> $commentsBeforeRule
-     *
-     * @throws UnexpectedEOFException
-     * @throws UnexpectedTokenException
-     *
-     * @internal since V8.8.0
-     */
-    public static function parse(ParserState $parserState, array $commentsBeforeRule = []): Rule
-    {
-        $comments = $commentsBeforeRule;
-        $parserState->consumeWhiteSpace($comments);
-        $rule = new Rule(
-            $parserState->parseIdentifier(!$parserState->comes('--')),
-            $parserState->currentLine(),
-            $parserState->currentColumn()
-        );
-        $parserState->consumeWhiteSpace($comments);
-        $rule->setComments($comments);
-        $parserState->consume(':');
-        $value = Value::parseValue($parserState, self::listDelimiterForRule($rule->getRule()));
-        $rule->setValue($value);
-        $parserState->consumeWhiteSpace();
-        if ($parserState->comes('!')) {
-            $parserState->consume('!');
-            $parserState->consumeWhiteSpace();
-            $parserState->consume('important');
-            $rule->setIsImportant(true);
-        }
-        $parserState->consumeWhiteSpace();
-        while ($parserState->comes(';')) {
-            $parserState->consume(';');
-        }
-
-        return $rule;
-    }
-
-    /**
-     * Returns a list of delimiters (or separators).
-     * The first item is the innermost separator (or, put another way, the highest-precedence operator).
-     * The sequence continues to the outermost separator (or lowest-precedence operator).
-     *
-     * @param non-empty-string $rule
-     *
-     * @return list<non-empty-string>
-     */
-    private static function listDelimiterForRule(string $rule): array
-    {
-        /** @phpstan-ignore theCodingMachineSafe.function */
-        $matchResult = \preg_match('/^font($|-)/', $rule);
-        if ($matchResult === false) {
-            throw new \RuntimeException('Unexpected error');
-        }
-        if ($matchResult === 1) {
-            return [',', '/', ' '];
-        }
-
-        switch ($rule) {
-            case 'src':
-                return [' ', ','];
-            default:
-                return [',', ' ', '/'];
-        }
-    }
-
-    /**
-     * @param non-empty-string $rule
-     */
-    public function setRule(string $rule): void
-    {
-        $this->rule = $rule;
-    }
-
-    /**
-     * @return non-empty-string
-     */
-    public function getRule(): string
-    {
-        return $this->rule;
-    }
-
-    /**
-     * @return RuleValueList|string|null
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param RuleValueList|string|null $value
-     */
-    public function setValue($value): void
-    {
-        $this->value = $value;
-    }
-
-    /**
-     * Adds a value to the existing value. Value will be appended if a `RuleValueList` exists of the given type.
-     * Otherwise, the existing value will be wrapped by one.
-     *
-     * @param RuleValueList|array<int, RuleValueList> $value
-     */
-    public function addValue($value, string $type = ' '): void
-    {
-        if (!\is_array($value)) {
-            $value = [$value];
-        }
-        if (!($this->value instanceof RuleValueList) || $this->value->getListSeparator() !== $type) {
-            $currentValue = $this->value;
-            $this->value = new RuleValueList($type, $this->getLineNumber());
-            if ($currentValue !== null && $currentValue !== '') {
-                $this->value->addListComponent($currentValue);
-            }
-        }
-        foreach ($value as $valueItem) {
-            $this->value->addListComponent($valueItem);
-        }
-    }
-
-    public function setIsImportant(bool $isImportant): void
-    {
-        $this->isImportant = $isImportant;
-    }
-
-    public function getIsImportant(): bool
-    {
-        return $this->isImportant;
-    }
-
-    /**
-     * @return non-empty-string
-     */
-    public function render(OutputFormat $outputFormat): string
-    {
-        $formatter = $outputFormat->getFormatter();
-        $result = "{$formatter->comments($this)}{$this->rule}:{$formatter->spaceAfterRuleName()}";
-        if ($this->value instanceof Value) { // Can also be a ValueList
-            $result .= $this->value->render($outputFormat);
-        } else {
-            $result .= $this->value;
-        }
-        if ($this->isImportant) {
-            $result .= ' !important';
-        }
-        $result .= ';';
-        return $result;
-    }
-
-    /**
-     * @return array<string, bool|int|float|string|array<mixed>|null>
-     *
-     * @internal
-     */
-    public function getArrayRepresentation(): array
-    {
-        throw new \BadMethodCallException('`getArrayRepresentation` is not yet implemented for `' . self::class . '`');
+    // The test is expected to evaluate to false,
+    // but allows for the deprecation notice to be picked up by IDEs like PHPStorm.
+    // @phpstan-ignore booleanNot.alwaysTrue, booleanAnd.alwaysTrue, function.impossibleType
+    if (!\class_exists(Rule::class, false) && !\interface_exists(Rule::class, false)) {
+        /**
+         * @deprecated in v9.2, will be removed in v10.0.  Use `Property\Declaration` instead, which is a direct
+         *             replacement.
+         */
+        class Rule {}
     }
 }

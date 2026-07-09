@@ -22,7 +22,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7
 
             - name: Install PHP
               uses: shivammathur/setup-php@v2
@@ -39,7 +39,7 @@ jobs:
               run: composer config --global --list
 
             - name: Cache dependencies installed with composer
-              uses: actions/cache@v5
+              uses: actions/cache@v6
               with:
                   path: ~/.cache/composer
                   key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
@@ -59,6 +59,8 @@ jobs:
 
             - name: Upload coverage results to Coveralls
               uses: coverallsapp/github-action@v2
+              with:
+                  fail-on-error: false
               env:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   file: coverage.xml

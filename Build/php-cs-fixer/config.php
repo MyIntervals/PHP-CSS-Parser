@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-return (new \PhpCsFixer\Config())
+use PhpCsFixer\Config;
+
+return (new Config())
     ->setRiskyAllowed(true)
     ->setRules(
         [
-            '@PER-CS2x0' => true,
-            '@PER-CS2x0:risky' => true,
+            '@PER-CS3x0' => true,
+            '@PER-CS3x0:risky' => true,
 
             '@PHPUnit5x0Migration:risky' => true,
             '@PHPUnit5x2Migration:risky' => true,

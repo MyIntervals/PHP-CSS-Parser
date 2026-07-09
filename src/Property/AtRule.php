@@ -18,7 +18,17 @@ interface AtRule extends CSSListItem
      *
      * @internal since 8.5.2
      */
-    public const BLOCK_RULES = 'media/document/supports/region-style/font-feature-values/container';
+    public const BLOCK_RULES = [
+        'media',
+        'document',
+        'supports',
+        'region-style',
+        'font-feature-values',
+        'container',
+        'layer',
+        'scope',
+        'starting-style',
+    ];
 
     /**
      * @return non-empty-string

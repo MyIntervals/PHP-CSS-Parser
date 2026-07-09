@@ -65,8 +65,8 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
         $isRoot = $list instanceof Document;
         $usesLenientParsing = $parserState->getSettings()->usesLenientParsing();
         $comments = [];
+        $parserState->consumeWhiteSpace($comments);
         while (!$parserState->isEnd()) {
-            $parserState->consumeWhiteSpace($comments);
             $listItem = null;
             if ($usesLenientParsing) {
                 try {
@@ -75,7 +75,7 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
                 } catch (UnexpectedTokenException $e) {
                     $listItem = false;
                     // If the failed parsing did not consume anything that was to come ...
-                    if ($parserState->currentColumn() === $positionBeforeParse && !$parserState->isEnd()) {
+                    if ($parserState->currentColumn() === $positionBeforeParse) {
                         // ... the unexpected token needs to be skipped, otherwise there'll be an infinite loop.
                         $parserState->consume(1);
                     }
@@ -220,7 +220,7 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
                 }
             }
             $useRuleSet = true;
-            foreach (\explode('/', AtRule::BLOCK_RULES) as $blockRuleName) {
+            foreach (AtRule::BLOCK_RULES as $blockRuleName) {
                 if (self::identifierIs($identifier, $blockRuleName)) {
                     $useRuleSet = false;
                     break;
@@ -365,7 +365,7 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
         if (!\is_array($selectors)) {
             $selectors = \explode(',', $selectors);
         }
-        foreach ($selectors as $key => &$selector) {
+        foreach ($selectors as &$selector) {
             if (!($selector instanceof Selector)) {
                 if (!Selector::isValid($selector)) {
                     throw new UnexpectedTokenException(

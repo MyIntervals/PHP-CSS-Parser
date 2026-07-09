@@ -417,6 +417,33 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
+    public function getSpaceAroundSelectorCombinatorInitiallyReturnsSpace(): void
+    {
+        self::assertSame(' ', $this->subject->getSpaceAroundSelectorCombinator());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceAroundSelectorCombinatorSetsSpaceAroundSelectorCombinator(): void
+    {
+        $value = '    ';
+        $this->subject->setSpaceAroundSelectorCombinator($value);
+
+        self::assertSame($value, $this->subject->getSpaceAroundSelectorCombinator());
+    }
+
+    /**
+     * @test
+     */
+    public function setSpaceAroundSelectorCombinatorProvidesFluentInterface(): void
+    {
+        self::assertSame($this->subject, $this->subject->setSpaceAroundSelectorCombinator(' '));
+    }
+
+    /**
+     * @test
+     */
     public function getSpaceBeforeListArgumentSeparatorInitiallyReturnsEmptyString(): void
     {
         self::assertSame('', $this->subject->getSpaceBeforeListArgumentSeparator());
@@ -1027,6 +1054,16 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
+    public function createCompactReturnsInstanceWithSpaceAroundSelectorCombinatorSetToEmptyString(): void
+    {
+        $newInstance = OutputFormat::createCompact();
+
+        self::assertSame('', $newInstance->getSpaceAroundSelectorCombinator());
+    }
+
+    /**
+     * @test
+     */
     public function createCompactReturnsInstanceWithSpaceAfterListArgumentSeparatorsSetToEmptyArray(): void
     {
         $newInstance = OutputFormat::createCompact();
@@ -1161,6 +1198,16 @@ final class OutputFormatTest extends TestCase
         $newInstance = OutputFormat::createPretty();
 
         self::assertSame(' ', $newInstance->getSpaceAfterSelectorSeparator());
+    }
+
+    /**
+     * @test
+     */
+    public function createPrettyReturnsInstanceWithSpaceAroundSelectorCombinatorSetToSpace(): void
+    {
+        $newInstance = OutputFormat::createPretty();
+
+        self::assertSame(' ', $newInstance->getSpaceAroundSelectorCombinator());
     }
 
     /**

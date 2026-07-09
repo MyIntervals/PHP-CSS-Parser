@@ -17,9 +17,9 @@ use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
+use Sabberworm\CSS\Property\Declaration;
 use Sabberworm\CSS\Property\KeyframeSelector;
 use Sabberworm\CSS\Property\Selector;
-use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Settings;
 
 /**
@@ -32,9 +32,10 @@ use Sabberworm\CSS\Settings;
  *
  * Note that `CSSListItem` extends both `Commentable` and `Renderable`, so those interfaces must also be implemented.
  */
-class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleContainer
+class DeclarationBlock implements CSSElement, CSSListItem, Positionable, DeclarationList
 {
     use CommentContainer;
+    use LegacyDeclarationListMethods;
     use Position;
 
     /**
@@ -180,65 +181,65 @@ class DeclarationBlock implements CSSElement, CSSListItem, Positionable, RuleCon
     }
 
     /**
-     * @see RuleSet::addRule()
+     * @see RuleSet::addDeclaration()
      */
-    public function addRule(Rule $ruleToAdd, ?Rule $sibling = null): void
+    public function addDeclaration(Declaration $declarationToAdd, ?Declaration $sibling = null): void
     {
-        $this->ruleSet->addRule($ruleToAdd, $sibling);
+        $this->ruleSet->addDeclaration($declarationToAdd, $sibling);
     }
 
     /**
-     * @return array<int<0, max>, Rule>
+     * @return array<int<0, max>, Declaration>
      *
-     * @see RuleSet::getRules()
+     * @see RuleSet::getDeclarations()
      */
-    public function getRules(?string $searchPattern = null): array
+    public function getDeclarations(?string $searchPattern = null): array
     {
-        return $this->ruleSet->getRules($searchPattern);
+        return $this->ruleSet->getDeclarations($searchPattern);
     }
 
     /**
-     * @param array<Rule> $rules
+     * @param array<Declaration> $declarations
      *
-     * @see RuleSet::setRules()
+     * @see RuleSet::setDeclarations()
      */
-    public function setRules(array $rules): void
+    public function setDeclarations(array $declarations): void
     {
-        $this->ruleSet->setRules($rules);
+        $this->ruleSet->setDeclarations($declarations);
     }
 
     /**
-     * @return array<string, Rule>
+     * @return array<string, Declaration>
      *
-     * @see RuleSet::getRulesAssoc()
+     * @see RuleSet::getDeclarationsAssociative()
      */
-    public function getRulesAssoc(?string $searchPattern = null): array
+    public function getDeclarationsAssociative(?string $searchPattern = null): array
     {
-        return $this->ruleSet->getRulesAssoc($searchPattern);
+        return $this->ruleSet->getDeclarationsAssociative($searchPattern);
     }
 
     /**
-     * @see RuleSet::removeRule()
+     * @see RuleSet::removeDeclaration()
      */
-    public function removeRule(Rule $ruleToRemove): void
+    public function removeDeclaration(Declaration $declarationToRemove): void
     {
-        $this->ruleSet->removeRule($ruleToRemove);
+        $this->ruleSet->removeDeclaration($declarationToRemove);
     }
 
     /**
-     * @see RuleSet::removeMatchingRules()
+     * @see RuleSet::removeMatchingDeclarations()
      */
-    public function removeMatchingRules(string $searchPattern): void
+    public function removeMatchingDeclarations(string $searchPattern): void
     {
-        $this->ruleSet->removeMatchingRules($searchPattern);
+        $this->ruleSet->removeMatchingDeclarations($searchPattern);
     }
 
     /**
-     * @see RuleSet::removeAllRules()
+     * @see RuleSet::removeAllDeclarations()
      */
-    public function removeAllRules(): void
+    public function removeAllDeclarations(): void
     {
-        $this->ruleSet->removeAllRules();
+        $this->ruleSet->removeAllDeclarations();
     }
 
     /**

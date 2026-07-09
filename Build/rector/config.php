@@ -10,8 +10,9 @@ use Rector\Set\ValueObject\SetList;
 return RectorConfig::configure()
     ->withPaths(
         [
-            __DIR__ . '/../src',
-            __DIR__ . '/../tests',
+            __DIR__ . '/../../bin',
+            __DIR__ . '/../../src',
+            __DIR__ . '/../../tests',
         ]
     )
     ->withSets([
@@ -26,7 +27,6 @@ return RectorConfig::configure()
         // SetList::INSTANCEOF,
         // SetList::NAMING,
         // SetList::PRIVATIZATION,
-        SetList::STRICT_BOOLEANS,
         SetList::TYPE_DECLARATION,
 
         // PHPUnit sets

@@ -10,20 +10,80 @@ Please also have a look at our
 
 ### Added
 
+### Changed
+
+- Remove `thecodingmachine/safe` dependency (#1484)
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Documentation
+
+## 9.4.0: Deprecations and bugfixes
+
+### Deprecated
+
+- Deprecate support for PHP 7.2 and 7.3 (#1565)
+
+### Fixed
+
+- Allow CSS containing only whitespace or comments (#1593)
+- Only allow strings as `LineName` components (#1590)
+
+## 9.3.0: Support for modern CSS at-rules and autoloading bugfix
+
+### Added
+
+- Add support for modern CSS at-rules: `@layer`, `@scope`, and
+  `@starting-style` (#1549)
+
+### Fixed
+
+- Avoid double autoloading of class aliases (#1552)
+
+### Documentation
+
+## 9.2.0: New features and deprecations
+
+### Added
+
+- Add `OutputFormat::setSpaceAroundSelectorCombinator()` (#1504)
+- Add support for escaped quotes in the selectors (#1485, #1489)
 - Provide line number in exception message for mismatched parentheses in
   selector (#1435)
 - Add support for CSS container queries (#1400)
 
 ### Changed
 
-- Remove `thecodingmachine/safe` dependency (#1484)
+- `RuleSet\RuleContainer` is renamed to `RuleSet\DeclarationList` (#1530, #1539)
+- Methods like `setRule()` in `RuleSet` and `DeclarationBlock` have been renamed
+  to `setDeclaration()`, etc. (#1521)
+- `Rule\Rule` class is renamed to `Property\Declaration`
+  (#1508, #1512, #1513, #1522)
+- `Rule::setRule()` and `getRule()` are replaced with `setPropertyName()` and
+  `getPropertyName()` (#1506)
+- `Selector` is now represented as a sequence of `Selector\Component` objects
+  which can be accessed via `getComponents()`, manipulated individually, or set
+  via `setComponents()` (#1478, #1486, #1487, #1488, #1494, #1496, #1536, #1537)
+- `Selector::setSelector()` and `Selector` constructor will now throw exception
+  upon provision of an invalid selectior (#1498, #1502)
 - Clean up extra whitespace in CSS selector (#1398)
 - The array keys passed to `DeclarationBlock::setSelectors()` are no longer
   preserved (#1407)
 
 ### Deprecated
 
-### Removed
+- `RuleSet\RuleContainer` is deprecated; use `RuleSet\DeclarationList` instead
+  (#1530)
+- Methods like `setRule()` in `RuleSet` and `DeclarationBlock` are deprecated;
+  there are direct replacements such as `setDeclaration()` (#1521)
+- `Rule\Rule` class is deprecated; `Property\Declaration` is a direct
+  replacement (#1508)
+- `Rule::setRule()` and `getRule()` are deprecated and replaced with
+  `setPropertyName()` and `getPropertyName()` (#1506, #1519)
 
 ### Fixed
 
@@ -38,8 +98,6 @@ Please also have a look at our
 - Fix parsing of `calc` expressions when a newline immediately precedes or
   follows a `+` or `-` operator (#1399)
 - Use typesafe versions of PHP functions (#1379, #1380, #1382, #1383, #1384)
-
-### Documentation
 
 ## 9.1.0: Add support for PHP 8.5
 
