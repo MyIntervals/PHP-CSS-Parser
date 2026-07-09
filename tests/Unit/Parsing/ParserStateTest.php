@@ -303,4 +303,28 @@ final class ParserStateTest extends TestCase
 
         self::assertTrue($subject->comes($nonWhitespace));
     }
+
+    /**
+     * @test
+     */
+    public function constructorThrowsForTextThatIsNotValidUtf8(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unexpected error');
+
+        new ParserState("\xFF body{}", Settings::create());
+    }
+
+    /**
+     * @test
+     */
+    public function consumeWhiteSpaceThrowsForTextThatIsNotValidUtf8WithoutMultibyteSupport(): void
+    {
+        $subject = new ParserState("\xFF body{}", Settings::create()->withMultibyteSupport(false));
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unexpected error');
+
+        $subject->consumeWhiteSpace();
+    }
 }
