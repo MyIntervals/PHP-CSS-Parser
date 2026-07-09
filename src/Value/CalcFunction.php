@@ -61,9 +61,9 @@ class CalcFunction extends CSSFunction
                     if (($parserState->comes('-') || $parserState->comes('+'))) {
                         if (
                             /** @phpstan-ignore theCodingMachineSafe.function */
-                            preg_match('/\\s/', $parserState->peek(1, -1)) !== 1
+                            \preg_match('/\\s/', $parserState->peek(1, -1)) !== 1
                             /** @phpstan-ignore theCodingMachineSafe.function */
-                            || preg_match('/\\s/', $parserState->peek(1, 1)) !== 1
+                            || \preg_match('/\\s/', $parserState->peek(1, 1)) !== 1
                         ) {
                             throw new UnexpectedTokenException(
                                 " {$parserState->peek()} ",
