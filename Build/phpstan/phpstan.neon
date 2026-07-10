@@ -14,6 +14,7 @@ parameters:
     - %currentWorkingDirectory%/tests/
 
   excludePaths:
+    - %currentWorkingDirectory%/tests/Unit/PhpStan/
     - %currentWorkingDirectory%/tests/fixtures/phpstan/
 
   type_perfect:
