@@ -10,8 +10,6 @@ use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\ShortClassNameProvider;
 
-use function Safe\preg_match;
-
 /**
  * Class representing a CSS compound selector.
  * Selectors have to be split at combinators (space, `>`, `+`, `~`) before being passed to this class.
@@ -277,7 +275,11 @@ class CompoundSelector implements Component
 
     private static function isValid(string $value): bool
     {
-        $numberOfMatches = preg_match(self::SELECTOR_VALIDATION_RX, $value);
+        /** @phpstan-ignore theCodingMachineSafe.function */
+        $numberOfMatches = \preg_match(self::SELECTOR_VALIDATION_RX, $value);
+        if ($numberOfMatches === false) {
+            throw new \RuntimeException('Unexpected error');
+        }
 
         return $numberOfMatches === 1;
     }

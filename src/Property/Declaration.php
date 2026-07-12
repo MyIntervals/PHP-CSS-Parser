@@ -18,8 +18,6 @@ use Sabberworm\CSS\ShortClassNameProvider;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Value;
 
-use function Safe\preg_match;
-
 /**
  * `Declaration`s just have a string key (the property name) and a 'Value'.
  *
@@ -105,7 +103,12 @@ class Declaration implements Commentable, CSSElement, Positionable
      */
     private static function getDelimitersForPropertyValue(string $propertyName): array
     {
-        if (preg_match('/^font($|-)/', $propertyName) === 1) {
+        /** @phpstan-ignore theCodingMachineSafe.function */
+        $matchResult = \preg_match('/^font($|-)/', $propertyName);
+        if ($matchResult === false) {
+            throw new \RuntimeException('Unexpected error');
+        }
+        if ($matchResult === 1) {
             return [',', '/', ' '];
         }
 

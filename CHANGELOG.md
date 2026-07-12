@@ -12,6 +12,8 @@ Please also have a look at our
 
 ### Changed
 
+- Remove `thecodingmachine/safe` dependency (#1484)
+
 ### Deprecated
 
 ### Removed

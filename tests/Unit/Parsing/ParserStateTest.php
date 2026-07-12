@@ -303,4 +303,33 @@ final class ParserStateTest extends TestCase
 
         self::assertTrue($subject->comes($nonWhitespace));
     }
+
+    /**
+     * @test
+     */
+    public function constructorThrowsForTextThatIsNotValidUtf8(): void
+    {
+        if (\PHP_VERSION_ID < 70304) {
+            // https://bugs.php.net/76127
+            self::markTestSkipped('Before PHP 7.3.4 preg_split did not return false for invalid UTF-8');
+        }
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unexpected error');
+
+        new ParserState("\xFF body{}", Settings::create());
+    }
+
+    /**
+     * @test
+     */
+    public function consumeWhiteSpaceThrowsForTextThatIsNotValidUtf8WithoutMultibyteSupport(): void
+    {
+        $subject = new ParserState("\xFF body{}", Settings::create()->withMultibyteSupport(false));
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unexpected error');
+
+        $subject->consumeWhiteSpace();
+    }
 }
