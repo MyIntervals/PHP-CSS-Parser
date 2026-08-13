@@ -13,6 +13,7 @@ return RectorConfig::configure()
             __DIR__ . '/../../tests',
         ]
     )
+    ->withPhpSets()
     ->withComposerBased()
     ->withSets([
         // SetList::CODE_QUALITY,
