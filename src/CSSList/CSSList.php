@@ -251,7 +251,7 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
         }
 
         $matchResult = \preg_match("/^(-\\w+-)?$match$/i", $identifier);
-        \assert($matchResult !== false);
+        \assert(\is_int($matchResult));
         return $matchResult === 1;
     }
 
