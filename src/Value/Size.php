@@ -10,9 +10,6 @@ use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\ShortClassNameProvider;
 
-use function Safe\preg_match;
-use function Safe\preg_replace;
-
 /**
  * A `Size` consists of a numeric `size` value and a unit.
  */
@@ -200,10 +197,27 @@ class Size extends PrimitiveValue
     {
         $locale = \localeconv();
         $decimalPoint = \preg_quote($locale['decimal_point'], '/');
-        $size = preg_match('/[\\d\\.]+e[+-]?\\d+/i', (string) $this->size) === 1
-            ? preg_replace("/$decimalPoint?0+$/", '', \sprintf('%f', $this->size)) : (string) $this->size;
+        /** @phpstan-ignore theCodingMachineSafe.function */
+        $matchResult = \preg_match('/[\\d\\.]+e[+-]?\\d+/i', (string) $this->size);
+        if ($matchResult === false) {
+            throw new \RuntimeException('Unexpected error');
+        }
+        if ($matchResult === 1) {
+            /** @phpstan-ignore theCodingMachineSafe.function */
+            $size = \preg_replace("/$decimalPoint?0+$/", '', \sprintf('%f', $this->size));
+            if ($size === null) {
+                throw new \RuntimeException('Unexpected error');
+            }
+        } else {
+            $size = (string) $this->size;
+        }
 
-        return preg_replace(["/$decimalPoint/", '/^(-?)0\\./'], ['.', '$1.'], $size) . ($this->unit ?? '');
+        /** @phpstan-ignore theCodingMachineSafe.function */
+        $result = \preg_replace(["/$decimalPoint/", '/^(-?)0\\./'], ['.', '$1.'], $size);
+        if ($result === null) {
+            throw new \RuntimeException('Unexpected error');
+        }
+        return $result . ($this->unit ?? '');
     }
 
     /**
