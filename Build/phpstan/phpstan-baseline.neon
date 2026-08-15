@@ -61,6 +61,18 @@ parameters:
 			path: ../../src/Value/Value.php
 
 		-
+			message: '#^Function file_get_contents is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\file_get_contents;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
+			identifier: theCodingMachineSafe.function
+			count: 2
+			path: ../../tests/ParserTest.php
+
+		-
+			message: '#^Function opendir is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\opendir;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
+			identifier: theCodingMachineSafe.function
+			count: 1
+			path: ../../tests/ParserTest.php
+
+		-
 			message: '#^Parameter \#1 \$value of method Sabberworm\\CSS\\Property\\Declaration\:\:setValue\(\) expects Sabberworm\\CSS\\Value\\RuleValueList\|string\|null, Sabberworm\\CSS\\Value\\Size given\.$#'
 			identifier: argument.type
 			count: 3
