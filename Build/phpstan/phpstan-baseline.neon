@@ -79,6 +79,12 @@ parameters:
 			path: ../../tests/RuleSet/DeclarationBlockTest.php
 
 		-
+			message: '#^Function file_get_contents is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\file_get_contents;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
+			identifier: theCodingMachineSafe.function
+			count: 10
+			path: ../../tests/RuleSet/LenientParsingTest.php
+
+		-
 			message: '#^Parameter \#1 \$type of class Sabberworm\\CSS\\CSSList\\AtRuleBlockList constructor expects non\-empty\-string, '''' given\.$#'
 			identifier: argument.type
 			count: 3
