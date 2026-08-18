@@ -13,7 +13,7 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 
 $source = \file_get_contents('php://stdin');
 if (!\is_string($source)) {
-    throw new \RuntimeException('Failed to read from stdin.');
+    throw new \RuntimeException('Failed to read from stdin.', 1786954465);
 }
 $parser = new Parser($source);
 
