@@ -16,6 +16,84 @@ use TRegx\PhpUnit\DataProviders\DataProvider;
 final class ParserStateTest extends TestCase
 {
     /**
+     * @test
+     */
+    public function constructorThrowsForTextThatIsNotValidUtf8(): void
+    {
+        if (\PHP_VERSION_ID < 70304) {
+            // https://bugs.php.net/76127
+            self::markTestSkipped('Before PHP 7.3.4 preg_split did not return false for invalid UTF-8');
+        }
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
+        $this->expectExceptionCode(1787112623);
+
+        new ParserState("\xFF body{}", Settings::create());
+    }
+
+    /**
+     * @test
+     */
+    public function parseIdentifierThrowsForTextThatIsNotValidUtf8WithoutMultibyteSupport(): void
+    {
+        $subject = new ParserState("a\xFF", Settings::create()->withMultibyteSupport(false));
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
+        $this->expectExceptionCode(1787112617);
+
+        $subject->parseIdentifier();
+    }
+
+    /**
+     * @test
+     */
+    public function parseCharacterThrowsForEscapedTextThatIsNotValidUtf8WithoutMultibyteSupport(): void
+    {
+        $subject = new ParserState("\\\xFF", Settings::create()->withMultibyteSupport(false));
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
+        $this->expectExceptionCode(1787112618);
+
+        $subject->parseCharacter(true);
+    }
+
+    /**
+     * @test
+     */
+    public function parseCharacterThrowsForMultibyteCharacterAfterIncompleteUnicodeEscapeWithoutMultibyteSupport(): void
+    {
+        // "\xC3\xA9" is "é". Without multibyte support, it is split into two separate "characters",
+        // each of which is not valid UTF-8 on its own.
+        $subject = new ParserState("\\3\xC3\xA9", Settings::create()->withMultibyteSupport(false));
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
+        $this->expectExceptionCode(1787112619);
+
+        $subject->parseCharacter(true);
+    }
+
+    /**
+     * @test
+     */
+    public function parseCharacterThrowsForEscapedCodePointThatCannotBeConverted(): void
+    {
+        // 0xFFFFFF is outside the Unicode range, so `\iconv` cannot convert it.
+        $subject = new ParserState('\\FFFFFF', Settings::create());
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'The Unicode escape sequence could not be converted to the target character set.'
+        );
+        $this->expectExceptionCode(1787112620);
+
+        $subject->parseCharacter(false);
+    }
+
+    /**
      * @return array<
      *             string,
      *             array{
@@ -302,5 +380,33 @@ final class ParserStateTest extends TestCase
         $subject->consumeWhiteSpace();
 
         self::assertTrue($subject->comes($nonWhitespace));
+    }
+
+    /**
+     * @test
+     */
+    public function consumeWhiteSpaceThrowsForTextThatIsNotValidUtf8WithoutMultibyteSupport(): void
+    {
+        $subject = new ParserState("\xFF body{}", Settings::create()->withMultibyteSupport(false));
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
+        $this->expectExceptionCode(1787112621);
+
+        $subject->consumeWhiteSpace();
+    }
+
+    /**
+     * @test
+     */
+    public function consumeExpressionThrowsForTextThatIsNotValidUtf8WithoutMultibyteSupport(): void
+    {
+        $subject = new ParserState("\xFF", Settings::create()->withMultibyteSupport(false));
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
+        $this->expectExceptionCode(1787112622);
+
+        $subject->consumeExpression('/^[0-9a-fA-F]{1,6}/u', 6);
     }
 }
