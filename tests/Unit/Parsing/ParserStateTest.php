@@ -26,6 +26,7 @@ final class ParserStateTest extends TestCase
         }
 
         $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
         $this->expectExceptionCode(1787112623);
 
         new ParserState("\xFF body{}", Settings::create());
@@ -39,6 +40,7 @@ final class ParserStateTest extends TestCase
         $subject = new ParserState("a\xFF", Settings::create()->withMultibyteSupport(false));
 
         $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
         $this->expectExceptionCode(1787112617);
 
         $subject->parseIdentifier();
@@ -52,6 +54,7 @@ final class ParserStateTest extends TestCase
         $subject = new ParserState("\\\xFF", Settings::create()->withMultibyteSupport(false));
 
         $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
         $this->expectExceptionCode(1787112618);
 
         $subject->parseCharacter(true);
@@ -67,6 +70,7 @@ final class ParserStateTest extends TestCase
         $subject = new ParserState("\\3\xC3\xA9", Settings::create()->withMultibyteSupport(false));
 
         $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
         $this->expectExceptionCode(1787112619);
 
         $subject->parseCharacter(true);
@@ -81,6 +85,9 @@ final class ParserStateTest extends TestCase
         $subject = new ParserState('\\FFFFFF', Settings::create());
 
         $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'The Unicode escape sequence could not be converted to the target character set.'
+        );
         $this->expectExceptionCode(1787112620);
 
         $subject->parseCharacter(false);
@@ -383,6 +390,7 @@ final class ParserStateTest extends TestCase
         $subject = new ParserState("\xFF body{}", Settings::create()->withMultibyteSupport(false));
 
         $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
         $this->expectExceptionCode(1787112621);
 
         $subject->consumeWhiteSpace();
@@ -396,6 +404,7 @@ final class ParserStateTest extends TestCase
         $subject = new ParserState("\xFF", Settings::create()->withMultibyteSupport(false));
 
         $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
         $this->expectExceptionCode(1787112622);
 
         $subject->consumeExpression('/^[0-9a-fA-F]{1,6}/u', 6);
