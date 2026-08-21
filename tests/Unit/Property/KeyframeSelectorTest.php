@@ -37,4 +37,16 @@ final class KeyframeSelectorTest extends TestCase
 
         self::assertSame('50%', $result['components'][0]['value']);
     }
+
+    /**
+     * @test
+     */
+    public function isValidThrowsForSelectorThatIsNotValidUtf8(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The selector is not valid UTF-8.');
+        $this->expectExceptionCode(1787284398);
+
+        KeyframeSelector::isValid("a\xFF");
+    }
 }

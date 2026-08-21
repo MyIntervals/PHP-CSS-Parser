@@ -526,6 +526,18 @@ final class SelectorTest extends TestCase
     /**
      * @test
      */
+    public function isValidThrowsForSelectorThatIsNotValidUtf8(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The selector is not valid UTF-8.');
+        $this->expectExceptionCode(1787284398);
+
+        Selector::isValid("a\xFF");
+    }
+
+    /**
+     * @test
+     */
     public function cleansUpSpacesWithinSelector(): void
     {
         $selector = 'p   >    small';
