@@ -373,6 +373,18 @@ final class CompoundSelectorTest extends TestCase
 
     /**
      * @test
+     */
+    public function constructorThrowsForValueThatIsNotValidUtf8(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The selector is not valid UTF-8.');
+        $this->expectExceptionCode(1787283476);
+
+        new CompoundSelector("a\xFF");
+    }
+
+    /**
+     * @test
      *
      * @param non-empty-string $value
      *
