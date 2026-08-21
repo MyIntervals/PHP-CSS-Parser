@@ -15,8 +15,6 @@ use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\ShortClassNameProvider;
 
-use function Safe\preg_match;
-
 /**
  * Class representing a single CSS selector. Selectors have to be split by the comma prior to being passed into this
  * class.
@@ -68,7 +66,10 @@ class Selector implements Renderable
     public static function isValid(string $selector): bool
     {
         // Note: We need to use `static::` here as the constant is overridden in the `KeyframeSelector` class.
-        $numberOfMatches = preg_match(static::SELECTOR_VALIDATION_RX, $selector);
+        $numberOfMatches = \preg_match(static::SELECTOR_VALIDATION_RX, $selector);
+        if (!\is_int($numberOfMatches)) {
+            throw new \RuntimeException('The selector is not valid UTF-8.', 1787284398);
+        }
 
         return $numberOfMatches === 1;
     }
