@@ -159,6 +159,10 @@ final class CalcFunctionTest extends TestCase
         return [
             'missing space around -' => ['calc(100%-20px)'],
             'missing space around +' => ['calc(100%+20px)'],
+            'missing space before -' => ['calc(100%- 20px)'],
+            'missing space before +' => ['calc(100%+ 20px)'],
+            'missing space after -' => ['calc(100% -20px)'],
+            'missing space after +' => ['calc(100% +20px)'],
             'invalid operator' => ['calc(100% ^ 20px)'],
         ];
     }

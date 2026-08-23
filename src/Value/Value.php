@@ -13,8 +13,6 @@ use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\ShortClassNameProvider;
 
-use function Safe\preg_match;
-
 /**
  * Abstract base class for specific classes of CSS values: `Size`, `Color`, `CSSString` and `URL`, and another
  * abstract subclass `ValueList`.
@@ -214,14 +212,20 @@ abstract class Value implements CSSElement, Positionable
         $codepointMaxLength = 6; // Code points outside BMP can use up to six digits
         $range = '';
         $parserState->consume('U+');
-        do {
+        while (true) {
             if ($parserState->comes('-')) {
                 $codepointMaxLength = 13; // Max length is 2 six-digit code points + the dash(-) between them
             }
             $range .= $parserState->consume(1);
-        } while (
-            (\strlen($range) < $codepointMaxLength) && (preg_match('/[A-Fa-f0-9\\?-]/', $parserState->peek()) === 1)
-        );
+            if (\strlen($range) >= $codepointMaxLength) {
+                break;
+            }
+            $matchResult = \preg_match('/[A-Fa-f0-9\\?-]/', $parserState->peek());
+            \assert(\is_int($matchResult));
+            if ($matchResult !== 1) {
+                break;
+            }
+        }
 
         return "U+{$range}";
     }
