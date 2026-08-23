@@ -109,6 +109,12 @@ parameters:
 			path: ../../src/Value/Size.php
 
 		-
+			message: '#^Function preg_match is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_match;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
+			identifier: theCodingMachineSafe.function
+			count: 1
+			path: ../../src/Value/Value.php
+
+		-
 			message: '#^Parameter \#2 \$arguments of class Sabberworm\\CSS\\Value\\CSSFunction constructor expects array\<Sabberworm\\CSS\\Value\\Value\|string\>\|Sabberworm\\CSS\\Value\\RuleValueList, Sabberworm\\CSS\\Value\\Value\|string given\.$#'
 			identifier: argument.type
 			count: 1
