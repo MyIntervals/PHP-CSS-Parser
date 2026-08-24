@@ -109,6 +109,18 @@ parameters:
 			path: ../../src/Value/Color.php
 
 		-
+			message: '#^Function preg_match is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_match;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
+			identifier: theCodingMachineSafe.function
+			count: 1
+			path: ../../src/Value/Size.php
+
+		-
+			message: '#^Function preg_replace is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_replace;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
+			identifier: theCodingMachineSafe.function
+			count: 2
+			path: ../../src/Value/Size.php
+
+		-
 			message: '#^Strict comparison using \!\=\= between non\-empty\-string and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
