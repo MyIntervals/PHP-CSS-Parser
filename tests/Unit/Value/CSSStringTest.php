@@ -6,6 +6,8 @@ namespace Sabberworm\CSS\Tests\Unit\Value;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\CSSString;
 use Sabberworm\CSS\Value\PrimitiveValue;
 use Sabberworm\CSS\Value\Value;
@@ -143,5 +145,19 @@ final class CSSStringTest extends TestCase
         $outputFormat->setStringQuotingType("'");
 
         self::assertSame("'{$input}'", (new CSSString($input))->render($outputFormat));
+    }
+
+    /**
+     * @test
+     */
+    public function parseThrowsForUnquotedStringThatIsNotValidUtf8WithoutMultibyteSupport(): void
+    {
+        $parserState = new ParserState("\xFF", Settings::create()->withMultibyteSupport(false));
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
+        $this->expectExceptionCode(1787548272);
+
+        CSSString::parse($parserState);
     }
 }
