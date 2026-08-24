@@ -16,6 +16,8 @@ Please also have a look at our
 
 ### Removed
 
+- Remove the `thecodingmachine/safe` dependency (#1622)
+
 ### Fixed
 
 ### Documentation

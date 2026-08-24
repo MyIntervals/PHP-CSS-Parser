@@ -1,40 +1,10 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Function file_get_contents is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\file_get_contents;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 1
-			path: ../../bin/quickdump.php
-
-		-
-			message: '#^Function preg_match is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_match;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 1
-			path: ../../src/CSSList/CSSList.php
-
-		-
 			message: '#^Parameter \#2 \$found of class Sabberworm\\CSS\\Parsing\\UnexpectedTokenException constructor expects string, Sabberworm\\CSS\\Value\\CSSFunction\|Sabberworm\\CSS\\Value\\CSSString\|Sabberworm\\CSS\\Value\\LineName\|Sabberworm\\CSS\\Value\\Size\|Sabberworm\\CSS\\Value\\URL given\.$#'
 			identifier: argument.type
 			count: 1
 			path: ../../src/CSSList/CSSList.php
-
-		-
-			message: '#^Function iconv is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\iconv;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 1
-			path: ../../src/Parsing/ParserState.php
-
-		-
-			message: '#^Function preg_match is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_match;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 5
-			path: ../../src/Parsing/ParserState.php
-
-		-
-			message: '#^Function preg_split is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_split;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 1
-			path: ../../src/Parsing/ParserState.php
 
 		-
 			message: '#^Negated boolean expression is always true\.$#'
@@ -43,58 +13,10 @@ parameters:
 			path: ../../src/Parsing/ParserState.php
 
 		-
-			message: '#^Function preg_match is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_match;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 1
-			path: ../../src/Property/Declaration.php
-
-		-
-			message: '#^Function preg_match is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_match;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 1
-			path: ../../src/Property/Selector.php
-
-		-
-			message: '#^Function preg_match is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_match;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 1
-			path: ../../src/Property/Selector/CompoundSelector.php
-
-		-
-			message: '#^Function preg_match_all is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_match_all;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 2
-			path: ../../src/Property/Selector/SpecificityCalculator.php
-
-		-
-			message: '#^Function class_alias is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\class_alias;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 1
-			path: ../../src/Rule/Rule.php
-
-		-
-			message: '#^Function class_alias is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\class_alias;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 1
-			path: ../../src/RuleSet/RuleContainer.php
-
-		-
 			message: '#^Parameter \#2 \$arguments of class Sabberworm\\CSS\\Value\\CSSFunction constructor expects array\<Sabberworm\\CSS\\Value\\Value\|string\>\|Sabberworm\\CSS\\Value\\RuleValueList, Sabberworm\\CSS\\Value\\Value\|string given\.$#'
 			identifier: argument.type
 			count: 1
 			path: ../../src/Value/CSSFunction.php
-
-		-
-			message: '#^Function preg_match is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_match;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 1
-			path: ../../src/Value/CSSString.php
-
-		-
-			message: '#^Function preg_match is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_match;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 2
-			path: ../../src/Value/CalcFunction.php
 
 		-
 			message: '#^Parameter \#2 \$offset of method Sabberworm\\CSS\\Parsing\\ParserState\:\:peek\(\) expects int\<0, max\>, \-1 given\.$#'
@@ -109,28 +31,10 @@ parameters:
 			path: ../../src/Value/Color.php
 
 		-
-			message: '#^Function preg_match is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_match;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 1
-			path: ../../src/Value/Size.php
-
-		-
-			message: '#^Function preg_replace is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_replace;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 2
-			path: ../../src/Value/Size.php
-
-		-
 			message: '#^Strict comparison using \!\=\= between non\-empty\-string and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: ../../src/Value/Size.php
-
-		-
-			message: '#^Function preg_match is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\preg_match;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 1
-			path: ../../src/Value/Value.php
 
 		-
 			message: '#^Parameter \#2 \$arguments of class Sabberworm\\CSS\\Value\\CSSFunction constructor expects array\<Sabberworm\\CSS\\Value\\Value\|string\>\|Sabberworm\\CSS\\Value\\RuleValueList, Sabberworm\\CSS\\Value\\Value\|string given\.$#'
@@ -145,28 +49,10 @@ parameters:
 			path: ../../src/Value/Value.php
 
 		-
-			message: '#^Function file_get_contents is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\file_get_contents;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 2
-			path: ../../tests/ParserTest.php
-
-		-
-			message: '#^Function opendir is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\opendir;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 1
-			path: ../../tests/ParserTest.php
-
-		-
 			message: '#^Parameter \#1 \$value of method Sabberworm\\CSS\\Property\\Declaration\:\:setValue\(\) expects Sabberworm\\CSS\\Value\\RuleValueList\|string\|null, Sabberworm\\CSS\\Value\\Size given\.$#'
 			identifier: argument.type
 			count: 3
 			path: ../../tests/RuleSet/DeclarationBlockTest.php
-
-		-
-			message: '#^Function file_get_contents is unsafe to use\. It can return FALSE instead of throwing an exception\. Please add ''use function Safe\\file_get_contents;'' at the beginning of the file to use the variant provided by the ''thecodingmachine/safe'' library\.$#'
-			identifier: theCodingMachineSafe.function
-			count: 10
-			path: ../../tests/RuleSet/LenientParsingTest.php
 
 		-
 			message: '#^Parameter \#1 \$type of class Sabberworm\\CSS\\CSSList\\AtRuleBlockList constructor expects non\-empty\-string, '''' given\.$#'
