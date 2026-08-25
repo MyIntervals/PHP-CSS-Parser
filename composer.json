@@ -29,13 +29,13 @@
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "1.4.0",
         "phpstan/extension-installer": "1.4.3",
-        "phpstan/phpstan": "1.12.33 || 2.2.9",
+        "phpstan/phpstan": "1.12.33 || 2.2.14",
         "phpstan/phpstan-phpunit": "1.4.2 || 2.0.18",
         "phpstan/phpstan-strict-rules": "1.6.2 || 2.0.12",
         "phpunit/phpunit": "8.5.54",
         "rawr/phpunit-data-provider": "3.3.1",
-        "rector/rector": "1.2.10 || 2.6.2",
-        "rector/type-perfect": "1.0.0 || 2.1.4",
+        "rector/rector": "1.2.10 || 2.6.7",
+        "rector/type-perfect": "1.0.0 || 2.2.0",
         "squizlabs/php_codesniffer": "4.0.4"
     },
     "suggest": {
@@ -80,7 +80,10 @@
         ],
         "check:php:cs-fixer": "\"./.phive/php-cs-fixer\" fix --config=./Build/php-cs-fixer/config.php -v --dry-run --diff --show-progress=dots Build bin src tests",
         "check:php:lint": "parallel-lint Build bin src tests",
-        "check:php:rector": "rector process --no-progress-bar --dry-run --config=./Build/rector/config.php",
+        "check:php:rector": [
+            "rector validate-config --config=./Build/rector/config.php",
+            "rector process --no-progress-bar --dry-run --config=./Build/rector/config.php"
+        ],
         "check:php:sniff": "phpcs --standard=./Build/phpcs/config.xml Build bin src tests",
         "check:php:stan": "phpstan --no-progress -v --configuration=./Build/phpstan/phpstan.neon",
         "check:static": [
