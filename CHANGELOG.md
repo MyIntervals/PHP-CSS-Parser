@@ -10,6 +10,8 @@ Please also have a look at our
 
 ### Added
 
+- Add tests for semicolon-terminated `@layer` statements // TODO: add PR ID
+
 ### Changed
 
 ### Deprecated
@@ -19,6 +21,9 @@ Please also have a look at our
 - Remove the `thecodingmachine/safe` dependency (#1622)
 
 ### Fixed
+
+- Parse semicolon-terminated `@layer` statements (and other statement at-rules)
+  instead of consuming until the next `{` // TODO: add PR ID
 
 ### Documentation
 

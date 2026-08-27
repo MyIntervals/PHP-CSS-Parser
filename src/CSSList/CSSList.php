@@ -14,6 +14,7 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Position\Position;
 use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Property\AtRule;
+use Sabberworm\CSS\Property\AtRuleStatement;
 use Sabberworm\CSS\Property\Charset;
 use Sabberworm\CSS\Property\CSSNamespace;
 use Sabberworm\CSS\Property\Import;
@@ -210,8 +211,13 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
             }
             return new CSSNamespace($url, $prefix, $identifierLineNumber);
         } else {
-            // Unknown other at rule (font-face or such)
-            $arguments = \trim($parserState->consumeUntil('{', false, true));
+            // Unknown other at rule (font-face, @layer, or such)
+            $arguments = \trim($parserState->consumeUntil(['{', ';'], false, false));
+            if ($parserState->comes(';')) {
+                $parserState->consume(';');
+                return new AtRuleStatement($identifier, $arguments, $identifierLineNumber);
+            }
+            $parserState->consume('{');
             if (\substr_count($arguments, '(') !== \substr_count($arguments, ')')) {
                 if ($parserState->getSettings()->usesLenientParsing()) {
                     return null;
