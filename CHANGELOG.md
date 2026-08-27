@@ -10,7 +10,7 @@ Please also have a look at our
 
 ### Added
 
-- Add tests for semicolon-terminated `@layer` statements // TODO: add PR ID
+- Add tests for semicolon-terminated `@layer` statements (#1624)
 
 ### Changed
 
@@ -23,7 +23,7 @@ Please also have a look at our
 ### Fixed
 
 - Parse semicolon-terminated `@layer` statements (and other statement at-rules)
-  instead of consuming until the next `{` // TODO: add PR ID
+  instead of consuming until the next `{` (#1624)
 
 ### Documentation
 
