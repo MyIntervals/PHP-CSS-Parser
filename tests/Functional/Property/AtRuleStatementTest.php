@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sabberworm\CSS\Tests\CSSList;
+namespace Sabberworm\CSS\Tests\Functional\Property;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSList\AtRuleBlockList;

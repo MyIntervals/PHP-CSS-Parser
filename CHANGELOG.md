@@ -10,8 +10,6 @@ Please also have a look at our
 
 ### Added
 
-- Add tests for semicolon-terminated `@layer` statements (#1624)
-
 ### Changed
 
 ### Deprecated
