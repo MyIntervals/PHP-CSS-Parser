@@ -29,6 +29,11 @@ parameters:
       message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) .* will always evaluate to#'
       path: '%currentWorkingDirectory%/tests/'
 
+  # This is a temporary but sadly necessary setting to allow upgrade to PHPStan 2.2.8.
+  # It maintains compatibility with PHPStan 2.2.7.
+  # When it has been bedded in, it can (and should) be removed.
+  reportUnmatchedIgnoredErrors: false
+
 services:
   -
     class: \Sabberworm\CSS\PhpStan\IgnoreBooleanAlways
