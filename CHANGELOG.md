@@ -20,6 +20,9 @@ Please also have a look at our
 
 ### Fixed
 
+- Parse semicolon-terminated `@layer` statements (and other statement at-rules)
+  instead of consuming until the next `{` (#1624)
+
 ### Documentation
 
 ## 9.4.0: Deprecations and bugfixes
