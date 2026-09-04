@@ -9,6 +9,8 @@ updates:
       commit-message:
           prefix: "[Dependabot] "
       milestone: 13
+      cooldown:
+        default-days: 7
 
     - package-ecosystem: "composer"
       directory: "/"
@@ -25,3 +27,5 @@ updates:
       commit-message:
           prefix: "[Dependabot] "
       milestone: 13
+      cooldown:
+        default-days: 7
