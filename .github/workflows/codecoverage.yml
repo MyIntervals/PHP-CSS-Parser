@@ -22,12 +22,12 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v7
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
               with:
                 persist-credentials: false
 
             - name: Install PHP
-              uses: shivammathur/setup-php@v2
+              uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
               with:
                   php-version: ${{ matrix.php-version }}
                   ini-file: development
@@ -41,7 +41,7 @@ jobs:
               run: composer config --global --list
 
             - name: Cache dependencies installed with composer
-              uses: actions/cache@v6
+              uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
               with:
                   path: ~/.cache/composer
                   key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
@@ -60,7 +60,7 @@ jobs:
               run: ls -lah
 
             - name: Upload coverage results to Coveralls
-              uses: coverallsapp/github-action@v2
+              uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # v2.3.8
               with:
                   fail-on-error: false
               env:
