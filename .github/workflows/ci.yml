@@ -10,6 +10,10 @@ on:
 
 name: CI
 
+concurrency:
+    group: ci-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
     php-lint:
         name: PHP Lint
