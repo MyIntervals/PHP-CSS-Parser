@@ -8,6 +8,9 @@ on:
 
 name: Code coverage
 
+permissions:
+    contents: read
+
 jobs:
     code-coverage:
         name: Code coverage
