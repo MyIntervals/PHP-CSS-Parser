@@ -10,11 +10,21 @@ Please also have a look at our
 
 ### Added
 
-- Add support for PHP 8.6 (#1619)
-
 ### Changed
 
 ### Deprecated
+
+### Removed
+
+### Fixed
+
+### Documentation
+
+## 9.5.0: Add support for PHP 8.6
+
+### Added
+
+- Add support for PHP 8.6 (#1619)
 
 ### Removed
 
@@ -24,8 +34,6 @@ Please also have a look at our
 
 - Parse semicolon-terminated `@layer` statements (and other statement at-rules)
   instead of consuming until the next `{` (#1624)
-
-### Documentation
 
 ## 9.4.0: Deprecations and bugfixes
 
