@@ -7,7 +7,6 @@ namespace Sabberworm\CSS\Tests\Unit\PhpStan;
 use PHPStan\Analyser\IgnoreErrorExtension;
 use PHPStan\Rules\Comparison\ImpossibleCheckTypeFunctionCallRule;
 use PHPStan\Rules\Rule;
-use PHPUnit\Framework\Error\Deprecated;
 
 /**
  * This covers `function.alreadyNarrowedType` error handling in the `IgnoreBooleanAlways` PHPStan extension class.
@@ -40,22 +39,15 @@ final class IgnoreBooleanAlwaysImpossibleAssertTest extends IgnoreBooleanAlwaysT
             self::markTestSkipped('This is testing the testers, and only needs to run whenever possible.');
         }
 
-        // TODO: remove try/catch block when PHPStan is fixed.
-        try {
-            // Second argument is array of expected warnings.
-            $this->analyse(
-                [self::FIXTURES_DIR . 'alwaystrue-pointlessassert.php'],
+        // Second argument is array of expected warnings.
+        $this->analyse(
+            [self::FIXTURES_DIR . 'alwaystrue-pointlessassert.php'],
+            [
                 [
-                    [
-                        'Call to function is_int() with int will always evaluate to true.',
-                        7,
-                    ],
-                ]
-            );
-        } catch (Deprecated $e) {
-            self::markTestSkipped(
-                'PHPStan has a dependency on an Hoa library that triggers a deprecation warning with PHP 8.6.'
-            );
-        }
+                    'Call to function is_int() with int will always evaluate to true.',
+                    7,
+                ],
+            ]
+        );
     }
 }
