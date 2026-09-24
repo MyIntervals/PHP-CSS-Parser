@@ -29,12 +29,12 @@
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "1.4.0",
         "phpstan/extension-installer": "1.4.3",
-        "phpstan/phpstan": "1.12.33 || 2.2.14",
-        "phpstan/phpstan-phpunit": "1.4.2 || 2.0.18",
-        "phpstan/phpstan-strict-rules": "1.6.2 || 2.0.12",
+        "phpstan/phpstan": "1.12.33 || 2.3.1",
+        "phpstan/phpstan-phpunit": "1.4.2 || 2.1.1",
+        "phpstan/phpstan-strict-rules": "1.6.2 || 2.1.0",
         "phpunit/phpunit": "8.5.55",
         "rawr/phpunit-data-provider": "3.3.1",
-        "rector/rector": "1.2.10 || 2.6.7",
+        "rector/rector": "1.2.10 || 2.7.0",
         "rector/type-perfect": "1.0.0 || 2.2.0",
         "squizlabs/php_codesniffer": "4.0.4"
     },
