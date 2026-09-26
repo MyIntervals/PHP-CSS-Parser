@@ -404,7 +404,7 @@ final class ColorTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider provideLenientParsing
+     * @dataProvider provideLenientParsingSetting
      */
     public function parsesRelativeColorInAStyleSheet(bool $usesLenientParsing): void
     {
