@@ -18,6 +18,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Add support for `from` keyword in `parseColorFunction` (#1639)
+
 ### Documentation
 
 ## 9.5.0: Add support for PHP 8.6
