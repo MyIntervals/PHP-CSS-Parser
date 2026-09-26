@@ -393,7 +393,7 @@ final class ColorTest extends TestCase
     /**
      * @return array<string, array{0: bool}>
      */
-    public static function provideLenientParsing(): array
+    public static function provideLenientParsingSetting(): array
     {
         return [
             'strict parsing' => [false],
