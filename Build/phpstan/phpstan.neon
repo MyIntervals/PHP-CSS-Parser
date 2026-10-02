@@ -6,7 +6,7 @@ parameters:
     min: 70200
     max: 80500
 
-  level: 6
+  level: 7
 
   paths:
     - %currentWorkingDirectory%/bin/
