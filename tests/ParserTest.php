@@ -583,6 +583,22 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
     /**
      * @test
      */
+    public function parsesNewerUnitsInsideFunctions(): void
+    {
+        $parser = new Parser(
+            '.test {margin: 0 0 .6cqi;--size: min(calc(100cqi / 5), 16rem);height: calc(100dvb - 2lh);}'
+        );
+
+        $document = $parser->parse();
+
+        $expected = '.test {margin: 0 0 .6cqi;--size: min(calc(100cqi / 5),16rem);'
+            . 'height: calc(100dvb - 2lh);}';
+        self::assertSame($expected, $document->render());
+    }
+
+    /**
+     * @test
+     */
     public function invalidCalcInFile(): void
     {
         $document = self::parsedStructureForFile('calc-invalid', Settings::create()->withMultibyteSupport(true));
