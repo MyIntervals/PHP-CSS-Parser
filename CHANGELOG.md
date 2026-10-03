@@ -18,6 +18,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Recognize newer CSS units (container query, viewport, font-relative and
+  resolution units) in `Size`
 - Add support for `from` keyword in `parseColorFunction` (#1639)
 
 ### Documentation

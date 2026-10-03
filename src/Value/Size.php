@@ -33,14 +33,64 @@ class Size extends PrimitiveValue
         'svh',
         'lvh',
         'vw',
+        'dvw',
+        'svw',
+        'lvw',
+        'vi',
+        'dvi',
+        'svi',
+        'lvi',
+        'vb',
+        'dvb',
+        'svb',
+        'lvb',
         'vmin',
+        'dvmin',
+        'svmin',
+        'lvmin',
         'vmax',
+        'dvmax',
+        'svmax',
+        'lvmax',
         'rem',
+        'rex',
+        'rch',
+        'rcap',
+        'ric',
+        'rlh',
     ];
 
-    private const RELATIVE_SIZE_UNITS = ['%', 'em', 'ex', 'ch', 'fr'];
+    private const RELATIVE_SIZE_UNITS = [
+        '%',
+        'em',
+        'ex',
+        'ch',
+        'cap',
+        'ic',
+        'lh',
+        'fr',
+        'cqw',
+        'cqh',
+        'cqi',
+        'cqb',
+        'cqmin',
+        'cqmax',
+    ];
 
-    private const NON_SIZE_UNITS = ['deg', 'grad', 'rad', 's', 'ms', 'turn', 'Hz', 'kHz'];
+    private const NON_SIZE_UNITS = [
+        'deg',
+        'grad',
+        'rad',
+        's',
+        'ms',
+        'turn',
+        'Hz',
+        'kHz',
+        'dpi',
+        'dpcm',
+        'dppx',
+        'x',
+    ];
 
     /**
      * @var array<int<1, max>, array<lowercase-string, non-empty-string>>|null
@@ -168,8 +218,8 @@ class Size extends PrimitiveValue
     /**
      * Returns whether the number stored in this Size really represents a size (as in a length of something on screen).
      *
-     * Returns `false` if the unit is an angle, a duration, a frequency, or the number is a component in a `Color`
-     * object.
+     * Returns `false` if the unit is an angle, a duration, a frequency, a resolution, or the number is a component in
+     * a `Color` object.
      */
     public function isSize(): bool
     {
