@@ -10,6 +10,10 @@ Please also have a look at our
 
 ### Added
 
+- Recognize newer CSS units (container query, viewport, font-relative and
+  resolution units) in `Size` (#1641)
+- Add support for `from` keyword in `parseColorFunction` (#1639)
+
 ### Changed
 
 ### Deprecated
@@ -17,10 +21,6 @@ Please also have a look at our
 ### Removed
 
 ### Fixed
-
-- Recognize newer CSS units (container query, viewport, font-relative and
-  resolution units) in `Size`
-- Add support for `from` keyword in `parseColorFunction` (#1639)
 
 ### Documentation
 
