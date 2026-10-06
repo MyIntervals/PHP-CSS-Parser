@@ -216,17 +216,25 @@ class Size extends PrimitiveValue
     }
 
     /**
-     * Returns whether the number stored in this Size really represents a size (as in a length of something on screen).
-     *
-     * Returns `false` if the unit is an angle, a duration, a frequency, a resolution, or the number is a component in
+     * @return bool
+     * `true` if the stored number represents a length, e.g. of something on screen;
+     * `false` if the unit is an angle, a duration, a frequency, a resolution, or the number is a component in
      * a `Color` object.
      */
-    public function isSize(): bool
+    public function isLength(): bool
     {
         if (\in_array($this->unit, self::NON_SIZE_UNITS, true)) {
             return false;
         }
         return !$this->isColorComponent();
+    }
+
+    /**
+     * @deprecated in version 9.6, will be removed in v10.0.  Use `isLength()` instead, which is a direct replacement.
+     */
+    public function isSize(): bool
+    {
+        return $this->isLength();
     }
 
     public function isRelative(): bool

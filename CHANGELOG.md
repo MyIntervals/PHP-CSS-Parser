@@ -16,7 +16,12 @@ Please also have a look at our
 
 ### Changed
 
+- `Size::isSize()` is renamed to `isLength()` (#1645)
+
 ### Deprecated
+
+- `Size::isSize()` is deprecated; use `isLength()` instead; it is a direct
+  replacement (#1645)
 
 ### Removed
 

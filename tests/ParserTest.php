@@ -360,7 +360,7 @@ body {color: green;}',
             $document->render()
         );
         foreach ($document->getAllValues(null) as $value) {
-            if ($value instanceof Size && $value->isSize() && !$value->isRelative()) {
+            if ($value instanceof Size && $value->isLength() && !$value->isRelative()) {
                 $value->setSize($value->getSize() * 3);
             }
         }
@@ -412,7 +412,7 @@ body {color: green;}',
         self::assertSame($expected, $document->render());
 
         foreach ($document->getAllValues(null, null, true) as $value) {
-            if ($value instanceof Size && $value->isSize()) {
+            if ($value instanceof Size && $value->isLength()) {
                 $value->setSize($value->getSize() * 3);
             }
         }
