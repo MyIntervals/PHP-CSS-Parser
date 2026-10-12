@@ -257,7 +257,18 @@ class Size extends PrimitiveValue
         $decimalPoint = \preg_quote($locale['decimal_point'], '/');
         $matchResult = \preg_match('/[\\d\\.]+e[+-]?\\d+/i', (string) $this->size);
         \assert(\is_int($matchResult));
-        if ($matchResult === 1) {
+        if ($matchResult === 1 && \abs($this->size) < 1) {
+            // `%f` keeps only six decimal places, so expand the digits of small numbers instead.
+            $matchResult = \preg_match(
+                "/^(-?)(\\d+)(?:$decimalPoint(\\d+))?e(-\\d+)$/i",
+                (string) $this->size,
+                $matches
+            );
+            \assert($matchResult === 1);
+            $digits = \rtrim($matches[2] . ($matches[3] ?? ''), '0');
+            $leadingZeros = \str_repeat('0', -(int) $matches[4] - \strlen($matches[2]));
+            $size = $matches[1] . '0.' . $leadingZeros . $digits;
+        } elseif ($matchResult === 1) {
             $size = \preg_replace("/$decimalPoint?0+$/", '', \sprintf('%f', $this->size));
             \assert(\is_string($size));
         } else {
