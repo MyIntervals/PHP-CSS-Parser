@@ -28,6 +28,7 @@ Please also have a look at our
 ### Fixed
 
 - Render very small numbers in `Size` without rounding them to zero (#1647)
+- Ignore braces and semicolons inside quoted strings when parsing at-rule preludes (#1625)
 
 ### Documentation
 

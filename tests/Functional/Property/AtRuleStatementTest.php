@@ -130,4 +130,18 @@ final class AtRuleStatementTest extends TestCase
 
         self::assertStringContainsString('@layer reset;', $rendered);
     }
+
+    /**
+     * @test
+     */
+    public function doesNotTreatBracesOrSemicolonsInsideStringsAsAtRuleDelimiters(): void
+    {
+        $css = '@media (custom: "a;b{c}") { .inside { color: red; } } .after { color: blue; }';
+
+        $contents = (new Parser($css))->parse()->getContents();
+
+        self::assertCount(2, $contents);
+        self::assertInstanceOf(AtRuleBlockList::class, $contents[0]);
+        self::assertSame('(custom: "a;b{c}")', $contents[0]->atRuleArgs());
+    }
 }
