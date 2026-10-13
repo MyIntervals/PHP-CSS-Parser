@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit\Value;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\PrimitiveValue;
@@ -196,6 +197,32 @@ final class SizeTest extends TestCase
         $result = $subject->getArrayRepresentation();
 
         self::assertSame('px', $result['unit']);
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: float, 1: non-empty-string}>
+     */
+    public static function provideNumberNearZeroAndExpectedRendering(): array
+    {
+        return [
+            '1e-7' => [1e-7, '.0000001px'],
+            '-1e-7' => [-1e-7, '-.0000001px'],
+            '1.23456789e-5' => [1.23456789e-5, '.0000123456789px'],
+            '-2.5e-8' => [-2.5e-8, '-.000000025px'],
+            '1e-5' => [1e-5, '.00001px'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideNumberNearZeroAndExpectedRendering
+     */
+    public function renderWritesNumberNearZeroWithoutLosingDigits(float $number, string $expected): void
+    {
+        $subject = new Size($number, 'px');
+
+        self::assertSame($expected, $subject->render(OutputFormat::create()));
     }
 
     /**

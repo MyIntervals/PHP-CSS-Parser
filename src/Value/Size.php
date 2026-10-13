@@ -258,7 +258,7 @@ class Size extends PrimitiveValue
         $matchResult = \preg_match('/[\\d\\.]+e[+-]?\\d+/i', (string) $this->size);
         \assert(\is_int($matchResult));
         if ($matchResult === 1) {
-            $size = \preg_replace("/$decimalPoint?0+$/", '', \sprintf('%f', $this->size));
+            $size = \preg_replace("/$decimalPoint?0+$/", '', \sprintf('%.15f', $this->size));
             \assert(\is_string($size));
         } else {
             $size = (string) $this->size;

@@ -27,6 +27,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Render very small numbers in `Size` without rounding them to zero (#1647)
+
 ### Documentation
 
 ## 9.5.0: Add support for PHP 8.6
