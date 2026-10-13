@@ -27,7 +27,7 @@ Please also have a look at our
 
 ### Fixed
 
-- Render very small numbers in `Size` without rounding them to zero
+- Render very small numbers in `Size` without rounding them to zero (#1647)
 
 ### Documentation
 

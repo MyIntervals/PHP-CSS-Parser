@@ -202,7 +202,7 @@ final class SizeTest extends TestCase
     /**
      * @return array<non-empty-string, array{0: float, 1: non-empty-string}>
      */
-    public static function provideNumberInExponentialNotationAndRendering(): array
+    public static function provideNumberNearZeroAndExpectedRendering(): array
     {
         return [
             '1e-7' => [1e-7, '.0000001px'],
@@ -216,9 +216,9 @@ final class SizeTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider provideNumberInExponentialNotationAndRendering
+     * @dataProvider provideNumberNearZeroAndExpectedRendering
      */
-    public function renderWritesNumberInExponentialNotationWithoutLosingDigits(float $number, string $expected): void
+    public function renderWritesNumberNearZeroWithoutLosingDigits(float $number, string $expected): void
     {
         $subject = new Size($number, 'px');
 
