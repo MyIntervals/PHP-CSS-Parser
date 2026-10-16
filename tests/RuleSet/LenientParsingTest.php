@@ -99,11 +99,13 @@ final class LenientParsingTest extends TestCase
         \setlocale(LC_ALL, 'pt_PT', 'no');
         $pathToFile = __DIR__ . '/../fixtures/-fault-tolerance.css';
         $parser = new Parser(\file_get_contents($pathToFile), Settings::create()->withLenientParsing(true));
-        $result = $parser->parse();
+        $parsedDocument = $parser->parse();
+        $result = $parsedDocument->render();
+        \setlocale(LC_ALL, null); // restore default
         self::assertSame(
             '.test1 {}' . "\n" . '.test2 {hello: 2.2;hello: 2000000000000.2;}' . "\n" . '#test {}' . "\n"
             . '#test2 {help: none;}',
-            $result->render()
+            $result
         );
     }
 
