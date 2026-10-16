@@ -164,4 +164,18 @@ final class AtRuleStatementTest extends TestCase
         self::assertInstanceOf(AtRuleStatement::class, $evenBackslashContents[0]);
         self::assertSame('"a\\\\"', $evenBackslashContents[0]->atRuleArgs());
     }
+
+    /**
+     * @test
+     */
+    public function doesNotTreatDelimitersAfterBackslashInsideStringAsAtRuleDelimiters(): void
+    {
+        $css = '@media (custom: "a\\b;c{d}") { .inside { color: red; } } .after { color: blue; }';
+
+        $contents = (new Parser($css))->parse()->getContents();
+
+        self::assertCount(2, $contents);
+        self::assertInstanceOf(AtRuleBlockList::class, $contents[0]);
+        self::assertSame('(custom: "a\\b;c{d}")', $contents[0]->atRuleArgs());
+    }
 }
