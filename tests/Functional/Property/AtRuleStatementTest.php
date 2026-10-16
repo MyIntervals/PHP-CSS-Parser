@@ -150,7 +150,7 @@ final class AtRuleStatementTest extends TestCase
      */
     public function handlesOddAndEvenBackslashRunsBeforeQuotesInAtRuleArguments(): void
     {
-        $oddBackslashCss = '@media (custom: "a\";{b}") { .inside { color: red; } } .after { color: blue; }';
+        $oddBackslashCss = '@media (custom: "a\\";{b}") { .inside { color: red; } } .after { color: blue; }';
         $oddBackslashContents = (new Parser($oddBackslashCss))->parse()->getContents();
 
         self::assertCount(2, $oddBackslashContents);
