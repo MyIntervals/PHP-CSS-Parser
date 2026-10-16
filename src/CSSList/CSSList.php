@@ -261,11 +261,10 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
             }
 
             $quote = $parserState->consume(1);
-            $trailingBackslashes = 0;
-            for ($i = \strlen($arguments) - 1; $i >= 0 && $arguments[$i] === '\\'; --$i) {
-                ++$trailingBackslashes;
-            }
-            $isEscaped = ($trailingBackslashes % 2) === 1;
+            $trailingBackslashMatches = [];
+            $matchCount = \preg_match('/(\\\\+)\\z/', $arguments, $trailingBackslashMatches);
+            // An odd run escapes the quote; an even run leaves it as a delimiter.
+            $isEscaped = $matchCount === 1 && (\strlen($trailingBackslashMatches[1]) % 2) === 1;
             $arguments .= $quote;
             if ($isEscaped) {
                 continue;

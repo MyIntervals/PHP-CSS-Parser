@@ -136,12 +136,38 @@ final class AtRuleStatementTest extends TestCase
      */
     public function doesNotTreatBracesOrSemicolonsInsideStringsAsAtRuleDelimiters(): void
     {
-        $css = '@media (custom: "a;b{c}") { .inside { color: red; } } .after { color: blue; }';
+        $css = <<<'CSS'
+@media (custom: "a;b{c}") { .inside { color: red; } } .after { color: blue; }
+CSS;
 
         $contents = (new Parser($css))->parse()->getContents();
 
         self::assertCount(2, $contents);
         self::assertInstanceOf(AtRuleBlockList::class, $contents[0]);
         self::assertSame('(custom: "a;b{c}")', $contents[0]->atRuleArgs());
+    }
+
+    /**
+     * @test
+     */
+    public function handlesOddAndEvenBackslashRunsBeforeQuotesInAtRuleArguments(): void
+    {
+        $oddBackslashCss = <<<'CSS'
+@media (custom: "a\";{b}") { .inside { color: red; } } .after { color: blue; }
+CSS;
+        $oddBackslashContents = (new Parser($oddBackslashCss))->parse()->getContents();
+
+        self::assertCount(2, $oddBackslashContents);
+        self::assertInstanceOf(AtRuleBlockList::class, $oddBackslashContents[0]);
+        self::assertSame('(custom: "a\\";{b}")', $oddBackslashContents[0]->atRuleArgs());
+
+        $evenBackslashCss = <<<'CSS'
+@custom "a\\"; .after { color: blue; }
+CSS;
+        $evenBackslashContents = (new Parser($evenBackslashCss))->parse()->getContents();
+
+        self::assertCount(2, $evenBackslashContents);
+        self::assertInstanceOf(AtRuleStatement::class, $evenBackslashContents[0]);
+        self::assertSame('"a\\\\"', $evenBackslashContents[0]->atRuleArgs());
     }
 }
