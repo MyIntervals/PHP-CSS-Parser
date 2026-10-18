@@ -130,4 +130,52 @@ final class AtRuleStatementTest extends TestCase
 
         self::assertStringContainsString('@layer reset;', $rendered);
     }
+
+    /**
+     * @test
+     */
+    public function doesNotTreatBracesOrSemicolonsInsideStringsAsAtRuleDelimiters(): void
+    {
+        $css = '@media (custom: "a;b{c}") { .inside { color: red; } } .after { color: blue; }';
+
+        $contents = (new Parser($css))->parse()->getContents();
+
+        self::assertCount(2, $contents);
+        self::assertInstanceOf(AtRuleBlockList::class, $contents[0]);
+        self::assertSame('(custom: "a;b{c}")', $contents[0]->atRuleArgs());
+    }
+
+    /**
+     * @test
+     */
+    public function handlesOddAndEvenBackslashRunsBeforeQuotesInAtRuleArguments(): void
+    {
+        $oddBackslashCss = '@media (custom: "a\\";{b}") { .inside { color: red; } } .after { color: blue; }';
+        $oddBackslashContents = (new Parser($oddBackslashCss))->parse()->getContents();
+
+        self::assertCount(2, $oddBackslashContents);
+        self::assertInstanceOf(AtRuleBlockList::class, $oddBackslashContents[0]);
+        self::assertSame('(custom: "a\\";{b}")', $oddBackslashContents[0]->atRuleArgs());
+
+        $evenBackslashCss = '@custom "a\\\\"; .after { color: blue; }';
+        $evenBackslashContents = (new Parser($evenBackslashCss))->parse()->getContents();
+
+        self::assertCount(2, $evenBackslashContents);
+        self::assertInstanceOf(AtRuleStatement::class, $evenBackslashContents[0]);
+        self::assertSame('"a\\\\"', $evenBackslashContents[0]->atRuleArgs());
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotTreatDelimitersAfterBackslashInsideStringAsAtRuleDelimiters(): void
+    {
+        $css = '@media (custom: "a\\b;c{d}") { .inside { color: red; } } .after { color: blue; }';
+
+        $contents = (new Parser($css))->parse()->getContents();
+
+        self::assertCount(2, $contents);
+        self::assertInstanceOf(AtRuleBlockList::class, $contents[0]);
+        self::assertSame('(custom: "a\\b;c{d}")', $contents[0]->atRuleArgs());
+    }
 }
