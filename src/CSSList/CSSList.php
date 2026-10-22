@@ -212,7 +212,7 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
             return new CSSNamespace($url, $prefix, $identifierLineNumber);
         } else {
             // Unknown other at rule (font-face, @layer, or such)
-            $arguments = \trim($parserState->consumeUntil(['{', ';'], false, false));
+            $arguments = self::consumeAtRuleArguments($parserState);
             if ($parserState->comes(';')) {
                 $parserState->consume(';');
                 return new AtRuleStatement($identifier, $arguments, $identifierLineNumber);
@@ -244,6 +244,44 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
             }
             return $atRule;
         }
+    }
+
+    /**
+     * Consumes an at-rule prelude without treating braces or semicolons inside strings as delimiters.
+     *
+     * @phpstan-impure This method advances the parser state.
+     */
+    private static function consumeAtRuleArguments(ParserState $parserState): string
+    {
+        $arguments = '';
+        while (!$parserState->isEnd()) {
+            $arguments .= $parserState->consumeUntil(['{', ';', '"', "'"]);
+            if ($parserState->comes('{') || $parserState->comes(';')) {
+                return \trim($arguments);
+            }
+
+            $quote = $parserState->consume(1);
+            $trailingBackslashMatches = [];
+            $matchCount = \preg_match('/(\\\\+)\\z/', $arguments, $trailingBackslashMatches);
+            // An odd run escapes the quote; an even run leaves it as a delimiter.
+            $isEscaped = $matchCount === 1 && (\strlen($trailingBackslashMatches[1]) % 2) === 1;
+            $arguments .= $quote;
+            if ($isEscaped) {
+                continue;
+            }
+
+            while (true) {
+                $character = $parserState->consume(1);
+                $arguments .= $character;
+                if ($character === '\\') {
+                    $arguments .= $parserState->consume(1);
+                } elseif ($character === $quote) {
+                    break;
+                }
+            }
+        }
+
+        return \trim($arguments);
     }
 
     /**

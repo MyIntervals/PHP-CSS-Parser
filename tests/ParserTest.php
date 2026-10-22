@@ -360,7 +360,7 @@ body {color: green;}',
             $document->render()
         );
         foreach ($document->getAllValues(null) as $value) {
-            if ($value instanceof Size && $value->isSize() && !$value->isRelative()) {
+            if ($value instanceof Size && $value->isLength() && !$value->isRelative()) {
                 $value->setSize($value->getSize() * 3);
             }
         }
@@ -412,7 +412,7 @@ body {color: green;}',
         self::assertSame($expected, $document->render());
 
         foreach ($document->getAllValues(null, null, true) as $value) {
-            if ($value instanceof Size && $value->isSize()) {
+            if ($value instanceof Size && $value->isLength()) {
                 $value->setSize($value->getSize() * 3);
             }
         }
@@ -577,6 +577,22 @@ div {width: calc(50% - ( ( 4% ) * .5 ));}';
     {
         $document = self::parsedStructureForFile('calc-nested', Settings::create()->withMultibyteSupport(true));
         $expected = '.test {font-size: calc(( 3 * 4px ) + -2px);top: calc(200px - calc(20 * 3px));}';
+        self::assertSame($expected, $document->render());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesNewerUnitsInsideFunctions(): void
+    {
+        $parser = new Parser(
+            '.test {margin: 0 0 .6cqi;--size: min(calc(100cqi / 5), 16rem);height: calc(100dvb - 2lh);}'
+        );
+
+        $document = $parser->parse();
+
+        $expected = '.test {margin: 0 0 .6cqi;--size: min(calc(100cqi / 5),16rem);'
+            . 'height: calc(100dvb - 2lh);}';
         self::assertSame($expected, $document->render());
     }
 

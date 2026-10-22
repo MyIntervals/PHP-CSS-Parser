@@ -10,15 +10,26 @@ Please also have a look at our
 
 ### Added
 
+- Recognize newer CSS units (container query, viewport, font-relative and
+  resolution units) in `Size` (#1641)
+- Add support for `from` keyword in `parseColorFunction` (#1639)
+
 ### Changed
 
+- `Size::isSize()` is renamed to `isLength()` (#1645)
+
 ### Deprecated
+
+- `Size::isSize()` is deprecated; use `isLength()` instead; it is a direct
+  replacement (#1645)
 
 ### Removed
 
 ### Fixed
 
-Enable parsing selectors that contain escaped characters `{}[]~+"` (#1658)
+- Enable parsing selectors that contain escaped characters `{}[]~+"` (#1658)
+- Render very small numbers in `Size` without rounding them to zero (#1647)
+- Ignore braces and semicolons inside quoted strings when parsing at-rule preludes (#1650)
 
 ### Documentation
 

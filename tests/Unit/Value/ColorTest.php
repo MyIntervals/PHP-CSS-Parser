@@ -6,10 +6,12 @@ namespace Sabberworm\CSS\Tests\Unit\Value;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\Color;
+use Sabberworm\CSS\Value\CSSFunction;
 
 /**
  * Note: some test data is currently commented-out.
@@ -335,6 +337,42 @@ final class ColorTest extends TestCase
                 'hsl(120 100% 25% / none)',
                 'hsla(120 100% 25%/none)',
             ],
+            'relative hsl with var origin, calc channels, and alpha' => [
+                'hsl(from var(--gcid-lvhfuivypo) calc(h + 0) calc(s + 0) calc(l + 0) / 0.66)',
+                'hsl(from var(--gcid-lvhfuivypo) calc(h + 0) calc(s + 0) calc(l + 0) / .66)',
+            ],
+            'relative rgb with var origin and alpha' => [
+                'rgb(from var(--c) r g b / 0.5)',
+                'rgb(from var(--c) r g b / .5)',
+            ],
+            'relative rgba with channel keywords' => [
+                'rgba(from var(--c) r g b / alpha)',
+                'rgba(from var(--c) r g b / alpha)',
+            ],
+            'relative hsla with a named origin color' => [
+                'hsla(from red h s l / 0.25)',
+                'hsla(from red h s l / .25)',
+            ],
+            'relative hsl with a comment before from' => [
+                'hsl( /* c */ from red h s l / 0.2)',
+                'hsl(from red h s l / .2)',
+            ],
+            'relative hsl with uppercase from' => [
+                'HSL(FROM var(--c) h s l / 0.66)',
+                'hsl(FROM var(--c) h s l / .66)',
+            ],
+            'relative hsl with a hex origin color' => [
+                'hsl(from #3366cc h s l / 50%)',
+                'hsl(from #36c h s l / 50%)',
+            ],
+            'relative hsl with calc adjustments and an alpha slash' => [
+                'hsl(from red calc(h / 2) calc(s + 0%) calc(l - 10) / 0.66)',
+                'hsl(from red calc(h / 2) calc(s + 0%) calc(l - 10) / .66)',
+            ],
+            'nested relative hsl' => [
+                'hsl(from hsl(from red h s l) h s l / 0.4)',
+                'hsl(from hsl(from red h s l) h s l / .4)',
+            ],
         ];
     }
 
@@ -350,6 +388,55 @@ final class ColorTest extends TestCase
         $renderedResult = $subject->render(OutputFormat::create());
 
         self::assertSame($expectedRendering, $renderedResult);
+    }
+
+    /**
+     * @return array<string, array{0: bool}>
+     */
+    public static function provideLenientParsingSetting(): array
+    {
+        return [
+            'strict parsing' => [false],
+            'lenient parsing' => [true],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideLenientParsingSetting
+     */
+    public function parsesRelativeColorInAStyleSheet(bool $usesLenientParsing): void
+    {
+        $css = ':root { --gcid-lvhfuivypo: #3366cc; }'
+            . 'div { background-color: hsl(from var(--gcid-lvhfuivypo)'
+            . ' calc(h + 0) calc(s + 0) calc(l + 0) / 0.66); }'
+            . 'a { background-color: var(--gcid-lvhfuivypo); }';
+        $document = (new Parser($css, Settings::create()->withLenientParsing($usesLenientParsing)))->parse();
+        $blocks = $document->getAllDeclarationBlocks();
+
+        self::assertCount(3, $blocks);
+
+        $customProperty = $blocks[0]->getDeclarations('--gcid-lvhfuivypo');
+        self::assertCount(1, $customProperty);
+        $customPropertyValue = $customProperty[0]->getValue();
+        self::assertInstanceOf(Color::class, $customPropertyValue);
+        self::assertSame('#36c', $customPropertyValue->render(OutputFormat::create()));
+
+        $relativeColor = $blocks[1]->getDeclarations('background-color');
+        self::assertCount(1, $relativeColor);
+        $relativeColorValue = $relativeColor[0]->getValue();
+        self::assertInstanceOf(CSSFunction::class, $relativeColorValue);
+        self::assertSame(
+            'hsl(from var(--gcid-lvhfuivypo) calc(h + 0) calc(s + 0) calc(l + 0) / .66)',
+            $relativeColorValue->render(OutputFormat::create())
+        );
+
+        $followingColor = $blocks[2]->getDeclarations('background-color');
+        self::assertCount(1, $followingColor);
+        $followingColorValue = $followingColor[0]->getValue();
+        self::assertInstanceOf(CSSFunction::class, $followingColorValue);
+        self::assertSame('var(--gcid-lvhfuivypo)', $followingColorValue->render(OutputFormat::create()));
     }
 
     /**
