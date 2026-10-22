@@ -253,21 +253,21 @@ class Size extends PrimitiveValue
      */
     public function render(OutputFormat $outputFormat): string
     {
-        $locale = \localeconv();
-        $decimalPoint = \preg_quote($locale['decimal_point'], '/');
-        $matchResult = \preg_match('/[\\d\\.]+e[+-]?\\d+/i', (string) $this->size);
-        \assert(\is_int($matchResult));
-        if ($matchResult === 1) {
-            $size = \preg_replace("/$decimalPoint?0+$/", '', \sprintf('%.15f', $this->size));
-            \assert(\is_string($size));
-        } else {
-            $size = (string) $this->size;
+        // Floating point numbers have only 14-15 digits of precision.
+        // Determine how many decimal places to include to avoid noise at the end.
+        $magnitude = $this->size !== 0.0 ? (int) \ceil(\log10(\abs($this->size))) : 0;
+        $numberOfDecimals = \max(15 - $magnitude, 0);
+
+        $formattedNumber = \number_format($this->size, $numberOfDecimals, '.', ''); // no thousands separator
+
+        if (\strpos($formattedNumber, '.') !== false) {
+            // Remove trailing zeros after decimal point, and perhaps the point itself
+            $formattedNumber = \rtrim(\rtrim($formattedNumber, '0'), '.');
         }
+        // Remove leading zero
+        $formattedNumber = \preg_replace('/^(-?+)0(?=\\.)/', '$1', $formattedNumber);
 
-        $renderedSize = \preg_replace(["/$decimalPoint/", '/^(-?)0\\./'], ['.', '$1.'], $size);
-        \assert(\is_string($renderedSize));
-
-        return $renderedSize . ($this->unit ?? '');
+        return $formattedNumber . ($this->unit ?? '');
     }
 
     /**
