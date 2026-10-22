@@ -294,7 +294,7 @@ class CompoundSelector implements Component
      */
     private static function isCharacterEscaped(array $selectorParts): bool
     {
-        $lastPart = \end($selectorParts);
+        $lastPart = $selectorParts[\count($selectorParts) - 1] ?? null;
         if (!\is_string($lastPart)) {
             return false;
         }
