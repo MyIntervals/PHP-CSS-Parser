@@ -18,6 +18,8 @@ Please also have a look at our
 
 ### Fixed
 
+Enable parsing selectors that contain escaped characters `{}[]~+"` (#1658)
+
 ### Documentation
 
 ## 9.5.0: Add support for PHP 8.6
