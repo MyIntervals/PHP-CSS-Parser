@@ -104,12 +104,35 @@ final class CompoundSelectorTest extends TestCase
     }
 
     /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideCompoundSelectorWithEscapedStructuralCharacters(): array
+    {
+        return [
+            'nested escaped square brackets' => ['.\\[\\&_\\[data\\]\\]'],
+            'tailwind arbitrary variant class'
+            => ['.\\[\\&_\\[data-piko-package\\=review-card\\]\\]\\:px-\\[25px\\]'],
+            'escaped square brackets inside an attribute value' => ['[title=\\[x\\]]'],
+            'escaped closing square bracket inside an attribute value' => ['[title=\\]]'],
+            'even number of backslashes before an attribute' => ['a\\\\[href]'],
+            'escaped parentheses in a class' => ['.w-\\[calc\\(100\\%-1rem\\)\\]'],
+            'escaped spaces inside a class' => ['.hover\\:bg-\\[rgb\\(0\\ 0\\ 0\\)\\]'],
+            'escaped child combinator in a class' => ['.foo\\>bar'],
+            'escaped opening parenthesis' => ['.foo\\('],
+            'escaped closing parenthesis' => ['.foo\\)'],
+            'escaped opening brace' => ['.foo\\{bar'],
+            'escaped comma' => ['.foo\\,bar'],
+        ];
+    }
+
+    /**
      * @test
      *
      * @param non-empty-string $compoundSelector
      *
      * @dataProvider provideCompoundSelectorAndSpecificity
      * @dataProvider provideCompoundSelectorWithEscapedQuotes
+     * @dataProvider provideCompoundSelectorWithEscapedStructuralCharacters
      */
     public function parsesValidCompoundSelector(string $compoundSelector): void
     {
@@ -196,6 +219,7 @@ final class CompoundSelectorTest extends TestCase
             'attribute value with mismatched quotes, double quote opening' => ['a[href="#top\']'],
             'attribute value with extra `[`' => ['a[[href="#top"]'],
             'attribute value with extra `]`' => ['a[href="#top"]]'],
+            'real square bracket after an escaped backslash' => ['a\\\\[[href]'],
         ];
     }
 
@@ -268,6 +292,19 @@ final class CompoundSelectorTest extends TestCase
         CompoundSelector::parse($subject);
 
         self::assertSame($stopCharacter, $subject->peek());
+    }
+
+    /**
+     * @test
+     */
+    public function parseConsumesEscapedStopCharacterAndLeavesTheFollowingStopCharacter(): void
+    {
+        $subject = new ParserState('.foo\\[bar\\]{', Settings::create());
+
+        $result = CompoundSelector::parse($subject);
+
+        self::assertSame('.foo\\[bar\\]', $result->getValue());
+        self::assertSame('{', $subject->peek());
     }
 
     /**

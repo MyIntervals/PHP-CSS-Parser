@@ -105,6 +105,7 @@ class CompoundSelector implements Component
         while (true) {
             $selectorParts[] = $parserState->consumeUntil(self::PARSER_STOP_CHARACTERS, false, false, $comments);
             $nextCharacter = $parserState->peek();
+            $nextCharacterIsEscaped = self::isCharacterEscaped($selectorParts);
             switch ($nextCharacter) {
                 case '':
                     // EOF
@@ -112,10 +113,7 @@ class CompoundSelector implements Component
                 case '\'':
                     // The fallthrough is intentional.
                 case '"':
-                    $lastPart = \end($selectorParts);
-                    $backslashCount = \strspn(\strrev($lastPart), '\\');
-                    $quoteIsEscaped = ($backslashCount % 2 === 1);
-                    if (!$quoteIsEscaped) {
+                    if (!$nextCharacterIsEscaped) {
                         if (!\is_string($stringWrapperCharacter)) {
                             $stringWrapperCharacter = $nextCharacter;
                         } elseif ($stringWrapperCharacter === $nextCharacter) {
@@ -124,12 +122,12 @@ class CompoundSelector implements Component
                     }
                     break;
                 case '(':
-                    if (!\is_string($stringWrapperCharacter)) {
+                    if (!$nextCharacterIsEscaped && !\is_string($stringWrapperCharacter)) {
                         ++$functionNestingLevel;
                     }
                     break;
                 case ')':
-                    if (!\is_string($stringWrapperCharacter)) {
+                    if (!$nextCharacterIsEscaped && !\is_string($stringWrapperCharacter)) {
                         if ($functionNestingLevel <= 0) {
                             throw new UnexpectedTokenException(
                                 'anything but',
@@ -142,7 +140,7 @@ class CompoundSelector implements Component
                     }
                     break;
                 case '[':
-                    if (!\is_string($stringWrapperCharacter)) {
+                    if (!$nextCharacterIsEscaped && !\is_string($stringWrapperCharacter)) {
                         if ($isWithinAttribute) {
                             throw new UnexpectedTokenException(
                                 'anything but',
@@ -155,7 +153,7 @@ class CompoundSelector implements Component
                     }
                     break;
                 case ']':
-                    if (!\is_string($stringWrapperCharacter)) {
+                    if (!$nextCharacterIsEscaped && !\is_string($stringWrapperCharacter)) {
                         if (!$isWithinAttribute) {
                             throw new UnexpectedTokenException(
                                 'anything but',
@@ -170,7 +168,7 @@ class CompoundSelector implements Component
                 case '{':
                     // The fallthrough is intentional.
                 case '}':
-                    if (!\is_string($stringWrapperCharacter)) {
+                    if (!$nextCharacterIsEscaped && !\is_string($stringWrapperCharacter)) {
                         break 2;
                     }
                     break;
@@ -189,7 +187,12 @@ class CompoundSelector implements Component
                 case '+':
                     // The fallthrough is intentional.
                 case '~':
-                    if (!\is_string($stringWrapperCharacter) && $functionNestingLevel === 0 && !$isWithinAttribute) {
+                    if (
+                        !$nextCharacterIsEscaped
+                        && !\is_string($stringWrapperCharacter)
+                        && $functionNestingLevel === 0
+                        && !$isWithinAttribute
+                    ) {
                         break 2;
                     }
                     break;
@@ -281,5 +284,21 @@ class CompoundSelector implements Component
         }
 
         return $numberOfMatches === 1;
+    }
+
+    /**
+     * A stop character is escaped when an odd number of backslashes immediately precedes it.
+     * `\[` is a literal bracket, and `\\[` is an escaped backslash followed by a real bracket.
+     *
+     * @param list<string> $selectorParts
+     */
+    private static function isCharacterEscaped(array $selectorParts): bool
+    {
+        $lastPart = \end($selectorParts);
+        if (!\is_string($lastPart)) {
+            return false;
+        }
+
+        return \strspn(\strrev($lastPart), '\\') % 2 === 1;
     }
 }
