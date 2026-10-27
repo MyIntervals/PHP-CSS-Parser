@@ -104,8 +104,8 @@ class CompoundSelector implements Component
 
         while (true) {
             $selectorParts[] = $parserState->consumeUntil(self::PARSER_STOP_CHARACTERS, false, false, $comments);
+            $nextCharacterIsEscaped = self::isCharacterEscaped($selectorParts[\count($selectorParts) - 1]);
             $nextCharacter = $parserState->peek();
-            $nextCharacterIsEscaped = self::isCharacterEscaped($selectorParts);
             switch ($nextCharacter) {
                 case '':
                     // EOF
@@ -297,16 +297,9 @@ class CompoundSelector implements Component
     /**
      * A stop character is escaped when an odd number of backslashes immediately precedes it.
      * `\[` is a literal bracket, and `\\[` is an escaped backslash followed by a real bracket.
-     *
-     * @param list<string> $selectorParts
      */
-    private static function isCharacterEscaped(array $selectorParts): bool
+    private static function isCharacterEscaped(string $lastPart): bool
     {
-        $lastPart = $selectorParts[\count($selectorParts) - 1] ?? null;
-        if (!\is_string($lastPart)) {
-            return false;
-        }
-
         return \strspn(\strrev($lastPart), '\\') % 2 === 1;
     }
 }
