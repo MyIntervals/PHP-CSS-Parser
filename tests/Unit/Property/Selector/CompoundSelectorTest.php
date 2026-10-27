@@ -117,6 +117,7 @@ final class CompoundSelectorTest extends TestCase
             'even number of backslashes before an attribute' => ['a\\\\[href]'],
             'escaped parentheses in a class' => ['.w-\\[calc\\(100\\%-1rem\\)\\]'],
             'escaped spaces inside a class' => ['.hover\\:bg-\\[rgb\\(0\\ 0\\ 0\\)\\]'],
+            'escaped tab inside a class' => [".foo\\\tbar"],
             'escaped child combinator in a class' => ['.foo\\>bar'],
             'escaped opening parenthesis' => ['.foo\\('],
             'escaped closing parenthesis' => ['.foo\\)'],
@@ -305,6 +306,40 @@ final class CompoundSelectorTest extends TestCase
 
         self::assertSame('.foo\\[bar\\]', $result->getValue());
         self::assertSame('{', $subject->peek());
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideLineBreaks(): array
+    {
+        return [
+            'line feed' => ["\n"],
+            'carriage return' => ["\r"],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $lineBreak
+     *
+     * @dataProvider provideLineBreaks
+     */
+    public function parseDoesNotTreatEscapedLineBreakAsPartOfTheCompoundSelector(string $lineBreak): void
+    {
+        $subject = new ParserState('.foo\\' . $lineBreak . 'bar', Settings::create());
+
+        $this->expectException(UnexpectedTokenException::class);
+
+        try {
+            CompoundSelector::parse($subject);
+        } catch (UnexpectedTokenException $exception) {
+            self::assertSame($lineBreak, $subject->peek());
+            self::assertStringStartsWith('Selector component is not valid: `.foo\\`', $exception->getMessage());
+
+            throw $exception;
+        }
     }
 
     /**

@@ -172,15 +172,23 @@ class CompoundSelector implements Component
                         break 2;
                     }
                     break;
+                // A backslash followed by a line break is not a CSS escape.
+                case "\n":
+                    // The fallthrough is intentional.
+                case "\r":
+                    if (
+                        !\is_string($stringWrapperCharacter)
+                        && $functionNestingLevel === 0
+                        && !$isWithinAttribute
+                    ) {
+                        break 2;
+                    }
+                    break;
                 case ',':
                     // The fallthrough is intentional.
                 case ' ':
                     // The fallthrough is intentional.
                 case "\t":
-                    // The fallthrough is intentional.
-                case "\n":
-                    // The fallthrough is intentional.
-                case "\r":
                     // The fallthrough is intentional.
                 case '>':
                     // The fallthrough is intentional.

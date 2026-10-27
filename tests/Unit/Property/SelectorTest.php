@@ -117,6 +117,7 @@ final class SelectorTest extends TestCase
             'even number of backslashes before an attribute' => ['a\\\\[href]'],
             'escaped parentheses in a class' => ['.w-\\[calc\\(100\\%-1rem\\)\\]'],
             'escaped spaces inside a class' => ['.hover\\:bg-\\[rgb\\(0\\ 0\\ 0\\)\\]'],
+            'escaped tab inside a class' => [".foo\\\tbar"],
             'escaped child combinator in a class' => ['.foo\\>bar'],
             'escaped opening parenthesis' => ['.foo\\('],
             'escaped closing parenthesis' => ['.foo\\)'],
