@@ -44,8 +44,7 @@ abstract class Value implements CSSElement, Positionable
         ParserState $parserState,
         array $listDelimiters = [],
         bool $allowTrailingEmptyArgument = false
-    )
-    {
+    ) {
         /** @var list<Value|string> $stack */
         $stack = [];
         $parserState->consumeWhiteSpace();
