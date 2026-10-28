@@ -183,7 +183,13 @@ class ParserState
             return $convertedCharacter;
         }
         if ($isForIdentifier) {
-            $peek = \ord($this->peek());
+            $nextCharacter = $this->peek();
+            // `peek()` returns one character. With multibyte support that character can be several bytes,
+            // and `ord()` only accepts a single byte. These ranges only inspect the first byte.
+            if (\strlen($nextCharacter) > 1) {
+                $nextCharacter = $nextCharacter[0];
+            }
+            $peek = \ord($nextCharacter);
             // Ranges: a-z A-Z 0-9 - _
             if (
                 ($peek >= 97 && $peek <= 122)
