@@ -104,12 +104,36 @@ final class SelectorTest extends TestCase
     }
 
     /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideSelectorsWithEscapedStructuralCharacters(): array
+    {
+        return [
+            'nested escaped square brackets' => ['.\\[\\&_\\[data\\]\\]'],
+            'tailwind arbitrary variant class'
+            => ['.\\[\\&_\\[data-piko-package\\=review-card\\]\\]\\:px-\\[25px\\]'],
+            'escaped square brackets inside an attribute value' => ['[title=\\[x\\]]'],
+            'escaped closing square bracket inside an attribute value' => ['[title=\\]]'],
+            'even number of backslashes before an attribute' => ['a\\\\[href]'],
+            'escaped parentheses in a class' => ['.w-\\[calc\\(100\\%-1rem\\)\\]'],
+            'escaped spaces inside a class' => ['.hover\\:bg-\\[rgb\\(0\\ 0\\ 0\\)\\]'],
+            'escaped tab inside a class' => [".foo\\\tbar"],
+            'escaped child combinator in a class' => ['.foo\\>bar'],
+            'escaped opening parenthesis' => ['.foo\\('],
+            'escaped closing parenthesis' => ['.foo\\)'],
+            'escaped opening brace' => ['.foo\\{bar'],
+            'escaped comma' => ['.foo\\,bar'],
+        ];
+    }
+
+    /**
      * @test
      *
      * @param non-empty-string $selector
      *
      * @dataProvider provideSelectorsAndSpecificities
      * @dataProvider provideSelectorsWithEscapedQuotes
+     * @dataProvider provideSelectorsWithEscapedStructuralCharacters
      */
     public function parsesValidSelector(string $selector): void
     {
@@ -191,6 +215,7 @@ final class SelectorTest extends TestCase
             'attribute value missing closing double quote' => ['a[href="#top]'],
             'attribute value with mismatched quotes, single quote opening' => ['a[href=\'#top"]'],
             'attribute value with mismatched quotes, double quote opening' => ['a[href="#top\']'],
+            'real square bracket after an escaped backslash' => ['a\\\\[[href]'],
         ];
     }
 
@@ -242,6 +267,43 @@ final class SelectorTest extends TestCase
         Selector::parse($subject);
 
         self::assertSame($stopCharacter, $subject->peek());
+    }
+
+    /**
+     * @test
+     */
+    public function parseSplitsClassWithEscapedBracketsFromFollowingAttributeSelector(): void
+    {
+        $className = '.\\[\\&_\\[data-piko-package\\=review-card\\]\\]\\:px-\\[25px\\]';
+        $selector = $className . ' [data-piko-package=review-card]';
+
+        $result = Selector::parse(new ParserState($selector, Settings::create()));
+
+        $components = $result->getComponents();
+        self::assertCount(3, $components);
+        self::assertInstanceOf(CompoundSelector::class, $components[0]);
+        self::assertSame($className, $components[0]->getValue());
+        self::assertInstanceOf(Combinator::class, $components[1]);
+        self::assertSame(' ', $components[1]->getValue());
+        self::assertInstanceOf(CompoundSelector::class, $components[2]);
+        self::assertSame('[data-piko-package=review-card]', $components[2]->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function parseTreatsEscapedCombinatorAndSpaceAsPartOfTheCompoundSelector(): void
+    {
+        $result = Selector::parse(new ParserState('.foo\\>bar\\ baz qux', Settings::create()));
+
+        $components = $result->getComponents();
+        self::assertCount(3, $components);
+        self::assertInstanceOf(CompoundSelector::class, $components[0]);
+        self::assertSame('.foo\\>bar\\ baz', $components[0]->getValue());
+        self::assertInstanceOf(Combinator::class, $components[1]);
+        self::assertSame(' ', $components[1]->getValue());
+        self::assertInstanceOf(CompoundSelector::class, $components[2]);
+        self::assertSame('qux', $components[2]->getValue());
     }
 
     /**

@@ -104,6 +104,7 @@ class CompoundSelector implements Component
 
         while (true) {
             $selectorParts[] = $parserState->consumeUntil(self::PARSER_STOP_CHARACTERS, false, false, $comments);
+            $nextCharacterIsEscaped = self::isCharacterEscaped($selectorParts[\count($selectorParts) - 1]);
             $nextCharacter = $parserState->peek();
             switch ($nextCharacter) {
                 case '':
@@ -112,10 +113,7 @@ class CompoundSelector implements Component
                 case '\'':
                     // The fallthrough is intentional.
                 case '"':
-                    $lastPart = \end($selectorParts);
-                    $backslashCount = \strspn(\strrev($lastPart), '\\');
-                    $quoteIsEscaped = ($backslashCount % 2 === 1);
-                    if (!$quoteIsEscaped) {
+                    if (!$nextCharacterIsEscaped) {
                         if (!\is_string($stringWrapperCharacter)) {
                             $stringWrapperCharacter = $nextCharacter;
                         } elseif ($stringWrapperCharacter === $nextCharacter) {
@@ -124,12 +122,12 @@ class CompoundSelector implements Component
                     }
                     break;
                 case '(':
-                    if (!\is_string($stringWrapperCharacter)) {
+                    if (!$nextCharacterIsEscaped && !\is_string($stringWrapperCharacter)) {
                         ++$functionNestingLevel;
                     }
                     break;
                 case ')':
-                    if (!\is_string($stringWrapperCharacter)) {
+                    if (!$nextCharacterIsEscaped && !\is_string($stringWrapperCharacter)) {
                         if ($functionNestingLevel <= 0) {
                             throw new UnexpectedTokenException(
                                 'anything but',
@@ -142,7 +140,7 @@ class CompoundSelector implements Component
                     }
                     break;
                 case '[':
-                    if (!\is_string($stringWrapperCharacter)) {
+                    if (!$nextCharacterIsEscaped && !\is_string($stringWrapperCharacter)) {
                         if ($isWithinAttribute) {
                             throw new UnexpectedTokenException(
                                 'anything but',
@@ -155,7 +153,7 @@ class CompoundSelector implements Component
                     }
                     break;
                 case ']':
-                    if (!\is_string($stringWrapperCharacter)) {
+                    if (!$nextCharacterIsEscaped && !\is_string($stringWrapperCharacter)) {
                         if (!$isWithinAttribute) {
                             throw new UnexpectedTokenException(
                                 'anything but',
@@ -170,7 +168,19 @@ class CompoundSelector implements Component
                 case '{':
                     // The fallthrough is intentional.
                 case '}':
-                    if (!\is_string($stringWrapperCharacter)) {
+                    if (!$nextCharacterIsEscaped && !\is_string($stringWrapperCharacter)) {
+                        break 2;
+                    }
+                    break;
+                // A backslash followed by a line break is not a CSS escape.
+                case "\n":
+                    // The fallthrough is intentional.
+                case "\r":
+                    if (
+                        !\is_string($stringWrapperCharacter)
+                        && $functionNestingLevel === 0
+                        && !$isWithinAttribute
+                    ) {
                         break 2;
                     }
                     break;
@@ -180,16 +190,17 @@ class CompoundSelector implements Component
                     // The fallthrough is intentional.
                 case "\t":
                     // The fallthrough is intentional.
-                case "\n":
-                    // The fallthrough is intentional.
-                case "\r":
-                    // The fallthrough is intentional.
                 case '>':
                     // The fallthrough is intentional.
                 case '+':
                     // The fallthrough is intentional.
                 case '~':
-                    if (!\is_string($stringWrapperCharacter) && $functionNestingLevel === 0 && !$isWithinAttribute) {
+                    if (
+                        !$nextCharacterIsEscaped
+                        && !\is_string($stringWrapperCharacter)
+                        && $functionNestingLevel === 0
+                        && !$isWithinAttribute
+                    ) {
                         break 2;
                     }
                     break;
@@ -281,5 +292,14 @@ class CompoundSelector implements Component
         }
 
         return $numberOfMatches === 1;
+    }
+
+    /**
+     * A stop character is escaped when an odd number of backslashes immediately precedes it.
+     * `\[` is a literal bracket, and `\\[` is an escaped backslash followed by a real bracket.
+     */
+    private static function isCharacterEscaped(string $lastPart): bool
+    {
+        return \strspn(\strrev($lastPart), '\\') % 2 === 1;
     }
 }
