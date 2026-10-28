@@ -29,6 +29,7 @@ Please also have a look at our
 
 - Render very small numbers in `Size` without rounding them to zero (#1647)
 - Ignore braces and semicolons inside quoted strings when parsing at-rule preludes (#1650)
+- Allow empty default value in var() i.e. `.a { border: var(--w,) solid red; }` (#1659)
 
 ### Documentation
 
