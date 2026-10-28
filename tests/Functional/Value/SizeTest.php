@@ -24,6 +24,10 @@ final class SizeTest extends TestCase
             '1.23456789e-5' => [1.23456789e-5, '.0000123456789'],
             '-2.5e-8' => [-2.5e-8, '-.000000025'],
             '1e-5' => [1e-5, '.00001'],
+            // TODO: this is the smallest number that can be set without `number_format()` rendering the equivalent of
+            // 1e15 when the locale is set to Portuguese on Windows 10.
+            // Must be a bug in PHP, since `number_format()` is supposed to be locale-independent.
+            '1e-18' => [1e-18, '.000000000000000001'],
             '10000000000000000000000' => [10000000000000000000000, '10000000000000000000000'],
             // TODO: the expected rendering may vary depending on the precision of the FPU
             '3.0418206565232E+21' => [3.0418206565232E+21, '3041820656523200167936'],
