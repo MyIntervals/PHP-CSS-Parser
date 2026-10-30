@@ -40,8 +40,11 @@ abstract class Value implements CSSElement, Positionable
      *
      * @internal since V8.8.0
      */
-    public static function parseValue(ParserState $parserState, array $listDelimiters = [])
-    {
+    public static function parseValue(
+        ParserState $parserState,
+        array $listDelimiters = [],
+        bool $allowTrailingEmptyArgument = false
+    ) {
         /** @var list<Value|string> $stack */
         $stack = [];
         $parserState->consumeWhiteSpace();
@@ -57,6 +60,10 @@ abstract class Value implements CSSElement, Positionable
                     if ($parserState->comes($delimiter)) {
                         \array_push($stack, $parserState->consume($delimiter));
                         $parserState->consumeWhiteSpace();
+                        if ($allowTrailingEmptyArgument && $delimiter === ',' && $parserState->comes(')')) {
+                            $stack[] = '';
+                            break 2;
+                        }
                         $foundDelimiter = true;
                         break;
                     }

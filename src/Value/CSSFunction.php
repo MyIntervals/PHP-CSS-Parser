@@ -51,7 +51,7 @@ class CSSFunction extends ValueList
     {
         $name = self::parseName($parserState, $ignoreCase);
         $parserState->consume('(');
-        $arguments = self::parseArguments($parserState);
+        $arguments = self::parseArguments($parserState, \strcmp($name, 'var') === 0);
 
         $result = new CSSFunction($name, $arguments, ',', $parserState->currentLine());
         $parserState->consume(')');
@@ -76,9 +76,9 @@ class CSSFunction extends ValueList
      * @throws UnexpectedEOFException
      * @throws UnexpectedTokenException
      */
-    private static function parseArguments(ParserState $parserState)
+    private static function parseArguments(ParserState $parserState, bool $allowTrailingEmptyArgument = false)
     {
-        return Value::parseValue($parserState, ['=', ' ', ',']);
+        return Value::parseValue($parserState, ['=', ' ', ','], $allowTrailingEmptyArgument);
     }
 
     /**
