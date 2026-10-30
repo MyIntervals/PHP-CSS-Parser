@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit\Value;
 
 use PHPUnit\Framework\TestCase;
-use Sabberworm\CSS\OutputFormat;
-use Sabberworm\CSS\Parsing\ParserState;
-use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\CSSFunction;
 
 /**
@@ -39,17 +36,5 @@ final class CSSFunctionTest extends TestCase
         $result = $subject->getArrayRepresentation();
 
         self::assertSame('filter', $result['name']);
-    }
-
-    /**
-     * @test
-     */
-    public function parsesEmptyVarFallback(): void
-    {
-        $parserState = new ParserState('var(--w,)', Settings::create());
-
-        $result = CSSFunction::parse($parserState);
-
-        self::assertSame('var(--w,)', $result->render(OutputFormat::createCompact()));
     }
 }

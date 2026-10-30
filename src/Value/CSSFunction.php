@@ -51,7 +51,7 @@ class CSSFunction extends ValueList
     {
         $name = self::parseName($parserState, $ignoreCase);
         $parserState->consume('(');
-        $arguments = self::parseArguments($parserState, \strcasecmp($name, 'var') === 0);
+        $arguments = self::parseArguments($parserState, \strcmp($name, 'var') === 0);
 
         $result = new CSSFunction($name, $arguments, ',', $parserState->currentLine());
         $parserState->consume(')');
