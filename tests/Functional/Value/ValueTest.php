@@ -6,8 +6,10 @@ namespace Sabberworm\CSS\Tests\Functional\Value;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\CSSFunction;
+use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\Value;
 
@@ -39,5 +41,34 @@ final class ValueTest extends TestCase
         self::assertSame(300.0, $size->getSize());
         self::assertSame('px', $size->getUnit());
         self::assertFalse($size->isColorComponent());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesTrailingEmptyArgumentWhenAllowed(): void
+    {
+        $parsedValue = Value::parseValue(
+            new ParserState('--w,)', Settings::create()),
+            self::DEFAULT_DELIMITERS,
+            true
+        );
+
+        self::assertInstanceOf(RuleValueList::class, $parsedValue);
+        self::assertSame(',', $parsedValue->getListSeparator());
+        self::assertSame(['--w', ''], $parsedValue->getListComponents());
+    }
+
+    /**
+     * @test
+     */
+    public function rejectsTrailingEmptyArgumentByDefault(): void
+    {
+        $this->expectException(UnexpectedTokenException::class);
+
+        Value::parseValue(
+            new ParserState('--w,)', Settings::create()),
+            self::DEFAULT_DELIMITERS
+        );
     }
 }
