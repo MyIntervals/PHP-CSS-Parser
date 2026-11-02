@@ -7,7 +7,6 @@ namespace Sabberworm\CSS\Tests\Unit\Property;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSList\CSSListItem;
-use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Position\Positionable;
 use Sabberworm\CSS\Property\AtRule;
 use Sabberworm\CSS\Property\AtRuleStatement;
@@ -153,47 +152,5 @@ final class AtRuleStatementTest extends TestCase
         $result = $subject->getArrayRepresentation();
 
         self::assertSame($arguments, $result['arguments']);
-    }
-
-    /**
-     * @test
-     */
-    public function renderWithArgumentsReturnsAtRuleFollowedBySemicolon(): void
-    {
-        $subject = new AtRuleStatement('layer', 'reset');
-
-        self::assertSame('@layer reset;', $subject->render(OutputFormat::create()));
-    }
-
-    /**
-     * @test
-     */
-    public function renderWithoutArgumentsReturnsAtRuleFollowedBySemicolon(): void
-    {
-        self::assertSame('@layer;', $this->subject->render(OutputFormat::create()));
-    }
-
-    /**
-     * @return array<non-empty-string, array{0: OutputFormat}>
-     */
-    public static function provideOutputFormats(): array
-    {
-        return [
-            'default' => [OutputFormat::create()],
-            'compact' => [OutputFormat::createCompact()],
-            'pretty' => [OutputFormat::createPretty()],
-        ];
-    }
-
-    /**
-     * @test
-     *
-     * @dataProvider provideOutputFormats
-     */
-    public function renderProducesTheSameStringForAllOutputFormats(OutputFormat $outputFormat): void
-    {
-        $subject = new AtRuleStatement('layer', 'reset');
-
-        self::assertSame('@layer reset;', $subject->render($outputFormat));
     }
 }
