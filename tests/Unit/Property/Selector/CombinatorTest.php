@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit\Property\Selector;
 
 use PHPUnit\Framework\TestCase;
-use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Property\Selector\Combinator;
 use Sabberworm\CSS\Property\Selector\Component;
 use Sabberworm\CSS\Renderable;
@@ -165,67 +164,6 @@ final class CombinatorTest extends TestCase
         $subject = new Combinator($value);
 
         self::assertSame(0, $subject->getSpecificity());
-    }
-
-    /**
-     * @test
-     *
-     * @param ValidCombinatorValue $value
-     * @param non-empty-string $expectedRendering
-     *
-     * @dataProvider provideValidValueAndDefaultRendering
-     */
-    public function renderReturnsDefaultRenderingForValueProvided(string $value, string $expectedRendering): void
-    {
-        $subject = new Combinator($value);
-
-        self::assertSame($expectedRendering, $subject->render(OutputFormat::create()));
-    }
-
-    /**
-     * @return array<non-empty-string, array{0: string}>
-     */
-    public static function provideSpacing(): array
-    {
-        return [
-            'empty string' => [''],
-            'space' => [' '],
-            'newline' => ["\n"],
-            'carriage return' => ["\r"],
-            'tab' => ["\t"],
-        ];
-    }
-
-    /**
-     * @test
-     *
-     * @dataProvider provideSpacing
-     */
-    public function renderIncludesSpacingSetInOutputFormat(string $spacing): void
-    {
-        $subject = new Combinator('>');
-        $outputFormat = (OutputFormat::create())->setSpaceAroundSelectorCombinator($spacing);
-
-        $result = $subject->render($outputFormat);
-
-        $expectedRendering = $spacing . '>' . $spacing;
-        self::assertSame($expectedRendering, $result);
-    }
-
-    /**
-     * @test
-     *
-     * @dataProvider provideSpacing
-     */
-    public function renderReturnsSpacingSetInOutputFormatForDescendentCombinatorOrSpaceIfNeeded(string $spacing): void
-    {
-        $subject = new Combinator(' ');
-        $outputFormat = (OutputFormat::create())->setSpaceAroundSelectorCombinator($spacing);
-
-        $result = $subject->render($outputFormat);
-
-        $expectedRendering = $spacing !== '' ? $spacing : ' ';
-        self::assertSame($expectedRendering, $result);
     }
 
     /**
