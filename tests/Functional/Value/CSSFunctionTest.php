@@ -6,6 +6,7 @@ namespace Sabberworm\CSS\Tests\Functional\Value;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\CSSFunction;
 
@@ -43,5 +44,15 @@ final class CSSFunctionTest extends TestCase
             ],
             $result->getArrayRepresentation()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function rejectsTrailingCommaInNonVarFunction(): void
+    {
+        $this->expectException(UnexpectedTokenException::class);
+
+        CSSFunction::parse(new ParserState('foo(a,)', Settings::create()));
     }
 }
