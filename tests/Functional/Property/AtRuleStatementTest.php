@@ -6,6 +6,7 @@ namespace Sabberworm\CSS\Tests\Functional\Property;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSList\AtRuleBlockList;
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Property\AtRuleStatement;
 use Sabberworm\CSS\RuleSet\AtRuleSet;
@@ -177,5 +178,49 @@ final class AtRuleStatementTest extends TestCase
         self::assertCount(2, $contents);
         self::assertInstanceOf(AtRuleBlockList::class, $contents[0]);
         self::assertSame('(custom: "a\\b;c{d}")', $contents[0]->atRuleArgs());
+    }
+
+    /**
+     * @test
+     */
+    public function renderWithArgumentsReturnsAtRuleFollowedBySemicolon(): void
+    {
+        $subject = new AtRuleStatement('layer', 'reset');
+
+        self::assertSame('@layer reset;', $subject->render(OutputFormat::create()));
+    }
+
+    /**
+     * @test
+     */
+    public function renderWithoutArgumentsReturnsAtRuleFollowedBySemicolon(): void
+    {
+        $subject = new AtRuleStatement('layer');
+
+        self::assertSame('@layer;', $subject->render(OutputFormat::create()));
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: OutputFormat}>
+     */
+    public static function provideOutputFormats(): array
+    {
+        return [
+            'default' => [OutputFormat::create()],
+            'compact' => [OutputFormat::createCompact()],
+            'pretty' => [OutputFormat::createPretty()],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideOutputFormats
+     */
+    public function renderProducesTheSameStringForAllOutputFormats(OutputFormat $outputFormat): void
+    {
+        $subject = new AtRuleStatement('layer', 'reset');
+
+        self::assertSame('@layer reset;', $subject->render($outputFormat));
     }
 }
