@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sabberworm\CSS\Tests\Unit;
+namespace Sabberworm\CSS\Tests\Functional;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Comment;
