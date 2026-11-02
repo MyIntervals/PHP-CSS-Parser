@@ -27,6 +27,7 @@ Please also have a look at our
 
 ### Fixed
 
+- Allow empty default value in var() e.g. `.a { border: var(--w,) solid red; }` (#1659)
 - Prevent warning when `ord()` handles multibyte string on PHP 8.5 (#1660)
 - Enable parsing selectors that contain escaped characters `{}[]~+"` (#1658)
 - Ignore braces and semicolons inside quoted strings when parsing at-rule preludes (#1650)
