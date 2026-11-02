@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Unit\Property\Selector;
 
 use PHPUnit\Framework\TestCase;
-use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Property\Selector\Component;
 use Sabberworm\CSS\Property\Selector\CompoundSelector;
 use Sabberworm\CSS\Renderable;
@@ -252,20 +251,6 @@ final class CompoundSelectorTest extends TestCase
         $subject->setValue($compoundSelector);
 
         self::assertSame($expectedSpecificity, $subject->getSpecificity());
-    }
-
-    /**
-     * @test
-     *
-     * @param non-empty-string $value
-     *
-     * @dataProvider provideCompoundSelectorAndSpecificity
-     */
-    public function renderReturnsValueProvided(string $value): void
-    {
-        $subject = new CompoundSelector($value);
-
-        self::assertSame($value, $subject->render(OutputFormat::create()));
     }
 
     /**

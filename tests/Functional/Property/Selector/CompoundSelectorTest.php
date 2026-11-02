@@ -6,6 +6,7 @@ namespace Sabberworm\CSS\Tests\Functional\Property\Selector;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Comment;
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Property\Selector\CompoundSelector;
@@ -381,5 +382,19 @@ final class CompoundSelectorTest extends TestCase
         self::assertSame('comment1', $result[0]->getComment());
         self::assertInstanceOf(Comment::class, $result[1]);
         self::assertSame('comment2', $result[1]->getComment());
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $value
+     *
+     * @dataProvider provideCompoundSelectorAndSpecificity
+     */
+    public function renderReturnsValueProvided(string $value): void
+    {
+        $subject = new CompoundSelector($value);
+
+        self::assertSame($value, $subject->render(OutputFormat::create()));
     }
 }
