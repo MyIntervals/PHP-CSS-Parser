@@ -35,6 +35,18 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      */
+    public function parseIdentifierAcceptsMultibyteCharacters(): void
+    {
+        $subject = new ParserState('Café', Settings::create()->withMultibyteSupport(true));
+
+        $result = $subject->parseIdentifier(false);
+
+        self::assertSame('Café', $result);
+    }
+
+    /**
+     * @test
+     */
     public function parseIdentifierThrowsForTextThatIsNotValidUtf8WithoutMultibyteSupport(): void
     {
         $subject = new ParserState("a\xFF", Settings::create()->withMultibyteSupport(false));
