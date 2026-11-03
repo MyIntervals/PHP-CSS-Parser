@@ -11,12 +11,15 @@ use Sabberworm\CSS\Property\Selector\Combinator;
 use Sabberworm\CSS\Property\Selector\Component;
 use Sabberworm\CSS\Property\Selector\CompoundSelector;
 use Sabberworm\CSS\Renderable;
+use Sabberworm\CSS\Tests\Support\Traits\SelectorDataProviders;
 
 /**
  * @covers \Sabberworm\CSS\Property\Selector
  */
 final class SelectorTest extends TestCase
 {
+    use SelectorDataProviders;
+
     /**
      * @test
      */
@@ -49,54 +52,6 @@ final class SelectorTest extends TestCase
         $subject->setSelector($selector);
 
         self::assertSame($selector, $subject->getSelector());
-    }
-
-    /**
-     * @return array<non-empty-string, array{0: non-empty-string, 1: int<0, max>}>
-     */
-    public static function provideSelectorsAndSpecificities(): array
-    {
-        return [
-            'type' => ['a', 1],
-            'class' => ['.highlighted', 10],
-            'type with class' => ['li.green', 11],
-            'pseudo-class' => [':hover', 10],
-            'type with pseudo-class' => ['a:hover', 11],
-            'class with pseudo-class' => ['.help:hover', 20],
-            'ID' => ['#file', 100],
-            'ID and descendent class' => ['#test .help', 110],
-            'type with ID' => ['h2#my-mug', 101],
-            'pseudo-element' => ['::before', 1],
-            'type with pseudo-element' => ['li::before', 2],
-            'type and descendent type with pseudo-element' => ['ol li::before', 3],
-            '`not`' => [':not(#your-mug)', 100],
-            // TODO, broken: The specificity should be the highest of the `:not` arguments, not the sum.
-            '`not` with multiple arguments' => [':not(#your-mug, .their-mug)', 110],
-            'attribute with `"`' => ['[alt="{}()[]\\"\',"]', 10],
-            'attribute with `\'`' => ['[alt=\'{}()[]"\\\',\']', 10],
-        ];
-    }
-
-    /**
-     * @return array<non-empty-string, array{0: non-empty-string}>
-     */
-    public static function provideSelectorsWithEscapedQuotes(): array
-    {
-        return [
-            'escaped double quote in double-quoted attribute' => ['a[href="test\\"value"]'],
-            'escaped single quote in single-quoted attribute' => ['a[href=\'test\\\'value\']'],
-            'multiple escaped double quotes in double-quoted attribute' => ['a[title="say \\"hello\\" world"]'],
-            'multiple escaped single quotes in single-quoted attribute' => ['a[title=\'say \\\'hello\\\' world\']'],
-            'escaped quote at start of attribute value' => ['a[data-test="\\"start"]'],
-            'escaped quote at end of attribute value' => ['a[data-test="end\\""]'],
-            'escaped backslash followed by quote' => ['a[data-test="test\\\\"]'],
-            'escaped backslash before escaped quote' => ['a[data-test="test\\\\\\"value"]'],
-            'triple backslash before quote' => ['a[data-test="test\\\\\\""]'],
-            'escaped single quotes in selector itself, with other escaped characters'
-            => ['.before\\:content-\\[\\\'\\\'\\]:before'],
-            'escaped double quotes in selector itself, with other escaped characters'
-            => ['.before\\:content-\\[\\"\\"\\]:before'],
-        ];
     }
 
     /**
@@ -294,7 +249,7 @@ final class SelectorTest extends TestCase
      * @param non-empty-string $selector
      * @param int<0, max> $expectedSpecificity
      *
-     * @dataProvider provideSelectorsAndSpecificities
+     * @dataProvider provideSelectorAndSpecificity
      */
     public function getSpecificityByDefaultReturnsSpecificityOfSelectorProvidedToConstructor(
         string $selector,
@@ -311,7 +266,7 @@ final class SelectorTest extends TestCase
      * @param non-empty-string $selector
      * @param int<0, max> $expectedSpecificity
      *
-     * @dataProvider provideSelectorsAndSpecificities
+     * @dataProvider provideSelectorAndSpecificity
      */
     public function getSpecificityReturnsSpecificityOfSelectorLastProvidedViaSetSelector(
         string $selector,
@@ -327,8 +282,8 @@ final class SelectorTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider provideSelectorsAndSpecificities
-     * @dataProvider provideSelectorsWithEscapedQuotes
+     * @dataProvider provideSelectorAndSpecificity
+     * @dataProvider provideSelectorWithEscapedQuotes
      */
     public function isValidForValidSelectorReturnsTrue(string $selector): void
     {

@@ -13,6 +13,7 @@ use Sabberworm\CSS\Property\Declaration;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\RuleSet\RuleSet;
+use Sabberworm\CSS\Tests\Support\Traits\SelectorDataProviders;
 use TRegx\PhpUnit\DataProviders\DataProvider;
 
 /**
@@ -21,6 +22,7 @@ use TRegx\PhpUnit\DataProviders\DataProvider;
 final class DeclarationBlockTest extends TestCase
 {
     use DeclarationListTests;
+    use SelectorDataProviders;
 
     /**
      * @var DeclarationBlock
@@ -92,35 +94,6 @@ final class DeclarationBlockTest extends TestCase
         $result = $subject->getLineNumber();
 
         self::assertSame($lineNumber, $result);
-    }
-
-    /**
-     * @return array<non-empty-string, array{0: non-empty-string}>
-     */
-    public static function provideSelector(): array
-    {
-        return [
-            'type' => ['body'],
-            'class' => ['.teapot'],
-            'type & class' => ['img.teapot'],
-            'id' => ['#my-mug'],
-            'type & id' => ['h2#my-mug'],
-            'pseudo-class' => [':hover'],
-            'type & pseudo-class' => ['a:hover'],
-            '`not`' => [':not(#your-mug)'],
-            '`not` with multiple arguments' => [':not(#your-mug, .their-mug)'],
-            'pseudo-element' => ['::before'],
-            'attribute with `"`' => ['[alt="{}()[]\\"\',"]'],
-            'attribute with `\'`' => ['[alt=\'{}()[]"\\\',\']'],
-        ];
-    }
-
-    /**
-     * @return DataProvider<non-empty-string, array{0: non-empty-string, 1: non-empty-string}>
-     */
-    public static function provideTwoSelectors(): DataProvider
-    {
-        return DataProvider::cross(self::provideSelector(), self::provideSelector());
     }
 
     /**

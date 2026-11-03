@@ -6,31 +6,18 @@ namespace Sabberworm\CSS\Tests\Unit\Property\Selector;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Property\Selector\SpecificityCalculator;
+use Sabberworm\CSS\Tests\Support\Traits\SelectorDataProviders;
 
 /**
  * @covers \Sabberworm\CSS\Property\Selector\SpecificityCalculator
  */
 final class SpecificityCalculatorTest extends TestCase
 {
+    use SelectorDataProviders;
+
     protected function tearDown(): void
     {
         SpecificityCalculator::clearCache();
-    }
-
-    /**
-     * @return array<string, array{0: non-empty-string, 1: int<0, max>}>
-     */
-    public static function provideSelectorsAndSpecificities(): array
-    {
-        return [
-            'element' => ['a', 1],
-            'element and descendant with pseudo-selector' => ['ol li::before', 3],
-            'class' => ['.highlighted', 10],
-            'element with class' => ['li.green', 11],
-            'class with pseudo-selector' => ['.help:hover', 20],
-            'ID' => ['#file', 100],
-            'ID and descendant class' => ['#test .help', 110],
-        ];
     }
 
     /**
@@ -39,7 +26,7 @@ final class SpecificityCalculatorTest extends TestCase
      * @param non-empty-string $selector
      * @param int<0, max> $expectedSpecificity
      *
-     * @dataProvider provideSelectorsAndSpecificities
+     * @dataProvider provideSelectorAndSpecificity
      */
     public function calculateReturnsSpecificityForProvidedSelector(
         string $selector,
@@ -54,7 +41,7 @@ final class SpecificityCalculatorTest extends TestCase
      * @param non-empty-string $selector
      * @param int<0, max> $expectedSpecificity
      *
-     * @dataProvider provideSelectorsAndSpecificities
+     * @dataProvider provideSelectorAndSpecificity
      */
     public function calculateAfterClearingCacheReturnsSpecificityForProvidedSelector(
         string $selector,
