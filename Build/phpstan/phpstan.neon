@@ -23,6 +23,16 @@ parameters:
     narrow_param: false
     narrow_return: false
 
+  type_coverage:
+    # Native types for class constants are only available in PHP >= 8.3.0:
+    # https://www.php.net/manual/en/language.oop5.constants.php
+    constant_type: 0
+    param_type: 90
+    # Native types for class constants are only available in PHP >= 7.4.0:
+    # https://www.php.net/manual/en/language.types.declarations.php
+    property_type: 0
+    return_type: 95
+
   ignoreErrors:
     -
       message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) .* will always evaluate to#'

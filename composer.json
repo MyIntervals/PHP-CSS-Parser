@@ -35,8 +35,8 @@
         "phpunit/phpunit": "8.5.56",
         "rawr/phpunit-data-provider": "3.3.1",
         "rector/rector": "1.2.10 || 2.6.7",
-        "rector/type-perfect": "1.0.0 || 2.2.0",
-        "squizlabs/php_codesniffer": "4.0.4"
+        "squizlabs/php_codesniffer": "4.0.4",
+        "tomasvotruba/type-coverage": "1.0.0 || 2.5.1"
     },
     "suggest": {
         "ext-mbstring": "for parsing UTF-8 CSS"
