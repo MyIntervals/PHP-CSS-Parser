@@ -36,6 +36,8 @@
         "rawr/phpunit-data-provider": "3.3.1",
         "rector/rector": "1.2.10 || 2.6.7",
         "squizlabs/php_codesniffer": "4.0.4",
+        "thecodingmachine/phpstan-safe-rule": "1.2.0 || 1.4.7",
+        "thecodingmachine/safe": "^1.3 || ^2.5 || ^3.4",
         "tomasvotruba/type-coverage": "1.0.0 || 2.5.1"
     },
     "suggest": {
