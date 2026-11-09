@@ -5,16 +5,16 @@ declare(strict_types=1);
 
 use Sabberworm\CSS\Parser;
 
+use function Safe\file_get_contents;
+
 /**
  * This script is used for generating the examples in the README.
  */
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-$source = \file_get_contents('php://stdin');
-if (!\is_string($source)) {
-    throw new \RuntimeException('Failed to read from stdin.', 1786954465);
-}
+// Using 'Safe' libraray, this will throw an exception on failure, so no further checking is needed.
+$source = file_get_contents('php://stdin');
 $parser = new Parser($source);
 
 $document = $parser->parse();
