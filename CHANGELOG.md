@@ -27,6 +27,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Allow generic parsing of CSS units that might be added to the spec in future
+  (#1689)
 - Allow empty default value in var() e.g. `.a { border: var(--w,) solid red; }` (#1659)
 - Prevent warning when `ord()` handles multibyte string on PHP 8.5 (#1660)
 - Enable parsing selectors that contain escaped characters `{}[]~+"` (#1658)
