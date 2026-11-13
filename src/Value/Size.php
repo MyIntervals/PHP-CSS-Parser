@@ -94,6 +94,14 @@ class Size extends PrimitiveValue
     ];
 
     /**
+     * This is a mapping from lowercased size units to their expected rendering (e.g. "khz" -> "hKz"),
+     * and includes all known size units.
+     *
+     * @var array<non-empty-lowercase-string, non-empty-string>|null
+     */
+    private static $SIZE_UNITS = null;
+
+    /**
      * @var float
      */
     private $size;
@@ -163,22 +171,30 @@ class Size extends PrimitiveValue
     }
 
     /**
+     * @return array<non-empty-lowercase-string, non-empty-string>
+     *         Keys are known units in lowercase; values are in expected rendering format (e.g. "kHz").
+     */
+    private static function getSizeUnits(): array
+    {
+        if (!\is_array(self::$SIZE_UNITS)) {
+            self::$SIZE_UNITS = [];
+            $sizeUnits = \array_merge(self::ABSOLUTE_SIZE_UNITS, self::RELATIVE_SIZE_UNITS, self::NON_SIZE_UNITS);
+            foreach ($sizeUnits as $sizeUnit) {
+                self::$SIZE_UNITS[\strtolower($sizeUnit)] = $sizeUnit;
+            }
+        }
+
+        return self::$SIZE_UNITS;
+    }
+
+    /**
      * @param non-empty-string $unit
      *
      * @return non-empty-string
      */
     private static function getUnitInRecommendedCasing(string $unit): string
     {
-        static $caseMapping = null;
-        if ($caseMapping === null) {
-            $caseMapping = [];
-            $sizeUnits = \array_merge(self::ABSOLUTE_SIZE_UNITS, self::RELATIVE_SIZE_UNITS, self::NON_SIZE_UNITS);
-            foreach ($sizeUnits as $sizeUnit) {
-                $caseMapping[\strtolower($sizeUnit)] = $sizeUnit;
-            }
-        }
-
-        return $caseMapping[\strtolower($unit)] ?? $unit;
+        return self::getSizeUnits()[\strtolower($unit)] ?? $unit;
     }
 
     public function setUnit(string $unit): void
