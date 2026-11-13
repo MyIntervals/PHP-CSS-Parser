@@ -31,12 +31,6 @@ parameters:
 			path: ../../src/Value/Color.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between non\-empty\-string and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../src/Value/Size.php
-
-		-
 			message: '#^Parameter \#2 \$arguments of class Sabberworm\\CSS\\Value\\CSSFunction constructor expects array\<Sabberworm\\CSS\\Value\\Value\|string\>\|Sabberworm\\CSS\\Value\\RuleValueList, Sabberworm\\CSS\\Value\\Value\|string given\.$#'
 			identifier: argument.type
 			count: 1

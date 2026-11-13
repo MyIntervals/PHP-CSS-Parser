@@ -90,6 +90,7 @@ final class SizeTest extends TestCase
             'cqb',
             'cqmin',
             'cqmax',
+            'Q',
         ]);
     }
 
@@ -115,12 +116,25 @@ final class SizeTest extends TestCase
     }
 
     /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideUncategorizedUnit(): array
+    {
+        return self::mapUnitListForDataProvider([
+            'zz', // lowercase, but undefined
+            'Z', // uppercase, but undefined
+            'μm', // not likely to ever be valid, but uses Unicode
+        ]);
+    }
+
+    /**
      * @test
      *
      * @param non-empty-string $unit
      *
      * @dataProvider provideLengthUnit
      * @dataProvider provideNonLengthUnit
+     * @dataProvider provideUncategorizedUnit
      */
     public function parsesUnit(string $unit): void
     {

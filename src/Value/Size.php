@@ -58,6 +58,7 @@ class Size extends PrimitiveValue
         'rcap',
         'ric',
         'rlh',
+        'Q',
     ];
 
     private const RELATIVE_SIZE_UNITS = [
@@ -93,7 +94,10 @@ class Size extends PrimitiveValue
     ];
 
     /**
-     * @var array<int<1, max>, array<lowercase-string, non-empty-string>>|null
+     * This is a mapping from lowercased size units to their expected rendering (e.g. "khz" -> "hKz"),
+     * and includes all known size units.
+     *
+     * @var array<non-empty-lowercase-string, non-empty-string>|null
      */
     private static $SIZE_UNITS = null;
 
@@ -151,22 +155,24 @@ class Size extends PrimitiveValue
             }
         }
 
-        $unit = null;
-        $sizeUnits = self::getSizeUnits();
-        foreach ($sizeUnits as $length => &$values) {
-            $key = \strtolower($parserState->peek($length));
-            if (\array_key_exists($key, $values)) {
-                if (($unit = $values[$key]) !== null) {
-                    $parserState->consume($length);
-                    break;
-                }
-            }
+        // If a number has not been parsed, there cannot be a unit.  It will be up to the caller do deal with this.
+        if ($size === '') {
+            $unit = null;
+        } else {
+            // The unit could be `%`, a seqeunce of ASCII or unicode letters, or absent.
+            // The letter sequence is not likely to be more than 5 characters (4 is the most currently),
+            // so a limit is applied as an optimization.
+            // The regex allows for an empty string for numbers without a unit, so exception handling is not required.
+            $parsedUnit = $parserState->consumeExpression('/^(?:%|[\\p{L}]*+)/u', 5);
+            $unit = $parsedUnit !== '' ? self::getUnitInRecommendedCasing($parsedUnit) : null;
         }
+
         return new Size((float) $size, $unit, $isColorComponent, $parserState->currentLine());
     }
 
     /**
-     * @return array<int<1, max>, array<lowercase-string, non-empty-string>>
+     * @return array<non-empty-lowercase-string, non-empty-string>
+     *         Keys are known units in lowercase; values are in expected rendering format (e.g. "kHz").
      */
     private static function getSizeUnits(): array
     {
@@ -174,17 +180,21 @@ class Size extends PrimitiveValue
             self::$SIZE_UNITS = [];
             $sizeUnits = \array_merge(self::ABSOLUTE_SIZE_UNITS, self::RELATIVE_SIZE_UNITS, self::NON_SIZE_UNITS);
             foreach ($sizeUnits as $sizeUnit) {
-                $tokenLength = \strlen($sizeUnit);
-                if (!isset(self::$SIZE_UNITS[$tokenLength])) {
-                    self::$SIZE_UNITS[$tokenLength] = [];
-                }
-                self::$SIZE_UNITS[$tokenLength][\strtolower($sizeUnit)] = $sizeUnit;
+                self::$SIZE_UNITS[\strtolower($sizeUnit)] = $sizeUnit;
             }
-
-            \krsort(self::$SIZE_UNITS, SORT_NUMERIC);
         }
 
         return self::$SIZE_UNITS;
+    }
+
+    /**
+     * @param non-empty-string $unit
+     *
+     * @return non-empty-string
+     */
+    private static function getUnitInRecommendedCasing(string $unit): string
+    {
+        return self::getSizeUnits()[\strtolower($unit)] ?? $unit;
     }
 
     public function setUnit(string $unit): void
