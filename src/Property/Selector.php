@@ -27,7 +27,7 @@ class Selector implements Renderable
      * @internal since 8.5.2
      */
     public const SELECTOR_VALIDATION_RX = '/
-        ^(
+        ^(?:
             # not whitespace only
             (?!\\s*+$)
             (?:

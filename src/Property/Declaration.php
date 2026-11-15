@@ -103,7 +103,7 @@ class Declaration implements Commentable, CSSElement, Positionable
      */
     private static function getDelimitersForPropertyValue(string $propertyName): array
     {
-        $matchResult = \preg_match('/^font($|-)/', $propertyName);
+        $matchResult = \preg_match('/^font(?:$|-)/', $propertyName);
         \assert(\is_int($matchResult));
         if ($matchResult === 1) {
             return [',', '/', ' '];

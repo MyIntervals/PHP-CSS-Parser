@@ -15,11 +15,11 @@ final class SpecificityCalculator
      * regexp for specificity calculations
      */
     private const NON_ID_ATTRIBUTES_AND_PSEUDO_CLASSES_RX = '/
-        (\\.[\\w]+)                   # classes
+        \\.\\w++                       # classes
         |
-        \\[(\\w+)                     # attributes
+        \\[\\w++                       # attributes
         |
-        (\\:(                         # pseudo classes
+        \\:(?:                         # pseudo classes
             link|visited|active
             |hover|focus
             |lang
@@ -30,18 +30,18 @@ final class SpecificityCalculator
             |first-child|last-child|first-of-type|last-of-type
             |only-child|only-of-type
             |empty|contains
-        ))
+        )
         /ix';
 
     /**
      * regexp for specificity calculations
      */
     private const ELEMENTS_AND_PSEUDO_ELEMENTS_RX = '/
-        ((^|[\\s\\+\\>\\~]+)[\\w]+   # elements
+        (?:^|[\\s\\+\\>\\~]++)\\w++  # elements
         |
-        \\:{1,2}(                    # pseudo-elements
+        \\:{1,2}+(?:                 # pseudo-elements
             after|before|first-letter|first-line|selection
-        ))
+        )
         /ix';
 
     /**

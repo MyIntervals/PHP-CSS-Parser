@@ -14,7 +14,7 @@ class KeyframeSelector extends Selector
      * @internal since 8.5.2
      */
     public const SELECTOR_VALIDATION_RX = '/
-        ^(
+        ^(?:
             (?:
                 # any sequence of valid unescaped characters, except quotes
                 [a-zA-Z0-9\\x{00A0}-\\x{FFFF}_^$|*=~\\[\\]()\\-\\s\\.:#+>]++
@@ -39,7 +39,7 @@ class KeyframeSelector extends Selector
             )*+ # zero or more times
             |
             # keyframe animation progress percentage (e.g. 50%), untrimmed
-            \\s*+(\\d++%)\\s*+
+            \\s*+\\d++%\\s*+
         )$
         /ux';
 }
