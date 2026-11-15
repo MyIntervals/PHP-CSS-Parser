@@ -94,9 +94,10 @@ final class DeclarationTest extends TestCase
      */
     public function getPropertyNameReturnsPropertyNameProvidedToConstructor(): void
     {
-        $subject = new Declaration('color');
+        $propertyName = 'color';
+        $subject = new Declaration($propertyName);
 
-        self::assertSame('color', $subject->getPropertyName());
+        self::assertSame($propertyName, $subject->getPropertyName());
     }
 
     /**
@@ -105,10 +106,11 @@ final class DeclarationTest extends TestCase
     public function setPropertyNameSetsPropertyName(): void
     {
         $subject = new Declaration('color');
+        $propertyName = 'background-color';
 
-        $subject->setPropertyName('background-color');
+        $subject->setPropertyName($propertyName);
 
-        self::assertSame('background-color', $subject->getPropertyName());
+        self::assertSame($propertyName, $subject->getPropertyName());
     }
 
     /**
