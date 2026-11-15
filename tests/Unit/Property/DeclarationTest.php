@@ -7,6 +7,7 @@ namespace Sabberworm\CSS\Tests\Unit\Property;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\Property\Declaration;
+use Sabberworm\CSS\Value\RuleValueList;
 
 /**
  * @covers \Sabberworm\CSS\Property\Declaration
@@ -86,5 +87,120 @@ final class DeclarationTest extends TestCase
         $result = $subject->getArrayRepresentation();
 
         self::assertSame($important, $result['important']);
+    }
+
+    /**
+     * @test
+     */
+    public function getPropertyNameReturnsPropertyNameProvidedToConstructor(): void
+    {
+        $subject = new Declaration('color');
+
+        self::assertSame('color', $subject->getPropertyName());
+    }
+
+    /**
+     * @test
+     */
+    public function setPropertyNameSetsPropertyName(): void
+    {
+        $subject = new Declaration('color');
+
+        $subject->setPropertyName('background-color');
+
+        self::assertSame('background-color', $subject->getPropertyName());
+    }
+
+    /**
+     * @test
+     */
+    public function isNotImportantByDefault(): void
+    {
+        $subject = new Declaration('color');
+
+        self::assertFalse($subject->getIsImportant());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideBooleans
+     */
+    public function setIsImportantSetsImportantFlag(bool $important): void
+    {
+        $subject = new Declaration('color');
+
+        $subject->setIsImportant($important);
+
+        self::assertSame($important, $subject->getIsImportant());
+    }
+
+    /**
+     * @test
+     */
+    public function addValueWithoutExistingValueCreatesListWithOnlyTheNewValue(): void
+    {
+        $subject = new Declaration('margin');
+        $value = new RuleValueList();
+
+        $subject->addValue($value);
+
+        $result = $subject->getValue();
+        self::assertInstanceOf(RuleValueList::class, $result);
+        self::assertSame(' ', $result->getListSeparator());
+        self::assertSame([$value], $result->getListComponents());
+    }
+
+    /**
+     * @test
+     */
+    public function addValueWithExistingNonListValueWrapsBothInList(): void
+    {
+        $subject = new Declaration('font-family');
+        $subject->setValue('Arial');
+        $value = new RuleValueList();
+
+        $subject->addValue($value, ',');
+
+        $result = $subject->getValue();
+        self::assertInstanceOf(RuleValueList::class, $result);
+        self::assertSame(',', $result->getListSeparator());
+        self::assertSame(['Arial', $value], $result->getListComponents());
+    }
+
+    /**
+     * @test
+     */
+    public function addValueWithExistingListOfSameSeparatorAppendsToIt(): void
+    {
+        $subject = new Declaration('margin');
+        $list = new RuleValueList(' ');
+        $subject->setValue($list);
+        $value1 = new RuleValueList();
+        $value2 = new RuleValueList();
+
+        $subject->addValue([$value1, $value2]);
+
+        self::assertSame($list, $subject->getValue());
+        self::assertSame([$value1, $value2], $list->getListComponents());
+    }
+
+    /**
+     * @test
+     */
+    public function addValueWithExistingListOfOtherSeparatorWrapsItInNewList(): void
+    {
+        $subject = new Declaration('font-family');
+        $list = new RuleValueList(' ');
+        $subject->setValue($list);
+        $value = new RuleValueList();
+
+        $subject->addValue($value, ',');
+
+        $result = $subject->getValue();
+        self::assertInstanceOf(RuleValueList::class, $result);
+        self::assertNotSame($list, $result);
+        self::assertSame(',', $result->getListSeparator());
+        self::assertSame([$list, $value], $result->getListComponents());
     }
 }
