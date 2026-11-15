@@ -67,10 +67,12 @@ class Declaration implements Commentable, CSSElement, Positionable
     {
         $comments = $commentsBefore;
         $parserState->consumeWhiteSpace($comments);
+        $lineNumber = $parserState->currentLine();
+        $columnNumber = $parserState->currentColumn();
         $declaration = new self(
             $parserState->parseIdentifier(!$parserState->comes('--')),
-            $parserState->currentLine(),
-            $parserState->currentColumn()
+            $lineNumber,
+            $columnNumber
         );
         $parserState->consumeWhiteSpace($comments);
         $declaration->setComments($comments);
