@@ -17,6 +17,8 @@ Please also have a look at our
 ### Changed
 
 - `Size::isSize()` is renamed to `isLength()` (#1645)
+- Use possessive quantifiers and non-capturing groups in the parser regexps to
+  reduce backtracking (#1690)
 
 ### Deprecated
 
