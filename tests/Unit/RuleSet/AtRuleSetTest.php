@@ -109,7 +109,10 @@ final class AtRuleSetTest extends TestCase
      */
     public function atRuleNameReturnsTypeProvidedToConstructor(): void
     {
-        self::assertSame('supports', $this->subject->atRuleName());
+        $type = 'page';
+        $subject = new AtRuleSet($type);
+
+        self::assertSame($type, $subject->atRuleName());
     }
 
     /**
@@ -117,8 +120,9 @@ final class AtRuleSetTest extends TestCase
      */
     public function atRuleArgsReturnsArgumentsProvidedToConstructor(): void
     {
-        $subject = new AtRuleSet('page', ':first');
+        $arguments = ':first';
+        $subject = new AtRuleSet('page', $arguments);
 
-        self::assertSame(':first', $subject->atRuleArgs());
+        self::assertSame($arguments, $subject->atRuleArgs());
     }
 }
