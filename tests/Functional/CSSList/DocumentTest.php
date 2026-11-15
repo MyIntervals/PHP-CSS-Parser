@@ -8,7 +8,10 @@ use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\CSSList\AtRuleBlockList;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Property\Charset;
+use Sabberworm\CSS\Property\Selector;
+use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\CSSString;
 
 /**
@@ -133,5 +136,43 @@ final class DocumentTest extends TestCase
 
         $expected = "\n" . '@charset "UTF-8";' . "\n\n" . '@media screen {}' . "\n";
         self::assertSame($expected, $subject->render(OutputFormat::createPretty()));
+    }
+
+    /**
+     * @test
+     */
+    public function parseParsesAllBlocks(): void
+    {
+        $result = Document::parse(new ParserState('#a {} .b {} p {}', Settings::create()));
+
+        self::assertCount(3, $result->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function getSelectorsBySpecificityWithoutFilterReturnsAllSelectors(): void
+    {
+        $subject = Document::parse(new ParserState('#a {} .b {} p {}', Settings::create()));
+
+        self::assertCount(3, $subject->getSelectorsBySpecificity());
+    }
+
+    /**
+     * @test
+     */
+    public function getSelectorsBySpecificityReturnsOnlyMatchingSelectors(): void
+    {
+        $subject = Document::parse(new ParserState('#a {} .b {} p {}', Settings::create()));
+
+        $result = $subject->getSelectorsBySpecificity('>= 10');
+
+        $selectors = \array_map(
+            static function (Selector $selector): string {
+                return $selector->getSelector();
+            },
+            $result
+        );
+        self::assertSame(['#a', '.b'], $selectors);
     }
 }
