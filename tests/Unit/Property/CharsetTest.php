@@ -66,7 +66,11 @@ final class CharsetTest extends TestCase
      */
     public function getCharsetReturnsCharsetProvidedToConstructor(): void
     {
-        self::assertSame('UTF-8', $this->subject->getCharset());
+        $charset = 'iso-8859-15';
+
+        $this->subject = new Charset(new CSSString($charset));
+
+        self::assertSame($charset, $this->subject->getCharset());
     }
 
     /**
@@ -74,9 +78,11 @@ final class CharsetTest extends TestCase
      */
     public function setCharsetWithStringSetsCharset(): void
     {
-        $this->subject->setCharset('iso-8859-15');
+        $charset = 'iso-8859-15';
 
-        self::assertSame('iso-8859-15', $this->subject->getCharset());
+        $this->subject->setCharset($charset);
+
+        self::assertSame($charset, $this->subject->getCharset());
     }
 
     /**
