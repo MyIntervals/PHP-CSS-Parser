@@ -103,4 +103,22 @@ final class AtRuleSetTest extends TestCase
 
         self::assertSame($arguments, $result['arguments']);
     }
+
+    /**
+     * @test
+     */
+    public function atRuleNameReturnsTypeProvidedToConstructor(): void
+    {
+        self::assertSame('supports', $this->subject->atRuleName());
+    }
+
+    /**
+     * @test
+     */
+    public function atRuleArgsReturnsArgumentsProvidedToConstructor(): void
+    {
+        $subject = new AtRuleSet('page', ':first');
+
+        self::assertSame(':first', $subject->atRuleArgs());
+    }
 }
