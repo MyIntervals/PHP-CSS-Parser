@@ -140,9 +140,10 @@ final class CSSNamespaceTest extends TestCase
      */
     public function getPrefixReturnsPrefixProvidedToConstructor(): void
     {
-        $subject = new CSSNamespace(new CSSString('http://www.w3.org/2000/svg'), 'svg');
+        $prefix = 'svg';
+        $subject = new CSSNamespace(new CSSString('http://www.w3.org/2000/svg'), $prefix);
 
-        self::assertSame('svg', $subject->getPrefix());
+        self::assertSame($prefix, $subject->getPrefix());
     }
 
     /**
@@ -150,9 +151,11 @@ final class CSSNamespaceTest extends TestCase
      */
     public function setPrefixSetsPrefix(): void
     {
-        $this->subject->setPrefix('svg');
+        $prefix = 'svg';
 
-        self::assertSame('svg', $this->subject->getPrefix());
+        $this->subject->setPrefix($prefix);
+
+        self::assertSame($prefix, $this->subject->getPrefix());
     }
 
     /**
