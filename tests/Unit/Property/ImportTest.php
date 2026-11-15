@@ -97,9 +97,10 @@ final class ImportTest extends TestCase
      */
     public function getMediaQueryReturnsMediaQueryProvidedToConstructor(): void
     {
-        $subject = new Import(new URL(new CSSString('https://example.com/')), 'print');
+        $mediaQuery = 'print';
+        $subject = new Import(new URL(new CSSString('https://example.com/')), $mediaQuery);
 
-        self::assertSame('print', $subject->getMediaQuery());
+        self::assertSame($mediaQuery, $subject->getMediaQuery());
     }
 
     /**
@@ -138,8 +139,9 @@ final class ImportTest extends TestCase
     public function atRuleArgsWithMediaQueryReturnsLocationFollowedByMediaQuery(): void
     {
         $location = new URL(new CSSString('https://example.com/'));
-        $subject = new Import($location, 'print');
+        $mediaQuery = 'print';
+        $subject = new Import($location, $mediaQuery);
 
-        self::assertSame([$location, 'print'], $subject->atRuleArgs());
+        self::assertSame([$location, $mediaQuery], $subject->atRuleArgs());
     }
 }
