@@ -44,9 +44,10 @@ final class CSSFunctionTest extends TestCase
      */
     public function getNameReturnsNameProvidedToConstructor(): void
     {
-        $subject = new CSSFunction('filter', []);
+        $name = 'filter';
+        $subject = new CSSFunction($name, []);
 
-        self::assertSame('filter', $subject->getName());
+        self::assertSame($name, $subject->getName());
     }
 
     /**
@@ -55,10 +56,11 @@ final class CSSFunctionTest extends TestCase
     public function setNameSetsName(): void
     {
         $subject = new CSSFunction('filter', []);
+        $name = 'blur';
 
-        $subject->setName('blur');
+        $subject->setName($name);
 
-        self::assertSame('blur', $subject->getName());
+        self::assertSame($name, $subject->getName());
     }
 
     /**
