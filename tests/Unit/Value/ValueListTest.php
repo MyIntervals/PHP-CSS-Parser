@@ -80,9 +80,11 @@ final class ValueListTest extends TestCase
      */
     public function constructorWrapsSingleComponentInArray(): void
     {
-        $subject = new ConcreteValueList('Helvetica');
+        $component = 'Helvetica';
 
-        self::assertSame(['Helvetica'], $subject->getListComponents());
+        $subject = new ConcreteValueList($component);
+
+        self::assertSame([$component], $subject->getListComponents());
     }
 
     /**
@@ -105,8 +107,10 @@ final class ValueListTest extends TestCase
     {
         $subject = new ConcreteValueList();
 
-        $subject->setListSeparator('/');
+        $separator = '/';
 
-        self::assertSame('/', $subject->getListSeparator());
+        $subject->setListSeparator($separator);
+
+        self::assertSame($separator, $subject->getListSeparator());
     }
 }
