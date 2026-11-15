@@ -194,8 +194,9 @@ final class CSSNamespaceTest extends TestCase
     public function atRuleArgsWithPrefixReturnsPrefixFollowedByUrl(): void
     {
         $url = new CSSString('http://www.w3.org/2000/svg');
-        $subject = new CSSNamespace($url, 'svg');
+        $prefix = 'svg';
+        $subject = new CSSNamespace($url, $prefix);
 
-        self::assertSame(['svg', $url], $subject->atRuleArgs());
+        self::assertSame([$prefix, $url], $subject->atRuleArgs());
     }
 }
