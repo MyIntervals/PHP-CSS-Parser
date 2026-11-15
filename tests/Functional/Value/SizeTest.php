@@ -225,31 +225,93 @@ final class SizeTest extends TestCase
     }
 
     /**
-     * @return array<non-empty-string, array{0: non-empty-string, 1: float, 2: string|null}>
+     * @test
      */
-    public static function provideSizeAndExpectedNumberAndUnit(): array
+    public function parsesNegativeDecimal(): void
     {
-        return [
-            'negative decimal' => ['-1.5px', -1.5, 'px'],
-            'decimal without leading zero' => ['.5em', 0.5, 'em'],
-            'scientific notation without unit' => ['1e3', 1000.0, null],
-            'scientific notation with negative exponent and unit' => ['2E-2s', 0.02, 's'],
-            'unit starting with e' => ['1em', 1.0, 'em'],
-            'uppercase unit' => ['3EM', 3.0, 'em'],
-            'unit without number' => ['px', 0.0, null],
-        ];
+        $parserState = new ParserState('-1.5px', Settings::create());
+
+        $result = Size::parse($parserState);
+
+        self::assertSame(-1.5, $result->getSize());
+        self::assertSame('px', $result->getUnit());
     }
 
     /**
      * @test
-     *
-     * @dataProvider provideSizeAndExpectedNumberAndUnit
      */
-    public function parsesNumberAndUnit(string $css, float $expectedNumber, ?string $expectedUnit): void
+    public function parsesDecimalWithoutLeadingZero(): void
     {
-        $result = Size::parse(new ParserState($css, Settings::create()));
+        $parserState = new ParserState('.5em', Settings::create());
 
-        self::assertSame($expectedNumber, $result->getSize());
-        self::assertSame($expectedUnit, $result->getUnit());
+        $result = Size::parse($parserState);
+
+        self::assertSame(0.5, $result->getSize());
+        self::assertSame('em', $result->getUnit());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesScientificNotationWithoutUnit(): void
+    {
+        $parserState = new ParserState('1e3', Settings::create());
+
+        $result = Size::parse($parserState);
+
+        self::assertSame(1000.0, $result->getSize());
+        self::assertNull($result->getUnit());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesScientificNotationWithNegativeExponentAndUnit(): void
+    {
+        $parserState = new ParserState('2E-2s', Settings::create());
+
+        $result = Size::parse($parserState);
+
+        self::assertSame(0.02, $result->getSize());
+        self::assertSame('s', $result->getUnit());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesUnitStartingWithE(): void
+    {
+        $parserState = new ParserState('1em', Settings::create());
+
+        $result = Size::parse($parserState);
+
+        self::assertSame(1.0, $result->getSize());
+        self::assertSame('em', $result->getUnit());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesUppercaseUnitInRecommendedCasing(): void
+    {
+        $parserState = new ParserState('3EM', Settings::create());
+
+        $result = Size::parse($parserState);
+
+        self::assertSame(3.0, $result->getSize());
+        self::assertSame('em', $result->getUnit());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesUnitWithoutNumberAsZeroWithoutUnit(): void
+    {
+        $parserState = new ParserState('px', Settings::create());
+
+        $result = Size::parse($parserState);
+
+        self::assertSame(0.0, $result->getSize());
+        self::assertNull($result->getUnit());
     }
 }
