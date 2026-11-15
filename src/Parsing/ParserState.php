@@ -141,7 +141,7 @@ class ParserState
     {
         if ($this->peek() === '\\') {
             $this->consume('\\');
-            if ($this->comes('\\n') || $this->comes('\\r')) {
+            if ($this->comes("\n") || $this->comes("\r")) {
                 return '';
             }
             $matchResult = \preg_match('/[0-9a-fA-F]/Su', $this->peek());
@@ -159,7 +159,7 @@ class ParserState
                     throw new \RuntimeException('The CSS is not valid UTF-8.', 1787112619);
                 }
                 if ($matchResult !== 0) {
-                    if ($this->comes('\\r\\n')) {
+                    if ($this->comes("\r\n")) {
                         $this->consume(2);
                     } else {
                         $this->consume(1);

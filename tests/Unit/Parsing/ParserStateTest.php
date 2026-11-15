@@ -421,4 +421,30 @@ final class ParserStateTest extends TestCase
 
         $subject->consumeExpression('/^[0-9a-fA-F]{1,6}/u', 6);
     }
+
+    /**
+     * @test
+     */
+    public function parseCharacterKeepsEscapedBackslashBeforeLetterThatIsNotNewline(): void
+    {
+        $subject = new ParserState('\\\\new\\\\road', Settings::create());
+
+        $result = '';
+        for ($i = 0; $i < 4; ++$i) {
+            $result .= $subject->parseCharacter(false);
+        }
+
+        self::assertSame('\\new', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function parseCharacterConsumesWholeCrLfAfterIncompleteUnicodeEscape(): void
+    {
+        $subject = new ParserState("\\41\r\nB", Settings::create());
+
+        self::assertSame('A', $subject->parseCharacter(false));
+        self::assertSame('B', $subject->parseCharacter(false));
+    }
 }
