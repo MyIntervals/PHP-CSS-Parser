@@ -6,6 +6,7 @@ namespace Sabberworm\CSS\Tests\Unit\Value;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Value\CSSFunction;
+use Sabberworm\CSS\Value\Size;
 
 /**
  * @covers \Sabberworm\CSS\Value\CSSFunction
@@ -36,5 +37,38 @@ final class CSSFunctionTest extends TestCase
         $result = $subject->getArrayRepresentation();
 
         self::assertSame('filter', $result['name']);
+    }
+
+    /**
+     * @test
+     */
+    public function getNameReturnsNameProvidedToConstructor(): void
+    {
+        $subject = new CSSFunction('filter', []);
+
+        self::assertSame('filter', $subject->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function setNameSetsName(): void
+    {
+        $subject = new CSSFunction('filter', []);
+
+        $subject->setName('blur');
+
+        self::assertSame('blur', $subject->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function getArgumentsReturnsArgumentsProvidedToConstructor(): void
+    {
+        $arguments = [new Size(1), new Size(2)];
+        $subject = new CSSFunction('rgb', $arguments);
+
+        self::assertSame($arguments, $subject->getArguments());
     }
 }
