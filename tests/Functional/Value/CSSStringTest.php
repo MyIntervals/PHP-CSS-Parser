@@ -66,4 +66,30 @@ final class CSSStringTest extends TestCase
 
         self::assertSame("'{$input}'", (new CSSString($input))->render($outputFormat));
     }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string, 1: string}>
+     */
+    public static function provideStringAndExpectedContents(): array
+    {
+        return [
+            'single-quoted with whitespace' => ["'a b'", 'a b'],
+            'double-quoted with whitespace' => ['"a b"', 'a b'],
+            'unquoted, ends at whitespace' => ['a b', 'a'],
+            'unquoted, ends at brace' => ['ab{', 'ab'],
+            'unquoted, ends at parenthesis' => ['ab)', 'ab'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideStringAndExpectedContents
+     */
+    public function parseParsesString(string $css, string $expectedContents): void
+    {
+        $result = CSSString::parse(new ParserState($css, Settings::create()));
+
+        self::assertSame($expectedContents, $result->getString());
+    }
 }
