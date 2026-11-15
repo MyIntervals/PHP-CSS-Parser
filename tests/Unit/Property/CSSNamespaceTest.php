@@ -111,4 +111,88 @@ final class CSSNamespaceTest extends TestCase
 
         self::assertSame($prefix, $result['prefix']);
     }
+
+    /**
+     * @test
+     */
+    public function getUrlReturnsUrlProvidedToConstructor(): void
+    {
+        $url = new CSSString('http://www.w3.org/2000/svg');
+        $subject = new CSSNamespace($url);
+
+        self::assertSame($url, $subject->getUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function setUrlSetsUrl(): void
+    {
+        $url = new URL(new CSSString('http://www.w3.org/1999/xhtml'));
+
+        $this->subject->setUrl($url);
+
+        self::assertSame($url, $this->subject->getUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function getPrefixReturnsPrefixProvidedToConstructor(): void
+    {
+        $subject = new CSSNamespace(new CSSString('http://www.w3.org/2000/svg'), 'svg');
+
+        self::assertSame('svg', $subject->getPrefix());
+    }
+
+    /**
+     * @test
+     */
+    public function setPrefixSetsPrefix(): void
+    {
+        $this->subject->setPrefix('svg');
+
+        self::assertSame('svg', $this->subject->getPrefix());
+    }
+
+    /**
+     * @test
+     */
+    public function atRuleNameReturnsNamespace(): void
+    {
+        self::assertSame('namespace', $this->subject->atRuleName());
+    }
+
+    /**
+     * @test
+     */
+    public function atRuleArgsWithoutPrefixReturnsOnlyUrl(): void
+    {
+        $url = new CSSString('http://www.w3.org/2000/svg');
+        $subject = new CSSNamespace($url);
+
+        self::assertSame([$url], $subject->atRuleArgs());
+    }
+
+    /**
+     * @test
+     */
+    public function atRuleArgsWithEmptyPrefixReturnsOnlyUrl(): void
+    {
+        $url = new CSSString('http://www.w3.org/2000/svg');
+        $subject = new CSSNamespace($url, '');
+
+        self::assertSame([$url], $subject->atRuleArgs());
+    }
+
+    /**
+     * @test
+     */
+    public function atRuleArgsWithPrefixReturnsPrefixFollowedByUrl(): void
+    {
+        $url = new CSSString('http://www.w3.org/2000/svg');
+        $subject = new CSSNamespace($url, 'svg');
+
+        self::assertSame(['svg', $url], $subject->atRuleArgs());
+    }
 }
