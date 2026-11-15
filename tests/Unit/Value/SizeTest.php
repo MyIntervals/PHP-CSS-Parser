@@ -102,62 +102,98 @@ final class SizeTest extends TestCase
      */
     public function isNotColorComponentByDefault(): void
     {
-        self::assertFalse((new Size(1))->isColorComponent());
+        $subject = new Size(1);
+
+        $result = $subject->isColorComponent();
+
+        self::assertFalse($result);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideBooleans
+     */
+    public function isColorComponentReturnsValueProvidedToConstructor(bool $isColorComponent): void
+    {
+        $subject = new Size(1, null, $isColorComponent);
+
+        $result = $subject->isColorComponent();
+
+        self::assertSame($isColorComponent, $result);
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: bool}>
+     */
+    public static function provideBooleans(): array
+    {
+        return [
+            'true' => [true],
+            'false' => [false],
+        ];
     }
 
     /**
      * @test
      */
-    public function isColorComponentReturnsValueProvidedToConstructor(): void
+    public function isLengthReturnsFalseForColorComponent(): void
     {
-        self::assertTrue((new Size(1, null, true))->isColorComponent());
+        $subject = new Size(1, null, true);
+
+        $result = $subject->isLength();
+
+        self::assertFalse($result);
     }
 
     /**
      * @test
+     *
+     * @dataProvider provideRelativeSizes
      */
-    public function colorComponentIsNotLength(): void
+    public function isRelativeReturnsTrueForRelativeSizes(float $number, ?string $unit): void
     {
-        self::assertFalse((new Size(1, null, true))->isLength());
+        $subject = new Size($number, $unit);
+
+        $result = $subject->isRelative();
+
+        self::assertTrue($result);
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: float, 1: string|null}>
+     */
+    public static function provideRelativeSizes(): array
+    {
+        return [
+            'relative unit' => [1.0, 'em'],
+            'percentage' => [1.0, '%'],
+            'non-zero number without unit' => [1.0, null],
+        ];
     }
 
     /**
      * @test
+     *
+     * @dataProvider provideAbsoluteSizes
      */
-    public function isRelativeReturnsTrueForRelativeUnit(): void
+    public function isRelativeReturnsFalseForAbsoluteSizes(float $number, ?string $unit): void
     {
-        self::assertTrue((new Size(1, 'em'))->isRelative());
+        $subject = new Size($number, $unit);
+
+        $result = $subject->isRelative();
+
+        self::assertFalse($result);
     }
 
     /**
-     * @test
+     * @return array<non-empty-string, array{0: float, 1: string|null}>
      */
-    public function isRelativeReturnsTrueForPercentage(): void
+    public static function provideAbsoluteSizes(): array
     {
-        self::assertTrue((new Size(1, '%'))->isRelative());
-    }
-
-    /**
-     * @test
-     */
-    public function isRelativeReturnsTrueForNonZeroNumberWithoutUnit(): void
-    {
-        self::assertTrue((new Size(1))->isRelative());
-    }
-
-    /**
-     * @test
-     */
-    public function isRelativeReturnsFalseForAbsoluteUnit(): void
-    {
-        self::assertFalse((new Size(1, 'px'))->isRelative());
-    }
-
-    /**
-     * @test
-     */
-    public function isRelativeReturnsFalseForZeroWithoutUnit(): void
-    {
-        self::assertFalse((new Size(0))->isRelative());
+        return [
+            'absolute unit' => [1.0, 'px'],
+            'zero without unit' => [0.0, null],
+        ];
     }
 }
