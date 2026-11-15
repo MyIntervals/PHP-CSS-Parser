@@ -17,9 +17,10 @@ final class DeclarationTest extends TestCase
      */
     public function getRuleReturnsPropertyName(): void
     {
-        $subject = new Declaration('color');
+        $propertyName = 'color';
+        $subject = new Declaration($propertyName);
 
-        self::assertSame('color', $subject->getRule());
+        self::assertSame($propertyName, $subject->getRule());
     }
 
     /**
@@ -28,9 +29,10 @@ final class DeclarationTest extends TestCase
     public function setRuleSetsPropertyName(): void
     {
         $subject = new Declaration('color');
+        $propertyName = 'background-color';
 
-        $subject->setRule('background-color');
+        $subject->setRule($propertyName);
 
-        self::assertSame('background-color', $subject->getPropertyName());
+        self::assertSame($propertyName, $subject->getPropertyName());
     }
 }
