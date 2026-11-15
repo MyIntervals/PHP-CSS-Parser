@@ -160,7 +160,7 @@ abstract class Value implements CSSElement, Positionable
             || (($parserState->comes('-') || $parserState->comes('.')) && \is_numeric($parserState->peek(1, 1)))
         ) {
             $value = Size::parse($parserState);
-        } elseif ($parserState->comes('#') || $parserState->comes('rgb', true) || $parserState->comes('hsl', true)) {
+        } elseif ($parserState->comes('#') || self::comesColorFunction($parserState)) {
             $value = Color::parse($parserState);
         } elseif ($parserState->comes("'") || $parserState->comes('"')) {
             $value = CSSString::parse($parserState);
@@ -197,6 +197,25 @@ abstract class Value implements CSSElement, Positionable
         return [
             'class' => $this->getShortClassName(),
         ];
+    }
+
+    private static function comesColorFunction(ParserState $parserState): bool
+    {
+        if (!$parserState->comes('rgb', true) && !$parserState->comes('hsl', true)) {
+            return false;
+        }
+
+        $anchor = $parserState->anchor();
+        try {
+            $parserState->parseIdentifier(true);
+            $parserState->consumeWhiteSpace();
+            $isFunction = $parserState->comes('(');
+        } catch (UnexpectedTokenException|UnexpectedEOFException $exception) {
+            $isFunction = false;
+        }
+        $anchor->backtrack();
+
+        return $isFunction;
     }
 
     /**
