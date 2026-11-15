@@ -125,16 +125,27 @@ final class DeclarationTest extends TestCase
 
     /**
      * @test
-     *
-     * @dataProvider provideBooleans
      */
-    public function setIsImportantSetsImportantFlag(bool $important): void
+    public function setIsImportantCanSetImportantFlagToTrue(): void
     {
         $subject = new Declaration('color');
 
-        $subject->setIsImportant($important);
+        $subject->setIsImportant(true);
 
-        self::assertSame($important, $subject->getIsImportant());
+        self::assertTrue($subject->getIsImportant());
+    }
+
+    /**
+     * @test
+     */
+    public function setIsImportantCanSetImportantFlagToFalse(): void
+    {
+        $subject = new Declaration('color');
+        $subject->setIsImportant(true);
+
+        $subject->setIsImportant(false);
+
+        self::assertFalse($subject->getIsImportant());
     }
 
     /**
