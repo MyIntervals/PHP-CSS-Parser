@@ -223,4 +223,33 @@ final class SizeTest extends TestCase
 
         self::assertSame($expected . 'px', $result);
     }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string, 1: float, 2: string|null}>
+     */
+    public static function provideSizeAndExpectedNumberAndUnit(): array
+    {
+        return [
+            'negative decimal' => ['-1.5px', -1.5, 'px'],
+            'decimal without leading zero' => ['.5em', 0.5, 'em'],
+            'scientific notation without unit' => ['1e3', 1000.0, null],
+            'scientific notation with negative exponent and unit' => ['2E-2s', 0.02, 's'],
+            'unit starting with e' => ['1em', 1.0, 'em'],
+            'uppercase unit' => ['3EM', 3.0, 'em'],
+            'unit without number' => ['px', 0.0, null],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideSizeAndExpectedNumberAndUnit
+     */
+    public function parsesNumberAndUnit(string $css, float $expectedNumber, ?string $expectedUnit): void
+    {
+        $result = Size::parse(new ParserState($css, Settings::create()));
+
+        self::assertSame($expectedNumber, $result->getSize());
+        self::assertSame($expectedUnit, $result->getUnit());
+    }
 }
