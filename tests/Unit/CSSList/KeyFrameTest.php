@@ -128,9 +128,11 @@ final class KeyFrameTest extends TestCase
     {
         $subject = new KeyFrame();
 
-        $subject->setAnimationName('spin');
+        $animationName = 'spin';
 
-        self::assertSame('spin', $subject->getAnimationName());
+        $subject->setAnimationName($animationName);
+
+        self::assertSame($animationName, $subject->getAnimationName());
     }
 
     /**
@@ -140,9 +142,11 @@ final class KeyFrameTest extends TestCase
     {
         $subject = new KeyFrame();
 
-        $subject->setVendorKeyFrame('-webkit-keyframes');
+        $vendorKeyFrame = '-webkit-keyframes';
 
-        self::assertSame('-webkit-keyframes', $subject->getVendorKeyFrame());
+        $subject->setVendorKeyFrame($vendorKeyFrame);
+
+        self::assertSame($vendorKeyFrame, $subject->getVendorKeyFrame());
     }
 
     /**
@@ -159,9 +163,10 @@ final class KeyFrameTest extends TestCase
     public function atRuleNameReturnsVendorKeyFrame(): void
     {
         $subject = new KeyFrame();
-        $subject->setVendorKeyFrame('-webkit-keyframes');
+        $vendorKeyFrame = '-webkit-keyframes';
+        $subject->setVendorKeyFrame($vendorKeyFrame);
 
-        self::assertSame('-webkit-keyframes', $subject->atRuleName());
+        self::assertSame($vendorKeyFrame, $subject->atRuleName());
     }
 
     /**
@@ -170,8 +175,9 @@ final class KeyFrameTest extends TestCase
     public function atRuleArgsReturnsAnimationName(): void
     {
         $subject = new KeyFrame();
-        $subject->setAnimationName('spin');
+        $animationName = 'spin';
+        $subject->setAnimationName($animationName);
 
-        self::assertSame('spin', $subject->atRuleArgs());
+        self::assertSame($animationName, $subject->atRuleArgs());
     }
 }
