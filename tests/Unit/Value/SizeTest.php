@@ -122,28 +122,42 @@ final class SizeTest extends TestCase
     }
 
     /**
-     * @return array<non-empty-string, array{0: float, 1: string|null, 2: bool}>
+     * @test
      */
-    public static function provideSizeAndRelativity(): array
+    public function isRelativeReturnsTrueForRelativeUnit(): void
     {
-        return [
-            'relative unit' => [1.0, 'em', true],
-            'percentage' => [1.0, '%', true],
-            'absolute unit' => [1.0, 'px', false],
-            'non-zero number without unit' => [1.0, null, true],
-            'zero without unit' => [0.0, null, false],
-        ];
+        self::assertTrue((new Size(1, 'em'))->isRelative());
     }
 
     /**
      * @test
-     *
-     * @dataProvider provideSizeAndRelativity
      */
-    public function isRelativeDetectsRelativeSizes(float $number, ?string $unit, bool $expected): void
+    public function isRelativeReturnsTrueForPercentage(): void
     {
-        $subject = new Size($number, $unit);
+        self::assertTrue((new Size(1, '%'))->isRelative());
+    }
 
-        self::assertSame($expected, $subject->isRelative());
+    /**
+     * @test
+     */
+    public function isRelativeReturnsTrueForNonZeroNumberWithoutUnit(): void
+    {
+        self::assertTrue((new Size(1))->isRelative());
+    }
+
+    /**
+     * @test
+     */
+    public function isRelativeReturnsFalseForAbsoluteUnit(): void
+    {
+        self::assertFalse((new Size(1, 'px'))->isRelative());
+    }
+
+    /**
+     * @test
+     */
+    public function isRelativeReturnsFalseForZeroWithoutUnit(): void
+    {
+        self::assertFalse((new Size(0))->isRelative());
     }
 }
