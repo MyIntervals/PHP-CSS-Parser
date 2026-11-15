@@ -74,4 +74,39 @@ final class ValueListTest extends TestCase
 
         self::assertSame(',', $result['separator']);
     }
+
+    /**
+     * @test
+     */
+    public function constructorWrapsSingleComponentInArray(): void
+    {
+        $subject = new ConcreteValueList('Helvetica');
+
+        self::assertSame(['Helvetica'], $subject->getListComponents());
+    }
+
+    /**
+     * @test
+     */
+    public function setListComponentsReplacesComponents(): void
+    {
+        $subject = new ConcreteValueList(['Helvetica']);
+        $components = ['Arial', 'sans-serif'];
+
+        $subject->setListComponents($components);
+
+        self::assertSame($components, $subject->getListComponents());
+    }
+
+    /**
+     * @test
+     */
+    public function setListSeparatorSetsSeparator(): void
+    {
+        $subject = new ConcreteValueList();
+
+        $subject->setListSeparator('/');
+
+        self::assertSame('/', $subject->getListSeparator());
+    }
 }
