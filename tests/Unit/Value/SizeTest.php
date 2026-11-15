@@ -78,10 +78,11 @@ final class SizeTest extends TestCase
     public function setUnitSetsUnit(): void
     {
         $subject = new Size(1, 'px');
+        $unit = 'em';
 
-        $subject->setUnit('em');
+        $subject->setUnit($unit);
 
-        self::assertSame('em', $subject->getUnit());
+        self::assertSame($unit, $subject->getUnit());
     }
 
     /**
