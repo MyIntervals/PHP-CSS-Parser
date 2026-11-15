@@ -17,27 +17,61 @@ use Sabberworm\CSS\Value\URL;
 final class URLTest extends TestCase
 {
     /**
-     * @return array<non-empty-string, array{0: non-empty-string}>
+     * @test
      */
-    public static function provideUrlSyntax(): array
+    public function parseParsesUrlWithDoubleQuotes(): void
     {
-        return [
-            'url() with double quotes' => ['url("a.png")'],
-            'url() with single quotes' => ["url('a.png')"],
-            'url() with whitespace inside parentheses' => ['url( "a.png" )'],
-            'uppercase URL()' => ['URL("a.png")'],
-            'string without url()' => ['"a.png"'],
-        ];
+        $parserState = new ParserState('url("a.png")', Settings::create());
+
+        $result = URL::parse($parserState);
+
+        self::assertSame('a.png', $result->getURL()->getString());
     }
 
     /**
      * @test
-     *
-     * @dataProvider provideUrlSyntax
      */
-    public function parseParsesUrl(string $css): void
+    public function parseParsesUrlWithSingleQuotes(): void
     {
-        $result = URL::parse(new ParserState($css, Settings::create()));
+        $parserState = new ParserState('url(\'a.png\')', Settings::create());
+
+        $result = URL::parse($parserState);
+
+        self::assertSame('a.png', $result->getURL()->getString());
+    }
+
+    /**
+     * @test
+     */
+    public function parseParsesUrlWithWhitespaceInsideParentheses(): void
+    {
+        $parserState = new ParserState('url( "a.png" )', Settings::create());
+
+        $result = URL::parse($parserState);
+
+        self::assertSame('a.png', $result->getURL()->getString());
+    }
+
+    /**
+     * @test
+     */
+    public function parseParsesUppercaseUrlFunction(): void
+    {
+        $parserState = new ParserState('URL("a.png")', Settings::create());
+
+        $result = URL::parse($parserState);
+
+        self::assertSame('a.png', $result->getURL()->getString());
+    }
+
+    /**
+     * @test
+     */
+    public function parseParsesStringWithoutUrlFunction(): void
+    {
+        $parserState = new ParserState('"a.png"', Settings::create());
+
+        $result = URL::parse($parserState);
 
         self::assertSame('a.png', $result->getURL()->getString());
     }
