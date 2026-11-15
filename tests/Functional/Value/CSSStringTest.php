@@ -68,28 +68,62 @@ final class CSSStringTest extends TestCase
     }
 
     /**
-     * @return array<non-empty-string, array{0: non-empty-string, 1: string}>
+     * @test
      */
-    public static function provideStringAndExpectedContents(): array
+    public function parseParsesSingleQuotedStringWithWhitespace(): void
     {
-        return [
-            'single-quoted with whitespace' => ["'a b'", 'a b'],
-            'double-quoted with whitespace' => ['"a b"', 'a b'],
-            'unquoted, ends at whitespace' => ['a b', 'a'],
-            'unquoted, ends at brace' => ['ab{', 'ab'],
-            'unquoted, ends at parenthesis' => ['ab)', 'ab'],
-        ];
+        $parserState = new ParserState("'a b'", Settings::create());
+
+        $result = CSSString::parse($parserState);
+
+        self::assertSame('a b', $result->getString());
     }
 
     /**
      * @test
-     *
-     * @dataProvider provideStringAndExpectedContents
      */
-    public function parseParsesString(string $css, string $expectedContents): void
+    public function parseParsesDoubleQuotedStringWithWhitespace(): void
     {
-        $result = CSSString::parse(new ParserState($css, Settings::create()));
+        $parserState = new ParserState('"a b"', Settings::create());
 
-        self::assertSame($expectedContents, $result->getString());
+        $result = CSSString::parse($parserState);
+
+        self::assertSame('a b', $result->getString());
+    }
+
+    /**
+     * @test
+     */
+    public function parseParsesUnquotedStringEndingAtWhitespace(): void
+    {
+        $parserState = new ParserState('a b', Settings::create());
+
+        $result = CSSString::parse($parserState);
+
+        self::assertSame('a', $result->getString());
+    }
+
+    /**
+     * @test
+     */
+    public function parseParsesUnquotedStringEndingAtBrace(): void
+    {
+        $parserState = new ParserState('ab{', Settings::create());
+
+        $result = CSSString::parse($parserState);
+
+        self::assertSame('ab', $result->getString());
+    }
+
+    /**
+     * @test
+     */
+    public function parseParsesUnquotedStringEndingAtParenthesis(): void
+    {
+        $parserState = new ParserState('ab)', Settings::create());
+
+        $result = CSSString::parse($parserState);
+
+        self::assertSame('ab', $result->getString());
     }
 }
