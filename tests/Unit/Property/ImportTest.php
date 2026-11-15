@@ -68,4 +68,78 @@ final class ImportTest extends TestCase
             $result['uri']
         );
     }
+
+    /**
+     * @test
+     */
+    public function getLocationReturnsLocationProvidedToConstructor(): void
+    {
+        $location = new URL(new CSSString('https://example.com/'));
+        $subject = new Import($location, null);
+
+        self::assertSame($location, $subject->getLocation());
+    }
+
+    /**
+     * @test
+     */
+    public function setLocationSetsLocation(): void
+    {
+        $location = new URL(new CSSString('https://example.com/other.css'));
+
+        $this->subject->setLocation($location);
+
+        self::assertSame($location, $this->subject->getLocation());
+    }
+
+    /**
+     * @test
+     */
+    public function getMediaQueryReturnsMediaQueryProvidedToConstructor(): void
+    {
+        $subject = new Import(new URL(new CSSString('https://example.com/')), 'print');
+
+        self::assertSame('print', $subject->getMediaQuery());
+    }
+
+    /**
+     * @test
+     */
+    public function atRuleNameReturnsImport(): void
+    {
+        self::assertSame('import', $this->subject->atRuleName());
+    }
+
+    /**
+     * @test
+     */
+    public function atRuleArgsWithoutMediaQueryReturnsOnlyLocation(): void
+    {
+        $location = new URL(new CSSString('https://example.com/'));
+        $subject = new Import($location, null);
+
+        self::assertSame([$location], $subject->atRuleArgs());
+    }
+
+    /**
+     * @test
+     */
+    public function atRuleArgsWithEmptyMediaQueryReturnsOnlyLocation(): void
+    {
+        $location = new URL(new CSSString('https://example.com/'));
+        $subject = new Import($location, '');
+
+        self::assertSame([$location], $subject->atRuleArgs());
+    }
+
+    /**
+     * @test
+     */
+    public function atRuleArgsWithMediaQueryReturnsLocationFollowedByMediaQuery(): void
+    {
+        $location = new URL(new CSSString('https://example.com/'));
+        $subject = new Import($location, 'print');
+
+        self::assertSame([$location, 'print'], $subject->atRuleArgs());
+    }
 }
