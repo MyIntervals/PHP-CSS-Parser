@@ -223,4 +223,82 @@ final class SizeTest extends TestCase
 
         self::assertSame($expected . 'px', $result);
     }
+
+    /**
+     * @test
+     */
+    public function parsesNegativeDecimal(): void
+    {
+        $parserState = new ParserState('-1.5px', Settings::create());
+
+        $result = Size::parse($parserState);
+
+        self::assertSame(-1.5, $result->getSize());
+        self::assertSame('px', $result->getUnit());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesDecimalWithoutLeadingZero(): void
+    {
+        $parserState = new ParserState('.5em', Settings::create());
+
+        $result = Size::parse($parserState);
+
+        self::assertSame(0.5, $result->getSize());
+        self::assertSame('em', $result->getUnit());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesScientificNotationWithoutUnit(): void
+    {
+        $parserState = new ParserState('1e3', Settings::create());
+
+        $result = Size::parse($parserState);
+
+        self::assertSame(1000.0, $result->getSize());
+        self::assertNull($result->getUnit());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesScientificNotationWithNegativeExponentAndUnit(): void
+    {
+        $parserState = new ParserState('2E-2s', Settings::create());
+
+        $result = Size::parse($parserState);
+
+        self::assertSame(0.02, $result->getSize());
+        self::assertSame('s', $result->getUnit());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesUnitStartingWithE(): void
+    {
+        $parserState = new ParserState('1em', Settings::create());
+
+        $result = Size::parse($parserState);
+
+        self::assertSame(1.0, $result->getSize());
+        self::assertSame('em', $result->getUnit());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesUppercaseUnitToRecommendedCasing(): void
+    {
+        $parserState = new ParserState('3EM', Settings::create());
+
+        $result = Size::parse($parserState);
+
+        self::assertSame(3.0, $result->getSize());
+        self::assertSame('em', $result->getUnit());
+    }
 }
