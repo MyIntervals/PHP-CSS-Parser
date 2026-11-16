@@ -442,7 +442,7 @@ final class ParserStateTest extends TestCase
      */
     public function parseCharacterConsumesWholeCrLfAfterIncompleteUnicodeEscape(): void
     {
-        $subject = new ParserState("\\41\r\nB", Settings::create());
+        $subject = new ParserState("A\r\nB", Settings::create());
 
         self::assertSame('A', $subject->parseCharacter(false));
         self::assertSame('B', $subject->parseCharacter(false));
