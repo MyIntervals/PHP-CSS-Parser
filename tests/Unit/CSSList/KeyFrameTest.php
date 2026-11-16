@@ -120,4 +120,64 @@ final class KeyFrameTest extends TestCase
 
         $subject->getArrayRepresentation();
     }
+
+    /**
+     * @test
+     */
+    public function setAnimationNameSetsAnimationName(): void
+    {
+        $subject = new KeyFrame();
+
+        $animationName = 'spin';
+
+        $subject->setAnimationName($animationName);
+
+        self::assertSame($animationName, $subject->getAnimationName());
+    }
+
+    /**
+     * @test
+     */
+    public function setVendorKeyFrameSetsVendorKeyFrame(): void
+    {
+        $subject = new KeyFrame();
+
+        $vendorKeyFrame = '-webkit-keyframes';
+
+        $subject->setVendorKeyFrame($vendorKeyFrame);
+
+        self::assertSame($vendorKeyFrame, $subject->getVendorKeyFrame());
+    }
+
+    /**
+     * @test
+     */
+    public function isNotRootList(): void
+    {
+        self::assertFalse((new KeyFrame())->isRootList());
+    }
+
+    /**
+     * @test
+     */
+    public function atRuleNameReturnsVendorKeyFrame(): void
+    {
+        $subject = new KeyFrame();
+        $vendorKeyFrame = '-webkit-keyframes';
+        $subject->setVendorKeyFrame($vendorKeyFrame);
+
+        self::assertSame($vendorKeyFrame, $subject->atRuleName());
+    }
+
+    /**
+     * @test
+     */
+    public function atRuleArgsReturnsAnimationName(): void
+    {
+        $subject = new KeyFrame();
+        $animationName = 'spin';
+        $subject->setAnimationName($animationName);
+
+        self::assertSame($animationName, $subject->atRuleArgs());
+    }
 }
