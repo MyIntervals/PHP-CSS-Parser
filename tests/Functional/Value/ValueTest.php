@@ -6,9 +6,11 @@ namespace Sabberworm\CSS\Tests\Functional\Value;
 
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\OutputFormat;
+use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Settings;
+use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\CSSFunction;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Size;
@@ -212,5 +214,55 @@ final class ValueTest extends TestCase
             new ParserState('--w,)', Settings::create()),
             self::DEFAULT_DELIMITERS
         );
+    }
+
+    /**
+     * @return \Generator<non-empty-string, array{0: non-empty-string, 1: non-empty-string}>
+     */
+    public static function provideIdentifiersStartingWithColorFunctionNameAndExpectedRendering(): \Generator
+    {
+        yield 'rgb prefix' => ['animation-name:rgbshift', 'animation-name: rgbshift;'];
+        yield 'hsl prefix' => ['font-family:hslfont', 'font-family: hslfont;'];
+        yield 'uppercase prefix' => ['animation-name:RGBshift', 'animation-name: RGBshift;'];
+        yield 'bare rgb' => ['animation-name:rgb', 'animation-name: rgb;'];
+        yield 'color function' => ['color:rgb(1,2,3)', 'color: #010203;'];
+        yield 'color function after prefixed identifier' => [
+            'animation-name:rgbshift;color:hsl(0,0%,0%)',
+            'animation-name: rgbshift;color: hsl(0,0%,0%);',
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideIdentifiersStartingWithColorFunctionNameAndExpectedRendering
+     */
+    public function parsesIdentifiersStartingWithColorFunctionNameAsIdentifiers(
+        string $declarations,
+        string $expected
+    ): void {
+        $result = (new Parser('a{' . $declarations . '}'))->parse()->render();
+
+        self::assertSame('a {' . $expected . '}', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function parsesColorFunctionWithoutWhitespaceBeforeOpeningParenthesisAsColor(): void
+    {
+        $result = Value::parsePrimitiveValue(new ParserState('rgb(0, 255, 0)', Settings::create()));
+
+        self::assertInstanceOf(Color::class, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotParseColorFunctionNameFollowedByWhitespaceAsColor(): void
+    {
+        $result = Value::parsePrimitiveValue(new ParserState('rgb (0, 255, 0)', Settings::create()));
+
+        self::assertSame('rgb', $result);
     }
 }

@@ -208,7 +208,6 @@ abstract class Value implements CSSElement, Positionable
         $anchor = $parserState->anchor();
         try {
             $parserState->parseIdentifier(true);
-            $parserState->consumeWhiteSpace();
             $isFunction = $parserState->comes('(');
         } catch (UnexpectedTokenException|UnexpectedEOFException $exception) {
             $isFunction = false;
