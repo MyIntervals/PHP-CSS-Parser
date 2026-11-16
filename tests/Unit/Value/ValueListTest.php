@@ -106,11 +106,13 @@ final class ValueListTest extends TestCase
     public function setListSeparatorSetsSeparator(): void
     {
         $subject = new ConcreteValueList();
-
         $separator = '/';
+        $newSeparator = ' ';
 
         $subject->setListSeparator($separator);
-
         self::assertSame($separator, $subject->getListSeparator());
+
+        $subject->setListSeparator($newSeparator);
+        self::assertSame($newSeparator, $subject->getListSeparator());
     }
 }
