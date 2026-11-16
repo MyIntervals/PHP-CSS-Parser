@@ -68,9 +68,9 @@ final class CharsetTest extends TestCase
     {
         $charset = 'iso-8859-15';
 
-        $this->subject = new Charset(new CSSString($charset));
+        $subject = new Charset(new CSSString($charset));
 
-        self::assertSame($charset, $this->subject->getCharset());
+        self::assertSame($charset, $subject->getCharset());
     }
 
     /**
