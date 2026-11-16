@@ -440,9 +440,11 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      */
-    public function parseCharacterConsumesWholeCrLfAfterPreviousCharacter(): void
+    public function parseCharacterConsumesWholeCrLfAfterIncompleteUnicodeEscape(): void
     {
-        $subject = new ParserState("A\r\nB", Settings::create());
+        // `\41` is the CSS escape for `A`. Whitespace after a hex escape is part of the escape, so a literal `A`
+        // would not exercise this.
+        $subject = new ParserState("\\41\r\nB", Settings::create());
 
         self::assertSame('A', $subject->parseCharacter(false));
         self::assertSame('B', $subject->parseCharacter(false));
