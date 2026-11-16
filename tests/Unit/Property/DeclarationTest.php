@@ -154,14 +154,18 @@ final class DeclarationTest extends TestCase
     public function addValueWithoutExistingValueCreatesListWithOnlyTheNewValue(): void
     {
         $subject = new Declaration('margin');
-        $value = new RuleValueList();
+        $value = new RuleValueList(' ');
+        $value->addListComponent('1px');
 
         $subject->addValue($value);
 
         $result = $subject->getValue();
         self::assertInstanceOf(RuleValueList::class, $result);
         self::assertSame(' ', $result->getListSeparator());
-        self::assertSame([$value], $result->getListComponents());
+        $components = $result->getListComponents();
+        self::assertCount(1, $components);
+        self::assertInstanceOf(RuleValueList::class, $components[0]);
+        self::assertSame(['1px'], $components[0]->getListComponents());
     }
 
     /**
@@ -171,14 +175,19 @@ final class DeclarationTest extends TestCase
     {
         $subject = new Declaration('font-family');
         $subject->setValue('Arial');
-        $value = new RuleValueList();
+        $value = new RuleValueList(',');
+        $value->addListComponent('Verdana');
 
         $subject->addValue($value, ',');
 
         $result = $subject->getValue();
         self::assertInstanceOf(RuleValueList::class, $result);
         self::assertSame(',', $result->getListSeparator());
-        self::assertSame(['Arial', $value], $result->getListComponents());
+        $components = $result->getListComponents();
+        self::assertCount(2, $components);
+        self::assertSame('Arial', $components[0]);
+        self::assertInstanceOf(RuleValueList::class, $components[1]);
+        self::assertSame(['Verdana'], $components[1]->getListComponents());
     }
 
     /**
@@ -189,13 +198,21 @@ final class DeclarationTest extends TestCase
         $subject = new Declaration('margin');
         $list = new RuleValueList(' ');
         $subject->setValue($list);
-        $value1 = new RuleValueList();
-        $value2 = new RuleValueList();
+        $value1 = new RuleValueList(' ');
+        $value1->addListComponent('1px');
+        $value2 = new RuleValueList(' ');
+        $value2->addListComponent('2px');
 
         $subject->addValue([$value1, $value2]);
 
-        self::assertSame($list, $subject->getValue());
-        self::assertSame([$value1, $value2], $list->getListComponents());
+        $result = $subject->getValue();
+        self::assertInstanceOf(RuleValueList::class, $result);
+        $components = $result->getListComponents();
+        self::assertCount(2, $components);
+        self::assertInstanceOf(RuleValueList::class, $components[0]);
+        self::assertSame(['1px'], $components[0]->getListComponents());
+        self::assertInstanceOf(RuleValueList::class, $components[1]);
+        self::assertSame(['2px'], $components[1]->getListComponents());
     }
 
     /**
@@ -205,15 +222,22 @@ final class DeclarationTest extends TestCase
     {
         $subject = new Declaration('font-family');
         $list = new RuleValueList(' ');
+        $list->addListComponent('Arial');
         $subject->setValue($list);
-        $value = new RuleValueList();
+        $value = new RuleValueList(',');
+        $value->addListComponent('Verdana');
 
         $subject->addValue($value, ',');
 
         $result = $subject->getValue();
         self::assertInstanceOf(RuleValueList::class, $result);
-        self::assertNotSame($list, $result);
         self::assertSame(',', $result->getListSeparator());
-        self::assertSame([$list, $value], $result->getListComponents());
+        $components = $result->getListComponents();
+        self::assertCount(2, $components);
+        self::assertInstanceOf(RuleValueList::class, $components[0]);
+        self::assertSame(' ', $components[0]->getListSeparator());
+        self::assertSame(['Arial'], $components[0]->getListComponents());
+        self::assertInstanceOf(RuleValueList::class, $components[1]);
+        self::assertSame(['Verdana'], $components[1]->getListComponents());
     }
 }
