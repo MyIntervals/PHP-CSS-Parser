@@ -449,4 +449,43 @@ final class ParserStateTest extends TestCase
         self::assertSame('A', $subject->parseCharacter(false));
         self::assertSame('B', $subject->parseCharacter(false));
     }
+
+    /**
+     * @return array<string, array{0: non-empty-string}>
+     */
+    public static function provideNewline(): array
+    {
+        return [
+            'LF' => ["\n"],
+            'CR' => ["\r"],
+            'CRLF' => ["\r\n"],
+            'FF' => ["\f"],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideNewline
+     */
+    public function parseCharacterForStringConsumesEscapedNewline(string $newline): void
+    {
+        $subject = new ParserState("\\{$newline}B", Settings::create());
+
+        self::assertSame('', $subject->parseCharacter(false));
+        self::assertSame('B', $subject->parseCharacter(false));
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideNewline
+     */
+    public function parseCharacterForIdentifierDoesNotConsumeEscapedNewline(string $newline): void
+    {
+        $subject = new ParserState("\\{$newline}B", Settings::create());
+
+        self::assertSame('', $subject->parseCharacter(true));
+        self::assertTrue($subject->comes($newline));
+    }
 }
