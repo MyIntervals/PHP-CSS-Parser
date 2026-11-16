@@ -93,22 +93,12 @@ final class CSSStringTest extends TestCase
 
     /**
      * @test
+     *
+     * @dataProvider provideUnquotedStringTerminators
      */
-    public function parseParsesUnquotedStringEndingAtWhitespace(): void
+    public function parseParsesUnquotedStringEndingAtTerminator(string $terminator): void
     {
-        $parserState = new ParserState('a b', Settings::create());
-
-        $result = CSSString::parse($parserState);
-
-        self::assertSame('a', $result->getString());
-    }
-
-    /**
-     * @test
-     */
-    public function parseParsesUnquotedStringEndingAtBrace(): void
-    {
-        $parserState = new ParserState('ab{', Settings::create());
+        $parserState = new ParserState('ab' . $terminator . 'cd', Settings::create());
 
         $result = CSSString::parse($parserState);
 
@@ -116,14 +106,22 @@ final class CSSStringTest extends TestCase
     }
 
     /**
-     * @test
+     * @return array<non-empty-string, array{0: non-empty-string}>
      */
-    public function parseParsesUnquotedStringEndingAtParenthesis(): void
+    public static function provideUnquotedStringTerminators(): array
     {
-        $parserState = new ParserState('ab)', Settings::create());
-
-        $result = CSSString::parse($parserState);
-
-        self::assertSame('ab', $result->getString());
+        return [
+            'space' => [' '],
+            'tab' => ["\t"],
+            'line feed' => ["\n"],
+            'opening brace' => ['{'],
+            'closing brace' => ['}'],
+            'opening parenthesis' => ['('],
+            'closing parenthesis' => [')'],
+            'less-than sign' => ['<'],
+            'greater-than sign' => ['>'],
+            'opening bracket' => ['['],
+            'closing bracket' => [']'],
+        ];
     }
 }
