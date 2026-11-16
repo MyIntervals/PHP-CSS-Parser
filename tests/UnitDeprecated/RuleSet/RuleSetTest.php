@@ -57,6 +57,7 @@ final class RuleSetTest extends TestCase
     {
         $declaration = new Declaration('color');
         $this->subject->addDeclaration($declaration);
+        self::assertSame([$declaration], $this->subject->getDeclarations());
 
         $this->subject->removeRule($declaration);
 
@@ -103,7 +104,7 @@ final class RuleSetTest extends TestCase
     /**
      * @test
      */
-    public function getRulesReturnsDeclarationsMatchingSearchPattern(): void
+    public function getRulesReturnsOnlyDeclarationsMatchingSearchPattern(): void
     {
         $marginDeclaration = new Declaration('margin');
         $this->subject->setDeclarations([new Declaration('color'), $marginDeclaration]);
