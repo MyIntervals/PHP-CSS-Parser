@@ -30,7 +30,7 @@ Please also have a look at our
 ### Fixed
 
 - Parse identifiers starting with `rgb` or `hsl` (e.g. `rgbshift`) as
-  identifiers instead of dropping the declaration
+  identifiers instead of dropping the declaration (#1717)
 - Allow generic parsing of CSS units that might be added to the spec in future
   (#1689)
 - Allow empty default value in var() e.g. `.a { border: var(--w,) solid red; }` (#1659)
