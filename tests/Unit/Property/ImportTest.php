@@ -74,10 +74,10 @@ final class ImportTest extends TestCase
      */
     public function getLocationReturnsLocationProvidedToConstructor(): void
     {
-        $location = new URL(new CSSString('https://example.com/'));
-        $subject = new Import($location, null);
+        $uri = 'https://example.com/';
+        $subject = new Import(new URL(new CSSString($uri)), null);
 
-        self::assertSame($location, $subject->getLocation());
+        self::assertSame($uri, $subject->getLocation()->getURL()->getString());
     }
 
     /**
@@ -85,11 +85,11 @@ final class ImportTest extends TestCase
      */
     public function setLocationSetsLocation(): void
     {
-        $location = new URL(new CSSString('https://example.com/other.css'));
+        $uri = 'https://example.com/other.css';
 
-        $this->subject->setLocation($location);
+        $this->subject->setLocation(new URL(new CSSString($uri)));
 
-        self::assertSame($location, $this->subject->getLocation());
+        self::assertSame($uri, $this->subject->getLocation()->getURL()->getString());
     }
 
     /**
@@ -116,10 +116,14 @@ final class ImportTest extends TestCase
      */
     public function atRuleArgsWithoutMediaQueryReturnsOnlyLocation(): void
     {
-        $location = new URL(new CSSString('https://example.com/'));
-        $subject = new Import($location, null);
+        $uri = 'https://example.com/';
+        $subject = new Import(new URL(new CSSString($uri)), null);
 
-        self::assertSame([$location], $subject->atRuleArgs());
+        $result = $subject->atRuleArgs();
+
+        self::assertCount(1, $result);
+        self::assertInstanceOf(URL::class, $result[0]);
+        self::assertSame($uri, $result[0]->getURL()->getString());
     }
 
     /**
@@ -127,10 +131,14 @@ final class ImportTest extends TestCase
      */
     public function atRuleArgsWithEmptyMediaQueryReturnsOnlyLocation(): void
     {
-        $location = new URL(new CSSString('https://example.com/'));
-        $subject = new Import($location, '');
+        $uri = 'https://example.com/';
+        $subject = new Import(new URL(new CSSString($uri)), '');
 
-        self::assertSame([$location], $subject->atRuleArgs());
+        $result = $subject->atRuleArgs();
+
+        self::assertCount(1, $result);
+        self::assertInstanceOf(URL::class, $result[0]);
+        self::assertSame($uri, $result[0]->getURL()->getString());
     }
 
     /**
@@ -138,10 +146,15 @@ final class ImportTest extends TestCase
      */
     public function atRuleArgsWithMediaQueryReturnsLocationFollowedByMediaQuery(): void
     {
-        $location = new URL(new CSSString('https://example.com/'));
+        $uri = 'https://example.com/';
         $mediaQuery = 'print';
-        $subject = new Import($location, $mediaQuery);
+        $subject = new Import(new URL(new CSSString($uri)), $mediaQuery);
 
-        self::assertSame([$location, $mediaQuery], $subject->atRuleArgs());
+        $result = $subject->atRuleArgs();
+
+        self::assertCount(2, $result);
+        self::assertInstanceOf(URL::class, $result[0]);
+        self::assertSame($uri, $result[0]->getURL()->getString());
+        self::assertSame($mediaQuery, $result[1]);
     }
 }
