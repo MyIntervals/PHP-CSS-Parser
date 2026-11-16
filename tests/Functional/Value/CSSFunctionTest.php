@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Sabberworm\CSS\Tests\Functional\Value;
 
 use PHPUnit\Framework\TestCase;
+use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\CSSFunction;
+use Sabberworm\CSS\Value\Size;
 
 /**
  * @covers \Sabberworm\CSS\Value\CSSFunction
@@ -54,5 +56,15 @@ final class CSSFunctionTest extends TestCase
         $this->expectException(UnexpectedTokenException::class);
 
         CSSFunction::parse(new ParserState('foo(a,)', Settings::create()));
+    }
+
+    /**
+     * @test
+     */
+    public function renderRendersNameAndArguments(): void
+    {
+        $subject = new CSSFunction('rgb', [new Size(1), new Size(2)]);
+
+        self::assertSame('rgb(1,2)', $subject->render(OutputFormat::create()));
     }
 }
