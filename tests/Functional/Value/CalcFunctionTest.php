@@ -202,4 +202,26 @@ final class CalcFunctionTest extends TestCase
         self::assertInstanceOf(CalcFunction::class, $function);
         return $function;
     }
+
+    /**
+     * @test
+     */
+    public function parseThrowsExceptionIfOpeningParenthesisIsMissing(): void
+    {
+        $parserState = new ParserState('calc;', Settings::create());
+
+        $this->expectException(UnexpectedTokenException::class);
+        $this->expectExceptionMessage('(');
+        CalcFunction::parse($parserState);
+    }
+
+    /**
+     * @test
+     */
+    public function parseStopsAtEndOfInputIfClosingParenthesisIsMissing(): void
+    {
+        $result = $this->parse('calc(1px + 2px');
+
+        self::assertSame('calc(1px + 2px)', $result->render(OutputFormat::create()));
+    }
 }
