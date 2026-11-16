@@ -440,7 +440,7 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      */
-    public function parseCharacterConsumesWholeCrLfAfterIncompleteUnicodeEscape(): void
+    public function parseCharacterConsumesWholeCrLfAfterPreviousCharacter(): void
     {
         $subject = new ParserState("A\r\nB", Settings::create());
 
