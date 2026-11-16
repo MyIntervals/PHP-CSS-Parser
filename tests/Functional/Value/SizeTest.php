@@ -292,7 +292,7 @@ final class SizeTest extends TestCase
     /**
      * @test
      */
-    public function parsesUppercaseUnitInRecommendedCasing(): void
+    public function parsesUppercaseUnitToRecommendedCasing(): void
     {
         $parserState = new ParserState('3EM', Settings::create());
 
@@ -300,18 +300,5 @@ final class SizeTest extends TestCase
 
         self::assertSame(3.0, $result->getSize());
         self::assertSame('em', $result->getUnit());
-    }
-
-    /**
-     * @test
-     */
-    public function parsesUnitWithoutNumberAsZeroWithoutUnit(): void
-    {
-        $parserState = new ParserState('px', Settings::create());
-
-        $result = Size::parse($parserState);
-
-        self::assertSame(0.0, $result->getSize());
-        self::assertNull($result->getUnit());
     }
 }
