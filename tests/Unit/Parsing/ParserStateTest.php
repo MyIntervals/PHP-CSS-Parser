@@ -620,11 +620,36 @@ final class ParserStateTest extends TestCase
     }
 
     /**
-     * @test
+     * @return array<non-empty-string, array{0: non-empty-string}>
      */
-    public function parseIdentifierIncludesEscapedCharacter(): void
+    public static function provideEscapedCharacter(): array
     {
-        $identifier = 'a\\.b';
+        return [
+            'full stop' => ['.'],
+            'opening brace' => ['{'],
+            'closing brace' => ['}'],
+            'opening parenthesis' => ['('],
+            'closing parenthesis' => [')'],
+            'colon' => [':'],
+            'semicolon' => [';'],
+            'comma' => [','],
+            'hash' => ['#'],
+            'plus' => ['+'],
+            'slash' => ['/'],
+            'space' => [' '],
+            'double quote' => ['"'],
+            'single quote' => ["'"],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideEscapedCharacter
+     */
+    public function parseIdentifierIncludesEscapedCharacter(string $character): void
+    {
+        $identifier = 'a\\' . $character . 'b';
         $subject = new ParserState($identifier, Settings::create());
 
         $result = $subject->parseIdentifier();
@@ -634,14 +659,16 @@ final class ParserStateTest extends TestCase
 
     /**
      * @test
+     *
+     * @dataProvider provideEscapedCharacter
      */
-    public function parseCharacterForEscapedNonHexCharacterReturnsThatCharacter(): void
+    public function parseCharacterForEscapedNonHexCharacterReturnsThatCharacter(string $character): void
     {
-        $subject = new ParserState('\\.', Settings::create());
+        $subject = new ParserState('\\' . $character, Settings::create());
 
         $result = $subject->parseCharacter(false);
 
-        self::assertSame('.', $result);
+        self::assertSame($character, $result);
     }
 
     /**
