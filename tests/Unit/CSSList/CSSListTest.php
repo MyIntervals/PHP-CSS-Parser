@@ -8,10 +8,13 @@ use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\Comment\Commentable;
 use Sabberworm\CSS\CSSElement;
 use Sabberworm\CSS\CSSList\CSSListItem;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
+use Sabberworm\CSS\Property\Charset;
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Renderable;
 use Sabberworm\CSS\RuleSet\DeclarationBlock;
 use Sabberworm\CSS\Tests\Unit\CSSList\Fixtures\ConcreteCSSList;
+use Sabberworm\CSS\Value\CSSString;
 
 /**
  * @covers \Sabberworm\CSS\CSSList\CSSList
@@ -353,5 +356,143 @@ final class CSSListTest extends TestCase
         $subject = new ConcreteCSSList();
 
         $subject->getArrayRepresentation();
+    }
+
+    /**
+     * @test
+     */
+    public function prependAddsItemAtTheStart(): void
+    {
+        $subject = new ConcreteCSSList();
+        $existingItem = new DeclarationBlock();
+        $subject->setContents([$existingItem]);
+        $newItem = new DeclarationBlock();
+
+        $subject->prepend($newItem);
+
+        self::assertSame([$newItem, $existingItem], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function spliceRemovesAndInsertsItems(): void
+    {
+        $subject = new ConcreteCSSList();
+        $first = new DeclarationBlock();
+        $second = new DeclarationBlock();
+        $third = new DeclarationBlock();
+        $subject->setContents([$first, $second, $third]);
+        $replacement = new DeclarationBlock();
+
+        $subject->splice(1, 1, [$replacement]);
+
+        self::assertSame([$first, $replacement, $third], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function removeRemovesItemAndReturnsTrue(): void
+    {
+        $subject = new ConcreteCSSList();
+        $itemToKeep = new DeclarationBlock();
+        $itemToRemove = new DeclarationBlock();
+        $subject->setContents([$itemToKeep, $itemToRemove]);
+
+        $result = $subject->remove($itemToRemove);
+
+        self::assertTrue($result);
+        self::assertSame([$itemToKeep], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function removeForItemNotInListReturnsFalse(): void
+    {
+        $subject = new ConcreteCSSList();
+        $item = new DeclarationBlock();
+        $subject->setContents([$item]);
+
+        $result = $subject->remove(new DeclarationBlock());
+
+        self::assertFalse($result);
+        self::assertSame([$item], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function replaceWithSingleItemReplacesItemAndReturnsTrue(): void
+    {
+        $subject = new ConcreteCSSList();
+        $oldItem = new DeclarationBlock();
+        $subject->setContents([$oldItem]);
+        $newItem = new DeclarationBlock();
+
+        $result = $subject->replace($oldItem, $newItem);
+
+        self::assertTrue($result);
+        self::assertSame([$newItem], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function replaceWithArrayReplacesItemWithAllItemsInArray(): void
+    {
+        $subject = new ConcreteCSSList();
+        $oldItem = new DeclarationBlock();
+        $subject->setContents([$oldItem]);
+        $newItem1 = new DeclarationBlock();
+        $newItem2 = new DeclarationBlock();
+
+        $subject->replace($oldItem, [$newItem1, $newItem2]);
+
+        self::assertSame([$newItem1, $newItem2], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function replaceForItemNotInListReturnsFalse(): void
+    {
+        $subject = new ConcreteCSSList();
+        $item = new DeclarationBlock();
+        $subject->setContents([$item]);
+
+        $result = $subject->replace(new DeclarationBlock(), new DeclarationBlock());
+
+        self::assertFalse($result);
+        self::assertSame([$item], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function removeDeclarationBlockBySelectorIgnoresItemsThatAreNotDeclarationBlocks(): void
+    {
+        $subject = new ConcreteCSSList();
+        $charset = new Charset(new CSSString('UTF-8'));
+        $declarationBlock = new DeclarationBlock();
+        $declarationBlock->setSelectors('html');
+        $subject->setContents([$charset, $declarationBlock]);
+
+        $subject->removeDeclarationBlockBySelector('html');
+
+        self::assertSame([$charset], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function removeDeclarationBlockBySelectorThrowsForInvalidSelector(): void
+    {
+        $subject = new ConcreteCSSList();
+
+        $this->expectException(UnexpectedTokenException::class);
+
+        $subject->removeDeclarationBlockBySelector('a{');
     }
 }
