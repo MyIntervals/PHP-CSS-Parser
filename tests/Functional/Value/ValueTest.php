@@ -8,11 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\CalcFunction;
 use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\CSSFunction;
+use Sabberworm\CSS\Value\CSSString;
+use Sabberworm\CSS\Value\LineName;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Value\URL;
@@ -435,5 +438,126 @@ final class ValueTest extends TestCase
 
         self::assertInstanceOf(CSSFunction::class, $result);
         self::assertSame('foo', $result->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function parseValueThrowsIfThereIsNoValue(): void
+    {
+        $parserState = new ParserState('a;', Settings::create());
+        $parserState->consume(1);
+
+        $this->expectException(UnexpectedTokenException::class);
+
+        Value::parseValue($parserState, self::DEFAULT_DELIMITERS);
+    }
+
+    /**
+     * @test
+     */
+    public function parsesUrlFunctionAsUrl(): void
+    {
+        $uri = 'https://example.com/image.png';
+        $parserState = new ParserState('url(' . $uri . ')', Settings::create());
+
+        $result = Value::parseValue($parserState, self::DEFAULT_DELIMITERS);
+
+        self::assertInstanceOf(URL::class, $result);
+        self::assertSame($uri, $result->getURL()->getString());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesQuotedValueAsString(): void
+    {
+        $string = 'Open Sans';
+        $parserState = new ParserState('"' . $string . '"', Settings::create());
+
+        $result = Value::parseValue($parserState, self::DEFAULT_DELIMITERS);
+
+        self::assertInstanceOf(CSSString::class, $result);
+        self::assertSame($string, $result->getString());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesBracketedValueAsLineName(): void
+    {
+        $name = 'full-start';
+        $parserState = new ParserState('[' . $name . ']', Settings::create());
+
+        $result = Value::parseValue($parserState, self::DEFAULT_DELIMITERS);
+
+        self::assertInstanceOf(LineName::class, $result);
+        self::assertSame([$name], $result->getListComponents());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesMicrosoftFilterAsFunctionInLenientMode(): void
+    {
+        $name = 'progid:DXImageTransform.Microsoft.Alpha';
+        $parserState = new ParserState($name . '(Opacity=50)', Settings::create());
+
+        $result = Value::parseValue($parserState, self::DEFAULT_DELIMITERS);
+
+        self::assertInstanceOf(CSSFunction::class, $result);
+        self::assertSame($name, $result->getName());
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideColorFunctionNameFollowedByIncompleteEscape(): array
+    {
+        return [
+            'rgb' => ['rgb\\'],
+            'hsl' => ['hsl\\'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideColorFunctionNameFollowedByIncompleteEscape
+     */
+    public function parsePrimitiveValueThrowsForColorFunctionNameFollowedByIncompleteEscape(string $css): void
+    {
+        $parserState = new ParserState($css, Settings::create());
+
+        $this->expectException(UnexpectedEOFException::class);
+
+        Value::parsePrimitiveValue($parserState);
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideUnicodeRange(): array
+    {
+        return [
+            'single code point' => ['U+26'],
+            'range' => ['U+0025-00FF'],
+            'range starting at zero' => ['U+0-7F'],
+            'wildcards' => ['U+4??'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideUnicodeRange
+     */
+    public function parsesUnicodeRangeAsString(string $range): void
+    {
+        $parserState = new ParserState($range, Settings::create());
+
+        $result = Value::parseValue($parserState, self::DEFAULT_DELIMITERS);
+
+        self::assertSame($range, $result);
     }
 }
