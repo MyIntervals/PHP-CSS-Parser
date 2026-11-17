@@ -121,6 +121,9 @@ final class RuleSetTest extends TestCase
     }
 
     /**
+     * The opening `{` is consumed by the caller of `parseRuleSet()`, so the CSS starts right after it
+     * and ends with the closing `}` that `parseRuleSet()` consumes.
+     *
      * @return array<non-empty-string, array{0: non-empty-string, 1: list<non-empty-string>}>
      */
     public static function provideValidDeclarationsAndExpectedPropertyNames(): array
