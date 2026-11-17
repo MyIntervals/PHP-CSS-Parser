@@ -421,4 +421,73 @@ final class ParserStateTest extends TestCase
 
         $subject->consumeExpression('/^[0-9a-fA-F]{1,6}/u', 6);
     }
+
+    /**
+     * @test
+     */
+    public function parseCharacterKeepsEscapedBackslashBeforeLetterThatIsNotNewline(): void
+    {
+        $subject = new ParserState('\\\\new\\\\road', Settings::create());
+
+        $result = '';
+        for ($i = 0; $i < 4; ++$i) {
+            $result .= $subject->parseCharacter(false);
+        }
+
+        self::assertSame('\\new', $result);
+    }
+
+    /**
+     * @return array<string, array{0: non-empty-string}>
+     */
+    public static function provideNewline(): array
+    {
+        return [
+            'LF' => ["\n"],
+            'CR' => ["\r"],
+            'CRLF' => ["\r\n"],
+            'FF' => ["\f"],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideNewline
+     */
+    public function parseCharacterConsumesNewlineAfterIncompleteUnicodeEscape(string $newline): void
+    {
+        // `\41` is the CSS escape for `A`. Whitespace after a hex escape is part of the escape, so a literal `A`
+        // would not exercise this.
+        $subject = new ParserState('\\41' . $newline . 'B', Settings::create());
+
+        self::assertSame('A', $subject->parseCharacter(false));
+        self::assertSame('B', $subject->parseCharacter(false));
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideNewline
+     */
+    public function parseCharacterForStringConsumesEscapedNewline(string $newline): void
+    {
+        $subject = new ParserState('\\' . $newline . 'B', Settings::create());
+
+        self::assertSame('', $subject->parseCharacter(false));
+        self::assertSame('B', $subject->parseCharacter(false));
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideNewline
+     */
+    public function parseCharacterForIdentifierDoesNotConsumeEscapedNewline(string $newline): void
+    {
+        $subject = new ParserState('\\' . $newline . 'B', Settings::create());
+
+        self::assertSame('', $subject->parseCharacter(true));
+        self::assertTrue($subject->comes($newline));
+    }
 }
