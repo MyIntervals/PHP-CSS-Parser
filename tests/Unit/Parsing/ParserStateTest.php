@@ -672,11 +672,31 @@ final class ParserStateTest extends TestCase
     }
 
     /**
-     * @test
+     * @return array<non-empty-string, array{0: non-empty-string}>
      */
-    public function parseCharacterNotForIdentifierReturnsAnyCharacter(): void
+    public static function provideAnyCharacter(): array
     {
-        $character = '{';
+        return [
+            'lowercase letter' => ['a'],
+            'uppercase letter' => ['Z'],
+            'digit' => ['5'],
+            'hyphen' => ['-'],
+            'underscore' => ['_'],
+            'space' => [' '],
+            'full stop' => ['.'],
+            'semicolon' => [';'],
+            'opening brace' => ['{'],
+            'closing brace' => ['}'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideAnyCharacter
+     */
+    public function parseCharacterNotForIdentifierReturnsAnyCharacter(string $character): void
+    {
         $subject = new ParserState($character, Settings::create());
 
         $result = $subject->parseCharacter(false);
