@@ -81,7 +81,7 @@ class ParserState
     public function currentColumn(): int
     {
         $lineStart = $this->currentPosition;
-        while ($lineStart > 0 && $this->characters[$lineStart - 1] !== "\n") {
+        while (($lineStart > 0) && ($this->characters[$lineStart - 1] !== "\n")) {
             --$lineStart;
         }
 
