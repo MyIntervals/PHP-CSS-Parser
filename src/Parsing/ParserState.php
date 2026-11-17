@@ -141,7 +141,11 @@ class ParserState
     {
         if ($this->peek() === '\\') {
             $this->consume('\\');
-            if ($this->comes('\\n') || $this->comes('\\r')) {
+            if ($this->comes("\n") || $this->comes("\r") || $this->comes("\f")) {
+                // In a string, an escaped newline is a line continuation and produces nothing.
+                if (!$isForIdentifier) {
+                    $this->consume($this->comes("\r\n") ? 2 : 1);
+                }
                 return '';
             }
             $matchResult = \preg_match('/[0-9a-fA-F]/Su', $this->peek());
@@ -159,7 +163,7 @@ class ParserState
                     throw new \RuntimeException('The CSS is not valid UTF-8.', 1787112619);
                 }
                 if ($matchResult !== 0) {
-                    if ($this->comes('\\r\\n')) {
+                    if ($this->comes("\r\n")) {
                         $this->consume(2);
                     } else {
                         $this->consume(1);
