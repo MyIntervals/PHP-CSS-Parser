@@ -568,11 +568,38 @@ final class ParserStateTest extends TestCase
     }
 
     /**
-     * @test
+     * @return array<non-empty-string, array{0: non-empty-string}>
      */
-    public function parseIdentifierThrowsForCharacterThatCannotStartIdentifier(): void
+    public static function provideCharacterThatCannotBePartOfIdentifier(): array
     {
-        $subject = new ParserState('{', Settings::create());
+        return [
+            'opening brace' => ['{'],
+            'closing brace' => ['}'],
+            'opening parenthesis' => ['('],
+            'closing parenthesis' => [')'],
+            'semicolon' => [';'],
+            'comma' => [','],
+            'colon' => [':'],
+            'space' => [' '],
+            'full stop' => ['.'],
+            'hash' => ['#'],
+            'at sign' => ['@'],
+            'plus' => ['+'],
+            'asterisk' => ['*'],
+            'slash' => ['/'],
+            'double quote' => ['"'],
+            'single quote' => ["'"],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideCharacterThatCannotBePartOfIdentifier
+     */
+    public function parseIdentifierThrowsForCharacterThatCannotStartIdentifier(string $character): void
+    {
+        $subject = new ParserState($character, Settings::create());
 
         $this->expectException(UnexpectedTokenException::class);
 
@@ -595,7 +622,7 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      */
-    public function parseIdentifierKeepsEscapedCharacterThatIsNotValidInIdentifierEscaped(): void
+    public function parseIdentifierIncludesEscapedCharacter(): void
     {
         $identifier = 'a\\.b';
         $subject = new ParserState($identifier, Settings::create());
@@ -632,10 +659,12 @@ final class ParserStateTest extends TestCase
 
     /**
      * @test
+     *
+     * @dataProvider provideCharacterThatCannotBePartOfIdentifier
      */
-    public function parseCharacterForIdentifierReturnsNullForCharacterNotValidInIdentifier(): void
+    public function parseCharacterForIdentifierReturnsNullForCharacterNotValidInIdentifier(string $character): void
     {
-        $subject = new ParserState('{', Settings::create());
+        $subject = new ParserState($character, Settings::create());
 
         $result = $subject->parseCharacter(true);
 
@@ -768,7 +797,7 @@ final class ParserStateTest extends TestCase
         $text = 'abc';
         $subject = new ParserState($text, Settings::create());
 
-        $result = $subject->consumeUntil([';', ParserState::EOF]);
+        $result = $subject->consumeUntil([ParserState::EOF]);
 
         self::assertSame($text, $result);
         self::assertTrue($subject->isEnd());
@@ -777,18 +806,13 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      */
-    public function consumeUntilThrowsAndResetsPositionIfStopCharacterIsNotFound(): void
+    public function consumeUntilThrowsIfStopCharacterIsNotFound(): void
     {
         $subject = new ParserState('abc', Settings::create());
 
-        try {
-            $subject->consumeUntil(';');
-            self::fail('Expected exception was not thrown.');
-        } catch (UnexpectedEOFException $exception) {
-            $result = $subject->currentColumn();
+        $this->expectException(UnexpectedEOFException::class);
 
-            self::assertSame(0, $result);
-        }
+        $subject->consumeUntil(';');
     }
 
     /**
@@ -796,6 +820,7 @@ final class ParserStateTest extends TestCase
      */
     public function peekWithMultibyteSupportSplitsNonUtf8TextIntoCharacters(): void
     {
+        // `\xE4` is `ä` in ISO-8859-1, but it is not valid UTF-8 on its own.
         $firstCharacter = "\xE4";
         $secondCharacter = 'b';
         $subject = new ParserState(
