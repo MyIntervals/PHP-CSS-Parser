@@ -29,6 +29,7 @@ Please also have a look at our
 
 ### Fixed
 
+- Allow `CSSList::splice()` without a length on PHP versions before 8.0 (#1727)
 - Parse identifiers starting with `rgb` or `hsl` (e.g. `rgbshift`) as
   identifiers instead of dropping the declaration (#1717)
 - Allow generic parsing of CSS units that might be added to the spec in future

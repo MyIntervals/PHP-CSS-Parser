@@ -322,7 +322,7 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
      */
     public function splice(int $offset, ?int $length = null, ?array $replacement = null): void
     {
-        \array_splice($this->contents, $offset, $length, $replacement);
+        \array_splice($this->contents, $offset, $length ?? \count($this->contents), $replacement);
     }
 
     /**
