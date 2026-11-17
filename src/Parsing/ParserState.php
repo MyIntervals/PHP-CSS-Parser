@@ -76,9 +76,22 @@ class ParserState
     }
 
     /**
-     * @return int<0, max>
+     * @return int<1, max> the 1-based column within the current line
      */
     public function currentColumn(): int
+    {
+        $lineStart = $this->currentPosition;
+        while (($lineStart > 0) && ($this->characters[$lineStart - 1] !== "\n")) {
+            --$lineStart;
+        }
+
+        return $this->currentPosition - $lineStart + 1;
+    }
+
+    /**
+     * @return int<0, max> the offset from the start of the input
+     */
+    public function currentOffset(): int
     {
         return $this->currentPosition;
     }
