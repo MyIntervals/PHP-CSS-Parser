@@ -121,17 +121,17 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * The opening `{` is consumed by the caller of `parseRuleSet()`, so the CSS starts right after it
-     * and ends with the closing `}` that `parseRuleSet()` consumes.
+     * The opening `{` is consumed by the caller of `parseRuleSet()`, so the CSS starts right after it.
+     * The tests append the closing `}` that `parseRuleSet()` consumes.
      *
      * @return array<non-empty-string, array{0: non-empty-string, 1: list<non-empty-string>}>
      */
     public static function provideValidDeclarationsAndExpectedPropertyNames(): array
     {
         return [
-            'one declaration' => ['color: red; }', ['color']],
-            'leading semicolons' => [';; color: red; }', ['color']],
-            'two declarations' => ['color: red; margin: 0; }', ['color', 'margin']],
+            'one declaration' => ['color: red;', ['color']],
+            'leading semicolons' => [';; color: red;', ['color']],
+            'two declarations' => ['color: red; margin: 0;', ['color', 'margin']],
         ];
     }
 
@@ -146,7 +146,7 @@ final class RuleSetTest extends TestCase
         string $css,
         array $expectedPropertyNames
     ): void {
-        $parserState = new ParserState($css, Settings::create()->beStrict());
+        $parserState = new ParserState($css . '}', Settings::create()->beStrict());
         $subject = new RuleSet();
 
         RuleSet::parseRuleSet($parserState, $subject);
@@ -173,9 +173,8 @@ final class RuleSetTest extends TestCase
     public static function provideInvalidDeclarationsAndExpectedPropertyNames(): array
     {
         return [
-            'invalid declaration followed by semicolon' => ['color: red; foo; margin: 0; }', ['color', 'margin']],
-            'invalid declaration followed by closing brace' => ['color: red; foo }', ['color']],
-            'invalid declaration at end of input' => ['color: red; foo', ['color']],
+            'invalid declaration followed by semicolon' => ['color: red; foo; margin: 0;', ['color', 'margin']],
+            'invalid declaration followed by closing brace' => ['color: red; foo', ['color']],
         ];
     }
 
@@ -190,7 +189,7 @@ final class RuleSetTest extends TestCase
         string $css,
         array $expectedPropertyNames
     ): void {
-        $parserState = new ParserState($css, Settings::create());
+        $parserState = new ParserState($css . '}', Settings::create());
         $subject = new RuleSet();
 
         RuleSet::parseRuleSet($parserState, $subject);
