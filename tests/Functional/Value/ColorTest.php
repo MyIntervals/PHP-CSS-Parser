@@ -9,6 +9,7 @@ use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\SourceException;
+use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\CSSFunction;
@@ -32,6 +33,14 @@ final class ColorTest extends TestCase
             '3-digit hex color' => [
                 '#070',
                 '#070',
+            ],
+            'uppercase hex color' => [
+                '#AABBCC',
+                '#abc',
+            ],
+            'mixed-case hex color' => [
+                '#aBcDeF',
+                '#abcdef',
             ],
             '6-digit hex color that can be represented as 3-digit' => [
                 '#007700',
@@ -465,6 +474,15 @@ final class ColorTest extends TestCase
             'hex color with 9 digits' => [
                 '#ff0000000',
             ],
+            'hex color with non-hex digits' => [
+                '#zzz',
+            ],
+            'hex color with a non-hex digit among valid ones' => [
+                '#12g456',
+            ],
+            'hex color with non-hex digits and alpha length' => [
+                '#ggggggg0',
+            ],
             'rgb color with 0 arguments' => [
                 'rgb()',
             ],
@@ -557,5 +575,27 @@ final class ColorTest extends TestCase
         $this->expectException(SourceException::class);
 
         Color::parse(new ParserState($color, Settings::create()));
+    }
+
+    /**
+     * @test
+     */
+    public function dropsDeclarationWithInvalidHexColorInLenientMode(): void
+    {
+        $css = 'a{color:#zzz;margin:0} b{color:#ggg}';
+
+        $result = (new Parser($css, Settings::create()))->parse()->render(OutputFormat::createCompact());
+
+        self::assertSame('a{margin:0}b{}', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function throwsExceptionForInvalidHexColorInStrictMode(): void
+    {
+        $this->expectException(UnexpectedTokenException::class);
+
+        (new Parser('a{color:#zzz}', Settings::create()->withLenientParsing(false)))->parse();
     }
 }

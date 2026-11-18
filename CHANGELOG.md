@@ -34,6 +34,8 @@ Please also have a look at our
   identifiers instead of dropping the declaration (#1717)
 - Report declaration column numbers relative to the line, pointing at the
   start of the property name (#1715)
+- Reject hex colors containing non-hex digits instead of silently parsing them
+  as black (#1726)
 - Allow generic parsing of CSS units that might be added to the spec in future
   (#1689)
 - Allow empty default value in var() e.g. `.a { border: var(--w,) solid red; }` (#1659)

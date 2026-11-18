@@ -45,6 +45,15 @@ class Color extends CSSFunction
     {
         $parserState->consume('#');
         $hexValue = $parserState->parseIdentifier(false);
+        if (!\ctype_xdigit($hexValue)) {
+            throw new UnexpectedTokenException(
+                'Invalid hex color value',
+                $hexValue,
+                'custom',
+                $parserState->currentLine()
+            );
+        }
+
         if ($parserState->strlen($hexValue) === 3) {
             $hexValue = $hexValue[0] . $hexValue[0] . $hexValue[1] . $hexValue[1] . $hexValue[2] . $hexValue[2];
         } elseif ($parserState->strlen($hexValue) === 4) {
