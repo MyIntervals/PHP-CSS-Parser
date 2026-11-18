@@ -622,7 +622,7 @@ final class ParserStateTest extends TestCase
     /**
      * @return array<non-empty-string, array{0: non-empty-string}>
      */
-    public static function provideEscapedCharacter(): array
+    public static function provideCharacterThatWouldNeedEscaping(): array
     {
         return [
             'full stop' => ['.'],
@@ -645,7 +645,7 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider provideEscapedCharacter
+     * @dataProvider provideCharacterThatWouldNeedEscaping
      */
     public function parseIdentifierIncludesEscapedCharacter(string $character): void
     {
