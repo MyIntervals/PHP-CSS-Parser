@@ -37,6 +37,22 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      */
+    public function currentColumnIsOneBasedPositionWithinCurrentLine(): void
+    {
+        $subject = new ParserState("a{}\n\n  b{}", Settings::create());
+
+        self::assertSame(1, $subject->currentColumn());
+
+        $subject->consume(3);
+        self::assertSame(4, $subject->currentColumn());
+
+        $subject->consume(4);
+        self::assertSame(3, $subject->currentColumn());
+    }
+
+    /**
+     * @test
+     */
     public function parseIdentifierAcceptsMultibyteCharacters(): void
     {
         $subject = new ParserState('Café', Settings::create()->withMultibyteSupport(true));

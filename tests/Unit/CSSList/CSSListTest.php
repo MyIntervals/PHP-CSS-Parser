@@ -349,6 +349,20 @@ final class CSSListTest extends TestCase
     /**
      * @test
      */
+    public function spliceWithoutLengthRemovesAllItemsFromOffset(): void
+    {
+        $subject = new ConcreteCSSList();
+        $first = new DeclarationBlock();
+        $subject->setContents([$first, new DeclarationBlock(), new DeclarationBlock()]);
+
+        $subject->splice(1);
+
+        self::assertSame([$first], $subject->getContents());
+    }
+
+    /**
+     * @test
+     */
     public function getArrayRepresentationThrowsException(): void
     {
         $this->expectException(\BadMethodCallException::class);

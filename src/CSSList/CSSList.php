@@ -71,12 +71,12 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
             $listItem = null;
             if ($usesLenientParsing) {
                 try {
-                    $positionBeforeParse = $parserState->currentColumn();
+                    $positionBeforeParse = $parserState->currentOffset();
                     $listItem = self::parseListItem($parserState, $list);
                 } catch (UnexpectedTokenException $e) {
                     $listItem = false;
                     // If the failed parsing did not consume anything that was to come ...
-                    if ($parserState->currentColumn() === $positionBeforeParse) {
+                    if ($parserState->currentOffset() === $positionBeforeParse) {
                         // ... the unexpected token needs to be skipped, otherwise there'll be an infinite loop.
                         $parserState->consume(1);
                     }
@@ -322,7 +322,7 @@ abstract class CSSList implements CSSElement, CSSListItem, Positionable
      */
     public function splice(int $offset, ?int $length = null, ?array $replacement = null): void
     {
-        \array_splice($this->contents, $offset, $length, $replacement);
+        \array_splice($this->contents, $offset, $length ?? \count($this->contents), $replacement);
     }
 
     /**
