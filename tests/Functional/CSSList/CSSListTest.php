@@ -98,7 +98,7 @@ final class CSSListTest extends TestCase
     /**
      * @return array<non-empty-string, array{0: non-empty-string, 1: class-string<\Throwable>, 2: non-empty-string}>
      */
-    public static function provideInvalidCssForStrictMode(): array
+    public static function provideInvalidCssAndExpectedExceptionDetailsForStrictMode(): array
     {
         return [
             'closing brace at root level' => ['} a {}', SourceException::class, 'Unopened {'],
@@ -131,7 +131,7 @@ final class CSSListTest extends TestCase
      *
      * @param class-string<\Throwable> $expectedException
      *
-     * @dataProvider provideInvalidCssForStrictMode
+     * @dataProvider provideInvalidCssAndExpectedExceptionDetailsForStrictMode
      */
     public function parseListInStrictModeThrowsForInvalidCss(
         string $css,
