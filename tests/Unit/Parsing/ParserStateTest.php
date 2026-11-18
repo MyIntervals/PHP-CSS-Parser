@@ -823,7 +823,7 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      */
-    public function consumeUntilWithIncludeEndReturnsStopCharacter(): void
+    public function consumeUntilWithIncludeEndReturnsStringIncludingStopCharacter(): void
     {
         $content = 'ab';
         $stopCharacter = ';';
@@ -839,7 +839,7 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      */
-    public function consumeUntilWithConsumeEndConsumesButDoesNotReturnStopCharacter(): void
+    public function consumeUntilWithConsumeEndReturnsStringWithoutStopCharacterAndConsumesIt(): void
     {
         $content = 'ab';
         $stopCharacter = ';';
