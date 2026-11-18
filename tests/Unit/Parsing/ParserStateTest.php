@@ -660,7 +660,7 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      *
-     * @dataProvider provideEscapedCharacter
+     * @dataProvider provideCharacterThatWouldNeedEscaping
      */
     public function parseCharacterForEscapedNonHexCharacterReturnsThatCharacter(string $character): void
     {
