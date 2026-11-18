@@ -532,10 +532,10 @@ final class ParserStateTest extends TestCase
 
         $subject->setPosition(0);
 
-        $column = $subject->currentColumn();
+        $offset = $subject->currentOffset();
         $character = $subject->peek();
 
-        self::assertSame(0, $column);
+        self::assertSame(0, $offset);
         self::assertSame('a', $character);
     }
 
