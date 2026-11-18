@@ -129,9 +129,9 @@ final class RuleSetTest extends TestCase
     public static function provideValidDeclarationsAndExpectedPropertyNames(): array
     {
         return [
-            'one declaration' => ['color: red; }', ['color']],
-            'leading semicolons' => [';; color: red; }', ['color']],
-            'two declarations' => ['color: red; margin: 0; }', ['color', 'margin']],
+            'one declaration' => ['color: red;', ['color']],
+            'leading semicolons' => [';; color: red;', ['color']],
+            'two declarations' => ['color: red; margin: 0;', ['color', 'margin']],
         ];
     }
 
