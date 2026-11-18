@@ -10,10 +10,12 @@ use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\Parsing\ParserState;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\Settings;
+use Sabberworm\CSS\Value\CalcFunction;
 use Sabberworm\CSS\Value\Color;
 use Sabberworm\CSS\Value\CSSFunction;
 use Sabberworm\CSS\Value\RuleValueList;
 use Sabberworm\CSS\Value\Size;
+use Sabberworm\CSS\Value\URL;
 use Sabberworm\CSS\Value\Value;
 
 /**
@@ -264,5 +266,174 @@ final class ValueTest extends TestCase
         $result = Value::parsePrimitiveValue(new ParserState('rgb (0, 255, 0)', Settings::create()));
 
         self::assertSame('rgb', $result);
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideListDelimiter(): array
+    {
+        return [
+            'comma' => [','],
+            'space' => [' '],
+            'slash' => ['/'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideListDelimiter
+     */
+    public function parsesValuesSeparatedByDelimiterAsList(string $delimiter): void
+    {
+        $parserState = new ParserState('a' . $delimiter . 'b', Settings::create());
+
+        $result = Value::parseValue($parserState, self::DEFAULT_DELIMITERS);
+
+        self::assertInstanceOf(RuleValueList::class, $result);
+        self::assertSame($delimiter, $result->getListSeparator());
+        self::assertSame(['a', 'b'], $result->getListComponents());
+    }
+
+    /**
+     * @test
+     */
+    public function parsesCommaSeparatedListInsideSpaceSeparatedList(): void
+    {
+        $parserState = new ParserState('a b, c', Settings::create());
+
+        $result = Value::parseValue($parserState, self::DEFAULT_DELIMITERS);
+
+        self::assertInstanceOf(RuleValueList::class, $result);
+        self::assertSame(' ', $result->getListSeparator());
+        $components = $result->getListComponents();
+        self::assertCount(2, $components);
+        self::assertSame('a', $components[0]);
+        self::assertInstanceOf(RuleValueList::class, $components[1]);
+        self::assertSame(',', $components[1]->getListSeparator());
+        self::assertSame(['b', 'c'], $components[1]->getListComponents());
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideValueTerminator(): array
+    {
+        return [
+            'semicolon' => [';'],
+            'closing brace' => ['}'],
+            'closing parenthesis' => [')'],
+            'exclamation mark' => ['!'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider provideValueTerminator
+     */
+    public function parseValueStopsAtTerminator(string $terminator): void
+    {
+        $value = 'red';
+        $parserState = new ParserState($value . $terminator . 'x', Settings::create());
+
+        $result = Value::parseValue($parserState, self::DEFAULT_DELIMITERS);
+
+        self::assertSame($value, $result);
+        self::assertTrue($parserState->comes($terminator));
+    }
+
+    /**
+     * @test
+     */
+    public function parsesUnicodeRangeWithMoreThanSixDigitsOnlyUpToSixDigits(): void
+    {
+        $parserState = new ParserState('U+1234567', Settings::create());
+
+        $result = Value::parsePrimitiveValue($parserState);
+
+        self::assertSame('U+123456', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function parseValueDoesNotAcceptMicrosoftFilterInStrictMode(): void
+    {
+        $parserState = new ParserState(
+            'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)',
+            Settings::create()->beStrict()
+        );
+
+        $this->expectException(UnexpectedTokenException::class);
+
+        Value::parseValue($parserState, self::DEFAULT_DELIMITERS);
+    }
+
+    /**
+     * @test
+     */
+    public function parseIdentifierOrFunctionParsesIdentifierAsString(): void
+    {
+        $identifier = 'Block';
+        $parserState = new ParserState($identifier, Settings::create());
+
+        $result = Value::parseIdentifierOrFunction($parserState);
+
+        self::assertSame($identifier, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function parseIdentifierOrFunctionParsesCalcAsCalcFunction(): void
+    {
+        $parserState = new ParserState('calc(1px + 2px)', Settings::create());
+
+        $result = Value::parseIdentifierOrFunction($parserState);
+
+        self::assertInstanceOf(CalcFunction::class, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function parseIdentifierOrFunctionParsesUppercaseUrlAsUrl(): void
+    {
+        $uri = 'a.png';
+        $parserState = new ParserState('URL(' . $uri . ')', Settings::create());
+
+        $result = Value::parseIdentifierOrFunction($parserState);
+
+        self::assertInstanceOf(URL::class, $result);
+        self::assertSame($uri, $result->getURL()->getString());
+    }
+
+    /**
+     * @test
+     */
+    public function parseIdentifierOrFunctionKeepsCaseOfFunctionNameByDefault(): void
+    {
+        $name = 'Foo';
+        $parserState = new ParserState($name . '(1)', Settings::create());
+
+        $result = Value::parseIdentifierOrFunction($parserState);
+
+        self::assertInstanceOf(CSSFunction::class, $result);
+        self::assertSame($name, $result->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function parseIdentifierOrFunctionLowercasesFunctionNameIfIgnoringCase(): void
+    {
+        $parserState = new ParserState('Foo(1)', Settings::create());
+
+        $result = Value::parseIdentifierOrFunction($parserState, true);
+
+        self::assertInstanceOf(CSSFunction::class, $result);
+        self::assertSame('foo', $result->getName());
     }
 }
