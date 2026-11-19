@@ -218,10 +218,10 @@ final class CalcFunctionTest extends TestCase
     /**
      * @test
      */
-    public function parseStopsAtEndOfInputIfClosingParenthesisIsMissing(): void
+    public function parseThrowsExceptionIfClosingParenthesisIsMissingAtEndOfInput(): void
     {
-        $result = $this->parse('calc(1px + 2px');
+        $this->expectException(UnexpectedTokenException::class);
 
-        self::assertSame('calc(1px + 2px)', $result->render(OutputFormat::create()));
+        $this->parse('calc(1px + 2px');
     }
 }
