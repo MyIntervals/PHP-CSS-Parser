@@ -161,6 +161,20 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
+    public function semicolonAfterLastRuleWithSpaceAfterRules(): void
+    {
+        $outputFormat = OutputFormat::create()->setSemicolonAfterLastRule(false)->setSpaceAfterRules("\n");
+
+        self::assertSame(
+            ".main, .test {font: italic normal bold 16px/1.2 \"Helvetica\",Verdana,sans-serif;background: white\n}\n"
+            . "@media screen {.main {background-size: 100% 100%;font-size: 1.3em;background-color: #fff\n\t}}",
+            $this->document->render($outputFormat)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function spaceAfterRuleName(): void
     {
         self::assertSame(

@@ -340,24 +340,24 @@ final class OutputFormatterTest extends TestCase
             'string with trailing semicolon' => ['Earl Grey: hot;', 'Earl Grey: hot'],
             'string with semicolon in the middle' => [
                 'Earl Grey: hot; Coffee: Americano',
-                'Earl Grey: hot Coffee: Americano',
+                'Earl Grey: hot; Coffee: Americano',
             ],
             'string with semicolon in the middle and trailing' => [
                 'Earl Grey: hot; Coffee: Americano;',
                 'Earl Grey: hot; Coffee: Americano',
             ],
-            'string with 2 semicolons in the middle' => ['tea; coffee; Club-Mate', 'tea; coffee Club-Mate'],
+            'string with 2 semicolons in the middle' => ['tea; coffee; Club-Mate', 'tea; coffee; Club-Mate'],
             'string with 2 semicolons in the middle surrounded by spaces' => [
                 'Earl Grey: hot ; Coffee: Americano ; Club-Mate: cold',
-                'Earl Grey: hot ; Coffee: Americano  Club-Mate: cold',
+                'Earl Grey: hot ; Coffee: Americano ; Club-Mate: cold',
             ],
             'string with 2 adjacent semicolons in the middle' => [
                 'Earl Grey: hot;; Coffee: Americano',
-                'Earl Grey: hot; Coffee: Americano',
+                'Earl Grey: hot;; Coffee: Americano',
             ],
             'string with 3 adjacent semicolons in the middle' => [
                 'Earl Grey: hot;;; Coffee: Americano',
-                'Earl Grey: hot;; Coffee: Americano',
+                'Earl Grey: hot;;; Coffee: Americano',
             ],
         ];
     }
