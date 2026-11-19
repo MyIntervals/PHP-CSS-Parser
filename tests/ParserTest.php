@@ -620,7 +620,7 @@ div {height: calc;}';
     {
         $parser = new Parser('div { height: calc(100px');
         $document = $parser->parse();
-        self::assertSame('div {height: calc(100px);}', $document->render());
+        self::assertSame('div {}', $document->render());
 
         $parser = new Parser('div { height: calc(100px)');
         $document = $parser->parse();

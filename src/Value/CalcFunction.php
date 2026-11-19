@@ -90,9 +90,7 @@ class CalcFunction extends CSSFunction
             $parserState->consumeWhiteSpace();
         }
         $list->addListComponent($calcRuleValueList);
-        if (!$parserState->isEnd()) {
-            $parserState->consume(')');
-        }
+        $parserState->consume(')');
         return new CalcFunction($function, $list, ',', $parserState->currentLine());
     }
 
