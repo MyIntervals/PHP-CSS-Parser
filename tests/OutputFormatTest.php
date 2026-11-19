@@ -161,7 +161,7 @@ final class OutputFormatTest extends TestCase
     /**
      * @test
      */
-    public function semicolonAfterLastRuleWithSpaceAfterRules(): void
+    public function canRemoveSemicolonAfterLastRuleWithSpaceAfterRules(): void
     {
         $outputFormat = OutputFormat::create()->setSemicolonAfterLastRule(false)->setSpaceAfterRules("\n");
 
