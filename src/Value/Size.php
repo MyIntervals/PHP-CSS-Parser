@@ -11,7 +11,12 @@ use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\ShortClassNameProvider;
 
 /**
- * A `Size` consists of a numeric `size` value and a unit.
+ * A `Size` represents a '<dimension>'.
+ *
+ * @see https://drafts.csswg.org/css-values-4/#dimensions
+ *
+ * It comprises a '<number>' (which is required, though may need to be an '<integer>' for some unit values),
+ * and a unit (which may be optional if the number is zero, or in some other cases).
  */
 class Size extends PrimitiveValue
 {
@@ -94,8 +99,8 @@ class Size extends PrimitiveValue
     ];
 
     /**
-     * This is a mapping from lowercased size units to their expected rendering (e.g. "khz" -> "hKz"),
-     * and includes all known size units.
+     * This is a mapping from lowercased dimension units to their expected rendering (e.g. "khz" -> "hKz"),
+     * and includes all known dimension units.
      *
      * @var array<non-empty-lowercase-string, non-empty-string>|null
      */
@@ -104,7 +109,7 @@ class Size extends PrimitiveValue
     /**
      * @var float
      */
-    private $size;
+    private $number;
 
     /**
      * @var string|null
@@ -117,13 +122,13 @@ class Size extends PrimitiveValue
     private $isColorComponent;
 
     /**
-     * @param float|int|string $size
+     * @param float|int|string $number
      * @param int<1, max>|null $lineNumber
      */
-    public function __construct($size, ?string $unit = null, bool $isColorComponent = false, ?int $lineNumber = null)
+    public function __construct($number, ?string $unit = null, bool $isColorComponent = false, ?int $lineNumber = null)
     {
         parent::__construct($lineNumber);
-        $this->size = (float) $size;
+        $this->number = (float) $number;
         $this->unit = $unit;
         $this->isColorComponent = $isColorComponent;
     }
@@ -136,27 +141,27 @@ class Size extends PrimitiveValue
      */
     public static function parse(ParserState $parserState, bool $isColorComponent = false): Size
     {
-        $size = '';
+        $number = '';
         if ($parserState->comes('-')) {
-            $size .= $parserState->consume('-');
+            $number .= $parserState->consume('-');
         }
         while (\is_numeric($parserState->peek()) || $parserState->comes('.') || $parserState->comes('e', true)) {
             if ($parserState->comes('.')) {
-                $size .= $parserState->consume('.');
+                $number .= $parserState->consume('.');
             } elseif ($parserState->comes('e', true)) {
                 $lookahead = $parserState->peek(1, 1);
                 if (\is_numeric($lookahead) || $lookahead === '+' || $lookahead === '-') {
-                    $size .= $parserState->consume(2);
+                    $number .= $parserState->consume(2);
                 } else {
                     break; // Reached the unit part of the number like "em" or "ex"
                 }
             } else {
-                $size .= $parserState->consume(1);
+                $number .= $parserState->consume(1);
             }
         }
 
         // If a number has not been parsed, there cannot be a unit.  It will be up to the caller do deal with this.
-        if ($size === '') {
+        if ($number === '') {
             $unit = null;
         } else {
             // The unit could be `%`, a seqeunce of ASCII or unicode letters, or absent.
@@ -167,7 +172,7 @@ class Size extends PrimitiveValue
             $unit = $parsedUnit !== '' ? self::getUnitInRecommendedCasing($parsedUnit) : null;
         }
 
-        return new Size((float) $size, $unit, $isColorComponent, $parserState->currentLine());
+        return new Size((float) $number, $unit, $isColorComponent, $parserState->currentLine());
     }
 
     /**
@@ -208,16 +213,34 @@ class Size extends PrimitiveValue
     }
 
     /**
-     * @param float|int|string $size
+     * @param float|int|string $number
      */
-    public function setSize($size): void
+    public function setNumber($number): void
     {
-        $this->size = (float) $size;
+        $this->number = (float) $number;
     }
 
+    public function getNumber(): float
+    {
+        return $this->number;
+    }
+
+    /**
+     * @param float|int|string $number
+     *
+     * @deprecated in version 9.6, will be removed in v10.0.  Use `setNumber()` instead, which is a direct replacement.
+     */
+    public function setSize($number): void
+    {
+        $this->setNumber($number);
+    }
+
+    /**
+     * @deprecated in version 9.6, will be removed in v10.0.  Use `getNumber()` instead, which is a direct replacement.
+     */
     public function getSize(): float
     {
-        return $this->size;
+        return $this->getNumber();
     }
 
     public function isColorComponent(): bool
@@ -252,7 +275,7 @@ class Size extends PrimitiveValue
         if (\in_array($this->unit, self::RELATIVE_SIZE_UNITS, true)) {
             return true;
         }
-        if ($this->unit === null && $this->size !== 0.0) {
+        if ($this->unit === null && $this->number !== 0.0) {
             return true;
         }
         return false;
@@ -265,10 +288,10 @@ class Size extends PrimitiveValue
     {
         // Floating point numbers have only 14-15 digits of precision.
         // Determine how many decimal places to include to avoid noise at the end.
-        $magnitude = $this->size !== 0.0 ? (int) \ceil(\log10(\abs($this->size))) : 0;
+        $magnitude = $this->number !== 0.0 ? (int) \ceil(\log10(\abs($this->number))) : 0;
         $numberOfDecimals = \max(15 - $magnitude, 0);
 
-        $formattedNumber = \number_format($this->size, $numberOfDecimals, '.', ''); // no thousands separator
+        $formattedNumber = \number_format($this->number, $numberOfDecimals, '.', ''); // no thousands separator
 
         if (\strpos($formattedNumber, '.') !== false) {
             // Remove trailing zeros after decimal point, and perhaps the point itself
@@ -289,8 +312,7 @@ class Size extends PrimitiveValue
     {
         return [
             'class' => $this->getShortClassName(),
-            // 'number' is the official W3C terminology (not 'size')
-            'number' => $this->size,
+            'number' => $this->number,
             'unit' => $this->unit,
         ];
     }

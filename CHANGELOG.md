@@ -16,12 +16,16 @@ Please also have a look at our
 
 ### Changed
 
+- `Size::setSize()` and `getSize()` are renamed to `setNumber()` and
+  `getNumber()` (#1731)
 - Use possessive quantifiers and non-capturing groups in the parser regexps to
   reduce backtracking (#1690)
 - `Size::isSize()` is renamed to `isLength()` (#1645)
 
 ### Deprecated
 
+- `Size::setSize()` and `getSize()` are deprecated; use `setNumber()` and
+  `getNumber()` instead; they are direct replacements (#1731)
 - `Size::isSize()` is deprecated; use `isLength()` instead; it is a direct
   replacement (#1645)
 

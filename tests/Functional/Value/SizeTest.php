@@ -233,7 +233,7 @@ final class SizeTest extends TestCase
 
         $result = Size::parse($parserState);
 
-        self::assertSame(-1.5, $result->getSize());
+        self::assertSame(-1.5, $result->getNumber());
         self::assertSame('px', $result->getUnit());
     }
 
@@ -246,7 +246,7 @@ final class SizeTest extends TestCase
 
         $result = Size::parse($parserState);
 
-        self::assertSame(0.5, $result->getSize());
+        self::assertSame(0.5, $result->getNumber());
         self::assertSame('em', $result->getUnit());
     }
 
@@ -259,7 +259,7 @@ final class SizeTest extends TestCase
 
         $result = Size::parse($parserState);
 
-        self::assertSame(1000.0, $result->getSize());
+        self::assertSame(1000.0, $result->getNumber());
         self::assertNull($result->getUnit());
     }
 
@@ -272,7 +272,7 @@ final class SizeTest extends TestCase
 
         $result = Size::parse($parserState);
 
-        self::assertSame(0.02, $result->getSize());
+        self::assertSame(0.02, $result->getNumber());
         self::assertSame('s', $result->getUnit());
     }
 
@@ -285,7 +285,7 @@ final class SizeTest extends TestCase
 
         $result = Size::parse($parserState);
 
-        self::assertSame(1.0, $result->getSize());
+        self::assertSame(1.0, $result->getNumber());
         self::assertSame('em', $result->getUnit());
     }
 
@@ -298,7 +298,7 @@ final class SizeTest extends TestCase
 
         $result = Size::parse($parserState);
 
-        self::assertSame(3.0, $result->getSize());
+        self::assertSame(3.0, $result->getNumber());
         self::assertSame('em', $result->getUnit());
     }
 }

@@ -38,13 +38,13 @@ final class CalcFunctionTest extends TestCase
         self::assertCount(3, $components); // 100%, -, 20px
 
         self::assertInstanceOf(Size::class, $components[0]);
-        self::assertSame(100.0, $components[0]->getSize());
+        self::assertSame(100.0, $components[0]->getNumber());
         self::assertSame('%', $components[0]->getUnit());
 
         self::assertSame('-', $components[1]);
 
         self::assertInstanceOf(Size::class, $components[2]);
-        self::assertSame(20.0, $components[2]->getSize());
+        self::assertSame(20.0, $components[2]->getNumber());
         self::assertSame('px', $components[2]->getUnit());
     }
 
