@@ -25,7 +25,7 @@ parameters:
 			path: ../../src/Value/CalcFunction.php
 
 		-
-			message: '#^Cannot call method getSize\(\) on Sabberworm\\CSS\\Value\\Value\|string\.$#'
+			message: '#^Cannot call method getNumber\(\) on Sabberworm\\CSS\\Value\\Value\|string\.$#'
 			identifier: method.nonObject
 			count: 3
 			path: ../../src/Value/Color.php

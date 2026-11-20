@@ -88,13 +88,13 @@ final class SizeTest extends TestCase
     /**
      * @test
      */
-    public function setSizeConvertsNumericStringToFloat(): void
+    public function setNumberConvertsNumericStringToFloat(): void
     {
         $subject = new Size(1);
 
-        $subject->setSize('2.5');
+        $subject->setNumber('2.5');
 
-        self::assertSame(2.5, $subject->getSize());
+        self::assertSame(2.5, $subject->getNumber());
     }
 
     /**

@@ -187,7 +187,7 @@ final class ValueTest extends TestCase
         self::assertInstanceOf(CSSFunction::class, $parsedValue);
         $size = $parsedValue->getArguments()[0];
         self::assertInstanceOf(Size::class, $size);
-        self::assertSame(300.0, $size->getSize());
+        self::assertSame(300.0, $size->getNumber());
         self::assertSame('px', $size->getUnit());
         self::assertFalse($size->isColorComponent());
     }

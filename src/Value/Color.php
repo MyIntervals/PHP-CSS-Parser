@@ -304,9 +304,9 @@ class Color extends CSSFunction
     {
         $result = \sprintf(
             '%02x%02x%02x',
-            $this->components['r']->getSize(),
-            $this->components['g']->getSize(),
-            $this->components['b']->getSize()
+            $this->components['r']->getNumber(),
+            $this->components['g']->getNumber(),
+            $this->components['b']->getNumber()
         );
         $canUseShortVariant = ($result[0] === $result[1]) && ($result[2] === $result[3]) && ($result[4] === $result[5]);
 

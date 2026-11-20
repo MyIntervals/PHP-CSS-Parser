@@ -364,7 +364,7 @@ body {color: green;}',
         );
         foreach ($document->getAllValues(null) as $value) {
             if ($value instanceof Size && $value->isLength() && !$value->isRelative()) {
-                $value->setSize($value->getSize() * 3);
+                $value->setNumber($value->getNumber() * 3);
             }
         }
         foreach ($document->getAllDeclarationBlocks() as $declarationBlock) {
@@ -416,7 +416,7 @@ body {color: green;}',
 
         foreach ($document->getAllValues(null, null, true) as $value) {
             if ($value instanceof Size && $value->isLength()) {
-                $value->setSize($value->getSize() * 3);
+                $value->setNumber($value->getNumber() * 3);
             }
         }
         $expected = \str_replace(['1.2em', '.2em', '60%'], ['3.6em', '.6em', '180%'], $expected);
@@ -424,7 +424,7 @@ body {color: green;}',
 
         foreach ($document->getAllValues(null, null, true) as $value) {
             if ($value instanceof Size && !$value->isRelative() && !$value->isColorComponent()) {
-                $value->setSize($value->getSize() * 2);
+                $value->setNumber($value->getNumber() * 2);
             }
         }
         $expected = \str_replace(['.2s', '.3s', '90deg'], ['.4s', '.6s', '180deg'], $expected);
