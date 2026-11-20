@@ -191,19 +191,11 @@ class OutputFormatter
 
     public function removeLastSemicolon(string $string): string
     {
-        if ($this->outputFormat->shouldRenderSemicolonAfterLastRule()) {
+        if ($this->outputFormat->shouldRenderSemicolonAfterLastRule() || \substr($string, -1) !== ';') {
             return $string;
         }
 
-        $parts = \explode(';', $string);
-        if (\count($parts) < 2) {
-            return $parts[0];
-        }
-        $lastPart = \array_pop($parts);
-        $nextToLastPart = \array_pop($parts);
-        \array_push($parts, $nextToLastPart . $lastPart);
-
-        return \implode(';', $parts);
+        return \substr($string, 0, -1);
     }
 
     public function comments(Commentable $commentable): string

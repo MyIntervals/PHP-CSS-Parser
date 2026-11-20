@@ -29,6 +29,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Only remove a trailing semicolon after the last rule instead of the last
+  semicolon anywhere (#1730)
 - Drop a declaration with an unclosed `calc(` at the end of the input instead
   of assuming the closing parenthesis (#1729)
 - Allow `CSSList::splice()` without a length on PHP versions before 8.0 (#1727)

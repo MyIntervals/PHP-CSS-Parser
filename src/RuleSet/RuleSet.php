@@ -331,12 +331,13 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, DeclarationList
         }
 
         $formatter = $outputFormat->getFormatter();
+        $result = $formatter->removeLastSemicolon($result);
         if (!$isFirst) {
             // Had some output
             $result .= $formatter->spaceAfterRules();
         }
 
-        return $formatter->removeLastSemicolon($result);
+        return $result;
     }
 
     /**
