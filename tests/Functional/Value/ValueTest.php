@@ -560,4 +560,28 @@ final class ValueTest extends TestCase
 
         self::assertSame($range, $result);
     }
+
+    /**
+     * @test
+     */
+    public function parsePrimitiveValueParsesValidDimensionAsASize(): void
+    {
+        $parserState = new ParserState('1px', Settings::create());
+
+        $result = Value::parsePrimitiveValue($parserState);
+
+        self::assertInstanceOf(Size::class, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function parsePrimitiveValueParsesDimensionMissingNumberAsAStringIdentifier(): void
+    {
+        $parserState = new ParserState('px', Settings::create());
+
+        $result = Value::parsePrimitiveValue($parserState);
+
+        self::assertIsString($result);
+    }
 }
