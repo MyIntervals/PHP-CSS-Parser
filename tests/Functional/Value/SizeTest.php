@@ -7,6 +7,7 @@ namespace Sabberworm\CSS\Tests\Functional\Value;
 use PHPUnit\Framework\TestCase;
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Settings;
 use Sabberworm\CSS\Value\Size;
 
@@ -300,5 +301,16 @@ final class SizeTest extends TestCase
 
         self::assertSame(3.0, $result->getNumber());
         self::assertSame('em', $result->getUnit());
+    }
+
+    /**
+     * @test
+     */
+    public function parseThrowsIfNumberNotPresent(): void
+    {
+        $parserState = new ParserState('px', Settings::create());
+
+        $this->expectException(SourceException::class);
+        Size::parse($parserState);
     }
 }

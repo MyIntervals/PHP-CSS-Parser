@@ -6,6 +6,7 @@ namespace Sabberworm\CSS\Value;
 
 use Sabberworm\CSS\OutputFormat;
 use Sabberworm\CSS\Parsing\ParserState;
+use Sabberworm\CSS\Parsing\SourceException;
 use Sabberworm\CSS\Parsing\UnexpectedEOFException;
 use Sabberworm\CSS\Parsing\UnexpectedTokenException;
 use Sabberworm\CSS\ShortClassNameProvider;
@@ -160,17 +161,20 @@ class Size extends PrimitiveValue
             }
         }
 
-        // If a number has not been parsed, there cannot be a unit.  It will be up to the caller do deal with this.
         if ($number === '') {
-            $unit = null;
-        } else {
-            // The unit could be `%`, a seqeunce of ASCII or unicode letters, or absent.
-            // The letter sequence is not likely to be more than 5 characters (4 is the most currently),
-            // so a limit is applied as an optimization.
-            // The regex allows for an empty string for numbers without a unit, so exception handling is not required.
-            $parsedUnit = $parserState->consumeExpression('/^(?:%|[\\p{L}]*+)/u', 5);
-            $unit = $parsedUnit !== '' ? self::getUnitInRecommendedCasing($parsedUnit) : null;
+            // A 'dimension' requires a number.  What has arisen here is exceptional.  The caller should deal with it.
+            throw new SourceException(
+                'Number not found when attempting to parse dimension',
+                $parserState->currentLine()
+            );
         }
+
+        // The unit could be `%`, a seqeunce of ASCII or unicode letters, or absent.
+        // The letter sequence is not likely to be more than 5 characters (4 is the most currently),
+        // so a limit is applied as an optimization.
+        // The regex allows for an empty string for numbers without a unit, so exception handling is not required.
+        $parsedUnit = $parserState->consumeExpression('/^(?:%|[\\p{L}]*+)/u', 5);
+        $unit = $parsedUnit !== '' ? self::getUnitInRecommendedCasing($parsedUnit) : null;
 
         return new Size((float) $number, $unit, $isColorComponent, $parserState->currentLine());
     }
