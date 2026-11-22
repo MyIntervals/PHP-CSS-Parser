@@ -311,6 +311,8 @@ final class SizeTest extends TestCase
         $parserState = new ParserState('px', Settings::create());
 
         $this->expectException(SourceException::class);
+        $this->expectExceptionMessage('Number not found when attempting to parse dimension');
+
         Size::parse($parserState);
     }
 }
