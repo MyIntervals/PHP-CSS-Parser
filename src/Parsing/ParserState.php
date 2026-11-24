@@ -200,22 +200,9 @@ class ParserState
             return $convertedCharacter;
         }
         if ($isForIdentifier) {
-            $nextCharacter = $this->peek();
-            // `peek()` returns one character. With multibyte support that character can be several bytes,
-            // and `ord()` only accepts a single byte. These ranges only inspect the first byte.
-            if (\strlen($nextCharacter) > 1) {
-                $nextCharacter = $nextCharacter[0];
-            }
-            $peek = \ord($nextCharacter);
-            // Ranges: a-z A-Z 0-9 - _
-            if (
-                ($peek >= 97 && $peek <= 122)
-                || ($peek >= 65 && $peek <= 90)
-                || ($peek >= 48 && $peek <= 57)
-                || ($peek === 45)
-                || ($peek === 95)
-                || ($peek > 0xa1)
-            ) {
+            // Ranges: a-z A-Z 0-9 _ - and bytes above 0xA1. Only the first byte is inspected,
+            // which covers the first byte of every multibyte UTF-8 character.
+            if (\preg_match('/^[a-zA-Z0-9_\\xA2-\\xFF-]/', $this->peek()) === 1) {
                 return $this->consume(1);
             }
         } else {

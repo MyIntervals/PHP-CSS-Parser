@@ -63,6 +63,69 @@ final class ParserStateTest extends TestCase
     }
 
     /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideIdentifierCharacter(): array
+    {
+        return [
+            'lowercase letter' => ['a'],
+            'uppercase letter' => ['Z'],
+            'digit' => ['7'],
+            'hyphen' => ['-'],
+            'underscore' => ['_'],
+            'two-byte character' => ['é'],
+            'three-byte character' => ['€'],
+            'four-byte character' => ['😀'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $character
+     *
+     * @dataProvider provideIdentifierCharacter
+     */
+    public function parseCharacterForIdentifierConsumesIdentifierCharacter(string $character): void
+    {
+        $subject = new ParserState($character, Settings::create()->withMultibyteSupport(true));
+
+        $result = $subject->parseCharacter(true);
+
+        self::assertSame($character, $result);
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideNonIdentifierCharacter(): array
+    {
+        return [
+            'space' => [' '],
+            'colon' => [':'],
+            'opening brace' => ['{'],
+            'period' => ['.'],
+            'tilde' => ['~'],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $character
+     *
+     * @dataProvider provideNonIdentifierCharacter
+     */
+    public function parseCharacterForIdentifierReturnsNullForNonIdentifierCharacter(string $character): void
+    {
+        $subject = new ParserState($character, Settings::create());
+
+        $result = $subject->parseCharacter(true);
+
+        self::assertNull($result);
+    }
+
+    /**
      * @test
      */
     public function parseIdentifierThrowsForTextThatIsNotValidUtf8WithoutMultibyteSupport(): void
