@@ -555,15 +555,48 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      */
-    public function consumeWhiteSpaceThrowsForTextThatIsNotValidUtf8WithoutMultibyteSupport(): void
+    public function consumeWhiteSpaceThrowsForTextThatIsNotValidUtf8WithMultibyteSupport(): void
     {
-        $subject = new ParserState("\xFF body{}", Settings::create()->withMultibyteSupport(false));
+        if (\PHP_VERSION_ID < 70304) {
+            // https://bugs.php.net/76127
+            self::markTestSkipped('Before PHP 7.3.4 preg_split did not return false for invalid UTF-8');
+        }
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The CSS is not valid UTF-8.');
-        $this->expectExceptionCode(1787112621);
+        $this->expectExceptionCode(1787112623);
 
+        $subject = new ParserState("\xFF body{}", Settings::create()->withMultibyteSupport(true));
         $subject->consumeWhiteSpace();
+    }
+
+    /**
+     * @test
+     */
+    public function consumeWhiteSpaceStopsAtUtf8CharacterWithoutMultibyteSupport(): void
+    {
+        $subject = new ParserState(' é', Settings::create()->withMultibyteSupport(false));
+
+        $result = $subject->consumeWhiteSpace();
+
+        self::assertSame(' ', $result);
+        self::assertTrue($subject->comes('é'));
+    }
+
+    /**
+     * @test
+     */
+    public function consumeWhiteSpaceStopsAtSingleByteCharsetCharacter(): void
+    {
+        $subject = new ParserState(
+            " \xE9",
+            Settings::create()->withMultibyteSupport(true)->withDefaultCharset('ISO-8859-1')
+        );
+
+        $result = $subject->consumeWhiteSpace();
+
+        self::assertSame(' ', $result);
+        self::assertTrue($subject->comes("\xE9"));
     }
 
     /**

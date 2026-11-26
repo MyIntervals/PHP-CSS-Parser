@@ -234,11 +234,7 @@ class ParserState
         $consumed = '';
         do {
             while (true) {
-                $matchResult = \preg_match('/\\s/isSu', $this->peek());
-                if (!\is_int($matchResult)) {
-                    throw new \RuntimeException('The CSS is not valid UTF-8.', 1787112621);
-                }
-                if ($matchResult !== 1) {
+                if (\preg_match('/\\s/isS', $this->peek()) !== 1) {
                     break;
                 }
                 $consumed .= $this->consume(1);
