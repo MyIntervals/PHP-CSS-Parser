@@ -157,9 +157,9 @@ class ParserState
                 }
                 return '';
             }
-            $matchResult = \preg_match('/[0-9a-fA-F]/Su', $this->peek());
+            $matchResult = \preg_match('/[0-9a-fA-F]/S', $this->peek());
             if (!\is_int($matchResult)) {
-                throw new \RuntimeException('The CSS is not valid UTF-8.', 1787112618);
+                throw new \RuntimeException('The regular expression match failed.', 1795787523);
             }
             if ($matchResult === 0) {
                 return $this->consume(1);
