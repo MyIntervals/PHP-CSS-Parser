@@ -200,9 +200,12 @@ class ParserState
             return $convertedCharacter;
         }
         if ($isForIdentifier) {
-            // Ranges: a-z A-Z 0-9 _ - and bytes above 0xA1. Only the first byte is inspected,
-            // which covers the first byte of every multibyte UTF-8 character.
-            if (\preg_match('/^[a-zA-Z0-9_\\xA2-\\xFF-]/', $this->peek()) === 1) {
+            // Ranges: a-z A-Z 0-9 _ - and code points from U+00A0 upwards,
+            // or bytes from 0xA0 upwards if the characters are not split as UTF-8.
+            $pattern = $this->parserSettings->hasMultibyteSupport() && $this->streql($this->charset, 'utf-8')
+                ? '/^[a-zA-Z0-9_\\x{00A0}-\\x{10FFFF}-]/u'
+                : '/^[a-zA-Z0-9_\\xA0-\\xFF-]/';
+            if (\preg_match($pattern, $this->peek()) === 1) {
                 return $this->consume(1);
             }
         } else {

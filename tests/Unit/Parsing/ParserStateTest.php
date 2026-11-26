@@ -73,6 +73,8 @@ final class ParserStateTest extends TestCase
             'digit' => ['7'],
             'hyphen' => ['-'],
             'underscore' => ['_'],
+            'no-break space' => ["\u{00A0}"],
+            'inverted exclamation mark' => ["\u{00A1}"],
             'two-byte character' => ['é'],
             'three-byte character' => ['€'],
             'four-byte character' => ['😀'],
@@ -106,6 +108,8 @@ final class ParserStateTest extends TestCase
             'opening brace' => ['{'],
             'period' => ['.'],
             'tilde' => ['~'],
+            'first C1 control character' => ["\u{0080}"],
+            'last C1 control character' => ["\u{009F}"],
         ];
     }
 
@@ -118,7 +122,80 @@ final class ParserStateTest extends TestCase
      */
     public function parseCharacterForIdentifierReturnsNullForNonIdentifierCharacter(string $character): void
     {
-        $subject = new ParserState($character, Settings::create());
+        $subject = new ParserState($character, Settings::create()->withMultibyteSupport(true));
+
+        $result = $subject->parseCharacter(true);
+
+        self::assertNull($result);
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideSingleByteIdentifierCharacter(): array
+    {
+        return [
+            'lowercase letter' => ['a'],
+            'uppercase letter' => ['Z'],
+            'digit' => ['7'],
+            'hyphen' => ['-'],
+            'underscore' => ['_'],
+            'no-break space' => ["\xA0"],
+            'inverted exclamation mark' => ["\xA1"],
+            'small letter e with acute' => ["\xE9"],
+            'small letter y with diaeresis' => ["\xFF"],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $character
+     *
+     * @dataProvider provideSingleByteIdentifierCharacter
+     */
+    public function parseCharacterForIdentifierConsumesSingleByteCharsetIdentifierCharacter(string $character): void
+    {
+        $subject = new ParserState(
+            $character,
+            Settings::create()->withMultibyteSupport(true)->withDefaultCharset('ISO-8859-1')
+        );
+
+        $result = $subject->parseCharacter(true);
+
+        self::assertSame($character, $result);
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: non-empty-string}>
+     */
+    public static function provideSingleByteNonIdentifierCharacter(): array
+    {
+        return [
+            'space' => [' '],
+            'colon' => [':'],
+            'opening brace' => ['{'],
+            'period' => ['.'],
+            'tilde' => ['~'],
+            'first C1 control character' => ["\x80"],
+            'last C1 control character' => ["\x9F"],
+        ];
+    }
+
+    /**
+     * @test
+     *
+     * @param non-empty-string $character
+     *
+     * @dataProvider provideSingleByteNonIdentifierCharacter
+     */
+    public function parseCharacterForIdentifierReturnsNullForSingleByteCharsetNonIdentifierCharacter(
+        string $character
+    ): void {
+        $subject = new ParserState(
+            $character,
+            Settings::create()->withMultibyteSupport(true)->withDefaultCharset('ISO-8859-1')
+        );
 
         $result = $subject->parseCharacter(true);
 

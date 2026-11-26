@@ -33,6 +33,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Accept U+00A0 and U+00A1 and reject U+0080 to U+009F as the first character
+  of an identifier (#1736)
 - Only remove a trailing semicolon after the last rule instead of the last
   semicolon anywhere (#1730)
 - Drop a declaration with an unclosed `calc(` at the end of the input instead
