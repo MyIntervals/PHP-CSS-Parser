@@ -205,15 +205,28 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      */
-    public function parseIdentifierThrowsForTextThatIsNotValidUtf8WithoutMultibyteSupport(): void
+    public function parseIdentifierAcceptsMultibyteCharactersWithoutMultibyteSupport(): void
     {
-        $subject = new ParserState("a\xFF", Settings::create()->withMultibyteSupport(false));
+        $subject = new ParserState('Café', Settings::create()->withMultibyteSupport(false));
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
-        $this->expectExceptionCode(1787112617);
+        $result = $subject->parseIdentifier(false);
 
-        $subject->parseIdentifier();
+        self::assertSame('Café', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function parseIdentifierAcceptsSingleByteCharsetCharacters(): void
+    {
+        $subject = new ParserState(
+            "Caf\xE9",
+            Settings::create()->withMultibyteSupport(true)->withDefaultCharset('ISO-8859-1')
+        );
+
+        $result = $subject->parseIdentifier(false);
+
+        self::assertSame("Caf\xE9", $result);
     }
 
     /**
