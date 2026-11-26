@@ -18,15 +18,46 @@ final class CSSStringTest extends TestCase
     /**
      * @test
      */
-    public function parseThrowsForUnquotedStringThatIsNotValidUtf8WithoutMultibyteSupport(): void
+    public function parseThrowsForUnquotedStringThatIsNotValidUtf8WithMultibyteSupport(): void
     {
-        $parserState = new ParserState("\xFF", Settings::create()->withMultibyteSupport(false));
+        if (\PHP_VERSION_ID < 70304) {
+            // https://bugs.php.net/76127
+            self::markTestSkipped('Before PHP 7.3.4 preg_split did not return false for invalid UTF-8');
+        }
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The CSS is not valid UTF-8.');
-        $this->expectExceptionCode(1787548272);
+        $this->expectExceptionCode(1787112623);
 
+        $parserState = new ParserState("\xFF", Settings::create()->withMultibyteSupport(true));
         CSSString::parse($parserState);
+    }
+
+    /**
+     * @test
+     */
+    public function parseParsesUnquotedStringWithUtf8CharacterWithoutMultibyteSupport(): void
+    {
+        $parserState = new ParserState('café cd', Settings::create()->withMultibyteSupport(false));
+
+        $result = CSSString::parse($parserState);
+
+        self::assertSame('café', $result->getString());
+    }
+
+    /**
+     * @test
+     */
+    public function parseParsesUnquotedStringWithSingleByteCharsetCharacter(): void
+    {
+        $parserState = new ParserState(
+            "caf\xE9 cd",
+            Settings::create()->withMultibyteSupport(true)->withDefaultCharset('ISO-8859-1')
+        );
+
+        $result = CSSString::parse($parserState);
+
+        self::assertSame("caf\xE9", $result->getString());
     }
 
     /**
