@@ -164,12 +164,12 @@ class ParserState
             if ($matchResult === 0) {
                 return $this->consume(1);
             }
-            $hexCodePoint = $this->consumeExpression('/^[0-9a-fA-F]{1,6}+/u', 6);
+            $hexCodePoint = $this->consumeExpression('/^[0-9a-fA-F]{1,6}+/', 6);
             if ($this->strlen($hexCodePoint) < 6) {
                 // Consume whitespace after incomplete unicode escape
-                $matchResult = \preg_match('/\\s/isSu', $this->peek());
+                $matchResult = \preg_match('/\\s/isS', $this->peek());
                 if (!\is_int($matchResult)) {
-                    throw new \RuntimeException('The CSS is not valid UTF-8.', 1787112619);
+                    throw new \RuntimeException('The regular expression match failed.', 1795787524);
                 }
                 if ($matchResult !== 0) {
                     if ($this->comes("\r\n")) {

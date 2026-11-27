@@ -264,17 +264,32 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      */
-    public function parseCharacterThrowsForMultibyteCharacterAfterIncompleteUnicodeEscapeWithoutMultibyteSupport(): void
+    public function parseCharacterKeepsUtf8CharacterAfterIncompleteUnicodeEscapeWithoutMultibyteSupport(): void
     {
         // "\xC3\xA9" is "é". Without multibyte support, it is split into two separate "characters",
         // each of which is not valid UTF-8 on its own.
-        $subject = new ParserState("\\3\xC3\xA9", Settings::create()->withMultibyteSupport(false));
+        $subject = new ParserState("\\26\xC3\xA9", Settings::create()->withMultibyteSupport(false));
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
-        $this->expectExceptionCode(1787112619);
+        $result = $subject->parseCharacter(true);
 
-        $subject->parseCharacter(true);
+        self::assertSame('&', $result);
+        self::assertTrue($subject->comes("\xC3\xA9"));
+    }
+
+    /**
+     * @test
+     */
+    public function parseCharacterKeepsSingleByteCharsetCharacterAfterIncompleteUnicodeEscape(): void
+    {
+        $subject = new ParserState(
+            "\\26\xE9",
+            Settings::create()->withMultibyteSupport(true)->withDefaultCharset('ISO-8859-1')
+        );
+
+        $result = $subject->parseCharacter(true);
+
+        self::assertSame('&', $result);
+        self::assertTrue($subject->comes("\xE9"));
     }
 
     /**
