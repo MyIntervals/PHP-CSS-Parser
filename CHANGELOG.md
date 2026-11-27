@@ -33,6 +33,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Do not throw for a non-ASCII character after whitespace without multibyte
+  support or with a single-byte charset (#1741)
 - Do not throw for non-ASCII characters in identifiers without multibyte
   support or with a single-byte charset (#1739)
 - Accept U+00A0 and U+00A1 and reject U+0080 to U+009F as a character in an
