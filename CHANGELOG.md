@@ -34,7 +34,7 @@ Please also have a look at our
 ### Fixed
 
 - Do not throw for non-ASCII characters in an unquoted string without
-  multibyte support or with a single-byte charset (#1737)
+  multibyte support or with a single-byte charset (#1742)
 - Accept U+00A0 and U+00A1 and reject U+0080 to U+009F as the first character
   of an identifier (#1736)
 - Only remove a trailing semicolon after the last rule instead of the last
