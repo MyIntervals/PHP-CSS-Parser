@@ -205,7 +205,25 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      */
-    public function parseIdentifierAcceptsMultibyteCharactersWithoutMultibyteSupport(): void
+    public function parseIdentifierThrowsForTextThatIsNotValidUtf8WithMultibyteSupport(): void
+    {
+        if (\PHP_VERSION_ID < 70304) {
+            // https://bugs.php.net/76127
+            self::markTestSkipped('Before PHP 7.3.4 preg_split did not return false for invalid UTF-8');
+        }
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The CSS is not valid UTF-8.');
+        $this->expectExceptionCode(1787112623);
+
+        $subject = new ParserState("a\xFF", Settings::create()->withMultibyteSupport(true));
+        $subject->parseIdentifier();
+    }
+
+    /**
+     * @test
+     */
+    public function parseIdentifierAcceptsUtf8CharactersWithoutMultibyteSupport(): void
     {
         $subject = new ParserState('Café', Settings::create()->withMultibyteSupport(false));
 
