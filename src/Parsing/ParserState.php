@@ -524,7 +524,12 @@ class ParserState
             ? '/^[a-zA-Z0-9_\\x{00A0}-\\x{10FFFF}-]/u'
             : '/^[a-zA-Z0-9_\\xA0-\\xFF-]/';
 
-        return \preg_match($pattern, $character) === 1;
+        $matchResult = \preg_match($pattern, $character);
+        if (!\is_int($matchResult)) {
+            throw new \RuntimeException('The regular expression match failed.', 1795797859);
+        }
+
+        return $matchResult === 1;
     }
 
     /**
