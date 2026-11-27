@@ -225,7 +225,11 @@ class ParserState
         $consumed = '';
         do {
             while (true) {
-                if (\preg_match('/\\s/isS', $this->peek()) !== 1) {
+                $matchResult = \preg_match('/\\s/isS', $this->peek());
+                if (!\is_int($matchResult)) {
+                    throw new \RuntimeException('The regular expression match failed.', 1795787521);
+                }
+                if ($matchResult !== 1) {
                     break;
                 }
                 $consumed .= $this->consume(1);
