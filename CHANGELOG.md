@@ -33,6 +33,8 @@ Please also have a look at our
 
 ### Fixed
 
+- Do not throw for an escaped non-ASCII character without multibyte support or
+  with a single-byte charset (#1745)
 - Do not throw for non-ASCII characters in an unquoted string without
   multibyte support or with a single-byte charset (#1742)
 - Do not throw for a non-ASCII character after whitespace without multibyte

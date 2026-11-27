@@ -250,15 +250,47 @@ final class ParserStateTest extends TestCase
     /**
      * @test
      */
-    public function parseCharacterThrowsForEscapedTextThatIsNotValidUtf8WithoutMultibyteSupport(): void
+    public function parseCharacterThrowsForEscapedTextThatIsNotValidUtf8WithMultibyteSupport(): void
     {
-        $subject = new ParserState("\\\xFF", Settings::create()->withMultibyteSupport(false));
+        if (\PHP_VERSION_ID < 70304) {
+            // https://bugs.php.net/76127
+            self::markTestSkipped('Before PHP 7.3.4 preg_split did not return false for invalid UTF-8');
+        }
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The CSS is not valid UTF-8.');
-        $this->expectExceptionCode(1787112618);
+        $this->expectExceptionCode(1787112623);
 
+        $subject = new ParserState("\\\xFF", Settings::create()->withMultibyteSupport(true));
         $subject->parseCharacter(true);
+    }
+
+    /**
+     * @test
+     */
+    public function parseCharacterReturnsEscapedByteWithoutMultibyteSupport(): void
+    {
+        // "\xC3\xA9" is "é". Without multibyte support, it is split into two separate "characters".
+        $subject = new ParserState("\\\xC3\xA9", Settings::create()->withMultibyteSupport(false));
+
+        $result = $subject->parseCharacter(true);
+
+        self::assertSame("\xC3", $result);
+    }
+
+    /**
+     * @test
+     */
+    public function parseCharacterReturnsEscapedSingleByteCharsetCharacter(): void
+    {
+        $subject = new ParserState(
+            "\\\xE9",
+            Settings::create()->withMultibyteSupport(true)->withDefaultCharset('ISO-8859-1')
+        );
+
+        $result = $subject->parseCharacter(true);
+
+        self::assertSame("\xE9", $result);
     }
 
     /**
