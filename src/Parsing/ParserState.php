@@ -129,11 +129,7 @@ class ParserState
             throw new UnexpectedTokenException('', $this->peek(5), 'identifier', $this->lineNumber);
         }
         while (!$this->isEnd() && ($character = $this->parseCharacter(true)) !== null) {
-            $matchResult = \preg_match('/[a-zA-Z0-9\\x{00A0}-\\x{FFFF}_-]/Sux', $character);
-            if (!\is_int($matchResult)) {
-                throw new \RuntimeException('The CSS is not valid UTF-8.', 1787112617);
-            }
-            if ($matchResult !== 0) {
+            if ($this->isValidUnescapedCharacterForIdentifier($character)) {
                 $result .= $character;
             } else {
                 $result .= '\\' . $character;
@@ -200,12 +196,7 @@ class ParserState
             return $convertedCharacter;
         }
         if ($isForIdentifier) {
-            // Ranges: a-z A-Z 0-9 _ - and code points from U+00A0 upwards,
-            // or bytes from 0xA0 upwards if the characters are not split as UTF-8.
-            $pattern = $this->parserSettings->hasMultibyteSupport() && $this->streql($this->charset, 'utf-8')
-                ? '/^[a-zA-Z0-9_\\x{00A0}-\\x{10FFFF}-]/u'
-                : '/^[a-zA-Z0-9_\\xA0-\\xFF-]/';
-            if (\preg_match($pattern, $this->peek()) === 1) {
+            if ($this->isValidUnescapedCharacterForIdentifier($this->peek())) {
                 return $this->consume(1);
             }
         } else {
@@ -519,6 +510,17 @@ class ParserState
         }
 
         return $result;
+    }
+
+    private function isValidUnescapedCharacterForIdentifier(string $character): bool
+    {
+        // Ranges: a-z A-Z 0-9 _ - and code points from U+00A0 upwards,
+        // or bytes from 0xA0 upwards if the characters are not split as UTF-8.
+        $pattern = $this->parserSettings->hasMultibyteSupport() && $this->streql($this->charset, 'utf-8')
+            ? '/^[a-zA-Z0-9_\\x{00A0}-\\x{10FFFF}-]/u'
+            : '/^[a-zA-Z0-9_\\xA0-\\xFF-]/';
+
+        return \preg_match($pattern, $character) === 1;
     }
 
     /**
