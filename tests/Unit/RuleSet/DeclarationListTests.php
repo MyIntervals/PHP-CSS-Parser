@@ -284,6 +284,27 @@ trait DeclarationListTests
     }
 
     /**
+     * This covers appending many declarations that all have the same property name, which is the
+     * scenario behind the quadratic run time that adding a declaration without a sibling used to
+     * have (it appended with `array_splice()`, re-indexing the whole per-property array each time).
+     * All the declarations must be kept, in insertion order.
+     *
+     * @test
+     */
+    public function addDeclarationWithoutSiblingKeepsManySameNamedDeclarationsInInsertionOrder(): void
+    {
+        $numberOfDeclarations = 1000;
+        $expectedDeclarations = [];
+        for ($i = 0; $i < $numberOfDeclarations; ++$i) {
+            $declaration = new Declaration('margin');
+            $expectedDeclarations[] = $declaration;
+            $this->subject->addDeclaration($declaration);
+        }
+
+        self::assertSame($expectedDeclarations, $this->subject->getDeclarations('margin'));
+    }
+
+    /**
      * @return array<string, array{0: non-empty-list<non-empty-string>, 1: int<0, max>}>
      */
     public static function provideInitialPropertyNamesAndIndexOfOne(): array
