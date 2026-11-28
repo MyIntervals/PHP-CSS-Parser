@@ -33,6 +33,9 @@ Please also have a look at our
 
 ### Fixed
 
+- Add a declaration without a sibling in constant instead of linear time, so
+  that parsing a declaration block with many same-named declarations is no
+  longer quadratic in their number (#1747)
 - Do not throw for non-ASCII characters in an unquoted string without
   multibyte support or with a single-byte charset (#1742)
 - Do not throw for a non-ASCII character after whitespace without multibyte

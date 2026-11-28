@@ -169,7 +169,15 @@ class RuleSet implements CSSElement, CSSListItem, Positionable, DeclarationList
             $declarationToAdd->setPosition($declarationToAdd->getLineNumber(), 0);
         }
 
-        \array_splice($this->declarations[$propertyName], $position, 0, [$declarationToAdd]);
+        if ($position >= \count($this->declarations[$propertyName])) {
+            // Appending at the end is the common case (e.g. when parsing a declaration block).
+            // Doing it directly keeps this constant-time: `array_splice()` re-indexes the entire
+            // array on every call, which would make adding many same-named declarations (and hence
+            // parsing a block that contains them) quadratic in their number.
+            $this->declarations[$propertyName][] = $declarationToAdd;
+        } else {
+            \array_splice($this->declarations[$propertyName], $position, 0, [$declarationToAdd]);
+        }
     }
 
     /**
